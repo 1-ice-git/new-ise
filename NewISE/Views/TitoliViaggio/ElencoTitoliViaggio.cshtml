@@ -11,6 +11,7 @@
 
 <p style="margin-top: 10px">
 <h4>Richiesta Titoli di viaggio/Carta d'imbarco</h4>
+<hr />
 
 <div style="padding-top: 10px;">
     <table id="tabElencoTitoliViaggio" class="table-striped" cellspacing="0">
@@ -22,19 +23,19 @@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.CodiceFiscale)
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizio)
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataFine)
                 </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.parentela)
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     Altri dati
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     Richiedi
                 </th>
             </tr>
@@ -46,23 +47,23 @@
                     <td>
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
                     </td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
                     @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             @Html.DisplayFor(modelItem => item.dataFine)
                         </td>
                     }
                     else
                     {
-                        <td style="text-align: center;"></td>
+                        <td class="text-center"></td>
                     }
-                    <td style="text-align: center">
+                    <td class="text-center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.parentela)</span>
                     </td>
                     @if (item.parentela == EnumParentela.Coniuge || item.parentela == EnumParentela.Figlio)
@@ -71,7 +72,7 @@
                         {
                             if (item.parentela == EnumParentela.Coniuge)
                             {
-                                <td style="text-align: center;">
+                                <td class="text-center">
                                     <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare);" id="linkAltriDatiFam">
                                         <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
                                     </a>
@@ -79,7 +80,7 @@
                             }
                             if (item.parentela == EnumParentela.Figlio)
                             {
-                                <td style="text-align: center;">
+                                <td class="text-center">
                                     <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare);" id="linkAltriDatiFam">
                                         <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
                                     </a>
@@ -88,7 +89,7 @@
                         }
                         else
                         {
-                            <td style="text-align: center;">
+                            <td class="text-center">
                                 <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
                             </td>
 
@@ -96,10 +97,10 @@
                     }
                     else
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                         </td>
                     }
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         @if(richiestaEseguita || statoTrasferimento==EnumStatoTraferimento.Attivo || statoTrasferimento==EnumStatoTraferimento.Annullato)
                         {
                             if (item.RichiediTitoloViaggio)

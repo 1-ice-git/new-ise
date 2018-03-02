@@ -333,6 +333,14 @@
                         $("#btAnnullaTrasf").attr("disabled", "disabled");
                         $("#btAnnullaTrasf").addClass("disableLink");
                     }
+                    if (admin == false) {
+                        $("#btAttivaTrsf").hide();
+                        $("#btAnnullaTrasf").hide();
+                    } else {
+                        $("#btAttivaTrsf").show();
+                        $("#btAnnullaTrasf").show();
+                    }
+
 
 
                     AggiornaInfoTrasferimento();

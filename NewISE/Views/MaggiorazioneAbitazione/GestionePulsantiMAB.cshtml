@@ -15,16 +15,17 @@
 @Html.Hidden("hi_idAttivazioneMAB", idAttivazioneMAB)
 
 <div style="padding-right: 10px">
+    <hr />
     <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
-        <button class="btn btn-default btn-sm" @hiddenNotificaRichiesta @disabledNotificaRichiesta id="btNotificaRichiestaMAB" onclick="ModalNotificaRichiestaMAB();">
+        <button class="btn btn-default btn-sm @hiddenNotificaRichiesta" @disabledNotificaRichiesta id="btNotificaRichiestaMAB" onclick="ModalNotificaRichiestaMAB();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
         </button>
-        <button class="btn btn-default btn-sm" @hiddenAttivaRichiesta @disabledAttivaRichiesta id="btAttivaRichiestaMAB" onclick="ModalAttivaRichiestaMAB();">
+        <button class="btn btn-default btn-sm @hiddenAttivaRichiesta" @disabledAttivaRichiesta id="btAttivaRichiestaMAB" onclick="ModalAttivaRichiestaMAB();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Attiva richiesta
         </button>
-        <button class="btn btn-default btn-sm" @hiddenAnnullaRichiesta @disabledAnnullaRichiesta id="btAnnullaRichiestaMAB" onclick="ModalAnnullaRichiestaMAB();">
+        <button class="btn btn-default btn-sm @hiddenAnnullaRichiesta" @disabledAnnullaRichiesta id="btAnnullaRichiestaMAB" onclick="ModalAnnullaRichiestaMAB();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Annulla richiesta
         </button>

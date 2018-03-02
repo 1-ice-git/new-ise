@@ -5,30 +5,31 @@
 
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
     <h4>Pratiche passaporto</h4>
-    <table cellspacing="0" id="tabElencoFamiliariPass">
+    <hr />
+    <table cellspacing="0" id="tabElencoFamiliariPass" class="table-striped">
         <thead>
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.nominativo)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.codiceFiscale)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizio)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataFine)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.parentela)
                 </th>
-                <th style="width: 20px;">
+                <th style="width: 20px;" class="text-center">
                     @Html.DisplayNameFor(model => model.idAltriDati)
                 </th>
 
                 <th></th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.richiedi)
                 </th>
             </tr>
@@ -41,19 +42,19 @@
                     <td style="text-align: left;">
                         @Html.DisplayFor(modelItem => item.nominativo)
                     </td>
-                    <td style="text-align: left;">
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.codiceFiscale)
                     </td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         @if (item.dataFine != Convert.ToDateTime("31/12/9999"))
                         {
                             @Html.DisplayFor(modelItem => item.dataFine)
                         }
                     </td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.parentela)</span>
                     </td>
                     @if (item.idAltriDati > 0)
@@ -61,21 +62,21 @@
                         switch (item.parentela)
                         {
                             case EnumParentela.Coniuge:
-                                <td style="text-align: center;">
+                                <td class="text-center">
                                     <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariConiuge(@item.idAltriDati); ">
                                         <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                     </a>
                                 </td>
                                 break;
                             case EnumParentela.Figlio:
-                                <td style="text-align: center;">
+                                <td class="text-center">
                                     <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariFiglio(@item.idAltriDati); ">
                                         <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                     </a>
                                 </td>
                                 break;
                             case EnumParentela.Richiedente:
-                                <td></td>
+                                <td class="text-center"></td>
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -83,17 +84,17 @@
                     }
                     else
                     {
-                        <td style="text-align: center;"></td>
+                        <td class="text-center"></td>
                     }
 
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         <input id="hColElencoDocIdFamiliare" type="hidden" value="@item.idFamiliarePassaporto" />
                         <input id="hColElencoDocParentela" type="hidden" value="@Convert.ToDecimal(item.parentela)" />
                         <div id="divColElencoDoc">
                             @Html.Action("ColonnaElencoDoc", "PratichePassaporto", new { idAttivazionePassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela })
                         </div>
                     </td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         @Html.Action("ChkIncludiPassaporto", "PratichePassaporto", new { idAttivitaPassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, esisteDoc = item.HasDoc.esisteDoc, includiPassaporto = item.richiedi })
                     </td>
 

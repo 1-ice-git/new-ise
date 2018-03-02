@@ -6,16 +6,16 @@
     EnumChiamante enChiamante = EnumChiamante.Maggiorazioni_Familiari;
 }
 
-<table class="table" id="tabElencoFormulariInseriti">
+<table class="table table-striped"" id="tabElencoFormulariInseriti" >
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.nomeDocumento)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.estensione)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInserimento)
             </th>
             <th></th>
@@ -29,13 +29,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.nomeDocumento)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.estensione)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataInserimento)
                 </td>
-                <td>
+                <td class="text-center">
                     <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
                 </td>
                 <td class="text-center">
