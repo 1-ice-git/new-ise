@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -18,321 +19,381 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
+             
 
-        public IList<PercentualeDisagioModel> getListPercentualeDisagio()
-        {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+        //public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio)
+        //{
+        //    List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.PERCENTUALEDISAGIO.ToList();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
 
-                    libm = (from e in lib
-                            select new PercentualeDisagioModel()
-                            {
+        //            libm = (from e in lib
+        //                    select new PercentualeDisagioModel()
+        //                    {
+        //                        idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+        //                        idUfficio = e.IDUFFICIO,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+        //                        percentuale = e.PERCENTUALE,
+        //                        annullato = e.ANNULLATO,
+        //                        Ufficio = new UfficiModel()
+        //                        {
+        //                            idUfficio = e.UFFICI.IDUFFICIO,
+        //                            descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+        //                        }
+        //                    }).ToList();
+        //        }
 
-                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                idUfficio = e.IDUFFICIO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
-                                percentuale = e.PERCENTUALE,
-                                annullato = e.ANNULLATO,
-                                Ufficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
-                            }).ToList();
-                }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //public IList<PercentualeDisagioModel> getListPercentualeDisagio(bool escludiAnnullati = false)
+        //{
+        //    List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
-        public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio)
-        {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var lib = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
+        //            libm = (from e in lib
+        //                    select new PercentualeDisagioModel()
+        //                    {
+        //                        idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+        //                        idUfficio = e.IDUFFICIO,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+        //                        percentuale = e.PERCENTUALE,
+        //                        annullato = e.ANNULLATO,
+        //                        Ufficio = new UfficiModel()
+        //                        {
+        //                            idUfficio = e.UFFICI.IDUFFICIO,
+        //                            descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+        //                        }
+        //                    }).ToList();
+        //        }
 
-                    libm = (from e in lib
-                            select new PercentualeDisagioModel()
-                            {
-                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                idUfficio = e.IDUFFICIO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
-                                percentuale = e.PERCENTUALE,
-                                annullato = e.ANNULLATO,
-                                Ufficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
-                            }).ToList();
-                }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio, bool escludiAnnullati = false)
+        //{
+        //    List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
-        public IList<PercentualeDisagioModel> getListPercentualeDisagio(bool escludiAnnullati = false)
-        {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
 
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+        //            libm = (from e in lib
+        //                    select new PercentualeDisagioModel()
+        //                    {
+        //                        idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+        //                        idUfficio = e.IDUFFICIO,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+        //                        percentuale = e.PERCENTUALE,
+        //                        annullato = e.ANNULLATO,
+        //                        Ufficio = new UfficiModel()
+        //                        {
+        //                            idUfficio = e.UFFICI.IDUFFICIO,
+        //                            descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+        //                        }
+        //                    }).ToList();
+        //        }
 
-                    libm = (from e in lib
-                            select new PercentualeDisagioModel()
-                            {
-                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                idUfficio = e.IDUFFICIO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
-                                percentuale = e.PERCENTUALE,
-                                annullato = e.ANNULLATO,
-                                Ufficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
-                            }).ToList();
-                }
-
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio, bool escludiAnnullati = false)
-        {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
-
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
-
-                    libm = (from e in lib
-                            select new PercentualeDisagioModel()
-                            {
-                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                idUfficio = e.IDUFFICIO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
-                                percentuale = e.PERCENTUALE,
-                                annullato = e.ANNULLATO,
-                                Ufficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
-                            }).ToList();
-                }
-
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetPercentualeDisagio(PercentualeDisagioModel ibm)
+        
+        public void SetPercentualeDisagio(PercentualeDisagioModel ibm, bool aggiornaTutto)
         {
             List<PERCENTUALEDISAGIO> libNew = new List<PERCENTUALEDISAGIO>();
 
-            PERCENTUALEDISAGIO ibNew = new PERCENTUALEDISAGIO();
-
             PERCENTUALEDISAGIO ibPrecedente = new PERCENTUALEDISAGIO();
-
+            PERCENTUALEDISAGIO ibNew1 = new PERCENTUALEDISAGIO();
+            PERCENTUALEDISAGIO ibNew2 = new PERCENTUALEDISAGIO();
             List<PERCENTUALEDISAGIO> lArchivioIB = new List<PERCENTUALEDISAGIO>();
-
+            List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
+                bool giafatta = false;
                 try
                 {
-                    if (ibm.dataFineValidita.HasValue)
+                    using (dtParPercentualeDisagio dtal = new dtParPercentualeDisagio())
                     {
-                        if (EsistonoMovimentiSuccessiviUguale(ibm))
+                        //Se la data variazione coincide con una data inizio esistente
+                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, ibm.idUfficio);
+                        if (lista.Count != 0)
                         {
-                            ibNew = new PERCENTUALEDISAGIO()
-                            {
+                            giafatta = true;
+                            decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
+                            DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
+                            DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
+                            decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
 
-                                IDUFFICIO = ibm.idUfficio,
-                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                PERCENTUALE = ibm.percentuale,
-                                ANNULLATO = ibm.annullato
-                            };
-                        }
-                        else
-                        {
-                            ibNew = new PERCENTUALEDISAGIO()
+                            ibNew1 = new PERCENTUALEDISAGIO()
                             {
                                 IDUFFICIO = ibm.idUfficio,
-                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Utility.DataFineStop(),
+                                DATAINIZIOVALIDITA = dataInizioFirst,
+                                DATAFINEVALIDITA = dataFineFirst,
+                                // ALIQUOTA = ibm.aliquota,
                                 PERCENTUALE = ibm.percentuale,
-                                ANNULLATO = ibm.annullato
+                                DATAAGGIORNAMENTO = DateTime.Now,
                             };
+
+                            if (aggiornaTutto)
+                            {
+                                ibNew1 = new PERCENTUALEDISAGIO()
+                                {
+                                    IDUFFICIO = ibm.idUfficio,
+                                    DATAINIZIOVALIDITA = dataInizioFirst,
+                                    DATAFINEVALIDITA = Utility.DataFineStop(),
+                                    // ALIQUOTA = ibm.aliquota,
+                                    PERCENTUALE = ibm.percentuale,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                };
+                                //qui annullo tutti i record rimanenti dalla data inizio inserita
+                                libNew = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == ibm.idUfficio
+                                && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst).ToList();
+                                foreach (var elem in libNew)
+                                {
+                                    RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDPERCENTUALEDISAGIO), db);
+                                }
+                            }
+                            db.Database.BeginTransaction();
+                            db.PERCENTUALEDISAGIO.Add(ibNew1);
+                            db.SaveChanges();
+                            RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            db.Database.CurrentTransaction.Commit();
                         }
-                    }
-                    else
-                    {
-                        ibNew = new PERCENTUALEDISAGIO()
+                        ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
+                        if (giafatta == false)
                         {
-                            IDUFFICIO = ibm.idUfficio,
-                            DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Utility.DataFineStop(),
-                            PERCENTUALE = ibm.percentuale,
-                            ANNULLATO = ibm.annullato
-                        };
-                    }
-
-                    db.Database.BeginTransaction();
-
-                    var recordInteressati = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
-                                                            .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
-                                                            .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                                            .ToList();
-
-                    recordInteressati.ForEach(a => a.ANNULLATO = true);
-                    //db.SaveChanges();
-
-                    if (recordInteressati.Count > 0)
-                    {
-                        foreach (var item in recordInteressati)
-                        {
-
-                            if (item.DATAINIZIOVALIDITA < ibNew.DATAINIZIOVALIDITA)
+                            lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita, ibm.idUfficio);
+                            if (lista.Count != 0)
                             {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+                                giafatta = true;
+                                decimal idIntervalloLast = Convert.ToDecimal(lista[0]);
+                                DateTime dataInizioLast = Convert.ToDateTime(lista[1]);
+                                DateTime dataFineLast = Convert.ToDateTime(lista[2]);
+                                decimal aliquotaLast = Convert.ToDecimal(lista[3]);
+
+                                ibNew1 = new PERCENTUALEDISAGIO()
                                 {
-                                    var ibOld1 = new PERCENTUALEDISAGIO()
+                                    IDUFFICIO = ibm.idUfficio,
+                                    DATAINIZIOVALIDITA = dataInizioLast,
+                                    DATAFINEVALIDITA = dataFineLast.AddDays(-1),
+                                    PERCENTUALE = aliquotaLast,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                };
+                                ibNew2 = new PERCENTUALEDISAGIO()
+                                {
+                                    IDUFFICIO = ibm.idUfficio,
+                                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                    DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
+                                    PERCENTUALE = ibm.percentuale,
+                                    DATAAGGIORNAMENTO = DateTime.Now
+                                };
+                                if (aggiornaTutto)
+                                {
+                                    ibNew2 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        PERCENTUALE = item.PERCENTUALE,
-                                        ANNULLATO = false
+                                        IDUFFICIO = ibm.idUfficio,
+                                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                        DATAFINEVALIDITA = Utility.DataFineStop(),
+                                        PERCENTUALE = ibm.percentuale,
+                                        DATAAGGIORNAMENTO = DateTime.Now
                                     };
-
-                                    libNew.Add(ibOld1);
-
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new PERCENTUALEDISAGIO()
+                                    libNew = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == ibm.idUfficio
+                                    && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    foreach (var elem in libNew)
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        PERCENTUALE = item.PERCENTUALE,
-                                        ANNULLATO = false
-                                    };
-
-                                    var ibOld2 = new PERCENTUALEDISAGIO()
-                                    {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        PERCENTUALE = item.PERCENTUALE,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-                                    libNew.Add(ibOld2);
-
+                                        RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDPERCENTUALEDISAGIO), db);
+                                    }
                                 }
 
-                            }
-                            else if (item.DATAINIZIOVALIDITA == ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    //Non preleva il record old
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new PERCENTUALEDISAGIO()
-                                    {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        PERCENTUALE = item.PERCENTUALE,
-                                        ANNULLATO = false
-                                    };
+                                libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                                    libNew.Add(ibOld1);
-                                }
-                            }
-                            else if (item.DATAINIZIOVALIDITA > ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    //Non preleva il record old
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new PERCENTUALEDISAGIO()
-                                    {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        PERCENTUALE = item.PERCENTUALE,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-                                }
+                                db.Database.BeginTransaction();
+                                db.PERCENTUALEDISAGIO.AddRange(libNew);
+                                db.SaveChanges();
+                                //annullare l'intervallo trovato
+                                RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+                                db.Database.CurrentTransaction.Commit();
                             }
                         }
+                        //Se il nuovo record si trova in un intervallo non annullato con data fine non uguale al 31/12/9999
+                        if (giafatta == false)
+                        {
+                            lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita, ibm.idUfficio);
+                            if (lista.Count != 0)
+                            {
+                                giafatta = true;
+                                decimal idIntervallo = Convert.ToDecimal(lista[0]);
+                                DateTime dataInizio = Convert.ToDateTime(lista[1]);
+                                DateTime dataFine = Convert.ToDateTime(lista[2]);
+                                decimal aliquota = Convert.ToDecimal(lista[3]);
 
-                        libNew.Add(ibNew);
-                        libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                DateTime NewdataFine1 = ibm.dataInizioValidita.AddDays(-1);
 
-                        db.PERCENTUALEDISAGIO.AddRange(libNew);
+                                ibNew1 = new PERCENTUALEDISAGIO()
+                                {
+                                    IDUFFICIO = ibm.idUfficio,
+                                    DATAINIZIOVALIDITA = dataInizio,
+                                    DATAFINEVALIDITA = NewdataFine1,
+                                    //ALIQUOTA = aliquota,
+                                    PERCENTUALE = aliquota,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                };
+                                ibNew2 = new PERCENTUALEDISAGIO()
+                                {
+                                    IDUFFICIO = ibm.idUfficio,
+                                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                    DATAFINEVALIDITA = dataFine,
+                                    // ALIQUOTA = ibm.aliquota,
+                                    PERCENTUALE = ibm.percentuale,
+                                    DATAAGGIORNAMENTO = DateTime.Now
+                                };
+
+                                if (aggiornaTutto)
+                                {
+                                    ibNew2 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = ibm.idUfficio,
+                                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                        DATAFINEVALIDITA = Utility.DataFineStop(),
+                                        // ALIQUOTA = ibm.aliquota,
+                                        PERCENTUALE = ibm.percentuale,
+                                        DATAAGGIORNAMENTO = DateTime.Now
+                                    };
+                                    libNew = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == ibm.idUfficio
+                                    && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    foreach (var elem in libNew)
+                                    {
+                                        RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDPERCENTUALEDISAGIO), db);
+                                    }
+                                }
+
+                                libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                db.Database.BeginTransaction();
+                                db.PERCENTUALEDISAGIO.AddRange(libNew);
+                                db.SaveChanges();
+                                //annullare l'intervallo trovato
+                                RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+                                db.Database.CurrentTransaction.Commit();
+                            }
+                        }
+                        //CASO DELL'ULTIMA RIGA CON LA DATA FINE UGUALE A 31/12/9999
+                        if (giafatta == false)
+                        {
+                            //Attenzione qui se la lista non contiene nessun elemento
+                            //significa che non esiste nessun elemento corrispondentemente al livello selezionato
+                            lista = dtal.RestituisciLaRigaMassima(ibm.idUfficio);
+                            if (lista.Count == 0)
+                            {
+                                ibNew1 = new PERCENTUALEDISAGIO()
+                                {
+                                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                    DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
+                                    PERCENTUALE = ibm.percentuale,
+                                    IDUFFICIO = ibm.idUfficio,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                };
+                                libNew.Add(ibNew1);
+                                db.Database.BeginTransaction();
+                                db.PERCENTUALEDISAGIO.Add(ibNew1);
+                                db.SaveChanges();
+                                db.Database.CurrentTransaction.Commit();
+                            }
+
+                            if (lista.Count != 0)
+                            {
+                                giafatta = true;
+                                //se il nuovo record rappresenta la data variazione uguale alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
+                                //occorre annullare il record esistente in questione ed aggiungere un nuovo con la stessa data inizio e l'altro campo da aggiornare con il nuovo
+
+                                decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
+                                DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
+                                DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
+                                decimal aliquotaUltimo = Convert.ToDecimal(lista[3]);
+
+                                if (dataInizioUltimo == ibm.dataInizioValidita)
+                                {
+                                    ibNew1 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = ibm.idUfficio,
+                                        DATAINIZIOVALIDITA = dataInizioUltimo,
+                                        DATAFINEVALIDITA = dataFineUltimo,
+                                        // ALIQUOTA = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
+                                        PERCENTUALE = ibm.percentuale,
+                                        DATAAGGIORNAMENTO = DateTime.Now
+                                    };
+                                    libNew.Add(ibNew1);
+                                    db.Database.BeginTransaction();
+                                    db.PERCENTUALEDISAGIO.Add(ibNew1);
+                                    db.SaveChanges();
+                                    RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+                                    db.Database.CurrentTransaction.Commit();
+                                }
+                                //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
+                                if (ibm.dataInizioValidita > dataInizioUltimo)
+                                {
+                                    ibNew1 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = ibm.idUfficio,
+                                        DATAINIZIOVALIDITA = dataInizioUltimo,
+                                        DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
+                                        PERCENTUALE = aliquotaUltimo,
+                                        DATAAGGIORNAMENTO = DateTime.Now
+                                    };
+                                    ibNew2 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = ibm.idUfficio,
+                                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                        DATAFINEVALIDITA = Utility.DataFineStop(),
+                                        PERCENTUALE = ibm.percentuale,//nuova aliquota rispetto alla vecchia registrata
+                                        DATAAGGIORNAMENTO = DateTime.Now
+                                    };
+                                    libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                    libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                    db.Database.BeginTransaction();
+                                    db.PERCENTUALEDISAGIO.AddRange(libNew);
+                                    db.SaveChanges();
+                                    RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+                                    db.Database.CurrentTransaction.Commit();
+                                }
+                            }
+                        }
                     }
-                    else
-                    {
-                        db.PERCENTUALEDISAGIO.Add(ibNew);
-
-                    }
-                    db.SaveChanges();
-
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "PERCENTUALEDISAGIO", ibNew.IDPERCENTUALEDISAGIO);
-                    }
-
-                    db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
                 {
@@ -450,6 +511,173 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         }
 
+        public decimal Get_Id_PercentualeDisaggioNonAnnullato(decimal idLivello)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<PERCENTUALEDISAGIO> libm = new List<PERCENTUALEDISAGIO>();
+                libm = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false
+                && a.IDUFFICIO == idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                if (libm.Count != 0)
+                    tmp = libm.First().IDPERCENTUALEDISAGIO;
+            }
+            return tmp;
+        }
+        //
+        public IList<PercentualeDisagioModel> getListPercentualeDisaggio(decimal idUfficio, bool escludiAnnullati = false)
+        {
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    List<PERCENTUALEDISAGIO> lib = new List<PERCENTUALEDISAGIO>();
+                    if (escludiAnnullati == true)
+                        lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == false).ToList();
+                    else
+                        lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
+
+                    libm = (from e in lib
+                            select new PercentualeDisagioModel()
+                            {
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO,
+                                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                percentuale = e.PERCENTUALE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                annullato = e.ANNULLATO,
+                                Ufficio = new UfficiModel()
+                                {
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                }
+                            }).ToList();
+                }
+                return libm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public bool PercentualeDisaggioAnnullato(PercentualeDisagioModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == ibm.idUfficio && a.IDPERCENTUALEDISAGIO == ibm.idPercentualeDisagio).First().ANNULLATO == true ? true : false;
+            }
+        }
+        public List<string> DataVariazioneCoincideConDataInizio(DateTime DataCampione, decimal idUfficio)
+        {
+            List<string> tmp = new List<string>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<PERCENTUALEDISAGIO> libm = new List<PERCENTUALEDISAGIO>();
+                libm = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false
+                && a.IDUFFICIO == idUfficio).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA &&
+                 b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
+                if (libm.Count != 0)
+                {
+                    tmp.Add(libm[0].IDPERCENTUALEDISAGIO.ToString());
+                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].PERCENTUALE.ToString());
+                }
+            }
+            return tmp;
+        }
+        public void RendiAnnullatoUnRecord(decimal idCoeffSede, ModelDBISE db)
+        {
+            PERCENTUALEDISAGIO entita = new PERCENTUALEDISAGIO();
+            entita = db.PERCENTUALEDISAGIO.Find(idCoeffSede);
+            entita.ANNULLATO = true;
+            db.SaveChanges();
+        }
+        public List<string> RestituisciLaRigaMassima(decimal idUfficio)
+        {
+            List<string> tmp = new List<string>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<PERCENTUALEDISAGIO> libm = new List<PERCENTUALEDISAGIO>();
+                libm = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false
+                && a.IDUFFICIO == idUfficio).ToList().Where(b =>
+                b.DATAFINEVALIDITA == Convert.ToDateTime(Utility.DataFineStop())).ToList();
+                if (libm.Count != 0)
+                {
+                    tmp.Add(libm[0].IDPERCENTUALEDISAGIO.ToString());
+                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].PERCENTUALE.ToString());
+                }
+            }
+            return tmp;
+        }
+        public List<string> DataVariazioneCoincideConDataFine(DateTime DataCampione, decimal idUfficio)
+        {
+            List<string> tmp = new List<string>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<PERCENTUALEDISAGIO> libm = new List<PERCENTUALEDISAGIO>();
+                libm = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false
+                && a.IDUFFICIO == idUfficio).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().
+                Where(b => DataCampione == b.DATAFINEVALIDITA
+                && b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())).ToList();
+
+                if (libm.Count != 0)
+                {
+                    tmp.Add(libm[0].IDPERCENTUALEDISAGIO.ToString());
+                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].PERCENTUALE.ToString());
+                }
+            }
+            return tmp;
+        }
+        public List<string> RestituisciIntervalloDiUnaData(DateTime DataCampione, decimal idUfficio)
+        {
+            List<string> tmp = new List<string>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<PERCENTUALEDISAGIO> libm = new List<PERCENTUALEDISAGIO>();
+                libm = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false
+                && a.IDUFFICIO == idUfficio).ToList().Where(b =>
+                b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())
+                && DataCampione > b.DATAINIZIOVALIDITA
+                && DataCampione < b.DATAFINEVALIDITA).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
+                if (libm.Count != 0)
+                {
+                    tmp.Add(libm[0].IDPERCENTUALEDISAGIO.ToString());
+                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].PERCENTUALE.ToString());
+                }
+            }
+            return tmp;
+        }
+        public static ValidationResult VerificaPercentuale(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as PercentualeDisagioModel;
+
+            if (fm != null)
+            {
+                if (fm.percentuale > 100)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire percentuale  maggiore di 100 ({0}).", fm.percentuale.ToString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La percentuale è richiesta.");
+            }
+            return vr;
+        }
     }
 }

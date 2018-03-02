@@ -2008,6 +2008,37 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public TrasferimentoModel GetTrasferimentoByIdPrimaSistemazione(decimal idPrimaSistemazione)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ps = db.PRIMASITEMAZIONE.Find(idPrimaSistemazione);
+                var tr = ps.TRASFERIMENTO;
+
+                tm = new TrasferimentoModel()
+                {
+                    idTrasferimento = tr.IDTRASFERIMENTO,
+                    idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
+                    idUfficio = tr.IDUFFICIO,
+                    idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
+                    idDipendente = tr.IDDIPENDENTE,
+                    idTipoCoan = tr.IDTIPOCOAN,
+                    dataPartenza = tr.DATAPARTENZA,
+                    dataRientro = tr.DATARIENTRO,
+                    coan = tr.COAN,
+                    protocolloLettera = tr.PROTOCOLLOLETTERA,
+                    dataLettera = tr.DATALETTERA,
+                    notificaTrasferimento = tr.NOTIFICATRASFERIMENTO,
+                    dataAggiornamento = tr.DATAAGGIORNAMENTO
+                };
+            }
+
+            return tm;
+        }
+
+
 
     }
 }

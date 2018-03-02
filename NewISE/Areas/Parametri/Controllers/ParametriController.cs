@@ -34,7 +34,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 r.Add(new SelectListItem() { Text = "TFR", Value = "12" });
                 r.Add(new SelectListItem() { Text = "Valute", Value = "13" });
                 r.Add(new SelectListItem() { Text = "Valuta Ufficio", Value = "14" });
-                //r.Add(new SelectListItem() { Text = "Percentuale Disagio", Value = "15" });
+                r.Add(new SelectListItem() { Text = "Percentuale Disagio", Value = "15" });
 
                 ViewBag.ParametriList = r;
                 return View();

@@ -11,14 +11,16 @@
 
 <div class="row" style="padding-right: 15px;">
     <div class="col-xs-12">
-        <div id="divTrasportoEffettiPartenza" style="padding-top: 5px;border-bottom:solid;border-width:1px;border-color:limegreen">
+        <div id="divTrasportoEffettiPartenza" style="padding-top: 5px">
             @Html.Action("TrasportoEffettiPartenza", "TrasportoEffetti", new { idTrasportoEffettiPartenza = idTrasportoEffettiPartenza })
         </div>
     </div>
 </div>
-
+<div class="row" style="margin-right: 15px;">
+    <hr />
+</div>
 <div class="row">
-    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:30px ">
+    <div class="pull-right" style="margin-bottom: 10px;margin-right:30px ">
         <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaTE" onclick="ModalNotificaRichiestaTE();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
@@ -126,6 +128,7 @@
                     var DocContributo = result.DocContributo;
                     var DocAttestazione = result.DocAttestazione;
                     var NumAttivazioni=result.NumAttivazioni;
+                    var trasfAnnullato = result.trasfAnnullato;
 
                     $("#btNotificaRichiestaTE").attr("disabled", "disabled");
                     $("#btNotificaRichiestaTE").addClass("disabled");
@@ -151,15 +154,18 @@
 
                     //Se risulta in lavorazione con almeno un documento abilito la il pulsante notifica
                     if (
-                        (NumAttivazioni==0 && richiestaTE==false && attivazioneTE==false && DocContributo) ||
-                        (NumAttivazioni>0 && richiestaTE==false && attivazioneTE==false && DocAttestazione)
-                        ) 
+                        (
+                            (NumAttivazioni==0 && richiestaTE==false && attivazioneTE==false && DocContributo) ||
+                            (NumAttivazioni>0 && richiestaTE==false && attivazioneTE==false && DocAttestazione)
+                        ) &&
+                            trasfAnnullato==false
+                        )
                     {
                         $("#btNotificaRichiestaTE").removeAttr("disabled");
                         $("#btNotificaRichiestaTE").removeClass("disabled");
                     } else {
                         if (admin) {
-                            if (richiestaTE && attivazioneTE==false) {
+                            if (richiestaTE && attivazioneTE==false && trasfAnnullato==false) {
                                 $("#btAttivaRichiestaTE").removeAttr("disabled");
                                 $("#btAttivaRichiestaTE").removeClass("disabled");
                                 $("#btAnnullaRichiestaTE").removeAttr("disabled");

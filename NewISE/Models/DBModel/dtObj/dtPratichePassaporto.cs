@@ -1735,7 +1735,7 @@ namespace NewISE.Models.DBModel.dtObj
                         gp.figliIncluso = true;
                     }
 
-
+                    gp.statoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO;
                 }
             }
 

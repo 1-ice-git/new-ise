@@ -14,94 +14,79 @@
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
 
+<h4>Richiesta Trasporto Effetti</h4>
 <div class="table col-xs-12">
     <div class="row">
         <div class="col-xs-12" style="padding-top:10px">
-            <div class="table" style="background-color:transparent">
-                <div class="row">
-                    <div class="col-xs-5 text-right"  style="padding-top:10px">
-                        <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
-                    </div>
-                    <div class="col-xs-3" style="padding-top:5px">
-                        <input id="valIndennitaPrimaSistemazione" class="form-control " readonly style="text-align: right" />
-                    </div>
+            <div class="row">
+                <div class="col-xs-7 text-right"  style="padding-top:10px">
+                    <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
                 </div>
-                <div class="row">
-                    <div class="col-xs-5 text-right" style="padding-top:10px">
-                        <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
-                    </div>
-                    <div class="col-xs-3" style="padding-top:5px">
-                        <input id="valPercKM" class="form-control" style="text-align: right" readonly />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5 text-right" style="padding-top:10px">
-                        <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
-                    </div>
-                    <div class="col-xs-3" style="padding-top:5px">
-                        <input id="valContributoLordo" class="form-control" style="text-align: right" readonly/>
-                    </div>
+                <div class="col-xs-3" style="padding-top:5px">
+                    <input id="valIndennitaPrimaSistemazione" class="form-control " readonly style="text-align: right" />
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">&nbsp;
-        </div>
-    </div>
-    <div class="row">
-        <div  class="col-xs-12">
-            <div class="table" style="background-color:transparent">
-                <div class="row">
-                    <div class="col-xs-7" style="text-align:right"><b>
-                            Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)
-                        </b>
-                    </div>
-                    <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
-                        @if (DocContributo)
-                        {
-                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
-                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
-                            </a>
-                        }
-                        else
-                        {
-                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
-                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
-                            </a>
-                        }
-                    </div>
+            <div class="row">
+                <div class="col-xs-7 text-right" style="padding-top:10px">
+                    <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
                 </div>
-                <div class="row">
-                    <div class="col-xs-7" style="text-align:right">
-                        <b>
-                            @*<label for="modulo2" class="control-label" style="text-align:right">
-                                Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
-                            </label>*@
-                        Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
-                            </b>
-                    </div>
-                    <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
-                        @if (DocAttestazione)
-                        {
-                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
-                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documenti attestazione trasloco" />
-                            </a>
-                        }
-                        else
-                        {
-                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
-                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
-                            </a>
-                        }
-                    </div>
+                <div class="col-xs-3" style="padding-top:5px">
+                    <input id="valPercKM" class="form-control" style="text-align: right" readonly />
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-xs-7 text-right" style="padding-top:10px">
+                    <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
+                </div>
+                <div class="col-xs-3" style="padding-top:5px">
+                    <input id="valContributoLordo" class="form-control" style="text-align: right" readonly/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">&nbsp;
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)</b>
+                </div>
+                <div class="col-xs-3" style="padding-left:10px;padding-bottom:10px">
+                    @if (DocContributo)
+                    {
+                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)</b>
+                </div>
+                <div class="col-xs-3" style="padding-left:10px;padding-bottom:10px">
+                    @if (DocAttestazione)
+                    {
+                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documenti attestazione trasloco" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript">
 

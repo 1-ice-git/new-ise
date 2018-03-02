@@ -16,18 +16,17 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeDisagio(bool escludiAnnullati, decimal idUfficio = 0)
+        public ActionResult PercentualeDisagio(bool escludiAnnullati, decimal idLivello = 0)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
             var r = new List<SelectListItem>();
             List<UfficiModel> llm = new List<UfficiModel>();
-
             try
-            {
+            {                
                 using (dtUffici dtl = new dtUffici())
                 {
                     llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
-
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
@@ -37,31 +36,30 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Value = t.idUfficio.ToString()
                              }).ToList();
 
-                        if (idUfficio == 0)
+                        if (idLivello == 0)
                         {
                             r.First().Selected = true;
-                            idUfficio = Convert.ToDecimal(r.First().Value);
+                            idLivello = Convert.ToDecimal(r.First().Value);
                         }
                         else
                         {
-                            r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
-
                     ViewBag.LivelliList = r;
                 }
 
                 using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListPercentualeDisagio(idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListPercentualeDisagio(idUfficio).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualeDisaggioNonAnnullato(idLivello);
+                    libm = dtib.getListPercentualeDisaggio(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -87,7 +85,6 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtUffici dtl = new dtUffici())
                 {
                     llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
-
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
@@ -96,23 +93,31 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Text = t.descUfficio,
                                  Value = t.idUfficio.ToString()
                              }).ToList();
-                        r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
-                    }
 
+                        if (idUfficio == 0)
+                        {
+                            r.First().Selected = true;
+                            idUfficio = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            var temp = r.Where(a => a.Value == idUfficio.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idUfficio = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                        }
+                    }
                     ViewBag.LivelliList = r;
                 }
 
                 using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListPercentualeDisagio(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListPercentualeDisagio(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualeDisaggioNonAnnullato(idUfficio);
+                    libm = dtib.getListPercentualeDisaggio(idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -148,20 +153,27 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciPercentualeDisagio(PercentualeDisagioModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciPercentualeDisagio(PercentualeDisagioModel ibm, bool escludiAnnullati = true,bool aggiornaTutto= false)
         {
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
             try
             {
                 if (ModelState.IsValid)
                 {
                     using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                     {
-                        dtib.SetPercentualeDisagio(ibm);
+                        dtib.SetPercentualeDisagio(ibm,aggiornaTutto);
                     }
-
-                    return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
+                    AggiornaLivelliList(ibm.idUfficio);
+                    //return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
+                    using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
+                    {
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualeDisaggioNonAnnullato(ibm.idUfficio);
+                        libm = dtib.getListPercentualeDisaggio(ibm.idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("PercentualeDisagio", libm);
                 }
                 else
                 {
@@ -171,6 +183,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         ViewBag.Descrizione = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
+                    
                     return PartialView("NuovaPercentualeDisagio", ibm);
                 }
             }
@@ -182,24 +195,48 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
+       
         public ActionResult EliminaPercentualeDisagio(bool escludiAnnullati, decimal idUfficio, decimal idPercDisagio)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
             try
             {
                 using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                 {
                     dtib.DelPercentualeDisagio(idPercDisagio);
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualeDisaggioNonAnnullato(idUfficio);
+                    libm = dtib.getListPercentualeDisaggio(idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
+                AggiornaLivelliList(idUfficio);
 
-                return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = idUfficio });
+                return PartialView("PercentualeDisagio", libm);
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
+        }
+        private void AggiornaLivelliList(decimal idUfficio)
+        {
+            var r = new List<SelectListItem>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+            using (dtUffici dtl = new dtUffici())
+            {
+                var llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
 
-
+                if (llm != null && llm.Count > 0)
+                {
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.descUfficio,
+                             Value = t.idUfficio.ToString()
+                         }).ToList();
+                    r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                }
+                ViewBag.LivelliList = r;
+            }
         }
 
     }

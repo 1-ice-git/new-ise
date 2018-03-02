@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel;
 
 namespace NewISE.Models.ViewModel
 {
@@ -18,5 +19,7 @@ namespace NewISE.Models.ViewModel
         public bool richiedenteIncluso { get; set; } = false;
         public bool coniugeIncluso { get; set; } = false;
         public bool figliIncluso { get; set; } = false;
+
+        public EnumStatoTraferimento statoTrasferimento { get; set; }
     }
 }

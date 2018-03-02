@@ -7,8 +7,6 @@
 
 <link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
 
-
-
 <div class="row" style="padding-right: 15px;">
     <div class="col-xs-12">
         <div id="divTitoliViaggio" style="padding-top: 5px;border-bottom:solid;border-width:1px;border-color:limegreen">
@@ -16,7 +14,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:30px ">
@@ -127,6 +124,7 @@
                     var richiediAnnulla = result.richiediAnnulla;
                     var richiediAttivazione = result.richiediAttivazione;
                     var inLavorazione = result.inLavorazione;
+                    var trasfAnnullato=result.trasfAnnullato;
 
                     $("#btNotificaRichiestaTV").attr("disabled", "disabled");
                     $("#btNotificaRichiestaTV").addClass("disabled");
@@ -150,18 +148,18 @@
                     } 
 
                     //Se risulta in lavorazione abilito la il pulsante notifica
-                    if (inLavorazione && richiediNotifica) {
+                    if (inLavorazione && richiediNotifica && trasfAnnullato==false) {
                         $("#btNotificaRichiestaTV").removeAttr("disabled");
                         $("#btNotificaRichiestaTV").removeClass("disabled");
                     } else {
                         if (admin) {
-                            if (richiediAttivazione) {
+                            if (richiediAttivazione && trasfAnnullato==false) {
                                 $("#btAttivaRichiestaTV").removeAttr("disabled");
                                 $("#btAttivaRichiestaTV").removeClass("disabled");
                                 $("#btAnnullaRichiestaTV").removeAttr("disabled");
                                 $("#btAnnullaRichiestaTV").removeClass("disabled");
                             } else {
-                                if (richiediNotifica) {
+                                if (richiediNotifica && trasfAnnullato==false) {
                                     $("#btNotificaRichiestaTV").removeAttr("disabled");
                                     $("#btNotificaRichiestaTV").removeClass("disabled");
 

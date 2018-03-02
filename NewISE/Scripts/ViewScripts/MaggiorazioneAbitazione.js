@@ -249,6 +249,8 @@ function SalvaDocumentoMAB(idTrasferimento,idTipoDocumento) {
                     MsgErroreJson(result.msg);
 
                     CloseTimeModalMAB(idTrasferimento);
+
+                    GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
                 }
 
             },

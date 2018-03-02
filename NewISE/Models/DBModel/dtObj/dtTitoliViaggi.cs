@@ -984,31 +984,57 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public IList<AttivazioneTitoliViaggioModel> GetListAttivazioniTitoliViaggio(decimal idTitoliViaggio)
+
+        public IList<AttivazioneTitoliViaggioModel> GetListAttivazioniTitoliViaggioByTipoDoc(decimal idTitoliViaggio, decimal idTipoDoc)
         {
             List<AttivazioneTitoliViaggioModel> latvm = new List<AttivazioneTitoliViaggioModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
-                var latv =tv.ATTIVAZIONETITOLIVIAGGIO.Where
+                var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where
                         (a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false)
                         .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO)
-                        .ToList(); 
+                        .ToList();
                 if (latv?.Any() ?? false)
                 {
-                    latvm = (from e in latv
-                             select new AttivazioneTitoliViaggioModel()
-                             {
-                                 idAttivazioneTitoliViaggio = e.IDATTIVAZIONETITOLIVIAGGIO,
-                                 idTitoloViaggio = e.IDTITOLOVIAGGIO,
-                                 AttivazioneRichiesta = e.ATTIVAZIONERICHIESTA,
-                                 dataAttivazioneRichiesta = e.DATAATTIVAZIONERICHIESTA,
-                                 notificaRichiesta = e.ATTIVAZIONERICHIESTA,
-                                 dataNotificaRichiesta = e.DATANOTIFICARICHIESTA,
-                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                 Annullato = e.ANNULLATO
-                             }).ToList();
+                    foreach (var atv in latv)
+                    {
+                        var ld = atv.DOCUMENTI.Where(a=>a.IDTIPODOCUMENTO==idTipoDoc).ToList();
+                        if (ld.Count > 0)
+                        {
+                            var new_atv = new AttivazioneTitoliViaggioModel()
+                            {
+                                idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                                idTitoloViaggio = atv.IDTITOLOVIAGGIO,
+                                AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
+                                dataAttivazioneRichiesta = atv.DATAATTIVAZIONERICHIESTA,
+                                notificaRichiesta = atv.ATTIVAZIONERICHIESTA,
+                                dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
+                                dataAggiornamento = atv.DATAAGGIORNAMENTO,
+                                Annullato = atv.ANNULLATO
+                            };
+                            latvm.Add(new_atv);
+
+
+
+
+
+
+                            //latvm = (from e in latv
+                            //         select new AttivazioneTitoliViaggioModel()
+                            //         {
+                            //             idAttivazioneTitoliViaggio = e.IDATTIVAZIONETITOLIVIAGGIO,
+                            //             idTitoloViaggio = e.IDTITOLOVIAGGIO,
+                            //             AttivazioneRichiesta = e.ATTIVAZIONERICHIESTA,
+                            //             dataAttivazioneRichiesta = e.DATAATTIVAZIONERICHIESTA,
+                            //             notificaRichiesta = e.ATTIVAZIONERICHIESTA,
+                            //             dataNotificaRichiesta = e.DATANOTIFICARICHIESTA,
+                            //             dataAggiornamento = e.DATAAGGIORNAMENTO,
+                            //             Annullato = e.ANNULLATO
+                            //         }).ToList();
+                        }
+                    }
                 }
             }
 
@@ -1055,7 +1081,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var ld = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).OrderByDescending(a => a.DATAINSERIMENTO).ToList();
 
                         bool modificabile = false;
-                        if (atv.ATTIVAZIONERICHIESTA == false && atv.NOTIFICARICHIESTA == false)
+                        if (atv.ATTIVAZIONERICHIESTA == false && atv.NOTIFICARICHIESTA == false && atv.TITOLIVIAGGIO.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
                         {
                             modificabile = true;
                             coloresfondo = Resources.TitoliViaggioColori.AttivazioniTitoloViaggioAbilitate_Sfondo;
@@ -1073,6 +1099,18 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             coloretesto = Resources.TitoliViaggioColori.AttivazioniTitoloViaggioDisabilitate_Testo;
                         }
+
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
+                            EnumStatoTraferimento statoTrasferimento = t.idStatoTrasferimento;
+                            if (statoTrasferimento==EnumStatoTraferimento.Annullato)
+                            {
+                                modificabile = false;
+                            }
+                        }
+
+
                         foreach (var doc in ld)
                         {
                             var amf = new VariazioneDocumentiModel()
@@ -1092,7 +1130,10 @@ namespace NewISE.Models.DBModel.dtObj
                             ldm.Add(amf);
                         }
 
-                        i++;
+                        if (ld.Count > 0)
+                        {
+                            i++;
+                        }
 
                     }
 
@@ -1120,12 +1161,14 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var e in latv)
                     {
+                        var ld = e.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDocumento).OrderByDescending(a => a.DATAINSERIMENTO).ToList();
+
                         if (e.IDATTIVAZIONETITOLIVIAGGIO == idAttivazioneTitoliViaggio)
                         {
-                            var ld = e.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDocumento).OrderByDescending(a => a.DATAINSERIMENTO);
 
                             bool modificabile = false;
-                            if (e.ATTIVAZIONERICHIESTA == false && e.NOTIFICARICHIESTA == false)
+
+                            if (e.ATTIVAZIONERICHIESTA == false && e.NOTIFICARICHIESTA == false && e.TITOLIVIAGGIO.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
                             {
                                 modificabile = true;
                                 coloretesto = Resources.TitoliViaggioColori.AttivazioniTitoloViaggioAbilitate_Testo;
@@ -1156,8 +1199,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 ldm.Add(atv);
                             }
                         }
+                        if (ld.Count > 0)
+                        {
+                            i++;
+                        }
 
-                        i++;
                     }
 
                 }
@@ -1396,7 +1442,7 @@ namespace NewISE.Models.DBModel.dtObj
                                out bool richiediNotifica, out bool richiediAttivazione,
                                out bool richiediConiuge, out bool richiediRichiedente,
                                out bool richiediFigli, out bool DocTitoliViaggio,
-                               out bool DocCartaImbarco, out bool inLavorazione)
+                               out bool DocCartaImbarco, out bool inLavorazione, out bool trasfAnnullato)
         {
             richiediNotifica = false;
             richiediAttivazione = false;
@@ -1406,6 +1452,7 @@ namespace NewISE.Models.DBModel.dtObj
             DocTitoliViaggio = false;
             DocCartaImbarco = false;
             inLavorazione = false;
+            trasfAnnullato = false;
 
             try
             {
@@ -1413,19 +1460,12 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
 
-                    //verifica se esiste una richiesta di attivazione in corso
-                    //var ultima_atv = this.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
-                    //if(ultima_atv.IDATTIVAZIONETITOLIVIAGGIO>0)
-                    //{
-                    //    if(ultima_atv.NOTIFICARICHIESTA==false)
-                    //    {
-                    //        richiediNotifica = true;
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //  //se non esiste verifica se esiste almeno una attivazione valida 
-                    //var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => (a.ANNULLATO == false || (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true))).OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+                    var t = tv.TRASFERIMENTO;
+                    var statoTrasferimeto = t.IDSTATOTRASFERIMENTO;
+                    if (statoTrasferimeto==(decimal)EnumStatoTraferimento.Annullato)
+                    {
+                        trasfAnnullato = true;
+                    }
 
                     //verifica se esiste una attivazione non notificata e non attivata 
                     var latv = tv.ATTIVAZIONETITOLIVIAGGIO
@@ -1537,7 +1577,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(IdAttivazioneTitoliViaggio);
 
-                    if(atv.ANNULLATO==false && atv.ATTIVAZIONERICHIESTA==false && atv.NOTIFICARICHIESTA==false)
+                    if(atv.ANNULLATO==false && atv.ATTIVAZIONERICHIESTA==false && atv.NOTIFICARICHIESTA==false && atv.TITOLIVIAGGIO.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
                     {
                         //verifica se ci sono elementi associati
 

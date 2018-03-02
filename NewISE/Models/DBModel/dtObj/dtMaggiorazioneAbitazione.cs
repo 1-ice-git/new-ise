@@ -1841,6 +1841,27 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public List<DOCUMENTI> GetDocumentiMABbyTipoDoc(decimal idAttivazioneMAB, decimal idTipoDoc)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    DOCUMENTI d = new DOCUMENTI();
+                    List<DOCUMENTI> dl = new List<DOCUMENTI>();
+
+                    var a = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+
+                    dl = a.DOCUMENTI.Where(x => x.MODIFICATO == false && x.IDTIPODOCUMENTO == idTipoDoc).ToList();
+                    return dl;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
     }
