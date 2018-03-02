@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-
+using NewISE.Areas.Parametri.Models.dtObj;
 
 namespace NewISE.Models.DBModel
 {
@@ -25,13 +25,14 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "La percentuale è richiesta.")]
+        [CustomValidation(typeof(dtParPercentualeDisagio), "VerificaPercentuale")]
         [Display(Name = "Percentuale Disagio")]
-        [DisplayFormat(DataFormatString = "{0:P2}")]
+        //[DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal percentuale { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data Aggiornamento")]
         public DateTime dataAggiornamento { get; set; }
 

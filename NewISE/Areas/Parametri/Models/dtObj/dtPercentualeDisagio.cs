@@ -459,6 +459,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         }
 
+        public bool PercentualeDisaggioAnnullato(PercentualeDisagioModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == ibm.idUfficio && a.IDPERCENTUALEDISAGIO == ibm.idPercentualeDisagio).First().ANNULLATO == true ? true : false;
+            }
+        }
 
     }
 }
