@@ -1,8 +1,10 @@
-﻿@{
+﻿@using NewISE.Models.DBModel
+@{
     string DescrizioneTV = Convert.ToString(ViewData["DescrizioneTV"]);
     decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
     decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
     bool richiestaNotificata = Convert.ToBoolean(ViewData["richiestaNotificata"]);
+    EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
 }
 
 @Html.Hidden("hiNuovoDocumento")
@@ -13,7 +15,7 @@
     <div class="row">
         <div class="col-xs-3">
             <div style="margin-top: 10px; margin-bottom: 10px;">
-                @if(richiestaNotificata == false)
+                @if(richiestaNotificata == false && statoTrasferimento!=EnumStatoTraferimento.Annullato)
                 {
                     <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTV();">
                         <table>

@@ -35,7 +35,7 @@ namespace NewISE.Models.DBModel.dtObj
                         throw new Exception("Ciclo di attivazione non presente.");
                     }
 
-                    if (ap.NOTIFICARICHIESTA == true || ap.PRATICACONCLUSA == true)
+                    if (ap.NOTIFICARICHIESTA == true || ap.PRATICACONCLUSA == true || ap.PASSAPORTI.TRASFERIMENTO.IDSTATOTRASFERIMENTO==(decimal)EnumStatoTraferimento.Attivo || ap.PASSAPORTI.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Annullato)
                     {
                         dchk = true;
                     }

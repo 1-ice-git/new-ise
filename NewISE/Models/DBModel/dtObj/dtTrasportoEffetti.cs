@@ -133,8 +133,12 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         public void SituazioneTEPartenza(decimal idTrasportoEffettiPartenza,
-                       out bool richiestaTE, out bool attivazioneTE,
-                       out bool DocContributo, out bool DocAttestazione, out decimal NumAttivazioni)
+                                        out bool richiestaTE, 
+                                        out bool attivazioneTE,
+                                        out bool DocContributo, 
+                                        out bool DocAttestazione, 
+                                        out decimal NumAttivazioni,
+                                        out bool trasfAnnullato)
         {
            
 
@@ -147,8 +151,16 @@ namespace NewISE.Models.DBModel.dtObj
                     attivazioneTE = false;
                     DocContributo = false;
                     DocAttestazione = false;
+                    trasfAnnullato = false;
 
                     var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
+
+                    var idStatoTrasferimento = tep.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+                    if(idStatoTrasferimento==(decimal)EnumStatoTraferimento.Annullato)
+                    {
+                        trasfAnnullato = true;
+                    }
+
                     if (tep==null)
                     {
                         TEPARTENZA new_tep = new TEPARTENZA()
@@ -415,6 +427,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
+                var statoTrasferimento = tep.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
 
                 var latep = tep.ATTIVITATEPARTENZA.Where(a => (a.ATTIVAZIONETRASPORTOEFFETTI == true && a.RICHIESTATRASPORTOEFFETTI == true) || a.ANNULLATO == false).OrderBy(a => a.IDATEPARTENZA).ToList();
 
@@ -430,6 +443,12 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             modificabile = true;
                         }
+
+                        if(statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
+                        {
+                            modificabile = false;
+                        }
+
                         foreach (var doc in ld)
                         {
                             var amf = new VariazioneDocumentiModel()

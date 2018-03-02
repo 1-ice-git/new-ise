@@ -516,6 +516,7 @@ namespace NewISE.Controllers
             AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
             bool solaLettura = false;
             decimal idTrasferimento = 0;
+            EnumStatoTraferimento statoTrasferimento;
 
             try
             {
@@ -571,6 +572,13 @@ namespace NewISE.Controllers
                 {
                     var t = dtt.GetTrasferimentoByIdAttPassaporto(apm.idAttivazioniPassaporti);
                     idTrasferimento = t.idTrasferimento;
+                    statoTrasferimento = t.idStatoTrasferimento;
+
+                    if (statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
+                    {
+                        solaLettura = true;
+                    }
+
                 }
 
             }

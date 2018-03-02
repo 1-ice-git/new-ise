@@ -253,7 +253,7 @@ namespace NewISE.Controllers
             bool siDocConiuge = false;
             bool siDocFigli = false;
             bool docFormulario = false;
-            bool solaLettura = false;
+            bool trasfSolaLettura = false;
 
 
 
@@ -273,7 +273,7 @@ namespace NewISE.Controllers
                     dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario,
-                        out solaLettura);
+                        out trasfSolaLettura);
                 }
 
             }
@@ -298,7 +298,7 @@ namespace NewISE.Controllers
                         siDocConiuge = siDocConiuge,
                         siDocFigli = siDocFigli,
                         docFormulario = docFormulario,
-                        solaLettura = solaLettura,
+                        trasfSolaLettura = trasfSolaLettura,
                         err = errore
                     });
 

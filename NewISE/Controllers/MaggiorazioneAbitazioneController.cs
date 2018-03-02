@@ -44,6 +44,8 @@ namespace NewISE.Controllers
                 {
                     bool soloLettura = false;
                     bool siDati = false;
+                    EnumStatoTraferimento statoTrasferimento = 0;
+
 
                     AttivazioneMABModel amm = dtma.GetAttivazioneMAB(idTrasferimento);
 
@@ -81,6 +83,16 @@ namespace NewISE.Controllers
                             mavml.Add(mavm);
 
                             siDati = true;
+                        }
+
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
+                            statoTrasferimento = t.idStatoTrasferimento;
+                            if(statoTrasferimento==EnumStatoTraferimento.Attivo || statoTrasferimento==EnumStatoTraferimento.Annullato)
+                            {
+                                soloLettura = true;
+                            }
                         }
                     }
 
@@ -131,6 +143,8 @@ namespace NewISE.Controllers
             decimal idDocModulo5 = 0;
             decimal idDocCopiaContratto = 0;
             decimal idDocCopiaRicevuta = 0;
+            EnumStatoTraferimento statoTrasferimento = 0;
+
 
             MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
 
@@ -162,6 +176,16 @@ namespace NewISE.Controllers
                         if (amm.notificaRichiesta)
                         {
                             soloLettura = true;
+                        }
+
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
+                            statoTrasferimento = t.idStatoTrasferimento;
+                            if (statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
+                            {
+                                soloLettura = true;
+                            }
                         }
 
                     }
@@ -212,12 +236,19 @@ namespace NewISE.Controllers
                 string disabledAnnullaRichiesta = "disabled";
                 string hiddenAnnullaRichiesta = "hidden";
                 decimal num_attivazioni = 0;
+                bool esisteMod1 = false;
+                EnumStatoTraferimento statoTrasferimento = 0;
 
                 using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                 {
                     amm = dtma.GetUltimaAttivazioneMAB(idTrasferimento);
                     num_attivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
                     mam = dtma.GetMaggiorazioneAbitazione(amm);
+                    var ldocModulo1 = dtma.GetDocumentiMABbyTipoDoc(amm.idAttivazioneMAB, (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione);
+                    if (ldocModulo1.Count>0)
+                    {
+                        esisteMod1 = true;
+                    }
                 }
                 var idAttivazioneMAB = amm.idAttivazioneMAB;
 
@@ -225,6 +256,12 @@ namespace NewISE.Controllers
 
                 bool notificaRichiesta = amm.notificaRichiesta;
                 bool attivaRichiesta = amm.Attivazione;
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var t = dtt.GetTrasferimentoById(idTrasferimento);
+                    statoTrasferimento = t.idStatoTrasferimento;
+                }
 
                 //se non esiste nessuma MAB non esegue nessun controllo
                 if (esisteMAB)
@@ -237,12 +274,12 @@ namespace NewISE.Controllers
 
                         if (num_attivazioni == 0)
                         {
-                            if (notificaRichiesta && attivaRichiesta == false)
+                            if (notificaRichiesta && attivaRichiesta == false && esisteMod1 && statoTrasferimento!=EnumStatoTraferimento.Attivo && statoTrasferimento!=EnumStatoTraferimento.Annullato)
                             {
                                 disabledAttivaRichiesta = "";
                                 disabledAnnullaRichiesta = "";
                             }
-                            if (notificaRichiesta == false && attivaRichiesta == false)
+                            if (notificaRichiesta == false && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledNotificaRichiesta = "";
                             }
@@ -252,7 +289,7 @@ namespace NewISE.Controllers
                     {
                         if (num_attivazioni == 0)
                         {
-                            if (notificaRichiesta == false && attivaRichiesta == false)
+                            if (notificaRichiesta == false && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledNotificaRichiesta = "";
                             }

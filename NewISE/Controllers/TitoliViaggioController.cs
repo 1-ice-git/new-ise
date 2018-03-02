@@ -197,6 +197,7 @@ namespace NewISE.Controllers
                 bool DocTitoliViaggio = false;
                 bool DocCartaImbarco = false;
                 bool inLavorazione = false;
+                bool trasfAnnullato = false;
 
                 var nDocCartaImbarco = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Carta_Imbarco);
                 var nDocTitoliViaggio = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Titolo_Viaggio);
@@ -207,7 +208,7 @@ namespace NewISE.Controllers
                                out richiediNotifica, out richiediAttivazione,
                                out richiediConiuge, out richiediRichiedente,
                                out richiediFigli, out DocTitoliViaggio,
-                               out DocCartaImbarco, out inLavorazione);
+                               out DocCartaImbarco, out inLavorazione, out trasfAnnullato);
 
                 if (richiediAttivazione)
                 {
@@ -240,11 +241,20 @@ namespace NewISE.Controllers
                     ltvm = dttv.ElencoTitoliViaggio(idTitoliViaggio);
                 }
 
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
+                    EnumStatoTraferimento statoTrasferimento = t.idStatoTrasferimento;
+                    ViewData.Add("statoTrasferimento", statoTrasferimento);
+                }
+ 
+
                 bool richiestaEseguita = dttv.richiestaEseguita(idTitoliViaggio);
 
                 ViewData.Add("richiestaEseguita", richiestaEseguita);
                 ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                 ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
+    
 
                 return PartialView(ltvm);
             }
@@ -267,7 +277,7 @@ namespace NewISE.Controllers
             {
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    latvm = dttv.GetListAttivazioniTitoliViaggio(idTitoliViaggio).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
+                    latvm = dttv.GetListAttivazioniTitoliViaggioByTipoDoc(idTitoliViaggio,idTipoDocumento).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
 
                     //var i = latvm.Count();
                     var i = 1;
@@ -294,6 +304,13 @@ namespace NewISE.Controllers
 
                     lDataAttivazione.Insert(0, new SelectListItem() { Text = "(TUTTE)", Value = "" });
                     ViewData.Add("lDataAttivazione", lDataAttivazione);
+
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
+                        EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)t.idStatoTrasferimento;
+                        ViewData.Add("statoTrasferimento", statoTrasferimento);
+                    }
 
                     ViewData.Add("DescrizioneTV", DescrizioneTV);
                     ViewData.Add("idTipoDocumento", idTipoDocumento);
@@ -562,7 +579,7 @@ namespace NewISE.Controllers
             bool DocTitoliViaggio = false;
             bool DocCartaImbarco = false;
             bool inLavorazione = false;
-           
+            bool trasfAnnullato = false;
 
             try
             {
@@ -575,7 +592,7 @@ namespace NewISE.Controllers
                                out richiediNotifica, out richiediAttivazione,
                                out richiediConiuge, out richiediRichiedente,
                                out richiediFigli, out DocTitoliViaggio,
-                               out DocCartaImbarco, out inLavorazione);
+                               out DocCartaImbarco, out inLavorazione, out trasfAnnullato);
                 }
 
             }
@@ -593,6 +610,7 @@ namespace NewISE.Controllers
                         richiediNotifica = richiediNotifica,
                         richiediAnnulla=richiediAnnulla,
                         inLavorazione = inLavorazione,
+                        trasfAnnullato = trasfAnnullato,
                         err = errore
                     });
 
