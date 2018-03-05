@@ -12,7 +12,7 @@ namespace NewISE.Models
         [StringLength(50, ErrorMessage = "Il campo utente accetta un massimo di 50 caratteri.")]
         [DataType(DataType.Text)]
         [Display(AutoGenerateField = false, AutoGenerateFilter = false, Description = "Username dell'utente.", Name = "Username")]
-        [Required(ErrorMessage ="L'username è richiesto.")]
+        [Required(ErrorMessage = "L'username è richiesto.")]
         public string username { get; set; }
 
         [Required(ErrorMessage = "La password è richiesta.")]

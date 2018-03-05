@@ -33,15 +33,11 @@
                     @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
                     @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                     <button>login</button>
-                    <p>
-                        <div style="display:inline-block; vertical-align:middle;">
-                            <label>Ricordati di me </label>                        
-                        </div>
-                        <div style="display:inline-block; ">
-                            @Html.EditorFor(model => model.ricordati)
-                        </div>
-                        
-                    </p>
+
+                    <div style="margin-top: 5px;">
+                        <label>Ricordati di me</label> <input id="ricordati" name="ricordati" type="checkbox" value="@Model.ricordati" />
+                    </div>
+
                     <p class="message">Dimenticata la password? <a onclick="Blocca();" href="/account/InviamiPassword">Inviami la password</a></p>
                 </form>
             </div>

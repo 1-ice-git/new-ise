@@ -14,7 +14,6 @@ namespace NewISE.App_Start
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery-ui-{version}.js",
                         "~/Scripts/jquery.unobtrusive-ajax.min.js",
-                        "~/Scripts/bootstrap.js",
                         "~/Scripts/bootstrap-modal.js*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
