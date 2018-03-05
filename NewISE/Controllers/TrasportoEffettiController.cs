@@ -60,6 +60,9 @@ namespace NewISE.Controllers
                     tepm.indennitaPrimaSistemazione =Math.Round(ci.indennitaSistemazioneLorda,2);
                     tepm.percKM = ci.percentualeFasciaKmTrasferimento;
                     tepm.contributoLordo = Math.Round(ci.contributoOmnicomprensivoTrasferimentoAnticipo,2);
+                    var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza((decimal)EnumTipoAnticipo.Partenza);
+                    tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
+                    tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100,2);
 
                     ViewData.Add("richiestaTE", richiestaTE);
                     ViewData.Add("attivazioneTE", attivazioneTE);

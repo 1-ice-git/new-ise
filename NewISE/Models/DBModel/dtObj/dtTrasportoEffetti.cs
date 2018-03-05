@@ -17,6 +17,13 @@ using System.Data.Entity;
 
 namespace NewISE.Models.DBModel.dtObj
 {
+    public enum EnumTipoAnticipo
+    {
+        Partenza = 1,
+        Rientro = 2
+    }
+
+
     public class dtTrasportoEffetti : IDisposable
     {
         public void Dispose()
@@ -917,6 +924,25 @@ namespace NewISE.Models.DBModel.dtObj
 
                 throw ex;
             }
+        }
+
+        public PERCENTUALEANTICIPOTE GetPercentualeAnticipoTEPartenza(decimal idTipoAnticipo)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                PERCENTUALEANTICIPOTE patep = new PERCENTUALEANTICIPOTE();
+
+                var lpatep = db.PERCENTUALEANTICIPOTE
+                            .Where(a => a.ANNULLATO == false && a.IDTIPOANTICIPOTE==idTipoAnticipo)
+                            .OrderByDescending(a => a.IDPERCANTICIPOTM).ToList();
+                if (lpatep?.Any() ?? false)
+                {
+                    patep = lpatep.First();
+                }
+
+                return patep;
+            }
+
         }
 
 
