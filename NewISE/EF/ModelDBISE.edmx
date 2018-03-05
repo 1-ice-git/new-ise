@@ -1169,14 +1169,6 @@
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="TEP_FK">
-          <Key>
-            <PropertyRef Name="IDTEPARTENZA" />
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
             <PropertyRef Name="IDTEPARTENZA" />
@@ -1190,14 +1182,6 @@
             <PropertyRef Name="IDTEPARTENZA" />
           </Key>
           <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TER_FK">
-          <Key>
-            <PropertyRef Name="IDTERIENTRO" />
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDTERIENTRO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TER_PATE">
           <Key>
@@ -1974,34 +1958,6 @@
             </Principal>
             <Dependent Role="CONIUGETITOLIVIAGGIO">
               <PropertyRef Name="IDCONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CFK_TEPFK">
-          <End Role="PERCENTUALEFKM" Type="Self.PERCENTUALEFKM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TEP_FK" Type="Self.TEP_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERCENTUALEFKM">
-              <PropertyRef Name="IDPFKM" />
-            </Principal>
-            <Dependent Role="TEP_FK">
-              <PropertyRef Name="IDCFKM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CFK_TERFK">
-          <End Role="PERCENTUALEFKM" Type="Self.PERCENTUALEFKM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TER_FK" Type="Self.TER_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERCENTUALEFKM">
-              <PropertyRef Name="IDPFKM" />
-            </Principal>
-            <Dependent Role="TER_FK">
-              <PropertyRef Name="IDCFKM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3765,20 +3721,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TEP_TEPFK">
-          <End Role="TEPARTENZA" Type="Self.TEPARTENZA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TEP_FK" Type="Self.TEP_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEPARTENZA">
-              <PropertyRef Name="IDTEPARTENZA" />
-            </Principal>
-            <Dependent Role="TEP_FK">
-              <PropertyRef Name="IDTEPARTENZA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TEP_TEPPATE">
           <End Role="TEPARTENZA" Type="Self.TEPARTENZA" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3803,20 +3745,6 @@
               <PropertyRef Name="IDTERIENTRO" />
             </Principal>
             <Dependent Role="ATTIVITATERIENTRO">
-              <PropertyRef Name="IDTERIENTRO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TER_TERFK">
-          <End Role="TERIENTRO" Type="Self.TERIENTRO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TER_FK" Type="Self.TER_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TERIENTRO">
-              <PropertyRef Name="IDTERIENTRO" />
-            </Principal>
-            <Dependent Role="TER_FK">
               <PropertyRef Name="IDTERIENTRO" />
             </Dependent>
           </ReferentialConstraint>
@@ -4383,10 +4311,8 @@
           <EntitySet Name="STIPENDI" EntityType="Self.STIPENDI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="T_RC" EntityType="Self.T_RC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TEORICI" EntityType="Self.TEORICI" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="TEP_FK" EntityType="Self.TEP_FK" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TEP_PATE" EntityType="Self.TEP_PATE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TEPARTENZA" EntityType="Self.TEPARTENZA" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="TER_FK" EntityType="Self.TER_FK" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TER_PATE" EntityType="Self.TER_PATE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TERIENTRO" EntityType="Self.TERIENTRO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TFR" EntityType="Self.TFR" Schema="ISESIM" store:Type="Tables" />
@@ -4570,14 +4496,6 @@
           <AssociationSet Name="R_C_CTV" Association="Self.R_C_CTV">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
-          </AssociationSet>
-          <AssociationSet Name="R_CFK_TEPFK" Association="Self.R_CFK_TEPFK">
-            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-            <End Role="TEP_FK" EntitySet="TEP_FK" />
-          </AssociationSet>
-          <AssociationSet Name="R_CFK_TERFK" Association="Self.R_CFK_TERFK">
-            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-            <End Role="TER_FK" EntitySet="TER_FK" />
           </AssociationSet>
           <AssociationSet Name="R_CIR_CIRR" Association="Self.R_CIR_CIRR">
             <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
@@ -5083,10 +5001,6 @@
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
             <End Role="RINUNCIA_TE" EntitySet="RINUNCIA_TE" />
           </AssociationSet>
-          <AssociationSet Name="R_TEP_TEPFK" Association="Self.R_TEP_TEPFK">
-            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-            <End Role="TEP_FK" EntitySet="TEP_FK" />
-          </AssociationSet>
           <AssociationSet Name="R_TEP_TEPPATE" Association="Self.R_TEP_TEPPATE">
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
             <End Role="TEP_PATE" EntitySet="TEP_PATE" />
@@ -5094,10 +5008,6 @@
           <AssociationSet Name="R_TER_ATER" Association="Self.R_TER_ATER">
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="R_TER_TERFK" Association="Self.R_TER_TERFK">
-            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
-            <End Role="TER_FK" EntitySet="TER_FK" />
           </AssociationSet>
           <AssociationSet Name="R_TER_TERPATE" Association="Self.R_TER_TERPATE">
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
@@ -10549,28 +10459,12 @@
               <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TEP_FK" TypeName="DBISEPRO.TEP_FK" StoreEntitySet="TEP_FK">
-            <EndProperty Name="TEPARTENZA">
-              <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
-            </EndProperty>
-            <EndProperty Name="PERCENTUALEFKM">
-              <ScalarProperty Name="IDPFKM" ColumnName="IDCFKM" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="TEP_PATE" TypeName="DBISEPRO.TEP_PATE" StoreEntitySet="TEP_PATE">
             <EndProperty Name="TEPARTENZA">
               <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
             </EndProperty>
             <EndProperty Name="PERCENTUALEANTICIPOTE">
               <ScalarProperty Name="IDPERCANTICIPOTM" ColumnName="IDPERCANTICIPOTM" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="TER_FK" TypeName="DBISEPRO.TER_FK" StoreEntitySet="TER_FK">
-            <EndProperty Name="TERIENTRO">
-              <ScalarProperty Name="IDTERIENTRO" ColumnName="IDTERIENTRO" />
-            </EndProperty>
-            <EndProperty Name="PERCENTUALEFKM">
-              <ScalarProperty Name="IDPFKM" ColumnName="IDCFKM" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="TER_PATE" TypeName="DBISEPRO.TER_PATE" StoreEntitySet="TER_PATE">
