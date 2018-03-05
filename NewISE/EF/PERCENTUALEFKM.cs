@@ -18,8 +18,6 @@ namespace NewISE.EF
         public PERCENTUALEFKM()
         {
             this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
-            this.TEPARTENZA = new HashSet<TEPARTENZA>();
-            this.TERIENTRO = new HashSet<TERIENTRO>();
         }
     
         public decimal IDPFKM { get; set; }
@@ -33,9 +31,5 @@ namespace NewISE.EF
         public virtual FASCIA_KM FASCIA_KM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEPARTENZA> TEPARTENZA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TERIENTRO> TERIENTRO { get; set; }
     }
 }

@@ -80,7 +80,6 @@ namespace NewISE.EF
         public virtual DbSet<PENSIONE> PENSIONE { get; set; }
         public virtual DbSet<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
         public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
-        public virtual DbSet<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
@@ -97,8 +96,6 @@ namespace NewISE.EF
         public virtual DbSet<STATOTRASFERIMENTO> STATOTRASFERIMENTO { get; set; }
         public virtual DbSet<STIPENDI> STIPENDI { get; set; }
         public virtual DbSet<TEORICI> TEORICI { get; set; }
-        public virtual DbSet<TEPARTENZA> TEPARTENZA { get; set; }
-        public virtual DbSet<TERIENTRO> TERIENTRO { get; set; }
         public virtual DbSet<TFR> TFR { get; set; }
         public virtual DbSet<TIPOALIQUOTECONTRIBUTIVE> TIPOALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<TIPOANTICIPOTRASPORTOEFFETTI> TIPOANTICIPOTRASPORTOEFFETTI { get; set; }
@@ -125,5 +122,8 @@ namespace NewISE.EF
         public virtual DbSet<VOCI> VOCI { get; set; }
         public virtual DbSet<RINUNCIA_TE> RINUNCIA_TE { get; set; }
         public virtual DbSet<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
+        public virtual DbSet<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
+        public virtual DbSet<TEPARTENZA> TEPARTENZA { get; set; }
+        public virtual DbSet<TERIENTRO> TERIENTRO { get; set; }
     }
 }
