@@ -887,7 +887,7 @@
           <Property Name="IDTIPOANTICIPOTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
-          <Property Name="PERCENTUALE" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="PERCENTUALE" Type="number" Precision="6" Scale="3" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -5196,7 +5196,6 @@
           <EntitySet Name="PASSAPORTI" EntityType="DBISEPRO.PASSAPORTI" />
           <EntitySet Name="PASSAPORTORICHIEDENTE" EntityType="DBISEPRO.PASSAPORTORICHIEDENTE" />
           <EntitySet Name="PENSIONE" EntityType="DBISEPRO.PENSIONE" />
-          <EntitySet Name="PERCENTUALEANTICIPOTE" EntityType="DBISEPRO.PERCENTUALEANTICIPOTE" />
           <EntitySet Name="PERCENTUALEDISAGIO" EntityType="DBISEPRO.PERCENTUALEDISAGIO" />
           <EntitySet Name="PERCENTUALEMAB" EntityType="DBISEPRO.PERCENTUALEMAB" />
           <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="DBISEPRO.PERCENTUALEMAGCONIUGE" />
@@ -5538,10 +5537,6 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
           </AssociationSet>
-          <AssociationSet Name="R_TATE_PATE" Association="DBISEPRO.R_TATE_PATE">
-            <End Role="TIPOANTICIPOTRASPORTOEFFETTI" EntitySet="TIPOANTICIPOTRASPORTOEFFETTI" />
-            <End Role="PERCENTUALEANTICIPOTE" EntitySet="PERCENTUALEANTICIPOTE" />
-          </AssociationSet>
           <AssociationSet Name="R_UFFICI_PERCDISAGIO" Association="DBISEPRO.R_UFFICI_PERCDISAGIO">
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
@@ -5859,6 +5854,11 @@
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
           </AssociationSet>
+          <EntitySet Name="PERCENTUALEANTICIPOTE" EntityType="DBISEPRO.PERCENTUALEANTICIPOTE" />
+          <AssociationSet Name="R_TATE_PATE" Association="DBISEPRO.R_TATE_PATE">
+            <End Role="TIPOANTICIPOTRASPORTOEFFETTI" EntitySet="TIPOANTICIPOTRASPORTOEFFETTI" />
+            <End Role="PERCENTUALEANTICIPOTE" EntitySet="PERCENTUALEANTICIPOTE" />
+          </AssociationSet>
           <AssociationSet Name="TEP_PATE" Association="DBISEPRO.TEP_PATE">
             <End Role="PERCENTUALEANTICIPOTE" EntitySet="PERCENTUALEANTICIPOTE" />
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
@@ -5867,7 +5867,7 @@
             <End Role="PERCENTUALEANTICIPOTE" EntitySet="PERCENTUALEANTICIPOTE" />
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -6668,21 +6668,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISEPRO.ATT_PENSIONE" FromRole="PENSIONE" ToRole="ATTIVAZIONIMAGFAM" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.C_P" FromRole="PENSIONE" ToRole="CONIUGE" />
-        </EntityType>
-        <EntityType Name="PERCENTUALEANTICIPOTE">
-          <Key>
-            <PropertyRef Name="IDPERCANTICIPOTM" />
-          </Key>
-          <Property Name="IDPERCANTICIPOTM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTIPOANTICIPOTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="PERCENTUALE" Type="Byte" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="TIPOANTICIPOTRASPORTOEFFETTI" Relationship="DBISEPRO.R_TATE_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TIPOANTICIPOTRASPORTOEFFETTI" />
-          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.TEP_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TEPARTENZA" />
-          <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.TER_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TERIENTRO" />
         </EntityType>
         <EntityType Name="PERCENTUALEDISAGIO">
           <Key>
@@ -8237,20 +8222,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TATE_PATE">
-          <End Type="DBISEPRO.TIPOANTICIPOTRASPORTOEFFETTI" Role="TIPOANTICIPOTRASPORTOEFFETTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PERCENTUALEANTICIPOTE" Role="PERCENTUALEANTICIPOTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPOANTICIPOTRASPORTOEFFETTI">
-              <PropertyRef Name="IDTIPOANTICIPOTE" />
-            </Principal>
-            <Dependent Role="PERCENTUALEANTICIPOTE">
-              <PropertyRef Name="IDTIPOANTICIPOTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_UFFICI_PERCDISAGIO">
           <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8988,6 +8959,35 @@
           <End Type="DBISEPRO.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
           <End Type="DBISEPRO.PRIMASITEMAZIONE" Role="PRIMASITEMAZIONE" Multiplicity="*" />
         </Association>
+        <EntityType Name="PERCENTUALEANTICIPOTE">
+          <Key>
+            <PropertyRef Name="IDPERCANTICIPOTM" />
+          </Key>
+          <Property Name="IDPERCANTICIPOTM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOANTICIPOTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="6" Scale="3" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TIPOANTICIPOTRASPORTOEFFETTI" Relationship="DBISEPRO.R_TATE_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TIPOANTICIPOTRASPORTOEFFETTI" />
+          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.TEP_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TEPARTENZA" />
+          <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.TER_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TERIENTRO" />
+        </EntityType>
+        <Association Name="R_TATE_PATE">
+          <End Type="DBISEPRO.TIPOANTICIPOTRASPORTOEFFETTI" Role="TIPOANTICIPOTRASPORTOEFFETTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PERCENTUALEANTICIPOTE" Role="PERCENTUALEANTICIPOTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOANTICIPOTRASPORTOEFFETTI">
+              <PropertyRef Name="IDTIPOANTICIPOTE" />
+            </Principal>
+            <Dependent Role="PERCENTUALEANTICIPOTE">
+              <PropertyRef Name="IDTIPOANTICIPOTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="TEP_PATE">
           <End Type="DBISEPRO.PERCENTUALEANTICIPOTE" Role="PERCENTUALEANTICIPOTE" Multiplicity="*" />
           <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="*" />
@@ -9668,19 +9668,6 @@
                 <ScalarProperty Name="DATAINIZIO" ColumnName="DATAINIZIO" />
                 <ScalarProperty Name="IMPORTOPENSIONE" ColumnName="IMPORTOPENSIONE" />
                 <ScalarProperty Name="IDPENSIONE" ColumnName="IDPENSIONE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PERCENTUALEANTICIPOTE">
-            <EntityTypeMapping TypeName="DBISEPRO.PERCENTUALEANTICIPOTE">
-              <MappingFragment StoreEntitySet="PERCENTUALEANTICIPOTE">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="PERCENTUALE" ColumnName="PERCENTUALE" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="IDTIPOANTICIPOTE" ColumnName="IDTIPOANTICIPOTE" />
-                <ScalarProperty Name="IDPERCANTICIPOTM" ColumnName="IDPERCANTICIPOTM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10493,6 +10480,19 @@
               <ScalarProperty Name="IDPFKM" ColumnName="IDPFKM" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="PERCENTUALEANTICIPOTE">
+            <EntityTypeMapping TypeName="DBISEPRO.PERCENTUALEANTICIPOTE">
+              <MappingFragment StoreEntitySet="PERCENTUALEANTICIPOTE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="PERCENTUALE" ColumnName="PERCENTUALE" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDTIPOANTICIPOTE" ColumnName="IDTIPOANTICIPOTE" />
+                <ScalarProperty Name="IDPERCANTICIPOTM" ColumnName="IDPERCANTICIPOTM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <AssociationSetMapping Name="TEP_PATE" TypeName="DBISEPRO.TEP_PATE" StoreEntitySet="TEP_PATE">
             <EndProperty Name="TEPARTENZA">
               <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
@@ -10509,7 +10509,7 @@
               <ScalarProperty Name="IDPERCANTICIPOTM" ColumnName="IDPERCANTICIPOTM" />
             </EndProperty>
           </AssociationSetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

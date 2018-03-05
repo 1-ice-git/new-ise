@@ -58,7 +58,6 @@
         <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="10.25" PointY="93.125" />
         <EntityTypeShape EntityType="DBISEPRO.PASSAPORTORICHIEDENTE" Width="1.5" PointX="17" PointY="85.25" />
         <EntityTypeShape EntityType="DBISEPRO.PENSIONE" Width="1.5" PointX="32" PointY="91" />
-        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEANTICIPOTE" Width="1.5" PointX="14" PointY="43.125" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEDISAGIO" Width="1.5" PointX="17.5" PointY="74.5" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAB" Width="1.5" PointX="14.75" PointY="87.25" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGCONIUGE" Width="1.5" PointX="32" PointY="98" />
@@ -175,7 +174,6 @@
         <AssociationConnector Association="DBISEPRO.R_NC_RC" />
         <AssociationConnector Association="DBISEPRO.R_P_PR" />
         <AssociationConnector Association="DBISEPRO.R_T_P" />
-        <AssociationConnector Association="DBISEPRO.R_TATE_PATE" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_PERCDISAGIO" />
         <AssociationConnector Association="DBISEPRO.R_U_PMAB" />
         <AssociationConnector Association="DBISEPRO.R_TC_PMC" />
@@ -259,9 +257,11 @@
         <AssociationConnector Association="DBISEPRO.R_T_TEP" />
         <AssociationConnector Association="DBISEPRO.R_T_TER" />
         <AssociationConnector Association="DBISEPRO.PS_PFKM" />
+        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEANTICIPOTE" Width="1.5" PointX="14" PointY="43.125" />
+        <AssociationConnector Association="DBISEPRO.R_TATE_PATE" />
         <AssociationConnector Association="DBISEPRO.TEP_PATE" />
         <AssociationConnector Association="DBISEPRO.TER_PATE" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
