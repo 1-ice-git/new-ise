@@ -34,47 +34,49 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult TrasportoEffettiPartenza(decimal idTrasportoEffettiPartenza)
         {
-            using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+            try
             {
-                bool richiestaTE = false;
-                bool attivazioneTE = false;
-                bool DocContributo = false;
-                bool DocAttestazione = false;
-                decimal NumAttivazioni = 0;
-                bool trasfAnnullato = false;
-
-                TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
-
-                dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
-                               out richiestaTE, out attivazioneTE,
-                               out DocContributo, out DocAttestazione, out NumAttivazioni, out trasfAnnullato);
-
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                 {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        bool richiestaTE = false;
+                        bool attivazioneTE = false;
+                        bool DocContributo = false;
+                        bool DocAttestazione = false;
+                        decimal NumAttivazioni = 0;
+                        bool trasfAnnullato = false;
 
-                    var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
+                        TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
 
-                    CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+                        dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
+                                                    out richiestaTE, out attivazioneTE,
+                                                    out DocContributo, out DocAttestazione, out NumAttivazioni, out trasfAnnullato);
 
-                    tepm.indennitaPrimaSistemazione =Math.Round(ci.indennitaSistemazioneLorda,2);
-                    tepm.percKM = ci.percentualeFasciaKmTrasferimento;
-                    tepm.contributoLordo = Math.Round(ci.contributoOmnicomprensivoTrasferimentoAnticipo,2);
-                    var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza((decimal)EnumTipoAnticipo.Partenza);
-                    tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
-                    tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100,2);
+                        var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
 
-                    ViewData.Add("richiestaTE", richiestaTE);
-                    ViewData.Add("attivazioneTE", attivazioneTE);
-                    ViewData.Add("DocContributo", DocContributo);
-                    ViewData.Add("DocAttestazione", DocAttestazione);
-                    ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+                        CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+
+                        tepm.indennitaPrimaSistemazione = Math.Round(ci.indennitaSistemazioneLorda, 2);
+                        tepm.percKM = ci.percentualeFasciaKmTrasferimento;
+                        tepm.contributoLordo = Math.Round(ci.contributoOmnicomprensivoTrasferimentoAnticipo, 2);
+                        var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza(idTrasportoEffettiPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
+                        tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
+                        tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100, 2);
+
+                        ViewData.Add("richiestaTE", richiestaTE);
+                        ViewData.Add("attivazioneTE", attivazioneTE);
+                        ViewData.Add("DocContributo", DocContributo);
+                        ViewData.Add("DocAttestazione", DocAttestazione);
+                        ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+
+                        return PartialView(tepm);
+                    }
                 }
-
-
-
-
-                return PartialView(tepm);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
         }
