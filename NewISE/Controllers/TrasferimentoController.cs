@@ -1872,6 +1872,7 @@ namespace NewISE.Controllers
         {
             var r = new List<SelectListItem>();
             bool admin = false;
+            bool notificato = false;
 
             try
             {
@@ -1897,6 +1898,12 @@ namespace NewISE.Controllers
                             {
                                 r.First(a => a.Value == idTrasferimento.ToString()).Selected = true;
                             }
+                            var t = dtt.GetSoloTrasferimentoById(lt.First().idTrasferimento);
+                            if (t.idTrasferimento > 0)
+                            {
+                                notificato = t.notificaTrasferimento;
+                            }
+
 
                         }
                     }
@@ -1906,6 +1913,7 @@ namespace NewISE.Controllers
                     admin = Utility.Amministratore();
 
                     ViewBag.Amministratore = admin;
+                    ViewBag.Notificato = notificato;
                 }
 
 

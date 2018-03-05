@@ -306,15 +306,14 @@ namespace NewISE.Models.DBModel.dtObj
             richiestaMAB = false;
             attivazioneMAB = false;
 
-            solaLettura = false;
+            solaLettura = true;
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || 
-                    t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Annullato)
+                if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Da_Attivare) 
                 {
-                    solaLettura = true;
+                    solaLettura = false;
                 }
 
                 #region MaggiorazioniFamiliari
