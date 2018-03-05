@@ -17,7 +17,7 @@ using System.Data.Entity;
 
 namespace NewISE.Models.DBModel.dtObj
 {
-    public enum EnumTipoAnticipo
+    public enum EnumTipoAnticipoTE
     {
         Partenza = 1,
         Rientro = 2
@@ -147,9 +147,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         out decimal NumAttivazioni,
                                         out bool trasfAnnullato)
         {
-           
-
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -232,13 +229,13 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public ATTIVITATEPARTENZA GetUltimaAttivazioneTEPartenza(decimal idTrasportoEffettiPartenza)
+        public ATTIVITATEPARTENZA GetUltimaAttivazioneTEPartenza(decimal idTEPartenza)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 ATTIVITATEPARTENZA atep = new ATTIVITATEPARTENZA();
 
-                var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
+                var tep = db.TEPARTENZA.Find(idTEPartenza);
 
                 if (tep != null && tep.IDTEPARTENZA > 0)
                 {
@@ -256,7 +253,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //ne creo una 
                         ATTIVITATEPARTENZA new_atep = new ATTIVITATEPARTENZA()
                         {
-                            IDTEPARTENZA = idTrasportoEffettiPartenza,
+                            IDTEPARTENZA = idTEPartenza,
                             IDANTIVIPOSALDOTE = (decimal)EnumTipoAnticipoSaldoTE.Anticipo,
                             RICHIESTATRASPORTOEFFETTI = false,
                             DATARICHIESTATRASPORTOEFFETTI = null,
@@ -273,9 +270,15 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                                "Inserimento attivita trasporto effetti partenza.", "ATTIVITATEPARTENZA", db, idTrasportoEffettiPartenza,
+                            var PercentualeAnticipoTE = this.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
+                            if (PercentualeAnticipoTE.IDPERCANTICIPOTM > 0)
+                            {
+                                this.Associa_TEpartenza_perceAnticipoTE(idTEPartenza, PercentualeAnticipoTE.IDPERCANTICIPOTM, db);
+
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                "Inserimento attivita trasporto effetti partenza.", "ATTIVITATEPARTENZA", db, idTEPartenza,
                                 new_atep.IDATEPARTENZA);
+                            }
                         }
 
                         atep = new_atep;
@@ -320,8 +323,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     DataInizioEvento = DateTime.Now.Date,
                                     DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaTrasportoEffettiPartenza)).Date,
                                 };
-
+    
                                 dtce.InsertCalendarioEvento(ref cem, db);
+                                
                             }
                         }
 
@@ -492,7 +496,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void SetDocumentoTEPartenza(ref DocumentiModel dm, decimal idTrsaportoEffettiPartenza, ModelDBISE db, decimal idTipoDocumento)
+        public void SetDocumentoTEPartenza(ref DocumentiModel dm, decimal idTrasportoEffettiPartenza, ModelDBISE db, decimal idTipoDocumento)
         {
             try
             {
@@ -502,7 +506,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 dm.file.InputStream.CopyTo(ms);
 
-                var tep = db.TEPARTENZA.Find(idTrsaportoEffettiPartenza);
+                var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
 
                 var latep =
                     tep.ATTIVITATEPARTENZA.Where(
@@ -514,7 +518,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    atep = this.CreaAttivitaTEPartenza(idTrsaportoEffettiPartenza, db);
+                    atep = this.CreaAttivitaTEPartenza(idTrasportoEffettiPartenza, db);
                 }
 
                 d.NOMEDOCUMENTO = dm.nomeDocumento;
@@ -545,12 +549,12 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public ATTIVITATEPARTENZA CreaAttivitaTEPartenza(decimal idTrasportoEffettiPartenza, ModelDBISE db)
+        public ATTIVITATEPARTENZA CreaAttivitaTEPartenza(decimal idTEPartenza, ModelDBISE db)
         {
-            var NumAttivazioni = this.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
+            var NumAttivazioni = this.GetNumAttivazioniTEPartenza(idTEPartenza);
             ATTIVITATEPARTENZA new_atep = new ATTIVITATEPARTENZA()
             {
-                IDTEPARTENZA = idTrasportoEffettiPartenza,
+                IDTEPARTENZA = idTEPartenza,
                 IDANTIVIPOSALDOTE=(NumAttivazioni==0)?((decimal)EnumTipoAnticipoSaldoTE.Anticipo):((decimal)EnumTipoAnticipoSaldoTE.Saldo),
                 RICHIESTATRASPORTOEFFETTI = false,
                 DATARICHIESTATRASPORTOEFFETTI = null,
@@ -567,7 +571,14 @@ namespace NewISE.Models.DBModel.dtObj
             }
             else
             {
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione trasporto effetti (partenza).", "ATTIVITATEPARTENZA", db, new_atep.IDTEPARTENZA, new_atep.IDATEPARTENZA);
+
+                var PercentualeAnticipoTE = this.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
+                if (PercentualeAnticipoTE.IDPERCANTICIPOTM > 0)
+                {
+                    this.Associa_TEpartenza_perceAnticipoTE(idTEPartenza, PercentualeAnticipoTE.IDPERCANTICIPOTM, db);
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione trasporto effetti (partenza).", "ATTIVITATEPARTENZA", db, new_atep.IDTEPARTENZA, new_atep.IDATEPARTENZA);
+                }
             }
 
             return new_atep;
@@ -926,24 +937,61 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public PERCENTUALEANTICIPOTE GetPercentualeAnticipoTEPartenza(decimal idTipoAnticipo)
+        public PERCENTUALEANTICIPOTE GetPercentualeAnticipoTEPartenza(decimal idTEPartenza, decimal idTipoAnticipo)
         {
-            using (ModelDBISE db = new ModelDBISE())
+
+            try
             {
-                PERCENTUALEANTICIPOTE patep = new PERCENTUALEANTICIPOTE();
-
-                var lpatep = db.PERCENTUALEANTICIPOTE
-                            .Where(a => a.ANNULLATO == false && a.IDTIPOANTICIPOTE==idTipoAnticipo)
-                            .OrderByDescending(a => a.IDPERCANTICIPOTM).ToList();
-                if (lpatep?.Any() ?? false)
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    patep = lpatep.First();
-                }
+                    var TEpartenza = db.TEPARTENZA.Find(idTEPartenza);
+                    var t = TEpartenza.TRASFERIMENTO;
 
-                return patep;
+                    List<PERCENTUALEANTICIPOTE> lpatep = new List<PERCENTUALEANTICIPOTE>();
+                    PERCENTUALEANTICIPOTE patep = new PERCENTUALEANTICIPOTE();
+
+                    lpatep = TEpartenza.PERCENTUALEANTICIPOTE.Where(a => a.ANNULLATO == false && 
+                                                                        a.IDTIPOANTICIPOTE == idTipoAnticipo &&
+                                                                        a.DATAINIZIOVALIDITA<=t.DATAPARTENZA)
+                                                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                    if(lpatep?.Any() ?? false)
+                    {
+                        patep = lpatep.First();
+                    }
+                    else
+                    {
+                        throw new Exception("Non e' stata trovata nessuna percentuale di anticipo trasporto effetti in partenza per il trasferimento corrente.");
+                    }
+
+                    return patep;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
 
         }
+
+        public void Associa_TEpartenza_perceAnticipoTE(decimal idTEPartenza, decimal idPercAnticipoTM, ModelDBISE db)
+        {
+            var tep = db.TEPARTENZA.Find(idTEPartenza);
+
+            var item = db.Entry<TEPARTENZA>(tep);
+            item.State = EntityState.Modified;
+            item.Collection(a => a.PERCENTUALEANTICIPOTE).Load();
+            var percAnticipo = db.PERCENTUALEANTICIPOTE.Find(idPercAnticipoTM);
+            tep.PERCENTUALEANTICIPOTE.Add(percAnticipo);
+            int i = db.SaveChanges();
+
+            if (i <= 0)
+            {
+                throw new Exception("Non è stato possibile associare la percentuale anticipo trasporto effetti al Trasporto Effetti in partenza.");
+            }
+
+        }
+
 
 
     }

@@ -15,7 +15,7 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "% Per Fascia KM")]
         public decimal percKM { get; set; }
 
-        [Display(Name = "Contributo Fisso OmniCompr. Lordo")]
+        [Display(Name = "Contributo Fisso OmniComprensivo")]
         public decimal contributoLordo { get; set; }
 
         [Display(Name = "Perc.")]
