@@ -130,10 +130,10 @@
     <value>Si notifica che la richiesta di maggiorazione abitazione è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
-    <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaPassaporto" xml:space="preserve">
-    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, è stata annullata.&lt;/p&gt;
+    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;strong&gt;{0}&lt;/strong&gt; del giorno {1}, è stata annullata.&lt;/p&gt;
 &lt;p&gt;Contattare l'amministratore per maggiori dettagli.&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
