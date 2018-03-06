@@ -95,14 +95,15 @@ namespace NewISE.Controllers
                             siDati = true;
                         }
 
-                        using (dtTrasferimento dtt = new dtTrasferimento())
+                    }
+
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var t = dtt.GetTrasferimentoById(idTrasferimento);
+                        statoTrasferimento = t.idStatoTrasferimento;
+                        if (statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
                         {
-                            var t = dtt.GetTrasferimentoById(idTrasferimento);
-                            statoTrasferimento = t.idStatoTrasferimento;
-                            if (statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
-                            {
-                                soloLettura = true;
-                            }
+                            soloLettura = true;
                         }
                     }
 

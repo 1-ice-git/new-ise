@@ -242,7 +242,6 @@
                     } else {
                         $("#chkMagFamiliariR").each(function () { this.checked = false; });
                         $("#chkMagFamiliariSR").each(function () { this.checked = false; });
-
                         EnableDisableLinkPassaporto(false);
                     }
 
@@ -263,6 +262,7 @@
 
                     //chkTitoliViaggioR
                     if (richiesteTV == true) {
+                        EnableDisableLinkTitoliViaggio(true);
                         $("#chkTitoliViaggioR").each(function () { this.checked = true; });
                         if (concluseTV == true) {
                             $("#chkTitoliViaggioSR").each(function () { this.checked = true; });
@@ -276,6 +276,7 @@
 
                     //chkTrasportoEffettiR
                     if (richiestaTE == true) {
+                        EnableDisableLinkTE(true);
                         $("#chkTrasportoEffettiR").each(function () { this.checked = true; });
                         if (attivazioneTE == true) {
                             $("#chkTrasportoEffettiSR").each(function () { this.checked = true; });
@@ -289,6 +290,7 @@
 
                     //chkAnticipiR
                     if (richiestaAnticipi == true) {
+                        EnableDisableLinkAnticipi(true);
                         $("#chkAnticipiR").each(function () { this.checked = true; });
                         if (attivazioneAnticipi == true) {
                             $("#chkAnticipiSR").each(function () { this.checked = true; });
@@ -303,6 +305,7 @@
                     //chkMABR
                     if (richiestaMAB == true) {
                         $("#chkMABR").each(function () { this.checked = true; });
+                        EnableDisableLinkMAB(true);
                         if (attivazioneMAB == true) {
                             $("#chkMABSR").each(function () { this.checked = true; });
                         } else {
@@ -406,6 +409,18 @@
             //disableLink
             $("#linkMAB").attr("disabled", "disabled");
             $("#linkMAB").addClass("disableLink");
+        }
+    }
+
+    function EnableDisableLinkTE(abilitato) {
+        //debugger;
+        if (abilitato == true) {
+            $("#linkTrasportoEffetti").removeAttr("disabled");
+            $("#linkTrasportoEffetti").removeClass("disableLink");
+        } else {
+            //disableLink
+            $("#linkTrasportoEffetti").attr("disabled", "disabled");
+            $("#linkTrasportoEffetti").addClass("disableLink");
         }
     }
 
