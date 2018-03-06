@@ -3196,6 +3196,7 @@
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\Enumeratori\AllEnumeratori.cs" />
     <Compile Include="Models\Ricalcoli\RicalcoloPrimaSistemazione.cs" />
+    <Compile Include="Models\Tools\EmailCredenziali.cs" />
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />

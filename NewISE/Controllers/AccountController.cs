@@ -461,14 +461,14 @@ namespace NewISE.Controllers
                 corpoMsg = string.Format(corpoMsg, d.Nominativo, matricola, matricola, password,
                     DateTime.Now.ToLongDateString(), DateTime.Now.ToShortTimeString());
 
-                using (GestioneEmail gem = new GestioneEmail())
+                using (EmailCredenziali ec = new EmailCredenziali())
                 {
                     msg.oggetto = "ISE - Password personale";
                     msg.corpoMsg = corpoMsg;
                     msg.priorita = System.Net.Mail.MailPriority.High;
                     msg.destinatario = ld;
 
-                    if (!gem.sendMail(msg))
+                    if (!ec.sendMail(msg))
                     {
                         ModelState.AddModelError("", "Errore nell'invio dell'E-mail.");
                         return View();
