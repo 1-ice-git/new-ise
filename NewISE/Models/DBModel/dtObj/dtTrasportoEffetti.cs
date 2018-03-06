@@ -140,10 +140,10 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         public void SituazioneTEPartenza(decimal idTrasportoEffettiPartenza,
-                                        out bool richiestaTE, 
+                                        out bool richiestaTE,
                                         out bool attivazioneTE,
-                                        out bool DocContributo, 
-                                        out bool DocAttestazione, 
+                                        out bool DocContributo,
+                                        out bool DocAttestazione,
                                         out decimal NumAttivazioni,
                                         out bool trasfAnnullato)
         {
@@ -160,12 +160,12 @@ namespace NewISE.Models.DBModel.dtObj
                     var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
 
                     var idStatoTrasferimento = tep.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
-                    if(idStatoTrasferimento==(decimal)EnumStatoTraferimento.Annullato)
+                    if (idStatoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
                     {
                         trasfAnnullato = true;
                     }
 
-                    if (tep==null)
+                    if (tep == null)
                     {
                         TEPARTENZA new_tep = new TEPARTENZA()
                         {
@@ -192,7 +192,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var last_atep = latep.First();
 
                         //verifica se è stata richiesta
-                        if(last_atep.RICHIESTATRASPORTOEFFETTI && last_atep.ATTIVAZIONETRASPORTOEFFETTI==false)
+                        if (last_atep.RICHIESTATRASPORTOEFFETTI && last_atep.ATTIVAZIONETRASPORTOEFFETTI == false)
                         {
                             richiestaTE = true;
                         }
@@ -202,7 +202,7 @@ namespace NewISE.Models.DBModel.dtObj
                             attivazioneTE = true;
                         }
 
-                        foreach(var atep in latep)
+                        foreach (var atep in latep)
                         {
                             //documenti contributo
                             var ldc = atep.DOCUMENTI.Where(a => (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo)).ToList();
@@ -258,7 +258,7 @@ namespace NewISE.Models.DBModel.dtObj
                             RICHIESTATRASPORTOEFFETTI = false,
                             DATARICHIESTATRASPORTOEFFETTI = null,
                             ATTIVAZIONETRASPORTOEFFETTI = false,
-                            DATAATTIVAZIONETE=null,
+                            DATAATTIVAZIONETE = null,
                             DATAAGGIORNAMENTO = DateTime.Now,
                             ANNULLATO = false
                         };
@@ -323,9 +323,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     DataInizioEvento = DateTime.Now.Date,
                                     DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaTrasportoEffettiPartenza)).Date,
                                 };
-    
+
                                 dtce.InsertCalendarioEvento(ref cem, db);
-                                
+
                             }
                         }
 
@@ -455,7 +455,7 @@ namespace NewISE.Models.DBModel.dtObj
                             modificabile = true;
                         }
 
-                        if(statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
+                        if (statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
                         {
                             modificabile = false;
                         }
@@ -555,7 +555,7 @@ namespace NewISE.Models.DBModel.dtObj
             ATTIVITATEPARTENZA new_atep = new ATTIVITATEPARTENZA()
             {
                 IDTEPARTENZA = idTEPartenza,
-                IDANTIVIPOSALDOTE=(NumAttivazioni==0)?((decimal)EnumTipoAnticipoSaldoTE.Anticipo):((decimal)EnumTipoAnticipoSaldoTE.Saldo),
+                IDANTIVIPOSALDOTE = (NumAttivazioni == 0) ? ((decimal)EnumTipoAnticipoSaldoTE.Anticipo) : ((decimal)EnumTipoAnticipoSaldoTE.Saldo),
                 RICHIESTATRASPORTOEFFETTI = false,
                 DATARICHIESTATRASPORTOEFFETTI = null,
                 ATTIVAZIONETRASPORTOEFFETTI = false,
@@ -654,7 +654,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     IDTEPARTENZA = atep_Old.IDTEPARTENZA,
                                     RICHIESTATRASPORTOEFFETTI = false,
-                                    IDANTIVIPOSALDOTE=atep_Old.IDANTIVIPOSALDOTE,
+                                    IDANTIVIPOSALDOTE = atep_Old.IDANTIVIPOSALDOTE,
                                     ATTIVAZIONETRASPORTOEFFETTI = false,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     ANNULLATO = false
@@ -950,17 +950,32 @@ namespace NewISE.Models.DBModel.dtObj
                     List<PERCENTUALEANTICIPOTE> lpatep = new List<PERCENTUALEANTICIPOTE>();
                     PERCENTUALEANTICIPOTE patep = new PERCENTUALEANTICIPOTE();
 
-                    lpatep = TEpartenza.PERCENTUALEANTICIPOTE.Where(a => a.ANNULLATO == false && 
-                                                                        a.IDTIPOANTICIPOTE == idTipoAnticipo &&
-                                                                        a.DATAINIZIOVALIDITA<=t.DATAPARTENZA)
-                                                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-                    if(lpatep?.Any() ?? false)
+                    lpatep = TEpartenza.PERCENTUALEANTICIPOTE.Where(a => a.ANNULLATO == false &&
+                                                                         a.IDTIPOANTICIPOTE == idTipoAnticipo &&
+                                                                         a.DATAINIZIOVALIDITA <= t.DATAPARTENZA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                    if (lpatep?.Any() ?? false)
                     {
                         patep = lpatep.First();
                     }
                     else
                     {
-                        throw new Exception("Non e' stata trovata nessuna percentuale di anticipo trasporto effetti in partenza per il trasferimento corrente.");
+                        var lPte = db.PERCENTUALEANTICIPOTE.Where(a => a.ANNULLATO == false &&
+                                                                       a.IDTIPOANTICIPOTE == idTipoAnticipo &&
+                                                                       a.DATAINIZIOVALIDITA <= t.DATAPARTENZA)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                        if (lPte?.Any() ?? false)
+                        {
+                            patep = lPte.First();
+
+                        }
+                        else
+                        {
+                            throw new Exception("Non e' stata trovata nessuna percentuale di anticipo trasporto effetti in partenza per il trasferimento corrente.");
+                        }
+
                     }
 
                     return patep;

@@ -19,6 +19,7 @@ namespace NewISE.Areas.Statistiche.Controllers
     public class StatisticheController : Controller
     {
         // GET: Statistiche/Statistiche
+        [Authorize(Roles = "1 ,2")]
         public ActionResult Index()
         {
             return View("Index");

@@ -13,17 +13,17 @@
 @* Menu a discesa*@
 
 @*<div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        Apri menu <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Link 4</a></li>
-    </ul>
-</div>*@
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Apri menu <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Link 1</a></li>
+            <li><a href="#">Link 2</a></li>
+            <li><a href="#">Link 3</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Link 4</a></li>
+        </ul>
+    </div>*@
 
 <div style="margin: 15px"></div>
 <div class="row">
@@ -36,14 +36,16 @@
                 <li><a href="#" onclick="callpartial();">LOG Attivita</a></li>
             </ul>
             <ul>
-                <li>Archivio Vecchio ISE
-                @*<a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a>*@
+                <li>
+                    Archivio Vecchio ISE
+                    @*<a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a>*@
                     <ul class="no-bullets">
                         <li>Consuntivo dei Costi * </li>
                         @*<li><a href="#">Consuntivo dei Costi * </a></li>*@
                         <li>Consuntivo dei Costi per codice CoAn * </li>
                         @*<li><a href="#">Consuntivo dei Costi per codice CoAn * </a></li>*@
-                        <li><a href="#" onclick="callpartialDislocazione();">Dislocazione dei dipendenti all'estero</a></li>
+                        @*<li><a href="#" onclick="callpartialDislocazione();">Dislocazione dei dipendenti all'estero</a></li>*@
+                        <li>Dislocazione dei dipendenti all'estero *</li>
                         <li><a href="#" onclick="callpartialPresenze();">Presenze dei livelli in servizio all'estero</a></li>
                         <li><a href="#" onclick="callpartialSpese();">Spese diverse</a></li>
                         <li><a href="#" onclick="callpartialSpeseAvvicendamento();">Spese avvicendamento</a></li>
@@ -55,12 +57,13 @@
                         <li><a href="#" onclick="callpartialOpSpeseDiverse();">Operazioni Effettuate - Spese Diverse</a></li>
                         <li><a href="#" onclick="callpartialOpMaggAbitazione();">Operazioni Effettuate - Maggiorazione Abitazione</a></li>
                     </ul>
-                
+
                 </li>
 
             </ul>
             <ul>
-                <li>ISE
+                <li>
+                    ISE
                     @*<a href="#" onclick="callpartial();">ISE</a>*@
                     <ul class="no-bullets">
                         <li>Interrogazione dipendente * </li>
@@ -75,7 +78,7 @@
             </ul>
         </div>
 
-        
+
 
     </div>
 
@@ -226,7 +229,7 @@
     //ISE Mensile
     function callpartial6() {
         debugger;
-        
+
         rotta = "/Statistiche/RiepiloghiIseMensile/Index";
         $.ajax({
             type: "POST",
@@ -393,7 +396,7 @@
             }
         });
     }
-    
+
     // Spese Diverse
     function callpartialSpese() {
         //debugger;
@@ -422,8 +425,8 @@
             }
         });
     }
-    
-    // Spese Avvicendamento 
+
+    // Spese Avvicendamento
     function callpartialSpeseAvvicendamento() {
         //debugger;
 
@@ -451,7 +454,7 @@
             }
         });
     }
-    
+
     // Storia del Dipendente
     function callpartialStoria() {
         //debugger;
@@ -487,10 +490,10 @@
 
         rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
         //rotta = "/Statistiche/OpIndEstera/Index";
-        
+
         //var data = $("#datepicker").datepicker().val()
         //var data1 = $("#datepicker1").datepicker().val()
-        
+
         $.ajax({
             type: "POST",
             url: rotta,
@@ -628,7 +631,7 @@
             }
         });
     }
-    
+
     // Operazioni Effettuate - Spese diverse
     function callpartialOpSpeseDiverse() {
         //debugger;
@@ -701,6 +704,6 @@
             }
         });
     }
-    
+
 
 </script>
