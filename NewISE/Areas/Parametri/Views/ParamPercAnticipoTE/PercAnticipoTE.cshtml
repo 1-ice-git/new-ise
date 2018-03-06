@@ -1,0 +1,307 @@
+﻿@model IEnumerable<NewISE.Models.DBModel.PercAnticipoTEModel>
+@using NewISE.Areas.Parametri.Models.dtObj;
+@using NewISE.Models.Tools;
+@{
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
+}
+<p>
+    <a id="btnInsAnticipoTE" href="#" onclick='NuovaPercAnticipoTE()'>Inserisci Percentuale Anticipo</a>
+</p>
+
+    <div class="form-group">
+        @Html.Label("lblTipologiaAnticipo", "Seleziona Tipologia Anticipo", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idTipoAnticipoTE", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPercAnticipo();", @onClick = "PrelevaPercAnticipo();" })
+            </div>
+        </div>
+    </div>
+
+
+
+<table id="tbMaggFigli" class="display" cellspacing="0">
+    <thead>
+        <tr>
+
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.percentuale)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.annullato)
+            </th>
+            <th class="text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.percentuale)  %
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td style="text-align:center;">
+                    @using (dtParPercAnticipoTE dtib = new dtParPercAnticipoTE())
+                    {
+                        if (dtib.PercAnticipoTEAnnullato(item))
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            if (item.idPercAnticipoTE == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaPercentualeAnticipo(@item.idPercAnticipoTE);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="dialog-confirm" title="Elimina percentuale di maggiorazione figli?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della percentuale ?</p>
+</div>
+
+<script type="text/javascript">
+    $('.display').DataTable({
+        "ordering": false,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+    $("#idTipoAnticipoTE").select2({
+        placeholder: "Seleziona la Tipologia Anticipo ",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsAnticipoTE").button();
+
+    function PrelevaPercAnticipo() {
+        //debugger;
+        rotta = "/Parametri/ParamPercAnticipoTe/PercAnticipoTELivello";
+
+        var idTipologiaAnticipo = parseInt($("#idTipoAnticipoTE").select2('val'));
+       // var idTipologiaAnticipo = parseInt($("#idTipoAnticipoTE").val());
+        $("#hiTipoContributo").val(idTipologiaAnticipo);
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+        if (isNaN(idTipologiaAnticipo)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTipologiaAnticipo: idTipologiaAnticipo, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuovaPercAnticipoTE() {
+        //debugger;
+
+        var rotta = "/Parametri/ParamPercAnticipoTe/NuovaPercAnticipoTE";
+        var idTipologiaAnticipo = parseInt($("#idTipoAnticipoTE").select2('val'));
+
+        if (isNaN(idTipologiaAnticipo)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare la tipologia procedere.");
+            return false;
+        }
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTipologiaAnticipo: idTipologiaAnticipo, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function EliminaPercentualeAnticipo(id) {
+        //debugger;
+        var rotta = "/Parametri/ParamPercAnticipoTe/EliminaPercAnticipoTE";
+        var id_TipoAnticipo_ = parseInt($("#idTipoAnticipoTE").select2('val'));
+
+        if (isNaN(id_TipoAnticipo_)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+        $('#dialog-confirm').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { escludiAnnullati: chk, idTipoAnticipo: id_TipoAnticipo_, idPercAnticipo: id },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                $("#divPViewParametri").empty();
+                                $("#divPViewParametri").html(result);
+
+                                //RicercaDocumenti();
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+
+                        });
+                    },
+                    "class": "ui-button-danger"
+                },
+                {
+                    text: "Annulla",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+    }
+</script>

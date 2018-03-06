@@ -18,11 +18,14 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime dataNotifica { get; set; }
         public decimal idMittente { get; set; }
-        public decimal idDestinatario { get; set; }
+        //public decimal idDestinatario { get; set; }
         public string Oggetto { get; set; }
         [Display(Name = "Contenuto Messaggio")]
         public string corpoMessaggio { get; set; }
         public byte[] Allegato { get; set; }
         public string Nominativo { get; set; }
+        public IList<DestinatarioModel> lDestinatari { get; set; }
+        [Display(Name = "Destinatari")]
+        public decimal NumeroDestinatari { get; set; }
     }
 }

@@ -82,5 +82,15 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
+        
+        public ActionResult VisualizzaDestinatari(decimal idNotifica)
+        {
+            List<DestinatarioModel> nm = new List<DestinatarioModel>();           
+            using (dtNotifiche dn = new dtNotifiche())
+            {
+                nm = dn.GetListDestinatari(idNotifica).ToList();
+            }
+            return PartialView(nm);
+        }
     }
 }

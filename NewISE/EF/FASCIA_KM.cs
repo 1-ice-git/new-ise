@@ -17,8 +17,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FASCIA_KM()
         {
-            this.RICHIAMO_FKM = new HashSet<RICHIAMO_FKM>();
             this.PERCENTUALEFKM = new HashSet<PERCENTUALEFKM>();
+            this.RICHIAMO_FKM = new HashSet<RICHIAMO_FKM>();
         }
     
         public decimal IDFKM { get; set; }
@@ -26,9 +26,9 @@ namespace NewISE.EF
         public string KM { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO_FKM> RICHIAMO_FKM { get; set; }
         public virtual GRUPPO_FKM GRUPPO_FKM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
     }
 }

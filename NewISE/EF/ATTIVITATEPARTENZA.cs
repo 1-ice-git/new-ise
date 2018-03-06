@@ -32,9 +32,9 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual ANTICIPOSALDOTE ANTICIPOSALDOTE { get; set; }
+        public virtual TEPARTENZA TEPARTENZA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        public virtual TEPARTENZA TEPARTENZA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
     }

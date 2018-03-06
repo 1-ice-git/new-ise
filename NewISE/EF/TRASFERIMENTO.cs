@@ -65,6 +65,8 @@ namespace NewISE.EF
         public virtual STATOTRASFERIMENTO STATOTRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
+        public virtual TEPARTENZA TEPARTENZA { get; set; }
+        public virtual TERIENTRO TERIENTRO { get; set; }
         public virtual TIPOLOGIACOAN TIPOLOGIACOAN { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
         public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
@@ -74,7 +76,5 @@ namespace NewISE.EF
         public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        public virtual TEPARTENZA TEPARTENZA { get; set; }
-        public virtual TERIENTRO TERIENTRO { get; set; }
     }
 }

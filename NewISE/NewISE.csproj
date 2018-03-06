@@ -1054,6 +1054,7 @@
     <Content Include="Immagini\EliminazioneDisable.png" />
     <Content Include="Immagini\Errore.gif" />
     <Content Include="Immagini\Errore2.png" />
+    <Content Include="Immagini\group.png" />
     <Content Include="Immagini\IconeDocumenti\File-New-icon.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
@@ -1856,6 +1857,8 @@
     <Content Include="Areas\Parametri\Views\ParamCoeffFasciaKm\NuovoCoeffFasciakm.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValutaUfficio\NuovaValutaUfficio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValutaUfficio\ValutaUfficio.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPercAnticipoTE\PercAnticipoTE.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPercAnticipoTE\NuovaPercAnticipoTE.cshtml" />
     <None Include="Areas\Statistiche\RPTDataSet\DataSet1.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet14.Designer.cs</LastGenOutput>
@@ -2428,9 +2431,14 @@
       <DependentUpon>VariazioneMagFamColori.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamPercAnticipoTeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
+    <Compile Include="EF\RINUNCIAANTICIPI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DBModel\dtObj\dtParPercAnticipoTE.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffIndRichiamo.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffRiduzioni.cs" />
@@ -2925,9 +2933,6 @@
     <Compile Include="EF\RIDUZIONI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\RINUNCIAANTICIPI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -3055,7 +3060,10 @@
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
+    <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\NotificheModel.cs" />
+    <Compile Include="Models\DBModel\PercAnticipoTEModel.cs" />
+    <Compile Include="Models\DBModel\TipoAnticipoTrasportoEffettiModel.cs" />
     <Compile Include="Models\DBModel\UtentiAutorizzatiModel.cs" />
     <Compile Include="Models\DBModel\Fascia_KMModel.cs" />
     <Compile Include="Models\DBModel\FunzioneRiduzioneModel.cs" />
@@ -3369,6 +3377,7 @@
     <Content Include="Views\Notifiche\ListaNotifiche.cshtml" />
     <Content Include="Views\Notifiche\NuovaNotifica.cshtml" />
     <Content Include="Views\Notifiche\VisualizzaCorpoMessaggio.cshtml" />
+    <Content Include="Views\Notifiche\VisualizzaDestinatari.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

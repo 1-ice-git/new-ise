@@ -1,0 +1,48 @@
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.DestinatarioModel>
+@{
+    ViewBag.Title = "Lista Utenze Autorizzate";
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    var errori = ViewData.ModelState;
+}
+<input type="hidden" id="Amministratore" value="@admin.ToString()" />
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
+
+    @*<div class="text-center Button"><input type="button" value="Scrivi email" onclick="NuovaNotifica();"  class="btn btn-default"/></div>*@
+    <div class="text-center" style="color:blue"><h4>Lista Destinatari</h4></div>
+    <table id="tbelencoNotifiche" class="table">
+        <thead style="background-color:forestgreen;color:white">
+            <tr>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Nominativi)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.ToCc)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ var rowColor = "#ffffff"; }
+            @foreach (var item in Model)
+            {
+                <tr style="background-color:@rowColor;">
+                    <td class="text-center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativi)</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.ToCc)</span>
+                    </td>
+                </tr>
+                if (@rowColor.Equals("#ffffff"))
+                {
+                    rowColor = "#D9E6C4";
+                }
+                else
+                {
+                    rowColor = "#ffffff";
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
