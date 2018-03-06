@@ -12,25 +12,50 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-
+        public IList<DestinatarioModel> GetListDestinatari(decimal idNotifica)
+        {
+            List<DestinatarioModel> ldes = new List<DestinatarioModel>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                ldes = (from d in db.DESTINATARI where d.IDNOTIFICA==idNotifica 
+                        select new DestinatarioModel()
+                        {
+                            idNotifica = d.IDNOTIFICA,
+                            idDipendente=d.IDDIPENDENTE,
+                            Nominativi = d.DIPENDENTI.NOME + "  " + d.DIPENDENTI.COGNOME,
+                            ToCc =d.TOCC
+                        }).ToList();
+            }
+            return ldes;
+        }
         public IList<NotificheModel> GetNotifiche(decimal idMittenteLogato)
         {
+            //List<DestinatarioModel> ldes=GetListDestinatari()
             List<NotificheModel> lnot = new List<NotificheModel>();
+           
             using (ModelDBISE db = new ModelDBISE())
             {
                 lnot = (from e in db.NOTIFICHE
+                        where e.IDMITTENTE == idMittenteLogato
+                        orderby e.DATANOTIFICA
                         select new NotificheModel()
                         {
                             idNotifica = e.IDNOTIFICA,
                             idMittente = e.IDMITTENTE,
-                            idDestinatario=e.DIPENDENTI.IDDIPENDENTE,
-                            //idDestinatario=e.
                             Oggetto = e.OGGETTO,
+                            NumeroDestinatari = e.DESTINATARI.Count,
+                            //(from e1 in e.DESTINATARI
+                            //                select new DestinatarioModel()
+                            //                {
+                            //                    idDipendente = e1.IDDIPENDENTE,
+                            //                    idNotifica = e1.IDNOTIFICA,
+                            //                    ToCc = e1.TOCC
+                            //                }).ToList().Count,
                             corpoMessaggio = e.CORPOMESSAGGIO,
                             dataNotifica = e.DATANOTIFICA,
                             Allegato = e.ALLEGATO,
                             Nominativo = e.DIPENDENTI.NOME + "  " + e.DIPENDENTI.COGNOME,
-                        }).Where(a => a.idMittente == idMittenteLogato).OrderByDescending(a => a.dataNotifica).ToList();
+                        }).ToList();
             }
             return lnot;
         }

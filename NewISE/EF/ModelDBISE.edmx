@@ -887,7 +887,7 @@
           <Property Name="IDTIPOANTICIPOTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
-          <Property Name="PERCENTUALE" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="PERCENTUALE" Type="number" Precision="6" Scale="3" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -1036,6 +1036,34 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="RIN_ATTANT">
+          <Key>
+            <PropertyRef Name="IDRINUNCIAANTICIPI" />
+            <PropertyRef Name="IDATTIVITAANTICIPI" />
+          </Key>
+          <Property Name="IDRINUNCIAANTICIPI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVITAANTICIPI" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RINUNCIA_TE">
+          <Key>
+            <PropertyRef Name="IDRINUNCIATE" />
+          </Key>
+          <Property Name="IDRINUNCIATE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="RINUNCIATE" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RINUNCIAANTICIPI">
+          <Key>
+            <PropertyRef Name="IDRINUNCIAANTICIPI" />
+          </Key>
+          <Property Name="IDRINUNCIAANTICIPI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="RINUNCIAANTICIPI" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
           <Key>
             <PropertyRef Name="IDRINUNCIAMAGFAM" />
@@ -1047,6 +1075,14 @@
           <Property Name="DATAFINE" Type="date" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RTE_ATEP">
+          <Key>
+            <PropertyRef Name="IDRINUNCIATE" />
+            <PropertyRef Name="IDATEPARTENZA" />
+          </Key>
+          <Property Name="IDRINUNCIATE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATEPARTENZA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="RUOLOACCESSO">
           <Key>
@@ -1133,14 +1169,6 @@
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="TEP_FK">
-          <Key>
-            <PropertyRef Name="IDTEPARTENZA" />
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
             <PropertyRef Name="IDTEPARTENZA" />
@@ -1154,14 +1182,6 @@
             <PropertyRef Name="IDTEPARTENZA" />
           </Key>
           <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TER_FK">
-          <Key>
-            <PropertyRef Name="IDTERIENTRO" />
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDTERIENTRO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TER_PATE">
           <Key>
@@ -1405,6 +1425,20 @@
               <PropertyRef Name="IDATTIVITAANTICIPI" />
             </Principal>
             <Dependent Role="ANTICIPI">
+              <PropertyRef Name="IDATTIVITAANTICIPI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AA_RAA">
+          <End Role="ATTIVITAANTICIPI" Type="Self.ATTIVITAANTICIPI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RIN_ATTANT" Type="Self.RIN_ATTANT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVITAANTICIPI">
+              <PropertyRef Name="IDATTIVITAANTICIPI" />
+            </Principal>
+            <Dependent Role="RIN_ATTANT">
               <PropertyRef Name="IDATTIVITAANTICIPI" />
             </Dependent>
           </ReferentialConstraint>
@@ -1675,6 +1709,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_ATEP_RTEATEP">
+          <End Role="ATTIVITATEPARTENZA" Type="Self.ATTIVITATEPARTENZA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RTE_ATEP" Type="Self.RTE_ATEP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVITATEPARTENZA">
+              <PropertyRef Name="IDATEPARTENZA" />
+            </Principal>
+            <Dependent Role="RTE_ATEP">
+              <PropertyRef Name="IDATEPARTENZA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_ATER_DATER">
           <End Role="ATTIVITATERIENTRO" Type="Self.ATTIVITATERIENTRO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1910,34 +1958,6 @@
             </Principal>
             <Dependent Role="CONIUGETITOLIVIAGGIO">
               <PropertyRef Name="IDCONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CFK_TEPFK">
-          <End Role="PERCENTUALEFKM" Type="Self.PERCENTUALEFKM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TEP_FK" Type="Self.TEP_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERCENTUALEFKM">
-              <PropertyRef Name="IDPFKM" />
-            </Principal>
-            <Dependent Role="TEP_FK">
-              <PropertyRef Name="IDCFKM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CFK_TERFK">
-          <End Role="PERCENTUALEFKM" Type="Self.PERCENTUALEFKM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TER_FK" Type="Self.TER_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERCENTUALEFKM">
-              <PropertyRef Name="IDPFKM" />
-            </Principal>
-            <Dependent Role="TER_FK">
-              <PropertyRef Name="IDCFKM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3129,6 +3149,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_PS_RA">
+          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RINUNCIAANTICIPI" Type="Self.RINUNCIAANTICIPI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRIMASITEMAZIONE">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Principal>
+            <Dependent Role="RINUNCIAANTICIPI">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_R_CIRR">
           <End Role="RIDUZIONI" Type="Self.RIDUZIONI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3213,6 +3247,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_RA_RAA">
+          <End Role="RINUNCIAANTICIPI" Type="Self.RINUNCIAANTICIPI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RIN_ATTANT" Type="Self.RIN_ATTANT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RINUNCIAANTICIPI">
+              <PropertyRef Name="IDRINUNCIAANTICIPI" />
+            </Principal>
+            <Dependent Role="RIN_ATTANT">
+              <PropertyRef Name="IDRINUNCIAANTICIPI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_RC_TRC">
           <End Role="REGOLECALCOLO" Type="Self.REGOLECALCOLO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3238,6 +3286,20 @@
             </Principal>
             <Dependent Role="ATT_RMF">
               <PropertyRef Name="IDRINUNCIAMAGFAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_RTE_RTEATEP">
+          <End Role="RINUNCIA_TE" Type="Self.RINUNCIA_TE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RTE_ATEP" Type="Self.RTE_ATEP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RINUNCIA_TE">
+              <PropertyRef Name="IDRINUNCIATE" />
+            </Principal>
+            <Dependent Role="RTE_ATEP">
+              <PropertyRef Name="IDRINUNCIATE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3645,16 +3707,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TEP_TEPFK">
+        <Association Name="R_TEP_RTE">
           <End Role="TEPARTENZA" Type="Self.TEPARTENZA" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="TEP_FK" Type="Self.TEP_FK" Multiplicity="*" />
+          <End Role="RINUNCIA_TE" Type="Self.RINUNCIA_TE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TEPARTENZA">
               <PropertyRef Name="IDTEPARTENZA" />
             </Principal>
-            <Dependent Role="TEP_FK">
+            <Dependent Role="RINUNCIA_TE">
               <PropertyRef Name="IDTEPARTENZA" />
             </Dependent>
           </ReferentialConstraint>
@@ -3683,20 +3745,6 @@
               <PropertyRef Name="IDTERIENTRO" />
             </Principal>
             <Dependent Role="ATTIVITATERIENTRO">
-              <PropertyRef Name="IDTERIENTRO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TER_TERFK">
-          <End Role="TERIENTRO" Type="Self.TERIENTRO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TER_FK" Type="Self.TER_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TERIENTRO">
-              <PropertyRef Name="IDTERIENTRO" />
-            </Principal>
-            <Dependent Role="TER_FK">
               <PropertyRef Name="IDTERIENTRO" />
             </Dependent>
           </ReferentialConstraint>
@@ -4250,7 +4298,11 @@
           <EntitySet Name="RICHIAMO_COEFFRICH" EntityType="Self.RICHIAMO_COEFFRICH" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RICHIAMO_FKM" EntityType="Self.RICHIAMO_FKM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RIN_ATTANT" EntityType="Self.RIN_ATTANT" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RINUNCIA_TE" EntityType="Self.RINUNCIA_TE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RINUNCIAANTICIPI" EntityType="Self.RINUNCIAANTICIPI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="Self.RINUNCIAMAGGIORAZIONIFAMILIARI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RTE_ATEP" EntityType="Self.RTE_ATEP" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RUOLOACCESSO" EntityType="Self.RUOLOACCESSO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RUOLODIPENDENTE" EntityType="Self.RUOLODIPENDENTE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RUOLOUFFICIO" EntityType="Self.RUOLOUFFICIO" Schema="ISESIM" store:Type="Tables" />
@@ -4259,10 +4311,8 @@
           <EntitySet Name="STIPENDI" EntityType="Self.STIPENDI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="T_RC" EntityType="Self.T_RC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TEORICI" EntityType="Self.TEORICI" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="TEP_FK" EntityType="Self.TEP_FK" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TEP_PATE" EntityType="Self.TEP_PATE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TEPARTENZA" EntityType="Self.TEPARTENZA" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="TER_FK" EntityType="Self.TER_FK" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TER_PATE" EntityType="Self.TER_PATE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TERIENTRO" EntityType="Self.TERIENTRO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TFR" EntityType="Self.TFR" Schema="ISESIM" store:Type="Tables" />
@@ -4294,6 +4344,10 @@
           <AssociationSet Name="R_AA_A" Association="Self.R_AA_A">
             <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
             <End Role="ANTICIPI" EntitySet="ANTICIPI" />
+          </AssociationSet>
+          <AssociationSet Name="R_AA_RAA" Association="Self.R_AA_RAA">
+            <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
+            <End Role="RIN_ATTANT" EntitySet="RIN_ATTANT" />
           </AssociationSet>
           <AssociationSet Name="R_AC_LA" Association="Self.R_AC_LA">
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
@@ -4371,6 +4425,10 @@
             <End Role="ATTIVITATEPARTENZA" EntitySet="ATTIVITATEPARTENZA" />
             <End Role="DOC_ATEP" EntitySet="DOC_ATEP" />
           </AssociationSet>
+          <AssociationSet Name="R_ATEP_RTEATEP" Association="Self.R_ATEP_RTEATEP">
+            <End Role="ATTIVITATEPARTENZA" EntitySet="ATTIVITATEPARTENZA" />
+            <End Role="RTE_ATEP" EntitySet="RTE_ATEP" />
+          </AssociationSet>
           <AssociationSet Name="R_ATER_DATER" Association="Self.R_ATER_DATER">
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
             <End Role="DOC_ATER" EntitySet="DOC_ATER" />
@@ -4438,14 +4496,6 @@
           <AssociationSet Name="R_C_CTV" Association="Self.R_C_CTV">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
-          </AssociationSet>
-          <AssociationSet Name="R_CFK_TEPFK" Association="Self.R_CFK_TEPFK">
-            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-            <End Role="TEP_FK" EntitySet="TEP_FK" />
-          </AssociationSet>
-          <AssociationSet Name="R_CFK_TERFK" Association="Self.R_CFK_TERFK">
-            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-            <End Role="TER_FK" EntitySet="TER_FK" />
           </AssociationSet>
           <AssociationSet Name="R_CIR_CIRR" Association="Self.R_CIR_CIRR">
             <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
@@ -4787,6 +4837,10 @@
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
             <End Role="PS_PFKM" EntitySet="PS_PFKM" />
           </AssociationSet>
+          <AssociationSet Name="R_PS_RA" Association="Self.R_PS_RA">
+            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
+            <End Role="RINUNCIAANTICIPI" EntitySet="RINUNCIAANTICIPI" />
+          </AssociationSet>
           <AssociationSet Name="R_R_CIRR" Association="Self.R_R_CIRR">
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
             <End Role="CIR_R" EntitySet="CIR_R" />
@@ -4811,6 +4865,10 @@
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
             <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
           </AssociationSet>
+          <AssociationSet Name="R_RA_RAA" Association="Self.R_RA_RAA">
+            <End Role="RINUNCIAANTICIPI" EntitySet="RINUNCIAANTICIPI" />
+            <End Role="RIN_ATTANT" EntitySet="RIN_ATTANT" />
+          </AssociationSet>
           <AssociationSet Name="R_RC_TRC" Association="Self.R_RC_TRC">
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="T_RC" EntitySet="T_RC" />
@@ -4818,6 +4876,10 @@
           <AssociationSet Name="R_RMF_ARMF" Association="Self.R_RMF_ARMF">
             <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
             <End Role="ATT_RMF" EntitySet="ATT_RMF" />
+          </AssociationSet>
+          <AssociationSet Name="R_RTE_RTEATEP" Association="Self.R_RTE_RTEATEP">
+            <End Role="RINUNCIA_TE" EntitySet="RINUNCIA_TE" />
+            <End Role="RTE_ATEP" EntitySet="RTE_ATEP" />
           </AssociationSet>
           <AssociationSet Name="R_RU_RD" Association="Self.R_RU_RD">
             <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
@@ -4935,9 +4997,9 @@
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
             <End Role="ATTIVITATEPARTENZA" EntitySet="ATTIVITATEPARTENZA" />
           </AssociationSet>
-          <AssociationSet Name="R_TEP_TEPFK" Association="Self.R_TEP_TEPFK">
+          <AssociationSet Name="R_TEP_RTE" Association="Self.R_TEP_RTE">
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-            <End Role="TEP_FK" EntitySet="TEP_FK" />
+            <End Role="RINUNCIA_TE" EntitySet="RINUNCIA_TE" />
           </AssociationSet>
           <AssociationSet Name="R_TEP_TEPPATE" Association="Self.R_TEP_TEPPATE">
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
@@ -4946,10 +5008,6 @@
           <AssociationSet Name="R_TER_ATER" Association="Self.R_TER_ATER">
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="R_TER_TERFK" Association="Self.R_TER_TERFK">
-            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
-            <End Role="TER_FK" EntitySet="TER_FK" />
           </AssociationSet>
           <AssociationSet Name="R_TER_TERPATE" Association="Self.R_TER_TERPATE">
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
@@ -5149,6 +5207,8 @@
           <EntitySet Name="RICHIAMO" EntityType="DBISEPRO.RICHIAMO" />
           <EntitySet Name="RICHIAMO_FKM" EntityType="DBISEPRO.RICHIAMO_FKM" />
           <EntitySet Name="RIDUZIONI" EntityType="DBISEPRO.RIDUZIONI" />
+          <EntitySet Name="RINUNCIA_TE" EntityType="DBISEPRO.RINUNCIA_TE" />
+          <EntitySet Name="RINUNCIAANTICIPI" EntityType="DBISEPRO.RINUNCIAANTICIPI" />
           <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" />
           <EntitySet Name="RUOLOACCESSO" EntityType="DBISEPRO.RUOLOACCESSO" />
           <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISEPRO.RUOLODIPENDENTE" />
@@ -5515,6 +5575,10 @@
             <End Role="TIPOLOGIAFIGLIO" EntitySet="TIPOLOGIAFIGLIO" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
           </AssociationSet>
+          <AssociationSet Name="R_PS_RA" Association="DBISEPRO.R_PS_RA">
+            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
+            <End Role="RINUNCIAANTICIPI" EntitySet="RINUNCIAANTICIPI" />
+          </AssociationSet>
           <AssociationSet Name="R_TRASF_PRIMASIST" Association="DBISEPRO.R_TRASF_PRIMASIST">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
@@ -5530,6 +5594,10 @@
           <AssociationSet Name="R_T_R" Association="DBISEPRO.R_T_R">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+          </AssociationSet>
+          <AssociationSet Name="R_TEP_RTE" Association="DBISEPRO.R_TEP_RTE">
+            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
+            <End Role="RINUNCIA_TE" EntitySet="RINUNCIA_TE" />
           </AssociationSet>
           <AssociationSet Name="R_RU_UA" Association="DBISEPRO.R_RU_UA">
             <End Role="RUOLOACCESSO" EntitySet="RUOLOACCESSO" />
@@ -5771,21 +5839,21 @@
             <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
           </AssociationSet>
+          <AssociationSet Name="RIN_ATTANT" Association="DBISEPRO.RIN_ATTANT">
+            <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
+            <End Role="RINUNCIAANTICIPI" EntitySet="RINUNCIAANTICIPI" />
+          </AssociationSet>
+          <AssociationSet Name="RTE_ATEP" Association="DBISEPRO.RTE_ATEP">
+            <End Role="ATTIVITATEPARTENZA" EntitySet="ATTIVITATEPARTENZA" />
+            <End Role="RINUNCIA_TE" EntitySet="RINUNCIA_TE" />
+          </AssociationSet>
           <AssociationSet Name="T_RC" Association="DBISEPRO.T_RC">
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
-          <AssociationSet Name="TEP_FK" Association="DBISEPRO.TEP_FK">
-            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-          </AssociationSet>
           <AssociationSet Name="TEP_PATE" Association="DBISEPRO.TEP_PATE">
             <End Role="PERCENTUALEANTICIPOTE" EntitySet="PERCENTUALEANTICIPOTE" />
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-          </AssociationSet>
-          <AssociationSet Name="TER_FK" Association="DBISEPRO.TER_FK">
-            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
           </AssociationSet>
           <AssociationSet Name="TER_PATE" Association="DBISEPRO.TER_PATE">
             <End Role="PERCENTUALEANTICIPOTE" EntitySet="PERCENTUALEANTICIPOTE" />
@@ -5979,6 +6047,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ANTICIPI" Relationship="DBISEPRO.R_AA_A" FromRole="ATTIVITAANTICIPI" ToRole="ANTICIPI" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_PS_AA" FromRole="ATTIVITAANTICIPI" ToRole="PRIMASITEMAZIONE" />
+          <NavigationProperty Name="RINUNCIAANTICIPI" Relationship="DBISEPRO.RIN_ATTANT" FromRole="ATTIVITAANTICIPI" ToRole="RINUNCIAANTICIPI" />
         </EntityType>
         <EntityType Name="ATTIVITACRUD">
           <Key>
@@ -6004,6 +6073,7 @@
           <NavigationProperty Name="ANTICIPOSALDOTE" Relationship="DBISEPRO.R_ASTE_ATEP" FromRole="ATTIVITATEPARTENZA" ToRole="ANTICIPOSALDOTE" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.R_TEP_ATEP" FromRole="ATTIVITATEPARTENZA" ToRole="TEPARTENZA" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.DOC_ATEP" FromRole="ATTIVITATEPARTENZA" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="RINUNCIA_TE" Relationship="DBISEPRO.RTE_ATEP" FromRole="ATTIVITATEPARTENZA" ToRole="RINUNCIA_TE" />
         </EntityType>
         <EntityType Name="ATTIVITATERIENTRO">
           <Key>
@@ -6607,7 +6677,7 @@
           <Property Name="IDTIPOANTICIPOTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="PERCENTUALE" Type="Byte" Nullable="false" />
+          <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="6" Scale="3" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TIPOANTICIPOTRASPORTOEFFETTI" Relationship="DBISEPRO.R_TATE_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TIPOANTICIPOTRASPORTOEFFETTI" />
@@ -6641,8 +6711,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FASCIA_KM" Relationship="DBISEPRO.R_DFK_CFK" FromRole="PERCENTUALEFKM" ToRole="FASCIA_KM" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.PS_PFKM" FromRole="PERCENTUALEFKM" ToRole="PRIMASITEMAZIONE" />
-          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.TEP_FK" FromRole="PERCENTUALEFKM" ToRole="TEPARTENZA" />
-          <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.TER_FK" FromRole="PERCENTUALEFKM" ToRole="TERIENTRO" />
         </EntityType>
         <EntityType Name="PERCENTUALEMAB">
           <Key>
@@ -6695,6 +6763,7 @@
           </Key>
           <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISEPRO.R_PS_AA" FromRole="PRIMASITEMAZIONE" ToRole="ATTIVITAANTICIPI" />
+          <NavigationProperty Name="RINUNCIAANTICIPI" Relationship="DBISEPRO.R_PS_RA" FromRole="PRIMASITEMAZIONE" ToRole="RINUNCIAANTICIPI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_TRASF_PRIMASIST" FromRole="PRIMASITEMAZIONE" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISEPRO.IS_PS" FromRole="PRIMASITEMAZIONE" ToRole="INDENNITASISTEMAZIONE" />
           <NavigationProperty Name="PERCENTUALEFKM" Relationship="DBISEPRO.PS_PFKM" FromRole="PRIMASITEMAZIONE" ToRole="PERCENTUALEFKM" />
@@ -6756,6 +6825,30 @@
           <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.CIR_R" FromRole="RIDUZIONI" ToRole="COEFFICIENTEINDRICHIAMO" />
           <NavigationProperty Name="INDENNITABASE" Relationship="DBISEPRO.IB_R" FromRole="RIDUZIONI" ToRole="INDENNITABASE" />
           <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISEPRO.IS_R" FromRole="RIDUZIONI" ToRole="INDENNITASISTEMAZIONE" />
+        </EntityType>
+        <EntityType Name="RINUNCIA_TE">
+          <Key>
+            <PropertyRef Name="IDRINUNCIATE" />
+          </Key>
+          <Property Name="IDRINUNCIATE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTEPARTENZA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="RINUNCIATE" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.R_TEP_RTE" FromRole="RINUNCIA_TE" ToRole="TEPARTENZA" />
+          <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISEPRO.RTE_ATEP" FromRole="RINUNCIA_TE" ToRole="ATTIVITATEPARTENZA" />
+        </EntityType>
+        <EntityType Name="RINUNCIAANTICIPI">
+          <Key>
+            <PropertyRef Name="IDRINUNCIAANTICIPI" />
+          </Key>
+          <Property Name="IDRINUNCIAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="RINUNCIAANTICIPI1" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_PS_RA" FromRole="RINUNCIAANTICIPI" ToRole="PRIMASITEMAZIONE" />
+          <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISEPRO.RIN_ATTANT" FromRole="RINUNCIAANTICIPI" ToRole="ATTIVITAANTICIPI" />
         </EntityType>
         <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
           <Key>
@@ -6867,8 +6960,8 @@
           </Key>
           <Property Name="IDTEPARTENZA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISEPRO.R_TEP_ATEP" FromRole="TEPARTENZA" ToRole="ATTIVITATEPARTENZA" />
+          <NavigationProperty Name="RINUNCIA_TE" Relationship="DBISEPRO.R_TEP_RTE" FromRole="TEPARTENZA" ToRole="RINUNCIA_TE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TEP" FromRole="TEPARTENZA" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="PERCENTUALEFKM" Relationship="DBISEPRO.TEP_FK" FromRole="TEPARTENZA" ToRole="PERCENTUALEFKM" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISEPRO.TEP_PATE" FromRole="TEPARTENZA" ToRole="PERCENTUALEANTICIPOTE" />
         </EntityType>
         <EntityType Name="TERIENTRO">
@@ -6878,7 +6971,6 @@
           <Property Name="IDTERIENTRO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISEPRO.R_TER_ATER" FromRole="TERIENTRO" ToRole="ATTIVITATERIENTRO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TER" FromRole="TERIENTRO" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="PERCENTUALEFKM" Relationship="DBISEPRO.TER_FK" FromRole="TERIENTRO" ToRole="PERCENTUALEFKM" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISEPRO.TER_PATE" FromRole="TERIENTRO" ToRole="PERCENTUALEANTICIPOTE" />
         </EntityType>
         <EntityType Name="TFR">
@@ -8314,6 +8406,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_PS_RA">
+          <End Type="DBISEPRO.PRIMASITEMAZIONE" Role="PRIMASITEMAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RINUNCIAANTICIPI" Role="RINUNCIAANTICIPI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRIMASITEMAZIONE">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Principal>
+            <Dependent Role="RINUNCIAANTICIPI">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TRASF_PRIMASIST">
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8367,6 +8473,20 @@
             </Principal>
             <Dependent Role="RICHIAMO">
               <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TEP_RTE">
+          <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RINUNCIA_TE" Role="RINUNCIA_TE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEPARTENZA">
+              <PropertyRef Name="IDTEPARTENZA" />
+            </Principal>
+            <Dependent Role="RINUNCIA_TE">
+              <PropertyRef Name="IDTEPARTENZA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8848,21 +8968,21 @@
           <End Type="DBISEPRO.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
           <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
         </Association>
+        <Association Name="RIN_ATTANT">
+          <End Type="DBISEPRO.ATTIVITAANTICIPI" Role="ATTIVITAANTICIPI" Multiplicity="*" />
+          <End Type="DBISEPRO.RINUNCIAANTICIPI" Role="RINUNCIAANTICIPI" Multiplicity="*" />
+        </Association>
+        <Association Name="RTE_ATEP">
+          <End Type="DBISEPRO.ATTIVITATEPARTENZA" Role="ATTIVITATEPARTENZA" Multiplicity="*" />
+          <End Type="DBISEPRO.RINUNCIA_TE" Role="RINUNCIA_TE" Multiplicity="*" />
+        </Association>
         <Association Name="T_RC">
           <End Type="DBISEPRO.REGOLECALCOLO" Role="REGOLECALCOLO" Multiplicity="*" />
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
         </Association>
-        <Association Name="TEP_FK">
-          <End Type="DBISEPRO.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
-          <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="*" />
-        </Association>
         <Association Name="TEP_PATE">
           <End Type="DBISEPRO.PERCENTUALEANTICIPOTE" Role="PERCENTUALEANTICIPOTE" Multiplicity="*" />
           <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="*" />
-        </Association>
-        <Association Name="TER_FK">
-          <End Type="DBISEPRO.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
-          <End Type="DBISEPRO.TERIENTRO" Role="TERIENTRO" Multiplicity="*" />
         </Association>
         <Association Name="TER_PATE">
           <End Type="DBISEPRO.PERCENTUALEANTICIPOTE" Role="PERCENTUALEANTICIPOTE" Multiplicity="*" />
@@ -9686,6 +9806,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RINUNCIA_TE">
+            <EntityTypeMapping TypeName="DBISEPRO.RINUNCIA_TE">
+              <MappingFragment StoreEntitySet="RINUNCIA_TE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="RINUNCIATE" ColumnName="RINUNCIATE" />
+                <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
+                <ScalarProperty Name="IDRINUNCIATE" ColumnName="IDRINUNCIATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RINUNCIAANTICIPI">
+            <EntityTypeMapping TypeName="DBISEPRO.RINUNCIAANTICIPI">
+              <MappingFragment StoreEntitySet="RINUNCIAANTICIPI">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="RINUNCIAANTICIPI1" ColumnName="RINUNCIAANTICIPI" />
+                <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
+                <ScalarProperty Name="IDRINUNCIAANTICIPI" ColumnName="IDRINUNCIAANTICIPI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
             <EntityTypeMapping TypeName="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI">
               <MappingFragment StoreEntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI">
@@ -10311,6 +10453,22 @@
               <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
             </EndProperty>
           </AssociationSetMapping>
+          <AssociationSetMapping Name="RIN_ATTANT" TypeName="DBISEPRO.RIN_ATTANT" StoreEntitySet="RIN_ATTANT">
+            <EndProperty Name="RINUNCIAANTICIPI">
+              <ScalarProperty Name="IDRINUNCIAANTICIPI" ColumnName="IDRINUNCIAANTICIPI" />
+            </EndProperty>
+            <EndProperty Name="ATTIVITAANTICIPI">
+              <ScalarProperty Name="IDATTIVITAANTICIPI" ColumnName="IDATTIVITAANTICIPI" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RTE_ATEP" TypeName="DBISEPRO.RTE_ATEP" StoreEntitySet="RTE_ATEP">
+            <EndProperty Name="RINUNCIA_TE">
+              <ScalarProperty Name="IDRINUNCIATE" ColumnName="IDRINUNCIATE" />
+            </EndProperty>
+            <EndProperty Name="ATTIVITATEPARTENZA">
+              <ScalarProperty Name="IDATEPARTENZA" ColumnName="IDATEPARTENZA" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="T_RC" TypeName="DBISEPRO.T_RC" StoreEntitySet="T_RC">
             <EndProperty Name="TRASFERIMENTO">
               <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
@@ -10319,28 +10477,12 @@
               <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TEP_FK" TypeName="DBISEPRO.TEP_FK" StoreEntitySet="TEP_FK">
-            <EndProperty Name="TEPARTENZA">
-              <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
-            </EndProperty>
-            <EndProperty Name="PERCENTUALEFKM">
-              <ScalarProperty Name="IDPFKM" ColumnName="IDCFKM" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="TEP_PATE" TypeName="DBISEPRO.TEP_PATE" StoreEntitySet="TEP_PATE">
             <EndProperty Name="TEPARTENZA">
               <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
             </EndProperty>
             <EndProperty Name="PERCENTUALEANTICIPOTE">
               <ScalarProperty Name="IDPERCANTICIPOTM" ColumnName="IDPERCANTICIPOTM" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="TER_FK" TypeName="DBISEPRO.TER_FK" StoreEntitySet="TER_FK">
-            <EndProperty Name="TERIENTRO">
-              <ScalarProperty Name="IDTERIENTRO" ColumnName="IDTERIENTRO" />
-            </EndProperty>
-            <EndProperty Name="PERCENTUALEFKM">
-              <ScalarProperty Name="IDPFKM" ColumnName="IDCFKM" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="TER_PATE" TypeName="DBISEPRO.TER_PATE" StoreEntitySet="TER_PATE">

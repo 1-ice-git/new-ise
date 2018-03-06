@@ -89,6 +89,8 @@ namespace NewISE.EF
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<RICHIAMO_FKM> RICHIAMO_FKM { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
+        public virtual DbSet<RINUNCIA_TE> RINUNCIA_TE { get; set; }
+        public virtual DbSet<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
         public virtual DbSet<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }

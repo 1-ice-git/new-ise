@@ -35,6 +35,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 r.Add(new SelectListItem() { Text = "Valute", Value = "13" });
                 r.Add(new SelectListItem() { Text = "Valuta Ufficio", Value = "14" });
                 r.Add(new SelectListItem() { Text = "Percentuale Disagio", Value = "15" });
+                r.Add(new SelectListItem() { Text = "Percentuale Anticipo TE", Value = "16" });
 
                 ViewBag.ParametriList = r;
                 return View();

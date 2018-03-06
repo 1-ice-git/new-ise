@@ -14,7 +14,7 @@
         <thead style="background-color:forestgreen;color:white">
             <tr>
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.Nominativo)
+                    @Html.DisplayNameFor(model => model.NumeroDestinatari)
                 </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.Oggetto)
@@ -34,7 +34,7 @@
             {
                 <tr style="background-color:@rowColor;">
                     <td class="text-center">
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                        <a href="#" onclick="ViewDestinatari(@item.idNotifica);"  title='@item.NumeroDestinatari destinatari'><img alt="Destinatari" src="~/Immagini/group.png" width="20" height="20" /></a>
                     </td>
                     <td class="text-right">
                         <a href="#" onclick="ViewCorpoMessaggio(@item.idNotifica);"><span class="text-right">@Html.DisplayFor(modelItem => item.Oggetto)</span></a>
@@ -86,7 +86,20 @@
     </div>
 </div>
 
-
+<div class="modal fade" id="DestinatariNotifiche" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabelNotifica" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="viewDestinatrioNotifica">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:white;text-align:center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 
@@ -370,8 +383,6 @@
 
         }
 
-
-
         function ViewCorpoMessaggio(id) {
             // debugger;
             // $(".anchorModifica").click(function () {
@@ -396,6 +407,41 @@
                     // debugger;
                     $("#viewMailNotifica").empty();
                     $("#viewMailNotifica").html(result);
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+            // });
+        }
+
+        function ViewDestinatari(idNotifica) {
+            // debugger;
+            // $(".anchorModifica").click(function () {
+
+            var rotta = "/Notifiche/VisualizzaDestinatari";
+            //    var $buttonClicked = $(this);
+            //   var idf = $buttonClicked.attr('id_fe');
+            //  var idd = $buttonClicked.attr('id_dip');
+            $.ajax({
+                url: rotta,
+                type: "POST",
+                data: { "idNotifica": idNotifica },
+                dataType: 'html',
+                async: false,
+                beforeSend: function () {
+                    // debugger;
+                    $('#DestinatariNotifiche').modal('show');
+                    // $('#dialog-confirm-Utenze').modal('show');
+                    //Blocca();
+                },
+                success: function (result) {
+                    // debugger;
+                    $("#viewDestinatrioNotifica").empty();
+                    $("#viewDestinatrioNotifica").html(result);
                 },
                 error: function (error) {
                     //debugger;

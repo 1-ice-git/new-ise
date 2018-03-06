@@ -12,27 +12,22 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PERCENTUALEANTICIPOTE
+    public partial class RINUNCIAANTICIPI
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PERCENTUALEANTICIPOTE()
+        public RINUNCIAANTICIPI()
         {
-            this.TEPARTENZA = new HashSet<TEPARTENZA>();
-            this.TERIENTRO = new HashSet<TERIENTRO>();
+            this.ATTIVITAANTICIPI = new HashSet<ATTIVITAANTICIPI>();
         }
     
-        public decimal IDPERCANTICIPOTM { get; set; }
-        public decimal IDTIPOANTICIPOTE { get; set; }
-        public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal PERCENTUALE { get; set; }
+        public decimal IDRINUNCIAANTICIPI { get; set; }
+        public decimal IDPRIMASISTEMAZIONE { get; set; }
+        public bool RINUNCIAANTICIPI1 { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual TIPOANTICIPOTRASPORTOEFFETTI TIPOANTICIPOTRASPORTOEFFETTI { get; set; }
+        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEPARTENZA> TEPARTENZA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TERIENTRO> TERIENTRO { get; set; }
+        public virtual ICollection<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
     }
 }
