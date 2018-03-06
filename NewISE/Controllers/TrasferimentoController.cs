@@ -123,6 +123,38 @@ namespace NewISE.Controllers
 
         }
 
+        private void FiltraRuoloUfficio(out List<SelectListItem> lRuoloUfficio, DipendentiModel dm)
+        {
+
+            using (dtLivelliDipendente dtpl = new dtLivelliDipendente())
+            {
+                dm.livelloDipendenteValido = dtpl.GetLivelloDipendente(dm.idDipendente, DateTime.Now.Date);
+            
+                var r = new List<SelectListItem>();
+
+                using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                {
+                    var lru = dtru.GetListRuoloUfficioByLivello(dm.livelloDipendenteValido.idLivello).OrderBy(a => a.DescrizioneRuolo).ToList();
+    
+                    if (lru != null && lru.Count > 0)
+                    {
+                        r = (from t in lru
+                            select new SelectListItem()
+                            {
+                                Text = t.DescrizioneRuolo,
+                                Value = t.idRuoloUfficio.ToString()
+                            }).ToList();
+    
+                        r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                    }
+    
+                    lRuoloUfficio = r;
+                }
+            }
+
+        }
+
+
         #endregion Metodi privati
 
         [HttpPost]
@@ -410,45 +442,41 @@ namespace NewISE.Controllers
                     var d = dtd.GetDipendenteByMatricola(matricola);
                     ViewBag.Dipendente = d;
                     matricola = d.matricola;
-                }
+               
+                    ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
 
-                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
+                    FiltraRuoloUfficio(out lRuoloUfficio, d);
 
-                ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
-                ViewBag.ListUfficio = lUffici;
-                ViewBag.ListRuolo = lRuoloUfficio;
-                ViewBag.ListTipoCoan = lTipologiaCoan;
-                ViewBag.ListFasciaKM = lFasciaKM;
+                    ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
+                    ViewBag.ListUfficio = lUffici;
+                    ViewBag.ListRuolo = lRuoloUfficio;
+                    ViewBag.ListTipoCoan = lTipologiaCoan;
+                    ViewBag.ListFasciaKM = lFasciaKM;
 
-                ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
-                ViewBag.Matricola = matricola;
+                    ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
+                    ViewBag.Matricola = matricola;
 
-
-                //using (dtTrasferimento dttr = new dtTrasferimento())
-                //{
-
-                if (idTrasferimento > 0)
-                {
-
-                    if (idRuoloDipendente <= 0)
+                    if (idTrasferimento > 0)
                     {
-                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+
+                        if (idRuoloDipendente <= 0)
                         {
-                            var rdm = dtrd.GetRuoloDipendentePartenza(idTrasferimento);
-                            idRuoloDipendente = rdm.idRuoloDipendente;
+                            using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                            {
+                                var rdm = dtrd.GetRuoloDipendentePartenza(idTrasferimento);
+                                idRuoloDipendente = rdm.idRuoloDipendente;
+                            }
                         }
+
+                        return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = idTrasferimento, matricola = matricola, idRuoloDipendente = idRuoloDipendente, ricaricaInfoTrasf = ricaricaInfoTrasf, ricaricaTrasferimenti = ricaricaTrasferimenti });
                     }
-
-                    //TrasferimentoModel trm = dttr.GetSoloTrasferimentoById(idTrasferimento);
-                    return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = idTrasferimento, matricola = matricola, idRuoloDipendente = idRuoloDipendente, ricaricaInfoTrasf = ricaricaInfoTrasf, ricaricaTrasferimenti = ricaricaTrasferimenti });
-                }
-                else
-                {
-                    ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
-                    return PartialView();
+                    else
+                    {
+                        ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                        return PartialView();
+                    }
                 }
 
-                //}
             }
             catch (Exception ex)
             {
@@ -566,7 +594,15 @@ namespace NewISE.Controllers
 
             try
             {
+
                 ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
+
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    var d = dtd.GetDipendenteByMatricola(matricola);
+
+                    FiltraRuoloUfficio(out lRuoloUfficio, d);
+                }
 
                 ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                 ViewBag.ListUfficio = lUffici;

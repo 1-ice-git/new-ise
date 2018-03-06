@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MessaggioAnnullamentoTrasferimento" xml:space="preserve">
-    <value>Si informa che il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si informa il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaAnticipi" xml:space="preserve">
     <value>Si notifica che la richiesta di anticipo è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
@@ -133,7 +133,7 @@
     <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaPassaporto" xml:space="preserve">
-    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, è stata annullate.&lt;/p&gt;
+    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, è stata annullata.&lt;/p&gt;
 &lt;p&gt;Contattare l'amministratore per maggiori dettagli.&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
@@ -283,7 +283,7 @@
     <value>Notifica della richiesta per le pratiche passaporto/visti.</value>
   </data>
   <data name="OggettoRichiestaPratichePassaportoConcluse" xml:space="preserve">
-    <value>Notifica della chiusura della pratica per la richiesta dei passaporto/visti.</value>
+    <value>Notifica della chiusura della pratica per la richiesta di passaporto/visto.</value>
   </data>
   <data name="OggettoRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
     <value>Notifica richiesta rimborso successivo titoli di viaggio.</value>

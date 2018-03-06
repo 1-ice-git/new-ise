@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si informa il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullamentoTrasferimento {
             get {
@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, è stata annullate.&lt;/p&gt;
+        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, è stata annullata.&lt;/p&gt;
         ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;
         ///&lt;hr /&gt;
         ///&lt;p&gt;&amp;nbsp;&lt;/p&gt;.
@@ -550,7 +550,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della chiusura della pratica per la richiesta dei passaporto/visti..
+        ///   Looks up a localized string similar to Notifica della chiusura della pratica per la richiesta di passaporto/visto..
         /// </summary>
         internal static string OggettoRichiestaPratichePassaportoConcluse {
             get {
