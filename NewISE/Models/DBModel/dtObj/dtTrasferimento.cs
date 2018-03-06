@@ -285,7 +285,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                       out bool richiesteTV, out bool concluseTV,
                                                       out bool richiestaTE, out bool attivazioneTE,
                                                       out bool richiestaAnticipi, out bool attivazioneAnticipi,
-                                                      out bool richiestaMAB, out bool attivazioneMAB, 
+                                                      out bool richiestaMAB, out bool attivazioneMAB,
                                                       out bool solaLettura)
         {
             richiestaMF = false;
@@ -311,7 +311,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Da_Attivare) 
+                if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Da_Attivare)
                 {
                     solaLettura = false;
                 }
@@ -1310,6 +1310,47 @@ namespace NewISE.Models.DBModel.dtObj
                     Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
                 }
 
+            }
+        }
+
+        public TrasferimentoModel GetTrasferimentoOldPrimaDiTrasfAnnullato(decimal idTrasfAnnullato)
+        {
+            TrasferimentoModel trm = new TrasferimentoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var trAnn = db.TRASFERIMENTO.Find(idTrasfAnnullato);
+                var lTrBefore =
+                    db.TRASFERIMENTO.Where(
+                        a =>
+                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                            a.IDDIPENDENTE == trAnn.IDDIPENDENTE &&
+                            a.DATARIENTRO < trAnn.DATAPARTENZA).OrderByDescending(a => a.DATARIENTRO).ToList();
+
+                if (lTrBefore?.Any() ?? false)
+                {
+                    var trb = lTrBefore.First();
+
+                    trm = new TrasferimentoModel()
+                    {
+                        idTrasferimento = trb.IDTRASFERIMENTO,
+                        idTipoTrasferimento = trb.IDTIPOTRASFERIMENTO,
+                        idUfficio = trb.IDUFFICIO,
+                        idStatoTrasferimento = (EnumStatoTraferimento)trb.IDSTATOTRASFERIMENTO,
+                        idDipendente = trb.IDDIPENDENTE,
+                        idTipoCoan = trb.IDTIPOCOAN,
+                        dataPartenza = trb.DATAPARTENZA,
+                        dataRientro = trb.DATARIENTRO,
+                        coan = trb.COAN,
+                        protocolloLettera = trb.PROTOCOLLOLETTERA,
+                        dataLettera = trb.DATALETTERA,
+                        notificaTrasferimento = trb.NOTIFICATRASFERIMENTO,
+                        dataAggiornamento = trb.DATAAGGIORNAMENTO,
+                    };
+
+                }
+
+                return trm;
             }
         }
 

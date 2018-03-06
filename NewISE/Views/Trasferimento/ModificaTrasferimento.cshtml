@@ -19,7 +19,7 @@
 
     decimal idRuoloDipendente = Convert.ToDecimal(ViewBag.idRuoloDipendente);
 
-    if (Model.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+    if (Model.idStatoTrasferimento == EnumStatoTraferimento.Terminato || Model.idStatoTrasferimento == EnumStatoTraferimento.Terminato || Model.idStatoTrasferimento == EnumStatoTraferimento.Annullato)
     {
         abilitaNuovoTrasferimento = true;
         abilitaSalva = false;
@@ -283,7 +283,7 @@
     @if (ricaricaTrasferimenti)
     {
          @:ElencoTrasferimento();
-                                                                            }
+                                                                                                        }
 
 
 
@@ -344,7 +344,7 @@
                 Sblocca();
             },
             error: function (error) {
-                debugger;
+                //debugger;
                 Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);

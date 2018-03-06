@@ -17,19 +17,54 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-        
-        
-        public List<RichiamoModel> GetLista_Richiamo(decimal idtrasferimento)
+
+
+
+        public RichiamoModel GetRichiamoByIdTrasf(decimal idTrasferimento)
+        {
+            RichiamoModel rm = new RichiamoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                TRASFERIMENTO t = db.TRASFERIMENTO.Find(idTrasferimento);
+                var lr = t.RICHIAMO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDRICHIAMO);
+
+                if (lr?.Any() ?? false)
+                {
+                    var r = lr.First();
+
+                    rm = new RichiamoModel()
+                    {
+                        IdRichiamo = r.IDRICHIAMO,
+                        idTrasferimento = r.IDTRASFERIMENTO,
+                        DataRientro = r.DATARIENTRO,
+                        DataAggiornamento = r.DATAAGGIORNAMENTO,
+                        annullato = r.ANNULLATO
+                    };
+                }
+            }
+
+            return rm;
+        }
+
+        public List<RichiamoModel> GetLista_Richiamo(decimal idTrasferimento)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                TRASFERIMENTO trasf = db.TRASFERIMENTO.Find(idtrasferimento);
-                var tmp = (from e in trasf.RICHIAMO
-                           
+                TRASFERIMENTO trasf = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var lr = trasf.RICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDRICHIAMO);
+
+
+                var tmp = (from e in lr
+
                            select new RichiamoModel()
                            {
-                            //IDTRASFRICHIAMO = e.IDTRASFRICHIAMO,
-                            //DATAOPERAZIONE = e.DATAOPERAZIONE
+                               IdRichiamo = e.IDRICHIAMO,
+                               idTrasferimento = e.IDTRASFERIMENTO,
+                               DataRientro = e.DATARIENTRO,
+                               DataAggiornamento = e.DATAAGGIORNAMENTO,
+                               annullato = e.ANNULLATO
                            }).ToList();
                 return tmp;
             }
@@ -76,67 +111,67 @@ namespace NewISE.Models.DBModel.dtObj
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo richiamo.", "Richiamo", db, ric.idTrasferimento, ri.IDTRASFERIMENTO);
             }
-            
-        }
-
-
-        public void EditTrasferimento(TrasferimentoModel trm)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
-
-                if (tr != null && tr.IDTRASFERIMENTO > 0)
-                {
-                    tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento;
-                    tr.IDUFFICIO = trm.idUfficio;
-                    tr.IDSTATOTRASFERIMENTO = (decimal)trm.idStatoTrasferimento;
-                    tr.IDDIPENDENTE = trm.idDipendente;
-                    tr.IDTIPOCOAN = trm.idTipoCoan;
-                    tr.DATAPARTENZA = trm.dataPartenza;
-                    tr.DATARIENTRO = trm.dataRientro;
-                    tr.COAN = trm.coan.ToUpper();
-                    tr.PROTOCOLLOLETTERA = trm.protocolloLettera.ToUpper();
-                    tr.DATALETTERA = trm.dataLettera;
-                    tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
-
-                    if (db.SaveChanges() > 0)
-                    {
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
-                    }
-
-
-                }
-            }
 
         }
 
-        public void EditTrasferimento(TrasferimentoModel trm, ModelDBISE db)
-        {
-            TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
 
-            if (tr != null && tr.IDTRASFERIMENTO > 0)
-            {
-                tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento > 0 ? trm.idTipoTrasferimento : tr.IDTIPOTRASFERIMENTO;
-                tr.IDUFFICIO = trm.idUfficio > 0 ? trm.idUfficio : tr.IDUFFICIO;
-                tr.IDSTATOTRASFERIMENTO = Convert.ToDecimal(trm.idStatoTrasferimento) > 0 ? (decimal)trm.idStatoTrasferimento : tr.IDSTATOTRASFERIMENTO;
-                tr.IDDIPENDENTE = trm.idDipendente > 0 ? trm.idDipendente : tr.IDDIPENDENTE;
-                tr.IDTIPOCOAN = trm.idTipoCoan > 0 ? trm.idTipoCoan : tr.IDTIPOCOAN;
-                tr.DATAPARTENZA = trm.dataPartenza > DateTime.MinValue ? trm.dataPartenza : tr.DATAPARTENZA;
-                tr.DATARIENTRO = trm.dataRientro ?? tr.DATARIENTRO;
-                tr.COAN = trm.coan ?? tr.COAN;
-                tr.PROTOCOLLOLETTERA = trm.protocolloLettera ?? tr.PROTOCOLLOLETTERA;
-                tr.DATALETTERA = trm.dataLettera ?? tr.DATALETTERA;
-                tr.DATAAGGIORNAMENTO = trm.dataAggiornamento > DateTime.MinValue ? trm.dataAggiornamento : tr.DATAAGGIORNAMENTO;
+        ////public void EditTrasferimento(TrasferimentoModel trm)
+        ////{
+        ////    using (ModelDBISE db = new ModelDBISE())
+        ////    {
+        ////        TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+
+        ////        if (tr != null && tr.IDTRASFERIMENTO > 0)
+        ////        {
+        ////            tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento;
+        ////            tr.IDUFFICIO = trm.idUfficio;
+        ////            tr.IDSTATOTRASFERIMENTO = (decimal)trm.idStatoTrasferimento;
+        ////            tr.IDDIPENDENTE = trm.idDipendente;
+        ////            tr.IDTIPOCOAN = trm.idTipoCoan;
+        ////            tr.DATAPARTENZA = trm.dataPartenza;
+        ////            tr.DATARIENTRO = trm.dataRientro;
+        ////            tr.COAN = trm.coan.ToUpper();
+        ////            tr.PROTOCOLLOLETTERA = trm.protocolloLettera.ToUpper();
+        ////            tr.DATALETTERA = trm.dataLettera;
+        ////            tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
+
+        ////            if (db.SaveChanges() > 0)
+        ////            {
+        ////                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+        ////            }
 
 
-                if (db.SaveChanges() > 0)
-                {
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
-                }
+        ////        }
+        ////    }
 
-            }
-        }
+        ////}
+
+        //public void EditTrasferimento(TrasferimentoModel trm, ModelDBISE db)
+        //{
+        //    TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+
+        //    if (tr != null && tr.IDTRASFERIMENTO > 0)
+        //    {
+        //        tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento > 0 ? trm.idTipoTrasferimento : tr.IDTIPOTRASFERIMENTO;
+        //        tr.IDUFFICIO = trm.idUfficio > 0 ? trm.idUfficio : tr.IDUFFICIO;
+        //        tr.IDSTATOTRASFERIMENTO = Convert.ToDecimal(trm.idStatoTrasferimento) > 0 ? (decimal)trm.idStatoTrasferimento : tr.IDSTATOTRASFERIMENTO;
+        //        tr.IDDIPENDENTE = trm.idDipendente > 0 ? trm.idDipendente : tr.IDDIPENDENTE;
+        //        tr.IDTIPOCOAN = trm.idTipoCoan > 0 ? trm.idTipoCoan : tr.IDTIPOCOAN;
+        //        tr.DATAPARTENZA = trm.dataPartenza > DateTime.MinValue ? trm.dataPartenza : tr.DATAPARTENZA;
+        //        tr.DATARIENTRO = trm.dataRientro ?? tr.DATARIENTRO;
+        //        tr.COAN = trm.coan ?? tr.COAN;
+        //        tr.PROTOCOLLOLETTERA = trm.protocolloLettera ?? tr.PROTOCOLLOLETTERA;
+        //        tr.DATALETTERA = trm.dataLettera ?? tr.DATALETTERA;
+        //        tr.DATAAGGIORNAMENTO = trm.dataAggiornamento > DateTime.MinValue ? trm.dataAggiornamento : tr.DATAAGGIORNAMENTO;
+
+
+        //        if (db.SaveChanges() > 0)
+        //        {
+        //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+        //        }
+
+        //    }
+        //}
 
 
 

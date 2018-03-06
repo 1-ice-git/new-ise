@@ -242,18 +242,15 @@
         <AssociationConnector Association="DBISEPRO.T_RC" />
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         <AssociationConnector Association="DBISEPRO.TVR_DOC" />
-        <EntityTypeShape EntityType="DBISEPRO.RINUNCIA_TE" Width="1.5" PointX="20.75" PointY="63.75" />
         <EntityTypeShape EntityType="DBISEPRO.RINUNCIAANTICIPI" Width="1.5" PointX="20.75" PointY="67" />
         <AssociationConnector Association="DBISEPRO.R_PS_RA" />
         <AssociationConnector Association="DBISEPRO.RIN_ATTANT" />
-        <AssociationConnector Association="DBISEPRO.RTE_ATEP" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEFKM" Width="1.5" PointX="11" PointY="32.625" />
         <EntityTypeShape EntityType="DBISEPRO.TEPARTENZA" Width="1.5" PointX="16.25" PointY="54.25" />
         <EntityTypeShape EntityType="DBISEPRO.TERIENTRO" Width="1.5" PointX="19.25" PointY="54.375" />
         <AssociationConnector Association="DBISEPRO.R_TEP_ATEP" />
         <AssociationConnector Association="DBISEPRO.R_TER_ATER" />
         <AssociationConnector Association="DBISEPRO.R_DFK_CFK" />
-        <AssociationConnector Association="DBISEPRO.R_TEP_RTE" />
         <AssociationConnector Association="DBISEPRO.R_T_TEP" />
         <AssociationConnector Association="DBISEPRO.R_T_TER" />
         <AssociationConnector Association="DBISEPRO.PS_PFKM" />
@@ -261,6 +258,12 @@
         <AssociationConnector Association="DBISEPRO.R_TATE_PATE" />
         <AssociationConnector Association="DBISEPRO.TEP_PATE" />
         <AssociationConnector Association="DBISEPRO.TER_PATE" />
+        <EntityTypeShape EntityType="DBISEPRO.RINUNCIA_TE_P" Width="1.5" PointX="20.75" PointY="57.25" />
+        <EntityTypeShape EntityType="DBISEPRO.RINUNCIA_TE_R" Width="1.5" PointX="23.5" PointY="57.25" />
+        <AssociationConnector Association="DBISEPRO.R_TEP_RTE" />
+        <AssociationConnector Association="DBISEPRO.R_TER_RTER" />
+        <AssociationConnector Association="DBISEPRO.RTE_ATEP" />
+        <AssociationConnector Association="DBISEPRO.TER_RTER" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,10 +12,10 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class RINUNCIA_TE
+    public partial class RINUNCIA_TE_P
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RINUNCIA_TE()
+        public RINUNCIA_TE_P()
         {
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
         }
@@ -26,8 +26,8 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
+        public virtual TEPARTENZA TEPARTENZA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
-        public virtual TEPARTENZA TEPARTENZA { get; set; }
     }
 }

@@ -143,7 +143,7 @@ namespace NewISE.Controllers
             bool richiestaMAB = false;
             bool attivazioneMAB = false;
             bool solaLettura = false;
-            bool amministratore = false;           
+            bool amministratore = false;
 
             try
             {
@@ -167,7 +167,7 @@ namespace NewISE.Controllers
                 Json(
                     new
                     {
-                        admin=amministratore,
+                        admin = amministratore,
                         err = errore,
                         richiestaMF = richiestaMF,
                         attivazioneMF = attivazioneMF,
@@ -282,14 +282,94 @@ namespace NewISE.Controllers
                     {
                         if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                         {
-                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
-                            ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+                            using (dtRichiamo dtr = new dtRichiamo())
+                            {
+                                var rm = dtr.GetRichiamoByIdTrasf(tOld.idTrasferimento);
 
+                                if (rm?.HasValue() ?? false)
+                                {
+                                    ViewBag.ListTipoTrasferimento =
+                                        lTipoTrasferimento.Where(
+                                            a =>
+                                                a.Value == "" ||
+                                                a.Value ==
+                                                Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+
+                                    ViewBag.ListUfficio = lUffici;
+                                }
+                                else
+                                {
+                                    ViewBag.ListTipoTrasferimento =
+                                        lTipoTrasferimento.Where(
+                                            a =>
+                                                a.Value == "" ||
+                                                a.Value ==
+                                                Convert.ToDecimal(EnumTipoTrasferimento.EsteroEstero).ToString() ||
+                                                a.Value ==
+                                                Convert.ToDecimal(EnumTipoTrasferimento.EsteroEsteroStessaRegiona)
+                                                    .ToString());
+
+                                    ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+                                }
+
+                            }
                         }
                         else if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
                         {
-                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.EsteroEstero).ToString() || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.EsteroEsteroStessaRegiona).ToString());
+                            ViewBag.ListTipoTrasferimento =
+                                lTipoTrasferimento.Where(
+                                    a =>
+                                        a.Value == "" ||
+                                        a.Value == Convert.ToDecimal(EnumTipoTrasferimento.EsteroEstero).ToString() ||
+                                        a.Value ==
+                                        Convert.ToDecimal(EnumTipoTrasferimento.EsteroEsteroStessaRegiona).ToString());
+
                             ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+                        }
+                        else if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Annullato)
+                        {
+
+                            var tOld_Old = dtt.GetTrasferimentoOldPrimaDiTrasfAnnullato(tOld.idTrasferimento);
+
+                            if (tOld_Old?.HasValue() ?? false)
+                            {
+                                using (dtRichiamo dtr = new dtRichiamo())
+                                {
+                                    var rm = dtr.GetRichiamoByIdTrasf(tOld_Old.idTrasferimento);
+
+                                    if (rm?.HasValue() ?? false)
+                                    {
+                                        ViewBag.ListTipoTrasferimento =
+                                        lTipoTrasferimento.Where(
+                                            a =>
+                                                a.Value == "" ||
+                                                a.Value ==
+                                                Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+
+                                        ViewBag.ListUfficio = lUffici;
+                                    }
+                                    else
+                                    {
+                                        ViewBag.ListTipoTrasferimento =
+                                            lTipoTrasferimento.Where(
+                                                a =>
+                                                    a.Value == "" ||
+                                                    a.Value ==
+                                                    Convert.ToDecimal(EnumTipoTrasferimento.EsteroEstero).ToString() ||
+                                                    a.Value ==
+                                                    Convert.ToDecimal(EnumTipoTrasferimento.EsteroEsteroStessaRegiona)
+                                                        .ToString());
+
+                                        ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld_Old.idUfficio.ToString());
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                                ViewBag.ListUfficio = lUffici;
+                            }
+
                         }
                         else
                         {
@@ -412,7 +492,7 @@ namespace NewISE.Controllers
 
                     trasferimentoSuccessivo = dtt.EsisteTrasferimentoSuccessivo(idTrasferimento);
 
-                    if (tm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || tm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                    if (tm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || tm.idStatoTrasferimento == EnumStatoTraferimento.Terminato || tm.idStatoTrasferimento == EnumStatoTraferimento.Annullato)
                     {
                         abilitaNuovoTrasferimento = true;
                         abilitaSalva = false;

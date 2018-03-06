@@ -119,11 +119,12 @@ namespace NewISE.EF
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
-        public virtual DbSet<RINUNCIA_TE> RINUNCIA_TE { get; set; }
         public virtual DbSet<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
         public virtual DbSet<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
         public virtual DbSet<TEPARTENZA> TEPARTENZA { get; set; }
         public virtual DbSet<TERIENTRO> TERIENTRO { get; set; }
         public virtual DbSet<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
+        public virtual DbSet<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
+        public virtual DbSet<RINUNCIA_TE_R> RINUNCIA_TE_R { get; set; }
     }
 }
