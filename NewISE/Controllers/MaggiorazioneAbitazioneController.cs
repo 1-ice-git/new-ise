@@ -60,8 +60,8 @@ namespace NewISE.Controllers
 
                         if (mam != null && mam.idMAB > 0)
                         {
-                            mavm.idAttivazioneMAB= mam.idAttivazioneMAB;
-                            mavm.idMAB= mam.idMAB;
+                            mavm.idAttivazioneMAB = mam.idAttivazioneMAB;
+                            mavm.idMAB = mam.idMAB;
 
                             CANONEMAB cm = dtma.GetCanoneMAB(mam);
 
@@ -99,7 +99,7 @@ namespace NewISE.Controllers
                         {
                             var t = dtt.GetTrasferimentoById(idTrasferimento);
                             statoTrasferimento = t.idStatoTrasferimento;
-                            if(statoTrasferimento==EnumStatoTraferimento.Attivo || statoTrasferimento==EnumStatoTraferimento.Annullato)
+                            if (statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
                             {
                                 soloLettura = true;
                             }
@@ -255,7 +255,7 @@ namespace NewISE.Controllers
                     num_attivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
                     mam = dtma.GetMaggiorazioneAbitazione(amm);
                     var ldocModulo1 = dtma.GetDocumentiMABbyTipoDoc(amm.idAttivazioneMAB, (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione);
-                    if (ldocModulo1.Count>0)
+                    if (ldocModulo1.Count > 0)
                     {
                         esisteMod1 = true;
                     }
@@ -284,7 +284,7 @@ namespace NewISE.Controllers
 
                         if (num_attivazioni == 0)
                         {
-                            if (notificaRichiesta && attivaRichiesta == false && esisteMod1 && statoTrasferimento!=EnumStatoTraferimento.Attivo && statoTrasferimento!=EnumStatoTraferimento.Annullato)
+                            if (notificaRichiesta && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledAttivaRichiesta = "";
                                 disabledAnnullaRichiesta = "";
@@ -304,6 +304,14 @@ namespace NewISE.Controllers
                                 disabledNotificaRichiesta = "";
                             }
                         }
+                    }
+                }
+                else
+                {
+                    if (amministratore)
+                    {
+                        hiddenAttivaRichiesta = "";
+                        hiddenAnnullaRichiesta = "";
                     }
                 }
 
