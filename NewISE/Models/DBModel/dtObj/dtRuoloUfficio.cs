@@ -124,6 +124,49 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public IList<RuoloUfficioModel> GetListRuoloUfficioByLivello(decimal idLivello)
+        {
+            List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
+            
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var livello = db.LIVELLI.Find(idLivello);
+                var descLivello = livello.LIVELLO;
+
+                if (descLivello.IndexOf("I") > -1 || descLivello.IndexOf("II")>-1)
+                {
+                    lru = (from e in db.RUOLOUFFICIO
+                        select new RuoloUfficioModel()
+                        {
+                            idRuoloUfficio = e.IDRUOLO,
+                            DescrizioneRuolo = e.DESCRUOLO
+                        }).Where(a => a.idRuoloUfficio == (decimal)EnumRuoloUfficio.Assistente).ToList();
+                }
+
+                if (descLivello.IndexOf("III") > -1)
+                {
+                    lru = (from e in db.RUOLOUFFICIO
+                           select new RuoloUfficioModel()
+                           {
+                               idRuoloUfficio = e.IDRUOLO,
+                               DescrizioneRuolo = e.DESCRUOLO
+                           }).Where(a => a.idRuoloUfficio == (decimal)EnumRuoloUfficio.Responsabile || a.idRuoloUfficio == (decimal)EnumRuoloUfficio.Collaboratore).ToList();
+                }
+                if (descLivello.IndexOf("D") > -1)
+                {
+                    lru = (from e in db.RUOLOUFFICIO
+                           select new RuoloUfficioModel()
+                           {
+                               idRuoloUfficio = e.IDRUOLO,
+                               DescrizioneRuolo = e.DESCRUOLO
+                           }).Where(a => a.idRuoloUfficio == (decimal)EnumRuoloUfficio.Dirigente).ToList();
+                }
+
+            }
+
+            return lru;
+
+        }
 
 
 
