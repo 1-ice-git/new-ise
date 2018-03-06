@@ -2931,7 +2931,10 @@
     <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\RINUNCIA_TE.cs">
+    <Compile Include="EF\RINUNCIA_TE_P.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RINUNCIA_TE_R.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RUOLOACCESSO.cs">

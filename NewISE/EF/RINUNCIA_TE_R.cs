@@ -12,24 +12,22 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TERIENTRO
+    public partial class RINUNCIA_TE_R
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TERIENTRO()
+        public RINUNCIA_TE_R()
         {
             this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
-            this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
-            this.RINUNCIA_TE_R = new HashSet<RINUNCIA_TE_R>();
         }
     
+        public decimal IDRINUNCIATE { get; set; }
         public decimal IDTERIENTRO { get; set; }
+        public bool RINUNCIATE { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public bool ANNULLATO { get; set; }
     
+        public virtual TERIENTRO TERIENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RINUNCIA_TE_R> RINUNCIA_TE_R { get; set; }
     }
 }

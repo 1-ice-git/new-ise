@@ -18,7 +18,7 @@ namespace NewISE.EF
         public ATTIVITATEPARTENZA()
         {
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
-            this.RINUNCIA_TE = new HashSet<RINUNCIA_TE>();
+            this.RINUNCIA_TE_P = new HashSet<RINUNCIA_TE_P>();
         }
     
         public decimal IDATEPARTENZA { get; set; }
@@ -34,8 +34,8 @@ namespace NewISE.EF
         public virtual ANTICIPOSALDOTE ANTICIPOSALDOTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RINUNCIA_TE> RINUNCIA_TE { get; set; }
         public virtual TEPARTENZA TEPARTENZA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
     }
 }
