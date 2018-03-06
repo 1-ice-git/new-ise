@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaMaggiorazioniFamiliari {
             get {
@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, è stata annullata.&lt;/p&gt;
+        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;strong&gt;{0}&lt;/strong&gt; del giorno {1}, è stata annullata.&lt;/p&gt;
         ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;
         ///&lt;hr /&gt;
         ///&lt;p&gt;&amp;nbsp;&lt;/p&gt;.

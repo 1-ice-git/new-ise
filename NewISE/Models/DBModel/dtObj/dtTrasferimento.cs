@@ -2033,7 +2033,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             msgMail.oggetto =
                             Resources.msgEmail.OggettoAnnullamentoTrasferimento;
-                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoTrasferimento, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", t.DATAPARTENZA.ToLongDateString());
+                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoTrasferimento, dip.NOME + " " + dip.COGNOME, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")");
 
                             gmail.sendMail(msgMail);
                         }
