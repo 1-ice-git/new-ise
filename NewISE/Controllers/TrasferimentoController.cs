@@ -129,25 +129,25 @@ namespace NewISE.Controllers
             using (dtLivelliDipendente dtpl = new dtLivelliDipendente())
             {
                 dm.livelloDipendenteValido = dtpl.GetLivelloDipendente(dm.idDipendente, DateTime.Now.Date);
-            
+
                 var r = new List<SelectListItem>();
 
                 using (dtRuoloUfficio dtru = new dtRuoloUfficio())
                 {
                     var lru = dtru.GetListRuoloUfficioByLivello(dm.livelloDipendenteValido.idLivello).OrderBy(a => a.DescrizioneRuolo).ToList();
-    
+
                     if (lru != null && lru.Count > 0)
                     {
                         r = (from t in lru
-                            select new SelectListItem()
-                            {
-                                Text = t.DescrizioneRuolo,
-                                Value = t.idRuoloUfficio.ToString()
-                            }).ToList();
-    
+                             select new SelectListItem()
+                             {
+                                 Text = t.DescrizioneRuolo,
+                                 Value = t.idRuoloUfficio.ToString()
+                             }).ToList();
+
                         r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                     }
-    
+
                     lRuoloUfficio = r;
                 }
             }
@@ -291,9 +291,13 @@ namespace NewISE.Controllers
                     var d = dtd.GetDipendenteByIDTrasf(idTrasfOld);
                     ViewBag.Dipendente = d;
                     matricola = d.matricola;
+
+                    ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
+
+                    FiltraRuoloUfficio(out lRuoloUfficio, d);
                 }
 
-                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
+
 
                 ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                 ViewBag.ListUfficio = lUffici;
@@ -442,7 +446,7 @@ namespace NewISE.Controllers
                     var d = dtd.GetDipendenteByMatricola(matricola);
                     ViewBag.Dipendente = d;
                     matricola = d.matricola;
-               
+
                     ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
 
                     FiltraRuoloUfficio(out lRuoloUfficio, d);

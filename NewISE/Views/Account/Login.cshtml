@@ -35,7 +35,7 @@
                     <button>login</button>
 
                     <div style="margin-top: 5px;">
-                        <label>Ricordati di me</label> <input id="ricordati" name="ricordati" type="checkbox" value="@Model.ricordati" />
+                        <label>Ricordati di me</label>@Html.EditorFor(model => model.ricordati)
                     </div>
 
                     <p class="message">Dimenticata la password? <a onclick="Blocca();" href="/account/InviamiPassword">Inviami la password</a></p>

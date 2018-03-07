@@ -81,10 +81,14 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var tOld = db.TRASFERIMENTO.Find(idTrasfOld);
 
-                if (tOld.DATAPARTENZA >= dtTrasfNew)
+                if (tOld.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
                 {
-                    ret = true;
+                    if (tOld.DATAPARTENZA >= dtTrasfNew)
+                    {
+                        ret = true;
+                    }
                 }
+
 
             }
 
@@ -169,11 +173,19 @@ namespace NewISE.Models.DBModel.dtObj
         public bool EsisteTrasferimentoSuccessivo(decimal idTrasferimento)
         {
             bool ret = false;
+            List<TRASFERIMENTO> ts = new List<TRASFERIMENTO>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                var ts = db.TRASFERIMENTO.Where(a => a.DATAPARTENZA > t.DATARIENTRO);
+                if (t.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
+                {
+                    ts = db.TRASFERIMENTO.Where(a => a.DATAPARTENZA > t.DATARIENTRO && a.IDDIPENDENTE == t.IDDIPENDENTE).ToList();
+                }
+                else
+                {
+                    ts = db.TRASFERIMENTO.Where(a => a.IDTRASFERIMENTO > t.IDTRASFERIMENTO && a.IDDIPENDENTE == t.IDDIPENDENTE).ToList();
+                }
 
                 if (ts?.Any() ?? false)
                 {
@@ -1155,18 +1167,22 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimentoOld);
 
-                if (!t.DATARIENTRO.HasValue)
+
+                if (t.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
                 {
-                    t.DATARIENTRO = dataPartenzaNewTrasf.AddDays(-1);
-
-                    int i = db.SaveChanges();
-                    if (i <= 0)
+                    if (!t.DATARIENTRO.HasValue)
                     {
-                        throw new Exception("Impossibile terminare il trasferimento.");
+                        t.DATARIENTRO = dataPartenzaNewTrasf.AddDays(-1);
+
+                        int i = db.SaveChanges();
+                        if (i <= 0)
+                        {
+                            throw new Exception("Impossibile terminare il trasferimento.");
+                        }
+
+                        this.SetStatoTrasferimento(idTrasferimentoOld, EnumStatoTraferimento.Terminato, db);
+
                     }
-
-                    this.SetStatoTrasferimento(idTrasferimentoOld, EnumStatoTraferimento.Terminato, db);
-
                 }
 
             }
