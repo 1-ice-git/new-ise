@@ -147,10 +147,9 @@ namespace NewISE.Controllers
                                                     DefaultAuthenticationTypes.ApplicationCookie,
                                                     ClaimTypes.NameIdentifier, ClaimTypes.Role);
 
-                                                Authentication.SignIn(new AuthenticationProperties
-                                                {
-                                                    IsPersistent = account.ricordati
-                                                }, identity);
+                                                var properties = new AuthenticationProperties { IsPersistent = account.ricordati };
+
+                                                Authentication.SignIn(properties, identity);
 
                                                 using (objAccesso accesso = new objAccesso())
                                                 {
