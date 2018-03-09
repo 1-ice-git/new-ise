@@ -861,7 +861,7 @@ namespace NewISE.Models.DBModel.dtObj
             var f = db.FIGLI.Find(idFiglio);
             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-            if (f.IDFIGLI != null && f.IDFIGLI > 0)
+            if (f.IDFIGLI > 0)
             {
                 MemoryStream ms = new MemoryStream();
                 DOCUMENTI d = new DOCUMENTI();
