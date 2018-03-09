@@ -4,8 +4,6 @@ using Microsoft.Owin;
 using Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using Microsoft.AspNet.Identity.Owin;
 
 [assembly: OwinStartup(typeof(NewISE.App_Start.Startup))]
 
@@ -26,11 +24,8 @@ namespace NewISE.App_Start
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationMode = AuthenticationMode.Active,
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                //ExpireTimeSpan = TimeSpan.FromMinutes(30),
                 LoginPath = new PathString("/Account/Login")
-
             });
 
             // Use a cookie to temporarily store information about a user logging in with a third party login provider

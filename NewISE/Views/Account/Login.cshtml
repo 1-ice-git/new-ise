@@ -34,9 +34,9 @@
                     @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                     <button>login</button>
 
-                    @*<div style="margin-top: 5px;">
-                            <label>Ricordati di me</label>@Html.EditorFor(model => model.ricordati)
-                        </div>*@
+                    <div style="margin-top: 5px;">
+                        <label>Ricordati di me</label>@Html.EditorFor(model => model.ricordati)
+                    </div>
 
                     <p class="message">Dimenticata la password? <a onclick="Blocca();" href="/account/InviamiPassword">Inviami la password</a></p>
                 </form>
