@@ -27,28 +27,37 @@ namespace NewISE.Models.DBModel.dtObj
 
         public ATTIVITAANTICIPI CreaAttivitaAnticipi(decimal idPrimaSistemazione, ModelDBISE db)
         {
-            ATTIVITAANTICIPI new_aa = new ATTIVITAANTICIPI()
+            try
             {
-                IDPRIMASISTEMAZIONE = idPrimaSistemazione,
-                NOTIFICARICHIESTA = false,
-                DATAATTIVARICHIESTA = null,
-                ATTIVARICHIESTA = false,
-                DATANOTIFICARICHIESTA = null,
-                ANNULLATO = false,
-                DATAAGGIORNAMENTO = DateTime.Now,
-            };
-            db.ATTIVITAANTICIPI.Add(new_aa);
+                ATTIVITAANTICIPI new_aa = new ATTIVITAANTICIPI()
+                {
+                    IDPRIMASISTEMAZIONE = idPrimaSistemazione,
+                    NOTIFICARICHIESTA = false,
+                    DATAATTIVARICHIESTA = null,
+                    ATTIVARICHIESTA = false,
+                    DATANOTIFICARICHIESTA = null,
+                    ANNULLATO = false,
+                    DATAAGGIORNAMENTO = DateTime.Now,
+                };
+                db.ATTIVITAANTICIPI.Add(new_aa);
 
-            if (db.SaveChanges() <= 0)
-            {
-                throw new Exception(string.Format("Non è stato possibile creare una nuova attivazione per gli anticipi."));
-            }
-            else
-            {
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione anticipi.", "ATTIVITAANTICIPI", db, new_aa.IDPRIMASISTEMAZIONE, new_aa.IDATTIVITAANTICIPI);
-            }
+                if (db.SaveChanges() <= 0)
+                {
+                    throw new Exception(string.Format("Non è stato possibile creare una nuova attivazione per gli anticipi."));
+                }
+                else
+                {
+                    var ra = this.CreaRinunciaAnticipi(new_aa.IDATTIVITAANTICIPI, db);
 
-            return new_aa;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione anticipi.", "ATTIVITAANTICIPI", db, new_aa.IDPRIMASISTEMAZIONE, new_aa.IDATTIVITAANTICIPI);
+                }
+
+                return new_aa;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
@@ -700,7 +709,34 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public RINUNCIAANTICIPI CreaRinunciaAnticipi(decimal idAttivitaAnticipi, ModelDBISE db)
+        {
+            try
+            {
+                RINUNCIAANTICIPI new_ra = new RINUNCIAANTICIPI()
+                {
+                    IDATTIVITAANTICIPI = idAttivitaAnticipi,
+                    RINUNCIAANTICIPI1 = false,
+                    DATAAGGIORNAMENTO = DateTime.Now,
+                };
+                db.RINUNCIAANTICIPI.Add(new_ra);
 
+                if (db.SaveChanges() <= 0)
+                {
+                    throw new Exception(string.Format("Non è stato possibile creare una nuova rinuncia anticipi."));
+                }
+                else
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova rinuncia anticipi.", "RINUNCIAANTICIPI", db, new_ra.ATTIVITAANTICIPI.IDPRIMASISTEMAZIONE, new_ra.IDATTIVITAANTICIPI);
+                }
+
+                return new_ra;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
 }

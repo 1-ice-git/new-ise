@@ -34,7 +34,7 @@ namespace NewISE.Models.DBModel.dtObj
             return psm;
         }
 
-        public PrimaSistemazioneModel GetPrimaSistemazioneBtIdTrasf(decimal idTrasferimento)
+        public PrimaSistemazioneModel GetPrimaSistemazioneByIdTrasf(decimal idTrasferimento)
         {
             PrimaSistemazioneModel psm = new PrimaSistemazioneModel();
 

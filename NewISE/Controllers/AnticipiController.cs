@@ -23,7 +23,7 @@ namespace NewISE.Controllers
             {
                 using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
                 {
-                    psm = dtps.GetPrimaSistemazioneBtIdTrasf(idTrasferimento);
+                    psm = dtps.GetPrimaSistemazioneByIdTrasf(idTrasferimento);
                 }
 
             }
