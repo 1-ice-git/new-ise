@@ -2440,9 +2440,6 @@
     <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
-    <Compile Include="EF\RINUNCIAANTICIPI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\DBModel\dtObj\dtParPercAnticipoTE.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffIndRichiamo.cs" />
@@ -2939,12 +2936,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RINUNCIA_TE_P.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RINUNCIA_TE_R.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RUOLOACCESSO.cs">
