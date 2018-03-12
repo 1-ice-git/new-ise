@@ -12,6 +12,7 @@ using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
+using NewISE.Interfacce;
 
 namespace NewISE.Controllers
 {
@@ -477,7 +478,9 @@ namespace NewISE.Controllers
                     });
         }
 
-        public JsonResult ConfermaAnnullaRichiestaMAB(decimal idAttivazioneMAB)
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult ConfermaAnnullaRichiestaMAB(decimal idAttivazioneMAB, string msg)
         {
             string errore = "";
 
@@ -485,7 +488,7 @@ namespace NewISE.Controllers
             {
                 using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                 {
-                    dtma.AnnullaRichiestaMAB(idAttivazioneMAB);
+                    dtma.AnnullaRichiestaMAB(idAttivazioneMAB, msg);
                 }
             }
             catch (Exception ex)
@@ -886,6 +889,37 @@ namespace NewISE.Controllers
             return RedirectToAction("GestioneMAB", new { idTrasferimento = idTrasferimento });
         }
 
+        public ActionResult MessaggioAnnullaMAB(decimal idTrasferimento)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtUffici dtu = new dtUffici())
+                        {
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
+
+                            if (t?.idTrasferimento > 0)
+                            {
+                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioneAbitazione, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
+        }
 
 
     }

@@ -6,18 +6,21 @@
     bool admin = Utility.Amministratore();
 }
 
+@Html.Hidden("HidAttivazionePassaporto", Model.idAttivazionePassaporto)
+
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
 
         @*    <div class="col-xs-7 col-xs-offset-5" style="margin-top: 10px; margin-bottom: 10px;">*@
 
-        @if (Model.praticaConclusa == false && Model.statoTrasferimento!=EnumStatoTraferimento.Attivo && Model.statoTrasferimento != EnumStatoTraferimento.Annullato)
+        @if (Model.praticaConclusa == false && Model.statoTrasferimento != EnumStatoTraferimento.Attivo && Model.statoTrasferimento != EnumStatoTraferimento.Annullato)
         {
             if (Model.notificaRichiesta == false)
             {
                 if (Model.richiedenteIncluso || Model.coniugeIncluso || Model.figliIncluso)
                 {
-                    <button class="btn btn-default btn-sm " id="btNotificaRichiestaPassaporti" onclick="NotificaRichiestaPassaporto(@Model.idAttivazionePassaporto); ">
+                    @*<button class="btn btn-default btn-sm " id="btNotificaRichiestaPassaporti" onclick="NotificaRichiestaPassaporto(@Model.idAttivazionePassaporto); ">*@
+                    <button class="btn btn-default btn-sm " id="btNotificaRichiestaPassaporti" onclick="ModalNotificaRichiestaPassaporti(); ">
                         <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                         Notifica richiesta
                     </button>
@@ -52,13 +55,14 @@
                 </button>
                 if (admin)
                 {
-                    <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ConcludiRichiestaPassaporto(@Model.idAttivazionePassaporto);">
+                    <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ModalAttivaRichiestaPassaporti();">
                         <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                         Attiva richiesta
                     </button>
-
-                    <button class="btn btn-default btn-sm " id="btAnnullaRichiestaPassaporto" onclick="AnnullaRichiestaPassaporto(@Model.idAttivazionePassaporto);">
-                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                                
+                    //< button class="btn btn-default btn-sm " id="btAnnullaRichiestaPassaporto" onclick="AnnullaRichiestaPassaporto(@Model.idAttivazionePassaporto);">
+                    <button class="btn btn-default btn-sm " id="btAnnullaRichiestaPassaporto" onclick="ModalAnnullaRichiestaPassaporti(@Model.idAttivazionePassaporto);">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                         Annulla richiesta
                     </button>
                 }
@@ -87,3 +91,27 @@
             }
     </div>
 </div>
+
+
+
+<script type="text/javascript">
+
+    function ModalAnnullaRichiestaPassaporti(idAttivazionePassaporto) {
+        //debugger;
+        MessaggioAnnullaRichiestaPassaporto(idAttivazionePassaporto);
+        $('#ModalAnnullaRichiestaPassaporti').modal().show();
+    }
+
+
+    function ModalNotificaRichiestaPassaporti() {
+        //debugger;
+        $('#ModalNotificaRichiestaPassaporti').modal().show();
+    }
+
+
+    function ModalAttivaRichiestaPassaporti() {
+        //debugger;
+        $('#ModalAttivaRichiestaPassaporti').modal().show();
+    }
+
+</script>

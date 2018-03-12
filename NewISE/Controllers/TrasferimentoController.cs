@@ -13,6 +13,8 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Resources;
+using NewISE.Models.ViewModel;
+using System.Web.Helpers;
 
 namespace NewISE.Controllers
 {
@@ -1845,6 +1847,12 @@ namespace NewISE.Controllers
 
         public ActionResult GestioneTrasferimento(decimal idTrasferimento)
         {
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                var msgmail = dtt.GetMessaggioAnnullaTrasf(idTrasferimento);
+                var msg = msgmail.corpoMsg;
+                ViewBag.msgAnnulla = msg;
+            }
 
             ViewBag.idTrasferimento = idTrasferimento;
 
@@ -2072,16 +2080,20 @@ namespace NewISE.Controllers
                         err = errore
                     });
         }
-
-        public JsonResult ConfermaAnnullaTrasf(decimal idTrasferimento)
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult ConfermaAnnullaTrasf(FormCollection fc)
         {
+            FormCollection collection = new FormCollection(Request.Unvalidated().Form);
+           
             string errore = "";
-
+            decimal idTrasferimento = Convert.ToDecimal(collection["idTrasferimento"]);
+            string testoAnnullaTrasf = collection["msg"];
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    dtt.AnnullaTrasf(idTrasferimento);
+                    dtt.AnnullaTrasf(idTrasferimento, testoAnnullaTrasf);
                 }
             }
             catch (Exception ex)
@@ -2097,6 +2109,41 @@ namespace NewISE.Controllers
                         err = errore
                     });
         }
+
+        public ActionResult MessaggioAnnullaTrasf(decimal idTrasferimento)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    using (dtDipendenti dtd = new dtDipendenti())
+                    {
+                        using (dtUffici dtu = new dtUffici())
+                        {
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
+
+                            if (t?.idTrasferimento > 0)
+                            {
+                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoTrasferimento, dip.nome + " " + dip.cognome, uff.descUfficio + " (" + uff.codiceUfficio + ")");
+                                ViewBag.idTrasferimento = idTrasferimento;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+
+            }
+            return PartialView(msg);
+        }
+
 
     }
 }

@@ -9,13 +9,13 @@ namespace NewISE.Models.ViewModel
 {
     public class TrasportoEffettiPartenzaModel: TEPartenzaModel
     {
-        [Display(Name = "Indennità di Prima Sistemazione")]
+        [Display(Name = "Ind. Prima Sist. + Magg. Fam. Lorda")]
         public decimal indennitaPrimaSistemazione { get; set; }
 
         [Display(Name = "% Per Fascia KM")]
         public decimal percKM { get; set; }
 
-        [Display(Name = "Contributo Fisso OmniComprensivo")]
+        [Display(Name = "Contrib. Fisso OmniCompr. Lordo")]
         public decimal contributoLordo { get; set; }
 
         [Display(Name = "Perc.")]

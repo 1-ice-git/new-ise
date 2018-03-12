@@ -196,6 +196,7 @@
 
     function ModalAnnullaRichiestaTE() {
         //debugger;
+        MessaggioAnnullaRichiestaTE();
         $('#ModalAnnullaRichiestaTE').modal().show();
     }
 
@@ -247,11 +248,12 @@
         //debugger;
         var rotta = "/TrasportoEffetti/ConfermaAnnullaRichiestaTEPartenza";
         var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+        var testoAnnullaTE = $('#FullDescription').val();
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza, msg:testoAnnullaTE },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -345,6 +347,35 @@
             }
         });
     }
+
+    function MessaggioAnnullaRichiestaTE() {
+        debugger;
+        var rotta = "/TrasportoEffetti/MessaggioAnnullaTEPartenza";
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data:{idTrasportoEffettiPartenza:idTrasportoEffettiPartenza},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaTE").empty();
+                $("#viewAnnullaRichiestaTE").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
 
 </script>
 

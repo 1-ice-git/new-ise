@@ -759,7 +759,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AnnullaRichiestaMAB(decimal idAttivazioneMAB)
+        public void AnnullaRichiestaMAB(decimal idAttivazioneMAB, string msg)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -952,7 +952,11 @@ namespace NewISE.Models.DBModel.dtObj
                                             }
                                         }
 
-                                        this.EmailAnnullaRichiestaMAB(am_New.IDATTIVAZIONEMAB, db);
+                                        EmailTrasferimento.EmailAnnulla(am_New.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                        Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioneAbitazione,
+                                                                        msg,
+                                                                        db);
+                                        //this.EmailAnnullaRichiestaMAB(am_New.IDATTIVAZIONEMAB, db);
                                         using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                         {
                                             dtce.AnnullaMessaggioEvento(am_New.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);

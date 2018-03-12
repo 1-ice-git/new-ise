@@ -11,6 +11,8 @@ using System.Web.Routing;
 using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.Tools;
+using NewISE.Interfacce;
+using System.Web.Helpers;
 using MaggiorazioniFamiliariModel = NewISE.Models.DBModel.MaggiorazioniFamiliariModel;
 
 namespace NewISE.Controllers
@@ -182,15 +184,21 @@ namespace NewISE.Controllers
 
         }
         [HttpPost]
-        public JsonResult AnnullaRichiesta(decimal idAttivazioneMagFam)
+        [ValidateInput(false)]
+        public JsonResult AnnullaRichiesta(FormCollection fc)
         {
-            string errore = "";
             decimal idAttivazioneMagFamNew = 0;
+            FormCollection collection = new FormCollection(Request.Unvalidated().Form);
+
+            string errore = "";
+            decimal idAttivazioneMagFam = Convert.ToDecimal(collection["idAttivazioneMagFam"]);
+            string testoAnnullaMF = collection["msg"];
+
             try
             {
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                 {
-                    dtmf.AnnullaRichiesta(idAttivazioneMagFam, out idAttivazioneMagFamNew);
+                    dtmf.AnnullaRichiesta(idAttivazioneMagFam, out idAttivazioneMagFamNew, testoAnnullaMF);
                 }
             }
             catch (Exception ex)
@@ -890,6 +898,38 @@ namespace NewISE.Controllers
                 new { idAttivazioneMagFam = cm.idAttivazioneMagFam });
         }
 
+        public ActionResult MessaggioAnnullaMF(decimal idAttMagFam)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtUffici dtu = new dtUffici())
+                        {
+                            var t = dtt.GetTrasferimentoByIdAttMagFam(idAttMagFam);
+
+                            if (t?.idTrasferimento > 0)
+                            {
+                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                                ViewBag.idTrasferimento = t.idTrasferimento;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
+        }
 
 
     }

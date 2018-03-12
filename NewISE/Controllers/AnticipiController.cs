@@ -8,6 +8,7 @@ using NewISE.Models;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
+using NewISE.Interfacce;
 
 namespace NewISE.Controllers
 {
@@ -202,15 +203,17 @@ namespace NewISE.Controllers
                     });
         }
 
-        public JsonResult ConfermaAnnullaRichiestaAnticipi(decimal idAttivitaAnticipi)
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult ConfermaAnnullaRichiestaAnticipi(decimal idAttivitaAnticipi, string msg)
         {
             string errore = "";
-
+            string testoAnnulla = msg;
             try
             {
                 using (dtAnticipi dta = new dtAnticipi())
                 {
-                    dta.AnnullaRichiestaAnticipi(idAttivitaAnticipi);
+                    dta.AnnullaRichiestaAnticipi(idAttivitaAnticipi, testoAnnulla);
                 }
             }
             catch (Exception ex)
@@ -254,6 +257,37 @@ namespace NewISE.Controllers
                     });
         }
 
+        public ActionResult MessaggioAnnullaAnticipi(decimal idPrimaSistemazione)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtUffici dtu = new dtUffici())
+                        {
+                            var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
+
+                            if (t?.idTrasferimento > 0)
+                            {
+                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaAnticipi, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
+        }
 
 
     }

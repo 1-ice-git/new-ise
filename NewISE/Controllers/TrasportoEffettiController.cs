@@ -12,6 +12,7 @@ using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
+using NewISE.Interfacce;
 
 namespace NewISE.Controllers
 {
@@ -404,7 +405,10 @@ namespace NewISE.Controllers
                 }
             }
         }
-        public JsonResult ConfermaAnnullaRichiestaTEPartenza(decimal idTrasportoEffettiPartenza)
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult ConfermaAnnullaRichiestaTEPartenza(decimal idTrasportoEffettiPartenza, string msg)
         {
             string errore = "";
 
@@ -414,7 +418,7 @@ namespace NewISE.Controllers
                 {
                     decimal idAttivazione_notificata = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza).IDATEPARTENZA;
 
-                    dtte.AnnullaRichiestaTrasportoEffetti(idAttivazione_notificata);
+                    dtte.AnnullaRichiestaTrasportoEffetti(idAttivazione_notificata, msg);
                 }
             }
             catch (Exception ex)
@@ -456,6 +460,38 @@ namespace NewISE.Controllers
                     {
                         err = errore
                     });
+        }
+
+        public ActionResult MessaggioAnnullaTEPartenza(decimal idTrasportoEffettiPartenza)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtUffici dtu = new dtUffici())
+                        {
+                            var t = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
+
+                            if (t?.idTrasferimento > 0)
+                            {
+                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaTrasportoEffettiPartenza, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
         }
 
 

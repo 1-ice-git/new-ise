@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo per il traasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaAnticipi {
             get {
@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaInizialeTitoloViaggio {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di maggiorazione abitazione è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di maggiorazione abitazione relativa al trasferimento presso la sede di {0} a partire dal giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaMaggiorazioneAbitazione {
             get {
@@ -106,10 +106,8 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;strong&gt;{0}&lt;/strong&gt; del giorno {1}, è stata annullata.&lt;/p&gt;
-        ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;
-        ///&lt;hr /&gt;
-        ///&lt;p&gt;&amp;nbsp;&lt;/p&gt;.
+        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;br&gt;&lt;center&gt;&lt;h4&gt;{0}&lt;/h4&gt; &lt;/center&gt;a partire dal giorno  &lt;br&gt;&lt;center&gt;&lt;h4&gt;{1}&lt;/h4&gt;&lt;/center&gt;è stata annullata.&lt;/p&gt;
+        ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;.
         /// </summary>
         internal static string MessaggioAnnullaRichiestaPassaporto {
             get {
@@ -127,7 +125,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per trasporto effetti in partenza è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per il trasporto effetti in partenza riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaTrasportoEffettiPartenza {
             get {

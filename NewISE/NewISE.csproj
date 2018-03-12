@@ -1363,6 +1363,11 @@
     <Content Include="Scripts\ckeditor\skins\office2013\images\lock.png" />
     <Content Include="Scripts\ckeditor\skins\office2013\images\refresh.png" />
     <Content Include="Scripts\ckeditor\styles.js" />
+    <Content Include="Scripts\cleditor\images\buttons.gif" />
+    <Content Include="Scripts\cleditor\images\toolbar.gif" />
+    <Content Include="Scripts\cleditor\jquery.cleditor.css" />
+    <Content Include="Scripts\cleditor\jquery.cleditor.js" />
+    <Content Include="Scripts\cleditor\jquery.cleditor.min.js" />
     <Content Include="Scripts\datepicker-it.js" />
     <Content Include="Scripts\fileinput.js" />
     <Content Include="Scripts\fileinput.min.js" />
@@ -3196,6 +3201,7 @@
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\Enumeratori\AllEnumeratori.cs" />
     <Compile Include="Models\Ricalcoli\RicalcoloPrimaSistemazione.cs" />
+    <Compile Include="Models\Tools\EmailTrasferimento.cs" />
     <Compile Include="Models\Tools\EmailCredenziali.cs" />
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
@@ -3379,6 +3385,13 @@
     <Content Include="Views\Notifiche\NuovaNotifica.cshtml" />
     <Content Include="Views\Notifiche\VisualizzaCorpoMessaggio.cshtml" />
     <Content Include="Views\Notifiche\VisualizzaDestinatari.cshtml" />
+    <Content Include="Views\Trasferimento\MessaggioAnnullaTrasf.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\MessaggioAnnullaMF.cshtml" />
+    <Content Include="Views\PratichePassaporto\MessaggioAnnullaPassaporto.cshtml" />
+    <Content Include="Views\TitoliViaggio\MessaggioAnnullaTV.cshtml" />
+    <Content Include="Views\Anticipi\MessaggioAnnullaAnticipi.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\MessaggioAnnullaMAB.cshtml" />
+    <Content Include="Views\TrasportoEffetti\MessaggioAnnullaTEPartenza.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

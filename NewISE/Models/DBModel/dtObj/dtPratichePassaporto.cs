@@ -279,7 +279,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AnnullaRichiestaPassaporto(decimal idAttivazionePassaporto)
+        public void AnnullaRichiestaPassaporto(decimal idAttivazionePassaporto, string testoAnnulla)
         {
 
             using (ModelDBISE db = new ModelDBISE())
@@ -461,6 +461,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     #endregion
 
+                                    #region figli
+
                                     var lfpOld =
                                         apOld.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false)
                                             .OrderBy(a => a.IDFIGLIPASSAPORTO);
@@ -501,8 +503,14 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
 
                                 }
+                                #endregion
 
-                                this.EmailAnnullaRichiestaPassaporto(apNew.IDATTIVAZIONIPASSAPORTI, db);
+                                EmailTrasferimento.EmailAnnulla(apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                               Resources.msgEmail.OggettoAnnullaRichiestaPassaporto,
+                                                               testoAnnulla,
+                                                               db);
+
+                                //this.EmailAnnullaRichiestaPassaporto(apNew.IDATTIVAZIONIPASSAPORTI, db);
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
                                     dtce.AnnullaMessaggioEvento(apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestePratichePassaporto, db);

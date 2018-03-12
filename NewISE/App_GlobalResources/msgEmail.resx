@@ -121,28 +121,26 @@
     <value>Si informa il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaAnticipi" xml:space="preserve">
-    <value>Si notifica che la richiesta di anticipo è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta di anticipo per il traasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaInizialeTitoloViaggio" xml:space="preserve">
-    <value>Si notifica che la richiesta dei titoli di viaggio è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta dei titoli di viaggio per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaMaggiorazioneAbitazione" xml:space="preserve">
-    <value>Si notifica che la richiesta di maggiorazione abitazione è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta di maggiorazione abitazione relativa al trasferimento presso la sede di {0} a partire dal giorno {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaPassaporto" xml:space="preserve">
-    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;strong&gt;{0}&lt;/strong&gt; del giorno {1}, è stata annullata.&lt;/p&gt;
-&lt;p&gt;Contattare l'amministratore per maggiori dettagli.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
+    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;br&gt;&lt;center&gt;&lt;h4&gt;{0}&lt;/h4&gt; &lt;/center&gt;a partire dal giorno  &lt;br&gt;&lt;center&gt;&lt;h4&gt;{1}&lt;/h4&gt;&lt;/center&gt;è stata annullata.&lt;/p&gt;
+&lt;p&gt;Contattare l'amministratore per maggiori dettagli.&lt;/p&gt;</value>
   </data>
   <data name="MessaggioAnnullaRichiestaSuccessivaTitoloViaggio" xml:space="preserve">
     <value>Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaTrasportoEffettiPartenza" xml:space="preserve">
-    <value>Si notifica che la richiesta di rimborso per trasporto effetti in partenza è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta di rimborso per il trasporto effetti in partenza riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaTrasportoEffettiRientro" xml:space="preserve">
     <value>Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>

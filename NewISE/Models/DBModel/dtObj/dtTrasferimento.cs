@@ -1880,7 +1880,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AnnullaTrasf(decimal idTrasferimento)
+        public void AnnullaTrasf(decimal idTrasferimento, string testoAnnullaTrasf)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -1907,7 +1907,12 @@ namespace NewISE.Models.DBModel.dtObj
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Annullamento trasferimento.", "TRASFERIMENTO", db,
                                     t.IDTRASFERIMENTO, t.IDTRASFERIMENTO);
-                                this.EmailAnnullaTrasf(t.IDTRASFERIMENTO, db);
+
+                                EmailTrasferimento.EmailAnnulla(t.IDTRASFERIMENTO,
+                                                                Resources.msgEmail.OggettoAnnullamentoTrasferimento,
+                                                                testoAnnullaTrasf,
+                                                                db);
+                                //this.EmailAnnullaTrasf(t.IDTRASFERIMENTO, testoAnnullaTrasf, db);
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
                                     dtce.AnnullaMessaggioEvento(t.IDTRASFERIMENTO, EnumFunzioniEventi.AttivaTrasferimento, db);
@@ -2007,7 +2012,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void EmailAnnullaTrasf(decimal idTrasferimento, ModelDBISE db)
+        public void EmailAnnullaTrasf(decimal idTrasferimento, string testoAnnullaTrasf, ModelDBISE db)
         {
             AccountModel am = new AccountModel();
             Mittente mittente = new Mittente();
@@ -2017,8 +2022,11 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
                 am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
+                if (am.RuoloAccesso.idRuoloAccesso != (decimal)EnumRuoloAccesso.SuperAmministratore)
+                {
+                    mittente.Nominativo = am.nominativo;
+                    mittente.EmailMittente = am.eMail;
+                }
 
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
@@ -2031,11 +2039,11 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         using (ModelloMsgMail msgMail = new ModelloMsgMail())
                         {
-                            cc = new Destinatario()
-                            {
-                                Nominativo = am.nominativo,
-                                EmailDestinatario = am.eMail
-                            };
+                            //cc = new Destinatario()
+                            //{
+                            //    Nominativo = am.nominativo,
+                            //    EmailDestinatario = am.eMail
+                            //};
 
                             to = new Destinatario()
                             {
@@ -2043,13 +2051,31 @@ namespace NewISE.Models.DBModel.dtObj
                                 EmailDestinatario = dip.EMAIL,
                             };
 
+                            var lua = db.UTENTIAUTORIZZATI.Where(a => a.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).ToList();
+                            foreach (var ua in lua)
+                            {
+                                var dipAdmin = ua.DIPENDENTI;
+
+                                if (dipAdmin!=null)
+                                {
+                                    cc = new Destinatario()
+                                    {
+                                        Nominativo = dipAdmin.NOME + " " + dipAdmin.COGNOME,
+                                        EmailDestinatario = dipAdmin.EMAIL,
+                                    };
+
+                                    msgMail.cc.Add(cc);
+                                }
+                            }
+
                             msgMail.mittente = mittente;
-                            msgMail.cc.Add(cc);
+                            //msgMail.cc.Add(cc);
                             msgMail.destinatario.Add(to);
 
                             msgMail.oggetto =
                             Resources.msgEmail.OggettoAnnullamentoTrasferimento;
-                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoTrasferimento, dip.NOME + " " + dip.COGNOME, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")");
+                            //msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoTrasferimento, dip.NOME + " " + dip.COGNOME, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")");
+                            msgMail.corpoMsg = testoAnnullaTrasf;
 
                             gmail.sendMail(msgMail);
                         }
@@ -2094,6 +2120,37 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
+        public ModelloMsgMail GetMessaggioAnnullaTrasf(decimal idTrasferimento)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    using (dtUffici dtu = new dtUffici())
+                    {
+                        var t = this.GetTrasferimentoById(idTrasferimento);
+
+                        if (t?.idTrasferimento > 0)
+                        {
+                            var dip = dtd.GetDipendenteByID(t.idDipendente);
+                            var uff = dtu.GetUffici(t.idUfficio);
+
+                            msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoTrasferimento, dip.nome + " " + dip.cognome, uff.descUfficio + " (" + uff.codiceUfficio + ")");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return msg;
+
+        }
 
 
     }

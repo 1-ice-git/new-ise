@@ -19,7 +19,6 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="ModalNotificaAnnullaTrasf" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaAnnullaTrasfLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
@@ -27,11 +26,10 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Messaggio di annullamento del trasferimento.</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewNotificaAnnullaTrasf">
-                    <label>Procedere con l'annullamento del trasferimento?</label>
                 </p>
             </div>
             <div class="modal-footer">
@@ -52,7 +50,7 @@
                 <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewNotificaAnnullaTrasf">
+                <p id="viewNotificaAttivaTrasf">
                     <label>Procedere con l'attivazione del trasferimento?</label>
                 </p>
             </div>
@@ -67,14 +65,16 @@
 
 
 <script type="text/javascript">
-    function ConfermaNotificaAnnullaTrasf() {
-        //debugger;
+      function ConfermaNotificaAnnullaTrasf() {
+        debugger;
         var rotta = "/Trasferimento/ConfermaAnnullaTrasf";
         var idTrasferimento = parseInt('@idTrasferimento');
+        var testoAnnullaTrasf = $('#FullDescription').val();          
+
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idTrasferimento: idTrasferimento, msg: testoAnnullaTrasf },            
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -94,7 +94,7 @@
             complete: function () {
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
+                debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
             }

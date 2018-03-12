@@ -617,7 +617,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AnnullaRichiestaTrasportoEffetti(decimal idAttivitaTrasportoEffetti)
+        public void AnnullaRichiestaTrasportoEffetti(decimal idAttivitaTrasportoEffetti, string msg)
         {
 
             using (ModelDBISE db = new ModelDBISE())
@@ -720,7 +720,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                     #endregion
 
-                                    this.EmailAnnullaRichiestaTEPartenza(atep_New.IDATEPARTENZA, db);
+                                    EmailTrasferimento.EmailAnnulla(idTrasferimento,
+                                                                    Resources.msgEmail.OggettoAnnullaRichiestaTrasportoPartenza,
+                                                                    msg,
+                                                                    db);
+                                    //this.EmailAnnullaRichiestaTEPartenza(atep_New.IDATEPARTENZA, db);
                                     using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                     {
                                         dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza, db);

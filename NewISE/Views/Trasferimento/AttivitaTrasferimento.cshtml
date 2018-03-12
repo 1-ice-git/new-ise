@@ -128,12 +128,12 @@
     </tbody>
 </table>
 <div class="text-center" style="padding-bottom: 5px;">
-    <button class="btn btn-default btn-sm" id="btAttivaTrsf" onclick="ModalNotificaAttivaTrasf();">
+    <button class="btn btn-default btn-sm"  id="btAttivaTrsf" onclick="ModalNotificaAttivaTrasf();">
         <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
         Attiva Trasferimento
     </button>
 
-    <button class="btn btn-default btn-sm" id="btAnnullaTrasf" onclick="ModalNotificaAnnullaTrasf();">
+    <button class="btn btn-default btn-sm"  id="btAnnullaTrasf" onclick="ModalNotificaAnnullaTrasf();">
         <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
         Annulla Trasferimento
     </button>
@@ -145,7 +145,9 @@
 
     function ModalNotificaAnnullaTrasf() {
         //debugger;
+        MessaggioAnnullaTrasf();
         $('#ModalNotificaAnnullaTrasf').modal().show();
+
     }
 
     function ModalNotificaAttivaTrasf() {
@@ -242,6 +244,7 @@
                     } else {
                         $("#chkMagFamiliariR").each(function () { this.checked = false; });
                         $("#chkMagFamiliariSR").each(function () { this.checked = false; });
+
                         EnableDisableLinkPassaporto(false);
                     }
 
@@ -262,7 +265,6 @@
 
                     //chkTitoliViaggioR
                     if (richiesteTV == true) {
-                        EnableDisableLinkTitoliViaggio(true);
                         $("#chkTitoliViaggioR").each(function () { this.checked = true; });
                         if (concluseTV == true) {
                             $("#chkTitoliViaggioSR").each(function () { this.checked = true; });
@@ -276,7 +278,6 @@
 
                     //chkTrasportoEffettiR
                     if (richiestaTE == true) {
-                        EnableDisableLinkTE(true);
                         $("#chkTrasportoEffettiR").each(function () { this.checked = true; });
                         if (attivazioneTE == true) {
                             $("#chkTrasportoEffettiSR").each(function () { this.checked = true; });
@@ -290,7 +291,6 @@
 
                     //chkAnticipiR
                     if (richiestaAnticipi == true) {
-                        EnableDisableLinkAnticipi(true);
                         $("#chkAnticipiR").each(function () { this.checked = true; });
                         if (attivazioneAnticipi == true) {
                             $("#chkAnticipiSR").each(function () { this.checked = true; });
@@ -305,7 +305,6 @@
                     //chkMABR
                     if (richiestaMAB == true) {
                         $("#chkMABR").each(function () { this.checked = true; });
-                        EnableDisableLinkMAB(true);
                         if (attivazioneMAB == true) {
                             $("#chkMABSR").each(function () { this.checked = true; });
                         } else {
@@ -318,9 +317,10 @@
 
                     //pulsanti trasferimento
                     // attivazione
-                    if (attivazioneMF && conclusePP && concluseTV
+                    if( attivazioneMF && conclusePP && concluseTV
                             && attivazioneTE && attivazioneAnticipi
-                            && attivazioneMAB && solaLettura == false) {
+                            && attivazioneMAB && solaLettura==false)
+                    {
                         $("#btAttivaTrsf").removeAttr("disabled");
                         $("#btAttivaTrsf").removeClass("disableLink");
 
@@ -412,18 +412,33 @@
         }
     }
 
-    function EnableDisableLinkTE(abilitato) {
+    function MessaggioAnnullaTrasf() {
         //debugger;
-        if (abilitato == true) {
-            $("#linkTrasportoEffetti").removeAttr("disabled");
-            $("#linkTrasportoEffetti").removeClass("disableLink");
-        } else {
-            //disableLink
-            $("#linkTrasportoEffetti").attr("disabled", "disabled");
-            $("#linkTrasportoEffetti").addClass("disableLink");
-        }
+        var rotta = "/Trasferimento/MessaggioAnnullaTrasf";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                debugger;
+                $("#viewNotificaAnnullaTrasf").empty();
+                $("#viewNotificaAnnullaTrasf").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
     }
-
 
 
 

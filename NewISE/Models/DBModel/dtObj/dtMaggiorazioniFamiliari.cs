@@ -285,7 +285,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        private void EmailAnnullaRichiesta(decimal idAttivazioneMagFam, ModelDBISE db)
+        private void EmailAnnullaRichiesta(decimal idAttivazioneMagFam, string testoAnnullaTrasf, ModelDBISE db)
         {
             MAGGIORAZIONIFAMILIARI mf = new MAGGIORAZIONIFAMILIARI();
             AccountModel am = new AccountModel();
@@ -507,7 +507,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public void AnnullaRichiesta(decimal idAttivazioneMagFam, out decimal idAttivazioneMagFamNew)
+        public void AnnullaRichiesta(decimal idAttivazioneMagFam, out decimal idAttivazioneMagFamNew, string testoAnnullaMF)
         {
             idAttivazioneMagFamNew = 0;
 
@@ -947,7 +947,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                 }
 
-                                this.EmailAnnullaRichiesta(idAttivazioneMagFam, db);
+                                EmailTrasferimento.EmailAnnulla(amfNew.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioniFamiliari,
+                                                                testoAnnullaMF,
+                                                                db);
+                                //this.EmailAnnullaRichiesta(idAttivazioneMagFam, testoAnnullaTrasf, db);
 
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {

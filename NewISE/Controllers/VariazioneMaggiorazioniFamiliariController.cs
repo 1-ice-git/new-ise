@@ -1381,7 +1381,7 @@ namespace NewISE.Controllers
                     {
                         var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari);
 
-                        dtmf.AnnullaRichiesta(amf.IDATTIVAZIONEMAGFAM, out idAttivazioneMagFamNew);
+                        dtmf.AnnullaRichiesta(amf.IDATTIVAZIONEMAGFAM, out idAttivazioneMagFamNew, "");
                     }
                 }
             }

@@ -201,11 +201,12 @@
         //debugger;
         var rotta = "/Anticipi/ConfermaAnnullaRichiestaAnticipi";
         var idAttivitaAnticipi = parseInt($('#hiIdAttivitaAnticipi').val());
+        var testoAnnullaAnticipi = $('#FullDescription').val();
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAttivitaAnticipi: idAttivitaAnticipi },
+            data: { idAttivitaAnticipi: idAttivitaAnticipi ,msg:testoAnnullaAnticipi},
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -324,6 +325,33 @@
         }
     }
 
+    function MessaggioAnnullaRichiestaAnticipi() {
+        debugger;
+        var rotta = "/Anticipi/MessaggioAnnullaAnticipi";
+        var idPrimaSistemazione = parseInt('@idPrimaSistemazione');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data:{idPrimaSistemazione:idPrimaSistemazione},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaAnticipi").empty();
+                $("#viewAnnullaRichiestaAnticipi").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
 
 
 </script>

@@ -9,6 +9,8 @@ using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
+using NewISE.Interfacce;
+using System.Web.Helpers;
 
 namespace NewISE.Controllers
 {
@@ -206,16 +208,22 @@ namespace NewISE.Controllers
             return Json(new { err = errore, msg = msg });
         }
 
-        public JsonResult AnnullaRichiesta(decimal idAttivazionePassaporto)
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult AnnullaRichiesta(FormCollection fc)
         {
             string errore = "";
             string msg = string.Empty;
+            FormCollection collection = new FormCollection(Request.Unvalidated().Form);
+
+            decimal idAttivazionePassaporto = Convert.ToDecimal(collection["idAttivazionePassaporto"]);
+            string testoAnnulla = collection["msg"];
 
             try
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    dtpp.AnnullaRichiestaPassaporto(idAttivazionePassaporto);
+                    dtpp.AnnullaRichiestaPassaporto(idAttivazionePassaporto,testoAnnulla);
                     msg = "Annullamento effettuato con successo";
                 }
             }
@@ -248,6 +256,41 @@ namespace NewISE.Controllers
 
             return Json(new { err = errore, msg = msg });
         }
+
+        public ActionResult MessaggioAnnullaPassaporto(decimal idAttivazionePassaporto)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtUffici dtu = new dtUffici())
+                        {
+                            var t = dtt.GetTrasferimentoByIdAttPassaporto(idAttivazionePassaporto);
+
+                            if (t?.idTrasferimento > 0)
+                            {
+                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaPassaporto, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                                ViewBag.idTrasferimento = t.idTrasferimento;
+                                ViewBag.idAttivazionePassaporto = idAttivazionePassaporto;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
+        }
+
 
     }
 }

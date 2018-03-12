@@ -302,7 +302,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AnnullaRichiestaAnticipi(decimal idAttivitaAnticipi)
+        public void AnnullaRichiestaAnticipi(decimal idAttivitaAnticipi, string testoAnnulla)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -396,7 +396,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 #endregion
 
 
-                                this.EmailAnnullaRichiestaAnticipi(aa_New.IDATTIVITAANTICIPI, db);
+                                EmailTrasferimento.EmailAnnulla(aa_New.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                Resources.msgEmail.OggettoAnnullaRichiestaAnticipi,
+                                                                testoAnnulla,
+                                                                db);
+                                //this.EmailAnnullaRichiestaAnticipi(aa_New.IDATTIVITAANTICIPI, db);
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
                                     dtce.AnnullaMessaggioEvento(aa_New.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaAnticipi, db);

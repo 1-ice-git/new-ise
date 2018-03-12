@@ -1638,7 +1638,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AnnullaRichiestaTitoliViaggio(decimal idAttivazioneTitoliViaggio)
+        public void AnnullaRichiestaTitoliViaggio(decimal idAttivazioneTitoliViaggio, string testoAnnulla)
         {
 
             using (ModelDBISE db = new ModelDBISE())
@@ -1668,9 +1668,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     "Annullamento della riga per il ciclo di attivazione dei titoli di viaggio",
                                     "ATTIVAZIONITITOLIVIAGGIO", db, atv_Old.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO,
                                     atv_Old.IDATTIVAZIONETITOLIVIAGGIO);
-
-
-                                //var atv_New=this.GetUltimaAttivazioneTitoliViaggio(atv_Old.IDTITOLOVIAGGIO);
 
                                 var idTrasferimento = atv_Old.IDTITOLOVIAGGIO;
 
@@ -1880,7 +1877,12 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                     #endregion
 
-                                    this.EmailAnnullaRichiestaTitoliViaggio(atv_New.IDATTIVAZIONETITOLIVIAGGIO, db);
+                                    EmailTrasferimento.EmailAnnulla(idTrasferimento,
+                                                                    Resources.msgEmail.OggettoAnnullaRichiestaInizialeTitioliViaggio,
+                                                                    testoAnnulla,
+                                                                    db);
+
+                                    //this.EmailAnnullaRichiestaTitoliViaggio(atv_New.IDATTIVAZIONETITOLIVIAGGIO, db);
                                     using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                     {
                                         dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaTitoliViaggio, db);

@@ -328,10 +328,12 @@ function ConfermaAnnullaRichiestaMAB() {
     var rotta = "/MaggiorazioneAbitazione/ConfermaAnnullaRichiestaMAB";
     var idTrasferimento = parseInt($('#hi_idTrasferimento').val());
     var idAttivazioneMAB = parseInt($('#hi_idAttivazioneMAB').val());
+    var testoAnnullaMAB = $('#FullDescription').val();
+
     $.ajax({
         type: "POST",
         url: rotta,
-        data: { idAttivazioneMAB: idAttivazioneMAB },
+        data: { idAttivazioneMAB: idAttivazioneMAB, msg:testoAnnullaMAB },
         dataType: 'json',
         beforeSend: function () {
             //debugger;
@@ -426,5 +428,33 @@ function NuovaMAB(idTrasferimento) {
             ErroreElaborazioneAjax(msg);
         }
 
+    });
+}
+
+function MessaggioAnnullaRichiestaMAB() {
+    debugger;
+    var rotta = "/MaggiorazioneAbitazione/MessaggioAnnullaMAB";
+    var idTrasferimento = parseInt($('#hi_idTrasferimento').val());
+    $.ajax({
+        type: "POST",
+        url: rotta,
+        data: { idTrasferimento: idTrasferimento },
+        dataType: 'html',
+        beforeSend: function () {
+            //debugger;
+            VerificaAutenticazione();
+        },
+        success: function (result) {
+            //debugger;
+            $("#viewAnnullaRichiestaMAB").empty();
+            $("#viewAnnullaRichiestaMAB").html(result);
+        },
+        complete: function () {
+        },
+        error: function (jqXHR, textStatus, errorThrow) {
+            //debugger;
+            var msg = errorThrow.err;
+            ErroreElaborazioneAjax(msg);
+        }
     });
 }

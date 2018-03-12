@@ -110,11 +110,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Messaggio di annullamento richiesta Maggiorazioni Familiari</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewAnnullaRichiesta">
-                    <label>Procedere con l'annullamento della richiesta?</label>
+                    @*<label>Procedere con l'annullamento della richiesta?</label>*@
                 </p>
             </div>
             <div class="modal-footer">
@@ -274,11 +274,12 @@
     function ConfermaAnnullaRichiesta() {
         var rotta = "/MaggiorazioniFamiliari/AnnullaRichiesta";
         var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
+        var testoAnnullaMF = $('#FullDescription').val();
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAttivazioneMagFam: idAttMagFam },
+            data: { idAttivazioneMagFam: idAttMagFam, msg: testoAnnullaMF },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -359,6 +360,7 @@
 
     function ModalAnnullaRichiesta() {
         //debugger;
+        MessaggioAnnullaMF();
         $('#ModalAnnullaRichiesta').modal().show();
     }
 
@@ -593,9 +595,35 @@
             }
 
         });
-
-
-
     }
+
+    function MessaggioAnnullaMF() {
+        //debugger;
+        var rotta = "/MaggiorazioniFamiliari/MessaggioAnnullaMF";
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttMagFam: idAttMagFam },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                debugger;
+                $("#viewAnnullaRichiesta").empty();
+                $("#viewAnnullaRichiesta").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
 
 </script>

@@ -13,6 +13,8 @@ using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
+using NewISE.Interfacce;
+using System.Web.Helpers;
 
 namespace NewISE.Controllers
 {
@@ -644,9 +646,16 @@ namespace NewISE.Controllers
                     });
         }
 
-        public JsonResult ConfermaAnnullaRichiestaTV(decimal idTitoliViaggio)
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult ConfermaAnnullaRichiestaTV(FormCollection fc)
         {
             string errore = "";
+            FormCollection collection = new FormCollection(Request.Unvalidated().Form);
+
+            decimal idTitoliViaggio = Convert.ToDecimal(collection["idTitoliViaggio"]);
+            string testoAnnulla = collection["msg"];
+
 
             try
             {
@@ -654,7 +663,7 @@ namespace NewISE.Controllers
                 {
                     decimal idAttivazione_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
 
-                    dttv.AnnullaRichiestaTitoliViaggio(idAttivazione_notificata);
+                    dttv.AnnullaRichiestaTitoliViaggio(idAttivazione_notificata, testoAnnulla);
                 }
             }
             catch (Exception ex)
@@ -696,6 +705,40 @@ namespace NewISE.Controllers
                     {
                         err = errore
                     });
+        }
+
+        public ActionResult MessaggioAnnullaTV(decimal idTitoliViaggio)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtUffici dtu = new dtUffici())
+                        {
+                            var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
+
+                            if (t?.idTrasferimento > 0)
+                            {
+                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaInizialeTitoloViaggio, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                                ViewBag.idTrasferimento = t.idTrasferimento;
+                                ViewBag.idTitoliViaggio = idTitoliViaggio;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
         }
 
 
