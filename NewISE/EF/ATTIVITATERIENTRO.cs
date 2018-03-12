@@ -18,7 +18,6 @@ namespace NewISE.EF
         public ATTIVITATERIENTRO()
         {
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
-            this.RINUNCIA_TE_R = new HashSet<RINUNCIA_TE_R>();
         }
     
         public decimal IDATERIENTRO { get; set; }
@@ -35,7 +34,6 @@ namespace NewISE.EF
         public virtual TERIENTRO TERIENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RINUNCIA_TE_R> RINUNCIA_TE_R { get; set; }
+        public virtual RINUNCIA_TE_R RINUNCIA_TE_R { get; set; }
     }
 }

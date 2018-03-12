@@ -14,20 +14,10 @@ namespace NewISE.EF
     
     public partial class RINUNCIA_TE_R
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RINUNCIA_TE_R()
-        {
-            this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
-        }
-    
-        public decimal IDRINUNCIATE { get; set; }
-        public decimal IDTERIENTRO { get; set; }
+        public decimal IDATERIENTRO { get; set; }
         public bool RINUNCIATE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
     
-        public virtual TERIENTRO TERIENTRO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
+        public virtual ATTIVITATERIENTRO ATTIVITATERIENTRO { get; set; }
     }
 }

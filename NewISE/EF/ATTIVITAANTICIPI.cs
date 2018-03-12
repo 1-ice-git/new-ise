@@ -18,7 +18,6 @@ namespace NewISE.EF
         public ATTIVITAANTICIPI()
         {
             this.ANTICIPI = new HashSet<ANTICIPI>();
-            this.RINUNCIAANTICIPI = new HashSet<RINUNCIAANTICIPI>();
         }
     
         public decimal IDATTIVITAANTICIPI { get; set; }
@@ -33,7 +32,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANTICIPI> ANTICIPI { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
+        public virtual RINUNCIAANTICIPI RINUNCIAANTICIPI { get; set; }
     }
 }

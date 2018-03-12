@@ -14,20 +14,10 @@ namespace NewISE.EF
     
     public partial class RINUNCIAANTICIPI
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RINUNCIAANTICIPI()
-        {
-            this.ATTIVITAANTICIPI = new HashSet<ATTIVITAANTICIPI>();
-        }
-    
-        public decimal IDRINUNCIAANTICIPI { get; set; }
-        public decimal IDPRIMASISTEMAZIONE { get; set; }
+        public decimal IDATTIVITAANTICIPI { get; set; }
         public bool RINUNCIAANTICIPI1 { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
     
-        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
+        public virtual ATTIVITAANTICIPI ATTIVITAANTICIPI { get; set; }
     }
 }
