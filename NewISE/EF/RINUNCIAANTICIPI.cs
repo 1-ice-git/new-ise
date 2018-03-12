@@ -15,7 +15,7 @@ namespace NewISE.EF
     public partial class RINUNCIAANTICIPI
     {
         public decimal IDATTIVITAANTICIPI { get; set; }
-        public bool RINUNCIAANTICIPI1 { get; set; }
+        public bool RINUNCIAANT { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
     
         public virtual ATTIVITAANTICIPI ATTIVITAANTICIPI { get; set; }

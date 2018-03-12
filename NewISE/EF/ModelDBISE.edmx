@@ -1057,7 +1057,7 @@
             <PropertyRef Name="IDATTIVITAANTICIPI" />
           </Key>
           <Property Name="IDATTIVITAANTICIPI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="RINUNCIAANTICIPI" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="RINUNCIAANT" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
@@ -5784,11 +5784,6 @@
           </AssociationSet>
           <EntitySet Name="RINUNCIA_TE_P" EntityType="DBISEPRO.RINUNCIA_TE_P" />
           <EntitySet Name="RINUNCIA_TE_R" EntityType="DBISEPRO.RINUNCIA_TE_R" />
-          <EntitySet Name="RINUNCIAANTICIPI" EntityType="DBISEPRO.RINUNCIAANTICIPI" />
-          <AssociationSet Name="R_AA_RA" Association="DBISEPRO.R_AA_RA">
-            <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
-            <End Role="RINUNCIAANTICIPI" EntitySet="RINUNCIAANTICIPI" />
-          </AssociationSet>
           <AssociationSet Name="R_ATEP_RTEP" Association="DBISEPRO.R_ATEP_RTEP">
             <End Role="ATTIVITATEPARTENZA" EntitySet="ATTIVITATEPARTENZA" />
             <End Role="RINUNCIA_TE_P" EntitySet="RINUNCIA_TE_P" />
@@ -5796,6 +5791,11 @@
           <AssociationSet Name="R_ATER_RTER" Association="DBISEPRO.R_ATER_RTER">
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
             <End Role="RINUNCIA_TE_R" EntitySet="RINUNCIA_TE_R" />
+          </AssociationSet>
+          <EntitySet Name="RINUNCIAANTICIPI" EntityType="DBISEPRO.RINUNCIAANTICIPI" />
+          <AssociationSet Name="R_AA_RA" Association="DBISEPRO.R_AA_RA">
+            <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
+            <End Role="RINUNCIAANTICIPI" EntitySet="RINUNCIAANTICIPI" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -8883,29 +8883,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISEPRO.R_ATER_RTER" FromRole="RINUNCIA_TE_R" ToRole="ATTIVITATERIENTRO" />
         </EntityType>
-        <EntityType Name="RINUNCIAANTICIPI">
-          <Key>
-            <PropertyRef Name="IDATTIVITAANTICIPI" />
-          </Key>
-          <Property Name="IDATTIVITAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="RINUNCIAANTICIPI1" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISEPRO.R_AA_RA" FromRole="RINUNCIAANTICIPI" ToRole="ATTIVITAANTICIPI" />
-        </EntityType>
-        <Association Name="R_AA_RA">
-          <End Type="DBISEPRO.ATTIVITAANTICIPI" Role="ATTIVITAANTICIPI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RINUNCIAANTICIPI" Role="RINUNCIAANTICIPI" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVITAANTICIPI">
-              <PropertyRef Name="IDATTIVITAANTICIPI" />
-            </Principal>
-            <Dependent Role="RINUNCIAANTICIPI">
-              <PropertyRef Name="IDATTIVITAANTICIPI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_ATEP_RTEP">
           <End Type="DBISEPRO.ATTIVITATEPARTENZA" Role="ATTIVITATEPARTENZA" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8931,6 +8908,29 @@
             </Principal>
             <Dependent Role="RINUNCIA_TE_R">
               <PropertyRef Name="IDATERIENTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RINUNCIAANTICIPI">
+          <Key>
+            <PropertyRef Name="IDATTIVITAANTICIPI" />
+          </Key>
+          <Property Name="IDATTIVITAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="RINUNCIAANT" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISEPRO.R_AA_RA" FromRole="RINUNCIAANTICIPI" ToRole="ATTIVITAANTICIPI" />
+        </EntityType>
+        <Association Name="R_AA_RA">
+          <End Type="DBISEPRO.ATTIVITAANTICIPI" Role="ATTIVITAANTICIPI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RINUNCIAANTICIPI" Role="RINUNCIAANTICIPI" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVITAANTICIPI">
+              <PropertyRef Name="IDATTIVITAANTICIPI" />
+            </Principal>
+            <Dependent Role="RINUNCIAANTICIPI">
+              <PropertyRef Name="IDATTIVITAANTICIPI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10431,7 +10431,7 @@
             <EntityTypeMapping TypeName="DBISEPRO.RINUNCIAANTICIPI">
               <MappingFragment StoreEntitySet="RINUNCIAANTICIPI">
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="RINUNCIAANTICIPI1" ColumnName="RINUNCIAANTICIPI" />
+                <ScalarProperty Name="RINUNCIAANT" ColumnName="RINUNCIAANT" />
                 <ScalarProperty Name="IDATTIVITAANTICIPI" ColumnName="IDATTIVITAANTICIPI" />
               </MappingFragment>
             </EntityTypeMapping>

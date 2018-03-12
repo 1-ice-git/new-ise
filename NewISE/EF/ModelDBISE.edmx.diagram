@@ -257,10 +257,10 @@
         <AssociationConnector Association="DBISEPRO.TVR_DOC" />
         <EntityTypeShape EntityType="DBISEPRO.RINUNCIA_TE_P" Width="1.5" PointX="15.75" PointY="93.625" />
         <EntityTypeShape EntityType="DBISEPRO.RINUNCIA_TE_R" Width="1.5" PointX="26.75" PointY="79.625" />
-        <EntityTypeShape EntityType="DBISEPRO.RINUNCIAANTICIPI" Width="1.5" PointX="21.75" PointY="75.625" />
-        <AssociationConnector Association="DBISEPRO.R_AA_RA" />
         <AssociationConnector Association="DBISEPRO.R_ATEP_RTEP" />
         <AssociationConnector Association="DBISEPRO.R_ATER_RTER" />
+        <EntityTypeShape EntityType="DBISEPRO.RINUNCIAANTICIPI" Width="1.5" PointX="21.75" PointY="75.625" />
+        <AssociationConnector Association="DBISEPRO.R_AA_RA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
