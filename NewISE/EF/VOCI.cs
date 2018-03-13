@@ -14,21 +14,12 @@ namespace NewISE.EF
     
     public partial class VOCI
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public VOCI()
-        {
-            this.TEORICI = new HashSet<TEORICI>();
-        }
-    
         public decimal IDVOCI { get; set; }
         public decimal IDTIPOLIQUIDAZIONE { get; set; }
         public decimal IDTIPOVOCE { get; set; }
         public string CODICEVOCE { get; set; }
         public string DESCRIZIONE { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEORICI> TEORICI { get; set; }
-        public virtual TIPOLIQUIDAZIONE TIPOLIQUIDAZIONE { get; set; }
         public virtual TIPOVOCE TIPOVOCE { get; set; }
     }
 }

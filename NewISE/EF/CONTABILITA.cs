@@ -26,8 +26,5 @@ namespace NewISE.EF
         public decimal FLAGINVIOOA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-    
-        public virtual OA OA { get; set; }
-        public virtual TEORICI TEORICI { get; set; }
     }
 }

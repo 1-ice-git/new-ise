@@ -22,7 +22,7 @@ namespace NewISE.EF
     
         public decimal IDATEPARTENZA { get; set; }
         public decimal IDTEPARTENZA { get; set; }
-        public decimal IDANTIVIPOSALDOTE { get; set; }
+        public decimal IDANTICIPOSALDOTE { get; set; }
         public bool RICHIESTATRASPORTOEFFETTI { get; set; }
         public Nullable<System.DateTime> DATARICHIESTATRASPORTOEFFETTI { get; set; }
         public bool ATTIVAZIONETRASPORTOEFFETTI { get; set; }
@@ -30,10 +30,9 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual ANTICIPOSALDOTE ANTICIPOSALDOTE { get; set; }
+        public virtual RINUNCIA_TE_P RINUNCIA_TE_P { get; set; }
         public virtual TEPARTENZA TEPARTENZA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        public virtual RINUNCIA_TE_P RINUNCIA_TE_P { get; set; }
     }
 }

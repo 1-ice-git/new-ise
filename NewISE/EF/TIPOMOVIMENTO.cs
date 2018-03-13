@@ -14,17 +14,8 @@ namespace NewISE.EF
     
     public partial class TIPOMOVIMENTO
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TIPOMOVIMENTO()
-        {
-            this.TEORICI = new HashSet<TEORICI>();
-        }
-    
         public decimal IDTIPOMOVIMENTO { get; set; }
         public string TIPOMOVIMENTO1 { get; set; }
         public string DESCMOVIMENTO { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEORICI> TEORICI { get; set; }
     }
 }

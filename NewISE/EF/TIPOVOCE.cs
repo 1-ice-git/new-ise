@@ -24,7 +24,6 @@ namespace NewISE.EF
         public decimal IDTIPOELABOPRAZIONE { get; set; }
         public string DESCRIZIONE { get; set; }
     
-        public virtual TIPOELABORAZIONE TIPOELABORAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VOCI> VOCI { get; set; }
     }

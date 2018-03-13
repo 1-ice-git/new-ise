@@ -73,7 +73,6 @@ namespace NewISE.EF
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
-        public virtual DbSet<OA> OA { get; set; }
         public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
         public virtual DbSet<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
@@ -89,22 +88,21 @@ namespace NewISE.EF
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<RICHIAMO_FKM> RICHIAMO_FKM { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
+        public virtual DbSet<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
+        public virtual DbSet<RINUNCIA_TE_R> RINUNCIA_TE_R { get; set; }
+        public virtual DbSet<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
         public virtual DbSet<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<RUOLOUFFICIO> RUOLOUFFICIO { get; set; }
         public virtual DbSet<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual DbSet<STATOTRASFERIMENTO> STATOTRASFERIMENTO { get; set; }
-        public virtual DbSet<STIPENDI> STIPENDI { get; set; }
-        public virtual DbSet<TEORICI> TEORICI { get; set; }
         public virtual DbSet<TEPARTENZA> TEPARTENZA { get; set; }
         public virtual DbSet<TERIENTRO> TERIENTRO { get; set; }
         public virtual DbSet<TFR> TFR { get; set; }
         public virtual DbSet<TIPOALIQUOTECONTRIBUTIVE> TIPOALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<TIPOANTICIPOTRASPORTOEFFETTI> TIPOANTICIPOTRASPORTOEFFETTI { get; set; }
         public virtual DbSet<TIPODOCUMENTI> TIPODOCUMENTI { get; set; }
-        public virtual DbSet<TIPOELABORAZIONE> TIPOELABORAZIONE { get; set; }
-        public virtual DbSet<TIPOLIQUIDAZIONE> TIPOLIQUIDAZIONE { get; set; }
         public virtual DbSet<TIPOLOGIAANTICIPI> TIPOLOGIAANTICIPI { get; set; }
         public virtual DbSet<TIPOLOGIACOAN> TIPOLOGIACOAN { get; set; }
         public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
@@ -123,8 +121,5 @@ namespace NewISE.EF
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
-        public virtual DbSet<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
-        public virtual DbSet<RINUNCIA_TE_R> RINUNCIA_TE_R { get; set; }
-        public virtual DbSet<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
     }
 }
