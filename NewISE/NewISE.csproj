@@ -1057,6 +1057,7 @@
     <Content Include="Immagini\group.png" />
     <Content Include="Immagini\IconeDocumenti\File-New-icon.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
+    <Content Include="Immagini\IconeDocumenti\PDF-icon-Grey.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
     <Content Include="Immagini\Loading\loader.gif" />
     <Content Include="Immagini\Logo Rit PNG.PNG" />
@@ -3053,6 +3054,7 @@
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\NotificheModel.cs" />
     <Compile Include="Models\DBModel\PercAnticipoTEModel.cs" />
+    <Compile Include="Models\DBModel\RinunciaTEPartenzaModel.cs" />
     <Compile Include="Models\DBModel\RinunciaAnticipiModel.cs" />
     <Compile Include="Models\DBModel\TipoAnticipoTrasportoEffettiModel.cs" />
     <Compile Include="Models\DBModel\UtentiAutorizzatiModel.cs" />
@@ -3379,6 +3381,7 @@
     <Content Include="Views\MaggiorazioneAbitazione\MessaggioAnnullaMAB.cshtml" />
     <Content Include="Views\TrasportoEffetti\MessaggioAnnullaTEPartenza.cshtml" />
     <Content Include="Views\Anticipi\GestioneRinunciaAnticipi.cshtml" />
+    <Content Include="Views\TrasportoEffetti\GestioneRinunciaTEPartenza.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

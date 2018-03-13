@@ -7,6 +7,7 @@
     decimal idStatoTrasferimento = Convert.ToDecimal(ViewData["idStatoTrasferimento"]);
     bool attivazioneTEPartenza = Convert.ToBoolean(ViewData["attivazioneTEPartenza"]);
     decimal NumAttivazioniTEPartenza = Convert.ToDecimal(ViewData["NumAttivazioniTEPartenza"]);
+    bool rinunciaTEPartenza = Convert.ToBoolean(ViewData["rinunciaTEPartenza"]);
 }
 
 @Html.Hidden("hiNuovoDocumento")
@@ -72,6 +73,8 @@
                     idStatoTrasferimento!=(decimal)EnumStatoTraferimento.Terminato
                     &&
                     idStatoTrasferimento != (decimal)EnumStatoTraferimento.Annullato
+                    &&
+                    rinunciaTEPartenza==false
                 )
                 {
                     <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTE();">

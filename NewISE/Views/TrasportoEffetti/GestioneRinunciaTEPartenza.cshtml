@@ -1,0 +1,40 @@
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.DBModel.RinunciaTEPartenzaModel
+
+@{
+    decimal idATEPartenza = Convert.ToDecimal(Model.idATEPartenza);
+    bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    bool rinunciaTEPartenza = Convert.ToBoolean(Model.rinunciaTE);
+}
+
+<div>
+    <div class="row fa-border" style="background-color:white; margin-left:5px;  border:solid;border-width:thin;margin-bottom:15px;border-radius:15px;box-shadow:3px 3px 5px 2px #333333">
+        <div class="col-xs-10 text-right" style="margin-top:3px;font-weight:bold;color:green">
+            Rinuncia Rich. Trasp. Effetti
+        </div>
+        <div class="col-xs-1">
+            @if (soloLettura)
+            {
+                if (rinunciaTEPartenza)
+                {
+                    <input type="checkbox" disabled checked="checked">
+                }
+                else
+                {
+                    <input type="checkbox" disabled>
+                }
+            }
+            else
+            {
+                if (rinunciaTEPartenza)
+                {
+                    <input type="checkbox" checked="checked" onclick="AggiornaRinunciaTEPartenza(@idATEPartenza )">
+                }
+                else
+                {
+                    <input type="checkbox" onclick="AggiornaRinunciaTEPartenza(@idATEPartenza)">
+                }
+            }
+        </div>
+    </div>
+</div>
