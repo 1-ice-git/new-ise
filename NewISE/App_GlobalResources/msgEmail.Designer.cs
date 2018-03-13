@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo per il traasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaAnticipi {
             get {
@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di maggiorazione abitazione relativa al trasferimento presso la sede di {0} a partire dal giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di maggiorazione abitazione relativa al trasferimento presso la sede di {0}, a partire dal giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaMaggiorazioneAbitazione {
             get {
@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1} è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaMaggiorazioniFamiliari {
             get {
@@ -134,7 +134,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaTrasportoEffettiRientro {
             get {
@@ -143,7 +143,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che l&apos;anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermato..
+        ///   Looks up a localized string similar to Si notifica che l&apos;anticipo da lei richiesto per il trasferimento presso la sede di {0} del {1}, è stato confermato..
         /// </summary>
         internal static string MessaggioAttivaRichiestaAnticipi {
             get {
@@ -188,7 +188,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate..
+        ///   Looks up a localized string similar to Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento presso la sede di  {0} del {1}, sono state confermate..
         /// </summary>
         internal static string MessaggioAttivazioneMaggiorazioniFamiliari {
             get {
@@ -215,7 +215,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta maggiorazione abitazione..
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di maggiorazione abitazione..
         /// </summary>
         internal static string MessaggioNotificaMaggiorazioneAbitazione {
             get {
@@ -287,7 +287,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l&apos;ufficio {1} dal {2}..
+        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l&apos;ufficio di {1} dal {2}..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaporto {
             get {
@@ -296,7 +296,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} è stata conclusa..
+        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per il trasferimento presso la sede di {0} del {1} è stata conclusa..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaportoConcluse {
             get {
@@ -305,7 +305,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento {1}..
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento presso la sede di {1}..
         /// </summary>
         internal static string MessaggioRimborsoSuccessivoTitoliViaggio {
             get {
@@ -485,7 +485,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica richiesta maggiorazione abitazione..
+        ///   Looks up a localized string similar to Notifica richiesta per la maggiorazione abitazione..
         /// </summary>
         internal static string OggettoNotificaRichiestaMaggiorazioneAbitazione {
             get {

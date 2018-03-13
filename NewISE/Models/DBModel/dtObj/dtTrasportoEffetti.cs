@@ -449,8 +449,10 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var ld = atep.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).OrderByDescending(a => a.DATAINSERIMENTO).ToList();
 
+                        var rtep = atep.RINUNCIA_TE_P;
+
                         bool modificabile = false;
-                        if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false)
+                        if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false && rtep.RINUNCIATE==false)
                         {
                             modificabile = true;
                         }
@@ -1011,6 +1013,115 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public RinunciaTEPartenzaModel GetRinunciaTEPartenza(decimal idTEPartenza, ModelDBISE db)
+        {
+            try
+            {
+                RinunciaTEPartenzaModel rtepm = new RinunciaTEPartenzaModel();
+                var tep = db.TEPARTENZA.Find(idTEPartenza);
+                var atep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATEPARTENZA).First();
+                var rtep = atep.RINUNCIA_TE_P;
+                if (rtep != null)
+                {
+                    rtepm = new RinunciaTEPartenzaModel()
+                    {
+                        idATEPartenza = rtep.IDATEPARTENZA,
+                        rinunciaTE = rtep.RINUNCIATE,
+                        dataAggiornamento = rtep.DATAAGGIORNAMENTO
+                    };
+                }
+                else
+                {
+                    var new_rtep = this.CreaRinunciaTEPartenza(atep.IDATEPARTENZA, db);
+                    rtepm = new RinunciaTEPartenzaModel()
+                    {
+                        idATEPartenza = new_rtep.IDATEPARTENZA,
+                        rinunciaTE = new_rtep.RINUNCIATE,
+                        dataAggiornamento = new_rtep.DATAAGGIORNAMENTO
+                    };
+                }
+
+                return rtepm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public RINUNCIA_TE_P CreaRinunciaTEPartenza(decimal idATEPartenza, ModelDBISE db)
+        {
+            try
+            {
+                RINUNCIA_TE_P new_ratep = new RINUNCIA_TE_P()
+                {
+                    IDATEPARTENZA = idATEPartenza,
+                    RINUNCIATE = false,
+                    DATAAGGIORNAMENTO = DateTime.Now,
+                };
+                db.RINUNCIA_TE_P.Add(new_ratep);
+
+                if (db.SaveChanges() <= 0)
+                {
+                    throw new Exception(string.Format("Non è stato possibile creare una nuova rinuncia trasporto effetti partenza."));
+                }
+                else
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova rinuncia trasporto effetti partenza.", "RINUNCIA_TE_P", db, new_ratep.ATTIVITATEPARTENZA.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, new_ratep.IDATEPARTENZA);
+                }
+
+                return new_ratep;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Aggiorna_RinunciaTEPartenza(decimal idATEPArtenza)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var atep = db.ATTIVITATEPARTENZA.Find(idATEPArtenza);
+                    var rtep = atep.RINUNCIA_TE_P;
+
+                    if (rtep != null)
+                    {
+                        var stato_rtep = rtep.RINUNCIATE;
+                        if (stato_rtep)
+                        {
+                            rtep.RINUNCIATE = false;
+                            rtep.DATAAGGIORNAMENTO = DateTime.Now;
+                        }
+                        else
+                        {
+                            rtep.RINUNCIATE = true;
+                            rtep.DATAAGGIORNAMENTO = DateTime.Now;
+                        }
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception(string.Format("Impossibile aggiornare lo stato della rinuncia relativo al trasporto effetti in partenza"));
+                        }
+                        else
+                        {
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                "Modifica Rinuncia TE Partenza", "RINUNCIA_TE_P", db, atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
+                                rtep.IDATEPARTENZA);
+                        }
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
     }

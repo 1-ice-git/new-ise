@@ -6,6 +6,7 @@
     bool attivazioneTE = Convert.ToBoolean(ViewData["attivazioneTE"]);
     bool DocContributo = Convert.ToBoolean(ViewData["DocContributo"]);
     bool DocAttestazione = Convert.ToBoolean(ViewData["DocAttestazione"]);
+    bool rinunciaTEPartenza = Convert.ToBoolean(ViewData["rinunciaTEPartenza"]);
     decimal idTrasportoEffettiPartenza = Convert.ToDecimal(ViewData["idTrasportoEffettiPartenza"]);
     decimal indennita = Convert.ToDecimal(ViewData["indennita"]);
     decimal perc_km = Convert.ToDecimal(ViewData["perc_km"]);
@@ -61,17 +62,26 @@
                     <b>Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)</b>
                 </div>
                 <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
-                    @if (DocContributo)
+                    @if (rinunciaTEPartenza)
                     {
-                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                        <a id="linkElencoDocTE" disabled class="disabled">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" />
                         </a>
                     }
                     else
                     {
-                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
-                        </a>
+                        if (DocContributo)
+                        {
+                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                            </a>
+                        }
                     }
                 </div>
             </div>
@@ -80,17 +90,26 @@
                     <b>Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)</b>
                 </div>
                 <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
-                    @if (DocAttestazione)
+                    @if (rinunciaTEPartenza)
                     {
-                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documenti attestazione trasloco" />
+                        <a id="linkElencoDocTE" disabled class="disabled">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" />
                         </a>
                     }
                     else
                     {
-                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
-                        </a>
+                        if (DocAttestazione)
+                        {
+                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documenti attestazione trasloco" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
+                            </a>
+                        }
                     }
                 </div>
             </div>

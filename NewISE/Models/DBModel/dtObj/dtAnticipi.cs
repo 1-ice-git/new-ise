@@ -785,10 +785,12 @@ namespace NewISE.Models.DBModel.dtObj
                         if (stato_ra)
                         {
                             ra.RINUNCIAANT = false;
+                            ra.DATAAGGIORNAMENTO = DateTime.Now;
                         }
                         else
                         {
                             ra.RINUNCIAANT = true;
+                            ra.DATAAGGIORNAMENTO = DateTime.Now;
                         }
 
                         if (db.SaveChanges() <= 0)

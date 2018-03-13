@@ -121,16 +121,16 @@
     <value>Si informa il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaAnticipi" xml:space="preserve">
-    <value>Si notifica che la richiesta di anticipo per il traasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta di anticipo per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaInizialeTitoloViaggio" xml:space="preserve">
     <value>Si notifica che la richiesta dei titoli di viaggio per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaMaggiorazioneAbitazione" xml:space="preserve">
-    <value>Si notifica che la richiesta di maggiorazione abitazione relativa al trasferimento presso la sede di {0} a partire dal giorno {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta di maggiorazione abitazione relativa al trasferimento presso la sede di {0}, a partire dal giorno {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
-    <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1} è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaPassaporto" xml:space="preserve">
     <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;br&gt;&lt;center&gt;&lt;h4&gt;{0}&lt;/h4&gt; &lt;/center&gt;a partire dal giorno  &lt;br&gt;&lt;center&gt;&lt;h4&gt;{1}&lt;/h4&gt;&lt;/center&gt;è stata annullata.&lt;/p&gt;
@@ -143,10 +143,10 @@
     <value>Si notifica che la richiesta di rimborso per il trasporto effetti in partenza riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaTrasportoEffettiRientro" xml:space="preserve">
-    <value>Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAttivaRichiestaAnticipi" xml:space="preserve">
-    <value>Si notifica che l'anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermato.</value>
+    <value>Si notifica che l'anticipo da lei richiesto per il trasferimento presso la sede di {0} del {1}, è stato confermato.</value>
   </data>
   <data name="MessaggioAttivaRichiestaInizialeTitoliViaggio" xml:space="preserve">
     <value>Si notifica che la richiesta dei titoli di viaggio è stata confermata.</value>
@@ -161,7 +161,7 @@
     <value>Notifica della Maggiorazione Abitazione per il dipendente {0}, trasferito il {1} nella sede di {2}.</value>
   </data>
   <data name="MessaggioAttivazioneMaggiorazioniFamiliari" xml:space="preserve">
-    <value>Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate.</value>
+    <value>Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento presso la sede di  {0} del {1}, sono state confermate.</value>
   </data>
   <data name="MessaggioAttivazioneTrasportoEffettiPartenza" xml:space="preserve">
     <value>Si informa la richiesta di rimborso per il trasporto effetti in fase di partenza è stata accettata.</value>
@@ -170,7 +170,7 @@
     <value>Si informa la richiesta di rimborso per il trasporto effetti in fase di rientro è stata accettata.</value>
   </data>
   <data name="MessaggioNotificaMaggiorazioneAbitazione" xml:space="preserve">
-    <value>Si informa che il dipendente {0} ha effettuato la richiesta maggiorazione abitazione.</value>
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta di maggiorazione abitazione.</value>
   </data>
   <data name="MessaggioNotificaRichiestaAnticipi" xml:space="preserve">
     <value>Si informa che il dipendente {0} ha effettuato la richiesta di anticipo.</value>
@@ -194,13 +194,13 @@
     <value>Si informa che il dipendente {0} ha effettuato la richiesta di rimborso per il trasporto effetti in fase di rientro.</value>
   </data>
   <data name="MessaggioRichiestaPratichePassaporto" xml:space="preserve">
-    <value>Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l'ufficio {1} dal {2}.</value>
+    <value>Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l'ufficio di {1} dal {2}.</value>
   </data>
   <data name="MessaggioRichiestaPratichePassaportoConcluse" xml:space="preserve">
-    <value>Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} è stata conclusa.</value>
+    <value>Si notifica che la pratica per la richiesta dei passaporto per il trasferimento presso la sede di {0} del {1} è stata conclusa.</value>
   </data>
   <data name="MessaggioRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
-    <value>Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento {1}.</value>
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento presso la sede di {1}.</value>
   </data>
   <data name="OggettoAnnullamentoTrasferimento" xml:space="preserve">
     <value>Notifica annullamento trasferimento.</value>
@@ -260,7 +260,7 @@
     <value>Notifica della richiesta per i titoli di viaggio.</value>
   </data>
   <data name="OggettoNotificaRichiestaMaggiorazioneAbitazione" xml:space="preserve">
-    <value>Notifica richiesta maggiorazione abitazione.</value>
+    <value>Notifica richiesta per la maggiorazione abitazione.</value>
   </data>
   <data name="OggettoNotificaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Notifica della richiesta per le Maggiorazioni Familiari.</value>

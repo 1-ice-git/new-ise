@@ -47,6 +47,7 @@ namespace NewISE.Controllers
                         bool DocAttestazione = false;
                         decimal NumAttivazioni = 0;
                         bool trasfAnnullato = false;
+                        bool rinunciaTEPartenza = false;
 
                         TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
 
@@ -65,6 +66,13 @@ namespace NewISE.Controllers
                         tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
                         tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100, 2);
 
+                        using (ModelDBISE db = new ModelDBISE())
+                        {
+                            var rtep = dtte.GetRinunciaTEPartenza(idTrasportoEffettiPartenza, db);
+                            rinunciaTEPartenza = rtep.rinunciaTE;
+                        }
+
+                        ViewData.Add("rinunciaTEPartenza", rinunciaTEPartenza);
                         ViewData.Add("richiestaTE", richiestaTE);
                         ViewData.Add("attivazioneTE", attivazioneTE);
                         ViewData.Add("DocContributo", DocContributo);
@@ -118,6 +126,7 @@ namespace NewISE.Controllers
                 bool attivazioneTEPartenza = false;
                 decimal NumAttivazioniTEPartenza = 0;
                 decimal idStatoTrasferimento = 0;
+                bool rinunciaTEPartenza = false;
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -143,6 +152,12 @@ namespace NewISE.Controllers
                         richiestaTEPartenza = true;
                     }
 
+                    using (ModelDBISE db = new ModelDBISE())
+                    {
+                        var rtep = dtte.GetRinunciaTEPartenza(idTrasportoEffettiPartenza, db);
+                        rinunciaTEPartenza = rtep.rinunciaTE;
+                    }
+
                     NumAttivazioniTEPartenza = dtte.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
                 }
 
@@ -154,6 +169,7 @@ namespace NewISE.Controllers
                 ViewData.Add("richiestaTEPartenza", richiestaTEPartenza);
                 ViewData.Add("attivazioneTEPartenza", attivazioneTEPartenza);
                 ViewData.Add("NumAttivazioniTEPartenza", NumAttivazioniTEPartenza);
+                ViewData.Add("rinunciaTEPartenza", rinunciaTEPartenza);
 
 
                 return PartialView();
@@ -492,6 +508,67 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             return PartialView(msg);
+        }
+
+        public ActionResult GestioneRinunciaTEPartenza(decimal idTrasportoEffettiPartenza)
+        {
+            RinunciaTEPartenzaModel rtepm = new RinunciaTEPartenzaModel();
+            bool soloLettura = false;
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                    {
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
+                            if (atep.RICHIESTATRASPORTOEFFETTI == true || atep.IDANTIVIPOSALDOTE==(decimal)EnumTipoAnticipoSaldoTE.Saldo)
+                            {
+                                soloLettura = true;
+                            }
+
+                            rtepm = dtte.GetRinunciaTEPartenza(idTrasportoEffettiPartenza, db);
+                            var idATEPartenza = rtepm.idATEPartenza;
+
+                            EnumStatoTraferimento statoTrasferimento = 0;
+                            var t = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
+                            statoTrasferimento = t.idStatoTrasferimento;
+                            if (statoTrasferimento == EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Attivo)
+                            {
+                                soloLettura = true;
+                            }
+
+
+                            ViewData.Add("soloLettura", soloLettura);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(rtepm);
+        }
+
+        public JsonResult AggiornaRinunciaTEPartenza(decimal idATEPartenza)
+        {
+            try
+            {
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                {
+                    dtte.Aggiorna_RinunciaTEPartenza(idATEPartenza);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { errore = ex.Message, msg = "" });
+            }
+            return Json(new { errore = "", msg = "Aggiornamento eseguito correttamente." });
         }
 
 
