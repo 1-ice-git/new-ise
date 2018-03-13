@@ -47,7 +47,6 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    var ra = this.CreaRinunciaAnticipi(new_aa.IDATTIVITAANTICIPI, db);
 
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione anticipi.", "ATTIVITAANTICIPI", db, new_aa.IDPRIMASISTEMAZIONE, new_aa.IDATTIVITAANTICIPI);
                 }
@@ -100,49 +99,46 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public AttivitaAnticipiModel GetUltimaAttivitaAnticipi(decimal idPrimaSistemazione)
+        public AttivitaAnticipiModel GetUltimaAttivitaAnticipi(decimal idPrimaSistemazione, ModelDBISE db)
         {
             try
             {
                 AttivitaAnticipiModel aam = new AttivitaAnticipiModel();
 
-                using (ModelDBISE db = new ModelDBISE())
+                var ps = db.PRIMASITEMAZIONE.Find(idPrimaSistemazione);
+
+                var aal = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderByDescending(a=>a.IDATTIVITAANTICIPI).ToList();
+
+                if (aal?.Any()??false)
                 {
-                    var ps = db.PRIMASITEMAZIONE.Find(idPrimaSistemazione);
+                    var aa = aal.First();
 
-                    var aal = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderByDescending(a=>a.IDATTIVITAANTICIPI).ToList();
-
-                    if (aal?.Any()??false)
+                    aam = new AttivitaAnticipiModel()
                     {
-                        var aa = aal.First();
+                        idAttivitaAnticipi=aa.IDATTIVITAANTICIPI,
+                        idPrimaSistemazione = aa.IDPRIMASISTEMAZIONE,
+                        notificaRichiestaAnticipi=aa.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta=aa.DATANOTIFICARICHIESTA,
+                        attivaRichiestaAnticipi=aa.ATTIVARICHIESTA,
+                        dataAttivaRichiesta=aa.DATAATTIVARICHIESTA,
+                        dataAggiornamento=aa.DATAAGGIORNAMENTO,
+                        annullato=aa.ANNULLATO
+                    };
+                }else
+                {
+                    var aa_new =this.CreaAttivitaAnticipi(idPrimaSistemazione, db);
 
-                        aam = new AttivitaAnticipiModel()
-                        {
-                            idAttivitaAnticipi=aa.IDATTIVITAANTICIPI,
-                            idPrimaSistemazione = aa.IDPRIMASISTEMAZIONE,
-                            notificaRichiestaAnticipi=aa.NOTIFICARICHIESTA,
-                            dataNotificaRichiesta=aa.DATANOTIFICARICHIESTA,
-                            attivaRichiestaAnticipi=aa.ATTIVARICHIESTA,
-                            dataAttivaRichiesta=aa.DATAATTIVARICHIESTA,
-                            dataAggiornamento=aa.DATAAGGIORNAMENTO,
-                            annullato=aa.ANNULLATO
-                        };
-                    }else
+                    aam = new AttivitaAnticipiModel()
                     {
-                        var aa_new =this.CreaAttivitaAnticipi(idPrimaSistemazione, db);
-
-                        aam = new AttivitaAnticipiModel()
-                        {
-                            idAttivitaAnticipi = aa_new.IDATTIVITAANTICIPI,
-                            idPrimaSistemazione = aa_new.IDPRIMASISTEMAZIONE,
-                            notificaRichiestaAnticipi = aa_new.NOTIFICARICHIESTA,
-                            dataNotificaRichiesta = aa_new.DATANOTIFICARICHIESTA,
-                            attivaRichiestaAnticipi = aa_new.ATTIVARICHIESTA,
-                            dataAttivaRichiesta = aa_new.DATAATTIVARICHIESTA,
-                            dataAggiornamento = aa_new.DATAAGGIORNAMENTO,
-                            annullato = aa_new.ANNULLATO
-                        };
-                    }
+                        idAttivitaAnticipi = aa_new.IDATTIVITAANTICIPI,
+                        idPrimaSistemazione = aa_new.IDPRIMASISTEMAZIONE,
+                        notificaRichiestaAnticipi = aa_new.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = aa_new.DATANOTIFICARICHIESTA,
+                        attivaRichiestaAnticipi = aa_new.ATTIVARICHIESTA,
+                        dataAttivaRichiesta = aa_new.DATAATTIVARICHIESTA,
+                        dataAggiornamento = aa_new.DATAAGGIORNAMENTO,
+                        annullato = aa_new.ANNULLATO
+                    };
                 }
 
                 return aam;
@@ -154,53 +150,50 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public AnticipiViewModel GetAnticipi(decimal idAttivitaAnticipi)
+        public AnticipiViewModel GetAnticipi(decimal idAttivitaAnticipi, ModelDBISE db)
         {
             try
             {
                 AnticipiViewModel avm = new AnticipiViewModel();
                 ANTICIPI a = new ANTICIPI();
 
-                using (ModelDBISE db = new ModelDBISE())
+                var idTrasferimento = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi).PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
                 {
-                    var idTrasferimento = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi).PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO;
-
-                    using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
-                    {
-                        var importoPrevisto =Math.Round(ci.anticipoIndennitaSistemazioneLorda,2);
+                    var importoPrevisto =Math.Round(ci.anticipoIndennitaSistemazioneLorda,2);
     
-                        var al = db.ANTICIPI.Where(x=>x.IDATTIVITAANTICIPI==idAttivitaAnticipi).ToList();
+                    var al = db.ANTICIPI.Where(x=>x.IDATTIVITAANTICIPI==idAttivitaAnticipi).ToList();
 
-                        if(al?.Any()??false)
-                        {
-                            a = al.First();
+                    if(al?.Any()??false)
+                    {
+                        a = al.First();
                           
-                            avm = new AnticipiViewModel()
-                            {
-                                idAttivitaAnticipi=a.IDATTIVITAANTICIPI,
-                                idTipologiaAnticipi=a.IDTIPOLOGIAANTICIPI,
-                                dataAggiornamento=a.DATAAGGIORNAMENTO,
-                                annullato=a.ANNULLATO,
-                                ImportoPrevisto=importoPrevisto,
-                                PercentualeAnticipoRichiesto=a.PERCENTUALEANTICIPO
-                            };
-                        }
-                        else
+                        avm = new AnticipiViewModel()
                         {
-                            a = this.CreaAnticipi(idAttivitaAnticipi, db);
+                            idAttivitaAnticipi=a.IDATTIVITAANTICIPI,
+                            idTipologiaAnticipi=a.IDTIPOLOGIAANTICIPI,
+                            dataAggiornamento=a.DATAAGGIORNAMENTO,
+                            annullato=a.ANNULLATO,
+                            ImportoPrevisto=importoPrevisto,
+                            PercentualeAnticipoRichiesto=a.PERCENTUALEANTICIPO
+                        };
+                    }
+                    else
+                    {
+                        a = this.CreaAnticipi(idAttivitaAnticipi, db);
         
-                            var new_avm = new AnticipiViewModel()
-                            {
-                                idAttivitaAnticipi = a.IDATTIVITAANTICIPI,
-                                idTipologiaAnticipi = a.IDTIPOLOGIAANTICIPI,
-                                dataAggiornamento = a.DATAAGGIORNAMENTO,
-                                annullato = a.ANNULLATO,
-                                ImportoPrevisto = importoPrevisto,
-                                PercentualeAnticipoRichiesto = a.PERCENTUALEANTICIPO
-                            };
+                        var new_avm = new AnticipiViewModel()
+                        {
+                            idAttivitaAnticipi = a.IDATTIVITAANTICIPI,
+                            idTipologiaAnticipi = a.IDTIPOLOGIAANTICIPI,
+                            dataAggiornamento = a.DATAAGGIORNAMENTO,
+                            annullato = a.ANNULLATO,
+                            ImportoPrevisto = importoPrevisto,
+                            PercentualeAnticipoRichiesto = a.PERCENTUALEANTICIPO
+                        };
 
-                            avm = new_avm;
-                        }
+                        avm = new_avm;
                     }
                 }
 
@@ -213,6 +206,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
         }
+
 
         public decimal CalcolaImportoPercepito(decimal idAttivitaAnticipi, decimal percRichiesta)
         {
@@ -256,45 +250,47 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var aa = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi);
 
+                        var ra = aa.RINUNCIAANTICIPI;
+                        var rinunciaAnticipi = ra.RINUNCIAANT;
+
                         var a = aa.ANTICIPI.Where(x => x.IDTIPOLOGIAANTICIPI == (decimal)EnumTipologiaAnticipi.Prima_Sistemazione).First();
 
-                        if(a!=null && a.IDATTIVITAANTICIPI>0)
+                        if (a.PERCENTUALEANTICIPO != percentualeRichiesta)
                         {
                             a.PERCENTUALEANTICIPO = percentualeRichiesta;
+                            a.DATAAGGIORNAMENTO = DateTime.Now;
 
                             if (db.SaveChanges() <= 0)
                             {
                                 throw new Exception("Errore nella fase di aggiornamento della percentuale di anticipo richiesta.");
                             }
-                            else
+                        }
+                        aa.NOTIFICARICHIESTA = true;
+                        aa.DATANOTIFICARICHIESTA = DateTime.Now;
+                        aa.DATAAGGIORNAMENTO = DateTime.Now;
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione anticipi.");
+                        }
+                        else
+                        {
+                            this.EmailNotificaRichiestaAnticipi(idAttivitaAnticipi, db);
+
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                             {
-                                aa.NOTIFICARICHIESTA = true;
-                                aa.DATANOTIFICARICHIESTA = DateTime.Now;
-                                aa.DATAAGGIORNAMENTO = DateTime.Now;
-
-                                if (db.SaveChanges() <= 0)
+                                CalendarioEventiModel cem = new CalendarioEventiModel()
                                 {
-                                    throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione anticipi.");
-                                }
-                                else
-                                {
-                                    this.EmailNotificaRichiestaAnticipi(idAttivitaAnticipi, db);
+                                    idFunzioneEventi = EnumFunzioniEventi.RichiestaAnticipi,
+                                    idTrasferimento = aa.PRIMASITEMAZIONE.IDPRIMASISTEMAZIONE,
+                                    DataInizioEvento = DateTime.Now.Date,
+                                    DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaAnticipi)).Date,
+                                };
 
-                                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                                    {
-                                    CalendarioEventiModel cem = new CalendarioEventiModel()
-                                    {
-                                        idFunzioneEventi = EnumFunzioniEventi.RichiestaAnticipi,
-                                        idTrasferimento = aa.PRIMASITEMAZIONE.IDPRIMASISTEMAZIONE,
-                                        DataInizioEvento = DateTime.Now.Date,
-                                        DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaAnticipi)).Date,
-                                    };
-
-                                    dtce.InsertCalendarioEvento(ref cem, db);
-                                }
-                                }
+                                dtce.InsertCalendarioEvento(ref cem, db);
                             }
                         }
+                        //}
 
                         db.Database.CurrentTransaction.Commit();
                     }
@@ -716,7 +712,7 @@ namespace NewISE.Models.DBModel.dtObj
                 RINUNCIAANTICIPI new_ra = new RINUNCIAANTICIPI()
                 {
                     IDATTIVITAANTICIPI = idAttivitaAnticipi,
-                    RINUNCIAANTICIPI1 = false,
+                    RINUNCIAANT = false,
                     DATAAGGIORNAMENTO = DateTime.Now,
                 };
                 db.RINUNCIAANTICIPI.Add(new_ra);
@@ -737,6 +733,85 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+        public RinunciaAnticipiModel GetRinunciaAnticipi(decimal idPrimaSistemazione, ModelDBISE db)
+        {
+            try
+            {
+                RinunciaAnticipiModel ram = new RinunciaAnticipiModel();
+                var ps = db.PRIMASITEMAZIONE.Find(idPrimaSistemazione);
+                var aa = ps.ATTIVITAANTICIPI.Where(a=>a.ANNULLATO==false).OrderByDescending(a=>a.IDATTIVITAANTICIPI).First();
+                var ra = aa.RINUNCIAANTICIPI;
+                if (ra!=null)
+                {
+                    ram = new RinunciaAnticipiModel()
+                    {
+                        idAttivitaAnticipi = aa.IDATTIVITAANTICIPI,
+                        rinunciaAnticipi = ra.RINUNCIAANT,
+                        dataAggiornamento = ra.DATAAGGIORNAMENTO
+                    };
+                }
+                else
+                {
+                    var new_ra = this.CreaRinunciaAnticipi(aa.IDATTIVITAANTICIPI, db);
+                    ram = new RinunciaAnticipiModel()
+                    {
+                        idAttivitaAnticipi = new_ra.IDATTIVITAANTICIPI,
+                        rinunciaAnticipi = new_ra.RINUNCIAANT,
+                        dataAggiornamento = new_ra.DATAAGGIORNAMENTO
+                    };
+                }
+
+                return ram;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Aggiorna_RinunciaAnticipi(decimal idAttivitaAnticipi)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var aa = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi);
+                    var ra = aa.RINUNCIAANTICIPI;
+
+                    if (ra!=null)
+                    {
+                        var stato_ra = ra.RINUNCIAANT;
+                        if (stato_ra)
+                        {
+                            ra.RINUNCIAANT = false;
+                        }
+                        else
+                        {
+                            ra.RINUNCIAANT = true;
+                        }
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception(string.Format("Impossibile aggiornare lo stato della rinuncia relativo alla richiesta di anticipo"));
+                        }
+                        else
+                        {
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                "Modifica RinunciaAnticipi", "RINUNCIAANTICIPI", db, aa.PRIMASITEMAZIONE.IDPRIMASISTEMAZIONE,
+                                ra.IDATTIVITAANTICIPI);
+                        }
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
     }
 }

@@ -9,6 +9,7 @@ using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
+using NewISE.EF;
 
 namespace NewISE.Controllers
 {
@@ -68,44 +69,67 @@ namespace NewISE.Controllers
 
         public ActionResult AttivitaAnticipi(decimal idPrimaSistemazione)
         {
+
             AnticipiViewModel avm = new AnticipiViewModel();
 
-            try
+            using (ModelDBISE db = new ModelDBISE())
             {
-                using (dtAnticipi dta = new dtAnticipi())
+                db.Database.BeginTransaction();
+
+                try
                 {
-                    bool soloLettura = false;
 
-                    AttivitaAnticipiModel aam = dta.GetUltimaAttivitaAnticipi(idPrimaSistemazione);
-
-                    var idAttivitaAnticipi = aam.idAttivitaAnticipi;
-
-                    if (aam.notificaRichiestaAnticipi)
+                    using (dtAnticipi dta = new dtAnticipi())
                     {
-                        soloLettura = true;
-                    }
-                    avm = dta.GetAnticipi(idAttivitaAnticipi);
-
-                    using (dtTrasferimento dtt = new dtTrasferimento())
-                    {
-                        var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
-                        if (t.idStatoTrasferimento == EnumStatoTraferimento.Annullato || t.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                        using (dtTrasferimento dtt = new dtTrasferimento())
                         {
-                            soloLettura = true;
+                            bool soloLettura = false;
+
+                            AttivitaAnticipiModel aam = dta.GetUltimaAttivitaAnticipi(idPrimaSistemazione, db);
+
+                            var idAttivitaAnticipi = aam.idAttivitaAnticipi;
+
+                            if (aam.notificaRichiestaAnticipi)
+                            {
+                                soloLettura = true;
+                            }
+
+                            avm = dta.GetAnticipi(idAttivitaAnticipi, db);
+
+                            RinunciaAnticipiModel ram = dta.GetRinunciaAnticipi(idPrimaSistemazione, db);
+                            aam.RinunciaAnticipi = ram;
+
+                            if (ram.rinunciaAnticipi)
+                            {
+                                soloLettura = true;
+                                avm.percentualeAnticipo = 0;
+                                avm.PercentualeAnticipoRichiesto = 0;
+                            }
+
+                            var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
+                            if (t.idStatoTrasferimento == EnumStatoTraferimento.Annullato || t.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                            {
+                                soloLettura = true;
+                            }
+
+
+                            decimal NumAttivazioni = dta.GetNumAttivazioniAnticipi(idPrimaSistemazione);
+
+                            ViewData.Add("NumAttivazioni", NumAttivazioni);
+                            ViewData.Add("rinunciaAnticipi", ram.rinunciaAnticipi);
+                            ViewData.Add("soloLettura", soloLettura);
+                            ViewData.Add("idAttivitaAnticipi", idAttivitaAnticipi);
                         }
                     }
 
-                    decimal NumAttivazioni = dta.GetNumAttivazioniAnticipi(idPrimaSistemazione);
+                    db.Database.CurrentTransaction.Commit();
 
-                    ViewData.Add("NumAttivazioni", NumAttivazioni);
-                    ViewData.Add("soloLettura", soloLettura);
-                    ViewData.Add("idAttivitaAnticipi", idAttivitaAnticipi);
                 }
-
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                }
             }
 
             return PartialView(avm);
@@ -116,58 +140,66 @@ namespace NewISE.Controllers
         {
             AttivitaAnticipiModel aam = new AttivitaAnticipiModel();
 
-
-
-
             try
             {
-                bool amministratore = Utility.Amministratore();
-
-                string disabledNotificaRichiesta = "disabled";
-                string hiddenNotificaRichiesta = "";
-                string disabledAttivaRichiesta = "disabled";
-                string hiddenAttivaRichiesta = "hidden";
-                string disabledAnnullaRichiesta = "disabled";
-                string hiddenAnnullaRichiesta = "hidden";
-
-                using (dtAnticipi dta = new dtAnticipi())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    aam = dta.GetUltimaAttivitaAnticipi(idPrimaSistemazione);
-                    var idAttivitaAnticipi = aam.idAttivitaAnticipi;
-                }
-
-                EnumStatoTraferimento statoTrasferimento = 0;
-                using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
-                    statoTrasferimento = t.idStatoTrasferimento;
-                }
-
-                bool notificaRichiesta = aam.notificaRichiestaAnticipi;
-                bool attivaRichiesta = aam.attivaRichiestaAnticipi;
-
-
-                //se amministratore vedo i pulsanti altrimenti solo notifica
-                if (amministratore)
-                {
-                    hiddenAttivaRichiesta = "";
-                    hiddenAnnullaRichiesta = "";
-
-                    if (notificaRichiesta && attivaRichiesta == false && statoTrasferimento!=EnumStatoTraferimento.Attivo && statoTrasferimento!=EnumStatoTraferimento.Annullato )
+                    using (dtAnticipi dta = new dtAnticipi())
                     {
-                        disabledAttivaRichiesta = "";
-                        disabledAnnullaRichiesta = "";
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+
+                            bool amministratore = Utility.Amministratore();
+
+                            string disabledNotificaRichiesta = "disabled";
+                            string hiddenNotificaRichiesta = "";
+                            string disabledAttivaRichiesta = "disabled";
+                            string hiddenAttivaRichiesta = "hidden";
+                            string disabledAnnullaRichiesta = "disabled";
+                            string hiddenAnnullaRichiesta = "hidden";
+        
+                            aam = dta.GetUltimaAttivitaAnticipi(idPrimaSistemazione, db);
+                            var idAttivitaAnticipi = aam.idAttivitaAnticipi;
+
+                            EnumStatoTraferimento statoTrasferimento = 0;
+                            var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
+                            statoTrasferimento = t.idStatoTrasferimento;
+
+                            bool notificaRichiesta = aam.notificaRichiestaAnticipi;
+                            bool attivaRichiesta = aam.attivaRichiestaAnticipi;
+
+                            var ra = dta.GetRinunciaAnticipi(idPrimaSistemazione, db);
+                            var rinunciaAnticipi = ra.rinunciaAnticipi;
+
+                            //se amministratore vedo i pulsanti altrimenti solo notifica
+                            if (amministratore)
+                            {
+                                hiddenAttivaRichiesta = "";
+                                hiddenAnnullaRichiesta = "";
+        
+                                if (notificaRichiesta && attivaRichiesta == false && statoTrasferimento!=EnumStatoTraferimento.Attivo && statoTrasferimento!=EnumStatoTraferimento.Annullato )
+                                {
+                                    disabledAttivaRichiesta = "";
+                                    disabledAnnullaRichiesta = "";
+                                }
+                            }
+
+                            if(rinunciaAnticipi && notificaRichiesta ==false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            {
+                                disabledNotificaRichiesta = "";
+                            }
+
+                            ViewData.Add("disabledAnnullaRichiesta", disabledAnnullaRichiesta);
+                            ViewData.Add("disabledAttivaRichiesta", disabledAttivaRichiesta);
+                            ViewData.Add("disabledNotificaRichiesta", disabledNotificaRichiesta);
+                            ViewData.Add("hiddenAnnullaRichiesta", hiddenAnnullaRichiesta);
+                            ViewData.Add("hiddenAttivaRichiesta", hiddenAttivaRichiesta);
+                            ViewData.Add("hiddenNotificaRichiesta", hiddenNotificaRichiesta);
+                            ViewData.Add("amministratore", amministratore);
+                        }
+
                     }
                 }
-
-                ViewData.Add("disabledAnnullaRichiesta", disabledAnnullaRichiesta);
-                ViewData.Add("disabledAttivaRichiesta", disabledAttivaRichiesta);
-                ViewData.Add("disabledNotificaRichiesta", disabledNotificaRichiesta);
-                ViewData.Add("hiddenAnnullaRichiesta", hiddenAnnullaRichiesta);
-                ViewData.Add("hiddenAttivaRichiesta", hiddenAttivaRichiesta);
-                ViewData.Add("hiddenNotificaRichiesta", hiddenNotificaRichiesta);
-                ViewData.Add("amministratore", amministratore);
-
             }
             catch (Exception ex)
             {
@@ -175,6 +207,52 @@ namespace NewISE.Controllers
             }
 
             return PartialView(aam);
+        }
+
+        public ActionResult GestioneRinunciaAnticipi(decimal idPrimaSistemazione)
+        {
+            RinunciaAnticipiModel ram = new RinunciaAnticipiModel();
+            bool soloLettura = false;
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtAnticipi dta = new dtAnticipi())
+                    {
+
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+
+                            ram = dta.GetRinunciaAnticipi(idPrimaSistemazione, db);
+                            var idAttivitaAnticipi = ram.idAttivitaAnticipi;
+
+                            EnumStatoTraferimento statoTrasferimento = 0;
+                            var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
+                            statoTrasferimento = t.idStatoTrasferimento;
+                            if (statoTrasferimento == EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Attivo)
+                            {
+                                soloLettura = true;
+                            }
+
+                            var aa = dta.GetUltimaAttivitaAnticipi(idPrimaSistemazione, db);
+                            if (aa.notificaRichiestaAnticipi==true)
+                            {
+                                soloLettura = true;
+                            }
+
+                            ViewData.Add("soloLettura", soloLettura);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(ram);
         }
 
         public JsonResult ConfermaNotificaRichiestaAnticipi(decimal idAttivitaAnticipi, decimal percentualeRichiesta)
@@ -289,6 +367,21 @@ namespace NewISE.Controllers
             return PartialView(msg);
         }
 
+        public JsonResult AggiornaRinunciaAnticipi(decimal idAttivitaAnticipi)
+        {
+            try
+            {
+                using (dtAnticipi dta = new dtAnticipi())
+                {
+                    dta.Aggiorna_RinunciaAnticipi(idAttivitaAnticipi);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { errore = ex.Message, msg = "" });
+            }
+            return Json(new { errore = "", msg = "Aggiornamento eseguito correttamente." });
+        }
 
     }
 }

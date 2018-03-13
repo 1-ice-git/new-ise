@@ -6,20 +6,24 @@
     decimal idPrimaSistemazione = Convert.ToDecimal(ViewData["idPrimaSistemazione"]);
 }
 
-<div class="row">
-    <div class="col-xs-12">
-        <div id="divAttivitaAnticipi">
-            @*@Html.Action("AttivitaAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })*@
+    <div class="row" style="height:220px">
+        <div class="col-xs-12">
+            <div id="divAttivitaAnticipi">
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <div id="divAttivazioneAnticipi">
-            @*@Html.Action("GestionePulsantiAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })*@
+
+    <div class="row" style="margin-right:15px">
+        <hr />
+        <div class="col-xs-4">
+            <div id="divRinunciaAnticipi">
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <div id="divAttivazioneAnticipi">
+            </div>
         </div>
     </div>
-</div>
 
 <div class="modal fade" id="ModalNotificaRichiestaAnticipi" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaAnticipiLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
@@ -91,7 +95,6 @@
 
 <script type="text/javascript">
     //debugger;
-
     AttivitaAnticipi();
 
     function GestionePulsantiNotificaAttivaAnnullaAnticipi() {
@@ -127,6 +130,39 @@
         });
     }
 
+    function GestioneRinunciaAnticipi() {
+        //debugger;
+        var rotta = "/Anticipi/GestioneRinunciaAnticipi";
+        var idPrimaSistemazione = parseInt('@idPrimaSistemazione');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idPrimaSistemazione: idPrimaSistemazione },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divRinunciaAnticipi").empty();
+                $("#divRinunciaAnticipi").html(result);
+                Sblocca();
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+
     function AttivitaAnticipi() {
         //debugger;
         var rotta = "/Anticipi/AttivitaAnticipi";
@@ -145,6 +181,7 @@
                 //debugger;
                 $("#divAttivitaAnticipi").empty();
                 $("#divAttivitaAnticipi").html(result);
+                GestioneRinunciaAnticipi();
                 GestionePulsantiNotificaAttivaAnnullaAnticipi();
 
             },
@@ -206,7 +243,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAttivitaAnticipi: idAttivitaAnticipi ,msg:testoAnnullaAnticipi},
+            data: { idAttivitaAnticipi: idAttivitaAnticipi, msg: testoAnnullaAnticipi },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -332,7 +369,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data:{idPrimaSistemazione:idPrimaSistemazione},
+            data: { idPrimaSistemazione: idPrimaSistemazione },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -353,5 +390,41 @@
         });
     }
 
+    function AggiornaRinunciaAnticipi(idAttivitaAnticipi) {
+        //debugger;
+        var rotta = "/Anticipi/AggiornaRinunciaAnticipi";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAttivitaAnticipi: idAttivitaAnticipi},
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.errore === "") {
+                    AttivitaAnticipi();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
 
 </script>

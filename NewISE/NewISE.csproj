@@ -3068,6 +3068,7 @@
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\NotificheModel.cs" />
     <Compile Include="Models\DBModel\PercAnticipoTEModel.cs" />
+    <Compile Include="Models\DBModel\RinunciaAnticipiModel.cs" />
     <Compile Include="Models\DBModel\TipoAnticipoTrasportoEffettiModel.cs" />
     <Compile Include="Models\DBModel\UtentiAutorizzatiModel.cs" />
     <Compile Include="Models\DBModel\Fascia_KMModel.cs" />
@@ -3392,6 +3393,7 @@
     <Content Include="Views\Anticipi\MessaggioAnnullaAnticipi.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\MessaggioAnnullaMAB.cshtml" />
     <Content Include="Views\TrasportoEffetti\MessaggioAnnullaTEPartenza.cshtml" />
+    <Content Include="Views\Anticipi\GestioneRinunciaAnticipi.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

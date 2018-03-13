@@ -32,6 +32,10 @@ namespace NewISE.Models.DBModel
 
         public AnticipiModel Anticipi { get; set; }
 
+        public RinunciaAnticipiModel RinunciaAnticipi { get; set; }
+
+
+
     }
 
 }
