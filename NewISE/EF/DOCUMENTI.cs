@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DOCUMENTI()
         {
+            this.DOC_ATER = new HashSet<DOC_ATER>();
             this.DOCUMENTI1 = new HashSet<DOCUMENTI>();
             this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
@@ -25,7 +26,6 @@ namespace NewISE.EF
             this.CONIUGE = new HashSet<CONIUGE>();
             this.CONIUGETITOLIVIAGGIO = new HashSet<CONIUGETITOLIVIAGGIO>();
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
-            this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
             this.NORMACALCOLO = new HashSet<NORMACALCOLO>();
             this.FIGLI = new HashSet<FIGLI>();
             this.FIGLITITOLIVIAGGIO = new HashSet<FIGLITITOLIVIAGGIO>();
@@ -44,6 +44,8 @@ namespace NewISE.EF
         public Nullable<decimal> FK_IDDOCUMENTO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOC_ATER> DOC_ATER { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI1 { get; set; }
         public virtual DOCUMENTI DOCUMENTI2 { get; set; }
         public virtual TIPODOCUMENTI TIPODOCUMENTI { get; set; }
@@ -61,8 +63,6 @@ namespace NewISE.EF
         public virtual ICollection<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NORMACALCOLO> NORMACALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

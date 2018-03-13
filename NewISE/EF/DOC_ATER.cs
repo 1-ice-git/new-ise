@@ -12,10 +12,11 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TIPOMOVIMENTO
+    public partial class DOC_ATER
     {
-        public decimal IDTIPOMOVIMENTO { get; set; }
-        public string TIPOMOVIMENTO1 { get; set; }
-        public string DESCMOVIMENTO { get; set; }
+        public decimal IDDOCUMENTO { get; set; }
+        public decimal IDATERIENTRO { get; set; }
+    
+        public virtual DOCUMENTI DOCUMENTI { get; set; }
     }
 }

@@ -14,7 +14,19 @@ namespace NewISE.EF
     
     public partial class ANTICIPOSALDOTE
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ANTICIPOSALDOTE()
+        {
+            this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
+            this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
+        }
+    
         public decimal IDANTICIPOSALDOTE { get; set; }
         public string TIPO { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
     }
 }

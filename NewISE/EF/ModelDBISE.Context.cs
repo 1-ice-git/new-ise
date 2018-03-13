@@ -47,9 +47,9 @@ namespace NewISE.EF
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         public virtual DbSet<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
-        public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
         public virtual DbSet<DESTINATARI> DESTINATARI { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
+        public virtual DbSet<DOC_ATER> DOC_ATER { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
         public virtual DbSet<EMAILUFFDEST> EMAILUFFDEST { get; set; }
@@ -107,11 +107,9 @@ namespace NewISE.EF
         public virtual DbSet<TIPOLOGIACOAN> TIPOLOGIACOAN { get; set; }
         public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
         public virtual DbSet<TIPOLOGIAFIGLIO> TIPOLOGIAFIGLIO { get; set; }
-        public virtual DbSet<TIPOMOVIMENTO> TIPOMOVIMENTO { get; set; }
         public virtual DbSet<TIPOREGOLACALCOLO> TIPOREGOLACALCOLO { get; set; }
         public virtual DbSet<TIPOSOSPENSIONE> TIPOSOSPENSIONE { get; set; }
         public virtual DbSet<TIPOTRASFERIMENTO> TIPOTRASFERIMENTO { get; set; }
-        public virtual DbSet<TIPOVOCE> TIPOVOCE { get; set; }
         public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
         public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
         public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
@@ -120,6 +118,5 @@ namespace NewISE.EF
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
-        public virtual DbSet<VOCI> VOCI { get; set; }
     }
 }
