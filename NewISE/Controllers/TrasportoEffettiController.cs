@@ -51,6 +51,8 @@ namespace NewISE.Controllers
 
                         TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
 
+                        var atep=dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
+
                         dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
                                                     out richiestaTE, out attivazioneTE,
                                                     out DocContributo, out DocAttestazione, out NumAttivazioni, out trasfAnnullato);
