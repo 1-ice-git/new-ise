@@ -254,7 +254,7 @@ namespace NewISE.Models.DBModel.dtObj
                         ATTIVITATEPARTENZA new_atep = new ATTIVITATEPARTENZA()
                         {
                             IDTEPARTENZA = idTEPartenza,
-                            IDANTIVIPOSALDOTE = (decimal)EnumTipoAnticipoSaldoTE.Anticipo,
+                            IDANTICIPOSALDOTE = (decimal)EnumTipoAnticipoSaldoTE.Anticipo,
                             RICHIESTATRASPORTOEFFETTI = false,
                             DATARICHIESTATRASPORTOEFFETTI = null,
                             ATTIVAZIONETRASPORTOEFFETTI = false,
@@ -557,7 +557,7 @@ namespace NewISE.Models.DBModel.dtObj
             ATTIVITATEPARTENZA new_atep = new ATTIVITATEPARTENZA()
             {
                 IDTEPARTENZA = idTEPartenza,
-                IDANTIVIPOSALDOTE = (NumAttivazioni == 0) ? ((decimal)EnumTipoAnticipoSaldoTE.Anticipo) : ((decimal)EnumTipoAnticipoSaldoTE.Saldo),
+                IDANTICIPOSALDOTE = (NumAttivazioni == 0) ? ((decimal)EnumTipoAnticipoSaldoTE.Anticipo) : ((decimal)EnumTipoAnticipoSaldoTE.Saldo),
                 RICHIESTATRASPORTOEFFETTI = false,
                 DATARICHIESTATRASPORTOEFFETTI = null,
                 ATTIVAZIONETRASPORTOEFFETTI = false,
@@ -656,7 +656,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     IDTEPARTENZA = atep_Old.IDTEPARTENZA,
                                     RICHIESTATRASPORTOEFFETTI = false,
-                                    IDANTIVIPOSALDOTE = atep_Old.IDANTIVIPOSALDOTE,
+                                    IDANTICIPOSALDOTE = atep_Old.IDANTICIPOSALDOTE,
                                     ATTIVAZIONETRASPORTOEFFETTI = false,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     ANNULLATO = false

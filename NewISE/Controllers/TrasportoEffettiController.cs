@@ -524,7 +524,7 @@ namespace NewISE.Controllers
                         using (dtTrasferimento dtt = new dtTrasferimento())
                         {
                             var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
-                            if (atep.RICHIESTATRASPORTOEFFETTI == true || atep.IDANTIVIPOSALDOTE==(decimal)EnumTipoAnticipoSaldoTE.Saldo)
+                            if (atep.RICHIESTATRASPORTOEFFETTI == true || atep.IDANTICIPOSALDOTE==(decimal)EnumTipoAnticipoSaldoTE.Saldo)
                             {
                                 soloLettura = true;
                             }
