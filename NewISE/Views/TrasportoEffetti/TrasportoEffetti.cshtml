@@ -136,6 +136,7 @@
                     var DocAttestazione = result.DocAttestazione;
                     var NumAttivazioni=result.NumAttivazioni;
                     var trasfAnnullato = result.trasfAnnullato;
+                    var rinunciaTE = result.rinunciaTE;
 
                     $("#btNotificaRichiestaTE").attr("disabled", "disabled");
                     $("#btNotificaRichiestaTE").addClass("disabled");
@@ -161,12 +162,21 @@
 
                     //Se risulta in lavorazione con almeno un documento abilito la il pulsante notifica
                     if (
-                        (
-                            (NumAttivazioni==0 && richiestaTE==false && attivazioneTE==false && DocContributo) ||
-                            (NumAttivazioni>0 && richiestaTE==false && attivazioneTE==false && DocAttestazione)
-                        ) &&
-                            trasfAnnullato==false
+                            (
+                                (
+                                    (NumAttivazioni==0 && richiestaTE==false && attivazioneTE==false && DocContributo) ||
+                                    (NumAttivazioni>0 && richiestaTE==false && attivazioneTE==false && DocAttestazione)
+                                ) &&
+                                    trasfAnnullato==false 
+                                && 
+                                    rinunciaTE == false
+                                
+                            ) || 
+                            (
+                                richiestaTE==false && attivazioneTE==false && trasfAnnullato==false && rinunciaTE == true
+                            )
                         )
+                        
                     {
                         $("#btNotificaRichiestaTE").removeAttr("disabled");
                         $("#btNotificaRichiestaTE").removeClass("disabled");
@@ -359,7 +369,7 @@
     }
 
     function MessaggioAnnullaRichiestaTE() {
-        debugger;
+        //debugger;
         var rotta = "/TrasportoEffetti/MessaggioAnnullaTEPartenza";
         var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
         $.ajax({
@@ -438,6 +448,7 @@
                 //debugger;
                 if (result.errore === "") {
                     TrasportoEffettiPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
                 } else {
                     ErroreElaborazioneAjax(result.msg);
                 }
