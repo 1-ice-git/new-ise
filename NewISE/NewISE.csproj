@@ -2444,6 +2444,27 @@
     <Compile Include="EF\DOC_ATER.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\ELABINDENNITA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ELABINDSISTEMAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ELABMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ELABTRASPEFFETTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FLUSSICEDOLINO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\NETTO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\OA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\RINUNCIAANTICIPI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2451,6 +2472,24 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RINUNCIA_TE_R.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TEORICI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOELABORAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOLIQUIDAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOMOVIMENTO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOVOCE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBModel\dtObj\dtParPercAnticipoTE.cs" />

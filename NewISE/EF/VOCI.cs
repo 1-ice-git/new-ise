@@ -12,21 +12,23 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TERIENTRO
+    public partial class VOCI
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TERIENTRO()
+        public VOCI()
         {
-            this.ELABTRASPEFFETTI = new HashSet<ELABTRASPEFFETTI>();
-            this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
+            this.NETTO = new HashSet<NETTO>();
         }
     
-        public decimal IDTERIENTRO { get; set; }
+        public decimal IDVOCI { get; set; }
+        public decimal IDTIPOLIQUIDAZIONE { get; set; }
+        public decimal IDTIPOVOCE { get; set; }
+        public string CODICEVOCE { get; set; }
+        public string DESCRIZIONE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
+        public virtual ICollection<NETTO> NETTO { get; set; }
+        public virtual TIPOLIQUIDAZIONE TIPOLIQUIDAZIONE { get; set; }
+        public virtual TIPOVOCE TIPOVOCE { get; set; }
     }
 }

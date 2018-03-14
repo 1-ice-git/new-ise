@@ -51,12 +51,17 @@ namespace NewISE.EF
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<DOC_ATER> DOC_ATER { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual DbSet<ELABINDENNITA> ELABINDENNITA { get; set; }
+        public virtual DbSet<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
+        public virtual DbSet<ELABMAB> ELABMAB { get; set; }
+        public virtual DbSet<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
         public virtual DbSet<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
         public virtual DbSet<EMAILUFFDEST> EMAILUFFDEST { get; set; }
         public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
         public virtual DbSet<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
+        public virtual DbSet<FLUSSICEDOLINO> FLUSSICEDOLINO { get; set; }
         public virtual DbSet<FUNZIONEEMAILUFF> FUNZIONEEMAILUFF { get; set; }
         public virtual DbSet<FUNZIONERIDUZIONE> FUNZIONERIDUZIONE { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
@@ -71,8 +76,10 @@ namespace NewISE.EF
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
+        public virtual DbSet<NETTO> NETTO { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
+        public virtual DbSet<OA> OA { get; set; }
         public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
         public virtual DbSet<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
@@ -97,19 +104,24 @@ namespace NewISE.EF
         public virtual DbSet<RUOLOUFFICIO> RUOLOUFFICIO { get; set; }
         public virtual DbSet<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual DbSet<STATOTRASFERIMENTO> STATOTRASFERIMENTO { get; set; }
+        public virtual DbSet<TEORICI> TEORICI { get; set; }
         public virtual DbSet<TEPARTENZA> TEPARTENZA { get; set; }
         public virtual DbSet<TERIENTRO> TERIENTRO { get; set; }
         public virtual DbSet<TFR> TFR { get; set; }
         public virtual DbSet<TIPOALIQUOTECONTRIBUTIVE> TIPOALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<TIPOANTICIPOTRASPORTOEFFETTI> TIPOANTICIPOTRASPORTOEFFETTI { get; set; }
         public virtual DbSet<TIPODOCUMENTI> TIPODOCUMENTI { get; set; }
+        public virtual DbSet<TIPOELABORAZIONE> TIPOELABORAZIONE { get; set; }
+        public virtual DbSet<TIPOLIQUIDAZIONE> TIPOLIQUIDAZIONE { get; set; }
         public virtual DbSet<TIPOLOGIAANTICIPI> TIPOLOGIAANTICIPI { get; set; }
         public virtual DbSet<TIPOLOGIACOAN> TIPOLOGIACOAN { get; set; }
         public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
         public virtual DbSet<TIPOLOGIAFIGLIO> TIPOLOGIAFIGLIO { get; set; }
+        public virtual DbSet<TIPOMOVIMENTO> TIPOMOVIMENTO { get; set; }
         public virtual DbSet<TIPOREGOLACALCOLO> TIPOREGOLACALCOLO { get; set; }
         public virtual DbSet<TIPOSOSPENSIONE> TIPOSOSPENSIONE { get; set; }
         public virtual DbSet<TIPOTRASFERIMENTO> TIPOTRASFERIMENTO { get; set; }
+        public virtual DbSet<TIPOVOCE> TIPOVOCE { get; set; }
         public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
         public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
         public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
@@ -118,5 +130,6 @@ namespace NewISE.EF
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
+        public virtual DbSet<VOCI> VOCI { get; set; }
     }
 }

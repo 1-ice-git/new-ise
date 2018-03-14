@@ -12,21 +12,28 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TERIENTRO
+    public partial class NETTO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TERIENTRO()
+        public NETTO()
         {
-            this.ELABTRASPEFFETTI = new HashSet<ELABTRASPEFFETTI>();
-            this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
+            this.FLUSSICEDOLINO = new HashSet<FLUSSICEDOLINO>();
+            this.OA = new HashSet<OA>();
         }
     
-        public decimal IDTERIENTRO { get; set; }
+        public decimal IDNETTO { get; set; }
+        public decimal IDTEORICI { get; set; }
+        public decimal IDALIQCONTR { get; set; }
+        public decimal IDVOCI { get; set; }
+        public decimal ALIQUOTAFISCALEGEPE { get; set; }
+        public decimal IMPORTONETTO { get; set; }
     
+        public virtual ALIQUOTECONTRIBUTIVE ALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        public virtual ICollection<FLUSSICEDOLINO> FLUSSICEDOLINO { get; set; }
+        public virtual TEORICI TEORICI { get; set; }
+        public virtual VOCI VOCI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
+        public virtual ICollection<OA> OA { get; set; }
     }
 }

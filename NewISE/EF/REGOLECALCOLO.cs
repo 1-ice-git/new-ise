@@ -17,6 +17,9 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public REGOLECALCOLO()
         {
+            this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
+            this.ELABINDSISTEMAZIONE = new HashSet<ELABINDSISTEMAZIONE>();
+            this.ELABMAB = new HashSet<ELABMAB>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
     
@@ -29,6 +32,12 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABMAB> ELABMAB { get; set; }
         public virtual NORMACALCOLO NORMACALCOLO { get; set; }
         public virtual TIPOREGOLACALCOLO TIPOREGOLACALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

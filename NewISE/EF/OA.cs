@@ -12,27 +12,31 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class ALIQUOTECONTRIBUTIVE
+    public partial class OA
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ALIQUOTECONTRIBUTIVE()
+        public OA()
         {
             this.NETTO = new HashSet<NETTO>();
-            this.RICHIAMO = new HashSet<RICHIAMO>();
         }
     
-        public decimal IDALIQCONTR { get; set; }
-        public decimal IDTIPOCONTRIBUTO { get; set; }
-        public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal ALIQUOTA { get; set; }
-        public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        public decimal CTB_ID_RECORD { get; set; }
+        public short CTB_MATRICOLA { get; set; }
+        public string CTB_QUALIFICA { get; set; }
+        public string CTB_COD_SEDE { get; set; }
+        public string CTB_TIPO_VOCE { get; set; }
+        public string CTB_TIPO_MOVIMENTO { get; set; }
+        public string CTB_DESCRIZIONE { get; set; }
+        public string CTB_COAN { get; set; }
+        public string CTB_NUM_DOC { get; set; }
+        public decimal CTB_IMPORTO { get; set; }
+        public string CTB_OPER_99 { get; set; }
+        public Nullable<System.DateTime> CTB_DTINI_MAB { get; set; }
+        public Nullable<System.DateTime> CTB_DTFIN_MAB { get; set; }
+        public Nullable<short> CTB_GIORNI_MAB { get; set; }
+        public Nullable<System.DateTime> CTB_DT_CONTABILE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NETTO> NETTO { get; set; }
-        public virtual TIPOALIQUOTECONTRIBUTIVE TIPOALIQUOTECONTRIBUTIVE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
     }
 }

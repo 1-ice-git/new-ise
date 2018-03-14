@@ -12,21 +12,19 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TERIENTRO
+    public partial class TIPOMOVIMENTO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TERIENTRO()
+        public TIPOMOVIMENTO()
         {
-            this.ELABTRASPEFFETTI = new HashSet<ELABTRASPEFFETTI>();
-            this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
+            this.TEORICI = new HashSet<TEORICI>();
         }
     
-        public decimal IDTERIENTRO { get; set; }
+        public decimal IDTIPOMOVIMENTO { get; set; }
+        public string TIPOMOVIMENTO1 { get; set; }
+        public string DESCMOVIMENTO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
     }
 }
