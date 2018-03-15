@@ -1861,10 +1861,10 @@
     <Content Include="Areas\Parametri\Views\ParamCoeffIndRichiamo\CoeffIndRichiamo.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamCoeffIndRichiamo\NuovoCoeffIndRichiamo.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamCoeffFasciaKm\NuovoCoeffFasciakm.cshtml" />
-    <Content Include="Areas\Parametri\Views\ParamValutaUfficio\NuovaValutaUfficio.cshtml" />
-    <Content Include="Areas\Parametri\Views\ParamValutaUfficio\ValutaUfficio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercAnticipoTE\PercAnticipoTE.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercAnticipoTE\NuovaPercAnticipoTE.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamValutaUfficio\NuovaValutaUfficio.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamValutaUfficio\ValutaUfficio.cshtml" />
     <None Include="Areas\Statistiche\RPTDataSet\DataSet1.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet14.Designer.cs</LastGenOutput>
@@ -2334,6 +2334,7 @@
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
     <Content Include="Scripts\jquery-2.2.4.js" />
     <Content Include="Scripts\jquery-2.2.4.min.js" />
     <Content Include="Scripts\jquery-2.2.4.min.map" />
@@ -2390,6 +2391,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\MyJs.js" />
     <Content Include="Scripts\MyValidateDate.js" />
+    <Content Include="Scripts\Notifiche\Operazione.js" />
     <Content Include="Scripts\plugins\moment.js" />
     <Content Include="Scripts\plugins\moment.min.js" />
     <Content Include="Scripts\plugins\MyJs.js" />
@@ -3343,27 +3345,17 @@
     <Content Include="Views\MaggiorazioneAbitazione\NuovaMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\GestioneMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\ModificaMAB.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\Index.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\ElencoUtenzeDipendenti.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\ElencoEmailSecondarioDip.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\VisualizzaEmail.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\NuovaEmail.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\VisualizzaEmailSecondaria.cshtml" />
-    <Content Include="Views\Notifiche\Index.cshtml" />
-    <Content Include="Views\Notifiche\ListaNotifiche.cshtml" />
-    <Content Include="Views\Notifiche\NuovaNotifica.cshtml" />
-    <Content Include="Views\Notifiche\VisualizzaCorpoMessaggio.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\Index.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\ElencoUtenzeDipendenti.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\ElencoEmailSecondarioDip.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\VisualizzaEmail.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\NuovaEmail.cshtml" />
-    <Content Include="Views\UtenzeDipendenti\VisualizzaEmailSecondaria.cshtml" />
     <Content Include="Views\Notifiche\Index.cshtml" />
     <Content Include="Views\Notifiche\ListaNotifiche.cshtml" />
     <Content Include="Views\Notifiche\NuovaNotifica.cshtml" />
     <Content Include="Views\Notifiche\VisualizzaCorpoMessaggio.cshtml" />
     <Content Include="Views\Notifiche\VisualizzaDestinatari.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\ElencoEmailSecondarioDip.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\ElencoUtenzeDipendenti.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\Index.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\NuovaEmail.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\VisualizzaEmail.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\VisualizzaEmailSecondaria.cshtml" />
     <Content Include="Views\Trasferimento\MessaggioAnnullaTrasf.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\MessaggioAnnullaMF.cshtml" />
     <Content Include="Views\PratichePassaporto\MessaggioAnnullaPassaporto.cshtml" />
@@ -3390,7 +3382,10 @@
     <Folder Include="Lib\json\" />
     <Folder Include="Lib\js\" />
     <Folder Include="Lib\locale\" />
+    <Folder Include="Scripts\Data\" />
     <Folder Include="Scripts\DayPilot\" />
+    <Folder Include="Scripts\ScriptsView\" />
+    <Folder Include="Scripts\themes\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>

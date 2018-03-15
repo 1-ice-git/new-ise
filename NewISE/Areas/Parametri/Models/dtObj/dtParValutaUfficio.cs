@@ -143,6 +143,52 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
+        public IList<ValutaUfficioModel> getListValutaUfficio( decimal idUfficio, bool escludiAnnullati = false)
+        {
+            List<ValutaUfficioModel> libm = new List<ValutaUfficioModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    List<VALUTAUFFICIO> lib = new List<VALUTAUFFICIO>();
+                    if (escludiAnnullati == true)
+                        lib = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == idUfficio
+                        && a.ANNULLATO == false).ToList();
+                    else
+                        lib = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
+                    libm = (from e in lib
+                            select new ValutaUfficioModel()
+                            {
+                                idValutaUfficio = e.IDVALUTAUFFICIO,
+                                idValuta = e.IDVALUTA,
+                                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                //  percentuale = e.PERCENTUALE,
+                                //  percentualeResponsabile = e.PERCENTUALERESPONSABILE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                annullato = e.ANNULLATO,
+                                Valuta = new ValuteModel()
+                                {
+                                    idValuta = e.VALUTE.IDVALUTA,
+                                    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA
+                                },
+                                Ufficio = new UfficiModel()
+                                {
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                }
+                            }).ToList();
+                }
+
+                return libm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IList<ValutaUfficioModel> getListValutaUfficio(decimal idLivello, decimal idUfficio, bool escludiAnnullati = false)
         {
             List<ValutaUfficioModel> libm = new List<ValutaUfficioModel>();
@@ -155,10 +201,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     List<VALUTAUFFICIO> lib = new List<VALUTAUFFICIO>();
                     if(escludiAnnullati==true)
-                        lib= db.VALUTAUFFICIO.Where(a => a.IDVALUTA == idLivello && a.IDUFFICIO==idUfficio 
+                        lib= db.VALUTAUFFICIO.Where(a => a.IDUFFICIO==idUfficio 
                        &&  a.ANNULLATO == false).ToList();
                     else
-                        lib= db.VALUTAUFFICIO.Where(a => a.IDVALUTA == idLivello).ToList();
+                        lib= db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
+
                     libm = (from e in lib
                             select new ValutaUfficioModel()
                             {
@@ -291,6 +338,28 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
+
+        public string GetDescrizioneValute(decimal idValuta)
+        {
+            string temp = "";
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                VALUTE vl = db.VALUTE.Find(idValuta);
+                temp = vl.DESCRIZIONEVALUTA;
+            }
+            return temp;
+        }
+        public decimal GetValutaDescrizioneID(string  ValutaDesc)
+        {
+            decimal temp =0 ;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                VALUTE vl = db.VALUTE.Where(x => x.DESCRIZIONEVALUTA.ToUpper() == ValutaDesc.ToUpper()).ToList().First();
+                temp = vl.IDVALUTA;
+            }
+            return temp;
+        }
+
         public bool ParValutaUfficioAnnullato(ValutaUfficioModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -315,25 +384,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     using (dtParValutaUfficio dtal = new dtParValutaUfficio())
                     {
                         //Se la data variazione coincide con una data inizio esistente
-                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita,ibm.idValuta ,ibm.idUfficio);
+                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, ibm.idValuta, ibm.idUfficio);
                         if (lista.Count != 0)
                         {
                             giafatta = true;
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
+                            string valuteDescrFirst = lista[3];
                             //decimal PercentualeFirst = Convert.ToDecimal(lista[3]);
                             //decimal PercentualeRespFirst = Convert.ToDecimal(lista[4]);
+
+                            VALUTE v1 = new VALUTE();
+                            v1.IDVALUTA = ibm.idValuta;
+                            v1.DESCRIZIONEVALUTA = GetDescrizioneValute(ibm.idValuta);
 
                             ibNew1 = new VALUTAUFFICIO()
                             {
                                 IDVALUTA = ibm.idValuta,
-                                IDUFFICIO=ibm.idUfficio,
+                                IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = dataInizioFirst,
                                 DATAFINEVALIDITA = dataFineFirst,
+                              //  VALUTE = v1,
                                 //PERCENTUALE = ibm.percentuale,
-                                //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
-                                DATAAGGIORNAMENTO=DateTime.Now
+                                DATAAGGIORNAMENTO = DateTime.Now
                             };
 
                             if (aggiornaTutto)
@@ -344,12 +418,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = dataInizioFirst,
                                     DATAFINEVALIDITA = Utility.DataFineStop(),
-                                    //PERCENTUALE = ibm.percentuale,
-                                    //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
+                                   // VALUTE = v1,
+                                    //PERCENTUALE = ibm.percentuale,                                   
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
                                 //qui annullo tutti i record rimanenti dalla data inizio inserita
-                                libNew = db.VALUTAUFFICIO.Where(a => a.IDVALUTA == ibm.idValuta && a.IDUFFICIO==ibm.idUfficio 
+                                libNew = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == ibm.idUfficio
                                 && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst).ToList();
                                 foreach (var elem in libNew)
                                 {
@@ -366,23 +440,27 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
                         if (giafatta == false)
                         {
-                            lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita, ibm.idValuta,ibm.idUfficio);
+                            lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita, ibm.idValuta, ibm.idUfficio);
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
                                 decimal idIntervalloLast = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizioLast = Convert.ToDateTime(lista[1]);
                                 DateTime dataFineLast = Convert.ToDateTime(lista[2]);
-                                // decimal aliquotaLast = Convert.ToDecimal(lista[3]);
-                                decimal PercentualeLast = Convert.ToDecimal(lista[3]);
-                                decimal PercentualeRespLast = Convert.ToDecimal(lista[4]);
+                                string ValuteDescrLast = lista[3];
+                                //decimal PercentualeLast = Convert.ToDecimal(lista[3]);
+                                //decimal PercentualeRespLast = Convert.ToDecimal(lista[4]);
 
+                               // VALUTE vLast = new VALUTE();
+                                //vLast.IDVALUTA = ibm.idValuta;
+                                //vLast.DESCRIZIONEVALUTA = GetDescrizioneValute(ibm.idValuta);
                                 ibNew1 = new VALUTAUFFICIO()
                                 {
                                     IDVALUTA = ibm.idValuta,
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = dataInizioLast,
                                     DATAFINEVALIDITA = dataFineLast.AddDays(-1),
+                                  //  VALUTE = vLast,
                                     //PERCENTUALE = ibm.percentuale,
                                     //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
                                     DATAAGGIORNAMENTO = DateTime.Now
@@ -394,6 +472,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
+                                   // VALUTE = vLast,
                                     //PERCENTUALE = ibm.percentuale,
                                     //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
                                     DATAAGGIORNAMENTO = DateTime.Now
@@ -406,11 +485,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
+                                      //  VALUTE = vLast,
                                         //PERCENTUALE = ibm.percentuale,
                                         //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
-                                    libNew = db.VALUTAUFFICIO.Where(a => a.IDVALUTA == ibm.idValuta && a.IDUFFICIO ==ibm.idUfficio 
+                                    libNew = db.VALUTAUFFICIO.Where(a => a.IDVALUTA == ibm.idValuta && a.IDUFFICIO == ibm.idUfficio
                                     && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
                                     foreach (var elem in libNew)
                                     {
@@ -432,35 +512,42 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         //Se il nuovo record si trova in un intervallo non annullato con data fine non uguale al 31/12/9999
                         if (giafatta == false)
                         {
-                            lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita, ibm.idValuta,ibm.idUfficio);
+                            lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita, ibm.idValuta, ibm.idUfficio);
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
                                 decimal idIntervallo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizio = Convert.ToDateTime(lista[1]);
                                 DateTime dataFine = Convert.ToDateTime(lista[2]);
-                               // decimal percentuale = Convert.ToDecimal(lista[3]);
-                              //  decimal percentualeResponsabile = Convert.ToDecimal(lista[4]);
+                                string valutaDescr = lista[3];
+                                //  decimal percentualeResponsabile = Convert.ToDecimal(lista[4]);
 
                                 DateTime NewdataFine1 = ibm.dataInizioValidita.AddDays(-1);
 
+                                VALUTE vLas = new VALUTE();
+                               // vLas.IDVALUTA = ibm.idValuta;
+                                vLas.DESCRIZIONEVALUTA = valutaDescr;
+
                                 ibNew1 = new VALUTAUFFICIO()
                                 {
-                                    IDVALUTA = ibm.idValuta,
+                                    IDVALUTA =GetValutaDescrizioneID(valutaDescr),// ibm.idValuta,
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = dataInizio,
                                     DATAFINEVALIDITA = NewdataFine1,
+                                    //VALUTE = vLas,
                                     // COEFFICIENTEKM = aliquota,
                                     //PERCENTUALE = percentuale,
                                     //PERCENTUALERESPONSABILE = percentualeResponsabile,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
+                                vLas.DESCRIZIONEVALUTA = GetDescrizioneValute(ibm.idValuta);
                                 ibNew2 = new VALUTAUFFICIO()
                                 {
                                     IDVALUTA = ibm.idValuta,
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = dataFine,
+                                   // VALUTE = vLas,
                                     //PERCENTUALE = ibm.percentuale,
                                     //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
                                     DATAAGGIORNAMENTO = DateTime.Now
@@ -474,11 +561,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
+                                      //  VALUTE = vLas,
                                         //PERCENTUALE = ibm.percentuale,
                                         //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
-                                    libNew = db.VALUTAUFFICIO.Where(a => a.IDVALUTA == ibm.idValuta && a.IDUFFICIO==ibm.idUfficio 
+                                    libNew = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == ibm.idUfficio
                                     && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
                                     foreach (var elem in libNew)
                                     {
@@ -501,19 +589,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             //Attenzione qui se la lista non contiene nessun elemento
                             //significa che non esiste nessun elemento corrispondentemente al livello selezionato
-                            lista = dtal.RestituisciLaRigaMassima(ibm.idValuta,ibm.idUfficio);
+                            lista = dtal.RestituisciLaRigaMassima(ibm.idValuta, ibm.idUfficio);
                             if (lista.Count == 0)
                             {
+                                VALUTE vLas = new VALUTE();
+                                vLas.IDVALUTA = ibm.idValuta;
+                                vLas.DESCRIZIONEVALUTA = GetDescrizioneValute(ibm.idValuta);
                                 ibNew1 = new VALUTAUFFICIO()
                                 {
                                     IDVALUTA = ibm.idValuta,
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
+                                  //  VALUTE = vLas,
                                     //PERCENTUALE = ibm.percentuale,
                                     //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
                                     DATAAGGIORNAMENTO = DateTime.Now,
-                                    
+
                                 };
                                 libNew.Add(ibNew1);
                                 db.Database.BeginTransaction();
@@ -531,16 +623,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
                                 DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
-                                //decimal PercentoUltimo = Convert.ToDecimal(lista[3]);
+                                string valutaDescrUltimo = lista[3];
                                 //decimal PercentoRespUltimo = Convert.ToDecimal(lista[4]);
                                 if (dataInizioUltimo == ibm.dataInizioValidita)
                                 {
+                                    VALUTE vLas = new VALUTE();
+                                    vLas.IDVALUTA = ibm.idValuta;
+                                    vLas.DESCRIZIONEVALUTA = GetDescrizioneValute(ibm.idValuta);
                                     ibNew1 = new VALUTAUFFICIO()
                                     {
                                         IDVALUTA = ibm.idValuta,
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = dataFineUltimo,
+                                     //   VALUTE = vLas,
                                         //PERCENTUALE = ibm.percentuale,
                                         //PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,//nuova aliquota rispetto alla vecchia registrata
                                         DATAAGGIORNAMENTO = DateTime.Now
@@ -555,24 +651,32 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
                                 if (ibm.dataInizioValidita > dataInizioUltimo)
                                 {
+                                    VALUTE vl = new VALUTE();
+                                    vl.IDVALUTA = GetValutaDescrizioneID(valutaDescrUltimo);
+                                    vl.DESCRIZIONEVALUTA = valutaDescrUltimo;
                                     ibNew1 = new VALUTAUFFICIO()
                                     {
-                                        IDVALUTA = ibm.idValuta,
+                                        IDVALUTA = GetValutaDescrizioneID(valutaDescrUltimo),// ibm.idValuta,
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
+                                      //  VALUTE = vl,
                                         //PERCENTUALE = PercentoUltimo,
                                         //PERCENTUALERESPONSABILE= PercentoRespUltimo,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
+                                    VALUTE v2 = new VALUTE();
+                                    v2.IDVALUTA = ibm.idValuta;
+                                    v2.DESCRIZIONEVALUTA = GetDescrizioneValute(ibm.idValuta);
                                     ibNew2 = new VALUTAUFFICIO()
                                     {
                                         IDVALUTA = ibm.idValuta,
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                       // PERCENTUALE = ibm.percentuale,//nuova aliquota rispetto alla vecchia registrata
-                                       // PERCENTUALERESPONSABILE=ibm.percentualeResponsabile,
+                                        // PERCENTUALE = ibm.percentuale,//nuova aliquota rispetto alla vecchia registrata
+                                        // PERCENTUALERESPONSABILE=ibm.percentualeResponsabile,
+                                      //  VALUTE = v2,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1); libNew.Add(ibNew2);
@@ -595,6 +699,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
+        
         
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
@@ -669,7 +774,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var TuttiNonAnnullati = db.VALUTAUFFICIO.Where(a => a.ANNULLATO == false && 
-                a.IDVALUTA == idLivello &&
+               // a.IDVALUTA == idLivello &&
                 a.IDUFFICIO==idUfficio).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                 if (TuttiNonAnnullati.Count > 0)
                 {
@@ -685,7 +790,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 VALUTAUFFICIO interessato = new VALUTAUFFICIO();
                 interessato = db.VALUTAUFFICIO.Find(IDCFKM);
-                tmp = db.VALUTAUFFICIO.Where(a => a.IDVALUTA == interessato.IDVALUTA && a.IDUFFICIO == interessato.IDUFFICIO 
+                tmp = db.VALUTAUFFICIO.Where(a=>a.IDUFFICIO == interessato.IDUFFICIO 
                 && a.ANNULLATO == false).ToList().Where(b => b.DATAFINEVALIDITA == interessato.DATAINIZIOVALIDITA.AddDays(-1)).ToList().First();
             }
             return tmp;
@@ -697,7 +802,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<VALUTAUFFICIO> libm = new List<VALUTAUFFICIO>();
                 libm = db.VALUTAUFFICIO.Where(a => a.ANNULLATO == false
-                && a.IDVALUTA == IDVALUTA && a.IDUFFICIO== IDUFFICIO).ToList().Where(b =>
+                && a.IDUFFICIO== IDUFFICIO).ToList().Where(b =>
                 b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())
                 && DataCampione > b.DATAINIZIOVALIDITA
                 && DataCampione < b.DATAFINEVALIDITA).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
@@ -706,6 +811,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].IDVALUTAUFFICIO.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].VALUTE.DESCRIZIONEVALUTA.ToString());
                     //tmp.Add(libm[0].PERCENTUALE.ToString());
                     //tmp.Add(libm[0].PERCENTUALERESPONSABILE.ToString());
                 }
@@ -719,13 +825,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<VALUTAUFFICIO> libm = new List<VALUTAUFFICIO>();
                 libm = db.VALUTAUFFICIO.Where(a => a.ANNULLATO == false
-                && a.IDVALUTA == IDVALUTA && a.IDUFFICIO==IDUFFICIO).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA &&
+                && a.IDUFFICIO==IDUFFICIO).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA &&
                  b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
                 if (libm.Count != 0)
                 {
                     tmp.Add(libm[0].IDVALUTAUFFICIO.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].VALUTE.DESCRIZIONEVALUTA.ToString());
                     //tmp.Add(libm[0].PERCENTUALE.ToString());
                     //tmp.Add(libm[0].PERCENTUALERESPONSABILE.ToString());
                 }
@@ -739,7 +846,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<VALUTAUFFICIO> libm = new List<VALUTAUFFICIO>();
                 libm = db.VALUTAUFFICIO.Where(a => a.ANNULLATO == false
-                && a.IDVALUTA == IDVALUTA && a.IDUFFICIO==IDUFFICIO).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().
+                && a.IDUFFICIO==IDUFFICIO).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().
                 Where(b => DataCampione == b.DATAFINEVALIDITA
                 && b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())).ToList();
 
@@ -748,8 +855,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].IDVALUTAUFFICIO.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                  //  tmp.Add(libm[0].PERCENTUALE.ToString());
-                   // tmp.Add(libm[0].PERCENTUALERESPONSABILE.ToString());
+                    tmp.Add(libm[0].VALUTE.DESCRIZIONEVALUTA.ToString());
+                    //  tmp.Add(libm[0].PERCENTUALE.ToString());
+                    // tmp.Add(libm[0].PERCENTUALERESPONSABILE.ToString());
                 }
             }
             return tmp;
@@ -761,15 +869,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<VALUTAUFFICIO> libm = new List<VALUTAUFFICIO>();
                 libm = db.VALUTAUFFICIO.Where(a => a.ANNULLATO == false
-                && a.IDVALUTA == IDVALUTA && a.IDUFFICIO== IDUFFICIO).ToList().Where(b =>
+                && a.IDUFFICIO== IDUFFICIO).ToList().Where(b =>
                 b.DATAFINEVALIDITA == Convert.ToDateTime(Utility.DataFineStop())).ToList();
                 if (libm.Count != 0)
                 {
                     tmp.Add(libm[0].IDVALUTAUFFICIO.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-              //      tmp.Add(libm[0].PERCENTUALE.ToString());
-                   // tmp.Add(libm[0].PERCENTUALERESPONSABILE.ToString());
+                    tmp.Add(libm[0].VALUTE.DESCRIZIONEVALUTA.ToString());
+                    //      tmp.Add(libm[0].PERCENTUALE.ToString());
+                    // tmp.Add(libm[0].PERCENTUALERESPONSABILE.ToString());
                 }
             }
             return tmp;
@@ -788,7 +897,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<VALUTAUFFICIO> libm = new List<VALUTAUFFICIO>();
                 libm = db.VALUTAUFFICIO.Where(a => a.ANNULLATO == false
-                && a.IDVALUTA == IDVALUTA && a.IDUFFICIO == IDUFFICIO).OrderBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                 && a.IDUFFICIO == IDUFFICIO).OrderBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                if (libm.Count != 0)
+                    tmp = libm.First().IDVALUTAUFFICIO;
+            }
+            return tmp;
+        }
+        public decimal Get_Id_ValutaUfficioNonAnnullato(decimal IDUFFICIO)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<VALUTAUFFICIO> libm = new List<VALUTAUFFICIO>();
+                libm = db.VALUTAUFFICIO.Where(a => a.ANNULLATO == false
+                && a.IDUFFICIO == IDUFFICIO).OrderBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
                 if (libm.Count != 0)
                     tmp = libm.First().IDVALUTAUFFICIO;
             }

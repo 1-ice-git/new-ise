@@ -13,7 +13,7 @@ namespace NewISE.Models.Config.s_admin
         public string cognome { get; set; }
         public string email { get; set; }
 
-        public string nominatico
+        public string nominativo
         {
             get { return cognome + " " + nome; }
         }

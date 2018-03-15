@@ -6,9 +6,9 @@
     decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 
 
-    IEnumerable<SelectListItem> GruppoValute = (IEnumerable<SelectListItem>)ViewBag.ValutaList;
-    string idValuta = GruppoValute.Where(x => x.Selected).FirstOrDefault().Value;
-    string descrizioneValue = GruppoValute.Where(x => x.Selected).FirstOrDefault().Text;
+    //IEnumerable<SelectListItem> GruppoValute = (IEnumerable<SelectListItem>)ViewBag.ValutaList;
+    //string idValuta = GruppoValute.Where(x => x.Selected).FirstOrDefault().Value;
+    //string descrizioneValue = GruppoValute.Where(x => x.Selected).FirstOrDefault().Text;
 
     IEnumerable<SelectListItem> GruppoUffici = (IEnumerable<SelectListItem>)ViewBag.UfficiList;
     string idUfficio = GruppoUffici.Where(x => x.Selected).FirstOrDefault().Value;
@@ -28,7 +28,7 @@
         </div>
     </div>
 </p>
-<p>
+@*<p>
     <div class="form-group">
         @Html.Label("lblValuta00", "Seleziona Valuta", new { @class = "control-label" })
         <div id="divCombo">
@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-</p>
+</p>*@
 
 <table id="tbParValutaUfficio" class="display" cellspacing="0">
     <thead>
@@ -51,12 +51,9 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            @*<th class="text-center">
-                    @Html.DisplayNameFor(model => model.percentuale)
-                </th>
-                <th class="text-center">
-                    @Html.DisplayNameFor(model => model.percentualeResponsabile)
-                </th>*@
+            <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Valuta.descrizioneValuta)
+             </th>               
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
@@ -86,12 +83,9 @@
                 {
                     <td></td>
                 }
-                @*<td style="text-align:right;">
-                        @Html.DisplayFor(modelItem => item.percentuale)
-                    </td>
-                    <td style="text-align:right;">
-                        @Html.DisplayFor(modelItem => item.percentualeResponsabile)
-                    </td>*@
+               <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.Valuta.descrizioneValuta)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
@@ -174,7 +168,7 @@
 
 
     function PrelevaPValutaUfficio() {
-        //  debugger;
+        // debugger;
         rotta = "/Parametri/ParamValutaUfficio/ValutaUfficioLivello";
 
         var idValuta = parseInt($("#idValuta").select2('val'));
@@ -184,8 +178,9 @@
         $("#hiIdUfficio").val(idUfficio);
 
         if (isNaN(idValuta)) {
-            $("#divPViewParametri").empty();
-            return false;
+            //$("#divPViewParametri").empty();
+            //return false;
+            idValuta = 0;
         }
 
         if (isNaN(idUfficio)) {
@@ -236,15 +231,14 @@
         //debugger;
 
         var rotta = "/Parametri/ParamValutaUfficio/NuovaValutaUfficio";
-        var idValuta = parseInt($("#idValuta").select2('val'));
+        var idValuta = 0;//parseInt($("#idValuta").select2('val'));
         var idUfficio = parseInt($("#idUfficio").select2('val'));
 
-
-        if (isNaN(idValuta)) {
-            //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare un livello per procedere.");
-            return false;
-        }
+        //if (isNaN(idValuta)) {
+        //    //$("#divPViewParametri").empty();
+        //    AlertDialog("Selezionare un livello per procedere.");
+        //    return false;
+        //}
 
         if (isNaN(idUfficio)) {
             //$("#divPViewParametri").empty();
@@ -296,13 +290,13 @@
         var rotta = "/Parametri/ParamValutaUfficio/EliminaValutaUfficio";
 
 
-        var idValuta = parseInt($("#idValuta").select2('val'));
+        var idValuta = 0;//parseInt($("#idValuta").select2('val'));
         var idUfficio = parseInt($("#idUfficio").select2('val'));
 
-        if (isNaN(idValuta)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
+        //if (isNaN(idValuta)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
 
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {

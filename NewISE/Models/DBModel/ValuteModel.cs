@@ -14,13 +14,12 @@ namespace NewISE.Models.DBModel
         public decimal idValuta { get; set; }
 
         [Required(ErrorMessage = "Il campo descrizione è richiesto.")]
-        [Display(Name = "Descrizione")]
+        [Display(Name = "Descrizione Valuta")]
         public string descrizioneValuta { get; set; }
 
         [Required(ErrorMessage = "Il campo valuta è richiesto.")]
         [Display(Name = "Valuta di sistema")]
         public bool valutaUfficiale { get; set; }
-
 
         public bool HasValue()
         {

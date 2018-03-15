@@ -1,43 +1,45 @@
 ﻿@model NewISE.Models.DBModel.NotificheModel
 @using NewISE.Models.DBModel;
-
+@using System.IO;
 <script src="~/Scripts/ckeditor/ckeditor.js"></script>
-
+<script type="text/javascript" src="~/scripts/ckeditor/adapters/jquery.js"></script>
+@*<script src="~/Scripts/jquery-1.8.2.min.js"></script>*@
+@*<script src="~/Scripts/ckfinder/ckfinder.js"></script>*@
 @{
+    decimal idMittenteLogato = (decimal)ViewBag.idMittenteLogato;
     var errori = ViewData.ModelState;
 }
 
-@using (Ajax.BeginForm("InserisciNuovaNotifica", "Notifiche", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelNotifiche", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNuovaNotifica" }))
+@using (Ajax.BeginForm("InserisciNuovaNotifica", "Notifiche",new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelNotifiche", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNuovaNotifica" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         <hr />
+        <input type="hidden" id="idMittente" name="idMittente" value="@idMittenteLogato.ToString()"/>
         <div class="row">
             <div class="col-xs-offset-2 col-xs-10">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-       
-        
-            <div class="form-group">
-                <div id="divCombo1" ass="col-md-10">
+            <div class="form-group" style="position:relative;z-index:9">
+                <div id="divCombo1" ass="col-md-10" >
                     @Html.Label("lblListDestinatari", "Destinatari : ", new { @class = "control-label" })
                     <div>
-                        @Html.DropDownList("idDestinatari", ViewBag.ListaDestinatari as IEnumerable<SelectListItem>
+                        @Html.DropDownList("lDestinatari", ViewBag.ListaDestinatari as IEnumerable<SelectListItem>
                , new { @class = "form-control js-example-tokenizer", multiple = "multiple", @onchange = "PrelevaPVListaDestinatari();", @onClick = "PrelevaPVListaDestinatari();" })
                     </div>
                     <div id="vai1" style="display:none; " class="text-danger">
-                        @Html.Label("lblvai1", "Email presente in Cc")                        
-                    </div> 
+                        @Html.Label("lblvai1", "Email presente in Cc")
+                    </div>
                     <div id="vaiDest" style="display:none; " class="text-danger">
-                        @Html.Label("lblDest", "Un destinatario obbligatorio")
-                    </div> 
+                        @Html.Label("lblDest", "Destinatario obbligatorio")
+                    </div>
                 </div>
                 
-                <div id="divCombo2" ass="col-md-10">
+                <div id="divCombo2" ass="col-md-10" >
                     @Html.Label("lblListDestinatari", "Cc : ", new { @class = "control-label" })
                     <div>
-                        @Html.DropDownList("idDestinatari2", ViewBag.ListaDestinatari as IEnumerable<SelectListItem>
+                        @Html.DropDownList("toCc", ViewBag.ListaCc as IEnumerable<SelectListItem>
                , new { @class = "form-control js-example-tokenizer", multiple = "multiple", @onchange = "PrelevaPVListaCC();", @onClick = "PrelevaPVListaDestinatari();" })
                     </div>
                     <div id="vai2" style="display:none; " class="text-danger">
@@ -49,33 +51,63 @@
                         @Html.Editor("Oggetto", "Oggetto", new { htmlAttributes = new { @class = "form-control" } })                       
                     </div>
                     <div id="vaiOgg" style="display:none; " class="text-danger">
-                        @Html.Label("lblOgg", "Oggetto obbligatorio")
+                        @Html.Label("lblOgg", "Oggetto mancante")
                     </div> 
             </div>
 
-        
-
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.corpoMessaggio, htmlAttributes: new { @class = "control-label col-md-2" })*@
+        <div class="form-group"  >
+            @*<div class="text-right" ><input id="idBtnAllegato" style="height:40px;width:100px;vertical-align:central" type="button"  class="btn btn-danger"
+                   value="Allega PDF" onclick="AllegaPDF();" /></div>*@
+            @*<div>
+                <span>Select File:</span>
+                <input type="file" name="postedFile" />
+                <input type="submit" value="Upload" />
+            </div>*@
+            @*<div style="padding-left: 15px; padding-right: 10px;">
+                <input id="files" name="files[]" type="file" multiple class="file-loading">
+                <div id="divError" class="text-center text-error text-danger">
+                </div>
+            </div>*@
             <div ass="col-md-10">
-                @Html.TextAreaFor(model => model.corpoMessaggio, new { @id = "FullDescription", @class = "form-control", @rows = "200" }) @Html.ValidationMessageFor(model => model.corpoMessaggio, "", new { @class = "text-danger" })
-                <script>
-                    CKEDITOR.replace("FullDescription");
+                @*@Html.TextBoxFor(model=>model.corpoMessaggio, new { @id = "corpoMessaggio", @class = "ckeditor"})*@ 
+                <textarea id="corpoMessaggio" name="corpoMessaggio"></textarea>
+                @Html.ValidationMessageFor(model => model.corpoMessaggio, "", new { @class = "text-danger" })
+                <script type="text/javascript">
+                   @*CKEDITOR.replace(@Html.Id("corpoMessaggio"));*@
+                    //CKEDITOR.replace("corpoMessaggio");
+                    @*CKEDITOR.replace("#@Html.IdFor(m=>m.corpoMessaggio)").val());*@
+                    //var textarea = document.body.appendChild(document.createElement('textarea'));
+                    //textarea.id = "corpoMessaggio"; textarea.name = "corpoMessaggio";
+                    //CKEDITOR.replace(textarea);
                     CKEDITOR.config.readOnly = false;
+                    //for (instance in CKEDITOR.instances) {
+                    //    CKEDITOR.instances[instance].updateElement();
+                    //}
                 </script> @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })*@
             </div>
+            <div id="vaiCorpoMess" style="display:none; " class="text-danger">
+                @Html.Label("lblvai1", "Messaggio vuoto")
+            </div> 
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Invia" class="btn btn-default" />
-               <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle Notifiche</a>
+            @*<div class="col-md-offset-2 col-md-10" >*@
+            <div class="row" style="text-align:left">
+                <div class="col-xs-2"> 
+                    <input type="submit" value="Invia" class="btn btn-default" />
+                </div>
+                @*<input type="button" value="Invia" class="btn btn-default" onclick="Register();" />*@
+                <div class="col-xs-10" style="text-align:right">
+                    <input id="idBtnAllegato" style="height:33px;width:100px;vertical-align:central" type="button" class="btn btn-danger"
+                           value="Allega PDF" onclick="AllegaPDF();" />
+                </div>
+            </div>
+            <div>
+                <br /><a href="#" onclick="TornaElencoIb();">Torna all'elenco delle Notifiche</a>
             </div>
         </div>
     </div>
 }
-
-
 
 <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -98,140 +130,11 @@
     </div>
 </div>
 
+<script type="text/javascript" src="~/Scripts/Notifiche/Operazione.js"></script>
+
 <script type="text/javascript">
-    function TornaElencoIb() {
-        var rotta = "/Notifiche/ListaNotifiche";
-        
-        $.ajax({
-            type: "POST",
-            url: rotta,
-          //  data: { idTipoContributo: idTipoContributo, escludiAnnullati: chk },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
-            success: function (result) {
-                //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divPanelNotifiche").empty();
-                $("#divPanelNotifiche").html(result);
-                //RicercaDocumenti();
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
-    //$("#idDestinatari").select2({
-    //    placeholder: "Seleziona tipo trasferimento",
-    //    allowClear: true,
-    //    language: "it",
-    //    width: '150',
-    //    tags: true
-    //});
-    $(".js-example-tokenizer").select2({
-        tags: true,
-        tokenSeparators: [',', ' ']
+
+    $(function () {
+        CKEDITOR.replace("corpoMessaggio", { customConfig: "~/Scripts/ckeditor/config.js" });
     })
-
-    function PrelevaPVListaDestinatari()
-    {
-        // debugger;
-        var listaDest1 = $("#idDestinatari").select2('val');
-        var listaDest2 = $("#idDestinatari2").select2('val');
-        // alert("1:"+listaDest1 +'\n\n2:'+listaDest2 );
-
-        if (listaDest1 != null && listaDest1.indexOf(",") == -1)
-            listaDest1 = listaDest1.toString() + ",";
-        if (listaDest2 != null && listaDest2.indexOf(",") == -1)
-            listaDest2 = listaDest2.toString() + ",";
-
-        if (listaDest2 != null && listaDest1 != null) {
-                var l1 = listaDest1.split(',');
-                for (j = 0; j < l1.length; j++) {
-                    if (l1[j] != '') {
-                        if (listaDest2.indexOf(l1[j]) != -1) {
-                            //alert('Attenzione: ' + l1[j] + ' presente nel settore Cc');
-                            var $select = $('#idDestinatari');
-                            var idToRemove = l1[j];
-                            var values = $select.val();
-                            if (values) {
-                                var i = values.indexOf(idToRemove);
-                                if (i >= 0) {
-                                    values.splice(i, 1);
-                                    $select.val(values).change();
-                                }
-                            }
-                            $('#vai1').show();
-                            return;
-                        }
-                    }
-                }               
-        }
-        hideAll();
-    }
-    function PrelevaPVListaCC()
-    {
-        //    debugger;
-        var listaDest1 = $("#idDestinatari").select2('val');
-        var listaDest2 = $("#idDestinatari2").select2('val');
-
-        if (listaDest1 != null && listaDest1.indexOf(",") == -1)
-            listaDest1 = listaDest1.toString() + ",";
-        if (listaDest2 != null && listaDest2.indexOf(",") == -1)
-            listaDest2 = listaDest2.toString() + ",";
-
-        if (listaDest2 != null && listaDest1 != null) {
-            var l2 = listaDest2.split(',');
-            for (j = 0; j < l2.length; j++) {
-                if (l2[j] != '') {
-                    if (listaDest1.indexOf(l2[j]) != -1) {
-                        // alert('Attenzione: ' + l2[j] + ' presente nel settore Destinatari');
-                      
-                        var $select = $('#idDestinatari2');
-                        var idToRemove = l2[j];
-                        var values = $select.val();
-                        if (values) {
-                            var i = values.indexOf(idToRemove);
-                            if (i >= 0) {
-                                values.splice(i, 1);
-                                $select.val(values).change();
-                            }
-                        }
-                        $('#vai2').show();
-                        return;
-                    }
-                }
-            }           
-        }
-        hideAll();
-    }
-    function hideAll()
-    {
-        $('#vai2').hide(); $('#vai1').hide();
-        $('#vaiOgg').hide(); $('#vaiDest').hide();
-    }
-
-    $('#formNuovaNotifica').submit(function (e) {
-        hideAll();
-        var listaDest1 = $("#idDestinatari").select2('val');
-       // var listaDest2 = $("#idDestinatari2").select2('val');
-        if (listaDest1 ==null)        {
-            $('#vaiDest').show();
-            return false;
-        }
-        if ($("#Oggetto").val().toString().trim() == '') {
-            $('#vaiOgg').show();
-            return false;
-        }
-    });
 </script>
