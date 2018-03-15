@@ -273,13 +273,13 @@ namespace NewISE.Models.DBModel.dtObj
                     fax = d.FAX,
                     abilitato = d.ABILITATO,
                     dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
-                    cdcGepe = new CDCGepeModel()
-                    {
-                        iddipendente = d.CDCGEPE.IDDIPENDENTE,
-                        codiceCDC = d.CDCGEPE.CODICECDC,
-                        descCDC = d.CDCGEPE.DESCCDC,
-                        dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
-                    }
+                    //cdcGepe = new CDCGepeModel()
+                    //{
+                    //    iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                    //    codiceCDC = d.CDCGEPE.CODICECDC,
+                    //    descCDC = d.CDCGEPE.DESCCDC,
+                    //    dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                    //}
                 };
             }
 

@@ -149,7 +149,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Report Dislocazione dei Dipendenti all'Estero
-        public ActionResult RptDislocazione(string codicesede = "", string V_UTENTE = "", string V_DATA = "")
+        public ActionResult RptDislocazione(string codicesede = "", string V_UTENTE = "", string V_DATA = "", string V_UFFICIO = "")
         {
             DataSet15 ds15 = new DataSet15();
 

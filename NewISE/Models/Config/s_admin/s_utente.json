@@ -1,4 +1,4 @@
-﻿{
+{
   "s_utente": [
     {
       "username": "2909",
@@ -58,10 +58,17 @@
       "email": "mauro.arduini@ritspa.it"
     },
     {
-      "username": "3320",
+      "username": "9991",
       "password": "ise",
-      "nome": "Sandro",
-      "cognome": "Politi",
+      "nome": "utente1",
+      "cognome": "utente1",
+      "email": "mauro.arduini@ritspa.it"
+    },
+    {
+      "username": "9992",
+      "password": "ise",
+      "nome": "utente2",
+      "cognome": "utente2",
       "email": "mauro.arduini@ritspa.it"
     }
   ]

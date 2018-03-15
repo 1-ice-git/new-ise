@@ -55,7 +55,8 @@ namespace NewISE.Controllers
 
                         dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
                                                     out richiestaTE, out attivazioneTE,
-                                                    out DocContributo, out DocAttestazione, out NumAttivazioni, out trasfAnnullato);
+                                                    out DocContributo, out DocAttestazione, 
+                                                    out NumAttivazioni, out trasfAnnullato, out rinunciaTEPartenza);
 
                         var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
 
@@ -67,12 +68,6 @@ namespace NewISE.Controllers
                         var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza(idTrasportoEffettiPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
                         tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
                         tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100, 2);
-
-                        using (ModelDBISE db = new ModelDBISE())
-                        {
-                            var rtep = dtte.GetRinunciaTEPartenza(idTrasportoEffettiPartenza, db);
-                            rinunciaTEPartenza = rtep.rinunciaTE;
-                        }
 
                         ViewData.Add("rinunciaTEPartenza", rinunciaTEPartenza);
                         ViewData.Add("richiestaTE", richiestaTE);
@@ -156,7 +151,7 @@ namespace NewISE.Controllers
 
                     using (ModelDBISE db = new ModelDBISE())
                     {
-                        var rtep = dtte.GetRinunciaTEPartenza(idTrasportoEffettiPartenza, db);
+                        var rtep = dtte.GetRinunciaTEPartenza(atep.IDATEPARTENZA, db);
                         rinunciaTEPartenza = rtep.rinunciaTE;
                     }
 
@@ -225,8 +220,8 @@ namespace NewISE.Controllers
             bool DocAttestazione = false;
             decimal NumAttivazioni = 0;
             bool trasfAnnullato = false;
-
-
+            bool rinunciaTE = false;
+            
             try
             {
                 amministratore = Utility.Amministratore();
@@ -240,7 +235,8 @@ namespace NewISE.Controllers
                                             out DocContributo,
                                             out DocAttestazione,
                                             out NumAttivazioni,
-                                            out trasfAnnullato);
+                                            out trasfAnnullato,
+                                            out rinunciaTE);
                 }
 
             }
@@ -260,6 +256,7 @@ namespace NewISE.Controllers
                         DocAttestazione = DocAttestazione,
                         NumAttivazioni = NumAttivazioni,
                         trasfAnnullato = trasfAnnullato,
+                        rinunciaTE = rinunciaTE,
                         err = errore
                     });
 
@@ -531,8 +528,7 @@ namespace NewISE.Controllers
                                 soloLettura = true;
                             }
 
-                            rtepm = dtte.GetRinunciaTEPartenza(idTrasportoEffettiPartenza, db);
-                            var idATEPartenza = rtepm.idATEPartenza;
+                            rtepm = dtte.GetRinunciaTEPartenza(atep.IDATEPARTENZA, db);
 
                             EnumStatoTraferimento statoTrasferimento = 0;
                             var t = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
@@ -542,6 +538,12 @@ namespace NewISE.Controllers
                                 soloLettura = true;
                             }
 
+                            var n_att = dtte.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
+
+                            if(n_att>0)
+                            {
+                                soloLettura = true;
+                            }
 
                             ViewData.Add("soloLettura", soloLettura);
                         }

@@ -1015,7 +1015,7 @@ namespace NewISE.Controllers
                                         }
                                         else
                                         {
-                                            throw new Exception("Non risulta il valore di coefficente di sede per l'ufficio interessato.");
+                                            throw new Exception("Non risulta il valore di coefficiente di sede per l'ufficio interessato.");
                                         }
 
                                     }
@@ -1437,7 +1437,7 @@ namespace NewISE.Controllers
                                             }
                                             else
                                             {
-                                                throw new Exception("Non risulta il valore di coefficente di sede per l'ufficio interessato.");
+                                                throw new Exception("Non risulta il valore di coefficiente di sede per l'ufficio interessato.");
                                             }
 
                                         }

@@ -145,7 +145,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         out bool DocContributo,
                                         out bool DocAttestazione,
                                         out decimal NumAttivazioni,
-                                        out bool trasfAnnullato)
+                                        out bool trasfAnnullato,
+                                        out bool rinunciaTE)
         {
             try
             {
@@ -156,6 +157,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DocContributo = false;
                     DocAttestazione = false;
                     trasfAnnullato = false;
+                    rinunciaTE = false;
 
                     var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
 
@@ -179,6 +181,10 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         tep = new_tep;
                     }
+
+                    ATTIVITATEPARTENZA last_atep = new ATTIVITATEPARTENZA();
+                    RinunciaTEPartenzaModel rtepm = new RinunciaTEPartenzaModel();
+
                     //elenco attivazioni valide
                     var latep = tep.ATTIVITATEPARTENZA
                                 .Where(a => a.ANNULLATO == false || (a.RICHIESTATRASPORTOEFFETTI && a.ATTIVAZIONETRASPORTOEFFETTI))
@@ -189,7 +195,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //se esiste verifica se ci sono elementi associati
 
                         //imposta l'ultima valida
-                        var last_atep = latep.First();
+                        last_atep = latep.First();
 
                         //verifica se è stata richiesta
                         if (last_atep.RICHIESTATRASPORTOEFFETTI && last_atep.ATTIVAZIONETRASPORTOEFFETTI == false)
@@ -220,7 +226,20 @@ namespace NewISE.Models.DBModel.dtObj
                         }
 
                     }
+                    else
+                    {
+                        last_atep = this.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
+
+                    }
+
+                    rtepm = this.GetRinunciaTEPartenza(last_atep.IDATEPARTENZA, db);
+                    if (rtepm.rinunciaTE)
+                    {
+                        rinunciaTE = true;
+                    }
+
                     NumAttivazioni = GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
+
                 }
             }
             catch (Exception ex)
@@ -270,6 +289,10 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
+                            //creo la riga relativa alla rinuncia
+                            var rtep = this.CreaRinunciaTEPartenza(new_atep.IDATEPARTENZA, db);
+
+                            //leggo la percentuale e la associo
                             var PercentualeAnticipoTE = this.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
                             if (PercentualeAnticipoTE.IDPERCANTICIPOTM > 0)
                             {
@@ -312,6 +335,18 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
+                            //in caso di rinuncia elimino eventuali documenti associati perchè non hanno senso di esistere
+                            var rtep = this.GetRinunciaTEPartenza(idAttivitaTEPartenza, db);
+                            if (rtep.rinunciaTE)
+                            {
+                                var ld = atep.DOCUMENTI.ToList();
+                                foreach(var d in ld)
+                                {
+                                    atep.DOCUMENTI.Remove(d);
+                                    db.SaveChanges();
+                                }
+                            }
+
                             this.EmailNotificaRichiestaTEPartenza(idAttivitaTEPartenza, db);
 
                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
@@ -677,6 +712,27 @@ namespace NewISE.Models.DBModel.dtObj
                                         "ATTIVITATEPARTENZA", db, atep_New.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
                                         atep_New.IDATEPARTENZA);
 
+                                    #region ricrea rinunciaTE
+                                    var rtep_old = this.GetRinunciaTEPartenza(atep_Old.IDATEPARTENZA,db);
+                                    RINUNCIA_TE_P rtep_new = new RINUNCIA_TE_P()
+                                    {
+                                        IDATEPARTENZA = atep_New.IDATEPARTENZA,
+                                        RINUNCIATE = rtep_old.rinunciaTE,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                    };
+                                    db.RINUNCIA_TE_P.Add(rtep_new);
+
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception(string.Format("Non è stato possibile creare una nuova rinuncia trasporto effetti partenza durante il ciclo di annullamento."));
+                                    }
+                                    else
+                                    {
+                                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova rinuncia trasporto effetti partenza.", "RINUNCIA_TE_P", db, rtep_new.ATTIVITATEPARTENZA.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, rtep_new.IDATEPARTENZA);
+                                    }
+
+                                    #endregion
+
 
                                     #region documenti
                                     var ldoc_Old =
@@ -1013,13 +1069,13 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public RinunciaTEPartenzaModel GetRinunciaTEPartenza(decimal idTEPartenza, ModelDBISE db)
+        public RinunciaTEPartenzaModel GetRinunciaTEPartenza(decimal idATEPartenza, ModelDBISE db)
         {
             try
             {
                 RinunciaTEPartenzaModel rtepm = new RinunciaTEPartenzaModel();
-                var tep = db.TEPARTENZA.Find(idTEPartenza);
-                var atep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATEPARTENZA).First();
+                var atep = db.ATTIVITATEPARTENZA.Find(idATEPartenza);
+                //var atep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATEPARTENZA).First();
                 var rtep = atep.RINUNCIA_TE_P;
                 if (rtep != null)
                 {
@@ -1032,13 +1088,15 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    var new_rtep = this.CreaRinunciaTEPartenza(atep.IDATEPARTENZA, db);
-                    rtepm = new RinunciaTEPartenzaModel()
-                    {
-                        idATEPartenza = new_rtep.IDATEPARTENZA,
-                        rinunciaTE = new_rtep.RINUNCIATE,
-                        dataAggiornamento = new_rtep.DATAAGGIORNAMENTO
-                    };
+                    throw new Exception("Non esiste nessuna informazione sulla rinuncia TE in partenza associata all'attivazione.");
+
+                    //var new_rtep = this.CreaRinunciaTEPartenza(atep.IDATEPARTENZA, db);
+                    //rtepm = new RinunciaTEPartenzaModel()
+                    //{
+                    //    idATEPartenza = new_rtep.IDATEPARTENZA,
+                    //    rinunciaTE = new_rtep.RINUNCIATE,
+                    //    dataAggiornamento = new_rtep.DATAAGGIORNAMENTO
+                    //};
                 }
 
                 return rtepm;
