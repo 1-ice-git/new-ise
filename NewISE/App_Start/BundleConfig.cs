@@ -53,6 +53,9 @@ namespace NewISE.App_Start
             bundles.Add(new ScriptBundle("~/bundles/unobtrusive").Include(
                "~/Scripts/jquery.unobtrusive*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include(
+               "~/Scripts/ckeditor/ckeditor.js"));
+
         }
     }
 }

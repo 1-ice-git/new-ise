@@ -24,11 +24,11 @@ namespace NewISE.Areas.Parametri.Controllers
             List<ValutaUfficioModel> libm = new List<ValutaUfficioModel>();
             try
             {
-                decimal[] tmp = AggiornaListaPerCombo(idLivello, idUfficio);
+                decimal tmp = AggiornaListaPerCombo(idLivello, idUfficio);
                 using (dtParValutaUfficio dtib = new dtParValutaUfficio())
                 {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_ValutaUfficioNonAnnullato(tmp[0], tmp[1]);
-                    libm = dtib.getListValutaUfficio(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_ValutaUfficioNonAnnullato(tmp);
+                    libm = dtib.getListValutaUfficio(tmp, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -49,18 +49,17 @@ namespace NewISE.Areas.Parametri.Controllers
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                decimal[] tmp = AggiornaListaPerCombo(idValuta, idUfficio);
+                decimal tmp = AggiornaListaPerCombo(idValuta, idUfficio);
                 using (dtParValutaUfficio dtib = new dtParValutaUfficio())
                 {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_ValutaUfficioNonAnnullato(tmp[0],tmp[1]);
-                    libm = dtib.getListValutaUfficio(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.idValuta).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_ValutaUfficioNonAnnullato(tmp);
+                    libm = dtib.getListValutaUfficio( tmp, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
             return PartialView("ValutaUfficio", libm);
         }
 
@@ -71,9 +70,7 @@ namespace NewISE.Areas.Parametri.Controllers
             var r = new List<SelectListItem>();            
             try
             {
-               
                 AggiornaListaPerCombo(idValuta, idUfficio);
-
                 ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView();
             }
@@ -98,11 +95,11 @@ namespace NewISE.Areas.Parametri.Controllers
                     {                        
                         dtib.SetValutaUfficio(ibm, aggiornaTutto);
                     }
-                    decimal[] tmp = AggiornaListaPerCombo(ibm.idValuta,ibm.idUfficio);
+                    decimal tmp = AggiornaListaPerCombo(ibm.idValuta,ibm.idUfficio);
                     using (dtParValutaUfficio dtib = new dtParValutaUfficio())
                     {
-                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_ValutaUfficioNonAnnullato(tmp[0], tmp[1]);
-                        libm = dtib.getListValutaUfficio(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_ValutaUfficioNonAnnullato(tmp);
+                        libm = dtib.getListValutaUfficio(tmp, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("ValutaUfficio",libm);
                   //  return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
@@ -114,10 +111,10 @@ namespace NewISE.Areas.Parametri.Controllers
                     //    var lm =dtl.GetValute(ibm.idValuta);
                     //    ViewBag.Livello = lm;
                     //}
-                    decimal[] tmp = AggiornaListaPerCombo(ibm.idValuta, ibm.idUfficio);
+                    decimal tmp = AggiornaListaPerCombo(ibm.idValuta, ibm.idUfficio);
                     using (dtParValutaUfficio dtib = new dtParValutaUfficio())
                     {
-                        libm = dtib.getListValutaUfficio(ibm.idValuta, ibm.idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListValutaUfficio(ibm.idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("NuovaValutaUfficio", ibm);
                 }
@@ -140,11 +137,11 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     dtib.DelValutaUfficio(idValutaUfficio);
                 }
-                decimal[] tmp = AggiornaListaPerCombo(idValuta, idUfficio);
+                decimal tmp = AggiornaListaPerCombo(idValuta, idUfficio);
                 using (dtParValutaUfficio dtib = new dtParValutaUfficio())
                 {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_ValutaUfficioNonAnnullato(tmp[0], tmp[1]);
-                    libm = dtib.getListValutaUfficio(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_ValutaUfficioNonAnnullato(tmp);
+                    libm = dtib.getListValutaUfficio(tmp, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
                 return PartialView("ValutaUfficio", libm);
             }
@@ -153,42 +150,43 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-        decimal[] AggiornaListaPerCombo(decimal idValuta, decimal idUfficio )
-        {  
+        //decimal[] AggiornaListaPerCombo(decimal idValuta, decimal idUfficio )
+        decimal AggiornaListaPerCombo(decimal idValuta, decimal idUfficio)
+        {
             var r = new List<SelectListItem>();
-            List<ValuteModel> llm = new List<ValuteModel>();        
-           
-                using (NewISE.Areas.Parametri.Models.dtObj.dtValute dtl = new NewISE.Areas.Parametri.Models.dtObj.dtValute())
+            List<ValuteModel> llm = new List<ValuteModel>();
+            idValuta = 0;
+            using (NewISE.Areas.Parametri.Models.dtObj.dtValute dtl = new NewISE.Areas.Parametri.Models.dtObj.dtValute())
+            {
+                llm = dtl.getListValute().OrderBy(a => a.descrizioneValuta).ToList();
+                if (llm != null && llm.Count > 0)
                 {
-                    llm = dtl.getListValute().OrderBy(a => a.descrizioneValuta).ToList();
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem
-                             {
-                                 Text = t.descrizioneValuta,
-                                 Value = t.idValuta.ToString()
-                             }).ToList();
+                    r = (from t in llm
+                         select new SelectListItem
+                         {
+                             Text = t.descrizioneValuta,
+                             Value = t.idValuta.ToString()
+                         }).ToList();
 
-                        if (idValuta == 0)
+                    if (idValuta == 0)
+                    {
+                        r.First().Selected = true;
+                        idValuta = Convert.ToDecimal(r.First().Value);
+                    }
+                    else
+                    {
+                        var temp = r.Where(a => a.Value == idValuta.ToString()).ToList();
+                        if (temp.Count == 0)
                         {
                             r.First().Selected = true;
                             idValuta = Convert.ToDecimal(r.First().Value);
                         }
                         else
-                        {
-                            var temp = r.Where(a => a.Value == idValuta.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idValuta = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idValuta.ToString()).First().Selected = true;
-                        }
+                            r.Where(a => a.Value == idValuta.ToString()).First().Selected = true;
                     }
-                    ViewBag.ValutaList = r;
                 }
+                ViewBag.ValutaList = r;
+            }
 
             List<UfficiModel> llm1 = new List<UfficiModel>();
             r = new List<SelectListItem>();
@@ -223,7 +221,8 @@ namespace NewISE.Areas.Parametri.Controllers
                     }                   
                     ViewBag.UfficiList = r;
                 }
-                return new decimal[] { idValuta, idUfficio };
-            }
+            //return new decimal[] { idValuta, idUfficio };
+            return  idUfficio ;
+        }
     }
 }

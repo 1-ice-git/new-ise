@@ -93,7 +93,7 @@ namespace NewISE.Models.Tools
                     {
                         foreach (var sa in sad.s_admin)
                         {
-                            messaggio.Bcc.Add(new MailAddress(sa.email, sa.nominatico));
+                            messaggio.Bcc.Add(new MailAddress(sa.email, sa.nominativo));
                         }
                     }
                 }

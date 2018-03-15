@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using System.Web.Helpers;
 namespace NewISE.Controllers
 {
     public class NotificheController : Controller
@@ -34,31 +34,49 @@ namespace NewISE.Controllers
             List<NotificheModel> nm = new List<NotificheModel>();
             using (dtNotifiche dn = new dtNotifiche())
             {
-                nm = dn.GetNotifiche(idMittenteLogato).ToList();
+                nm = dn.GetNotifiche(idMittenteLogato).OrderBy(x=>x.dataNotifica).ToList();
             }
-
             return PartialView(nm);
         }
         public ActionResult NuovaNotifica()
         {
             var r = new List<SelectListItem>();
-            using (Config cfg = new Config())
+            var r0 = new List<SelectListItem>();
+            var r2 = new List<SelectListItem>();
+            UtentiAutorizzatiModel uta = null;
+            List<DipendentiModel> dm = new List<DipendentiModel>();
+            decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
+            using (dtNotifiche dtn = new dtNotifiche())
             {
-                sAdmin sad = new sAdmin();
-                sUtenteNormale utentiNormali = new sUtenteNormale();
-                sad = cfg.SuperAmministratore();
-                if (sad.s_admin.Count > 0)
+                uta = dtn.RestituisciAutorizzato(idMittenteLogato);
+
+                if (uta.idRouloUtente == 2) dm.AddRange(dtn.GetListaDipendentiAutorizzati(3));                      
+                if (uta.idRouloUtente == 3) dm.AddRange(dtn.GetListaDipendentiAutorizzati(2));
+                
+                if (dm.Count > 0)
                 {
-                    r = (from t in sad.s_admin
-                         select new SelectListItem()
+                    var agg = new SelectListItem(); agg.Text = "TUTTI"; agg.Value = "TUTTI";
+                    r.Add(agg);
+                    r0 = (from t in dm where !string.IsNullOrEmpty(t.email) && t.email.Trim()!="" orderby t.nome
+                        select new SelectListItem()
                          {
-                             Text = t.email,
+                             Text = t.nome + " " + t.cognome,
                              Value = t.email,
                          }).ToList();
-                    //r.Where(a => a.Value == idTipoContributo.ToString()).First().Selected = true;
-                }
+                    r.AddRange(r0);
+
+                    r2 = (from t in dm
+                         where !string.IsNullOrEmpty(t.email) && t.email.Trim() != "" orderby t.nome
+                         select new SelectListItem()
+                         {
+                             Text = t.nome + " " + t.cognome,
+                             Value = t.email,
+                         }).ToList();
+                }                
             }
+            ViewBag.idMittenteLogato = idMittenteLogato;
             ViewBag.ListaDestinatari = r;
+            ViewBag.ListaCc = r2;
             return PartialView();
         }
         public ActionResult VisualizzaCorpoMessaggio(decimal idNotifica)
@@ -68,7 +86,7 @@ namespace NewISE.Controllers
             NotificheModel elem = new NotificheModel();
             using (dtNotifiche dn = new dtNotifiche())
             {
-                nm = dn.GetNotifiche(idMittenteLogato).ToList();
+                nm = dn.GetNotifiche(idMittenteLogato).Where(a=>a.idNotifica==idNotifica).ToList();
                 if (nm.Count() > 0)
                 {
                     elem = nm.First();
@@ -76,13 +94,27 @@ namespace NewISE.Controllers
             }
             return PartialView(elem);
         }
-
-        public ActionResult InserisciNuovaNotifica(NotificheModel nm)
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult InserisciNuovaNotifica(NotificheModel nmod )
         {
-
-            return PartialView();
+            List<NotificheModel> nm = new List<NotificheModel>();
+            using (dtNotifiche dn = new dtNotifiche())
+            {
+                dn.InsertNotifiche(nmod);
+                decimal idMittenteLogato = nmod.idMittente;// Utility.UtenteAutorizzato().idDipendente;
+                nm = dn.GetNotifiche(idMittenteLogato).ToList();
+            }
+            return PartialView("ListaNotifiche",nm);
         }
-        
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult RegistraNotifiche(FormCollection CollectionMessaggio)
+        {
+            FormCollection fc = new FormCollection(Request.Unvalidated().Form);
+            string testo = fc["contenutoMessaggio"];
+            return PartialView("ListaNotifiche");
+        }
         public ActionResult VisualizzaDestinatari(decimal idNotifica)
         {
             List<DestinatarioModel> nm = new List<DestinatarioModel>();           
@@ -92,5 +124,6 @@ namespace NewISE.Controllers
             }
             return PartialView(nm);
         }
+       
     }
 }

@@ -36,3 +36,19 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 };
+
+//CKEDITOR.editorConfig = function (config) {
+//    // Define changes to default configuration here.
+//    // For the complete reference:
+//    config.syntaxhighlight_lang = 'csharp';
+//    config.syntaxhighlight_hideControls = true;
+//    config.languages = 'vi';
+//    config.filebrowserBrowseUrl = '/Scripts/ckfinder/ckfinder.html';
+//    config.filebrowserImageBrowseUrl = '/Scripts/ckfinder/ckfinder.html?Types=Images';
+//    config.filebrowserFlashBrowseUrl = '/Scripts/ckfinder/ckfinder.html?Types=Flash';
+//    config.filebrowserUploadUrl = '/Scripts/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=File';
+//    config.filebrowserImageUploadUrl = '/Scripts/Data';
+//    config.filebrowserFlashUploadUrl = '/Scripts/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash';
+
+//    CKFinder.setupCKEditor(null, '/Scripts/ckfinder/');
+//};

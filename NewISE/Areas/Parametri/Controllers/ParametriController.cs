@@ -21,8 +21,8 @@ namespace NewISE.Areas.Parametri.Controllers
                 r.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
                 r.Add(new SelectListItem() { Text = "Aliquote Contributive", Value = "0" });
                 r.Add(new SelectListItem() { Text = "Percentuale Chilometrica", Value = "1" });
-                r.Add(new SelectListItem() { Text = "Coefficente di Richiamo", Value = "2" });
-                r.Add(new SelectListItem() { Text = "Coefficente di Sede", Value = "3" });
+                r.Add(new SelectListItem() { Text = "Coefficiente di Richiamo", Value = "2" });
+                r.Add(new SelectListItem() { Text = "Coefficiente di Sede", Value = "3" });
                 r.Add(new SelectListItem() { Text = "Indennita Base", Value = "4" });
                 r.Add(new SelectListItem() { Text = "Indennità Primo Segretario", Value = "5" });
                 r.Add(new SelectListItem() { Text = "Indennità Sistemazione", Value = "6" });

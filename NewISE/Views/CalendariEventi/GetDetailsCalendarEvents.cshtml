@@ -21,32 +21,32 @@
                 </div>
             </div>
             <div class="modal-footer" style="text-align:center">
-                <button type="button" class="btn btn-secondary" onclick="ChiudiNonModal2();" >Chiudi</button>
+                <button type="button" class="btn btn-primary" onclick="ChiudiNonModal2();" >Chiudi</button>
             </div>
         </div>
     </div>
 </div>
 <input type="hidden" id="Amministratore" value="@admin.ToString()" />
-        <div  style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
-            <h3 style="text-align:center; color:darkblue">Numero @Model.FirstOrDefault().Stato: @Model.Count()</h3>
+        <div  style="padding-left: 15px; padding-right: 5px; padding-top:5px;">
+            <h4 style="text-align:center; color:darkblue">Numero @Model.FirstOrDefault().Stato: @Model.Count()</h4>
             <table id="tbelencocal" class="table">
                 @{var st = @Model.FirstOrDefault().Stato.ToLower(); }
                     @if(st.Equals("completati"))
                     {<thead style="background-color:forestgreen;color:white">
                         <tr>
-                            <th>
+                            <th nowrap>
                                 @Html.DisplayNameFor(model => model.Nominativo)
                             </th>
-                            <th>
+                            <th  nowrap>
                                 @Html.DisplayNameFor(model => model.dataInizio)
                             </th>
-                            <th>
+                            <th  nowrap>
                                 @Html.DisplayNameFor(model => model.dataScadenza)
                             </th>
-                            <th>
+                            <th  nowrap>
                                 @Html.DisplayNameFor(model => model.NomeFunzione)
                             </th>
-                            <th>
+                            <th nowrap>
                                 @Html.DisplayNameFor(model => model.dataCompletato)
                             </th>
                         </tr>
@@ -54,19 +54,19 @@
                     @if (st.Equals("attivi"))
                     {<thead style="background-color:#548bbf;color:white">
                     <tr>
-                        <th>
+                        <th nowrap>
                             @Html.DisplayNameFor(model => model.Nominativo)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.dataInizio)
                         </th>
-                        <th>
+                        <th nowrap>
                             @Html.DisplayNameFor(model => model.dataScadenza)
                         </th>
-                        <th>
+                        <th class="text-center">
                             @Html.DisplayNameFor(model => model.NomeFunzione)
                         </th>
-                        <th>
+                        <th nowrap>
                             @Html.DisplayNameFor(model => model.dataCompletato)
                         </th>
                     </tr>
@@ -74,19 +74,19 @@
                     @if (st.Equals("scaduti"))
                     {<thead style="background-color:red;color:white">
                         <tr>
-                            <th>
+                            <th nowrap>
                                 @Html.DisplayNameFor(model => model.Nominativo)
                             </th>
-                            <th>
+                            <th nowrap>
                                 @Html.DisplayNameFor(model => model.dataInizio)
                             </th>
-                            <th>
+                            <th nowrap>
                                 @Html.DisplayNameFor(model => model.dataScadenza)
                             </th>
-                            <th>
+                            <th nowrap>
                                 @Html.DisplayNameFor(model => model.NomeFunzione)
                             </th>
-                            <th>
+                            <th nowrap>
                                 @Html.DisplayNameFor(model => model.dataCompletato)
                             </th>
                         </tr>
@@ -97,7 +97,7 @@
              {
                   <tr style="background-color:@rowColor;">
 
-                    <td>
+                    <td nowrap>
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
                     </td>
                     @if (item.dataInizio.HasValue && item.dataInizio.Value < Convert.ToDateTime("31/12/9999"))
@@ -110,7 +110,7 @@
                     {
                         <td style="text-align: center;"></td>
                     }
-                    @if (item.dataScadenza.HasValue && item.dataScadenza.Value < Convert.ToDateTime("31/12/9999"))
+                    @if (item.dataScadenza.HasValue && item.dataScadenza.Value < Convert.ToDateTime(Utility.DataFineStop()))
                     {
                         <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.dataScadenza)
@@ -120,12 +120,13 @@
                     {
                         <td style="text-align: center;"></td>
                     }
-                    <td>
-                        <a href="javascript:void(0);"
+                    <td nowrap>
+                         @*<a href="javascript:void(0);" 
                            class="anchorDetail" id_dip="@item.IdDipendente"
-                           id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
+                           id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>*@
+                        <a href="#" onclick="VisualizzaNomeFunzionePOPUP(@item.IdFunzioneEvento,@item.IdDipendente);"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
                     </td>
-                      @if (item.dataCompletato.HasValue && item.dataCompletato.Value < Convert.ToDateTime("31/12/9999"))
+                      @if (item.dataCompletato.HasValue && item.dataCompletato.Value < Convert.ToDateTime(Utility.DataFineStop()))
                       {
                           <td style="text-align: center;">
                               @Html.DisplayFor(modelItem => item.dataCompletato)
@@ -151,32 +152,32 @@
 
 <script type="text/javascript">
        
-    //$("#tbelencocal").DataTable({
-        //    "ordering": false,
-        //    "language": {
-        //        "sEmptyTable": "Nessun dato presente nella tabella",
-        //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-        //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-        //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-        //        "sInfoPostFix": "",
-        //        "sInfoThousands": ".",
-        //        "sLengthMenu": "Visualizza _MENU_ elementi",
-        //        "sLoadingRecords": "Caricamento...",
-        //        "sProcessing": "Elaborazione...",
-        //        "sSearch": "Cerca:",
-        //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-        //        "oPaginate": {
-        //            "sFirst": "Inizio",
-        //            "sPrevious": "Precedente",
-        //            "sNext": "Successivo",
-        //            "sLast": "Fine"
-        //        },
-        //        "oAria": {
-        //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-        //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-        //        }
-        //    }
-        //});
+    $("#tbelencocal").DataTable({
+            "ordering": false,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+            }
+        });
 
 
         $("#btModifica").click(function () {
@@ -197,46 +198,48 @@
         }
 
         //function DocumentoModal() {
-            $(".anchorDetail").click(function () {
-               // debugger;
-                var rotta = "/Home/DetailsFunzioneEvento";
-                var $buttonClicked = $(this);
-                var idf = $buttonClicked.attr('id_fe');
-                var idd = $buttonClicked.attr('id_dip');
-                $.ajax({
-                    url: rotta,
-                    type: "GET", //Le info testuali saranno passate in POST
-                    data: { "idf": idf, "idd": idd },
-                    dataType: 'html',
-                    async: false,
-                    beforeSend: function () {
-                        // debugger;
-                        //$('#inviaDocModal2').                 // Get your box ...
-                        //  prev('.ui-dialog-titlebar'). // Get title bar,...
-                        //  find('a').                   // ... then get the X close button ...
-                        //  hide();
+        //$(".anchorDetail").click(function () {
+        function VisualizzaNomeFunzionePOPUP(idf,idd)
+        {
+           // debugger;
+            var rotta = "/Home/DetailsFunzioneEvento";
+            //var $buttonClicked = $(this);
+            //var idf = $buttonClicked.attr('id_fe');
+            //var idd = $buttonClicked.attr('id_dip');
+            $.ajax({
+                url: rotta,
+                type: "GET", //Le info testuali saranno passate in POST
+                data: { "idf": idf, "idd": idd },
+                dataType: 'html',
+                async: false,
+                beforeSend: function () {
+                    // debugger;
+                    //$('#inviaDocModal2').                 // Get your box ...
+                    //  prev('.ui-dialog-titlebar'). // Get title bar,...
+                    //  find('a').                   // ... then get the X close button ...
+                    //  hide();
                         
-                        //$("#inviaDocModal2.ui-dialog-titlebar-close").hide();
-                        //$("#inviaDocModal2.ui-dialog-titlebar-close").remove();
-                        $('#inviaDocModal2').modal('show');                        
-                        Blocca();
-                    },
-                    success: function (result) {
-                       // debugger;
-                        $("#viewDocumentoDettagli2").empty();
-                        $("#viewDocumentoDettagli2").html(result);                        
-                    },
-                    error: function (error) {
-                        //debugger;
-                        Sblocca();
-                        var msg = error.responseText;
-                        ErroreElaborazioneAjax(msg);
-                    }
-                });
+                    //$("#inviaDocModal2.ui-dialog-titlebar-close").hide();
+                    //$("#inviaDocModal2.ui-dialog-titlebar-close").remove();
+                    $('#inviaDocModal2').modal('show');                        
+                    Blocca();
+                },
+                success: function (result) {
+                    // debugger;
+                    $("#viewDocumentoDettagli2").empty();
+                    $("#viewDocumentoDettagli2").html(result);                        
+                },
+                error: function (error) {
+                    //debugger;
+                    Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+                //    });
             });
-      //  }
-
-
+            //  }
+        }
+        
         function DialogInfo(response) {
             $("#msgModalInfo").text(response);
             $('#myModalInfo').modal('toggle');
