@@ -44,75 +44,48 @@
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
         <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
         <div class="form-group">
-
-            <div class="col-xs-2 text-right">
-                <label>Ufficio </label>
-            </div>
-            <div class="col-xs-10">
-                <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneUfficio.ToString()</label>
+            <div class="row">
+                <div class="col-xs-2 text-right">
+                    <label>Ufficio </label>
+                </div>
+                <div class="col-xs-5">
+                    <div class="panel panel-default">
+                        <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneUfficio.ToString()</label>
+                    </div>
                 </div>
             </div>
-
-
-            <div class="col-xs-2 text-right">
-                <label>Seleziona Valuta</label>
-            </div>
-            <div class="col-xs-10">
-                <div class="panel panel-default">
-                    @Html.DropDownList("idValuta", ViewBag.ValutaList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+            <div class="row">
+                <div class="col-xs-2 text-right">
+                    <label>Seleziona Valuta</label>
                 </div>
-            </div>
-           
-            
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-5">
-                @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
-            </div>
-            <div id="divChkAgg" class="col-xs-5">
-                <div style="display:inline-block;">
-                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                <div class="col-xs-5">
+                    @Html.DropDownList("idValuta", ViewBag.ValutaList as IEnumerable<SelectListItem>,
+                     new { @class = "form-control select2 select2-select" })
                 </div>
-                <div style="vertical-align:middle; display:inline-block;">
-                    <label>Aggiorna tutto</label>
-                </div>
-            </div>
-        </div>
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
-        @*<div class="form-group ">
-                @Html.LabelFor(model => model.percentuale, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.percentuale, new { htmlAttributes = new { @class = "form-control number" } })
-                    @Html.ValidationMessageFor(model => model.percentuale, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.percentualeResponsabile, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.percentualeResponsabile, new { htmlAttributes = new { @class = "form-control number" } })
-                    @Html.ValidationMessageFor(model => model.percentualeResponsabile, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Inserisci" class="btn btn-default" />
+            </div><br />
+            <div class="row">
+                    @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
+                    </div>
+                    <div id="divChkAgg" class="col-xs-5">
+                        <div style="display:inline-block;">
+                            <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                        </div>
+                        <div style="vertical-align:middle; display:inline-block;">
+                            <label>Aggiorna tutto</label>
+                        </div>
+                    </div>               
+              </div>
+              <br />
+              <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Inserisci" class="btn btn-default" />
+                    </div>
+               </div>
             </div>
         </div>
-    </div>
 }
 
 <div class="row">
@@ -185,6 +158,13 @@
         }
         $("#aggiornaTutto").val(chk);
     }
+    $("#idValuta").select2({
+        placeholder: "Seleziona Descrizione Valuta",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
 
     function TornaElencoIb() {
         rotta = "/Parametri/ParamValutaUfficio/ValutaUfficioLivello";
