@@ -13,6 +13,7 @@
 
 <div class="modal fade" id="inviaDocModal2" tabindex="-1"
       role="dialog" aria-labelledby="inviaDocModalLabel2" aria-hidden="true" data-modal-parent="#inviaDocModal" >
+   
     <div class="modal-dialog modal-lg" role="document" >
         <div class="modal-content alert alert-info text-info"  >
             <div class="modal-body alert-info text-info" style="font-size: 1em;">
@@ -21,13 +22,13 @@
                 </div>
             </div>
             <div class="modal-footer" style="text-align:center">
-                <button type="button" class="btn btn-primary" onclick="ChiudiNonModal2();" >Chiudi</button>
+                <button type="button" class="btn btn-primary" onclick="ChiudiNonModal2();">Chiudi</button>
             </div>
         </div>
     </div>
 </div>
 <input type="hidden" id="Amministratore" value="@admin.ToString()" />
-        <div  style="padding-left: 15px; padding-right: 5px; padding-top:5px;">
+        <div  style="padding-left: 15px; padding-right: 5px; padding-top:5px; overflow:auto">
             <h4 style="text-align:center; color:darkblue">Numero @Model.FirstOrDefault().Stato: @Model.Count()</h4>
             <table id="tbelencocal" class="table">
                 @{var st = @Model.FirstOrDefault().Stato.ToLower(); }
@@ -100,7 +101,7 @@
                     <td nowrap>
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
                     </td>
-                    @if (item.dataInizio.HasValue && item.dataInizio.Value < Convert.ToDateTime("31/12/9999"))
+                    @if (item.dataInizio.HasValue && item.dataInizio.Value < Convert.ToDateTime(Utility.DataFineStop()))
                     {
                         <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.dataInizio)
@@ -176,7 +177,10 @@
                     "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                     "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
                 }
-            }
+            },
+            "paging":true,
+            "pageLength":5,
+            "lengthChange":false
         });
 
 
