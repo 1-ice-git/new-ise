@@ -9,11 +9,8 @@
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
     var errori = ViewData.ModelState;
 }
-
-
 <div class="modal fade" id="inviaDocModal2" tabindex="-1"
       role="dialog" aria-labelledby="inviaDocModalLabel2" aria-hidden="true" data-modal-parent="#inviaDocModal" >
-   
     <div class="modal-dialog modal-lg" role="document" >
         <div class="modal-content alert alert-info text-info"  >
             <div class="modal-body alert-info text-info" style="font-size: 1em;">
@@ -250,6 +247,7 @@
         }
 
         function ChiudiNonModal2() {
+            //debugger;
             $('#inviaDocModal2').modal('hide');
         }
 </script>
