@@ -26,24 +26,16 @@
 </style>
 
 <div class="modal fade" id="inviaDocModal"  data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true" ">
-    <div class="modal-dialog modal-lg" role="document"">
+    <div class="modal-dialog modal-lg" role="document">        
         <div class="modal-content">
-            @*<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel" style="text-align:center">Dettagli Calendario Eventi</h3>
-            </div>*@
+            <p style="text-align:right; background-color:white"><button id="chiudi2" type="button" class="btn btn-secondary" onclick="ChiudiNonModal();"><font size="4"><b>X</b></font></button></p>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                @*<button id="chiudi1" type="button" class="close" onclick="ChiudiNonModal();"  aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>*@
                 <div id="viewDocumentoDettagli">
                     <img src="~/Immagini/Loading/ajax-loader (1).gif" />
                 </div>
             </div>
             <div class="modal-footer" style="text-align:center">
-                <button id="chiudi2" type="button" class="btn btn-secondary" onclick="ChiudiNonModal();" >Chiudi</button>
+                @*<button id="chiudi2" type="button" class="btn btn-secondary" onclick="ChiudiNonModal();" >Chiudi</button>*@
             </div>
         </div>
     </div>
