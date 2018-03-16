@@ -12,27 +12,22 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PAGATOCONDIVISOMAB
+    public partial class PERCENTUALECONDIVISIONE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PAGATOCONDIVISOMAB()
+        public PERCENTUALECONDIVISIONE()
         {
-            this.PERCENTUALECONDIVISIONE = new HashSet<PERCENTUALECONDIVISIONE>();
+            this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
         }
     
-        public decimal IDPAGATOCONDIVISO { get; set; }
-        public decimal IDMAB { get; set; }
-        public decimal IDATTIVAZIONEMAB { get; set; }
+        public decimal IDPERCCOND { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
-        public bool CONDIVISO { get; set; }
-        public bool PAGATO { get; set; }
+        public decimal PERCENTUALE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALECONDIVISIONE> PERCENTUALECONDIVISIONE { get; set; }
+        public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
     }
 }

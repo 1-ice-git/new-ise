@@ -937,6 +937,14 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="PAGCOND_PERCCOND">
+          <Key>
+            <PropertyRef Name="IDPAGATOCONDIVISO" />
+            <PropertyRef Name="IDPERCCOND" />
+          </Key>
+          <Property Name="IDPAGATOCONDIVISO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCCOND" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="PASSAPORTI">
           <Key>
             <PropertyRef Name="IDPASSAPORTI" />
@@ -979,6 +987,17 @@
           </Key>
           <Property Name="IDPERCANTICIPOTM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTIPOANTICIPOTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
+          <Property Name="PERCENTUALE" Type="number" Precision="6" Scale="3" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PERCENTUALECONDIVISIONE">
+          <Key>
+            <PropertyRef Name="IDPERCCOND" />
+          </Key>
+          <Property Name="IDPERCCOND" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="PERCENTUALE" Type="number" Precision="6" Scale="3" Nullable="false" />
@@ -3245,6 +3264,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_PC_PCPC">
+          <End Role="PERCENTUALECONDIVISIONE" Type="Self.PERCENTUALECONDIVISIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PAGCOND_PERCCOND" Type="Self.PAGCOND_PERCCOND" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERCENTUALECONDIVISIONE">
+              <PropertyRef Name="IDPERCCOND" />
+            </Principal>
+            <Dependent Role="PAGCOND_PERCCOND">
+              <PropertyRef Name="IDPERCCOND" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_PCMAB_PCPC">
+          <End Role="PAGATOCONDIVISOMAB" Type="Self.PAGATOCONDIVISOMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PAGCOND_PERCCOND" Type="Self.PAGCOND_PERCCOND" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDPAGATOCONDIVISO" />
+            </Principal>
+            <Dependent Role="PAGCOND_PERCCOND">
+              <PropertyRef Name="IDPAGATOCONDIVISO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_PD_IPD">
           <End Role="PERCENTUALEDISAGIO" Type="Self.PERCENTUALEDISAGIO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4495,11 +4542,13 @@
           <EntitySet Name="NOTIFICHE" EntityType="Self.NOTIFICHE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="OA" EntityType="Self.OA" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="Self.PAGATOCONDIVISOMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PAGCOND_PERCCOND" EntityType="Self.PAGCOND_PERCCOND" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PASSAPORTI" EntityType="Self.PASSAPORTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PASSAPORTORICHIEDENTE" EntityType="Self.PASSAPORTORICHIEDENTE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PASSRICH_DOC" EntityType="Self.PASSRICH_DOC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PENSIONE" EntityType="Self.PENSIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEANTICIPOTE" EntityType="Self.PERCENTUALEANTICIPOTE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALECONDIVISIONE" EntityType="Self.PERCENTUALECONDIVISIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEDISAGIO" EntityType="Self.PERCENTUALEDISAGIO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEFKM" EntityType="Self.PERCENTUALEFKM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAB" EntityType="Self.PERCENTUALEMAB" Schema="ISESIM" store:Type="Tables" />
@@ -5059,6 +5108,14 @@
             <End Role="PERCENTUALEMAGCONIUGE" EntitySet="PERCENTUALEMAGCONIUGE" />
             <End Role="C_PC" EntitySet="C_PC" />
           </AssociationSet>
+          <AssociationSet Name="R_PC_PCPC" Association="Self.R_PC_PCPC">
+            <End Role="PERCENTUALECONDIVISIONE" EntitySet="PERCENTUALECONDIVISIONE" />
+            <End Role="PAGCOND_PERCCOND" EntitySet="PAGCOND_PERCCOND" />
+          </AssociationSet>
+          <AssociationSet Name="R_PCMAB_PCPC" Association="Self.R_PCMAB_PCPC">
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+            <End Role="PAGCOND_PERCCOND" EntitySet="PAGCOND_PERCCOND" />
+          </AssociationSet>
           <AssociationSet Name="R_PD_IPD" Association="Self.R_PD_IPD">
             <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
             <End Role="INDENNITA_PERCDISAGIO" EntitySet="INDENNITA_PERCDISAGIO" />
@@ -5457,6 +5514,7 @@
           <EntitySet Name="PASSAPORTORICHIEDENTE" EntityType="DBISEPRO.PASSAPORTORICHIEDENTE" />
           <EntitySet Name="PENSIONE" EntityType="DBISEPRO.PENSIONE" />
           <EntitySet Name="PERCENTUALEANTICIPOTE" EntityType="DBISEPRO.PERCENTUALEANTICIPOTE" />
+          <EntitySet Name="PERCENTUALECONDIVISIONE" EntityType="DBISEPRO.PERCENTUALECONDIVISIONE" />
           <EntitySet Name="PERCENTUALEDISAGIO" EntityType="DBISEPRO.PERCENTUALEDISAGIO" />
           <EntitySet Name="PERCENTUALEFKM" EntityType="DBISEPRO.PERCENTUALEFKM" />
           <EntitySet Name="PERCENTUALEMAB" EntityType="DBISEPRO.PERCENTUALEMAB" />
@@ -6134,6 +6192,10 @@
           <AssociationSet Name="MAB_PMAB" Association="DBISEPRO.MAB_PMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="PAGCOND_PERCCOND" Association="DBISEPRO.PAGCOND_PERCCOND">
+            <End Role="PERCENTUALECONDIVISIONE" EntitySet="PERCENTUALECONDIVISIONE" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
           <AssociationSet Name="PASSRICH_DOC" Association="DBISEPRO.PASSRICH_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -7055,6 +7117,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="PERCENTUALECONDIVISIONE" Relationship="DBISEPRO.PAGCOND_PERCCOND" FromRole="PAGATOCONDIVISOMAB" ToRole="PERCENTUALECONDIVISIONE" />
         </EntityType>
         <EntityType Name="PASSAPORTI">
           <Key>
@@ -7108,6 +7171,18 @@
           <NavigationProperty Name="TIPOANTICIPOTRASPORTOEFFETTI" Relationship="DBISEPRO.R_TATE_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TIPOANTICIPOTRASPORTOEFFETTI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.TEP_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TEPARTENZA" />
           <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.TER_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TERIENTRO" />
+        </EntityType>
+        <EntityType Name="PERCENTUALECONDIVISIONE">
+          <Key>
+            <PropertyRef Name="IDPERCCOND" />
+          </Key>
+          <Property Name="IDPERCCOND" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="6" Scale="3" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.PAGCOND_PERCCOND" FromRole="PERCENTUALECONDIVISIONE" ToRole="PAGATOCONDIVISOMAB" />
         </EntityType>
         <EntityType Name="PERCENTUALEDISAGIO">
           <Key>
@@ -9562,6 +9637,10 @@
           <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
         </Association>
+        <Association Name="PAGCOND_PERCCOND">
+          <End Type="DBISEPRO.PERCENTUALECONDIVISIONE" Role="PERCENTUALECONDIVISIONE" Multiplicity="*" />
+          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
+        </Association>
         <Association Name="PASSRICH_DOC">
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISEPRO.PASSAPORTORICHIEDENTE" Role="PASSAPORTORICHIEDENTE" Multiplicity="*" />
@@ -10389,6 +10468,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PERCENTUALECONDIVISIONE">
+            <EntityTypeMapping TypeName="DBISEPRO.PERCENTUALECONDIVISIONE">
+              <MappingFragment StoreEntitySet="PERCENTUALECONDIVISIONE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="PERCENTUALE" ColumnName="PERCENTUALE" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDPERCCOND" ColumnName="IDPERCCOND" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PERCENTUALEDISAGIO">
             <EntityTypeMapping TypeName="DBISEPRO.PERCENTUALEDISAGIO">
               <MappingFragment StoreEntitySet="PERCENTUALEDISAGIO">
@@ -11106,6 +11197,14 @@
             </EndProperty>
             <EndProperty Name="MAGGIORAZIONEABITAZIONE">
               <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PAGCOND_PERCCOND" TypeName="DBISEPRO.PAGCOND_PERCCOND" StoreEntitySet="PAGCOND_PERCCOND">
+            <EndProperty Name="PAGATOCONDIVISOMAB">
+              <ScalarProperty Name="IDPAGATOCONDIVISO" ColumnName="IDPAGATOCONDIVISO" />
+            </EndProperty>
+            <EndProperty Name="PERCENTUALECONDIVISIONE">
+              <ScalarProperty Name="IDPERCCOND" ColumnName="IDPERCCOND" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="PASSRICH_DOC" TypeName="DBISEPRO.PASSRICH_DOC" StoreEntitySet="PASSRICH_DOC">
