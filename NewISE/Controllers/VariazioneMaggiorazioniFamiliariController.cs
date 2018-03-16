@@ -68,6 +68,10 @@ namespace NewISE.Controllers
                         solaLettura = false;
                     }
                 }
+                if(trasfSolaLettura)
+                {
+                    solaLettura = true;
+                }
             }
             return solaLettura;
         }
@@ -610,21 +614,27 @@ namespace NewISE.Controllers
                                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out siPensioniConiuge, out docFormulario);
 
-                                if (
-                                    //(richiestaAttivazione && attivazione == false) ||
-                                    (richiestaAttivazione == false && datiFigli) ||
-                                    (richiestaAttivazione == false && datiParzialiFigli == false) ||
-                                    (richiestaAttivazione == false && siDocFigli) ||
-                                    (richiestaAttivazione == false && datiConiuge) ||
-                                    (richiestaAttivazione == false && datiParzialiConiuge == false) ||
-                                    (richiestaAttivazione == false && siDocConiuge) ||
-                                    (richiestaAttivazione == false && docFormulario) ||
-                                    (richiestaAttivazione == false && siPensioniConiuge))
+                                if (!trasfSolaLettura)
                                 {
-                                    lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMagFam.ToString() });
-                                    solaLettura = false;
-                                }
-                                if (richiestaAttivazione)
+                                    if (
+                                        //(richiestaAttivazione && attivazione == false) ||
+                                        (richiestaAttivazione == false && datiFigli) ||
+                                        (richiestaAttivazione == false && datiParzialiFigli == false) ||
+                                        (richiestaAttivazione == false && siDocFigli) ||
+                                        (richiestaAttivazione == false && datiConiuge) ||
+                                        (richiestaAttivazione == false && datiParzialiConiuge == false) ||
+                                        (richiestaAttivazione == false && siDocConiuge) ||
+                                        (richiestaAttivazione == false && docFormulario) ||
+                                        (richiestaAttivazione == false && siPensioniConiuge))
+                                    {
+                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMagFam.ToString() });
+                                        solaLettura = false;
+                                    }
+                                    if (richiestaAttivazione)
+                                    {
+                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString(), Value = e.idAttivazioneMagFam.ToString() });
+                                    }
+                                }else
                                 {
                                     lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString(), Value = e.idAttivazioneMagFam.ToString() });
                                 }
@@ -715,6 +725,7 @@ namespace NewISE.Controllers
                         solaLettura = false;
                     }
                     ViewData.Add("solaLettura", solaLettura);
+                    ViewData.Add("trasfSolaLettura", trasfSolaLettura);
                 }
 
                 //using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
@@ -854,6 +865,7 @@ namespace NewISE.Controllers
                     }
 
                     ViewData.Add("solaLettura", solaLettura);
+                    ViewData.Add("trasfSolaLettura", trasfSolaLettura);
                 }
 
                 //using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
@@ -1184,6 +1196,7 @@ namespace NewISE.Controllers
                             solaLettura = false;
                         }
                         ViewData.Add("solaLettura", solaLettura);
+                        ViewData.Add("trasfSolaLettura", trasfSolaLettura);
                     }
                 }
             }
