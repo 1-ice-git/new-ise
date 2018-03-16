@@ -713,22 +713,40 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtDipendenti dtd = new dtDipendenti())
+
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                     {
-                        using (dtUffici dtu = new dtUffici())
+                        using (dtDipendenti dtd = new dtDipendenti())
                         {
-                            var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
-
-                            if (t?.idTrasferimento > 0)
+                            using (dtTrasferimento dtt = new dtTrasferimento())
                             {
-                                var dip = dtd.GetDipendenteByID(t.idDipendente);
-                                var uff = dtu.GetUffici(t.idUfficio);
+                                using (dtUffici dtu = new dtUffici())
+                                {
+                                    var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
 
-                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaInizialeTitoloViaggio, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
-                                ViewBag.idTrasferimento = t.idTrasferimento;
-                                ViewBag.idTitoliViaggio = idTitoliViaggio;
+                                    if (t?.idTrasferimento > 0)
+                                    {
+                                        var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                        var uff = dtu.GetUffici(t.idUfficio);
+
+                                        var conta_attivazioni = dttv.GetNumAttivazioniTV(idTitoliViaggio, db);
+                                        string messaggioAnnulla = "";
+
+                                        if (conta_attivazioni == 1)
+                                        {
+                                            messaggioAnnulla = Resources.msgEmail.MessaggioAnnullaRichiestaInizialeTitoloViaggio;
+                                        }
+                                        else
+                                        {
+                                            messaggioAnnulla = Resources.msgEmail.MessaggioAnnullaRichiestaSuccessivaTitoloViaggio;
+                                        }
+                                        msg.corpoMsg = string.Format(messaggioAnnulla, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString());
+                                        ViewBag.idTrasferimento = t.idTrasferimento;
+                                        ViewBag.idTitoliViaggio = idTitoliViaggio;
+                                    }
+                                }
                             }
                         }
                     }

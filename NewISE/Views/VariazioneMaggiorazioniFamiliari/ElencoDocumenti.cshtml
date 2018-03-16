@@ -102,7 +102,7 @@
 <p style="padding-left: 15px;">
     @switch (enChiamante)
     {
-        case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+        case EnumChiamante.Variazione_Maggiorazioni_Familiari:
             @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
         default:

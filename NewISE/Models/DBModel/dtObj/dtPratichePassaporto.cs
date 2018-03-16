@@ -262,8 +262,28 @@ namespace NewISE.Models.DBModel.dtObj
                                     dtce.ModificaInCompletatoCalendarioEvento(ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestePratichePassaporto, db);
                                 }
 
-                                this.EmailCompletaRichiestaPassaporto(ap.IDATTIVAZIONIPASSAPORTI, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        using (dtUffici dtu = new dtUffici())
+                                        {
+                                            var t = dtt.GetTrasferimentoByIdAttPassaporto(idAttivazionePassaporto);
 
+                                            if (t?.idTrasferimento > 0)
+                                            {
+                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                                EmailTrasferimento.EmailAttiva(t.idTrasferimento,
+                                                                    Resources.msgEmail.OggettoRichiestaPratichePassaportoConcluse,
+                                                                    string.Format(Resources.msgEmail.MessaggioRichiestaPratichePassaportoConcluse, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                    db);
+                                            }
+                                        }
+                                    }
+                                }
+                                //this.EmailCompletaRichiestaPassaporto(ap.IDATTIVAZIONIPASSAPORTI, db);
                             }
                         }
                     }
@@ -577,11 +597,30 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
 
 
-                                this.EmailNotificaRichiestaPassaporto(ap.IDATTIVAZIONIPASSAPORTI, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        using (dtUffici dtu = new dtUffici())
+                                        {
+                                            var t = dtt.GetTrasferimentoByIdAttPassaporto(idAttivazionePassaporto);
 
+                                            if (t?.idTrasferimento > 0)
+                                            {
+                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                var uff = dtu.GetUffici(t.idUfficio);
 
+                                                EmailTrasferimento.EmailNotifica(EnumChiamante.Passaporti,
+                                                                                t.idTrasferimento,
+                                                                                Resources.msgEmail.OggettoRichiestaPratichePassaporto,
+                                                                                string.Format(Resources.msgEmail.MessaggioRichiestaPratichePassaporto, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")", t.dataPartenza.ToShortDateString(), uff.descUfficio + " (" + uff.codiceUfficio + ")"),
+                                                                                db);
+                                            }
+                                        }
+                                    }
+                                }
+                                //this.EmailNotificaRichiestaPassaporto(ap.IDATTIVAZIONIPASSAPORTI, db);
                             }
-
                         }
                     }
                     else

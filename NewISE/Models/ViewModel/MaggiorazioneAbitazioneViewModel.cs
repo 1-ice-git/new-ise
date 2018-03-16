@@ -11,7 +11,7 @@ namespace NewISE.Models.ViewModel
     {
 
 
-        [Display(Name = "Importo Canone")]
+        [Display(Name = "Importo")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal importo_canone { get; set; }
         public decimal id_Valuta { get; set; }

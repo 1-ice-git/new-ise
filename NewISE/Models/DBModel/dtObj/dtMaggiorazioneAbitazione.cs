@@ -659,8 +659,29 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     dtce.ModificaInCompletatoCalendarioEvento(am.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
                                 }
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        using (dtUffici dtu = new dtUffici())
+                                        {
+                                            var t = dtt.GetTrasferimentoById(am.TRASFERIMENTO.IDTRASFERIMENTO);
 
-                                this.EmailAttivaRichiestaMAB(am.IDATTIVAZIONEMAB, db);
+                                            if (t?.idTrasferimento > 0)
+                                            {
+                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                                EmailTrasferimento.EmailAttiva(am.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                    Resources.msgEmail.OggettoAttivazioneMaggiorazioneAbitazione,
+                                                                    string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioneAbitazione, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                    db);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                //this.EmailAttivaRichiestaMAB(am.IDATTIVAZIONEMAB, db);
 
                             }
                         }
@@ -1060,7 +1081,17 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
-                                this.EmailNotificaRichiestaMAB(idAttivazioneMAB, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    var dip = dtd.GetDipendenteByID(am.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE);
+
+                                    EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazione_Abitazione, 
+                                                    am.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                    Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioneAbitazione,
+                                                    string.Format(Resources.msgEmail.MessaggioNotificaMaggiorazioneAbitazione, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")"),
+                                                    db);
+                                }
+                                //this.EmailNotificaRichiestaMAB(idAttivazioneMAB, db);
 
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {

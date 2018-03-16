@@ -142,6 +142,28 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        using (dtUffici dtu = new dtUffici())
+                                        {
+                                            var t = dtt.GetTrasferimentoByIdAttMagFam(amf.IDATTIVAZIONEMAGFAM);
+
+                                            if (t?.idTrasferimento > 0)
+                                            {
+                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                                EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                    Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
+                                                                    string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                    db);
+                                            }
+                                        }
+                                    }
+                                }
+
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
                                     dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
@@ -173,6 +195,29 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
                                             }
+
+                                            using (dtDipendenti dtd = new dtDipendenti())
+                                            {
+                                                using (dtTrasferimento dtt = new dtTrasferimento())
+                                                {
+                                                    using (dtUffici dtu = new dtUffici())
+                                                    {
+                                                        var t = dtt.GetTrasferimentoByIdAttMagFam(amf.IDATTIVAZIONEMAGFAM);
+
+                                                        if (t?.idTrasferimento > 0)
+                                                        {
+                                                            var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                            var uff = dtu.GetUffici(t.idUfficio);
+
+                                                            EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                                Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
+                                                                                string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza),
+                                                                                db);
+                                                        }
+                                                    }
+                                                }
+                                            }
+
                                         }
                                     }
 
@@ -927,6 +972,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             amfNew.DOCUMENTI.Add(dNew);
 
+                                            if (db.SaveChanges() <= 0)
+                                            {
+                                                throw new Exception("Errore nella fase di creazione del documento nel ciclo di annullamento.");
+                                            }
+
                                             //dtamf.AssociaFormulario(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
                                         }
                                         #endregion
@@ -947,7 +997,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                 }
 
-                                EmailTrasferimento.EmailAnnulla(amfNew.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                EmailTrasferimento.EmailAnnulla(amfOld.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                                 Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioniFamiliari,
                                                                 testoAnnullaMF,
                                                                 db);
@@ -1037,7 +1087,30 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                     else
                                     {
-                                        this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
+
+                                        using (dtDipendenti dtd = new dtDipendenti())
+                                        {
+                                            using (dtTrasferimento dtt = new dtTrasferimento())
+                                            {
+                                                using (dtUffici dtu = new dtUffici())
+                                                {
+                                                    var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
+
+                                                    if (t?.idTrasferimento > 0)
+                                                    {
+                                                        var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                        var uff = dtu.GetUffici(t.idUfficio);
+
+                                                        EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazioni_Familiari,
+                                                                                        amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                                        Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari,
+                                                                                        string.Format(Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")", t.dataPartenza.ToShortDateString(), uff.descUfficio + " (" + uff.codiceUfficio + ")"),
+                                                                                        db);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        //this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
 
                                         using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                         {
@@ -1701,7 +1774,31 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                using (dtTrasferimento dtt = new dtTrasferimento())
+                                {
+                                    using (dtUffici dtu = new dtUffici())
+                                    {
+                                        var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
+
+                                        if (t?.idTrasferimento > 0)
+                                        {
+                                            var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                            var uff = dtu.GetUffici(t.idUfficio);
+
+                                            EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazioni_Familiari,
+                                                                            amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                            Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari,
+                                                                            string.Format(Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")", t.dataPartenza.ToShortDateString(), uff.descUfficio + " (" + uff.codiceUfficio + ")"),
+                                                                            db);
+                                        }
+                                    }
+                                }
+                            }
+
+
+                            //this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
 
                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                             {

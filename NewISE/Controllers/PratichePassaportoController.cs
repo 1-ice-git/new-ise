@@ -276,7 +276,7 @@ namespace NewISE.Controllers
                                 var dip = dtd.GetDipendenteByID(t.idDipendente);
                                 var uff = dtu.GetUffici(t.idUfficio);
 
-                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaPassaporto, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaPassaporto, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString());
                                 ViewBag.idTrasferimento = t.idTrasferimento;
                                 ViewBag.idAttivazionePassaporto = idAttivazionePassaporto;
                             }
