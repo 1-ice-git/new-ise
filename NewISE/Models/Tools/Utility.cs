@@ -20,7 +20,7 @@ namespace NewISE.Models.Tools
 
         private const string DataFineSistema = "31/12/9999";
         private const string Data_Inizio_Base = "01/07/2015";
-        
+
         public static bool Amministratore()
         {
             bool admin = false;
@@ -41,7 +41,7 @@ namespace NewISE.Models.Tools
 
             return admin;
         }
-        
+
         public static bool SuperAmministratore()
         {
             bool admin = false;
@@ -72,7 +72,7 @@ namespace NewISE.Models.Tools
             ac = Utility.UtenteAutorizzato();
             if (ac != null)
             {
-               
+
                 if (ac.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore || ac.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
                 {
                     admin = true;
@@ -143,7 +143,7 @@ namespace NewISE.Models.Tools
                         if (d?.IDDIPENDENTE > 0)
                         {
                             ac.idDipendente = d.IDDIPENDENTE;
-                           
+
                             DipendentiModel dm = new DipendentiModel()
                             {
                                 idDipendente = d.IDDIPENDENTE,
@@ -375,6 +375,35 @@ namespace NewISE.Models.Tools
             result = CodiceFiscale.ControlloFormaleOK(CodFisc);
 
             return result;
+
+        }
+        /// <summary>
+        /// Imposta la data di inizio ricalcoli per il dipendente passato come parametro.
+        /// </summary>
+        /// <param name="idDipendente"></param>
+        /// <param name="dtIniRicalcoli"></param>
+        /// <param name="db"></param>
+        public static void DataInizioRicalcoliDipendente(decimal idDipendente, DateTime dtIniRicalcoli, ModelDBISE db)
+        {
+            try
+            {
+                var d = db.DIPENDENTI.Find(idDipendente);
+                d.DATAINIZIORICALCOLI = dtIniRicalcoli;
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
 
         }
 
