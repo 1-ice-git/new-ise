@@ -313,6 +313,8 @@ namespace NewISE.Models.Tools
 
                                     }
 
+                                    #region Maggiorazioni figli
+
                                     var lf =
                                         mf.FIGLI.Where(
                                             a =>
@@ -345,9 +347,41 @@ namespace NewISE.Models.Tools
                                                 if (lips?.Any() ?? false)
                                                 {
                                                     var ips = lips.First();
+                                                    decimal indennitaPrimoSegretario = ips.INDENNITA;
+                                                    decimal indennitaServizioPS = 0;
 
-                                                    valoreMF += ips.INDENNITA * pmf.PERCENTUALEFIGLI / 100;
+                                                    var lcsd =
+                                                        indennita.COEFFICIENTESEDE.Where(
+                                                            a =>
+                                                                a.ANNULLATO == false &&
+                                                                dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                                                dtDatiParametri <= a.DATAFINEVALIDITA)
+                                                            .OrderByDescending(a => a.DATAINIZIOVALIDITA);
+                                                    if (lcsd?.Any() ?? false)
+                                                    {
+                                                        var coefficenteSede = lcsd.First();
 
+                                                        var lpd =
+                                                            indennita.PERCENTUALEDISAGIO.Where(
+                                                                a =>
+                                                                    a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                                                    dtDatiParametri <= a.DATAFINEVALIDITA)
+                                                                .OrderByDescending(a => a.DATAINIZIOVALIDITA);
+                                                        if (lpd?.Any() ?? false)
+                                                        {
+                                                            var percentualeDisagio = lpd.First();
+
+                                                            indennitaServizioPS = (((indennitaPrimoSegretario * coefficenteSede.VALORECOEFFICIENTE) +
+                                                                                  indennitaPrimoSegretario) +
+                                                                                 (((indennitaPrimoSegretario * coefficenteSede.VALORECOEFFICIENTE) +
+                                                                                   indennitaPrimoSegretario) / 100 * percentualeDisagio.PERCENTUALE));
+
+                                                            valoreMF += indennitaServizioPS * pmf.PERCENTUALEFIGLI / 100;
+
+
+                                                        }
+
+                                                    }
 
                                                 }
 
@@ -361,6 +395,7 @@ namespace NewISE.Models.Tools
 
                                         maggiorazioneFigli = valoreMF;
                                     }
+                                    #endregion
 
                                 }
 
