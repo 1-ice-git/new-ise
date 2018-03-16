@@ -908,7 +908,7 @@ namespace NewISE.Controllers
                                 var dip = dtd.GetDipendenteByID(t.idDipendente);
                                 var uff = dtu.GetUffici(t.idUfficio);
 
-                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioneAbitazione, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioneAbitazione, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString());
                             }
                         }
                     }

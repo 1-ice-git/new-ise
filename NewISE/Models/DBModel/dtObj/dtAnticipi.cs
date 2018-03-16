@@ -47,8 +47,9 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione anticipi.", "ATTIVITAANTICIPI", db, new_aa.IDPRIMASISTEMAZIONE, new_aa.IDATTIVITAANTICIPI);
+
+                    var ra = this.CreaRinunciaAnticipi(new_aa.IDATTIVITAANTICIPI, db);
                 }
 
                 return new_aa;
@@ -275,7 +276,16 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            this.EmailNotificaRichiestaAnticipi(idAttivitaAnticipi, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                var dip = dtd.GetDipendenteByID(aa.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE);
+
+                                EmailTrasferimento.EmailNotifica(EnumChiamante.Anticipi, aa.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                Resources.msgEmail.OggettoNotificaRichiestaAnticipi,
+                                                string.Format(Resources.msgEmail.MessaggioNotificaRichiestaAnticipi, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")"),
+                                                db);
+                            }
+                            //this.EmailNotificaRichiestaAnticipi(idAttivitaAnticipi, db);
 
                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                             {
@@ -395,10 +405,31 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
 
                                     }
+                                    #endregion
 
+                                    #region ricrea rinunciaAnticipi
+                                    var ra_old = this.GetRinunciaAnticipi(idAttivitaAnticipi, db);
+                                    RINUNCIAANTICIPI ra_new = new RINUNCIAANTICIPI()
+                                    {
+                                        IDATTIVITAANTICIPI = aa_New.IDATTIVITAANTICIPI,
+                                        RINUNCIAANT = ra_old.rinunciaAnticipi,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                    };
+                                    db.RINUNCIAANTICIPI.Add(ra_new);
+
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception(string.Format("Non è stato possibile creare una nuova rinuncia anticipi durante il ciclo di annullamento."));
+                                    }
+                                    else
+                                    {
+                                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova rinuncia anticipi.", "RINUNCIAANTICIPI", db, ra_new.ATTIVITAANTICIPI.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO, ra_new.IDATTIVITAANTICIPI);
+                                    }
+
+                                    #endregion
 
                                 }
-                                #endregion
+
 
 
                                 EmailTrasferimento.EmailAnnulla(aa_New.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO,
@@ -461,8 +492,29 @@ namespace NewISE.Models.DBModel.dtObj
                                     dtce.ModificaInCompletatoCalendarioEvento(aa.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaAnticipi, db);
                                 }
 
-                                this.EmailAttivaRichiestaAnticipi(aa.IDATTIVITAANTICIPI, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        using (dtUffici dtu = new dtUffici())
+                                        {
+                                            var t = dtt.GetTrasferimentoByIdPrimaSistemazione(aa.IDPRIMASISTEMAZIONE);
 
+                                            if (t?.idTrasferimento > 0)
+                                            {
+                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                var uff = dtu.GetUffici(t.idUfficio);
+
+
+                                                EmailTrasferimento.EmailAttiva(aa.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                    Resources.msgEmail.OggettoAttivaRichiestaAnticipi,
+                                                                    string.Format(Resources.msgEmail.MessaggioAttivaRichiestaAnticipi, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                    db);
+                                            }
+                                        }
+                                    }
+                                }
+                                //this.EmailAttivaRichiestaAnticipi(aa.IDATTIVITAANTICIPI, db);
                             }
                         }
                     }
@@ -734,13 +786,12 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public RinunciaAnticipiModel GetRinunciaAnticipi(decimal idPrimaSistemazione, ModelDBISE db)
+        public RinunciaAnticipiModel GetRinunciaAnticipi(decimal idAttivitaAnticipi, ModelDBISE db)
         {
             try
             {
                 RinunciaAnticipiModel ram = new RinunciaAnticipiModel();
-                var ps = db.PRIMASITEMAZIONE.Find(idPrimaSistemazione);
-                var aa = ps.ATTIVITAANTICIPI.Where(a=>a.ANNULLATO==false).OrderByDescending(a=>a.IDATTIVITAANTICIPI).First();
+                var aa = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi);
                 var ra = aa.RINUNCIAANTICIPI;
                 if (ra!=null)
                 {
@@ -753,13 +804,14 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    var new_ra = this.CreaRinunciaAnticipi(aa.IDATTIVITAANTICIPI, db);
-                    ram = new RinunciaAnticipiModel()
-                    {
-                        idAttivitaAnticipi = new_ra.IDATTIVITAANTICIPI,
-                        rinunciaAnticipi = new_ra.RINUNCIAANT,
-                        dataAggiornamento = new_ra.DATAAGGIORNAMENTO
-                    };
+                    throw new Exception("Non esiste nessuna informazione di rinuncia Anticipi.");
+                    //var new_ra = this.CreaRinunciaAnticipi(aa.IDATTIVITAANTICIPI, db);
+                    //ram = new RinunciaAnticipiModel()
+                    //{
+                    //    idAttivitaAnticipi = new_ra.IDATTIVITAANTICIPI,
+                    //    rinunciaAnticipi = new_ra.RINUNCIAANT,
+                    //    dataAggiornamento = new_ra.DATAAGGIORNAMENTO
+                    //};
                 }
 
                 return ram;

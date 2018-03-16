@@ -1057,7 +1057,7 @@ namespace NewISE.Models.DBModel.dtObj
                             switch (chiamante)
                             {
                                 case EnumChiamante.Maggiorazioni_Familiari:
-                                case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+                                case EnumChiamante.Variazione_Maggiorazioni_Familiari:
                                     var lc = d.CONIUGE;
                                     if (lc?.Any() ?? false)
                                     {

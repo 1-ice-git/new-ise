@@ -40,10 +40,10 @@ namespace NewISE.Models.DBModel.dtObj
                 am = Utility.UtenteAutorizzato();
                 mittente.Nominativo = am.nominativo;
                 mittente.EmailMittente = am.eMail;
-
+    
                 var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
-
-                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO);
+    
+                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
 
                 tv = atv.TITOLIVIAGGIO;
 
@@ -52,8 +52,8 @@ namespace NewISE.Models.DBModel.dtObj
                     TRASFERIMENTO tr = tv.TRASFERIMENTO;
                     DIPENDENTI d = tr.DIPENDENTI;
                     UFFICI u = tr.UFFICI;
-
-
+    
+    
                     using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
                     {
                         using (GestioneEmail gmail = new GestioneEmail())
@@ -110,11 +110,11 @@ namespace NewISE.Models.DBModel.dtObj
                                                 u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
                                 }
                                 gmail.sendMail(msgMail);
-
                             }
+    
                         }
-
                     }
+
                 }
 
             }
@@ -144,7 +144,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
 
-                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO);
+                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
 
                 tv = atv.TITOLIVIAGGIO;
 
@@ -250,7 +250,45 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            this.EmailNotificaRichiestaTV(idAttivazioneTitoliViaggio, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                using (dtTrasferimento dtt = new dtTrasferimento())
+                                {
+                                    using (dtUffici dtu = new dtUffici())
+                                    {
+                                        var t = dtt.GetTrasferimentoByIdTitoloViaggio(atv.IDTITOLOVIAGGIO);
+
+                                        if (t?.idTrasferimento > 0)
+                                        {
+                                            var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                            var uff = dtu.GetUffici(t.idUfficio);
+
+                                            var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
+                                            string messaggioNotifica = "";
+                                            string oggettoNotifica = "";
+
+                                            if (conta_attivazioni == 1)
+                                            {
+                                                messaggioNotifica = Resources.msgEmail.MessaggioNotificaRichiestaInizialeTitoliViaggio;
+                                                oggettoNotifica = Resources.msgEmail.OggettoNotificaRichiestaInizialeTitoloViaggio;
+
+                                            }
+                                            else
+                                            {
+                                                messaggioNotifica = Resources.msgEmail.MessaggioNotificaRichiestaSuccessivaTitoliViaggio;
+                                                oggettoNotifica = Resources.msgEmail.OggettoNotificaRichiestaSuccessivaTitoloViaggio;
+                                            }
+
+                                            EmailTrasferimento.EmailNotifica(EnumChiamante.Titoli_Viaggio,
+                                                                            t.idTrasferimento,
+                                                                            oggettoNotifica,
+                                                                            string.Format(messaggioNotifica, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")", uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                            db);
+                                        }
+                                    }
+                                }
+                            }
+                            //this.EmailNotificaRichiestaTV(idAttivazioneTitoliViaggio, db);
 
                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                             {
@@ -317,7 +355,44 @@ namespace NewISE.Models.DBModel.dtObj
                                     dtce.ModificaInCompletatoCalendarioEvento(atv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTitoliViaggio, db);
                                 }
 
-                                this.EmailAttivaRichiestaTV(atv.IDATTIVAZIONETITOLIVIAGGIO, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        using (dtUffici dtu = new dtUffici())
+                                        {
+                                            var t = dtt.GetTrasferimentoByIdTitoloViaggio(atv.IDTITOLOVIAGGIO);
+
+                                            if (t?.idTrasferimento > 0)
+                                            {
+                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
+                                                string messaggioAttiva = "";
+                                                string oggettoAttiva = "";
+
+                                                if (conta_attivazioni == 1)
+                                                {
+                                                    messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaInizialeTitoliViaggio;
+                                                    oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaInizialeTitoloViaggio;
+
+                                                }
+                                                else
+                                                {
+                                                    messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaSuccessivaTitoliViaggio;
+                                                    oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaSuccessivaTitoloViaggio;
+                                                }
+
+                                                EmailTrasferimento.EmailAttiva(t.idTrasferimento,
+                                                                    oggettoAttiva,
+                                                                    string.Format(messaggioAttiva, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                    db);
+                                            }
+                                        }
+                                    }
+                                }
+                                //this.EmailAttivaRichiestaTV(atv.IDATTIVAZIONETITOLIVIAGGIO, db);
 
                             }
                         }
@@ -632,16 +707,16 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public decimal GetNumAttivazioniTV(decimal idTitoliViaggio)
+        public decimal GetNumAttivazioniTV(decimal idTitoliViaggio, ModelDBISE db)
         {
-            using (ModelDBISE db = new ModelDBISE())
-            {
+            //using (ModelDBISE db = new ModelDBISE())
+            //{
                 var NumAttivazioni = 0;
                 NumAttivazioni = db.TITOLIVIAGGIO.Find(idTitoliViaggio).ATTIVAZIONETITOLIVIAGGIO
                                     .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true)
                                     .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).Count();
                 return NumAttivazioni;
-            }
+            //}
         }
 
 
@@ -872,16 +947,18 @@ namespace NewISE.Models.DBModel.dtObj
 
         public bool richiestaEseguita(decimal idTitoliViaggio)
         {
-            decimal NumAttivazioni = this.GetNumAttivazioniTV(idTitoliViaggio);
-            if (NumAttivazioni==0)
+            using (ModelDBISE db = new ModelDBISE())
             {
-                return false;
+                decimal NumAttivazioni = this.GetNumAttivazioniTV(idTitoliViaggio, db);
+                if (NumAttivazioni == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
-            else
-            {
-                return true;
-            }
-
         }
 
 
@@ -1757,14 +1834,14 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAAGGIORNAMENTO = ctv_Old.DATAAGGIORNAMENTO,
                                                 ANNULLATO = ctv_Old.ANNULLATO
                                             };
-    
+
                                             //db.CONIUGETITOLIVIAGGIO.Add(ctv_New);
 
                                             atv_New.CONIUGETITOLIVIAGGIO.Add(ctv_New);
                                             ctv_Old.ANNULLATO = true;
 
                                             int x = db.SaveChanges();
-    
+
                                             if (x <= 0)
                                             {
                                                 throw new Exception("Errore - Impossibile inserire il coniuge per il titolo di viaggio da annullamento richiesta. (" + ctv_New.CONIUGE.NOME + " " + ctv_New.CONIUGE.COGNOME + ")");
@@ -1790,7 +1867,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     var lftv_Old =
                                         atv_Old.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false)
                                             .OrderBy(a => a.IDFIGLITITOLIVIAGGIO);
-    
+
                                     if (lftv_Old?.Any() ?? false)
                                     {
                                         foreach (var ftv_Old in lftv_Old)
@@ -1804,13 +1881,13 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAAGGIORNAMENTO = ftv_Old.DATAAGGIORNAMENTO,
                                                 ANNULLATO = ftv_Old.ANNULLATO
                                             };
-    
+
                                             //db.FIGLITITOLIVIAGGIO.Add(ftv_New);
                                             atv_New.FIGLITITOLIVIAGGIO.Add(ftv_New);
                                             ftv_Old.ANNULLATO = true;
 
                                             int z = db.SaveChanges();
-    
+
                                             if (z <= 0)
                                             {
                                                 throw new Exception("Errore - Impossibile inserire i figli per il titolo di viaggio da annullamento richiesta.");
@@ -1837,7 +1914,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             a => a.MODIFICATO == false &&
                                             (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio))
                                             .OrderBy(a => a.DATAINSERIMENTO);
-    
+
                                     if (ldoc_Old?.Any() ?? false)
                                     {
                                         foreach (var doc_Old in ldoc_Old)
@@ -1852,12 +1929,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                 MODIFICATO = doc_Old.MODIFICATO,
                                                 FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO
                                             };
-    
+
                                             //db.DOCUMENTI.Add(doc_New);
                                             atv_New.DOCUMENTI.Add(doc_New);
 
                                             int y = db.SaveChanges();
-    
+
                                             if (y <= 0)
                                             {
                                                 throw new Exception("Errore - Impossibile associare il documento per il titolo viaggio. (" + doc_New.NOMEDOCUMENTO + ")");
@@ -1872,13 +1949,25 @@ namespace NewISE.Models.DBModel.dtObj
                                             }
 
                                         }
-                                   
+
 
                                     }
                                     #endregion
 
+                                    var conta_attivazioni = this.GetNumAttivazioniTV(atv_New.IDTITOLOVIAGGIO, db);
+                                    string oggettoAnnulla = "";
+
+                                    if (conta_attivazioni == 1)
+                                    {
+                                        oggettoAnnulla= Resources.msgEmail.OggettoAnnullaRichiestaInizialeTitoliViaggio;
+                                    }
+                                    else
+                                    {
+                                        oggettoAnnulla = Resources.msgEmail.OggettoAnnullaRichiestaSuccessivaTitioliViaggio;
+                                    }
+
                                     EmailTrasferimento.EmailAnnulla(idTrasferimento,
-                                                                    Resources.msgEmail.OggettoAnnullaRichiestaInizialeTitioliViaggio,
+                                                                    oggettoAnnulla,
                                                                     testoAnnulla,
                                                                     db);
 
@@ -1922,7 +2011,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
 
-                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO);
+                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
 
                 if (atv?.IDATTIVAZIONETITOLIVIAGGIO > 0)
                 {
@@ -1953,7 +2042,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if(conta_attivazioni==1)
                             {
                                 msgMail.oggetto =
-                                Resources.msgEmail.OggettoAnnullaRichiestaInizialeTitioliViaggio;
+                                Resources.msgEmail.OggettoAnnullaRichiestaInizialeTitoliViaggio;
                                 msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaInizialeTitoloViaggio, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
                             }
                             else
