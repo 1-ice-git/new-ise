@@ -1865,6 +1865,8 @@
     <Content Include="Areas\Parametri\Views\ParamPercAnticipoTE\NuovaPercAnticipoTE.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValutaUfficio\NuovaValutaUfficio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValutaUfficio\ValutaUfficio.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPercCondivisioneMAB\PercCondivisioneMAB.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPercCondivisioneMAB\NuovaCondivisioneMab.cshtml" />
     <None Include="Areas\Statistiche\RPTDataSet\DataSet1.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet14.Designer.cs</LastGenOutput>
@@ -2440,9 +2442,11 @@
     </Compile>
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamPercAnticipoTeController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamPercCondivisioneMAB.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="EF\DOC_ATER.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -3087,6 +3091,7 @@
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
+    <Compile Include="Models\DBModel\percCondivisioneMABModel.cs" />
     <Compile Include="Models\DBModel\NotificheModel.cs" />
     <Compile Include="Models\DBModel\PercAnticipoTEModel.cs" />
     <Compile Include="Models\DBModel\RinunciaTEPartenzaModel.cs" />
