@@ -432,7 +432,7 @@ function NuovaMAB(idTrasferimento) {
 }
 
 function MessaggioAnnullaRichiestaMAB() {
-    debugger;
+    //debugger;
     var rotta = "/MaggiorazioneAbitazione/MessaggioAnnullaMAB";
     var idTrasferimento = parseInt($('#hi_idTrasferimento').val());
     $.ajax({

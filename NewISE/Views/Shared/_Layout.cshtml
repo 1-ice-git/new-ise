@@ -16,12 +16,14 @@
         AccountModel ac = new AccountModel();
         AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
         string nominativo = string.Empty;
+        string descRuoloAccesso = string.Empty;
 
         ac = Utility.UtenteAutorizzato();
 
         if (ac != null && ac.idUtenteAutorizzato > 0)
         {
             nominativo = ac.nominativo + " (" + ac.utente + ")";
+            descRuoloAccesso = ac.RuoloAccesso.descRuoloAccesso;
         }
 
 
@@ -169,12 +171,12 @@
         <div id="menuIse" class="row">
             <div class="col-xs-4">
                 @if (nominativo == string.Empty)
-            {
+                {
                     <span>Utente: </span><span>Anonimo</span>
                 }
                 else
                 {
-                    <span>Utente: </span><span>@nominativo</span>
+                    <span>@descRuoloAccesso: </span><span>@nominativo</span>
                 }
             </div>
             <div class="col-xs-8 text-right ">

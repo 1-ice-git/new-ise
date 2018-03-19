@@ -86,7 +86,8 @@
                     $("#divOperazioniAttivitaTrasf").empty();
                     //InfoElaborazioneAjax(result.msg);
                     GestioneAttivitaTrasferimento();
-                    //GestioneTrasferimento();
+                    //GestioneAbilitazioneMenu(idTrasferimento);
+                    GestioneMenu();
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -120,6 +121,7 @@
                     $("#divOperazioniAttivitaTrasf").empty();
                     //InfoElaborazioneAjax(result.msg);
                     GestioneAttivitaTrasferimento();
+                    ElencoTrasferimento();
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }

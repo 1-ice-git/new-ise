@@ -96,7 +96,7 @@ namespace NewISE.Controllers
 
                             avm = dta.GetAnticipi(idAttivitaAnticipi, db);
 
-                            RinunciaAnticipiModel ram = dta.GetRinunciaAnticipi(idPrimaSistemazione, db);
+                            RinunciaAnticipiModel ram = dta.GetRinunciaAnticipi(idAttivitaAnticipi, db);
                             aam.RinunciaAnticipi = ram;
 
                             if (ram.rinunciaAnticipi)
@@ -168,7 +168,7 @@ namespace NewISE.Controllers
                             bool notificaRichiesta = aam.notificaRichiestaAnticipi;
                             bool attivaRichiesta = aam.attivaRichiestaAnticipi;
 
-                            var ra = dta.GetRinunciaAnticipi(idPrimaSistemazione, db);
+                            var ra = dta.GetRinunciaAnticipi(idAttivitaAnticipi, db);
                             var rinunciaAnticipi = ra.rinunciaAnticipi;
 
                             //se amministratore vedo i pulsanti altrimenti solo notifica
@@ -224,8 +224,7 @@ namespace NewISE.Controllers
                         using (dtTrasferimento dtt = new dtTrasferimento())
                         {
 
-                            ram = dta.GetRinunciaAnticipi(idPrimaSistemazione, db);
-                            var idAttivitaAnticipi = ram.idAttivitaAnticipi;
+                           
 
                             EnumStatoTraferimento statoTrasferimento = 0;
                             var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
@@ -240,6 +239,7 @@ namespace NewISE.Controllers
                             {
                                 soloLettura = true;
                             }
+                            ram = dta.GetRinunciaAnticipi(aa.idAttivitaAnticipi, db);
 
                             ViewData.Add("soloLettura", soloLettura);
                         }
@@ -354,7 +354,7 @@ namespace NewISE.Controllers
                                 var dip = dtd.GetDipendenteByID(t.idDipendente);
                                 var uff = dtu.GetUffici(t.idUfficio);
 
-                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaAnticipi, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaAnticipi, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString());
                             }
                         }
                     }

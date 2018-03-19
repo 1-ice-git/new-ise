@@ -1864,7 +1864,30 @@ namespace NewISE.Models.DBModel.dtObj
                                     dtce.ModificaInCompletatoCalendarioEvento(t.IDTRASFERIMENTO, EnumFunzioniEventi.AttivaTrasferimento, db);
                                 }
 
-                                this.EmailAttivaTrasf(t.IDTRASFERIMENTO, db);
+
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        using (dtUffici dtu = new dtUffici())
+                                        {
+                                            var dip = dtd.GetDipendenteByID(t.IDDIPENDENTE);
+                                            var uff = dtu.GetUffici(t.IDUFFICIO);
+
+                                            var messaggioAttiva = Resources.msgEmail.MessaggioAttivaTrasferimento;
+                                            var oggettoAttiva = Resources.msgEmail.OggettoAttivaTrasferimento;
+
+
+                                            EmailTrasferimento.EmailAttiva(t.IDTRASFERIMENTO,
+                                                                            oggettoAttiva,
+                                                                            string.Format(messaggioAttiva,dip.cognome + " " + dip.nome + " (" + dip.matricola + ") " ,uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString()),
+                                                                            db);
+                                            
+                                        }
+                                    }
+                                }
+
+                                //this.EmailAttivaTrasf(t.IDTRASFERIMENTO, db);
 
                             }
                         }
@@ -2098,6 +2121,36 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var ps = db.PRIMASITEMAZIONE.Find(idPrimaSistemazione);
                 var tr = ps.TRASFERIMENTO;
+
+                tm = new TrasferimentoModel()
+                {
+                    idTrasferimento = tr.IDTRASFERIMENTO,
+                    idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
+                    idUfficio = tr.IDUFFICIO,
+                    idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
+                    idDipendente = tr.IDDIPENDENTE,
+                    idTipoCoan = tr.IDTIPOCOAN,
+                    dataPartenza = tr.DATAPARTENZA,
+                    dataRientro = tr.DATARIENTRO,
+                    coan = tr.COAN,
+                    protocolloLettera = tr.PROTOCOLLOLETTERA,
+                    dataLettera = tr.DATALETTERA,
+                    notificaTrasferimento = tr.NOTIFICATRASFERIMENTO,
+                    dataAggiornamento = tr.DATAAGGIORNAMENTO
+                };
+            }
+
+            return tm;
+        }
+
+        public TrasferimentoModel GetTrasferimentoByIdMAB(decimal idMAB)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mab = db.MAGGIORAZIONEABITAZIONE.Find(idMAB);
+                var tr = mab.TRASFERIMENTO;
 
                 tm = new TrasferimentoModel()
                 {

@@ -116,7 +116,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio relativi al trasferimento presso la sede di {0} dal giorno {1} è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaSuccessivaTitoloViaggio {
             get {
@@ -152,7 +152,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata confermata..
+        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio per il trasferimento presso la sede di {0} del {1} è stata confermata..
         /// </summary>
         internal static string MessaggioAttivaRichiestaInizialeTitoliViaggio {
             get {
@@ -161,7 +161,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che l&apos;ulteriore documentazione relativa ai titoli di viaggio richiesti è stata confermata..
+        ///   Looks up a localized string similar to Si notifica che l&apos;ulteriore documentazione relativa ai titoli di viaggio richiesti relativi al trasferimento presso la sede di {0} dal {1} è stata confermata..
         /// </summary>
         internal static string MessaggioAttivaRichiestaSuccessivaTitoliViaggio {
             get {
@@ -170,7 +170,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il trasferimento del dipendente {0} per la sede di {1} è stato attivato..
+        ///   Looks up a localized string similar to Si informa che il trasferimento del dipendente {0} per la sede di {1}, a partire dal giorno {2}, è stato attivato..
         /// </summary>
         internal static string MessaggioAttivaTrasferimento {
             get {
@@ -179,7 +179,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della Maggiorazione Abitazione per il dipendente {0}, trasferito il {1} nella sede di {2}..
+        ///   Looks up a localized string similar to Notifica che la richiesta di Maggiorazione Abitazione per il trasferimento presso la sede di {0}, dal giorno {1}, è stata confermata..
         /// </summary>
         internal static string MessaggioAttivazioneMaggiorazioneAbitazione {
             get {
@@ -233,7 +233,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica la richiesta dei titoli di viaggio per {0}.
+        ///   Looks up a localized string similar to Si notifica che il dipendente {0} ha effettuato la richiesta dei titoli di viaggio per la sede di {1} dal {2}..
         /// </summary>
         internal static string MessaggioNotificaRichiestaInizialeTitoliViaggio {
             get {
@@ -251,7 +251,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica la richiesta di invio di ulteriore documentazione relativa ai titoli di viaggio per {0}.
+        ///   Looks up a localized string similar to Si notifica che il dipendente {0} ha effettuato la richiesta di invio di ulteriore documentazione relativa ai titoli di viaggio per il trasferimento presso la sede di {1} dal {2}..
         /// </summary>
         internal static string MessaggioNotificaRichiestaSuccessivaTitoliViaggio {
             get {
@@ -287,7 +287,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l&apos;ufficio di {1} dal {2}..
+        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaporto {
             get {
@@ -334,9 +334,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta dei titoli di viaggio..
         /// </summary>
-        internal static string OggettoAnnullaRichiestaInizialeTitioliViaggio {
+        internal static string OggettoAnnullaRichiestaInizialeTitoliViaggio {
             get {
-                return ResourceManager.GetString("OggettoAnnullaRichiestaInizialeTitioliViaggio", resourceCulture);
+                return ResourceManager.GetString("OggettoAnnullaRichiestaInizialeTitoliViaggio", resourceCulture);
             }
         }
         

@@ -22,33 +22,33 @@
     <hr />
     <div class="table col-xs-12">
         <div class="row">
-            <div class="col-xs-3">
+            <div class="col-xs-4">
             </div>
-            <div class="col-xs-3 text-center" style="font-weight:bold">
+            <div class="col-xs-2 text-center" style="font-weight:bold">
                 @Html.DisplayNameFor(model => model.ImportoPrevisto)
             </div>
             <div class="col-xs-2 text-center" style="font-weight:bold">
                 @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
             </div>
-            <div class="col-xs-3 text-center" style="font-weight:bold">
+            <div class="col-xs-2 text-center" style="font-weight:bold">
                 @Html.DisplayNameFor(model => model.ImportoPercepito)
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-3 text-right" style="padding-right:15px;font-weight:bold;padding-top:5px">
-                Ind. Prima Sist. Lorda
+            <div class="col-xs-4 text-right" style="padding-right:15px;font-weight:bold;padding-top:5px">
+                Ind. Prima Sist. Lorda - Magg. Fam.
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                 <input type="text" id="ValImportoPrevisto" class="form-control " readonly style="text-align: right" />
             </div>
             <div class="col-xs-2">
                 <input type="text" maxlength="3" onkeyup="CalcolaAnticipo(@idAttivitaAnticipi,@ValsoloLettura);" id="PercentualeAnticipoRichiesto" value="@Model.PercentualeAnticipoRichiesto" class="form-control " @txtReadOnly style="text-align: right" />
             </div>
             <div>
-                <div id="divLoader" class="col-xs-3" hidden>
+                <div id="divLoader" class="col-xs-2" hidden>
                     <img src="~/Immagini/Loading/loader.gif" style="width:100%" height="30" />
                 </div>
-                <div id="divImportoPercepito" class="col-xs-3">
+                <div id="divImportoPercepito" class="col-xs-2">
                     <input type="text" id="ValImportoPercepito" value="@Model.ImportoPercepito" class="form-control " readonly style="text-align: right" />
                 </div>
             </div>

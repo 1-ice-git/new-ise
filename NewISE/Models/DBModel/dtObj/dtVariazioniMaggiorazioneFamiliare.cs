@@ -30,7 +30,8 @@ namespace NewISE.Models.DBModel.dtObj
                                        out bool datiConiuge, out bool datiParzialiConiuge,
                                        out bool datiFigli, out bool datiParzialiFigli,
                                        out bool siDocConiuge, out bool siDocFigli,
-                                       out bool docFormulario, out bool inLavorazione)
+                                       out bool docFormulario, out bool inLavorazione,
+                                       out bool trasfSolaLettura)
         {
             rinunciaMagFam = false;
             richiestaAttivazione = false;
@@ -43,12 +44,28 @@ namespace NewISE.Models.DBModel.dtObj
             siDocFigli = false;
             docFormulario = false;
             inLavorazione = false;
+            trasfSolaLettura = false;
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                    var lrmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a=>a.ANNULLATO==false).ToList();
+                    if(lrmf?.Any()??false)
+                    {
+                        var rmf = lrmf.First();
+                        if(rmf.RINUNCIAMAGGIORAZIONI)
+                        {
+                            rinunciaMagFam = true;
+                        }
+                    }
+
+                    decimal IDstatoTrasf = mf.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+                    if (IDstatoTrasf == (decimal)EnumStatoTraferimento.Terminato || IDstatoTrasf == (decimal)EnumStatoTraferimento.Annullato)
+                    {
+                        trasfSolaLettura = true;
+                    }
 
                     var conta_attivazioni = mf.ATTIVAZIONIMAGFAM.Where(a => (a.ANNULLATO == false || (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true))).Count();
 
@@ -346,28 +363,30 @@ namespace NewISE.Models.DBModel.dtObj
                             if (lc?.Any() ?? false)
                             {
                                 datiConiuge = true;
-                            }
+                                foreach (var c in lc)
+                                {
+                                    var nadc = c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false && a.IDCONIUGE > 0).Count();
+                                    if (nadc > 0)
+                                    {
+                                        datiParzialiConiuge = false;
+                                    }
+                                    else
+                                    {
+                                        datiParzialiConiuge = true;
+                                    }
 
-                            var nadc = amf.ALTRIDATIFAM.Count(a => a.ANNULLATO == false && a.IDCONIUGE > 0);
-                            if (nadc > 0)
-                            {
-                                datiParzialiConiuge = false;
-                            }
-                            else
-                            {
-                                datiParzialiConiuge = true;
-                            }
+                                    var ndocc = c.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).Count();
+                                    if (ndocc > 0)
+                                    {
+                                        siDocConiuge = true;
+                                    }
 
-                            var ndocc = amf.DOCUMENTI.Count(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
-                            if (ndocc > 0)
-                            {
-                                siDocConiuge = true;
-                            }
-
-                            var npc = amf.PENSIONE.Count(a => a.ANNULLATO == false);
-                            if (npc > 0)
-                            {
-                                siPensioniConiuge = true;
+                                    var npc = c.PENSIONE.Where(a => a.ANNULLATO == false).Count();
+                                    if (npc > 0)
+                                    {
+                                        siPensioniConiuge = true;
+                                    }
+                                }
                             }
                         }
 
@@ -378,25 +397,28 @@ namespace NewISE.Models.DBModel.dtObj
                             if (lf?.Any() ?? false)
                             {
                                 datiFigli = true;
-                            }
-                            var nadf = amf.ALTRIDATIFAM.Count(a => a.ANNULLATO == false && a.IDFIGLI > 0);
-                            if (nadf > 0)
-                            {
-                                datiParzialiFigli = false;
-                            }
-                            else
-                            {
-                                datiParzialiFigli = true;
-                            }
+                                foreach (var f in lf)
+                                {
+                                    var nadf = f.ALTRIDATIFAM.Where(a => a.ANNULLATO == false && a.IDFIGLI > 0).Count();
+                                    if (nadf > 0)
+                                    {
+                                        datiParzialiFigli = false;
+                                    }
+                                    else
+                                    {
+                                        datiParzialiFigli = true;
+                                    }
 
-                            var ndocf = amf.DOCUMENTI.Count(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
-                            if (ndocf > 0)
-                            {
-                                siDocFigli = true;
-                            }
-                            else
-                            {
-                                siDocFigli = false;
+                                    var ndocf = f.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).Count();
+                                    if (ndocf > 0)
+                                    {
+                                        siDocFigli = true;
+                                    }
+                                    else
+                                    {
+                                        siDocFigli = false;
+                                    }
+                                }
                             }
                         }
                     }
@@ -450,6 +472,7 @@ namespace NewISE.Models.DBModel.dtObj
                 bool siDocFigli = false;
                 bool docFormulario = false;
                 bool inLavorazione = false;
+                bool trasfSolaLettura = false;
 
 
                 DateTime dtIni = cm.dataInizio.Value;
@@ -465,7 +488,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         this.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
 
                         //leggo l'ultima attivazione valida
                         var last_attivazione_coniuge = this.GetAttivazioneById(cm.idConiuge, EnumTipoTabella.Coniuge);
@@ -1002,6 +1025,7 @@ namespace NewISE.Models.DBModel.dtObj
                 bool siDocFigli = false;
                 bool docFormulario = false;
                 bool inLavorazione = false;
+                bool trasfSolaLettura = false;
 
                 DateTime dtIni = fm.dataInizio.Value;
                 DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
@@ -1016,7 +1040,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         this.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
 
                         //leggo l'ultima attivazione valida
                         var last_attivazione_figlio = this.GetAttivazioneById(fm.idFigli, EnumTipoTabella.Figli);
@@ -1963,7 +1987,7 @@ namespace NewISE.Models.DBModel.dtObj
                         case EnumTipoDoc.Documento_Identita:
                             switch (chiamante)
                             {
-                                case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+                                case EnumChiamante.Variazione_Maggiorazioni_Familiari:
                                     var lc = d.CONIUGE;
                                     if (lc?.Any() ?? false)
                                     {
@@ -2600,18 +2624,42 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (ld?.Any() ?? false)
                 {
-                    ldm.AddRange(from d in ld
-                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
-                                 select new VariazioneDocumentiModel()
-                                 {
-                                     idDocumenti = d.IDDOCUMENTO,
-                                     nomeDocumento = d.NOMEDOCUMENTO,
-                                     estensione = d.ESTENSIONE,
-                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                                     dataInserimento = d.DATAINSERIMENTO,
-                                     file = f,
-                                     Modificabile = (d.MODIFICATO == false && d.FK_IDDOCUMENTO == null && d.ATTIVAZIONIMAGFAM.First().RICHIESTAATTIVAZIONE == false) ? true : false
-                                 });
+                    foreach (var d in ld)
+                    {
+                        var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
+
+                        bool rich = false;
+                        var latt = d.ATTIVAZIONIMAGFAM;
+                        if (latt?.Any()??false)
+                        {
+                            var att = latt.First();
+                            rich = att.RICHIESTAATTIVAZIONE;
+                        }
+
+                        VariazioneDocumentiModel vdm_new = new VariazioneDocumentiModel()
+                        {
+                            idDocumenti = d.IDDOCUMENTO,
+                            nomeDocumento = d.NOMEDOCUMENTO,
+                            estensione = d.ESTENSIONE,
+                            tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                            dataInserimento = d.DATAINSERIMENTO,
+                            file = f,
+                            Modificabile = (d.MODIFICATO == false && d.FK_IDDOCUMENTO == null && rich == false) ? true : false
+                        };
+                        ldm.Add(vdm_new);
+                        //ldm.AddRange(from d in ld
+                        //             let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                        //             select new VariazioneDocumentiModel()
+                        //             {
+                        //                 idDocumenti = d.IDDOCUMENTO,
+                        //                 nomeDocumento = d.NOMEDOCUMENTO,
+                        //                 estensione = d.ESTENSIONE,
+                        //                 tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                        //                 dataInserimento = d.DATAINSERIMENTO,
+                        //                 file = f,
+                        //                 Modificabile = (d.MODIFICATO == false && d.FK_IDDOCUMENTO == null && d.ATTIVAZIONIMAGFAM.First().RICHIESTAATTIVAZIONE == false) ? true : false
+                        //             });
+                    }
                 }
             }
             return ldm;
@@ -2866,12 +2914,13 @@ namespace NewISE.Models.DBModel.dtObj
             bool siDocFigli = false;
             bool docFormulario = false;
             bool inLavorazione = false;
+            bool trasfSolaLettura = false;
 
             int i = 0;
 
             this.SituazioneMagFamVariazione(idMaggiorazioneFamiliare, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
 
             try
             {
@@ -2900,6 +2949,27 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
                                 }
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        using (dtUffici dtu = new dtUffici())
+                                        {
+                                            var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
+
+                                            if (t?.idTrasferimento > 0)
+                                            {
+                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                var uff = dtu.GetUffici(t.idUfficio);
+
+                                                EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                    Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
+                                                                    string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                    db);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         else if (rinunciaMagFam == false && richiestaAttivazione == true && attivazione == false)
@@ -2927,9 +2997,29 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
                                             }
+                                            using (dtDipendenti dtd = new dtDipendenti())
+                                            {
+                                                using (dtTrasferimento dtt = new dtTrasferimento())
+                                                {
+                                                    using (dtUffici dtu = new dtUffici())
+                                                    {
+                                                        var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
+
+                                                        if (t?.idTrasferimento > 0)
+                                                        {
+                                                            var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                            var uff = dtu.GetUffici(t.idUfficio);
+
+                                                            EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                                Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
+                                                                                string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                                db);
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
-
                                 }
                             }
                         }

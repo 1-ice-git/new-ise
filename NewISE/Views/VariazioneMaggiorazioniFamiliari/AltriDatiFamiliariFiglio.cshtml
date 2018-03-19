@@ -5,6 +5,7 @@
     decimal idAttivazione = Convert.ToDecimal(ViewData["idAttivazione"]);
     decimal idFigli = Convert.ToDecimal(ViewData["idFigli"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool trasfSolaLettura = Convert.ToBoolean(ViewData["trasfSolaLettura"]);
 }
 
 <div style="padding-left: 15px;">
@@ -129,7 +130,7 @@
     <hr />
 </div>
 <p style="padding-left: 15px;">
-    @if (solaLettura)
+    @if (solaLettura || trasfSolaLettura)
     {
         <button class="btn btn-default disabled">Modifica</button>
     }

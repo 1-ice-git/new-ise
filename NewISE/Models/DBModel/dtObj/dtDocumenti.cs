@@ -1057,7 +1057,7 @@ namespace NewISE.Models.DBModel.dtObj
                             switch (chiamante)
                             {
                                 case EnumChiamante.Maggiorazioni_Familiari:
-                                case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+                                case EnumChiamante.Variazione_Maggiorazioni_Familiari:
                                     var lc = d.CONIUGE;
                                     if (lc?.Any() ?? false)
                                     {
@@ -1223,6 +1223,9 @@ namespace NewISE.Models.DBModel.dtObj
                     mf.ATTIVAZIONIMAGFAM.Where(
                         a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAGFAM);
 
+                var t = mf.TRASFERIMENTO;
+                var statoTrasf = t.IDSTATOTRASFERIMENTO;
+
                 var i = 1;
                 var coloresfondo = "";
                 var coloretesto = "";
@@ -1237,7 +1240,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                         bool modificabile = false;
-                        if (e.RICHIESTAATTIVAZIONE == false && e.ATTIVAZIONEMAGFAM == false)
+                        if (e.RICHIESTAATTIVAZIONE == false && 
+                            e.ATTIVAZIONEMAGFAM == false && 
+                            statoTrasf!=(decimal)EnumStatoTraferimento.Annullato && 
+                            statoTrasf!=(decimal)EnumStatoTraferimento.Terminato)
                         {
                             modificabile = true;
                             coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
@@ -1317,6 +1323,8 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                var t = mf.TRASFERIMENTO;
+                var statoTrasf = t.IDSTATOTRASFERIMENTO;
 
                 //var lamf =
                 //    mf.ATTIVAZIONIMAGFAM.Where(
@@ -1343,7 +1351,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                             bool modificabile = false;
-                            if (e.RICHIESTAATTIVAZIONE == false && e.ATTIVAZIONEMAGFAM == false)
+                            if (e.RICHIESTAATTIVAZIONE == false && 
+                                e.ATTIVAZIONEMAGFAM == false &&
+                                statoTrasf!=(decimal)EnumStatoTraferimento.Annullato &&
+                                statoTrasf!=(decimal)EnumStatoTraferimento.Terminato)
                             {
                                 modificabile = true;
                                 coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;

@@ -5,12 +5,13 @@
     decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool trasfSolaLettura = Convert.ToBoolean(ViewData["trasfSolaLettura"]);
 }
 
 @Html.Hidden("hdIdImportoPensione")
 
 <p style="margin-top: 5px; padding-left:15px;">
-    @if (solaLettura) 
+    @if (solaLettura || trasfSolaLettura) 
     {
         <button class="btn btn-default disabled">Nuovo importo</button>
     }
@@ -58,7 +59,7 @@
                         @Html.DisplayFor(modelItem => item.importoPensione)
                     </td>
                     <td class="text-center">
-                        @if (solaLettura)
+                        @if (solaLettura || trasfSolaLettura)
                         {
                             <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
                         }

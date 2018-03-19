@@ -13,11 +13,11 @@
     {
         if (solaLettura)
         {
-            <button href="#" class="btn btn-default disabled" disabled="disabled">Modifica coniuge</button>
+            <button href="#" class="btn btn-default disabled" disabled="disabled">Modifica Coniuge</button>
         }
         else
         {
-            @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
+            @Ajax.ActionLink("Modifica Coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
         }
 
     }
@@ -25,11 +25,11 @@
     {
         if (solaLettura)
         {
-            <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo coniuge</button>
+            <button href="#" class="btn btn-default disabled" disabled="disabled">Coniuge</button>
         }
         else
         {
-            @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge", @id = "linkNewConiuge" })
+            @Ajax.ActionLink("Coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge", @id = "linkNewConiuge" })
         }
 
     }

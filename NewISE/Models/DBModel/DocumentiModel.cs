@@ -18,8 +18,9 @@ namespace NewISE.Models.DBModel
         Trasporto_Effetti = 3,
         Trasferimento = 4,
         Passaporti = 5,
-        VariazioneMaggiorazioniFamiliari = 6
-
+        Variazione_Maggiorazioni_Familiari = 6,
+        Maggiorazione_Abitazione = 7,
+        Anticipi = 8
     }
 
     public enum EnumTipoDoc

@@ -2,8 +2,10 @@
 
 @{
     decimal idMagFam = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal ValRinunciaMagFam = Convert.ToDecimal(ViewData["rinunciaMagFam"]);
 }
 
+@Html.Hidden("hi_idTrasferimento", idMagFam)
 <div class="row">
     <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
         <div class="nav nav-justified nav-tabs">
@@ -23,20 +25,27 @@
     </div>
 </div>
 
+
 <div class="row">
-    <div class="col-xs-5" style="margin-top: 10px; margin-bottom: 10px;">
-        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam_Var" onclick="ModelNotificaRichiesta();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Notifica richiesta
-        </button>
-        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam_Var" onclick="ModelAttivaRichiesta();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Attiva maggiorazioni
-        </button>
-        <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaMagFam_Var" onclick="ModalAnnullaRichiesta();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Annulla richiesta
-        </button>
+    <div class="col-xs-12">
+
+        <div style="padding-right: 10px;padding-left:15px">
+            <hr />
+            <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
+                <button class="btn btn-default btn-sm  disabled"  disabled id="btNotificaRichiestaMagFam_Var" onclick="ModelNotificaRichiesta();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAttivaMagFam_Var" onclick="ModelAttivaRichiesta();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Attiva maggiorazioni
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaMagFam_Var" onclick="ModalAnnullaRichiesta();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Annulla richiesta
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -95,11 +104,11 @@
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewAnnullaRichiesta">
-                    <label>Procedere con l'annullamento della richiesta?</label>
+                    @*<label>Procedere con l'annullamento della richiesta?</label>*@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaAnnulla_Var" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaAnnullaRichiesta(); ">Procedi</button>
+                <button id="btConfermaAnnulla_Var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiesta();">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
@@ -110,6 +119,8 @@
     $('#tabsAttivitaMaggiorazioniFamiliari_Var').tab();
 
     ElencoFamiliari();
+
+    PulsantiNotificaAttivaMagFam();
 
     function ElencoFormulariInseriti() {
         var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoFormulariInseriti";
@@ -140,8 +151,7 @@
 
         });
     }
-    
-    PulsantiNotificaAttivaMagFam();
+
 
     function ElencoFamiliari() {
         //debugger;
@@ -217,6 +227,7 @@
 
     function ModalAnnullaRichiesta() {
         //debugger;
+        MessaggioAnnullaVariazioneMagFam();
         $('#ModalAnnullaRichiesta_Var').modal().show();
     }
 
@@ -288,12 +299,27 @@
                     var docFormulario = result.docFormulario;
                     var inLavorazione = result.inLavorazione;
                     var checkNotifica = result.CheckNotifica;
+                    var trasfSolaLettura = result.trasfSolaLettura;
 
                     $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                     $("#btAttivaMagFam_Var").addClass("disabled");
 
                     $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
                     $("#btAnnullaMagFam_Var").addClass("disabled");
+
+                    if (admin) {
+                        $("#btAttivaMagFam_Var").removeAttr("hidden");
+                        $("#btAttivaMagFam_Var").removeClass("hidden");
+
+                        $("#btAnnullaMagFam_Var").removeAttr("hidden");
+                        $("#btAnnullaMagFam_Var").removeClass("hidden");
+
+                        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                        $("#btAttivaMagFam_Var").addClass("disabled");
+
+                        $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                        $("#btAnnullaMagFam_Var").addClass("disabled");
+                    }
 
 
                     //Se risulta in lavorazione abilito la il pulsante notifica
@@ -361,6 +387,18 @@
                             }
                         }
                     }
+                    //se il trasferimento è terminato o annullato disabilito i pulsanti
+                    if(trasfSolaLettura)
+                    {
+                        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                        $("#btAttivaMagFam_Var").addClass("disabled");
+
+                        $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                        $("#btAnnullaMagFam_Var").addClass("disabled");
+
+                        $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                        $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
+                    }
 
                 } else {
                     ErroreElaborazioneAjax(result.err);
@@ -378,13 +416,15 @@
     }
 
     function ConfermaAnnullaRichiesta() {
+        debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaAnnullaRichiestaVariazione";
         var idMagFam = parseInt('@idMagFam');
+        var testoAnnullaMAB = $('#FullDescription').val();
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idMaggiorazioniFamiliari: idMagFam },
+            data: { idMaggiorazioniFamiliari: idMagFam, msg: testoAnnullaMAB },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -409,6 +449,35 @@
             }
         });
     }
+
+    function MessaggioAnnullaVariazioneMagFam() {
+        debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/MessaggioAnnullaVariazioneMagFam";
+        var idTrasferimento = parseInt($('#hi_idTrasferimento').val());
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiesta").empty();
+                $("#viewAnnullaRichiesta").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
 
 </script>
 
