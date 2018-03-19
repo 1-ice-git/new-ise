@@ -102,7 +102,7 @@ namespace NewISE.Controllers
                     {
                         var t = dtt.GetTrasferimentoById(idTrasferimento);
                         statoTrasferimento = t.idStatoTrasferimento;
-                        if (statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
+                        if (statoTrasferimento == EnumStatoTraferimento.Annullato)
                         {
                             soloLettura = true;
                         }
@@ -194,7 +194,7 @@ namespace NewISE.Controllers
                         {
                             var t = dtt.GetTrasferimentoById(idTrasferimento);
                             statoTrasferimento = t.idStatoTrasferimento;
-                            if (statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
+                            if (statoTrasferimento == EnumStatoTraferimento.Annullato)
                             {
                                 soloLettura = true;
                             }
@@ -286,12 +286,12 @@ namespace NewISE.Controllers
 
                         if (num_attivazioni == 0)
                         {
-                            if (notificaRichiesta && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            if (notificaRichiesta && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledAttivaRichiesta = "";
                                 disabledAnnullaRichiesta = "";
                             }
-                            if (notificaRichiesta == false && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            if (notificaRichiesta == false && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledNotificaRichiesta = "";
                             }
@@ -301,7 +301,7 @@ namespace NewISE.Controllers
                     {
                         if (num_attivazioni == 0)
                         {
-                            if (notificaRichiesta == false && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            if (notificaRichiesta == false && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledNotificaRichiesta = "";
                             }
@@ -659,8 +659,50 @@ namespace NewISE.Controllers
                                 if (lpc.Count() > 0)
                                 {
                                     var pc = lpc.First();
-                                    mam.canone_pagato = pc.PAGATO;
                                     mam.canone_condiviso = pc.CONDIVISO;
+                                    mam.canone_pagato = pc.PAGATO;
+
+                                    //#region inserisce eventuale pagato condiviso
+                                    //if (mam.canone_condiviso)
+                                    //{
+                                    //    //PAGATOCONDIVISOMAB pc = dtma.SetPagatoCondivisoMAB(mvm, db);
+
+                                    //    pc.PAGATO = mam.canone_pagato;
+                                    //    pc.CONDIVISO = mam.canone_condiviso;
+                                    //    pc.DATAINIZIOVALIDITA = mam.dataInizioMAB;
+                                    //    pc.DATAFINEVALIDITA = mam.dataFineMAB;
+                                    //    pc.DATAAGGIORNAMENTO = DateTime.Now;
+
+                                    //    if (db.SaveChanges() > 0)
+                                    //    {
+
+                                    //        #region associa percentuale condivisione
+                                    //        var lpercCond = dtma.GetListaPercentualeCondivisione(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
+                                    //        if (lpercCond?.Any() ?? false)
+                                    //        {
+                                    //            //rimuovo precedenti associazioni percentuali
+                                    //            dtma.RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, db);
+
+                                    //            //riassocio le percentuali
+                                    //            foreach (var percCond in lpercCond)
+                                    //            {
+                                    //                dtma.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+                                    //            }
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+                                    //        }
+                                    //        #endregion
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        throw new Exception("Errore nell'aggiornamento di PAgatoCondivisoMAB.");
+                                    //    }
+
+
+                                    //}
+                                    //#endregion
                                 }
 
                                 if (ma.DATAFINEMAB == Utility.DataFineStop())

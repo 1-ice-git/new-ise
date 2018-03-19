@@ -62,7 +62,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     decimal IDstatoTrasf = mf.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
-                    if (IDstatoTrasf == (decimal)EnumStatoTraferimento.Terminato || IDstatoTrasf == (decimal)EnumStatoTraferimento.Annullato)
+                    if (IDstatoTrasf == (decimal)EnumStatoTraferimento.Annullato)
                     {
                         trasfSolaLettura = true;
                     }
