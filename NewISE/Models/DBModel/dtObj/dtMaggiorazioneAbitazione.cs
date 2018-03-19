@@ -163,11 +163,29 @@ namespace NewISE.Models.DBModel.dtObj
                 um.descUfficio = u.DESCRIZIONEUFFICIO;
 
                 pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
-                                                    a.DATAINIZIOVALIDITA >= ma.DATAINIZIOMAB &&
-                                                    a.DATAFINEVALIDITA <= ma.DATAFINEMAB &&
+                                                    a.DATAINIZIOVALIDITA <= ma.DATAINIZIOMAB &&
+                                                    a.DATAFINEVALIDITA >= ma.DATAFINEMAB &&
                                                     a.IDUFFICIO == u.IDUFFICIO &&
                                                     a.IDLIVELLO == l.IDLIVELLO).ToList();
                 return pl;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<PERCENTUALECONDIVISIONE> GetListaPercentualeCondivisione(DateTime dataIni, DateTime dataFin, ModelDBISE db)
+        {
+            try
+            {
+
+                List<PERCENTUALECONDIVISIONE> lpc = new List<PERCENTUALECONDIVISIONE>();
+
+                lpc = db.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false &&
+                                                        a.DATAINIZIOVALIDITA <= dataIni &&
+                                                        a.DATAFINEVALIDITA >= dataFin).ToList();
+                return lpc;
             }
             catch (Exception ex)
             {
@@ -1511,8 +1529,6 @@ namespace NewISE.Models.DBModel.dtObj
                     mvm.dataFineMAB = dtFin;
                     mvm.idMAB = new_idMAB;
 
-
-
                     #region anticipo annuale
                     if (mvm.AnticipoAnnuale)
                     {
@@ -1532,7 +1548,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                     }
                     #endregion
-
 
                     #region associa MAB a tutte le percentuali MAB trovate
                     var lista_perc = this.GetListaPercentualeMAB(idTrasferimento, db);
@@ -1572,8 +1587,23 @@ namespace NewISE.Models.DBModel.dtObj
                     if (mvm.canone_condiviso)
                     {
                         PAGATOCONDIVISOMAB pc = this.SetPagatoCondivisoMAB(mvm, db);
-                    }
 
+                        #region associa percentuale condivisione
+                        var lpercCond = this.GetListaPercentualeCondivisione(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
+                        if(lpercCond?.Any() ?? false)
+                        {
+                            foreach(var percCond in lpercCond)
+                            {
+                                this.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+                        }
+                        #endregion
+
+                    }
                     #endregion
 
                     db.Database.CurrentTransaction.Commit();
@@ -1618,8 +1648,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DateTime dtIni = mvm.dataInizioMAB;
                     DateTime dtFin = mvm.ut_dataFineMAB == null ? Utility.DataFineStop() : mvm.ut_dataFineMAB.Value;
                     mvm.dataFineMAB = dtFin;
-
-
+                    
                     #region aggiorno anticipo annuale
                     //rimuovi precedenti associazioni MAB MaggiorazioniAnnuali
                     this.RimuoviAssociazioneMAB_MaggiorazioniAnnuali(idMAB, db);
@@ -1634,8 +1663,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
                     #endregion
-
-
+                    
                     #region associa MAB a tutte le percentuali MAB trovate
                     this.RimuoviAssociazioneMAB_PercentualeMAB(mvm.idMAB, db);
                     var lista_perc = this.GetListaPercentualeMAB(mvm.idTrasferimento, db);
@@ -1673,22 +1701,37 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     #endregion
 
-                    #region aggiorna eventuale pagato condiviso
-                    //if (mvm.canone_condiviso)
-                    //{
-                    this.UpdatePagatoCondivisoMAB(mvm, db);
-                    //}
-                    //else
-                    //{
-                    //    //se non lo ho richiesto annullo eventuali record precedenti
-                    //    var lpc = this.GetListPagatoCondivisoMAB(mvm);
+                    #region inserisce/aggiorna eventuale pagato condiviso
 
-                    //    foreach(var pc in lpc)
-                    //    {
-                    //        pc.ANNULLATO = true;
-                    //    }
-                    //}
+                    var ma = this.GetMaggiorazioneAbitazione(amm);
+                    var lpc = this.GetListPagatoCondivisoMAB(mvm);
+                    var pc = lpc.First();
 
+                    //rimuovo precedenti associazioni percentuali
+                    this.RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, db);
+
+                    if (mvm.canone_condiviso)
+                    {
+                        //PAGATOCONDIVISOMAB pc = dtma.SetPagatoCondivisoMAB(mvm, db);
+                        this.UpdatePagatoCondivisoMAB(mvm, db);
+
+                        #region associa percentuale condivisione
+                        var lpercCond = this.GetListaPercentualeCondivisione(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
+                        if (lpercCond?.Any() ?? false)
+                        {
+                            //riassocio le percentuali
+                            foreach (var percCond in lpercCond)
+                            {
+                                this.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+                        }
+                        #endregion
+
+                    }
                     #endregion
 
                     db.Database.CurrentTransaction.Commit();
@@ -1733,6 +1776,22 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione(decimal idPagatoCondiviso, ModelDBISE db)
+        {
+            var pc = db.PAGATOCONDIVISOMAB.Find(idPagatoCondiviso);
+            var lpercCond = pc.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
+            if (lpercCond?.Any() ?? false)
+            {
+                foreach (var percCond in lpercCond)
+                {
+                    pc.PERCENTUALECONDIVISIONE.Remove(percCond);
+                }
+
+                db.SaveChanges();
+            }
+
+        }
+
         public void RimuoviAssociazioneCanoneMAB_TFR(decimal idCanone, ModelDBISE db)
         {
             var c = db.CANONEMAB.Find(idCanone);
@@ -1767,6 +1826,30 @@ namespace NewISE.Models.DBModel.dtObj
                 if (i <= 0)
                 {
                     throw new Exception(string.Format("Impossibile associare MaggiorazioneAbitazione a MaggiorazioniAnnuali."));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void Associa_PagatoCondivisoMAB_PercentualeCondivisione(decimal idPagatoCondiviso, decimal idPercCond, ModelDBISE db)
+        {
+            try
+            {
+                var pcmab = db.PAGATOCONDIVISOMAB.Find(idPagatoCondiviso);
+                var item = db.Entry<PAGATOCONDIVISOMAB>(pcmab);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.PERCENTUALECONDIVISIONE).Load();
+                var pc = db.PERCENTUALECONDIVISIONE.Find(idPercCond);
+                pcmab.PERCENTUALECONDIVISIONE.Add(pc);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare PagatoCondivisoMAB a PercentualeCondivisione."));
                 }
             }
             catch (Exception ex)
