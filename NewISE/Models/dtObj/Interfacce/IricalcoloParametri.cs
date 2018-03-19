@@ -104,7 +104,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPercentualeCondivisione"></param>
         /// <param name="db"></param>
-        void AssociaPagatoCondiviso(decimal idPercentualeCondivisione, ModelDBISE db);
+        void AssociaPagatoCondivisoMAB(decimal idPercentualeCondivisione, ModelDBISE db);
         #endregion
 
         #region Percentuale chilometrica
@@ -156,15 +156,51 @@ namespace NewISE.Models.dtObj.Interfacce
         /// <summary>
         /// Associa la percentuale di maggiorazione figli alla tabella figli.
         /// </summary>
-        /// <param name="idPercFiflio"></param>
+        /// <param name="idPercFiglio"></param>
         /// <param name="db"></param>
-        void AssociaFiglio_PMF(decimal idPercFiflio, ModelDBISE db);
+        void AssociaFiglio_PMF(decimal idPercFiglio, ModelDBISE db);
 
         #endregion
 
         #region Riduzioni
+        /// <summary>
+        /// Associa le riduzioni alla tabella Indennitabase.
+        /// </summary>
+        /// <param name="idRiduzioni"></param>
+        /// <param name="db"></param>
+        void AssociaIndennitaBase_Riduzioni(decimal idRiduzioni, ModelDBISE db);
+        /// <summary>
+        /// Associa le riduzioni alla tabella CoefficenteIndRichiamo.
+        /// </summary>
+        /// <param name="idRiduzioni"></param>
+        /// <param name="db"></param>
+        void AssociaCoefficienteRichiamo_Riduzioni(decimal idRiduzioni, ModelDBISE db);
+        /// <summary>
+        /// Associa le riduzioni alla tabella IndennitaSistemazione.
+        /// </summary>
+        /// <param name="idRiduzioni"></param>
+        /// <param name="db"></param>
+        void AssociaIndennitaSistemazione_Riduzioni(decimal idRiduzioni, ModelDBISE db);
 
         #endregion
+
+        #region TFR
+        /// <summary>
+        /// Associa il tfr alla tabella Indennita.
+        /// </summary>
+        /// <param name="idTFR"></param>
+        /// <param name="db"></param>
+        void AssociaIndennita_TFR(decimal idTFR, ModelDBISE db);
+        /// <summary>
+        /// Associa il tfr alla tabella CanoneMAB.
+        /// </summary>
+        /// <param name="idTFR"></param>
+        /// <param name="db"></param>
+        void AssociaCanoneMAB_TFR(decimal idTFR, ModelDBISE db);
+
+        #endregion
+
+
 
     }
 }
