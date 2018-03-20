@@ -383,12 +383,17 @@ namespace NewISE.Models.Tools
         /// <param name="idDipendente"></param>
         /// <param name="dtIniRicalcoli"></param>
         /// <param name="db"></param>
-        public static void DataInizioRicalcoliDipendente(decimal idDipendente, DateTime dtIniRicalcoli, ModelDBISE db)
+        public static void DataInizioRicalcoliDipendente(decimal idTrasferimento, DateTime dtIniRicalcoli, ModelDBISE db)
         {
             try
             {
-                var d = db.DIPENDENTI.Find(idDipendente);
-                d.DATAINIZIORICALCOLI = dtIniRicalcoli;
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var d = t.DIPENDENTI;
+                if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
+                {
+                    d.DATAINIZIORICALCOLI = dtIniRicalcoli;
+                }
 
                 int i = db.SaveChanges();
 
@@ -406,6 +411,8 @@ namespace NewISE.Models.Tools
 
 
         }
+
+
 
 
     }

@@ -6,6 +6,7 @@ using System.Web;
 using NewISE.EF;
 using NewISE.Models.dtObj.Interfacce;
 using NewISE.Models.DBModel;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.dtObj
 {
@@ -33,6 +34,10 @@ namespace NewISE.Models.dtObj
                     if (nCmab <= 0)
                     {
                         tfr.CANONEMAB.Add(cmab);
+
+                        var t = cmab.ATTIVAZIONEMAB.TRASFERIMENTO;
+
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
                     }
                 }
 
