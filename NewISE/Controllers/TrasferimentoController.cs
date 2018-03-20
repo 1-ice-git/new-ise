@@ -2144,6 +2144,61 @@ namespace NewISE.Controllers
             return PartialView(msg);
         }
 
+        public JsonResult VerificaMaggiorazioneAbitazione(decimal idTrasferimento)
+        {
+            try
+            {
+                if (idTrasferimento.Equals(null))
+                {
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
+                }
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+                    if (trm != null && trm.HasValue())
+                    {
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                        {
+                            using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                            {
+                                trm.RuoloUfficio = dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento, DateTime.Now).RuoloUfficio;
+                                trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                            }
+                            using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                            {
+                                AttivazioneMABModel amm = dtma.GetUltimaAttivazioneMAB(idTrasferimento);
+                                MaggiorazioneAbitazioneModel mam = dtma.GetMaggiorazioneAbitazione(amm);
+
+                                if (mam.idMAB.ToString() != null)
+                                {
+                                    return Json(new { idMAB = mam.idMAB.ToString() });
+                                }
+                                else
+                                {
+                                    return Json(new { idMAB = 0 });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { idMAB = 0 });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { idMAB = 0 });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+
+
+        }
+
+
 
     }
 }

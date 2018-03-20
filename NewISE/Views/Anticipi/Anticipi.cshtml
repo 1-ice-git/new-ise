@@ -154,7 +154,7 @@
 
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                debugger;
+                //debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
             }
@@ -363,7 +363,7 @@
     }
 
     function MessaggioAnnullaRichiestaAnticipi() {
-        debugger;
+        //debugger;
         var rotta = "/Anticipi/MessaggioAnnullaAnticipi";
         var idPrimaSistemazione = parseInt('@idPrimaSistemazione');
         $.ajax({

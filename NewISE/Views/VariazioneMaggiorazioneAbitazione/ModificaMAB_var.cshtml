@@ -1,0 +1,233 @@
+﻿@model NewISE.Models.ViewModel.MaggiorazioneAbitazioneViewModel
+@using NewISE.Models.Tools
+
+<link href="~/Content/css/NuovaMAB.css" rel="stylesheet" />
+<script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
+<script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idMAB = Convert.ToDecimal(ViewData["idMAB"]);
+    var errori = ViewData.ModelState;
+    var dataFine = Convert.ToDateTime(Model.dataFineMAB);
+}
+
+<style>
+    div .col-xs-10 {
+        padding-right: 25px;
+    }
+</style>
+
+@using (@Ajax.BeginForm("ConfermaModificaMAB_var", "VariazioneMaggiorazioneAbitazione", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formModMAB_var" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="padding-left: 15px;padding-right:50px">
+        <div class="form-horizontal">
+            <h4>Modifica Dati Maggiorazione Abitazione</h4>
+            <hr />
+            @Html.Hidden("idTrasferimento", idTrasferimento)
+            @Html.Hidden("dataPartenza", Model.dataPartenza)
+            @Html.Hidden("idMagAnnuali", Model.idMagAnnuali )
+            @Html.Hidden("idMAB", idMAB)
+            <div class="row">
+                <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
+                    <div class="row">
+                        <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AnticipoAnnuale, new { @class = "control-label col-xs-3" })
+                                @if (Model.idMagAnnuali>0)
+                                {
+                                    if (Model.AnticipoAnnuale)
+                                    {
+                                        <div class="col-xs-2">
+                                            <label>@Html.RadioButtonFor(Model=>Model.AnticipoAnnuale, "false") Semestrale</label>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true", new { @checked = true }) Annuale</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-xs-2">
+                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true") Annuale</label>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-xs-2">
+                                        <label>@Html.RadioButton("chk", true, new { @checked = true, disabled = "disabled" }) Semestrale</label>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <label>@Html.RadioButton("chk", false, new { disabled = "disabled" }) Annuale</label>
+                                        @Html.Hidden("AnticipoAnnuale", Model.AnticipoAnnuale)
+                                        @*<label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false", new { disabled = "disabled" }) Annuale</label>*@
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.importo_canone, htmlAttributes: new { @class = "control-label col-xs-3" })
+                        <div class="col-xs-3">
+                            @{ decimal canone = Convert.ToDecimal(Model.importo_canone);}
+                            @Html.TextBox("imp_canone", canone, new { @class = "form-control col-xs-2" })
+                            @Html.TextBoxFor(Model => Model.importo_canone, new { type = "number", @class = "form-control col-xs-2 hidden" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Valuta", htmlAttributes: new { @class = "control-label col-xs-3" })
+                        <div class="select2-container select2-container--classic col-xs-3">
+                            @Html.DropDownListFor(Model => Model.id_Valuta, ViewBag.lValute as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.dataInizioMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
+                        <div class="col-xs-2">
+                            @Html.TextBoxFor(model => model.dataInizioMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-3" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.dataFineMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
+                        <div class="col-xs-2">
+                            @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-2" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.canone_condiviso, htmlAttributes: new { @class = "control-label col-xs-3" })
+                        <div class="col-xs-1">
+                            <span class="text-uppercase">@Html.CheckBoxFor(model => model.canone_condiviso)</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.canone_pagato, htmlAttributes: new { @class = "control-label col-xs-3" })
+                        <div class="col-xs-1">
+                            <span class="text-uppercase">@Html.CheckBoxFor(model => model.canone_pagato)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-2 col-xs-4">
+                        <input type="submit" value="Salva" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
+                </div>
+                <div class="modal-body alert alert-warning text-warning">
+                    <p id="msgModalWarning" class="text-warning">
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<p style="padding-left: 15px;">
+    @Ajax.ActionLink("Torna indietro", "GestioneMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = Model.idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</p>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/MyValidateDate.js"></script>
+
+<script type="text/javascript">
+    @foreach (var e in errori)
+    {
+        if (e.Value.Errors.Count > 0)
+        {
+            @:DialogModalError('True');
+            break;
+        }
+    }
+
+    $("#canone_condiviso").click(function () {
+        if ($(this).is(':checked')) {
+            $("#canone_pagato").prop('disabled', false);
+        } else {
+            $("#canone_pagato").prop('disabled', true);
+            $("#canone_pagato").prop('checked', false);
+        }
+    });
+
+    if ($("#canone_condiviso").is(':checked')) {
+        $("#canone_pagato").prop('disabled', false);
+    } else {
+        $("#canone_pagato").prop('disabled', true);
+    }
+
+    $("#id_Valuta").select2({
+        placeholder: "Seleziona la valuta",
+        allowClear: true,
+        language: "it"
+    });
+
+    $('#dataInizioMAB').datepicker({
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
+    });
+
+    $('#dataFineMAB').datepicker({
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
+    });
+
+    $('#ut_dataFineMAB').datepicker({
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
+    });
+
+    $("#imp_canone").on('change', function () {
+        //debugger;
+        var appo = $("#imp_canone").autoNumeric('get');
+        var appo3 = parseFloat(appo).toString().replace('.', ',');
+        $('#importo_canone').val(appo3);
+    });
+
+    $('#formAddMAB_var').submit(function () {
+        //debugger;
+        var form = $(this);
+        if (!form.valid()) {
+            DialogModalError('True');
+        }
+    });
+
+
+    function DialogModalError(err) {
+        //debugger;
+        if (err == 'True') {
+            $('#myModalErrorModel').modal('toggle');
+        }
+    }
+
+    $('#imp_canone').autoNumeric('init',
+    {
+       aSep: '.',
+       aDec: ',',
+       nSep: true
+    });
+
+</script>
+
+
+

@@ -1,0 +1,143 @@
+﻿<head>
+    <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+    <script src="~/Scripts/ViewScripts/VariazioneMaggiorazioneAbitazione.js"></script>
+</head>
+
+<body>
+    @{
+        decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    }
+
+    @Html.Hidden("hiIdTipoDocumento", 0)
+    <div id="divMaggiorazioneAbitazione_var">
+    </div>
+    <div class="modal fade" id="ModalDownloadFormularioMAB_var" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioMABLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="DownloadFormularioMABLabel">Formulari Variazione Maggiorazione Abitazione</h3>
+                </div>
+                <div class="modal-body text-info" style="font-size: 1em;">
+                    <div id="divFormularioMAB_var" class="modal-body alert alert-info text-info">
+                        @Html.Action("ElencoDocumentiFormularioMAB_var", "VariazioneMaggiorazioneAbitazione")
+                    </div>
+                </div>
+                <div class="modal-footer text-info">
+                    <div class="alert alert-info text-info">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="inviaDocMABModal_var" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalMABLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="notificaModelMABLabel">Documentazione Variazione Maggiorazione Abitazione</h3>
+                </div>
+                <div class="modal-body text-info" style="font-size: 1em;">
+                    <div id="divDocumentoMAB_var" class="modal-body alert alert-info text-info">
+                        <p id="viewDocumentoMAB_var">
+                            <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btUploadDocMAB_var" type="button" class="btn btn-info" onclick="SalvaDocMAB_var(@idTrasferimento);">Salva</button>
+                    <button id="btAnnullaDocMAB_var" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalNotificaRichiestaMAB_var" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaMABLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+                </div>
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <p id="viewNotificaRichiestaMAB_var">
+                        <label>Procedere con la notifica della richiesta?</label>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btConfermaNotificaRichiestaMAB_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaMAB_var();">Procedi</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalAttivaRichiestaMAB_var" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaMABLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+                </div>
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <p id="viewAttivaRichiestaMAB_var">
+                        <label>Procedere con l'attivazione della richiesta?</label>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btConfermaAttivazioneRichiestaMAB_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaMAB_var();">Procedi</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalAnnullaRichiestaMAB_var" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaMABLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+                </div>
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <p id="viewAnnullaRichiestaMAB_var">
+                        @*<label>Procedere con l'annullamento della richiesta?</label>*@
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btConfermaAnnullaRichiestaMAB_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaMAB_var();">Procedi</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+<script type="text/javascript">
+    //debugger;
+    GestioneMAB_var(@idTrasferimento);
+
+    function SalvaDocMAB_var(idTrasferimento)
+    {
+        //debugger;
+        var idTipoDocumento=parseInt($("#hiIdTipoDocumento").val());
+        SalvaDocumentoMAB_var(idTrasferimento, idTipoDocumento);
+    }
+</script>
+
+
+

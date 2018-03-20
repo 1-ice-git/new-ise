@@ -181,7 +181,7 @@ function Register() {
         $('#vaiOgg').show();
         return false;
     }
-    debugger;
+    //debugger;
 
     // $('#corpoMessaggio').val(CKEDITOR.instances.corpoMessaggio.getData());
     CKEDITOR.instances["corpoMessaggio"].updateElement();
@@ -206,7 +206,7 @@ function Register() {
             //$("#divEffettoLoadAutNoDoc").show("slow");
         },
         success: function (result) {
-            debugger;
+            //debugger;
             //$("#divEffettoLoadAutNoDoc").hide("slow");
             $("#divPanelNotifiche").empty();
             $("#divPanelNotifiche").html(result);
@@ -216,7 +216,7 @@ function Register() {
             //                $("#Centro").getNiceScroll().resize();
         },
         error: function (jqXHR, textStatus, errorThrow) {
-            debugger;
+            //debugger;
             var msg = errorThrow.err;
             AlertDialog(msg);
         }
