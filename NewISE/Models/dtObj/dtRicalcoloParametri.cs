@@ -60,10 +60,32 @@ namespace NewISE.Models.dtObj
                 item.State = EntityState.Modified;
                 item.Collection(a => a.COEFFICIENTEINDRICHIAMO).Load();
 
-                var lcir = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false);
+                var lcir =
+                    db.COEFFICIENTEINDRICHIAMO.Where(
+                        a =>
+                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= riduzioni.DATAINIZIOVALIDITA &&
+                            a.DATAINIZIOVALIDITA <= riduzioni.DATAFINEVALIDITA)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA)
+                        .ToList();
 
+                foreach (var cir in lcir)
+                {
+                    var nConta =
+                        riduzioni.COEFFICIENTEINDRICHIAMO.Count(
+                            a => a.ANNULLATO == false && a.IDCOEFINDRICHIAMO == cir.IDCOEFINDRICHIAMO);
 
+                    if (nConta <= 0)
+                    {
+                        riduzioni.COEFFICIENTEINDRICHIAMO.Add(cir);
+                    }
+                }
 
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione del coefficente di richiamo alle riduzioni.");
+                }
 
             }
             catch (Exception ex)
@@ -74,7 +96,24 @@ namespace NewISE.Models.dtObj
 
         public void AssociaConiuge_PMC(decimal idPercMagConiuge, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var pmc = db.PERCENTUALEMAGCONIUGE.Find(idPercMagConiuge);
+                var item = db.Entry<PERCENTUALEMAGCONIUGE>(pmc);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.CONIUGE).Load();
+
+                //var lc = db.CONIUGE
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+
+
         }
 
         public void AssociaFiglio_PMF(decimal idPercFiglio, ModelDBISE db)
@@ -99,7 +138,36 @@ namespace NewISE.Models.dtObj
 
         public void AssociaIndennitaBase_Riduzioni(decimal idRiduzioni, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var r = db.RIDUZIONI.Find(idRiduzioni);
+                var item = db.Entry<RIDUZIONI>(r);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.INDENNITABASE).Load();
+
+                var lib =
+                    db.INDENNITABASE.Where(
+                        a =>
+                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
+                            a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                foreach (INDENNITABASE ib in lib)
+                {
+                    var nConta =
+                        r.INDENNITABASE.Count(a => a.ANNULLATO == false && a.IDINDENNITABASE == ib.IDINDENNITABASE);
+
+                    if (nConta <= 0)
+                    {
+                        r.INDENNITABASE.Add(ib);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaIndennitaSistemazione_Riduzioni(decimal idRiduzioni, ModelDBISE db)
@@ -144,7 +212,7 @@ namespace NewISE.Models.dtObj
 
                 if (i <= 0)
                 {
-                    throw new Exception("Errore nella fase di asscoiazione del canome MAB al TFR.");
+                    throw new Exception("Errore nella fase di asscoiazione dell'indennità al TFR.");
                 }
 
             }
@@ -202,7 +270,7 @@ namespace NewISE.Models.dtObj
 
         public void AssociaRiduzioniIB(decimal idIndBase, ModelDBISE db)
         {
-            throw new NotImplementedException();
+
         }
 
         public void AssociaRiduzioni_CR(decimal idCoeffRichiamo, ModelDBISE db)

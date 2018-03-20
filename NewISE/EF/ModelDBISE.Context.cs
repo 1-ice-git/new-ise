@@ -56,13 +56,11 @@ namespace NewISE.EF
         public virtual DbSet<ELABMAB> ELABMAB { get; set; }
         public virtual DbSet<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
         public virtual DbSet<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
-        public virtual DbSet<EMAILUFFDEST> EMAILUFFDEST { get; set; }
         public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
         public virtual DbSet<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
         public virtual DbSet<FLUSSICEDOLINO> FLUSSICEDOLINO { get; set; }
-        public virtual DbSet<FUNZIONEEMAILUFF> FUNZIONEEMAILUFF { get; set; }
         public virtual DbSet<FUNZIONERIDUZIONE> FUNZIONERIDUZIONE { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
         public virtual DbSet<GRUPPO_FKM> GRUPPO_FKM { get; set; }
@@ -94,7 +92,6 @@ namespace NewISE.EF
         public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
-        public virtual DbSet<RICHIAMO_FKM> RICHIAMO_FKM { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
         public virtual DbSet<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
         public virtual DbSet<RINUNCIA_TE_R> RINUNCIA_TE_R { get; set; }

@@ -561,14 +561,6 @@
           <Property Name="EMAIL" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="ATTIVA" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="EMAILUFFDEST">
-          <Key>
-            <PropertyRef Name="IDEMAILUFFDEST" />
-          </Key>
-          <Property Name="IDEMAILUFFDEST" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EMAIL" Type="varchar2" MaxLength="100" Nullable="false" />
-          <Property Name="IDFUNZIONEUFF" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="F_IPS">
           <Key>
             <PropertyRef Name="IDFIGLI" />
@@ -654,13 +646,6 @@
           </Key>
           <Property Name="IDFIGLITITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="FUNZIONEEMAILUFF">
-          <Key>
-            <PropertyRef Name="IDFUNZIONEUFF" />
-          </Key>
-          <Property Name="IDFUNZIONEUFF" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FUNZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="FUNZIONERIDUZIONE">
           <Key>
@@ -1101,6 +1086,14 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="RIC_PFKM">
+          <Key>
+            <PropertyRef Name="IDRICHIAMO" />
+            <PropertyRef Name="IDPFKM" />
+          </Key>
+          <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="RICHIAMO">
           <Key>
             <PropertyRef Name="IDRICHIAMO" />
@@ -1126,16 +1119,6 @@
           </Key>
           <Property Name="IDCOEFINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RICHIAMO_FKM">
-          <Key>
-            <PropertyRef Name="IDRICHIAMO" />
-            <PropertyRef Name="IDFKM" />
-          </Key>
-          <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="DATAANNULLATO" Type="date" />
         </EntityType>
         <EntityType Name="RIDUZIONI">
           <Key>
@@ -2650,34 +2633,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_FEU_EUD">
-          <End Role="FUNZIONEEMAILUFF" Type="Self.FUNZIONEEMAILUFF" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="EMAILUFFDEST" Type="Self.EMAILUFFDEST" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FUNZIONEEMAILUFF">
-              <PropertyRef Name="IDFUNZIONEUFF" />
-            </Principal>
-            <Dependent Role="EMAILUFFDEST">
-              <PropertyRef Name="IDFUNZIONEUFF" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_FKM_RFKM">
-          <End Role="FASCIA_KM" Type="Self.FASCIA_KM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="RICHIAMO_FKM" Type="Self.RICHIAMO_FKM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FASCIA_KM">
-              <PropertyRef Name="IDFKM" />
-            </Principal>
-            <Dependent Role="RICHIAMO_FKM">
-              <PropertyRef Name="IDFKM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_FR_R">
           <End Role="FUNZIONERIDUZIONE" Type="Self.FUNZIONERIDUZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3334,6 +3289,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_PFKM_RPFKM">
+          <End Role="PERCENTUALEFKM" Type="Self.PERCENTUALEFKM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RIC_PFKM" Type="Self.RIC_PFKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERCENTUALEFKM">
+              <PropertyRef Name="IDPFKM" />
+            </Principal>
+            <Dependent Role="RIC_PFKM">
+              <PropertyRef Name="IDPFKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_PMAB_MABPMAB">
           <End Role="PERCENTUALEMAB" Type="Self.PERCENTUALEMAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3502,16 +3471,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_R_RFKM">
+        <Association Name="R_R_RPFKM">
           <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="RICHIAMO_FKM" Type="Self.RICHIAMO_FKM" Multiplicity="*" />
+          <End Role="RIC_PFKM" Type="Self.RIC_PFKM" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RICHIAMO">
               <PropertyRef Name="IDRICHIAMO" />
             </Principal>
-            <Dependent Role="RICHIAMO_FKM">
+            <Dependent Role="RIC_PFKM">
               <PropertyRef Name="IDRICHIAMO" />
             </Dependent>
           </ReferentialConstraint>
@@ -4504,7 +4473,6 @@
           <EntitySet Name="ELABMAB" EntityType="Self.ELABMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABTRASPEFFETTI" EntityType="Self.ELABTRASPEFFETTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="EMAILSECONDARIEDIP" EntityType="Self.EMAILSECONDARIEDIP" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="EMAILUFFDEST" EntityType="Self.EMAILUFFDEST" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="FASCIA_KM" EntityType="Self.FASCIA_KM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISESIM" store:Type="Tables" />
@@ -4513,7 +4481,6 @@
           <EntitySet Name="FIGLITITOLIVIAGGIO" EntityType="Self.FIGLITITOLIVIAGGIO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="FLUSSICEDOLINO" EntityType="Self.FLUSSICEDOLINO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="FTV_DOC" EntityType="Self.FTV_DOC" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="FUNZIONEEMAILUFF" EntityType="Self.FUNZIONEEMAILUFF" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="FUNZIONERIDUZIONE" EntityType="Self.FUNZIONERIDUZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="GRUPPO_FKM" EntityType="Self.GRUPPO_FKM" Schema="ISESIM" store:Type="Tables" />
@@ -4558,10 +4525,10 @@
           <EntitySet Name="PRIMASITEMAZIONE" EntityType="Self.PRIMASITEMAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PS_PFKM" EntityType="Self.PS_PFKM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="REGOLECALCOLO" EntityType="Self.REGOLECALCOLO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RIC_PFKM" EntityType="Self.RIC_PFKM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RICHIAMO" EntityType="Self.RICHIAMO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RICHIAMO_ALIQCONTR" EntityType="Self.RICHIAMO_ALIQCONTR" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RICHIAMO_COEFFRICH" EntityType="Self.RICHIAMO_COEFFRICH" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="RICHIAMO_FKM" EntityType="Self.RICHIAMO_FKM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RINUNCIA_TE_P" EntityType="Self.RINUNCIA_TE_P" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RINUNCIA_TE_R" EntityType="Self.RINUNCIA_TE_R" Schema="ISESIM" store:Type="Tables" />
@@ -4932,14 +4899,6 @@
             <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
             <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
           </AssociationSet>
-          <AssociationSet Name="R_FEU_EUD" Association="Self.R_FEU_EUD">
-            <End Role="FUNZIONEEMAILUFF" EntitySet="FUNZIONEEMAILUFF" />
-            <End Role="EMAILUFFDEST" EntitySet="EMAILUFFDEST" />
-          </AssociationSet>
-          <AssociationSet Name="R_FKM_RFKM" Association="Self.R_FKM_RFKM">
-            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
-            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
-          </AssociationSet>
           <AssociationSet Name="R_FR_R" Association="Self.R_FR_R">
             <End Role="FUNZIONERIDUZIONE" EntitySet="FUNZIONERIDUZIONE" />
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
@@ -5128,6 +5087,10 @@
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
             <End Role="PS_PFKM" EntitySet="PS_PFKM" />
           </AssociationSet>
+          <AssociationSet Name="R_PFKM_RPFKM" Association="Self.R_PFKM_RPFKM">
+            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
+            <End Role="RIC_PFKM" EntitySet="RIC_PFKM" />
+          </AssociationSet>
           <AssociationSet Name="R_PMAB_MABPMAB" Association="Self.R_PMAB_MABPMAB">
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
             <End Role="MAB_PMAB" EntitySet="MAB_PMAB" />
@@ -5176,9 +5139,9 @@
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
             <End Role="RICHIAMO_COEFFRICH" EntitySet="RICHIAMO_COEFFRICH" />
           </AssociationSet>
-          <AssociationSet Name="R_R_RFKM" Association="Self.R_R_RFKM">
+          <AssociationSet Name="R_R_RPFKM" Association="Self.R_R_RPFKM">
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
+            <End Role="RIC_PFKM" EntitySet="RIC_PFKM" />
           </AssociationSet>
           <AssociationSet Name="R_RC_EI" Association="Self.R_RC_EI">
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
@@ -5485,13 +5448,11 @@
           <EntitySet Name="ELABMAB" EntityType="DBISEPRO.ELABMAB" />
           <EntitySet Name="ELABTRASPEFFETTI" EntityType="DBISEPRO.ELABTRASPEFFETTI" />
           <EntitySet Name="EMAILSECONDARIEDIP" EntityType="DBISEPRO.EMAILSECONDARIEDIP" />
-          <EntitySet Name="EMAILUFFDEST" EntityType="DBISEPRO.EMAILUFFDEST" />
           <EntitySet Name="FASCIA_KM" EntityType="DBISEPRO.FASCIA_KM" />
           <EntitySet Name="FIGLI" EntityType="DBISEPRO.FIGLI" />
           <EntitySet Name="FIGLIPASSAPORTO" EntityType="DBISEPRO.FIGLIPASSAPORTO" />
           <EntitySet Name="FIGLITITOLIVIAGGIO" EntityType="DBISEPRO.FIGLITITOLIVIAGGIO" />
           <EntitySet Name="FLUSSICEDOLINO" EntityType="DBISEPRO.FLUSSICEDOLINO" />
-          <EntitySet Name="FUNZIONEEMAILUFF" EntityType="DBISEPRO.FUNZIONEEMAILUFF" />
           <EntitySet Name="FUNZIONERIDUZIONE" EntityType="DBISEPRO.FUNZIONERIDUZIONE" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="DBISEPRO.FUNZIONIEVENTI" />
           <EntitySet Name="GRUPPO_FKM" EntityType="DBISEPRO.GRUPPO_FKM" />
@@ -5523,7 +5484,6 @@
           <EntitySet Name="PRIMASITEMAZIONE" EntityType="DBISEPRO.PRIMASITEMAZIONE" />
           <EntitySet Name="REGOLECALCOLO" EntityType="DBISEPRO.REGOLECALCOLO" />
           <EntitySet Name="RICHIAMO" EntityType="DBISEPRO.RICHIAMO" />
-          <EntitySet Name="RICHIAMO_FKM" EntityType="DBISEPRO.RICHIAMO_FKM" />
           <EntitySet Name="RIDUZIONI" EntityType="DBISEPRO.RIDUZIONI" />
           <EntitySet Name="RINUNCIA_TE_P" EntityType="DBISEPRO.RINUNCIA_TE_P" />
           <EntitySet Name="RINUNCIA_TE_R" EntityType="DBISEPRO.RINUNCIA_TE_R" />
@@ -5829,17 +5789,9 @@
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
             <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
           </AssociationSet>
-          <AssociationSet Name="R_FEU_EUD" Association="DBISEPRO.R_FEU_EUD">
-            <End Role="FUNZIONEEMAILUFF" EntitySet="FUNZIONEEMAILUFF" />
-            <End Role="EMAILUFFDEST" EntitySet="EMAILUFFDEST" />
-          </AssociationSet>
           <AssociationSet Name="R_DFK_CFK" Association="DBISEPRO.R_DFK_CFK">
             <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-          </AssociationSet>
-          <AssociationSet Name="R_FKM_RFKM" Association="DBISEPRO.R_FKM_RFKM">
-            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
-            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
           </AssociationSet>
           <AssociationSet Name="R_GFKM_F_KM" Association="DBISEPRO.R_GFKM_F_KM">
             <End Role="GRUPPO_FKM" EntitySet="GRUPPO_FKM" />
@@ -5976,10 +5928,6 @@
           <AssociationSet Name="R_TRC_RC" Association="DBISEPRO.R_TRC_RC">
             <End Role="TIPOREGOLACALCOLO" EntitySet="TIPOREGOLACALCOLO" />
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
-          </AssociationSet>
-          <AssociationSet Name="R_R_RFKM" Association="DBISEPRO.R_R_RFKM">
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
           </AssociationSet>
           <AssociationSet Name="R_T_R" Association="DBISEPRO.R_T_R">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -6208,6 +6156,10 @@
           <AssociationSet Name="PS_PFKM" Association="DBISEPRO.PS_PFKM">
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="RIC_PFKM" Association="DBISEPRO.RIC_PFKM">
+            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
           </AssociationSet>
           <AssociationSet Name="RICHIAMO_ALIQCONTR" Association="DBISEPRO.RICHIAMO_ALIQCONTR">
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
@@ -6770,15 +6722,6 @@
           <Property Name="ATTIVA" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_D_ESD" FromRole="EMAILSECONDARIEDIP" ToRole="DIPENDENTI" />
         </EntityType>
-        <EntityType Name="EMAILUFFDEST">
-          <Key>
-            <PropertyRef Name="IDEMAILUFFDEST" />
-          </Key>
-          <Property Name="IDEMAILUFFDEST" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EMAIL" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="IDFUNZIONEUFF" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="FUNZIONEEMAILUFF" Relationship="DBISEPRO.R_FEU_EUD" FromRole="EMAILUFFDEST" ToRole="FUNZIONEEMAILUFF" />
-        </EntityType>
         <EntityType Name="FASCIA_KM">
           <Key>
             <PropertyRef Name="IDFKM" />
@@ -6787,7 +6730,6 @@
           <Property Name="IDGRUPPOFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="KM" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="PERCENTUALEFKM" Relationship="DBISEPRO.R_DFK_CFK" FromRole="FASCIA_KM" ToRole="PERCENTUALEFKM" />
-          <NavigationProperty Name="RICHIAMO_FKM" Relationship="DBISEPRO.R_FKM_RFKM" FromRole="FASCIA_KM" ToRole="RICHIAMO_FKM" />
           <NavigationProperty Name="GRUPPO_FKM" Relationship="DBISEPRO.R_GFKM_F_KM" FromRole="FASCIA_KM" ToRole="GRUPPO_FKM" />
         </EntityType>
         <EntityType Name="FIGLI">
@@ -6862,14 +6804,6 @@
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="NETTO" Relationship="DBISEPRO.R_N_S" FromRole="FLUSSICEDOLINO" ToRole="NETTO" />
-        </EntityType>
-        <EntityType Name="FUNZIONEEMAILUFF">
-          <Key>
-            <PropertyRef Name="IDFUNZIONEUFF" />
-          </Key>
-          <Property Name="IDFUNZIONEUFF" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FUNZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EMAILUFFDEST" Relationship="DBISEPRO.R_FEU_EUD" FromRole="FUNZIONEEMAILUFF" ToRole="EMAILUFFDEST" />
         </EntityType>
         <EntityType Name="FUNZIONERIDUZIONE">
           <Key>
@@ -7211,6 +7145,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FASCIA_KM" Relationship="DBISEPRO.R_DFK_CFK" FromRole="PERCENTUALEFKM" ToRole="FASCIA_KM" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.PS_PFKM" FromRole="PERCENTUALEFKM" ToRole="PRIMASITEMAZIONE" />
+          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.RIC_PFKM" FromRole="PERCENTUALEFKM" ToRole="RICHIAMO" />
         </EntityType>
         <EntityType Name="PERCENTUALEMAB">
           <Key>
@@ -7296,22 +7231,10 @@
           <Property Name="DATARIENTRO" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="RICHIAMO_FKM" Relationship="DBISEPRO.R_R_RFKM" FromRole="RICHIAMO" ToRole="RICHIAMO_FKM" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_R" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="PERCENTUALEFKM" Relationship="DBISEPRO.RIC_PFKM" FromRole="RICHIAMO" ToRole="PERCENTUALEFKM" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISEPRO.RICHIAMO_ALIQCONTR" FromRole="RICHIAMO" ToRole="ALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.RICHIAMO_COEFFRICH" FromRole="RICHIAMO" ToRole="COEFFICIENTEINDRICHIAMO" />
-        </EntityType>
-        <EntityType Name="RICHIAMO_FKM">
-          <Key>
-            <PropertyRef Name="IDRICHIAMO" />
-            <PropertyRef Name="IDFKM" />
-          </Key>
-          <Property Name="IDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAANNULLATO" Type="DateTime" />
-          <NavigationProperty Name="FASCIA_KM" Relationship="DBISEPRO.R_FKM_RFKM" FromRole="RICHIAMO_FKM" ToRole="FASCIA_KM" />
-          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_R_RFKM" FromRole="RICHIAMO_FKM" ToRole="RICHIAMO" />
         </EntityType>
         <EntityType Name="RIDUZIONI">
           <Key>
@@ -8673,20 +8596,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_FEU_EUD">
-          <End Type="DBISEPRO.FUNZIONEEMAILUFF" Role="FUNZIONEEMAILUFF" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.EMAILUFFDEST" Role="EMAILUFFDEST" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FUNZIONEEMAILUFF">
-              <PropertyRef Name="IDFUNZIONEUFF" />
-            </Principal>
-            <Dependent Role="EMAILUFFDEST">
-              <PropertyRef Name="IDFUNZIONEUFF" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_DFK_CFK">
           <End Type="DBISEPRO.FASCIA_KM" Role="FASCIA_KM" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8697,20 +8606,6 @@
               <PropertyRef Name="IDFKM" />
             </Principal>
             <Dependent Role="PERCENTUALEFKM">
-              <PropertyRef Name="IDFKM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_FKM_RFKM">
-          <End Type="DBISEPRO.FASCIA_KM" Role="FASCIA_KM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RICHIAMO_FKM" Role="RICHIAMO_FKM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FASCIA_KM">
-              <PropertyRef Name="IDFKM" />
-            </Principal>
-            <Dependent Role="RICHIAMO_FKM">
               <PropertyRef Name="IDFKM" />
             </Dependent>
           </ReferentialConstraint>
@@ -9191,20 +9086,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_R_RFKM">
-          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RICHIAMO_FKM" Role="RICHIAMO_FKM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RICHIAMO">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Principal>
-            <Dependent Role="RICHIAMO_FKM">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_R">
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -9652,6 +9533,10 @@
         <Association Name="PS_PFKM">
           <End Type="DBISEPRO.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
           <End Type="DBISEPRO.PRIMASITEMAZIONE" Role="PRIMASITEMAZIONE" Multiplicity="*" />
+        </Association>
+        <Association Name="RIC_PFKM">
+          <End Type="DBISEPRO.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
+          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
         </Association>
         <Association Name="RICHIAMO_ALIQCONTR">
           <End Type="DBISEPRO.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
@@ -10127,15 +10012,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EMAILUFFDEST">
-            <EntityTypeMapping TypeName="DBISEPRO.EMAILUFFDEST">
-              <MappingFragment StoreEntitySet="EMAILUFFDEST">
-                <ScalarProperty Name="IDFUNZIONEUFF" ColumnName="IDFUNZIONEUFF" />
-                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
-                <ScalarProperty Name="IDEMAILUFFDEST" ColumnName="IDEMAILUFFDEST" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FASCIA_KM">
             <EntityTypeMapping TypeName="DBISEPRO.FASCIA_KM">
               <MappingFragment StoreEntitySet="FASCIA_KM">
@@ -10200,14 +10076,6 @@
                 <ScalarProperty Name="MATRICOLA" ColumnName="MATRICOLA" />
                 <ScalarProperty Name="IDNETTO" ColumnName="IDNETTO" />
                 <ScalarProperty Name="IDELABORAZIONEMENSILE" ColumnName="IDELABORAZIONEMENSILE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FUNZIONEEMAILUFF">
-            <EntityTypeMapping TypeName="DBISEPRO.FUNZIONEEMAILUFF">
-              <MappingFragment StoreEntitySet="FUNZIONEEMAILUFF">
-                <ScalarProperty Name="FUNZIONE" ColumnName="FUNZIONE" />
-                <ScalarProperty Name="IDFUNZIONEUFF" ColumnName="IDFUNZIONEUFF" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10575,16 +10443,6 @@
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATARIENTRO" ColumnName="DATARIENTRO" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RICHIAMO_FKM">
-            <EntityTypeMapping TypeName="DBISEPRO.RICHIAMO_FKM">
-              <MappingFragment StoreEntitySet="RICHIAMO_FKM">
-                <ScalarProperty Name="DATAANNULLATO" ColumnName="DATAANNULLATO" />
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="IDFKM" ColumnName="IDFKM" />
                 <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -11226,6 +11084,14 @@
           <AssociationSetMapping Name="PS_PFKM" TypeName="DBISEPRO.PS_PFKM" StoreEntitySet="PS_PFKM">
             <EndProperty Name="PRIMASITEMAZIONE">
               <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
+            </EndProperty>
+            <EndProperty Name="PERCENTUALEFKM">
+              <ScalarProperty Name="IDPFKM" ColumnName="IDPFKM" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RIC_PFKM" TypeName="DBISEPRO.RIC_PFKM" StoreEntitySet="RIC_PFKM">
+            <EndProperty Name="RICHIAMO">
+              <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
             </EndProperty>
             <EndProperty Name="PERCENTUALEFKM">
               <ScalarProperty Name="IDPFKM" ColumnName="IDPFKM" />
