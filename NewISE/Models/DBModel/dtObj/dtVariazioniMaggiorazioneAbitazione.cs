@@ -19,14 +19,14 @@ using NewISE.Models.Config.s_admin;
 
 namespace NewISE.Models.DBModel.dtObj
 {
-    public class dtMaggiorazioneAbitazione : IDisposable
+    public class dtVariazioniMaggiorazioneAbitazione : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        public static ValidationResult VerificaDataInizio_var(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
             var ma = context.ObjectInstance as MaggiorazioneAbitazioneModel;
@@ -48,9 +48,7 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-
-
-        public AttivazioneMABModel GetPrimaAttivazioneMAB(decimal idTrasferimento)
+        public AttivazioneMABModel GetPrimaAttivazioneMAB_var(decimal idTrasferimento)
         {
             try
             {
@@ -70,7 +68,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        am = this.CreaAttivazioneMAB(idTrasferimento, db);
+                        am = this.CreaAttivazioneMAB_var(idTrasferimento, db);
                     }
 
                     amm = new AttivazioneMABModel()
@@ -95,10 +93,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
-
-
-        public MaggiorazioniAnnualiModel GetMaggiorazioneAnnuale(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public MaggiorazioniAnnualiModel GetMaggiorazioneAnnuale_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -143,7 +138,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<PERCENTUALEMAB> GetListaPercentualeMAB(decimal idTrasferimento, ModelDBISE db)
+        public List<PERCENTUALEMAB> GetListaPercentualeMAB_var(decimal idTrasferimento, ModelDBISE db)
         {
             try
             {
@@ -175,7 +170,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<PERCENTUALECONDIVISIONE> GetListaPercentualeCondivisione(DateTime dataIni, DateTime dataFin, ModelDBISE db)
+        public List<PERCENTUALECONDIVISIONE> GetListaPercentualeCondivisione_var(DateTime dataIni, DateTime dataFin, ModelDBISE db)
         {
             try
             {
@@ -193,7 +188,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public AttivazioneMABModel GetAttivazioneMAB(decimal idTrasferimento)
+        public AttivazioneMABModel GetAttivazioneMAB_var(decimal idTrasferimento)
         {
             try
             {
@@ -234,7 +229,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public decimal VerificaEsistenzaDocumentoMAB(decimal idTrasferimento, EnumTipoDoc TipoDocumento)
+        public decimal VerificaEsistenzaDocumentoMAB_var(decimal idTrasferimento, EnumTipoDoc TipoDocumento)
         {
             try
             {
@@ -286,8 +281,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-
-        public void VerificaDocumentiPartenza(AttivazioneMABModel amm, out bool siDocCopiaContratto,
+        public void VerificaDocumentiPartenza_var(AttivazioneMABModel amm, out bool siDocCopiaContratto,
                                                                         out bool siDocCopiaRicevuta,
                                                                         out bool siDocModulo1,
                                                                         out bool siDocModulo2,
@@ -373,10 +367,8 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
-
-
-
-        public CANONEMAB GetCanoneMAB(MaggiorazioneAbitazioneModel mam)
+        
+        public CANONEMAB GetCanoneMAB_var(MaggiorazioneAbitazioneModel mam)
         {
             try
             {
@@ -418,7 +410,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public ATTIVAZIONEMAB CreaAttivazioneMAB(decimal idTrasferimento, ModelDBISE db)
+        public ATTIVAZIONEMAB CreaAttivazioneMAB_var(decimal idTrasferimento, ModelDBISE db)
         {
             ATTIVAZIONEMAB new_am = new ATTIVAZIONEMAB()
             {
@@ -445,7 +437,7 @@ namespace NewISE.Models.DBModel.dtObj
             return new_am;
         }
 
-        public decimal GetNumAttivazioniMAB(decimal idTrasferimento)
+        public decimal GetNumAttivazioniMAB_var(decimal idTrasferimento)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -456,7 +448,8 @@ namespace NewISE.Models.DBModel.dtObj
                 return NumAttivazioni;
             }
         }
-        public decimal GetNumNotificheMAB(decimal idTrasferimento)
+
+        public decimal GetNumNotificheMAB_var(decimal idTrasferimento)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -468,7 +461,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public MaggiorazioneAbitazioneModel GetMaggiorazioneAbitazione(AttivazioneMABModel amm)
+        public MaggiorazioneAbitazioneModel GetMaggiorazioneAbitazione_var(AttivazioneMABModel amm)
         {
             try
             {
@@ -510,7 +503,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public MAGGIORAZIONEABITAZIONE GetMaggiorazioneAbitazioneByID(decimal idMAB)
+        public MAGGIORAZIONEABITAZIONE GetMaggiorazioneAbitazioneByID_var(decimal idMAB)
         {
             try
             {
@@ -530,7 +523,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<PAGATOCONDIVISOMAB> GetListPagatoCondivisoMAB(MaggiorazioneAbitazioneViewModel mvm)
+        public List<PAGATOCONDIVISOMAB> GetListPagatoCondivisoMAB_var(MaggiorazioneAbitazioneViewModel mvm)
         {
             try
             {
@@ -553,9 +546,8 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
-
-
-        public void SostituisciDocumentoMAB(ref DocumentiModel dm, decimal idDocumentoOld, decimal idAttivazioneMAB, ModelDBISE db)
+        
+        public void SostituisciDocumentoMAB_var(ref DocumentiModel dm, decimal idDocumentoOld, decimal idAttivazioneMAB, ModelDBISE db)
         {
             //inserisce un nuovo documento e imposta il documento sostituito 
             //con MODIFICATO=true e valorizza FK_IDDOCUMENTO
@@ -598,7 +590,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void SetDocumentoMAB(ref DocumentiModel dm, decimal idAttivazioneMAB, ModelDBISE db)
+        public void SetDocumentoMAB_var(ref DocumentiModel dm, decimal idAttivazioneMAB, ModelDBISE db)
         {
             MemoryStream ms = new MemoryStream();
             DOCUMENTI d = new DOCUMENTI();
@@ -623,7 +615,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AssociaDocumentoAttivazione(decimal idAttivazioneMAB, decimal idDocumento, ModelDBISE db)
+        public void AssociaDocumentoAttivazione_var(decimal idAttivazioneMAB, decimal idDocumento, ModelDBISE db)
         {
             try
             {
@@ -646,7 +638,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AttivaRichiestaMAB(decimal idAttivazioneMAB)
+        public void AttivaRichiestaMAB_var(decimal idAttivazioneMAB)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -716,7 +708,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        private void EmailAttivaRichiestaMAB(decimal idAttivazioneMAB, ModelDBISE db)
+        private void EmailAttivaRichiestaMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
         {
             //PRIMASITEMAZIONE ps = new PRIMASITEMAZIONE();
             AccountModel am = new AccountModel();
@@ -799,7 +791,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AnnullaRichiestaMAB(decimal idAttivazioneMAB, string msg)
+        public void AnnullaRichiestaMAB_var(decimal idAttivazioneMAB, string msg)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -933,7 +925,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     {
                                                         foreach (var m_annuali in m_annuali_l)
                                                         {
-                                                            this.Associa_MAB_MaggiorazioniAnnuali(mab_New.IDMAB, m_annuali.IDMAGANNUALI, db);
+                                                            this.Associa_MAB_MaggiorazioniAnnuali_var(mab_New.IDMAB, m_annuali.IDMAGANNUALI, db);
                                                         }
                                                     }
                                                     #endregion
@@ -944,7 +936,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     {
                                                         foreach (var percMAB in percMAB_l)
                                                         {
-                                                            this.Associa_MAB_PercenualeMAB(mab_New.IDMAB, percMAB.IDPERCMAB, db);
+                                                            this.Associa_MAB_PercenualeMAB_var(mab_New.IDMAB, percMAB.IDPERCMAB, db);
                                                         }
                                                     }
                                                     #endregion
@@ -955,7 +947,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     {
                                                         foreach (var TFR in TFR_l)
                                                         {
-                                                            this.Associa_TFR_CanoneMAB(TFR.IDTFR, canone_new.IDCANONE, db);
+                                                            this.Associa_TFR_CanoneMAB_var(TFR.IDTFR, canone_new.IDCANONE, db);
                                                         }
                                                     }
                                                     #endregion
@@ -964,7 +956,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 #endregion
 
                                                 #region documenti
-                                                var ld_old=this.GetDocumentiMAB(idAttivazioneMAB, db);
+                                                var ld_old=this.GetDocumentiMAB_var(idAttivazioneMAB, db);
                                                 foreach (var d in ld_old)
                                                 {
                                                     DOCUMENTI dNew = new DOCUMENTI()
@@ -1018,7 +1010,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void EmailAnnullaRichiestaMAB(decimal idAttivazioneMAB, ModelDBISE db)
+        public void EmailAnnullaRichiestaMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
         {
             AccountModel am = new AccountModel();
             Mittente mittente = new Mittente();
@@ -1076,7 +1068,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void NotificaRichiestaMAB(decimal idAttivazioneMAB)
+        public void NotificaRichiestaMAB_var(decimal idAttivazioneMAB)
         {
             try
             {
@@ -1142,7 +1134,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        private void EmailNotificaRichiestaMAB(decimal idAttivazioneMAB, ModelDBISE db)
+        private void EmailNotificaRichiestaMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
         {
             AccountModel am = new AccountModel();
             Mittente mittente = new Mittente();
@@ -1225,7 +1217,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public decimal SetMaggiorazioneAbitazione(ref MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
+        public decimal SetMaggiorazioneAbitazione_var(ref MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
         {
             try
             {
@@ -1274,7 +1266,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void UpdateMaggiorazioneAbitazione(ref MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
+        public void UpdateMaggiorazioneAbitazione_var(ref MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
         {
             try
             {
@@ -1322,8 +1314,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
-        public CANONEMAB SetCanoneMAB(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public CANONEMAB SetCanoneMAB_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -1360,7 +1351,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public CANONEMAB UpdateCanoneMAB(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public CANONEMAB UpdateCanoneMAB_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -1406,8 +1397,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
-        public PAGATOCONDIVISOMAB SetPagatoCondivisoMAB(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public PAGATOCONDIVISOMAB SetPagatoCondivisoMAB_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -1445,7 +1435,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public PAGATOCONDIVISOMAB UpdatePagatoCondivisoMAB(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public PAGATOCONDIVISOMAB UpdatePagatoCondivisoMAB_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -1476,7 +1466,7 @@ namespace NewISE.Models.DBModel.dtObj
                 else
                 {
                     // se non esiste lo creo
-                    pc = SetPagatoCondivisoMAB(mvm, db);
+                    pc = SetPagatoCondivisoMAB_var(mvm, db);
                 }
 
                 return pc;
@@ -1488,9 +1478,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
-
-        public void InserisciMAB(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento)
+        public void InserisciMAB_var(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -1499,14 +1487,14 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     #region ATTIVAZIONE MAB
-                    var amm = this.GetAttivazioneMAB(idTrasferimento);
+                    var amm = this.GetAttivazioneMAB_var(idTrasferimento);
                     if (amm != null && amm.idAttivazioneMAB > 0)
                     {
                         mvm.idAttivazioneMAB = amm.idAttivazioneMAB;
                     }
                     else
                     {
-                        var am = this.CreaAttivazioneMAB(idTrasferimento, db);
+                        var am = this.CreaAttivazioneMAB_var(idTrasferimento, db);
                         amm = new AttivazioneMABModel()
                         {
                             Annullato = am.ANNULLATO,
@@ -1525,7 +1513,7 @@ namespace NewISE.Models.DBModel.dtObj
                     mvm.dataAggiornamento = DateTime.Now;
 
                     #region nuova MAB
-                    decimal new_idMAB = this.SetMaggiorazioneAbitazione(ref mvm, db, amm.idAttivazioneMAB);
+                    decimal new_idMAB = this.SetMaggiorazioneAbitazione_var(ref mvm, db, amm.idAttivazioneMAB);
                     #endregion
 
                     DateTime dtIni = mvm.dataInizioMAB;
@@ -1537,13 +1525,13 @@ namespace NewISE.Models.DBModel.dtObj
                     if (mvm.AnticipoAnnuale)
                     {
 
-                        var mann = this.GetMaggiorazioneAnnuale(mvm, db);
+                        var mann = this.GetMaggiorazioneAnnuale_var(mvm, db);
 
                         if (mann.idMagAnnuali > 0)
                         {
                             mvm.AnticipoAnnuale = mann.annualita;
                             //associa MAB a MaggiorazioniAnnuali se esiste
-                            this.Associa_MAB_MaggiorazioniAnnuali(new_idMAB, mann.idMagAnnuali, db);
+                            this.Associa_MAB_MaggiorazioniAnnuali_var(new_idMAB, mann.idMagAnnuali, db);
                         }
                         else
                         {
@@ -1554,18 +1542,18 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region associa MAB a tutte le percentuali MAB trovate
-                    var lista_perc = this.GetListaPercentualeMAB(idTrasferimento, db);
+                    var lista_perc = this.GetListaPercentualeMAB_var(idTrasferimento, db);
                     if (lista_perc?.Any() ?? false)
                     {
                         foreach (var perc in lista_perc)
                         {
-                            this.Associa_MAB_PercenualeMAB(new_idMAB, perc.IDPERCMAB, db);
+                            this.Associa_MAB_PercenualeMAB_var(new_idMAB, perc.IDPERCMAB, db);
                         }
                     }
                     #endregion
 
                     #region inserisci CANONE
-                    CANONEMAB c = this.SetCanoneMAB(mvm, db);
+                    CANONEMAB c = this.SetCanoneMAB_var(mvm, db);
                     #endregion
 
                     #region associa canone MAB a TFR
@@ -1580,7 +1568,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var tfr in ltfr)
                                 {
-                                    this.Associa_TFR_CanoneMAB(tfr.idTFR, c.IDCANONE, db);
+                                    this.Associa_TFR_CanoneMAB_var(tfr.idTFR, c.IDCANONE, db);
                                 }
                             }
                         }
@@ -1590,15 +1578,15 @@ namespace NewISE.Models.DBModel.dtObj
                     #region inserisce eventuale pagato condiviso
                     if (mvm.canone_condiviso)
                     {
-                        PAGATOCONDIVISOMAB pc = this.SetPagatoCondivisoMAB(mvm, db);
+                        PAGATOCONDIVISOMAB pc = this.SetPagatoCondivisoMAB_var(mvm, db);
 
                         #region associa percentuale condivisione
-                        var lpercCond = this.GetListaPercentualeCondivisione(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
+                        var lpercCond = this.GetListaPercentualeCondivisione_var(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
                         if(lpercCond?.Any() ?? false)
                         {
                             foreach(var percCond in lpercCond)
                             {
-                                this.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+                                this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
                             }
                         }
                         else
@@ -1621,7 +1609,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AggiornaMAB(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento, decimal idMAB)
+        public void AggiornaMAB_var(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento, decimal idMAB)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -1630,7 +1618,7 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     #region legge ATTIVAZIONE MAB
-                    var amm = this.GetAttivazioneMAB(idTrasferimento);
+                    var amm = this.GetAttivazioneMAB_var(idTrasferimento);
                     if (amm != null && amm.idAttivazioneMAB > 0)
                     {
                         mvm.idAttivazioneMAB = amm.idAttivazioneMAB;
@@ -1646,7 +1634,7 @@ namespace NewISE.Models.DBModel.dtObj
                     mvm.idTrasferimento = idTrasferimento;
 
                     #region aggiorna MAB
-                    this.UpdateMaggiorazioneAbitazione(ref mvm, db, amm.idAttivazioneMAB);
+                    this.UpdateMaggiorazioneAbitazione_var(ref mvm, db, amm.idAttivazioneMAB);
                     #endregion
 
                     DateTime dtIni = mvm.dataInizioMAB;
@@ -1655,38 +1643,38 @@ namespace NewISE.Models.DBModel.dtObj
                     
                     #region aggiorno anticipo annuale
                     //rimuovi precedenti associazioni MAB MaggiorazioniAnnuali
-                    this.RimuoviAssociazioneMAB_MaggiorazioniAnnuali(idMAB, db);
+                    this.RimuoviAssociazioneMAB_MaggiorazioniAnnuali_var(idMAB, db);
                     //se richiesto le riassocio
                     if (mvm.AnticipoAnnuale)
                     {
-                        var mann = this.GetMaggiorazioneAnnuale(mvm, db);
+                        var mann = this.GetMaggiorazioneAnnuale_var(mvm, db);
                         if (mann.idMagAnnuali > 0)
                         {
                             //associa MAB a MaggiorazioniAnnuali se esiste
-                            this.Associa_MAB_MaggiorazioniAnnuali(mvm.idMAB, mann.idMagAnnuali, db);
+                            this.Associa_MAB_MaggiorazioniAnnuali_var(mvm.idMAB, mann.idMagAnnuali, db);
                         }
                     }
                     #endregion
                     
                     #region associa MAB a tutte le percentuali MAB trovate
-                    this.RimuoviAssociazioneMAB_PercentualeMAB(mvm.idMAB, db);
-                    var lista_perc = this.GetListaPercentualeMAB(mvm.idTrasferimento, db);
+                    this.RimuoviAssociazioneMAB_PercentualeMAB_var(mvm.idMAB, db);
+                    var lista_perc = this.GetListaPercentualeMAB_var(mvm.idTrasferimento, db);
                     if (lista_perc?.Any() ?? false)
                     {
                         foreach (var perc in lista_perc)
                         {
-                            this.Associa_MAB_PercenualeMAB(mvm.idMAB, perc.IDPERCMAB, db);
+                            this.Associa_MAB_PercenualeMAB_var(mvm.idMAB, perc.IDPERCMAB, db);
                         }
                     }
                     #endregion
 
                     #region aggiorna CANONE
-                    var canone = this.UpdateCanoneMAB(mvm, db);
+                    var canone = this.UpdateCanoneMAB_var(mvm, db);
                     #endregion
 
                     #region associa canone MAB a TFR
                     //rimuovi precedenti associazioni CANONE TFR
-                    this.RimuoviAssociazioneCanoneMAB_TFR(canone.IDCANONE, db);
+                    this.RimuoviAssociazioneCanoneMAB_TFR_var(canone.IDCANONE, db);
                     using (dtTFR dtt = new dtTFR())
                     {
                         using (dtTrasferimento dttrasf = new dtTrasferimento())
@@ -1698,7 +1686,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var tfr in ltfr)
                                 {
-                                    this.Associa_TFR_CanoneMAB(tfr.idTFR, canone.IDCANONE, db);
+                                    this.Associa_TFR_CanoneMAB_var(tfr.idTFR, canone.IDCANONE, db);
                                 }
                             }
                         }
@@ -1707,26 +1695,26 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #region inserisce/aggiorna eventuale pagato condiviso
 
-                    var ma = this.GetMaggiorazioneAbitazione(amm);
-                    var lpc = this.GetListPagatoCondivisoMAB(mvm);
+                    var ma = this.GetMaggiorazioneAbitazione_var(amm);
+                    var lpc = this.GetListPagatoCondivisoMAB_var(mvm);
                     PAGATOCONDIVISOMAB pc = new PAGATOCONDIVISOMAB();
 
                     //PAGATOCONDIVISOMAB pc = dtma.SetPagatoCondivisoMAB(mvm, db);
-                    pc = this.UpdatePagatoCondivisoMAB(mvm, db);
+                    pc = this.UpdatePagatoCondivisoMAB_var(mvm, db);
 
                     //rimuovo precedenti associazioni percentuali
-                    this.RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, db);
+                    this.RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, db);
 
                     if (mvm.canone_condiviso)
                     {
                         #region associa percentuale condivisione
-                        var lpercCond = this.GetListaPercentualeCondivisione(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
+                        var lpercCond = this.GetListaPercentualeCondivisione_var(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
                         if (lpercCond?.Any() ?? false)
                         {
                             //riassocio le percentuali
                             foreach (var percCond in lpercCond)
                             {
-                                this.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+                                this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
                             }
                         }
                         else
@@ -1749,7 +1737,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void RimuoviAssociazioneMAB_MaggiorazioniAnnuali(decimal idMAB, ModelDBISE db)
+        public void RimuoviAssociazioneMAB_MaggiorazioniAnnuali_var(decimal idMAB, ModelDBISE db)
         {
             var ma = db.MAGGIORAZIONEABITAZIONE.Find(idMAB);
             var lmann = ma.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
@@ -1764,7 +1752,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void RimuoviAssociazioneMAB_PercentualeMAB(decimal idMAB, ModelDBISE db)
+        public void RimuoviAssociazioneMAB_PercentualeMAB_var(decimal idMAB, ModelDBISE db)
         {
             var ma = db.MAGGIORAZIONEABITAZIONE.Find(idMAB);
             var lpercMAB = ma.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
@@ -1780,7 +1768,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione(decimal idPagatoCondiviso, ModelDBISE db)
+        public void RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(decimal idPagatoCondiviso, ModelDBISE db)
         {
             var pc = db.PAGATOCONDIVISOMAB.Find(idPagatoCondiviso);
             var lpercCond = pc.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
@@ -1796,7 +1784,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void RimuoviAssociazioneCanoneMAB_TFR(decimal idCanone, ModelDBISE db)
+        public void RimuoviAssociazioneCanoneMAB_TFR_var(decimal idCanone, ModelDBISE db)
         {
             var c = db.CANONEMAB.Find(idCanone);
             var lTFR = c.TFR.Where(a => a.ANNULLATO == false).ToList();
@@ -1812,10 +1800,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-
-
-
-        public void Associa_MAB_MaggiorazioniAnnuali(decimal idMAB, decimal idMaggiorazioniAnnuali, ModelDBISE db)
+        public void Associa_MAB_MaggiorazioniAnnuali_var(decimal idMAB, decimal idMaggiorazioniAnnuali, ModelDBISE db)
         {
             try
             {
@@ -1839,7 +1824,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void Associa_PagatoCondivisoMAB_PercentualeCondivisione(decimal idPagatoCondiviso, decimal idPercCond, ModelDBISE db)
+        public void Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(decimal idPagatoCondiviso, decimal idPercCond, ModelDBISE db)
         {
             try
             {
@@ -1863,7 +1848,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void Associa_MAB_PercenualeMAB(decimal idMAB, decimal idPercMAB, ModelDBISE db)
+        public void Associa_MAB_PercenualeMAB_var(decimal idMAB, decimal idPercMAB, ModelDBISE db)
         {
             try
             {
@@ -1887,7 +1872,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void Associa_TFR_CanoneMAB(decimal idTFR, decimal idCanoneMAB, ModelDBISE db)
+        public void Associa_TFR_CanoneMAB_var(decimal idTFR, decimal idCanoneMAB, ModelDBISE db)
         {
             try
             {
@@ -1911,7 +1896,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<DOCUMENTI> GetDocumentiMAB(decimal idAttivazioneMAB, ModelDBISE db)
+        public List<DOCUMENTI> GetDocumentiMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
         {
             try
             {
@@ -1939,7 +1924,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void Associa_Documenti_Attivazione(decimal idDocumento, decimal idAttivazioneMAB, ModelDBISE db)
+        public void Associa_Documenti_Attivazione_var(decimal idDocumento, decimal idAttivazioneMAB, ModelDBISE db)
         {
             try
             {
@@ -1963,7 +1948,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<DOCUMENTI> GetDocumentiMABbyTipoDoc(decimal idAttivazioneMAB, decimal idTipoDoc)
+        public List<DOCUMENTI> GetDocumentiMABbyTipoDoc_var(decimal idAttivazioneMAB, decimal idTipoDoc)
         {
             try
             {
@@ -1985,7 +1970,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public AttivazioneMABModel GetUltimaAttivazioneMAB(decimal idTrasferimento)
+        public AttivazioneMABModel GetUltimaAttivazioneMAB_var(decimal idTrasferimento)
         {
             try
             {
@@ -2005,7 +1990,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        am = this.CreaAttivazioneMAB(idTrasferimento, db);
+                        am = this.CreaAttivazioneMAB_var(idTrasferimento, db);
                     }
 
                     amm = new AttivazioneMABModel()

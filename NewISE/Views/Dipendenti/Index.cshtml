@@ -206,6 +206,45 @@
         });
     }
 
+    function MaggiorazioneAbitazione() {
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/VariazioneMaggiorazioneAbitazione/VariazioneMaggiorazioneAbitazione";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //svuoto il contenitore di gestione trasferimento per evitare conflitti di oggetti
+                $("#tabGestioneTrasferimento").empty();
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabMaggiorazioneAbitazione").empty();
+                $("#tabMaggiorazioneAbitazione").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnMaggiorazioneAbitazione");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+
     function Sospensione() {
         //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
@@ -453,6 +492,17 @@
             $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
         }
 
+        if (MenuMaggiorazioneAbitazione(idTrasferimento) == 1) {
+            $("#lkMaggiorazioneAbitazione").removeAttr("disabled");
+            $("#mnMaggiorazioneAbitazione").removeClass("disabled");
+            $('#lkMaggiorazioneAbitazione').attr('onClick', 'MaggiorazioneAbitazione();');
+        }
+        else {
+            $("#lkMaggiorazioneAbitazione").attr("disabled", "disabled");
+            $("#mnMaggiorazioneAbitazione").addClass("disabled");
+            $("#lkMaggiorazioneAbitazione").removeAttr("onClick");
+        }
+
         if (MenuSospensione(idTrasferimento) == 1) {
             $("#lkSospensione").removeAttr("disabled");
             $("#mnSospensione").removeClass("disabled");
@@ -599,6 +649,55 @@
         return valoreRitorno;
     }
 
+    function MenuMaggiorazioneAbitazione(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaMaggiorazioneAbitazione";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idMAB != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+
     function MenuSospensione(idTrasferimento) {
         //debugger;
         var rotta = "/Sospensione/VerificaSospensione";
@@ -697,6 +796,5 @@
 
         return valoreRitorno;
     }
-
 
 </script>

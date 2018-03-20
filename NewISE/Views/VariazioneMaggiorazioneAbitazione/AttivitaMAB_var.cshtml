@@ -1,0 +1,146 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.ViewModel
+@using NewISE.Models.Tools
+
+@model IEnumerable<NewISE.Models.ViewModel.MaggiorazioneAbitazioneViewModel>
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idMAB = Convert.ToDecimal(ViewData["idMAB"]);
+    bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    bool siDati = Convert.ToBoolean(ViewData["siDati"]);
+}
+
+
+<div >
+    <div style="padding-top: 10px;padding-bottom:10px;padding-left:5px">
+        @if (soloLettura == false)
+        {
+            if (idMAB > 0)
+            {
+                @Ajax.ActionLink("Modifica", "ModificaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idMAB = idMAB }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica Maggiorazione Abitazione", @id = "linkEditMAB_var" })
+            }
+            else
+            {
+                @Ajax.ActionLink("Nuovo", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
+            }
+        }
+    </div>
+    <table id="tabMAB" class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Tipo Anticipo
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.descrizioneValuta )
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.importo_canone)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataInizioMAB )
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataFineMAB)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.canone_condiviso)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.canone_pagato)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (siDati)
+                        {
+                            if (item.AnticipoAnnuale)
+                            {
+                                <span class="text-uppercase">ANNUALE</span>
+                            }
+                            else
+                            {
+                                <span class="text-uppercase">SEMESTRALE</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-uppercase"></span>
+                        }
+                    </td>
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.descrizioneValuta)</span>
+                    </td>
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.importo_canone)</span>
+                    </td>
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizioMAB)</span>
+                    </td>
+                    <td style="text-align: center">
+                        @if (item.dataFineMAB != Utility.DataFineStop())
+                        {
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
+                        }
+                    </td>
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_condiviso)</span>
+                    </td>
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_pagato)</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<script type="text/javascript">
+
+    $("#tabMAB").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+    });
+
+    $('#ImportoCanone').autoNumeric('init',
+    {
+        aSep: '.',
+        aDec: ',',
+        nSep: true
+    });
+
+</script>

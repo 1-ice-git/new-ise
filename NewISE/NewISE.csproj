@@ -2407,6 +2407,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\ValidationWithBoot.js" />
     <Content Include="Scripts\ViewScripts\anticipo.js" />
+    <Content Include="Scripts\ViewScripts\VariazioneMaggiorazioneAbitazione.js" />
     <Content Include="Scripts\ViewScripts\MaggiorazioneAbitazione.js" />
     <Content Include="Template\HtmlPage1.html" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
@@ -2447,6 +2448,7 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
     <Compile Include="EF\DOC_ATER.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2501,6 +2503,7 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtParPercAnticipoTE.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffIndRichiamo.cs" />
@@ -3415,6 +3418,16 @@
     <Content Include="Views\Anticipi\GestioneRinunciaAnticipi.cshtml" />
     <Content Include="Views\TrasportoEffetti\GestioneRinunciaTEPartenza.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\MessaggioAnnullaVariazioneMagFam.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\VariazioneMaggiorazioneAbitazione.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\GestioneMAB_var.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\AttivitaMAB_var.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\DocumentoMAB_var.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoDocumentiFormularioMAB_var.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\FormulariMAB_var.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\GestionePulsantiMAB_var.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\MessaggioAnnullaMAB_var.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\ModificaMAB_var.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovaMAB_var.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

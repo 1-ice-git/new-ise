@@ -1,0 +1,58 @@
+﻿@model NewISE.Models.DBModel.AttivazioneMABModel
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idAttivazioneMAB = Convert.ToDecimal(ViewData["idAttivazioneMAB"]);
+    string disabledAnnullaRichiesta = Convert.ToString(ViewData["disabledAnnullaRichiesta"]);
+    string disabledAttivaRichiesta = Convert.ToString(ViewData["disabledAttivaRichiesta"]);
+    string disabledNotificaRichiesta = Convert.ToString(ViewData["disabledNotificaRichiesta"]);
+    string hiddenAnnullaRichiesta = Convert.ToString(ViewData["hiddenAnnullaRichiesta"]);
+    string hiddenAttivaRichiesta = Convert.ToString(ViewData["hiddenAttivaRichiesta"]);
+    string hiddenNotificaRichiesta = Convert.ToString(ViewData["hiddenNotificaRichiesta"]);
+}
+
+@Html.Hidden("hi_idTrasferimento", idTrasferimento)
+@Html.Hidden("hi_idAttivazioneMAB", idAttivazioneMAB)
+
+<div style="padding-right: 10px">
+    <hr />
+    <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
+        <button class="btn btn-default btn-sm @hiddenNotificaRichiesta" @disabledNotificaRichiesta id="btNotificaRichiestaMAB_var" onclick="ModalNotificaRichiestaMAB_var();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Notifica richiesta
+        </button>
+        <button class="btn btn-default btn-sm @hiddenAttivaRichiesta" @disabledAttivaRichiesta id="btAttivaRichiestaMAB_var" onclick="ModalAttivaRichiestaMAB_var();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Attiva richiesta
+        </button>
+        <button class="btn btn-default btn-sm @hiddenAnnullaRichiesta" @disabledAnnullaRichiesta id="btAnnullaRichiestaMAB_var" onclick="ModalAnnullaRichiestaMAB_var();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Annulla richiesta
+        </button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    GestioneAttivitaTrasferimento();
+
+    function ModalNotificaRichiestaMAB_var() {
+        //debugger;
+        $('#ModalNotificaRichiestaMAB_var').modal().show();
+    }
+
+    function ModalAnnullaRichiestaMAB_var() {
+        //debugger;
+        MessaggioAnnullaRichiestaMAB_var();
+        $('#ModalAnnullaRichiestaMAB_var').modal().show();
+    }
+
+    function ModalAttivaRichiestaMAB_var() {
+        //debugger;
+        $('#ModalAttivaRichiestaMAB_var').modal().show();
+    }
+
+
+</script>
+
+
+
