@@ -20,6 +20,7 @@ namespace NewISE.EF
             this.CANONEMAB = new HashSet<CANONEMAB>();
             this.ELABMAB = new HashSet<ELABMAB>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
+            this.VARIAZIONIMAB = new HashSet<VARIAZIONIMAB>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
         }
@@ -27,11 +28,7 @@ namespace NewISE.EF
         public decimal IDMAB { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
-        public System.DateTime DATAINIZIOMAB { get; set; }
-        public System.DateTime DATAFINEMAB { get; set; }
-        public bool ANTICIPOANNUALE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -40,6 +37,8 @@ namespace NewISE.EF
         public virtual ICollection<ELABMAB> ELABMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VARIAZIONIMAB> VARIAZIONIMAB { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }

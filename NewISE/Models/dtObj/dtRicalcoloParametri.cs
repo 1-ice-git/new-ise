@@ -104,6 +104,7 @@ namespace NewISE.Models.dtObj
                 item.Collection(a => a.CONIUGE).Load();
 
                 //var lc = db.CONIUGE
+
             }
             catch (Exception ex)
             {
