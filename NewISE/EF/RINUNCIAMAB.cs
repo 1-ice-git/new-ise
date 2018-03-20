@@ -12,26 +12,15 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class VARIAZIONIMAB
+    public partial class RINUNCIAMAB
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public VARIAZIONIMAB()
-        {
-            this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
-        }
-    
-        public decimal IDVARIAZIONIMAB { get; set; }
+        public decimal IDRINUNCIAMAB { get; set; }
         public decimal IDMAB { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
-        public System.DateTime DATAINIZIOMAB { get; set; }
-        public System.DateTime DATAFINEMAB { get; set; }
-        public bool ANTICIPOANNUALE { get; set; }
+        public bool RINUNCIA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
     }
 }

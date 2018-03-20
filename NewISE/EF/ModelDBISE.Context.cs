@@ -96,6 +96,7 @@ namespace NewISE.EF
         public virtual DbSet<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
         public virtual DbSet<RINUNCIA_TE_R> RINUNCIA_TE_R { get; set; }
         public virtual DbSet<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
+        public virtual DbSet<RINUNCIAMAB> RINUNCIAMAB { get; set; }
         public virtual DbSet<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }

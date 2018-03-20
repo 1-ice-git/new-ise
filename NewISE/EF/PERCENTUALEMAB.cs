@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PERCENTUALEMAB()
         {
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+            this.VARIAZIONIMAB = new HashSet<VARIAZIONIMAB>();
         }
     
         public decimal IDPERCMAB { get; set; }
@@ -33,6 +33,6 @@ namespace NewISE.EF
         public virtual LIVELLI LIVELLI { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual ICollection<VARIAZIONIMAB> VARIAZIONIMAB { get; set; }
     }
 }
