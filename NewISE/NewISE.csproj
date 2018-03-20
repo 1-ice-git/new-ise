@@ -3091,6 +3091,8 @@
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
+    <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
+    <Compile Include="Models\DBModel\VariazioniMABModel.cs" />
     <Compile Include="Models\DBModel\percCondivisioneMABModel.cs" />
     <Compile Include="Models\DBModel\NotificheModel.cs" />
     <Compile Include="Models\DBModel\PercAnticipoTEModel.cs" />

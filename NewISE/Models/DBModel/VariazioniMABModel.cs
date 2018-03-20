@@ -11,23 +11,29 @@ namespace NewISE.Models.DBModel
 {
 
 
-    public class MaggiorazioneAbitazioneModel
+    public class VariazioniMABModel
     {
         [Key]
+        public decimal idVariazioniMAB { get; set; }
+
         public decimal idMAB { get; set; }
 
-        public decimal idTrasferimento { get; set; }
         public decimal idAttivazioneMAB { get; set; }
 
-        public DateTime dataAggiornamento { get; set; }
+        public DateTime DataInizioMAB { get; set; }
 
-        public bool variazione { get; set; }
+        public DateTime DataFineMAB { get; set; }
+
+        public bool AnticipoAnnuale { get; set; }
+
+        public DateTime DataAggiornamento { get; set; }
+
+        public bool Annullato { get; set; }
 
         public bool HasValue()
         {
             return idMAB > 0 ? true : false;
         }
 
-        public CanoneMABModel CanoneMAB;
     }
 }

@@ -430,24 +430,24 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region MaggiorazioneAbitazione
-                var lma = t.MAGGIORAZIONEABITAZIONE.Where(x => x.ANNULLATO == false).OrderBy(x => x.IDMAB);
-                if (lma?.Any() ?? false)
-                {
-                    var ma = lma.First();
+                //var lma = t.MAGGIORAZIONEABITAZIONE.Where(x => x.ANNULLATO == false).OrderBy(x => x.IDMAB);
+                //if (lma?.Any() ?? false)
+                //{
+                //    var ma = lma.First();
 
-                    if (ma != null && ma.IDMAB > 0)
-                    {
-                        var lam = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
+                //    if (ma != null && ma.IDMAB > 0)
+                //    {
+                //        var lam = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
 
-                        if (lam?.Any() ?? false)
-                        {
-                            var am = lam.First();
+                //        if (lam?.Any() ?? false)
+                //        {
+                //            var am = lam.First();
 
-                            richiestaMAB = am.NOTIFICARICHIESTA;
-                            attivazioneMAB = am.ATTIVAZIONE;
-                        }
-                    }
-                }
+                //            richiestaMAB = am.NOTIFICARICHIESTA;
+                //            attivazioneMAB = am.ATTIVAZIONE;
+                //        }
+                //    }
+                //}
 
                 #endregion
             }

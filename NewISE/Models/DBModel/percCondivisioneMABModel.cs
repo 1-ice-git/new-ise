@@ -31,11 +31,10 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
+
         [Required(ErrorMessage = "L'Indennità è richiesta.")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N3}")]
         [Display(Name = "Percentuale")]
-
-        
         [CustomValidation(typeof(dtCondivisioneMAB), "VerificaPercentuale")]
         public decimal Percentuale { get; set; }
 

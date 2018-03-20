@@ -67,9 +67,9 @@ namespace NewISE.Controllers
                             CANONEMAB cm = dtma.GetCanoneMAB(mam);
 
                             mavm.importo_canone = cm.IMPORTOCANONE;
-                            mavm.dataInizioMAB = mam.dataInizioMAB;
-                            mavm.dataFineMAB = mam.dataFineMAB;
-                            mavm.AnticipoAnnuale = mam.AnticipoAnnuale;
+                            //mavm.dataInizioMAB = mam.dataInizioMAB;
+                            //mavm.dataFineMAB = mam.dataFineMAB;
+                            //mavm.AnticipoAnnuale = mam.AnticipoAnnuale;
 
                             if (cm.IDCANONE > 0)
                             {
@@ -572,15 +572,15 @@ namespace NewISE.Controllers
                         using (dtTrasferimento dtt = new dtTrasferimento())
                         {
                             var t = dtt.GetTrasferimentoById(idTrasferimento);
-                            mam.dataInizioMAB = t.dataPartenza;
+                            //mam.dataInizioMAB = t.dataPartenza;
                             mam.idTrasferimento = idTrasferimento;
-                            mam.dataPartenza = t.dataPartenza;
+                            //mam.dataPartenza = t.dataPartenza;
                         }
-                        mam.dataFineMAB = Utility.DataFineStop();
+                        //mam.dataFineMAB = Utility.DataFineStop();
                         mam.ut_dataFineMAB = null;
                         mam.importo_canone = 0;
 
-                        mam.AnticipoAnnuale = false;
+                        //mam.AnticipoAnnuale = false;
                         var mann = dtma.GetMaggiorazioneAnnuale(mam, db);
                         mam.idMagAnnuali = mann.idMagAnnuali;
 
@@ -638,14 +638,14 @@ namespace NewISE.Controllers
                                 var ma = dtma.GetMaggiorazioneAbitazioneByID(idMAB);
                                 var t = dtt.GetTrasferimentoById(ma.IDTRASFERIMENTO);
                                 mam.idMAB = ma.IDMAB;
-                                mam.dataPartenza = t.dataPartenza;
+                                //mam.dataPartenza = t.dataPartenza;
                                 mam.idTrasferimento = ma.IDTRASFERIMENTO;
                                 mam.idAttivazioneMAB = ma.IDATTIVAZIONEMAB;
 
-                                mam.dataInizioMAB = ma.DATAINIZIOMAB;
-                                mam.dataFineMAB = ma.DATAFINEMAB;
-                                mam.ut_dataFineMAB = ma.DATAFINEMAB;
-                                mam.AnticipoAnnuale = ma.ANTICIPOANNUALE;
+                                //mam.dataInizioMAB = ma.DATAINIZIOMAB;
+                                //mam.dataFineMAB = ma.DATAFINEMAB;
+                                //mam.ut_dataFineMAB = ma.DATAFINEMAB;
+                                //mam.AnticipoAnnuale = ma.ANTICIPOANNUALE;
 
                                 mam.idMagAnnuali = 0;
                                 var mann = dtma.GetMaggiorazioneAnnuale(mam, db);
@@ -705,10 +705,10 @@ namespace NewISE.Controllers
                                     //#endregion
                                 }
 
-                                if (ma.DATAFINEMAB == Utility.DataFineStop())
-                                {
-                                    mam.ut_dataFineMAB = null;
-                                }
+                                //if (ma.DATAFINEMAB == Utility.DataFineStop())
+                                //{
+                                //    mam.ut_dataFineMAB = null;
+                                //}
 
 
                                 var canone = dtma.GetCanoneMAB(mam);
