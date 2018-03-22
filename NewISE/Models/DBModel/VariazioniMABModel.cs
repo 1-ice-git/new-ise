@@ -28,7 +28,9 @@ namespace NewISE.Models.DBModel
 
         public DateTime DataAggiornamento { get; set; }
 
-        public bool Annullato { get; set; }
+        public decimal idStatoRecord { get; set; }
+
+        public decimal? fk_IDVariazioniMAB { get; set; }
 
         public bool HasValue()
         {

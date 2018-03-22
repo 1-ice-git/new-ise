@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.IO;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -382,7 +383,7 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var cml = db.MAGGIORAZIONEABITAZIONE.Find(vmam.idMAB)
-                                .CANONEMAB.Where(X => X.ANNULLATO == false &&
+                                .CANONEMAB.Where(X => X.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                  X.DATAINIZIOVALIDITA >= vmam.DataInizioMAB &&
                                                  X.DATAFINEVALIDITA <= vmam.DataFineMAB)
                                 .ToList();
@@ -400,7 +401,7 @@ namespace NewISE.Models.DBModel.dtObj
                             DATAFINEVALIDITA = cm_row.DATAFINEVALIDITA,
                             IMPORTOCANONE = cm_row.IMPORTOCANONE,
                             DATAAGGIORNAMENTO = cm_row.DATAAGGIORNAMENTO,
-                            ANNULLATO = cm_row.ANNULLATO
+                            IDSTATORECORD = cm_row.IDSTATORECORD
                         };
 
                     }
@@ -527,7 +528,7 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
 
-                    var vmal = db.ATTIVAZIONEMAB.Find(mam.idAttivazioneMAB).VARIAZIONIMAB.Where(x=>x.ANNULLATO==false).OrderBy(x => x.IDVARIAZIONIMAB).ToList();
+                    var vmal = db.ATTIVAZIONEMAB.Find(mam.idAttivazioneMAB).VARIAZIONIMAB.Where(x=>x.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato).OrderBy(x => x.IDVARIAZIONIMAB).ToList();
 
                     if (vmal?.Any() ?? false)
                     {
@@ -541,7 +542,8 @@ namespace NewISE.Models.DBModel.dtObj
                             DataFineMAB=vma.DATAFINEMAB,
                             AnticipoAnnuale=vma.ANTICIPOANNUALE,
                             DataAggiornamento = vma.DATAAGGIORNAMENTO,
-                            Annullato = vma.ANNULLATO
+                            idStatoRecord = vma.IDSTATORECORD,
+                            fk_IDVariazioniMAB = vma.FK_IDVARIAZIONIMAB
                         };
 
                     }
@@ -585,7 +587,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    lpc = db.PAGATOCONDIVISOMAB.Where(x => x.ANNULLATO == false &&
+                    lpc = db.PAGATOCONDIVISOMAB.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                         mvm.idMAB == x.IDMAB &&
                                                         mvm.idAttivazioneMAB == x.IDATTIVAZIONEMAB
                                                     ).ToList();
@@ -1381,7 +1383,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //DATAFINEVALIDITA = mvm.dataFineMAB,
                     IMPORTOCANONE = mvm.importo_canone,
                     DATAAGGIORNAMENTO = DateTime.Now,
-                    ANNULLATO = false
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                 };
 
                 db.CANONEMAB.Add(cm);
@@ -1410,7 +1412,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
-                var lc = db.CANONEMAB.Where(a => a.ANNULLATO == false &&
+                var lc = db.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                               a.IDATTIVAZIONEMAB == mvm.idAttivazioneMAB &&
                                               a.IDMAB == mvm.idMAB).ToList();
                 if (lc?.Any() ?? false)
@@ -1466,7 +1468,8 @@ namespace NewISE.Models.DBModel.dtObj
                     CONDIVISO = mvm.canone_condiviso,
                     PAGATO = mvm.canone_pagato,
                     DATAAGGIORNAMENTO = DateTime.Now,
-                    ANNULLATO = false
+                    IDSTATORECORD = (decimal)EnumStatoRecord.Attivato,
+                    FK_IDPAGATOCONDIVISO=null
                 };
 
                 db.PAGATOCONDIVISOMAB.Add(pc);
@@ -1497,7 +1500,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 PAGATOCONDIVISOMAB pc = new PAGATOCONDIVISOMAB();
                 var ma = db.MAGGIORAZIONEABITAZIONE.Find(mvm.idMAB);
-                var lpc = ma.PAGATOCONDIVISOMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
+                var lpc = ma.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
                 if (lpc?.Any() ?? false)
                 {
                     pc = lpc.First();
@@ -2269,7 +2272,8 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEMAB = dataFine.Value,
                     ANTICIPOANNUALE = false,
                     DATAAGGIORNAMENTO = DateTime.Now,
-                    ANNULLATO=false
+                    IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione,
+                    FK_IDVARIAZIONIMAB=null
                 };
                 db.VARIAZIONIMAB.Add(vmab);
 
@@ -2284,7 +2288,8 @@ namespace NewISE.Models.DBModel.dtObj
                         DataInizioMAB=vmab.DATAINIZIOMAB,
                         DataFineMAB=vmab.DATAFINEMAB,
                         AnticipoAnnuale=vmab.ANTICIPOANNUALE,
-                        Annullato=vmab.ANNULLATO
+                        idStatoRecord=vmab.IDSTATORECORD,
+                        fk_IDVariazioniMAB=vmab.FK_IDVARIAZIONIMAB
                     };
 
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento VariazioniMAB", "VARIAZIONIMAB", db,
@@ -2319,7 +2324,8 @@ namespace NewISE.Models.DBModel.dtObj
                     CONDIVISO=false,
                     PAGATO=false,
                     DATAAGGIORNAMENTO = DateTime.Now,
-                    ANNULLATO = false
+                    FK_IDPAGATOCONDIVISO = null,
+                    IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione
                 };
                 db.PAGATOCONDIVISOMAB.Add(pcmab);
 
@@ -2335,7 +2341,8 @@ namespace NewISE.Models.DBModel.dtObj
                         Condiviso=pcmab.CONDIVISO,
                         Pagato=pcmab.PAGATO,
                         DataAggiornamento = pcmab.DATAAGGIORNAMENTO,
-                        Annullato = pcmab.ANNULLATO
+                        idStatoRecord = pcmab.IDSTATORECORD,
+                        fk_IDPagatoCondiviso=pcmab.FK_IDPAGATOCONDIVISO
                     };
 
                     var t = db.VARIAZIONIMAB.Find(vmabm.idVariazioniMAB).MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
@@ -2371,7 +2378,8 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEVALIDITA = vmabm.DataFineMAB,
                     IMPORTOCANONE=0,
                     DATAAGGIORNAMENTO = DateTime.Now,
-                    ANNULLATO = false
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                    FK_IDCANONE=null
                 };
                 db.CANONEMAB.Add(cmab);
 
@@ -2386,7 +2394,8 @@ namespace NewISE.Models.DBModel.dtObj
                         DataFineValidita = cmab.DATAFINEVALIDITA,
                         ImportoCanone=cmab.IMPORTOCANONE,
                         DataAggiornamento = cmab.DATAAGGIORNAMENTO,
-                        Annullato = cmab.ANNULLATO
+                        idStatoRecord = cmab.IDSTATORECORD,
+                        FK_IDCanone=cmab.FK_IDCANONE
                     };
 
                     var t = db.VARIAZIONIMAB.Find(vmabm.idVariazioniMAB).MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;

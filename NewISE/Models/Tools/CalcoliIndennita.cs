@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.Tools
 {
@@ -261,7 +262,7 @@ namespace NewISE.Models.Tools
                                     var lc =
                                         mf.CONIUGE.Where(
                                             a =>
-                                                a.MODIFICATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                                a.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                                                 dtDatiParametri <= a.DATAFINEVALIDITA)
                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA);
 
@@ -318,7 +319,7 @@ namespace NewISE.Models.Tools
                                     var lf =
                                         mf.FIGLI.Where(
                                             a =>
-                                                a.MODIFICATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                                                 dtDatiParametri <= a.DATAFINEVALIDITA)
                                             .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 

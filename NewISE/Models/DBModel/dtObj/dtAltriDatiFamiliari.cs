@@ -6,6 +6,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using NewISE.EF;
 using NewISE.Models.Tools;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -138,7 +139,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataInizio = f.DATAINIZIOVALIDITA,
                                     dataFine = f.DATAFINEVALIDITA,
                                     dataAggiornamento = f.DATAAGGIORNAMENTO,
-                                    Modificato = f.MODIFICATO,
+                                    StatoRecord = (EnumStatoRecord)f.IDSTATORECORD,
                                     FK_IdFigli = f.FK_IDFIGLI
                                 }
                             };
@@ -233,7 +234,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataInizio = c.DATAINIZIOVALIDITA,
                                     dataFine = c.DATAFINEVALIDITA,
                                     dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                    Modificato = c.MODIFICATO,
+                                    StatoRecord =(EnumStatoRecord)c.IDSTATORECORD,
                                     FK_idConiuge = c.FK_IDCONIUGE
                                 }
                             };

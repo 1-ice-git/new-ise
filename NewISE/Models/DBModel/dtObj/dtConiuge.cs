@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -344,7 +345,7 @@ namespace NewISE.Models.DBModel.dtObj
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                FK_idConiuge = e.FK_IDCONIUGE,
                                idAttivazioneMagFam = idAttivazioneMagFam,
-                               Modificato = e.MODIFICATO
+                               StatoRecord = (EnumStatoRecord)e.IDSTATORECORD
 
                            }).ToList();
                 }
@@ -366,7 +367,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = cm.dataInizio.Value,
                 DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                MODIFICATO = cm.Modificato,
+                IDSTATORECORD = (decimal)cm.StatoRecord,
                 FK_IDCONIUGE = cm.FK_idConiuge
 
 
@@ -488,14 +489,14 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             //var e = amfl.First();
 
-                            lc = e.CONIUGE.Where(y => y.MODIFICATO == false).ToList();
+                            lc = e.CONIUGE.Where(y => y.IDSTATORECORD ==(decimal)EnumStatoRecord.Attivato).ToList();
                             if (lc?.Any() ?? false)
                             {
                                 foreach (var c in lc)
                                 {
                                     VariazioneConiugeModel cm = new VariazioneConiugeModel()
                                     {
-                                        eliminabile = ((c.FK_IDCONIUGE > 0 || c.MODIFICATO == true) || e.ATTIVAZIONEMAGFAM) ? false : true,
+                                        eliminabile = ((c.FK_IDCONIUGE > 0 || c.IDSTATORECORD ==(decimal)EnumStatoRecord.In_Lavorazione) || e.ATTIVAZIONEMAGFAM) ? false : true,
                                         modificabile = modificabile,
                                         idConiuge = c.IDCONIUGE,
                                         idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
@@ -506,7 +507,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataInizio = c.DATAINIZIOVALIDITA,
                                         dataFine = c.DATAFINEVALIDITA,
                                         dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                        Modificato = c.MODIFICATO,
+                                        StatoRecord = (EnumStatoRecord)c.IDSTATORECORD,
                                         FK_idConiuge = c.FK_IDCONIUGE
                                     };
                                     lcm.Add(cm);

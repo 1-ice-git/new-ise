@@ -615,7 +615,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAINIZIOVALIDITA = cOld.DATAINIZIOVALIDITA,
                                                 DATAFINEVALIDITA = cOld.DATAFINEVALIDITA,
                                                 DATAAGGIORNAMENTO = cOld.DATAAGGIORNAMENTO,
-                                                MODIFICATO = cOld.MODIFICATO,
+                                                IDSTATORECORD = cOld.IDSTATORECORD,
                                                 FK_IDCONIUGE = cOld.FK_IDCONIUGE
                                             };
 
@@ -793,7 +793,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAINIZIOVALIDITA = fOld.DATAINIZIOVALIDITA,
                                                 DATAFINEVALIDITA = fOld.DATAFINEVALIDITA,
                                                 DATAAGGIORNAMENTO = fOld.DATAAGGIORNAMENTO,
-                                                MODIFICATO = fOld.MODIFICATO,
+                                                IDSTATORECORD = fOld.IDSTATORECORD,
                                                 FK_IDFIGLI = fOld.FK_IDFIGLI
                                             };
 

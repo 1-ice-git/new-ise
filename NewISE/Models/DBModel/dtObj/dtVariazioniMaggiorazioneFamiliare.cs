@@ -13,6 +13,7 @@ using System.IO;
 
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -514,7 +515,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     escludiTitoloViaggio = cm.escludiTitoloViaggio,
                                     dataNotificaTV = cm.dataNotificaTV,
                                     FK_idConiuge = cm.idConiuge,
-                                    Modificato = false
+                                    StatoRecord = EnumStatoRecord.Attivato
                                 };
 
                                 decimal new_idconiuge = this.SetConiuge(ref newc, db, attivazione_aperta.IDATTIVAZIONEMAGFAM);
@@ -538,7 +539,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 };
                                 db.ALTRIDATIFAM.Add(adf_new);
 
-                                c.MODIFICATO = true;
+                                c.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
                                 if (db.SaveChanges() > 0)
                                 {
@@ -724,7 +725,7 @@ namespace NewISE.Models.DBModel.dtObj
                             };
                             db.ATTIVAZIONIMAGFAM.Add(newmf);
 
-                            c.MODIFICATO = true;
+                            c.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
                             int idx = db.SaveChanges();
 
@@ -747,7 +748,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 escludiTitoloViaggio = cm.escludiTitoloViaggio,
                                 dataNotificaTV = cm.dataNotificaTV,
                                 FK_idConiuge = cm.idConiuge,
-                                Modificato = false
+                                StatoRecord = EnumStatoRecord.Attivato
                             };
 
                             decimal new_idconiuge = this.SetConiuge(ref newc, db, newmf.IDATTIVAZIONEMAGFAM);
@@ -924,7 +925,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = cm.dataAggiornamento,
                     FK_IDCONIUGE = cm.FK_idConiuge,
-                    MODIFICATO = false
+                    IDSTATORECORD = (decimal)EnumStatoRecord.Attivato
                 };
 
                 db.CONIUGE.Add(c);
@@ -1066,7 +1067,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     escludiTitoloViaggio = fm.escludiTitoloViaggio,
                                     dataNotificaTV = fm.dataNotificaTV,
                                     FK_IdFigli = fm.idFigli,
-                                    Modificato = false
+                                    StatoRecord = EnumStatoRecord.Attivato
                                 };
 
                                 decimal new_idfiglio = this.SetFiglio(ref newf, db, attivazione_aperta.IDATTIVAZIONEMAGFAM);
@@ -1090,7 +1091,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 };
                                 db.ALTRIDATIFAM.Add(adf_new);
 
-                                f.MODIFICATO = true;
+                                f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
 
                                 if (db.SaveChanges() > 0)
                                 {
@@ -1256,7 +1257,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //crea una nuova attivazione
                             var newamf = this.CreaAttivazione(idMaggiorazioniFamiliari,db);
 
-                            f.MODIFICATO = true;
+                            f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
 
                             int idx = db.SaveChanges();
 
@@ -1279,7 +1280,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 escludiTitoloViaggio = fm.escludiTitoloViaggio,
                                 dataNotificaTV = fm.dataNotificaTV,
                                 FK_IdFigli = fm.idFigli,
-                                Modificato = false
+                                StatoRecord = EnumStatoRecord.In_Lavorazione
                             };
 
                             decimal new_idfiglio = this.SetFiglio(ref newf, db, newamf.IDATTIVAZIONEMAGFAM);
@@ -1451,7 +1452,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = fm.dataAggiornamento,
                     FK_IDFIGLI = fm.FK_IdFigli,
-                    MODIFICATO = false
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                 };
 
                 db.FIGLI.Add(f);

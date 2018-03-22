@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.ViewModel;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -330,7 +331,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataInizio = item.DATAINIZIOVALIDITA,
                                 dataFine = item.DATAFINEVALIDITA,
                                 dataAggiornamento = item.DATAAGGIORNAMENTO,
-                                Modificato = item.MODIFICATO,
+                                StatoRecord = (EnumStatoRecord)item.IDSTATORECORD,
                                 FK_IdFigli = item.FK_IDFIGLI,
                                 idAttivazioneMagFam = idAttivazioneMagFam
 
@@ -391,14 +392,14 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var e in amfl)
                         {
-                            lf = e.FIGLI.Where(y => y.MODIFICATO == false).ToList();
+                            lf = e.FIGLI.Where(y => y.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                             if (lf?.Any() ?? false)
                             {
                                 foreach (var f in lf)
                                 {
                                     VariazioneFigliModel fm = new VariazioneFigliModel()
                                     {
-                                        eliminabile = ((f.FK_IDFIGLI > 0 || f.MODIFICATO == true) || e.ATTIVAZIONEMAGFAM) ? false : true,
+                                        eliminabile = ((f.FK_IDFIGLI > 0 || f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione) || e.ATTIVAZIONEMAGFAM) ? false : true,
                                         modificabile = modificabile,
                                         idFigli = f.IDFIGLI,
                                         idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
@@ -409,7 +410,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataInizio = f.DATAINIZIOVALIDITA,
                                         dataFine = f.DATAFINEVALIDITA,
                                         dataAggiornamento = f.DATAAGGIORNAMENTO,
-                                        Modificato = f.MODIFICATO,
+                                        StatoRecord =(EnumStatoRecord)f.IDSTATORECORD,
                                         FK_IdFigli = f.FK_IDFIGLI
                                     };
                                     lfm.Add(fm);
