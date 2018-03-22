@@ -51,6 +51,7 @@ namespace NewISE.Models.Tools
             messaggio.Subject = msgMail.oggetto;
             messaggio.SubjectEncoding = System.Text.Encoding.UTF8;
 
+                       
             messaggio.Priority = msgMail.priorita;
 
             // Gestire campo vuoto del Body
