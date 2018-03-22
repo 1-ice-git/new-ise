@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PAGATOCONDIVISOMAB()
         {
+            this.PAGATOCONDIVISOMAB1 = new HashSet<PAGATOCONDIVISOMAB>();
             this.PERCENTUALECONDIVISIONE = new HashSet<PERCENTUALECONDIVISIONE>();
         }
     
@@ -28,10 +29,15 @@ namespace NewISE.EF
         public bool CONDIVISO { get; set; }
         public bool PAGATO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        public decimal IDSTATORECORD { get; set; }
+        public Nullable<decimal> FK_IDPAGATOCONDIVISO { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB1 { get; set; }
+        public virtual PAGATOCONDIVISOMAB PAGATOCONDIVISOMAB2 { get; set; }
+        public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALECONDIVISIONE> PERCENTUALECONDIVISIONE { get; set; }
     }

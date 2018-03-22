@@ -6,9 +6,11 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel
 {
+
 
     public class ConiugeModel
     {
@@ -65,8 +67,6 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? dataNotificaTV { get; set; }
 
-        [DefaultValue(false)]
-        public bool Modificato { get; set; }
 
         public decimal? FK_idConiuge { get; set; }
 
@@ -79,6 +79,8 @@ namespace NewISE.Models.DBModel
         public PassaportoModel passaporto { get; set; }
 
         public MaggiorazioniFamiliariModel MaggiorazioniFamiliari { get; set; }
+
+        public EnumStatoRecord StatoRecord { get; set; }
 
         public bool HasValue()
         {
