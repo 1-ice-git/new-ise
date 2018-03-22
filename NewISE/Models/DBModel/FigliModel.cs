@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.DBModel.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -67,8 +68,6 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;
 
-        [DefaultValue(false)]
-        public bool Modificato { get; set; }
 
         public decimal? FK_IdFigli { get; set; }
 
@@ -80,6 +79,8 @@ namespace NewISE.Models.DBModel
         public PassaportoModel passaporto { get; set; }
 
         public MaggiorazioniFamiliariModel MaggiorazioniFamiliari { get; set; }
+
+        public EnumStatoRecord StatoRecord { get; set; }
 
         public bool HasValue()
         {

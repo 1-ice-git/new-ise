@@ -6,6 +6,7 @@ using System.Web;
 using NewISE.EF;
 using NewISE.Models.dtObj.Interfacce;
 using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.Tools;
 
 namespace NewISE.Models.dtObj
@@ -25,12 +26,12 @@ namespace NewISE.Models.dtObj
                 var lCanoneMAB =
                     db.CANONEMAB.Where(
                         a =>
-                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= tfr.DATAINIZIOVALIDITA &&
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.DATAFINEVALIDITA >= tfr.DATAINIZIOVALIDITA &&
                             a.DATAINIZIOVALIDITA <= tfr.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                 foreach (var cmab in lCanoneMAB)
                 {
-                    var nCmab = tfr.CANONEMAB.Count(a => a.ANNULLATO == false && a.IDCANONE == cmab.IDCANONE);
+                    var nCmab = tfr.CANONEMAB.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato == false && a.IDCANONE == cmab.IDCANONE);
                     if (nCmab <= 0)
                     {
                         tfr.CANONEMAB.Add(cmab);
@@ -82,6 +83,16 @@ namespace NewISE.Models.dtObj
                     if (nConta <= 0)
                     {
                         riduzioni.COEFFICIENTEINDRICHIAMO.Add(cir);
+
+                        var lr = cir.RICHIAMO;
+
+                        foreach (var r in lr)
+                        {
+                            var t = r.TRASFERIMENTO;
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, riduzioni.DATAINIZIOVALIDITA, db);
+                        }
+
                     }
                 }
 
@@ -108,7 +119,29 @@ namespace NewISE.Models.dtObj
                 item.State = EntityState.Modified;
                 item.Collection(a => a.CONIUGE).Load();
 
-                //var lc = db.CONIUGE
+                var lc =
+                    db.CONIUGE.Where(
+                        a =>
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.ATTIVAZIONIMAGFAM.Where(
+                                b =>
+                                    b.ANNULLATO == false && b.RICHIESTAATTIVAZIONE == true &&
+                                    b.ATTIVAZIONEMAGFAM == true).Any() && a.DATAFINEVALIDITA >= pmc.DATAINIZIOVALIDITA &&
+                            a.DATAINIZIOVALIDITA <= pmc.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                foreach (var c in lc)
+                {
+                    var nConta = pmc.CONIUGE.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCONIUGE == c.IDCONIUGE);
+                    if (nConta <= 0)
+                    {
+                        pmc.CONIUGE.Add(c);
+
+                        var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmc.DATAINIZIOVALIDITA, db);
+                    }
+                }
+
 
             }
             catch (Exception ex)

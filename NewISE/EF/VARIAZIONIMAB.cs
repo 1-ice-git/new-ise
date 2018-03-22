@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public VARIAZIONIMAB()
         {
+            this.VARIAZIONIMAB1 = new HashSet<VARIAZIONIMAB>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
         }
     
@@ -27,10 +28,15 @@ namespace NewISE.EF
         public System.DateTime DATAFINEMAB { get; set; }
         public bool ANTICIPOANNUALE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        public decimal IDSTATORECORD { get; set; }
+        public Nullable<decimal> FK_IDVARIAZIONIMAB { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual STATORECORD STATORECORD { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VARIAZIONIMAB> VARIAZIONIMAB1 { get; set; }
+        public virtual VARIAZIONIMAB VARIAZIONIMAB2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
     }
