@@ -877,6 +877,8 @@
           <Property Name="CORPOMESSAGGIO" Type="clob" Nullable="false" />
           <Property Name="DATANOTIFICA" Type="date" Nullable="false" />
           <Property Name="ALLEGATO" Type="blob" />
+          <Property Name="NOMEDOCUMENTO" Type="varchar2" MaxLength="100" />
+          <Property Name="ESTENSIONEDOC" Type="varchar2" MaxLength="6" />
         </EntityType>
         <EntityType Name="OA">
           <Key>
@@ -7316,6 +7318,8 @@
           <Property Name="CORPOMESSAGGIO" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DATANOTIFICA" Type="DateTime" Nullable="false" />
           <Property Name="ALLEGATO" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="NOMEDOCUMENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ESTENSIONEDOC" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="DESTINATARI" Relationship="DBISEPRO.R_NOTIF_DEST" FromRole="NOTIFICHE" ToRole="DESTINATARI" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_D_MIT_N" FromRole="NOTIFICHE" ToRole="DIPENDENTI" />
         </EntityType>
@@ -10763,6 +10767,8 @@
           <EntitySetMapping Name="NOTIFICHE">
             <EntityTypeMapping TypeName="DBISEPRO.NOTIFICHE">
               <MappingFragment StoreEntitySet="NOTIFICHE">
+                <ScalarProperty Name="ESTENSIONEDOC" ColumnName="ESTENSIONEDOC" />
+                <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
                 <ScalarProperty Name="ALLEGATO" ColumnName="ALLEGATO" />
                 <ScalarProperty Name="DATANOTIFICA" ColumnName="DATANOTIFICA" />
                 <ScalarProperty Name="CORPOMESSAGGIO" ColumnName="CORPOMESSAGGIO" />

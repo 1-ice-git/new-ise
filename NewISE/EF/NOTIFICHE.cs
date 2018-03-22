@@ -26,6 +26,8 @@ namespace NewISE.EF
         public string CORPOMESSAGGIO { get; set; }
         public System.DateTime DATANOTIFICA { get; set; }
         public byte[] ALLEGATO { get; set; }
+        public string NOMEDOCUMENTO { get; set; }
+        public string ESTENSIONEDOC { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DESTINATARI> DESTINATARI { get; set; }
