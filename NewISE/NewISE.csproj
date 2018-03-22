@@ -3096,6 +3096,7 @@
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
+    <Compile Include="Models\DBModel\PagatoCondivisoMABModel.cs" />
     <Compile Include="Models\DBModel\VariazioniMABModel.cs" />
     <Compile Include="Models\DBModel\percCondivisioneMABModel.cs" />
     <Compile Include="Models\DBModel\NotificheModel.cs" />

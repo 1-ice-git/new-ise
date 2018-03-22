@@ -28,5 +28,10 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Pagato")]
         public bool canone_pagato { get; set; }
 
+        public bool anticipoAnnuale { get; set; }
+
+        public DateTime dataInizioMAB { get; set; }
+        public DateTime dataFineMAB { get; set; }
+
     }
 }
