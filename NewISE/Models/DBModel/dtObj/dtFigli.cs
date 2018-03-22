@@ -192,7 +192,8 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = fm.dataInizio.Value,
                 DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = fm.dataAggiornamento,
-
+                IDSTATORECORD=(decimal)fm.StatoRecord,
+                FK_IDFIGLI=fm.FK_IdFigli
             };
 
             db.FIGLI.Add(f);
