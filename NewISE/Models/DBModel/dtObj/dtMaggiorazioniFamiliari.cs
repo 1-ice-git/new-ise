@@ -11,6 +11,7 @@ using NewISE.Models.ModelRest;
 using NewISE.Models.Tools;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -142,6 +143,20 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
+                                //imposta coniuge e figli con statorecord da da_attivare a attivato
+                                var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                foreach (var c in lc)
+                                {
+                                    c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                    db.SaveChanges();
+                                }
+                                foreach (var f in lf)
+                                {
+                                    f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                    db.SaveChanges();
+                                }
+
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
                                     using (dtTrasferimento dtt = new dtTrasferimento())
@@ -180,6 +195,19 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
+                                        //imposta coniuge e figli con statorecord da da_attivare a attivato
+                                        var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                        var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                        foreach (var c in lc)
+                                        {
+                                            c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                            db.SaveChanges();
+                                        }
+                                        foreach (var f in lf)
+                                        {
+                                            f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                            db.SaveChanges();
+                                        }
 
                                         amf.ATTIVAZIONEMAGFAM = true;
 
@@ -615,11 +643,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAINIZIOVALIDITA = cOld.DATAINIZIOVALIDITA,
                                                 DATAFINEVALIDITA = cOld.DATAFINEVALIDITA,
                                                 DATAAGGIORNAMENTO = cOld.DATAAGGIORNAMENTO,
-                                                IDSTATORECORD = cOld.IDSTATORECORD,
+                                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
                                                 FK_IDCONIUGE = cOld.FK_IDCONIUGE
                                             };
 
                                             amfNew.CONIUGE.Add(cNew);///Inserisco la nuova riga per il coniuge associata alla nuova riga per il ciclo di autorizzazione.
+                                            cOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                             int j2 = db.SaveChanges();
 
@@ -793,11 +822,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAINIZIOVALIDITA = fOld.DATAINIZIOVALIDITA,
                                                 DATAFINEVALIDITA = fOld.DATAFINEVALIDITA,
                                                 DATAAGGIORNAMENTO = fOld.DATAAGGIORNAMENTO,
-                                                IDSTATORECORD = fOld.IDSTATORECORD,
+                                                IDSTATORECORD =(decimal)EnumStatoRecord.In_Lavorazione,
                                                 FK_IDFIGLI = fOld.FK_IDFIGLI
                                             };
 
                                             amfNew.FIGLI.Add(fNew);
+                                            fOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                             int x = db.SaveChanges();
 
@@ -1087,6 +1117,19 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                     else
                                     {
+                                        //imposta coniuge e figli con statorecord da in_lavorazione a da_attivare
+                                        var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        foreach (var c in lc)
+                                        {
+                                            c.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                            db.SaveChanges();
+                                        }
+                                        foreach (var f in lf)
+                                        {
+                                            f.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                            db.SaveChanges();
+                                        }
 
                                         using (dtDipendenti dtd = new dtDipendenti())
                                         {
@@ -1120,7 +1163,6 @@ namespace NewISE.Models.DBModel.dtObj
                                                 idTrasferimento = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                 DataInizioEvento = DateTime.Now.Date,
                                                 DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
-
                                             };
 
                                             dtce.InsertCalendarioEvento(ref cem, db);
@@ -1131,6 +1173,20 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     if (datiParzialiConiuge == false && datiParzialiFigli == false)
                                     {
+                                        //imposta coniuge e figli con statorecord da in_lavorazione a da_attivare
+                                        var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        foreach (var c in lc)
+                                        {
+                                            c.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                            db.SaveChanges();
+                                        }
+                                        foreach (var f in lf)
+                                        {
+                                            f.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                            db.SaveChanges();
+                                        }
+
                                         amf.RICHIESTAATTIVAZIONE = true;
                                         amf.DATARICHIESTAATTIVAZIONE = DateTime.Now;
 
@@ -1471,6 +1527,8 @@ namespace NewISE.Models.DBModel.dtObj
                     using (dtFigli dtf = new dtFigli())
                     {
                         fm.dataAggiornamento = DateTime.Now;
+                        fm.StatoRecord = Enum.EnumStatoRecord.In_Lavorazione;
+                        fm.FK_IdFigli = null;
 
                         dtf.SetFiglio(ref fm, db);
                         using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
@@ -1547,6 +1605,8 @@ namespace NewISE.Models.DBModel.dtObj
                     using (dtConiuge dtc = new dtConiuge())
                     {
                         cm.dataAggiornamento = DateTime.Now;
+                        cm.StatoRecord = Enum.EnumStatoRecord.In_Lavorazione;
+                        cm.FK_idConiuge = null;
 
                         dtc.SetConiuge(ref cm, db);
 

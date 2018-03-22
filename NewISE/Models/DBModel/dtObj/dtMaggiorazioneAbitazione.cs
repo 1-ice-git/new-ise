@@ -2245,13 +2245,20 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (dtValute dtv = new dtValute())
             {
-                vm = dtv.GetValutaUfficiale(db);
+                using (dtTFR dtTFR = new dtTFR())
+                {
+                    vm = dtv.GetValutaUfficiale(db);
+
+                    ltfrm = dtTFR.GetListaTfrByValuta_RangeDate(trm, vm.idValuta, cm.DataInizioValidita, cm.DataFineValidita, db);
+
+                    foreach (var tfrm in ltfrm)
+                    {
+                        this.Associa_TFR_CanoneMAB(tfrm.idTFR, cm.idCanone, db);
+                    }
+                }
             }
 
-            using (dtTFR dtTFR = new dtTFR())
-            {
-                ltfrm = dtTFR.GetListaTfrByValuta_RangeDate(trm,vm.idValuta, cm.DataInizioValidita, cm.DataFineValidita, db);
-            }
+
 
         }
 
