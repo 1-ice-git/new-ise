@@ -248,13 +248,16 @@ namespace NewISE.Models.DBModel.dtObj
             return tfrm;
         }
 
-        public List<TFRModel> GetListaTfrByValuta_RangeDate(decimal idUfficio,decimal idValuta, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        public List<TFRModel> GetListaTfrByValuta_RangeDate(TrasferimentoModel trm,decimal idValuta, DateTime dtIni, DateTime dtFin, ModelDBISE db)
         {
             List<TFRModel> ltfrm = new List<TFRModel>();
 
             using (dtUffici dtu = new dtUffici())
             {
-                UfficiModel ufm = dtu.GetUffici(idUfficio, db);
+                var t = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+                UFFICI u = t.UFFICI;
+
+                UfficiModel ufm = dtu.GetUffici(u.IDUFFICIO, db);
 
                 if (ufm.pagatoValutaUfficio == false)
                 {

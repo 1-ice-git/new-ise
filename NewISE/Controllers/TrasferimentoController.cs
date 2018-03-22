@@ -1236,6 +1236,7 @@ namespace NewISE.Controllers
                                 {
                                     db.Database.BeginTransaction();
 
+                                    #region trasferimento
                                     dttr.SetTrasferimento(ref trm, db);
 
                                     using (dtDipendenti dtd = new dtDipendenti())
@@ -1253,8 +1254,9 @@ namespace NewISE.Controllers
                                     {
                                         dttr.TerminaTrasferimento(idTrasferimentoOld, trm.dataPartenza, db);
                                     }
+                                    #endregion
 
-
+                                    #region prima sistemazione
                                     using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
                                     {
                                         PrimaSistemazioneModel psm = new PrimaSistemazioneModel()
@@ -1266,27 +1268,37 @@ namespace NewISE.Controllers
                                         dtps.InserisciPrimaSistemazione(psm, db);
 
                                     }
+                                    #endregion
 
+                                    #region maggiorazioni familiari
                                     using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                                     {
                                         dtmf.PreSetMaggiorazioniFamiliari(trm.idTrasferimento, db);
                                     }
+                                    #endregion
 
+                                    #region passaporto
                                     using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                                     {
                                         dtpp.PreSetPassaporto(trm.idTrasferimento, db);
                                     }
+                                    #endregion
 
+                                    #region titoli viaggio
                                     using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                                     {
                                         dttv.PreSetTitoloViaggio(trm.idTrasferimento, db);
                                     }
+                                    #endregion
 
+                                    #region trasporto effetti
                                     using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                                     {
                                         dtte.PreSetTrasportoEffetti(trm.idTrasferimento, db);
                                     }
+                                    #endregion
 
+                                    #region indennita
                                     using (dtIndennita dti = new dtIndennita())
                                     {
                                         IndennitaModel im = new IndennitaModel();
@@ -1488,6 +1500,13 @@ namespace NewISE.Controllers
 
                                         }
                                     }
+                                    #endregion
+                                    #region maggiorazione abitazione
+                                    using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                                    {
+                                        dtma.PreSetMaggiorazioneAbitazione(trm, db);
+                                    }
+                                    #endregion
 
                                     db.Database.CurrentTransaction.Commit();
                                 }
