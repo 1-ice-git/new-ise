@@ -50,12 +50,13 @@
                         </td>
                     }
                     else
-                    {
+                    {                       
                         <td style="text-align: center;">
-                            <a href="#" onclick="ViewAllegato(@item.idNotifica);"><img alt="Elimina" src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" height="17" /></a>
+                            <a href="@Url.RouteUrl("LeggiNotifichePDF", new {id = @item.idNotifica})" target="_blank">
+                                <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
+                            </a>
                         </td>
                     }
-
                 </tr>
                 if (@rowColor.Equals("#ffffff"))
                 {

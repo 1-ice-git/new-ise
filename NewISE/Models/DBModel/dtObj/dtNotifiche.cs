@@ -32,30 +32,58 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return ldes;
         }
+        public string GetEmailByIdDipendente(decimal idDipendente)
+        {
+            string email = "";
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
+                email = d.EMAIL;
+            }
+            return email;
+        }
         public List<DipendentiModel> GetListaDipendentiAutorizzati(decimal idRuoloUtente)
         {
             List<DipendentiModel> ldes = new List<DipendentiModel>();
+            List<DipendentiModel> ldesdef = new List<DipendentiModel>();
+            List<UtentiAutorizzatiModel> uaut = new List<UtentiAutorizzatiModel>();
             using (ModelDBISE db = new ModelDBISE())
             {
-                ldes = (from d in db.UTENTIAUTORIZZATI
-                        where d.IDRUOLOUTENTE == idRuoloUtente
-                       // && d.DIPENDENTI.IDDIPENDENTE.CompareTo(null)!=0
-                        select new DipendentiModel()
+                uaut = (from d in db.UTENTIAUTORIZZATI
+                        where d.IDRUOLOUTENTE == idRuoloUtente 
+                        select new UtentiAutorizzatiModel()
                         {
-                           // idDipendente = (decimal)d.DIPENDENTI.IDDIPENDENTE,
-                            nome = d.DIPENDENTI.NOME==null?"": d.DIPENDENTI.NOME,
-                            cognome = d.DIPENDENTI.COGNOME == null ? "" : d.DIPENDENTI.COGNOME,
-                            email = d.DIPENDENTI.EMAIL==null?"": d.DIPENDENTI.EMAIL,
+                             idDipendente=(decimal)d.IDDIPENDENTE,
+                             idRouloUtente=d.IDRUOLOUTENTE,
+                             idUtenteAutorizzato=d.IDUTENTEAUTORIZZATO,
+                             Utente=d.UTENTE
                         }).ToList();
+                foreach (var ut in uaut)
+                {
+                    DipendentiModel dm = new DipendentiModel();
+                    ldes = (from t in db.TRASFERIMENTO
+                            where t.IDDIPENDENTE ==ut.idDipendente //&& (t.IDSTATOTRASFERIMENTO==(decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                            select new DipendentiModel()
+                            {
+                                nome = t.DIPENDENTI.NOME == null ? "" : t.DIPENDENTI.NOME,
+                                cognome = t.DIPENDENTI.COGNOME == null ? "" : t.DIPENDENTI.COGNOME,
+                                email = t.DIPENDENTI.EMAIL == null ? "" : t.DIPENDENTI.EMAIL,
+                            }).ToList();
+                    if(ldes.Count!=0)
+                    {
+                        dm = ldes.First();
+                        ldesdef.Add(dm);
+                    }
+                }
             }
-            return ldes;
+            return ldesdef;
         }
         public List<DipendentiModel> GetListaDipendentiAutorizzati()
         {
             List<DipendentiModel> ldes = new List<DipendentiModel>();
             using (ModelDBISE db = new ModelDBISE())
             {
-                ldes = (from d in db.UTENTIAUTORIZZATI
+                ldes = (from d in db.UTENTIAUTORIZZATI //where d.IDDIPENDENTE==d.DIPENDENTI.TRASFERIMENTO.First().IDDIPENDENTE
                         select new DipendentiModel()
                         {
                             idDipendente = d.DIPENDENTI.IDDIPENDENTE,
@@ -99,7 +127,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         List<SelectListItem> TuttiDestinatari()
         {
-            var r = new List<SelectListItem>();            
+            var r = new List<SelectListItem>();
             UtentiAutorizzatiModel uta = null;
             List<DipendentiModel> dm = new List<DipendentiModel>();
             decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
@@ -119,8 +147,8 @@ namespace NewISE.Models.DBModel.dtObj
                          {
                              Text = t.nome + " " + t.cognome,
                              Value = t.email,
-                         }).ToList();                   
-                }                
+                         }).ToList();
+                }
             }
             return r;
         }
@@ -153,9 +181,11 @@ namespace NewISE.Models.DBModel.dtObj
             }
             //if (NM.toCc != null)
             //{
-                List<DESTINATARI> listToCc = new List<DESTINATARI>();
-                string[] lToCc = NM.toCc;
-                foreach (string email in lToCc)
+            List<DESTINATARI> listToCc = new List<DESTINATARI>();
+            string[] lToCc = NM.toCc;
+            foreach (string email in lToCc)
+            {
+                if (email != "null")
                 {
                     DESTINATARI dcc = new DESTINATARI();
                     dcc.IDNOTIFICA = NM.idNotifica;
@@ -163,6 +193,7 @@ namespace NewISE.Models.DBModel.dtObj
                     dcc.TOCC = true;
                     listDest.Add(dcc);
                 }
+            }
             //}
 
             using (ModelDBISE db = new ModelDBISE())
@@ -175,11 +206,12 @@ namespace NewISE.Models.DBModel.dtObj
                     nuovo.DATANOTIFICA = DateTime.Now;
                     nuovo.OGGETTO = NM.Oggetto;
                     nuovo.DESTINATARI = listDest;
-                    
+                    nuovo.ALLEGATO = NM.Allegato;
                     db.Database.BeginTransaction();
                     db.NOTIFICHE.Add(nuovo);
                     db.SaveChanges();
                     db.Database.CurrentTransaction.Commit();
+                    NM.idNotifica = nuovo.IDNOTIFICA;
                 }
 
                 catch (Exception ex)
@@ -191,7 +223,7 @@ namespace NewISE.Models.DBModel.dtObj
             return true;
         }
 
-        private decimal RestituisciIDdestinatarioDaEmail(string email)
+        public decimal RestituisciIDdestinatarioDaEmail(string email)
         {
             decimal idDipendente = 0;
             using (ModelDBISE db = new ModelDBISE())
@@ -199,7 +231,7 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     idDipendente = (from e in db.DIPENDENTI
-                                where e.EMAIL.ToUpper()==email.ToUpper() && e.ABILITATO == true
+                                    where e.EMAIL.ToUpper() == email.ToUpper() && e.ABILITATO == true
                                     select new DipendentiModel()
                                     {
                                         idDipendente = e.IDDIPENDENTE,
@@ -243,10 +275,10 @@ namespace NewISE.Models.DBModel.dtObj
                 if (idDipendente == 0)
                 {
                     tmp = (from e in db.UTENTIAUTORIZZATI
-                           where e.IDDIPENDENTE != null && e.IDDIPENDENTE!= 0 && e.DIPENDENTI.ABILITATO == true
+                           where e.IDDIPENDENTE != null && e.IDDIPENDENTE != 0 && e.DIPENDENTI.ABILITATO == true
                            select new UtentiAutorizzatiModel()
                            {
-                               idDipendente=(decimal)e.IDDIPENDENTE,
+                               idDipendente = (decimal)e.IDDIPENDENTE,
                                idRouloUtente = e.IDRUOLOUTENTE,
                                idUtenteAutorizzato = e.IDUTENTEAUTORIZZATO,
                                Utente = e.UTENTE
@@ -255,10 +287,10 @@ namespace NewISE.Models.DBModel.dtObj
                 else
                 {
                     tmp = (from e in db.UTENTIAUTORIZZATI
-                           where e.IDDIPENDENTE == idDipendente && e.DIPENDENTI.ABILITATO==true 
+                           where e.IDDIPENDENTE == idDipendente && e.DIPENDENTI.ABILITATO == true
                            select new UtentiAutorizzatiModel()
                            {
-                               idDipendente=(decimal)e.IDDIPENDENTE,
+                               idDipendente = (decimal)e.IDDIPENDENTE,
                                idRouloUtente = e.IDRUOLOUTENTE,
                                idUtenteAutorizzato = e.IDUTENTEAUTORIZZATO,
                                Utente = e.UTENTE
@@ -266,6 +298,54 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
             return tmp;
+        }
+        public NotificheModel GetDatiDocumentoById(decimal idNotifica)
+        {
+            NotificheModel dm = new NotificheModel();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var d = db.NOTIFICHE.Find(idNotifica);
+
+                if (d != null && d.IDNOTIFICA > 0)
+                {
+                    dm = new NotificheModel()
+                    {
+                        idNotifica = d.IDNOTIFICA,
+                        Allegato = d.ALLEGATO,
+                        //estensione = d.ESTENSIONE,
+                        //tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                        dataNotifica = d.DATANOTIFICA,
+                        //file = f
+                    };
+                }
+            }
+            return dm;
+        }
+        public byte[] GetDocumentoByteById(decimal idNotifica)
+        {
+            byte[] blob = null;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var d = db.NOTIFICHE.Find(idNotifica);
+
+                if (d != null && d.IDNOTIFICA > 0)
+                {
+                    blob = d.ALLEGATO;
+                }
+            }
+            return blob;
+        }
+        public DipendentiModel RestituisciDipendenteByID(decimal idDipendente)
+        {
+            DipendentiModel dm = new DipendentiModel();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
+                dm.idDipendente = d.IDDIPENDENTE;
+                dm.nome = d.NOME ;dm.cognome = d.COGNOME;
+                dm.email = d.EMAIL;d.INDIRIZZO = d.INDIRIZZO;
+            }
+            return dm;
         }
     }
 }

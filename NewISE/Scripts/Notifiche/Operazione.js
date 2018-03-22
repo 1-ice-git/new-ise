@@ -223,10 +223,12 @@ function Register() {
     });
 }
 
-$('#formNuovaNotifica').submit(function (e) {
+//$('#formNuovaNotifica').submit(function (e) {
+function SalvaNotificaConPDF() {
+  //  debugger;
     hideAll();
     var listaDest1 = $("#lDestinatari").select2('val');
-    // var listaDest2 = $("#toCc").select2('val');
+     var listaDest2 = $("#toCc").select2('val');
     if (listaDest1 == null) {
         $('#vaiDest').show();
         $("#lDestinatari").focus();
@@ -237,16 +239,66 @@ $('#formNuovaNotifica').submit(function (e) {
         $("#Oggetto").focus();
         return false;
     }
- //   debugger;
-
-    // $('#corpoMessaggio').val(CKEDITOR.instances.corpoMessaggio.getData());
+    var Oggetto = $("#Oggetto").val().toString().trim();
+    //   debugger;
     CKEDITOR.instances["corpoMessaggio"].updateElement();
-    // alert(CKEDITOR.instances.corpoMessaggio.getData());
     if (CKEDITOR.instances.corpoMessaggio.getData().toString().trim() == '') {
         $('#vaiCorpoMess').show();
         CKEDITOR.instances.corpoMessaggio.focus();
         return false;
     }
-});
+    var CorpoMessaggio = CKEDITOR.instances.corpoMessaggio.getData().toString().trim();
+    SalvaDocumentoNotifica(listaDest1, listaDest2, Oggetto, CorpoMessaggio);
+}
+function SalvaDocumentoNotifica(listaMailPrincipale, listaMailToCc, Oggetto, CorpoMessaggio)
+{
+   // debugger;
+    var datiForm = new FormData();
+    var rotta = "/Notifiche/InserisciNuovaNotifica";
+
+    var file = $("#PDFUpload")[0].files[0];
+
+        datiForm.append("listaMailPrincipale", listaMailPrincipale);
+        datiForm.append("listaMailToCc", listaMailToCc);
+        datiForm.append("Oggetto", Oggetto);
+        datiForm.append("CorpoMessaggio", CorpoMessaggio);
+        datiForm.append("file", file);
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: datiForm, //I dati, forniti sotto forma di oggetto FormData
+            dataType: 'html',
+            cache: false,
+            async: false,
+            beforeSend: function () {
+                //debugger;
+               // VerificaAutenticazione();
+                //Blocca();
+            },
+            processData: false, //Serve per NON far convertire l’oggetto
+            //FormData in una stringa, preservando il file
+            contentType: false, //Serve per NON far inserire automaticamente
+            //un content type errato
+            success: function (result) {
+                debugger;
+                if (result.err != "" && result.err != undefined) {
+                    MsgErroreJson(result.err);
+                }
+                $("#divPanelNotifiche").empty();
+                $("#divPanelNotifiche").html(result);
+            },
+            complete: function () {
+                //$("#btUpload").removeAttr("disabled");
+            },
+            error: function (error) {
+                debugger;               
+                var msg = error.responseText;
+                MsgErroreJson(msg);
+            }
+        });
+    
+}
+
 
 

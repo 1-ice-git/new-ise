@@ -29,5 +29,6 @@ namespace NewISE.Models.DBModel
         public string[] toCc { get; set; }
         [Display(Name = "Destinatari")]
         public decimal NumeroDestinatari { get; set; }
+        public HttpPostedFileBase PDFUpload { get; set; }
     }
 }

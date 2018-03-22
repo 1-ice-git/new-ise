@@ -2393,6 +2393,7 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\MyJs.js" />
     <Content Include="Scripts\MyValidateDate.js" />
+    <Content Include="Scripts\Notifiche\UploadNotifiche.js" />
     <Content Include="Scripts\Notifiche\Operazione.js" />
     <Content Include="Scripts\plugins\moment.js" />
     <Content Include="Scripts\plugins\moment.min.js" />

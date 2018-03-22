@@ -48,6 +48,10 @@ namespace NewISE
                name: "Notifiche",
                url: "Notifiche/index"
            );
+            routes.MapRoute(
+                name: "LeggiNotifichePDF",
+                url: "Notifiche/LeggiNotifichePDF/{id}"
+            );
         }
     }
 }
