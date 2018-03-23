@@ -17,7 +17,6 @@ namespace NewISE.Models.DBModel
         public decimal idMAB { get; set; }
 
         public decimal idTrasferimento { get; set; }
-
         public decimal idAttivazioneMAB { get; set; }
 
         public DateTime dataAggiornamento { get; set; }

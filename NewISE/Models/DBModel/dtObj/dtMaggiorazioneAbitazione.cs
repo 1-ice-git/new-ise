@@ -2067,44 +2067,35 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public MaggiorazioneAbitazioneModel CreaMaggiorazioneAbitazionePartenza(AttivazioneMABModel amm, ModelDBISE db)
+        public MaggiorazioneAbitazioneModel CreaMaggiorazioneAbitazionePartenza(decimal idTrasferimento, ModelDBISE db)
         {
             try
             {
                 MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
 
-                var amab = db.ATTIVAZIONEMAB.Find(amm.idAttivazioneMAB);
-                if (amab!=null && amab.IDATTIVAZIONEMAB>0)
+                MAGGIORAZIONEABITAZIONE ma = new MAGGIORAZIONEABITAZIONE()
                 {
-                    MAGGIORAZIONEABITAZIONE ma = new MAGGIORAZIONEABITAZIONE()
+                    IDTRASFERIMENTO = idTrasferimento,
+                    DATAAGGIORNAMENTO = DateTime.Now,
+                    VARIAZIONE=false
+                };
+                db.MAGGIORAZIONEABITAZIONE.Add(ma);
+                if (db.SaveChanges() > 0)
+                {
+                    mam = new MaggiorazioneAbitazioneModel()
                     {
-                        IDTRASFERIMENTO = amab.IDTRASFERIMENTO,
-                        IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
-                        DATAAGGIORNAMENTO = DateTime.Now,
-                        VARIAZIONE=false
+                        idMAB = ma.IDMAB,
+                        idTrasferimento = ma.IDTRASFERIMENTO,
+                        dataAggiornamento = ma.DATAAGGIORNAMENTO,
+                        variazione = ma.VARIAZIONE
                     };
-                    db.MAGGIORAZIONEABITAZIONE.Add(ma);
-                    if (db.SaveChanges() > 0)
-                    {
 
-                        mam = new MaggiorazioneAbitazioneModel()
-                        {
-                            idMAB = ma.IDMAB,
-                            idTrasferimento = ma.IDTRASFERIMENTO,
-                            idAttivazioneMAB = ma.IDATTIVAZIONEMAB,
-                            dataAggiornamento = ma.DATAAGGIORNAMENTO,
-                            variazione = ma.VARIAZIONE
-                        };
-
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento MaggiorazioneAbitazione", "MAGGIORAZIONEABIAZIONE", db,
-                                mam.idTrasferimento, mam.idMAB);
-                    }
-                    else
-
-                    {
-                        throw new Exception("Errore in fase di creazione della maggiorazione abitazione in partenza.");
-                    }
-
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento MaggiorazioneAbitazione", "MAGGIORAZIONEABIAZIONE", db,
+                            mam.idTrasferimento, mam.idMAB);
+                }
+                else
+                {
+                    throw new Exception("Errore in fase di creazione della maggiorazione abitazione in partenza.");
                 }
 
                 return mam;
@@ -2209,10 +2200,9 @@ namespace NewISE.Models.DBModel.dtObj
             List<PERCENTUALEMAB> lpmab = new List<PERCENTUALEMAB>();
             List<PERCENTUALECONDIVISIONE> lpc = new List<PERCENTUALECONDIVISIONE>();
 
-
             amabm = this.CreaAttivazioneMAB(trm.idTrasferimento, db);
 
-            mabm = this.CreaMaggiorazioneAbitazionePartenza(amabm, db);
+            mabm = this.CreaMaggiorazioneAbitazionePartenza(trm.idTrasferimento, db);
 
             rmabm = this.CreaRinunciaMAB(mabm, db);
 
