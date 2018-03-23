@@ -131,7 +131,10 @@ namespace NewISE.Models.dtObj
 
                 foreach (var c in lc)
                 {
-                    var nConta = pmc.CONIUGE.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCONIUGE == c.IDCONIUGE);
+                    var nConta =
+                        pmc.CONIUGE.Count(
+                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCONIUGE == c.IDCONIUGE);
+
                     if (nConta <= 0)
                     {
                         pmc.CONIUGE.Add(c);
@@ -142,7 +145,6 @@ namespace NewISE.Models.dtObj
                     }
                 }
 
-
             }
             catch (Exception ex)
             {
@@ -150,19 +152,86 @@ namespace NewISE.Models.dtObj
                 throw ex;
             }
 
-
-
-
         }
 
         public void AssociaFiglio_PMF(decimal idPercFiglio, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var pmf = db.PERCENTUALEMAGFIGLI.Find(idPercFiglio);
+                var item = db.Entry<PERCENTUALEMAGFIGLI>(pmf);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.FIGLI).Load();
+
+                var lf = db.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                             a.ATTIVAZIONIMAGFAM.Where(
+                                                 b =>
+                                                     b.ANNULLATO == false && b.RICHIESTAATTIVAZIONE == true &&
+                                                     b.ATTIVAZIONEMAGFAM == true).Any() &&
+                                             a.DATAFINEVALIDITA >= pmf.DATAINIZIOVALIDITA &&
+                                             a.DATAINIZIOVALIDITA <= pmf.DATAFINEVALIDITA)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+                foreach (var f in lf)
+                {
+                    var nConta =
+                        pmf.FIGLI.Count(
+                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
+                    if (nConta <= 0)
+                    {
+                        pmf.FIGLI.Add(f);
+                        var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmf.DATAINIZIOVALIDITA, db);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaFigli_IPS(decimal idPrimoSegretario, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var ips = db.INDENNITAPRIMOSEGRETARIO.Find(idPrimoSegretario);
+                var item = db.Entry<INDENNITAPRIMOSEGRETARIO>(ips);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.FIGLI).Load();
+
+                var lf = db.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                             a.ATTIVAZIONIMAGFAM.Where(
+                                                 b =>
+                                                     b.ANNULLATO == false && b.RICHIESTAATTIVAZIONE == true &&
+                                                     b.ATTIVAZIONEMAGFAM == true).Any() &&
+                                             a.DATAFINEVALIDITA >= ips.DATAINIZIOVALIDITA &&
+                                             a.DATAINIZIOVALIDITA <= ips.DATAFINEVALIDITA)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+                foreach (var f in lf)
+                {
+                    var nConta =
+                        ips.FIGLI.Count(
+                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
+                    if (nConta <= 0)
+                    {
+                        ips.FIGLI.Add(f);
+                        var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ips.DATAINIZIOVALIDITA, db);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaIndenita_PD(decimal idPercDisagio, ModelDBISE db)
