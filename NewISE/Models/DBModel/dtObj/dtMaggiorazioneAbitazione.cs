@@ -491,22 +491,22 @@ namespace NewISE.Models.DBModel.dtObj
                 {
 
                     var amab = db.ATTIVAZIONEMAB.Find(amm.idAttivazioneMAB);
-                    var mal = amab.MAGGIORAZIONEABITAZIONE.Where(x => x.VARIAZIONE == false).OrderBy(x => x.IDMAB).ToList();
+                    //var mal = amab.MAGGIORAZIONEABITAZIONE.Where(x => x.VARIAZIONE == false).OrderBy(x => x.IDMAB).ToList();
 
-                    if (mal?.Any() ?? false)
-                    {
-                        MAGGIORAZIONEABITAZIONE ma = mal.First();
+                    //if (mal?.Any() ?? false)
+                    //{
+                    //    MAGGIORAZIONEABITAZIONE ma = mal.First();
 
-                        mam = new MaggiorazioneAbitazioneModel()
-                        {
-                            idMAB = ma.IDMAB,
-                            idTrasferimento = ma.IDTRASFERIMENTO,
-                            idAttivazioneMAB = ma.IDATTIVAZIONEMAB,
-                            dataAggiornamento = ma.DATAAGGIORNAMENTO,
-                            variazione = ma.VARIAZIONE
-                        };
+                    //    mam = new MaggiorazioneAbitazioneModel()
+                    //    {
+                    //        idMAB = ma.IDMAB,
+                    //        idTrasferimento = ma.IDTRASFERIMENTO,
+                    //        idAttivazioneMAB = ma.IDATTIVAZIONEMAB,
+                    //        dataAggiornamento = ma.DATAAGGIORNAMENTO,
+                    //        variazione = ma.VARIAZIONE
+                    //    };
 
-                    }
+                    //}
                 }
 
                 return mam;
@@ -1293,7 +1293,7 @@ namespace NewISE.Models.DBModel.dtObj
                 MAGGIORAZIONEABITAZIONE ma = new MAGGIORAZIONEABITAZIONE()
                 {
                     IDTRASFERIMENTO = mvm.idTrasferimento,
-                    IDATTIVAZIONEMAB = idAttivazioneMAB,
+                    //IDATTIVAZIONEMAB = idAttivazioneMAB,
                     //DATAINIZIOMAB = mvm.dataInizioMAB,
                     //DATAFINEMAB = dtFine,
                     DATAAGGIORNAMENTO = DateTime.Now,

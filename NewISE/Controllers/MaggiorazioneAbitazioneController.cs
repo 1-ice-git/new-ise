@@ -657,7 +657,7 @@ namespace NewISE.Controllers
                                 mam.idMAB = ma.IDMAB;
                                 //mam.dataPartenza = t.dataPartenza;
                                 mam.idTrasferimento = ma.IDTRASFERIMENTO;
-                                mam.idAttivazioneMAB = ma.IDATTIVAZIONEMAB;
+                                //mam.idAttivazioneMAB = ma.IDATTIVAZIONEMAB;
 
                                 //mam.dataInizioMAB = ma.DATAINIZIOMAB;
                                 //mam.dataFineMAB = ma.DATAFINEMAB;
