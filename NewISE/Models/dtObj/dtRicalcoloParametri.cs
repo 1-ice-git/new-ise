@@ -46,7 +46,7 @@ namespace NewISE.Models.dtObj
 
                 if (i <= 0)
                 {
-                    throw new Exception("Errore nella fase di asscoiazione del canome MAB al TFR.");
+                    throw new Exception("Errore nella fase di associazione del canome MAB al TFR.");
                 }
 
             }
@@ -145,6 +145,13 @@ namespace NewISE.Models.dtObj
                     }
                 }
 
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione dell'indennità al TFR.");
+                }
+
             }
             catch (Exception ex)
             {
@@ -182,10 +189,17 @@ namespace NewISE.Models.dtObj
                     {
                         pmf.FIGLI.Add(f);
                         var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
                         Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmf.DATAINIZIOVALIDITA, db);
                     }
                 }
 
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione della percentuale figli alla tabella figli.");
+                }
             }
             catch (Exception ex)
             {
@@ -218,12 +232,20 @@ namespace NewISE.Models.dtObj
                     var nConta =
                         ips.FIGLI.Count(
                             a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
+
                     if (nConta <= 0)
                     {
                         ips.FIGLI.Add(f);
                         var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
                         Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ips.DATAINIZIOVALIDITA, db);
                     }
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione dell'indennità di primo segretario alla tabella figli.");
                 }
 
             }
@@ -236,12 +258,93 @@ namespace NewISE.Models.dtObj
 
         public void AssociaIndenita_PD(decimal idPercDisagio, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var pd = db.PERCENTUALEDISAGIO.Find(idPercDisagio);
+                var item = db.Entry<PERCENTUALEDISAGIO>(pd);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.INDENNITA).Load();
+
+                var lTrsferimento =
+                    db.TRASFERIMENTO.Where(
+                        a =>
+                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                            a.DATARIENTRO >= pd.DATAINIZIOVALIDITA && a.DATAPARTENZA <= pd.DATAFINEVALIDITA)
+                        .OrderBy(a => a.DATAPARTENZA)
+                        .ToList();
+
+                foreach (var t in lTrsferimento)
+                {
+                    var indennita = t.INDENNITA;
+
+                    var nCont = pd.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
+                    if (nCont <= 0)
+                    {
+                        pd.INDENNITA.Add(indennita);
+
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pd.DATAINIZIOVALIDITA, db);
+                    }
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di asscoiazione dell'indennità al TFR.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaIndennitaBase_IB(decimal idIndBase, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var ib = db.INDENNITABASE.Find(idIndBase);
+                var item = db.Entry<INDENNITABASE>(ib);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.INDENNITA).Load();
+
+                var lTrsferimento =
+                    db.TRASFERIMENTO.Where(
+                        a =>
+                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                            a.DATARIENTRO >= ib.DATAINIZIOVALIDITA && a.DATAPARTENZA <= ib.DATAFINEVALIDITA)
+                        .OrderBy(a => a.DATAPARTENZA)
+                        .ToList();
+
+                foreach (var t in lTrsferimento)
+                {
+                    var indennita = t.INDENNITA;
+
+                    var nCont = ib.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
+                    if (nCont <= 0)
+                    {
+                        ib.INDENNITA.Add(indennita);
+
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                    }
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione dell'indennità di base alla tabella Indennita.");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaIndennitaBase_Riduzioni(decimal idRiduzioni, ModelDBISE db)
@@ -267,6 +370,11 @@ namespace NewISE.Models.dtObj
                     if (nConta <= 0)
                     {
                         r.INDENNITABASE.Add(ib);
+
+                        var t =
+                            ib.INDENNITA.Where(
+                                a => a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato);
+
                     }
                 }
 
@@ -310,9 +418,12 @@ namespace NewISE.Models.dtObj
                     var indennita = t.INDENNITA;
 
                     var nCont = tfr.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
+
                     if (nCont <= 0)
                     {
                         tfr.INDENNITA.Add(indennita);
+
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
                     }
                 }
 
@@ -320,7 +431,7 @@ namespace NewISE.Models.dtObj
 
                 if (i <= 0)
                 {
-                    throw new Exception("Errore nella fase di asscoiazione dell'indennità al TFR.");
+                    throw new Exception("Errore nella fase di associazione dell'indennità al TFR.");
                 }
 
             }
