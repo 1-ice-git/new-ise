@@ -18,7 +18,6 @@ namespace NewISE.EF
         public ATTIVAZIONEMAB()
         {
             this.CANONEMAB = new HashSet<CANONEMAB>();
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
             this.RINUNCIAMAB = new HashSet<RINUNCIAMAB>();
             this.VARIAZIONIMAB = new HashSet<VARIAZIONIMAB>();
@@ -37,8 +36,6 @@ namespace NewISE.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANONEMAB> CANONEMAB { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

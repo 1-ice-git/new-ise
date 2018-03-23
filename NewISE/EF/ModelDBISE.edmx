@@ -827,7 +827,6 @@
           </Key>
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="VARIAZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -1625,20 +1624,6 @@
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Principal>
             <Dependent Role="CANONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_AMAB_MAB">
-          <End Role="ATTIVAZIONEMAB" Type="Self.ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -4804,10 +4789,6 @@
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_AMAB_MAB" Association="Self.R_AMAB_MAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
           <AssociationSet Name="R_AMAB_PCMAB" Association="Self.R_AMAB_PCMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
@@ -5813,10 +5794,6 @@
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_AMAB_MAB" Association="DBISEPRO.R_AMAB_MAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
           <AssociationSet Name="R_AMAB_PCMAB" Association="DBISEPRO.R_AMAB_PCMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
@@ -6573,7 +6550,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISEPRO.R_AMAB_CMAB" FromRole="ATTIVAZIONEMAB" ToRole="CANONEMAB" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_AMAB_MAB" FromRole="ATTIVAZIONEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="ATTIVAZIONEMAB" ToRole="PAGATOCONDIVISOMAB" />
           <NavigationProperty Name="RINUNCIAMAB" Relationship="DBISEPRO.R_AMAB_RMAB" FromRole="ATTIVAZIONEMAB" ToRole="RINUNCIAMAB" />
           <NavigationProperty Name="VARIAZIONIMAB" Relationship="DBISEPRO.R_AMAB_VMAB" FromRole="ATTIVAZIONEMAB" ToRole="VARIAZIONIMAB" />
@@ -7246,10 +7222,8 @@
           </Key>
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="VARIAZIONE" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISEPRO.R_MAB_CMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="CANONEMAB" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISEPRO.R_MAB_EMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="ELABMAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PAGATOCONDIVISOMAB" />
@@ -8152,20 +8126,6 @@
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Principal>
             <Dependent Role="CANONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_AMAB_MAB">
-          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -10718,7 +10678,6 @@
               <MappingFragment StoreEntitySet="MAGGIORAZIONEABITAZIONE">
                 <ScalarProperty Name="VARIAZIONE" ColumnName="VARIAZIONE" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
               </MappingFragment>
