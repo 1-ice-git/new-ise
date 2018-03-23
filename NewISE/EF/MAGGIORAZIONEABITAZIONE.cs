@@ -27,11 +27,9 @@ namespace NewISE.EF
     
         public decimal IDMAB { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
-        public decimal IDATTIVAZIONEMAB { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool VARIAZIONE { get; set; }
     
-        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANONEMAB> CANONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
