@@ -281,7 +281,6 @@ function SalvaDocumentoNotifica(listaMailPrincipale, listaMailToCc, Oggetto, Cor
             contentType: false, //Serve per NON far inserire automaticamente
             //un content type errato
             success: function (result) {
-                debugger;
                 if (result.err != "" && result.err != undefined) {
                     MsgErroreJson(result.err);
                 }
