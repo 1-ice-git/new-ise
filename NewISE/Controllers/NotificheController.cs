@@ -77,9 +77,7 @@ namespace NewISE.Controllers
                 {
                     dm.AddRange(dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Amministratore));
                 }
-
-              //  dm.AddRange(dtn.GetListaDipendentiAutorizzati());
-
+                //dm.AddRange(dtn.GetListaDipendentiAutorizzati());
                 if (dm.Count > 0)
                 {
                     var agg = new SelectListItem(); agg.Text = "TUTTI"; agg.Value = "TUTTI";
@@ -90,7 +88,8 @@ namespace NewISE.Controllers
                           select new SelectListItem()
                           {
                               Text = t.nome + " " + t.cognome,
-                              Value = t.email,
+                           //    Value = t.email
+                             Value = t.idDipendente.ToString()
                           }).ToList();
                     r.AddRange(r0);
 
@@ -100,7 +99,8 @@ namespace NewISE.Controllers
                           select new SelectListItem()
                           {
                               Text = t.nome + " " + t.cognome,
-                              Value = t.email,
+                            //  Value = t.email
+                              Value = t.idDipendente.ToString()
                           }).ToList();
                 }
             }
@@ -109,14 +109,15 @@ namespace NewISE.Controllers
             ViewBag.ListaCc = r2;
             return PartialView();
         }
-        public ActionResult VisualizzaCorpoMessaggio(decimal idNotifica,decimal idUtenteLoggato)
+        public ActionResult VisualizzaCorpoMessaggio(decimal idNotifica,string idUtenteLoggato)
         {
+            if(string.IsNullOrEmpty(idUtenteLoggato)) idUtenteLoggato="0";
             decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
             List<NotificheModel> nm = new List<NotificheModel>();
             NotificheModel elem = new NotificheModel();
             using (dtNotifiche dn = new dtNotifiche())
             {
-                if(idUtenteLoggato!=1)
+                if(idUtenteLoggato!="1")
                     nm = dn.GetNotifiche(idMittenteLogato).Where(a => a.idNotifica == idNotifica).ToList();
                 else
                     nm = dn.GetNotifiche(idMittenteLogato, idNotifica).ToList();
@@ -312,7 +313,7 @@ namespace NewISE.Controllers
                 {
                     dm.AddRange(dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Amministratore));
                 }
-                //   dm.AddRange(dtn.GetListaDipendentiAutorizzati());
+                //dm.AddRange(dtn.GetListaDipendentiAutorizzati());
                 if (dm.Count > 0)
                 {
                     var agg = new SelectListItem(); agg.Text = "TUTTI"; agg.Value = "TUTTI";
@@ -323,7 +324,8 @@ namespace NewISE.Controllers
                           select new SelectListItem()
                           {
                               Text = t.nome + " " + t.cognome,
-                              Value = t.email,
+                             //Value = t.email
+                              Value = t.idDipendente.ToString()                               
                           }).ToList();
                     r.AddRange(r0);
 
@@ -333,7 +335,8 @@ namespace NewISE.Controllers
                           select new SelectListItem()
                           {
                               Text = t.nome + " " + t.cognome,
-                              Value = t.email,
+                             //Value = t.email
+                              Value = t.idDipendente.ToString()
                           }).ToList();
                 }
             }

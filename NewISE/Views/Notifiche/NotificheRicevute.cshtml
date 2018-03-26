@@ -14,6 +14,9 @@
         <thead style="background-color:forestgreen;color:white">
             <tr>
                 <th class="text-center">
+                    @Html.DisplayName("ToCc")
+                </th>
+                <th class="text-center">
                     @Html.DisplayName("Mittente")
                 </th>
                 <th class="text-center">
@@ -33,6 +36,9 @@
             @foreach (var item in Model)
             {
                 <tr style="background-color:@rowColor;">
+                    <td class="text-center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.tocc)</span>
+                    </td>
                     <td class="text-center">
                         <a href="#" onclick="ViewMittente(@item.idNotifica);" title='Visualizza Mittente'><img alt="Destinatari" src="~/Immagini/group.png" width="20" height="20" /></a>
                     </td>
@@ -148,11 +154,16 @@
         }
 
         function CloseModalFile() {
-            $('#inviaModificaModal').modal('hide');
+            $('#inviaModificaModalRicevute').modal('hide');
             //RicaricaModificaTrasferimento();
             setTimeout(RicaricaModificaTrasferimento, 1000);
         }
-
+        
+        function CloseModalFile() {
+            $('#MittenteNotifiche').modal('hide');
+            //RicaricaModificaTrasferimento();
+            setTimeout(RicaricaModificaTrasferimento, 1000);
+        }
         function DocumentoModal_0(id) {
             //  debugger;
             // $(".anchorModifica").click(function () {
@@ -169,7 +180,7 @@
                 async: false,
                 beforeSend: function () {
                     // debugger;
-                    $('#inviaModificaModal').modal('show');
+                    $('#inviaModificaModalRicevute').modal('show');
                     // $('#dialog-confirm-Utenze').modal('show');
                     //Blocca();
                 },
@@ -256,46 +267,46 @@
 
         }
 
-        function VisualizzaModificaStatoDipendentePOPUP(id) {
-          // debugger;
-           // $(".anchorModifica").click(function () {
+        //function VisualizzaModificaStatoDipendentePOPUP(id) {
+        //  // debugger;
+        //   // $(".anchorModifica").click(function () {
 
-                var rotta = "/UtenzeDipendenti/VisualizzaEmail";
-            //    var $buttonClicked = $(this);
-                //   var idf = $buttonClicked.attr('id_fe');
-              //  var idd = $buttonClicked.attr('id_dip');
-                $.ajax({
-                    url: rotta,
-                    type: "POST",
-                    data: {"idd": id },
-                    dataType: 'html',
-                    async: false,
-                    beforeSend: function () {
-                        // debugger;
-                        $('#inviaModificaModal').modal('show');
-                       // $('#dialog-confirm-Utenze').modal('show');
-                        //Blocca();
-                    },
-                    success: function (result) {
-                        // debugger;
-                        $("#viewDocumentoModifica").empty();
-                        $("#viewDocumentoModifica").html(result);
-                       // debugger;
-                        //top.location.href = "/UtenzeDipendenti/index";
-                        //if (xhr.getResponseHeader('REQUIRES_AUTH') === '1') {
-                        //    XMLHttpRequest.abort(); // terminate further ajax execution
-                        //    window.location = location;
-                       // }
-                    },
-                    error: function (error) {
-                        //debugger;
-                        //Sblocca();
-                        var msg = error.responseText;
-                        ErroreElaborazioneAjax(msg);
-                    }
-                });
-           // });
-        }
+        //        var rotta = "/UtenzeDipendenti/VisualizzaEmail";
+        //    //    var $buttonClicked = $(this);
+        //        //   var idf = $buttonClicked.attr('id_fe');
+        //      //  var idd = $buttonClicked.attr('id_dip');
+        //        $.ajax({
+        //            url: rotta,
+        //            type: "POST",
+        //            data: {"idd": id },
+        //            dataType: 'html',
+        //            async: false,
+        //            beforeSend: function () {
+        //                // debugger;
+        //                $('#inviaModificaModalRicevute').modal('show');
+        //               // $('#dialog-confirm-Utenze').modal('show');
+        //                //Blocca();
+        //            },
+        //            success: function (result) {
+        //                // debugger;
+        //                $("#viewDocumentoModifica").empty();
+        //                $("#viewDocumentoModifica").html(result);
+        //               // debugger;
+        //                //top.location.href = "/UtenzeDipendenti/index";
+        //                //if (xhr.getResponseHeader('REQUIRES_AUTH') === '1') {
+        //                //    XMLHttpRequest.abort(); // terminate further ajax execution
+        //                //    window.location = location;
+        //               // }
+        //            },
+        //            error: function (error) {
+        //                //debugger;
+        //                //Sblocca();
+        //                var msg = error.responseText;
+        //                ErroreElaborazioneAjax(msg);
+        //            }
+        //        });
+        //   // });
+        //}
 
         function DialogInfo(response) {
             $("#msgModalInfo").text(response);
@@ -392,7 +403,7 @@
             $.ajax({
                 url: rotta,
                 type: "POST",
-                data: { "idNotifica": id, idUtenteLoggato:1 },
+                data: { "idNotifica": id, "idUtenteLoggato":"1" },
                 dataType: 'html',
                 async: false,
                 beforeSend: function () {
