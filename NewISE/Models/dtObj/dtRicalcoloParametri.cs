@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
@@ -8,6 +9,7 @@ using NewISE.Models.dtObj.Interfacce;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.Enum;
 using NewISE.Models.Tools;
+using System.Linq.Dynamic;
 
 namespace NewISE.Models.dtObj
 {
@@ -371,12 +373,32 @@ namespace NewISE.Models.dtObj
                     {
                         r.INDENNITABASE.Add(ib);
 
-                        var t =
+                        var li =
                             ib.INDENNITA.Where(
-                                a => a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato);
+                                a =>
+                                    a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                    a.TRASFERIMENTO.DATARIENTRO >= r.DATAINIZIOVALIDITA &&
+                                    a.TRASFERIMENTO.DATAPARTENZA <= r.DATAFINEVALIDITA).ToList();
+
+                        foreach (var i in li)
+                        {
+                            var t = i.TRASFERIMENTO;
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+
+                        }
 
                     }
                 }
+
+
+                int j = db.SaveChanges();
+
+                if (j <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione dell'indennità di base alla tabella Riduzioni.");
+                }
+
 
             }
             catch (Exception ex)
@@ -388,7 +410,60 @@ namespace NewISE.Models.dtObj
 
         public void AssociaIndennitaSistemazione_Riduzioni(decimal idRiduzioni, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var r = db.RIDUZIONI.Find(idRiduzioni);
+                var item = db.Entry<RIDUZIONI>(r);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.INDENNITASISTEMAZIONE).Load();
+
+                var lis =
+                    db.INDENNITASISTEMAZIONE.Where(
+                        a =>
+                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
+                            a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                foreach (INDENNITASISTEMAZIONE isist in lis)
+                {
+                    var nConta =
+                        r.INDENNITASISTEMAZIONE.Count(a => a.ANNULLATO == false && a.IDINDSIST == isist.IDINDSIST);
+
+                    if (nConta <= 0)
+                    {
+                        r.INDENNITASISTEMAZIONE.Add(isist);
+
+                        var li =
+                            isist.PRIMASITEMAZIONE.Where(
+                                a =>
+                                    a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                    a.TRASFERIMENTO.DATARIENTRO >= r.DATAINIZIOVALIDITA &&
+                                    a.TRASFERIMENTO.DATAPARTENZA <= r.DATAFINEVALIDITA).ToList();
+
+                        foreach (var i in li)
+                        {
+                            var t = i.TRASFERIMENTO;
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+
+                        }
+
+                    }
+                }
+
+                int j = db.SaveChanges();
+
+                if (j <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione dell'indennità di sistemazione alla tabella Riduzioni.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaIndennita_CS(decimal idCoefficenteSede, ModelDBISE db)
@@ -507,6 +582,37 @@ namespace NewISE.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+        //public void Dipendenti()
+        //{
+        //    DateTime dtNow = Convert.ToDateTime("01/04/2018");
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+
+        //        var ld =
+        //            db.DIPENDENTI.Where(
+        //                a =>
+        //                    a.ABILITATO == true &&
+        //                    a.UTENTIAUTORIZZATI.Where(
+        //                        b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente).Any() &&
+        //                    a.TRASFERIMENTO.Where(
+        //                        c =>
+        //                            (c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+        //                             c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+        //                            dtNow >= c.DATAPARTENZA &&
+        //                            dtNow <= (c.DATARIENTRO.HasValue == true ? c.DATARIENTRO.Value : new DateTime(9999, 12, 31))).Any()).ToList();
+
+
+        //        foreach (var d in ld)
+        //        {
+
+        //        }
+
+
+
+        //    }
+        //}
 
     }
 }

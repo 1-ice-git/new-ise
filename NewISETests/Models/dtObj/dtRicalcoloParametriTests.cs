@@ -33,5 +33,22 @@ namespace NewISE.Models.dtObj.Tests
 
 
         }
+
+        //[TestMethod()]
+        //public void DipendentiTest()
+        //{
+        //    try
+        //    {
+        //        using (dtRicalcoloParametri dtrp = new dtRicalcoloParametri())
+        //        {
+        //            dtrp.Dipendenti();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        Assert.Fail(ex.Message);
+        //    }
+        //}
     }
 }
