@@ -33,7 +33,7 @@ namespace NewISE.Models.dtObj
 
                 foreach (var cmab in lCanoneMAB)
                 {
-                    var nCmab = tfr.CANONEMAB.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato == false && a.IDCANONE == cmab.IDCANONE);
+                    var nCmab = tfr.CANONEMAB.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCANONE == cmab.IDCANONE);
                     if (nCmab <= 0)
                     {
                         tfr.CANONEMAB.Add(cmab);
@@ -468,7 +468,49 @@ namespace NewISE.Models.dtObj
 
         public void AssociaIndennita_CS(decimal idCoefficenteSede, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var cs = db.COEFFICIENTESEDE.Find(idCoefficenteSede);
+                var item = db.Entry<COEFFICIENTESEDE>(cs);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.INDENNITA).Load();
+
+                var lTrsferimento =
+                        db.TRASFERIMENTO.Where(
+                            a =>
+                                a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                a.DATARIENTRO >= cs.DATAINIZIOVALIDITA && a.DATAPARTENZA <= cs.DATAFINEVALIDITA)
+                            .OrderBy(a => a.DATAPARTENZA)
+                            .ToList();
+
+                foreach (var t in lTrsferimento)
+                {
+                    var indennita = t.INDENNITA;
+
+                    var nCont = cs.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
+                    if (nCont <= 0)
+                    {
+                        cs.INDENNITA.Add(indennita);
+
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cs.DATAINIZIOVALIDITA, db);
+                    }
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione dell'indennità al coefficiente di sede.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+
         }
 
         public void AssociaIndennita_TFR(decimal idTFR, ModelDBISE db)
@@ -517,24 +559,205 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaMAB_PMAB(decimal idPerceMAB, ModelDBISE db)
+        public void AssociaMAB_VMAB(decimal idPerceMAB, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var pm = db.PERCENTUALEMAB.Find(idPerceMAB);
+                var item = db.Entry<PERCENTUALEMAB>(pm);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.VARIAZIONIMAB).Load();
+
+                var lvmab =
+                    db.VARIAZIONIMAB.Where(
+                        a =>
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA && a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
+                        .OrderBy(a => a.DATAINIZIOMAB)
+                        .ToList();
+
+                foreach (var vmab in lvmab)
+                {
+                    var nConta =
+                        pm.VARIAZIONIMAB.Count(
+                            a =>
+                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                a.IDVARIAZIONIMAB == vmab.IDVARIAZIONIMAB);
+
+                    if (nConta <= 0)
+                    {
+                        pm.VARIAZIONIMAB.Add(vmab);
+
+                        var t = vmab.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);
+                    }
+
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella VariazioneMAB.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaMaggiorazioniAbitazione_MA(decimal idMagAnnuali, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var ma = db.MAGGIORAZIONIANNUALI.Find(idMagAnnuali);
+                var item = db.Entry<MAGGIORAZIONIANNUALI>(ma);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.MAGGIORAZIONEABITAZIONE).Load();
+
+                var lmab =
+                    db.MAGGIORAZIONEABITAZIONE.Where(
+                        a =>
+                            a.VARIAZIONIMAB.Where(
+                                b =>
+                                    b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                    b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA && b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA)
+                                .Any()).OrderBy(a => a.IDMAB).ToList();
+
+                foreach (var mab in lmab)
+                {
+                    var nConta =
+                        ma.MAGGIORAZIONEABITAZIONE.Count(
+                            a =>
+                                a.IDMAB == mab.IDMAB &&
+                                a.VARIAZIONIMAB.Any(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                         b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA &&
+                                                         b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA));
+
+                    if (nConta <= 0)
+                    {
+                        ma.MAGGIORAZIONEABITAZIONE.Add(mab);
+
+                        var t = mab.TRASFERIMENTO;
+
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ma.DATAINIZIOVALIDITA, db);
+                    }
+
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione delle maggiorazioni annuali sulla tabella MaggiorazioneAbitazione.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaPagatoCondivisoMAB(decimal idPercentualeCondivisione, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var pc = db.PERCENTUALECONDIVISIONE.Find(idPercentualeCondivisione);
+                var item = db.Entry<PERCENTUALECONDIVISIONE>(pc);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.PAGATOCONDIVISOMAB).Load();
+
+                var lpc =
+                    db.PAGATOCONDIVISOMAB.Where(
+                        a =>
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA && a.DATAINIZIOVALIDITA <= pc.DATAFINEVALIDITA)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA)
+                        .ToList();
+
+                foreach (var pgc in lpc)
+                {
+                    var nConta =
+                        pc.PAGATOCONDIVISOMAB.Count(
+                            a =>
+                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                a.IDPAGATOCONDIVISO == pgc.IDPAGATOCONDIVISO);
+
+
+                    if (nConta <= 0)
+                    {
+                        pc.PAGATOCONDIVISOMAB.Add(pgc);
+
+                        var t = pgc.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pc.DATAINIZIOVALIDITA, db);
+
+                    }
+
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione della percentuale di condivisione alla tabella PagatoConvisoMAB.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaPercentualeAnticipoTEP(decimal idPercentualeAnticipoTEP, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var patep = db.PERCENTUALEANTICIPOTE.Find(idPercentualeAnticipoTEP);
+                var item = db.Entry<PERCENTUALEANTICIPOTE>(patep);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.TEPARTENZA).Load();
+
+                var ltep =
+                    db.TEPARTENZA.Where(
+                        a =>
+                            a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                            a.TRASFERIMENTO.DATARIENTRO >= patep.DATAINIZIOVALIDITA &&
+                            a.TRASFERIMENTO.DATAPARTENZA <= patep.DATAFINEVALIDITA)
+                        .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
+                        .ToList();
+
+                foreach (var tep in ltep)
+                {
+                    var nConta =
+                        db.TEPARTENZA.Count(
+                            a =>
+                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                a.IDTEPARTENZA == tep.IDTEPARTENZA);
+
+
+
+
+
+                }
+
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaPercentualeAnticipoTER(decimal idPercentualeAnticipoTEP, ModelDBISE db)

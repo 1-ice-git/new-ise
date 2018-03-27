@@ -100,7 +100,7 @@ namespace NewISE.Models.dtObj.Interfacce
         #region Percentuale condivisione
 
         /// <summary>
-        /// Associa la percentuale di condivisione alla maggiorazione abitazione tramite la tabella PagatoCondivisoMAB.
+        /// Associa la percentuale di condivisione per la maggiorazione abitazione alla tabella PagatoCondivisoMAB.
         /// </summary>
         /// <param name="idPercentualeCondivisione"></param>
         /// <param name="db"></param>
@@ -135,11 +135,11 @@ namespace NewISE.Models.dtObj.Interfacce
 
         #region PercentualeMAB
         /// <summary>
-        /// Associa la percentuale MAB alla tabella MAB.
+        /// Associa la percentuale MAB alla tabella VariazioniMAB.
         /// </summary>
         /// <param name="idPerceMAB"></param>
         /// <param name="db"></param>
-        void AssociaMAB_PMAB(decimal idPerceMAB, ModelDBISE db);
+        void AssociaMAB_VMAB(decimal idPerceMAB, ModelDBISE db);
         #endregion
 
         #region Percentuale maggiorazione coniuge
