@@ -82,6 +82,7 @@ function RemoveAll1()
 
 function PrelevaPVListaDestinatari()
 {
+  //  debugger;
     var listaDest1 = $("#lDestinatari").select2('val');
     var listaDest2 = $("#toCc").select2('val');
     // alert("1:"+listaDest1 +'\n\n2:'+listaDest2 );
@@ -128,7 +129,7 @@ function PrelevaPVListaDestinatari()
 }
 function PrelevaPVListaCC()
 {
-    //    debugger;
+   // debugger;
     var listaDest1 = $("#lDestinatari").select2('val');
     var listaDest2 = $("#toCc").select2('val');
 

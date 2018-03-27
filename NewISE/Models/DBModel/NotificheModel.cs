@@ -32,5 +32,10 @@ namespace NewISE.Models.DBModel
         public HttpPostedFileBase PDFUpload { get; set; }
         public string NomeFile { get; set; }
         public string Estensione { get; set; }
+        public IList<DestinatarioModel> lDestinatariObj { get; set; }
+        public IList<DestinatarioModel> lToCc { get; set; }
+        public DipendentiModel Dipendenti { get; set; }
+        [Display(Name = "Ricevuta ic copia")]
+        public bool tocc { get; set; }
     }
 }

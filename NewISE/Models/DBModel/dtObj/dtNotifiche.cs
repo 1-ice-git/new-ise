@@ -89,6 +89,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 nome = t.DIPENDENTI.NOME == null ? "" : t.DIPENDENTI.NOME,
                                 cognome = t.DIPENDENTI.COGNOME == null ? "" : t.DIPENDENTI.COGNOME,
                                 email = t.DIPENDENTI.EMAIL == null ? "" : t.DIPENDENTI.EMAIL,
+                                idDipendente=t.IDDIPENDENTE
                             }).ToList();
                     if(ldes.Count!=0)
                     {
@@ -189,7 +190,8 @@ namespace NewISE.Models.DBModel.dtObj
                         select new SelectListItem()
                         {
                             Text = t.nome + " " + t.cognome,
-                            Value = t.email,
+                            //Value = t.email
+                            Value = t.idDipendente.ToString()
                         }).ToList();
                 
             }
@@ -256,31 +258,59 @@ namespace NewISE.Models.DBModel.dtObj
             return lnot;
         }
 
-        public IList<NotificheModel> GetRicevuteNotifiche(decimal idMittenteLogato)
+        public IList<NotificheModel> GetRicevuteNotifiche(decimal idDipendenteLogato)
         {
             List<NotificheModel> lnot = new List<NotificheModel>();
             using (ModelDBISE db = new ModelDBISE())
             {
-                List<NOTIFICHE> z = new List<NOTIFICHE>();
-                var x =  db.DESTINATARI.Where(d=>d.IDDIPENDENTE==idMittenteLogato).ToList();
-                foreach(var y in x)
+                //List<NOTIFICHE> z = new List<NOTIFICHE>();
+                //var x =  db.DESTINATARI.Where(d=>d.IDDIPENDENTE==idMittenteLogato).ToList();
+                //foreach(var y in x)
+                //{
+                //    z = db.NOTIFICHE.Where(n => n.IDNOTIFICA == y.IDNOTIFICA).ToList();
+                //}
+                //foreach (var k in z)
+                //{
+                //    lnot = (from e in z where e.IDNOTIFICA==k.IDNOTIFICA
+                //               select new NotificheModel()
+                //               {
+                //                   idNotifica = e.IDNOTIFICA,
+                //                   idMittente = e.IDMITTENTE,
+                //                   Oggetto = e.OGGETTO,
+                //                   NumeroDestinatari = e.DESTINATARI.Count,
+                //                   corpoMessaggio = e.CORPOMESSAGGIO,
+                //                   dataNotifica = e.DATANOTIFICA,
+                //                   Allegato = e.ALLEGATO,
+                //                   Nominativo = e.DIPENDENTI.NOME + "  " + e.DIPENDENTI.COGNOME
+                //               }).ToList();
+                //}
+
+                //var notifiche = db.NOTIFICHE.Where(a => a.DESTINATARI.Where(b => b.IDDIPENDENTE == idDipendenteLogato).Any()).OrderByDescending(a => a.DATANOTIFICA).ToList();
+
+                //foreach (var n in notifiche)
+                //{
+                //    var d = n.DESTINATARI.Where(a => a.IDDIPENDENTE == idDipendenteLogato && a.IDNOTIFICA == n.IDNOTIFICA).First();
+                    
+                //}
+                var lDest = db.DESTINATARI.Where(a => a.IDDIPENDENTE == idDipendenteLogato).ToList();
+
+                foreach (var d in lDest)
                 {
-                    z = db.NOTIFICHE.Where(n => n.IDNOTIFICA == y.IDNOTIFICA).ToList();
-                }
-                foreach (var k in z)
-                {
-                    lnot = (from e in z where e.IDNOTIFICA==k.IDNOTIFICA
-                               select new NotificheModel()
-                               {
-                                   idNotifica = e.IDNOTIFICA,
-                                   idMittente = e.IDMITTENTE,
-                                   Oggetto = e.OGGETTO,
-                                   NumeroDestinatari = e.DESTINATARI.Count,
-                                   corpoMessaggio = e.CORPOMESSAGGIO,
-                                   dataNotifica = e.DATANOTIFICA,
-                                   Allegato = e.ALLEGATO,
-                                   Nominativo = e.DIPENDENTI.NOME + "  " + e.DIPENDENTI.COGNOME
-                               }).ToList();
+                    var not = d.NOTIFICHE;
+
+                    var nm = new NotificheModel()
+                    {
+                        idNotifica = not.IDNOTIFICA,
+                        idMittente = not.IDMITTENTE,
+                        Oggetto = not.OGGETTO,
+                        corpoMessaggio = not.CORPOMESSAGGIO,
+                        dataNotifica = not.DATANOTIFICA,
+                        Allegato = not.ALLEGATO,
+                        NomeFile = not.NOMEDOCUMENTO,
+                        Estensione = not.ESTENSIONEDOC,
+                        tocc = d.TOCC
+                    };
+                    lnot.Add(nm);
                 }
             }
             return lnot;
@@ -308,14 +338,34 @@ namespace NewISE.Models.DBModel.dtObj
                          select new SelectListItem()
                          {
                              Text = t.nome + " " + t.cognome,
-                             Value = t.email,
+                            //Value = t.email
+                             Value = t.idDipendente.ToString()
                          }).ToList();
                 }
             }
             return r;
         }
-
-
+        public string RestituisciEmailDaID(decimal idDipendente)
+        {
+            string tmp = "";
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    tmp = (from e in db.DIPENDENTI
+                        where e.IDDIPENDENTE==idDipendente && e.ABILITATO == true
+                        select new DipendentiModel()
+                        {
+                            email = e.EMAIL,
+                        }).ToList().First().email.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return tmp;
+        }
         public bool InsertNotifiche(NotificheModel NM)
         {
             List<DESTINATARI> listDest = new List<DESTINATARI>();
@@ -324,23 +374,23 @@ namespace NewISE.Models.DBModel.dtObj
             {
               //  dtn.RestituisciAutorizzato(idMittenteLogato);
                 string[] ld = NM.lDestinatari;
+                //DestinatarioModel dm = new DestinatarioModel();
+                //List<DestinatarioModel> destMod = new List<DestinatarioModel>();
+
                 if (ld.Length == 1 && ld[0].ToUpper() == "TUTTI")
                 {
                     UtentiAutorizzatiModel uta = dtn.RestituisciAutorizzato(idMittenteLogato);
-
                     var tmp=new List<SelectListItem>();
-
                     if (uta.idRouloUtente == (decimal)EnumRuoloAccesso.Amministratore)
                         tmp = GetListaTUTTI((decimal)EnumRuoloAccesso.Utente);
-                        //dm.AddRange(dtn.GetListaDipendentiAutorizzati(3));
-                    if (uta.idRouloUtente == (decimal)EnumRuoloAccesso.Utente) //dm.AddRange(dtn.GetListaDipendentiAutorizzati(2));
+                    if (uta.idRouloUtente == (decimal)EnumRuoloAccesso.Utente) 
                         tmp = GetListaTUTTI((decimal)EnumRuoloAccesso.Amministratore);
                     //tmp = GetListaTUTTI(uta.idRouloUtente);// TuttiDestinatari();
                     foreach (var x in tmp)
                     {
                         DESTINATARI d = new DESTINATARI();
                         d.IDNOTIFICA = NM.idNotifica;
-                        d.IDDIPENDENTE = RestituisciIDdestinatarioDaEmail(x.Value);
+                        d.IDDIPENDENTE = Convert.ToDecimal(x.Value);// RestituisciIDdestinatarioDaEmail(x.Value);
                         listDest.Add(d);
                     }
                 }
@@ -350,7 +400,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         DESTINATARI d = new DESTINATARI();
                         d.IDNOTIFICA = NM.idNotifica;
-                        d.IDDIPENDENTE = RestituisciIDdestinatarioDaEmail(email);
+                        d.IDDIPENDENTE = Convert.ToDecimal(email);// RestituisciIDdestinatarioDaEmail(email);
                         listDest.Add(d);
                     }
                 }
@@ -364,13 +414,12 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         DESTINATARI dcc = new DESTINATARI();
                         dcc.IDNOTIFICA = NM.idNotifica;
-                        dcc.IDDIPENDENTE = RestituisciIDdestinatarioDaEmail(email);
+                        dcc.IDDIPENDENTE = Convert.ToDecimal(email);// RestituisciIDdestinatarioDaEmail(email);
                         dcc.TOCC = true;
                         listDest.Add(dcc);
                     }
                 }
             }
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (listDest.Count != 0)
@@ -392,7 +441,6 @@ namespace NewISE.Models.DBModel.dtObj
                         db.Database.CurrentTransaction.Commit();
                         NM.idNotifica = nuovo.IDNOTIFICA;
                     }
-
                     catch (Exception ex)
                     {
                         db.Database.CurrentTransaction.Rollback();
