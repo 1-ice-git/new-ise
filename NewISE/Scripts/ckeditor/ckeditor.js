@@ -1297,14 +1297,16 @@ a.config.copyFormatting_keystrokePaste;b&&(this._initialKeystrokePasteCommand=a.
 CKEDITOR.config.copyFormatting_allowedContexts=!0;CKEDITOR.config.copyFormatting_keystrokeCopy=CKEDITOR.CTRL+CKEDITOR.SHIFT+67;CKEDITOR.config.copyFormatting_keystrokePaste=CKEDITOR.CTRL+CKEDITOR.SHIFT+86})();CKEDITOR.plugins.add("find",{requires:"dialog",init:function(a){var b=a.addCommand("find",new CKEDITOR.dialogCommand("find"));b.canUndo=!1;b.readOnly=1;a.addCommand("replace",new CKEDITOR.dialogCommand("replace")).canUndo=!1;a.ui.addButton&&(a.ui.addButton("Find",{label:a.lang.find.find,command:"find",toolbar:"find,10"}),a.ui.addButton("Replace",{label:a.lang.find.replace,command:"replace",toolbar:"find,20"}));CKEDITOR.dialog.add("find",this.path+"dialogs/find.js");CKEDITOR.dialog.add("replace",this.path+
 "dialogs/find.js")}});CKEDITOR.config.find_highlight={element:"span",styles:{"background-color":"#004",color:"#fff"}};CKEDITOR.plugins.add("fixed",{init:function(){window.addEventListener("scroll",function(){var d=document.getElementsByClassName("cke_contents").item(0),a=document.getElementsByClassName("cke_top").item(0),b=document.getElementsByClassName("cke").item(0),e=document.getElementsByClassName("cke_inner").item(0),c=document.documentElement.scrollTop>document.body.scrollTop?document.documentElement.scrollTop:document.body.scrollTop;
     try {
-        a.style.width = d.offsetWidth + "px";
-        a.style.top = "0px";
-    ; a.style.left = "0px"; a.style.right =
-"0px";a.style.margin="0 auto";a.style.boxSizing="border-box";
-    
+            a.style.width = d.offsetWidth + "px";
+            a.style.top = "0px";
+            a.style.left = "0px"; a.style.right ="0px"; a.style.margin = "0 auto"; a.style.boxSizing = "border-box";
+            a.offsetTop <= c && (a.style.position = "fixed", d.style.paddingTop = a.offsetHeight + "px");
+            b.offsetTop > c && b.offsetTop + b.offsetHeight >= c + a.offsetHeight && (a.style.position = "relative", d.style.paddingTop = "0px");
+            b.offsetTop + b.offsetHeight < c + a.offsetHeight && (a.style.position = "absolute", a.style.top = "calc(100% - " + a.offsetHeight + "px)", e.style.position = "relative")
     } catch (e_e) { };
-a.offsetTop<=c&&(a.style.position="fixed",d.style.paddingTop=a.offsetHeight+"px");b.offsetTop>c&&b.offsetTop+b.offsetHeight>=c+a.offsetHeight&&(a.style.position="relative",d.style.paddingTop="0px");b.offsetTop+b.offsetHeight<c+a.offsetHeight&&(a.style.position="absolute",a.style.top="calc(100% - "+a.offsetHeight+"px)",e.style.position="relative")},!1)}});
-    
+    }, !1)
+        }
+        });    
     (function(){function p(b,f,e,d,r,p,v,x){var y=b.config,t=new CKEDITOR.style(v),g=r.split(";");r=[];
 
     for (var k = {}, l = 0; l < g.length; l++) { var m = g[l]; if (m) { var m = m.split("/"), w = {}, q = g[l] = m[0]; w[e] = r[l] = m[1] || q; k[q] = new CKEDITOR.style(v, w); k[q]._.definition.name = q } else g.splice(l--, 1) } b.ui.addRichCombo(f, {

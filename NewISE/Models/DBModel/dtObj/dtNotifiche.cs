@@ -68,31 +68,48 @@ namespace NewISE.Models.DBModel.dtObj
             List<DipendentiModel> ldes = new List<DipendentiModel>();
             List<DipendentiModel> ldesdef = new List<DipendentiModel>();
             List<UtentiAutorizzatiModel> uaut = new List<UtentiAutorizzatiModel>();
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 uaut = (from d in db.UTENTIAUTORIZZATI
                         where d.IDRUOLOUTENTE == idRuoloUtente && d.IDDIPENDENTE > 0
                         select new UtentiAutorizzatiModel()
                         {
-                            idDipendente = (decimal)d.IDDIPENDENTE,
-                            idRouloUtente = d.IDRUOLOUTENTE,
-                            idUtenteAutorizzato = d.IDUTENTEAUTORIZZATO,
-                            Utente = d.UTENTE
+                             idDipendente=(decimal)d.IDDIPENDENTE,
+                             idRouloUtente= idRuoloUtente,
+                             idUtenteAutorizzato=d.IDUTENTEAUTORIZZATO,
+                             Utente=d.UTENTE
                         }).ToList();
+
                 foreach (var ut in uaut)
                 {
                     DipendentiModel dm = new DipendentiModel();
-
-                    ldes = (from t in db.TRASFERIMENTO
-                            where t.IDDIPENDENTE == ut.idDipendente
-                            && (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
-                            select new DipendentiModel()
-                            {
-                                nome = t.DIPENDENTI.NOME == null ? "" : t.DIPENDENTI.NOME,
-                                cognome = t.DIPENDENTI.COGNOME == null ? "" : t.DIPENDENTI.COGNOME,
-                                email = t.DIPENDENTI.EMAIL == null ? "" : t.DIPENDENTI.EMAIL,
-                                idDipendente = t.IDDIPENDENTE
-                            }).ToList();
+                    if (idRuoloUtente == (Decimal)EnumRuoloAccesso.Utente)
+                    {
+                        ldes = (from t in db.TRASFERIMENTO
+                                where t.IDDIPENDENTE == ut.idDipendente
+                                && (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                                select new DipendentiModel()
+                                {
+                                    nome = t.DIPENDENTI.NOME == null ? "" : t.DIPENDENTI.NOME,
+                                    cognome = t.DIPENDENTI.COGNOME == null ? "" : t.DIPENDENTI.COGNOME,
+                                    email = t.DIPENDENTI.EMAIL == null ? "" : t.DIPENDENTI.EMAIL,
+                                    idDipendente = t.IDDIPENDENTE
+                                }).ToList();
+                    }
+                    else if (idRuoloUtente == (Decimal)EnumRuoloAccesso.Amministratore)
+                    {
+                        ldes = (from t in db.DIPENDENTI
+                                where t.IDDIPENDENTE == ut.idDipendente
+                                select new DipendentiModel()
+                                {
+                                    nome = t.NOME == null ? "" : t.NOME,
+                                    cognome = t.COGNOME == null ? "" : t.COGNOME,
+                                    email = t.EMAIL == null ? "" : t.EMAIL,
+                                    idDipendente = t.IDDIPENDENTE
+                                }).ToList();
+                    }
+                    
 
                     if (ldes.Count != 0)
                     {
@@ -158,7 +175,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a =>
                             a.ABILITATO == true &&
                             a.UTENTIAUTORIZZATI.Where(
-                                b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente).Any()).ToList();
+                                b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).Any()).ToList();
 
                     if (ld?.Any() ?? false)
                     {

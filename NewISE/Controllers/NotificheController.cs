@@ -33,7 +33,7 @@ namespace NewISE.Controllers
             {
                 return View("Error");
             }
-             return View();
+            return View();
             //var model = new NotificheModel();
             //return View(model);
         }
@@ -65,68 +65,83 @@ namespace NewISE.Controllers
             UtentiAutorizzatiModel uta = null;
             List<DipendentiModel> dm = new List<DipendentiModel>();
             decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
-            using (dtNotifiche dtn = new dtNotifiche())
+
+            try
             {
-                uta = dtn.RestituisciAutorizzato(idMittenteLogato);
+                using (dtNotifiche dtn = new dtNotifiche())
+                {
+                    uta = dtn.RestituisciAutorizzato(idMittenteLogato);
 
-                if (uta.idRouloUtente == (decimal)EnumRuoloAccesso.Amministratore)
-                {
-                    dm.AddRange(dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Utente));
-                }
-                if (uta.idRouloUtente == (decimal)EnumRuoloAccesso.Utente)
-                {
-                    dm.AddRange(dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Amministratore));
-                }
-                //dm.AddRange(dtn.GetListaDipendentiAutorizzati());
-                if (dm.Count > 0)
-                {
-                    var agg = new SelectListItem(); agg.Text = "TUTTI"; agg.Value = "TUTTI";
-                    r.Add(agg);
-                    r0 = (from t in dm
-                          where !string.IsNullOrEmpty(t.email) && t.email.Trim() != ""
-                          orderby t.nome
-                          select new SelectListItem()
-                          {
-                              Text = t.nome + " " + t.cognome,
-                           //    Value = t.email
-                             Value = t.idDipendente.ToString()
-                          }).ToList();
-                    r.AddRange(r0);
+                    if (uta.idRouloUtente == (decimal)EnumRuoloAccesso.Amministratore)
+                    {
+                        dm.AddRange(dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Utente));
+                    }
+                    if (uta.idRouloUtente == (decimal)EnumRuoloAccesso.Utente)
+                    {
+                        dm.AddRange(dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Amministratore));
+                    }
+                    //dm.AddRange(dtn.GetListaDipendentiAutorizzati());
+                    if (dm.Count > 0)
+                    {
+                        var agg = new SelectListItem(); agg.Text = "TUTTI"; agg.Value = "TUTTI";
+                        r.Add(agg);
+                        r0 = (from t in dm
+                              where !string.IsNullOrEmpty(t.email) && t.email.Trim() != ""
+                              orderby t.nome
+                              select new SelectListItem()
+                              {
+                                  Text = t.nome + " " + t.cognome,
+                                  //    Value = t.email
+                                  Value = t.idDipendente.ToString()
+                              }).ToList();
+                        r.AddRange(r0);
 
-                    r2 = (from t in dm
-                          where !string.IsNullOrEmpty(t.email) && t.email.Trim() != ""
-                          orderby t.nome
-                          select new SelectListItem()
-                          {
-                              Text = t.nome + " " + t.cognome,
-                            //  Value = t.email
-                              Value = t.idDipendente.ToString()
-                          }).ToList();
+                        r2 = (from t in dm
+                              where !string.IsNullOrEmpty(t.email) && t.email.Trim() != ""
+                              orderby t.nome
+                              select new SelectListItem()
+                              {
+                                  Text = t.nome + " " + t.cognome,
+                                  //  Value = t.email
+                                  Value = t.idDipendente.ToString()
+                              }).ToList();
+                    }
                 }
+                ViewBag.idMittenteLogato = idMittenteLogato;
+                ViewBag.ListaDestinatari = r;
+                ViewBag.ListaCc = r2;
+                return PartialView();
             }
-            ViewBag.idMittenteLogato = idMittenteLogato;
-            ViewBag.ListaDestinatari = r;
-            ViewBag.ListaCc = r2;
-            return PartialView();
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
         }
-        public ActionResult VisualizzaCorpoMessaggio(decimal idNotifica,string idUtenteLoggato)
+        public ActionResult VisualizzaCorpoMessaggio(decimal idNotifica, string idUtenteLoggato)
         {
-            if(string.IsNullOrEmpty(idUtenteLoggato)) idUtenteLoggato="0";
+            if (string.IsNullOrEmpty(idUtenteLoggato)) idUtenteLoggato = "0";
             decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
             List<NotificheModel> nm = new List<NotificheModel>();
             NotificheModel elem = new NotificheModel();
-            using (dtNotifiche dn = new dtNotifiche())
+            try
             {
-                if(idUtenteLoggato!="1")
-                    nm = dn.GetNotifiche(idMittenteLogato).Where(a => a.idNotifica == idNotifica).ToList();
-                else
-                    nm = dn.GetNotifiche(idMittenteLogato, idNotifica).ToList();
-                if (nm.Count() > 0)
+                using (dtNotifiche dn = new dtNotifiche())
                 {
-                    elem = nm.First();
+                    if (idUtenteLoggato != "1")
+                        nm = dn.GetNotifiche(idMittenteLogato).Where(a => a.idNotifica == idNotifica).ToList();
+                    else
+                        nm = dn.GetNotifiche(idMittenteLogato, idNotifica).ToList();
+                    if (nm.Count() > 0)
+                    {
+                        elem = nm.First();
+                    }
                 }
+                return PartialView(elem);
             }
-            return PartialView(elem);
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
         }
         [HttpPost]
         [ValidateInput(false)]
@@ -135,10 +150,10 @@ namespace NewISE.Controllers
         public ActionResult InserisciNuovaNotifica(string listaMailPrincipale, string listaMailToCc, string Oggetto, string CorpoMessaggio, HttpPostedFileBase file)
         {
             bool InserimentoEffettuatoinDB = false;
-            string nomefile="";
-            string[] VettNomeFile=null;           
-            string nomefileFin="";
-            string estensione="";
+            string nomefile = "";
+            string[] VettNomeFile = null;
+            string nomefileFin = "";
+            string estensione = "";
             if (file != null)
             {
                 nomefile = file.FileName;
@@ -150,19 +165,19 @@ namespace NewISE.Controllers
             AggiornaLista();
             decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
             ViewBag.idMittenteLogato = idMittenteLogato;
-            UtentiAutorizzatiModel uta=null;
+            UtentiAutorizzatiModel uta = null;
             NotificheModel nmod = new NotificheModel();
             //if (nmod.PDFUpload == null || nmod.PDFUpload.ContentLength == 0)
             //{            
             //    ModelState.AddModelError("PDFUpload", "Questo campo è richiesto");
             //}
-           
-            List<NotificheModel> lnm = new List<NotificheModel>();          
+            List<NotificheModel> lnm = new List<NotificheModel>();
             using (ModelDBISE db = new ModelDBISE())
             {
-                db.Database.BeginTransaction();
                 try
                 {
+                    db.Database.BeginTransaction();
+
                     //  db.Database.BeginTransaction();
                     // HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
                     bool esisteFile = false;
@@ -198,100 +213,140 @@ namespace NewISE.Controllers
                     using (dtNotifiche dn = new dtNotifiche())
                     {
                         uta = dn.RestituisciAutorizzato(idMittenteLogato);
-                        InserimentoEffettuatoinDB=dn.InsertNotifiche(nmod);
+                        InserimentoEffettuatoinDB = dn.InsertNotifiche(nmod);
                         db.Database.CurrentTransaction.Commit();
                         idMittenteLogato = nmod.idMittente;// Utility.UtenteAutorizzato().idDipendente;
                         lnm = dn.GetNotifiche(idMittenteLogato).ToList();
                     }
+                    //*************************************************************************
+                    //INVIARE EMAIL SE NON SI E' VERIFICATO NESSUN ERRORE
+                    //*************************************************************************
+                    if (InserimentoEffettuatoinDB)
+                    {
+                        using (GestioneEmail gmail = new GestioneEmail())
+                        {
+                            ModelloAllegatoMail allegato = new ModelloAllegatoMail();
+                            Destinatario dest = new Destinatario();
+                            Destinatario destToCc = new Destinatario();
+                            ModelloMsgMail modMSGmail = new ModelloMsgMail();
+                            using (dtNotifiche dtn = new dtNotifiche())
+                            {
+                                if (nmod.Allegato != null)
+                                {
+                                    var docByte = dtn.GetDocumentoByteById(nmod.idNotifica);
+                                    Stream streamDoc = new MemoryStream(docByte);
+                                    allegato.nomeFile = nomefileFin + "." + estensione;//DateTime.Now.Ticks.ToString() + ".pdf";
+                                    allegato.allegato = streamDoc;
+                                    modMSGmail.allegato.Add(allegato);
+                                }
+                                modMSGmail.oggetto = nmod.Oggetto;
+                                modMSGmail.corpoMsg = nmod.corpoMessaggio;
+                                Mittente mitt = new Mittente();
+                                mitt.EmailMittente = dtn.GetEmailByIdDipendente(idMittenteLogato);
+                                decimal id_dip = dtn.RestituisciIDdestinatarioDaEmail(mitt.EmailMittente);
+                                DipendentiModel dmod = dtn.RestituisciDipendenteByID(id_dip);
+                                mitt.Nominativo = dmod.nome + " " + dmod.cognome;
+                                var ddss = dtn.GetListDestinatari(nmod.idNotifica);
+                                foreach (var x in ddss)
+                                {
+                                    string nome_ = dtn.RestituisciDipendenteByID(x.idDipendente).nome;
+                                    string cognome_ = dtn.RestituisciDipendenteByID(x.idDipendente).cognome;
+                                    string nominativo_ = nome_ + " " + cognome_;
+                                    if (!x.ToCc)
+                                    {
+                                        dest.EmailDestinatario = dtn.GetEmailByIdDipendente(x.idDipendente);
+                                        dest.Nominativo = nominativo_;
+                                        modMSGmail.destinatario.Add(dest);
+
+                                    }
+                                    else
+                                    {
+                                        destToCc.EmailDestinatario = dtn.GetEmailByIdDipendente(x.idDipendente);
+                                        destToCc.Nominativo = nominativo_;
+                                        modMSGmail.cc.Add(destToCc);
+                                    }
+                                }
+                                //Qui aggiungere tutti gli amministratori in toCC escluso il mittente amministratore
+                                idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
+                                uta = dtn.RestituisciAutorizzato(idMittenteLogato);
+                                List<DipendentiModel>lls= dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Amministratore);
+                                foreach (var zz in lls)
+                                {
+                                    foreach (var x in ddss)
+                                    {
+                                        if (zz.idDipendente != x.idDipendente)
+                                        {
+                                            destToCc.EmailDestinatario = dtn.GetEmailByIdDipendente(zz.idDipendente);
+                                            string nome_cc = dtn.RestituisciDipendenteByID(zz.idDipendente).nome;
+                                            string cognome_cc = dtn.RestituisciDipendenteByID(zz.idDipendente).cognome;
+                                            string nominativo_cc = nome_cc + " " + cognome_cc;
+                                            destToCc.Nominativo = nominativo_cc;
+                                            modMSGmail.cc.Add(destToCc);
+                                        }
+                                    }
+                                }
+                                modMSGmail.mittente = mitt;
+                                gmail.sendMail(modMSGmail);
+                            }
+                        }
+                    }
+                    return PartialView("ListaNotifiche", lnm);
                 }
                 catch (Exception ex)
                 {
                     db.Database.CurrentTransaction.Rollback();
-                    //return Json(new { error = ex.Message });
-                    return PartialView("NuovaNotifica",nmod);
-                };
-            }
-            //*************************************************************************
-            //INVIARE EMAIL SE NON SI E' VERIFICATO NESSUN ERRORE
-            //*************************************************************************
-            if (InserimentoEffettuatoinDB)
-            {
-                using (GestioneEmail gmail = new GestioneEmail())
-                {
-                    ModelloAllegatoMail allegato = new ModelloAllegatoMail();
-                    Destinatario dest = new Destinatario();
-                    Destinatario destToCc = new Destinatario();
-                    ModelloMsgMail modMSGmail = new ModelloMsgMail();
-                    using (dtNotifiche dtn = new dtNotifiche())
-                    {
-                        if (nmod.Allegato != null)
-                        {
-                            var docByte = dtn.GetDocumentoByteById(nmod.idNotifica);
-                            Stream streamDoc = new MemoryStream(docByte);
-                            allegato.nomeFile = nomefileFin + "." + estensione;//DateTime.Now.Ticks.ToString() + ".pdf";
-                            allegato.allegato = streamDoc;
-                            modMSGmail.allegato.Add(allegato);
-                        }
-                        modMSGmail.oggetto = nmod.Oggetto;
-                        modMSGmail.corpoMsg = nmod.corpoMessaggio;
-                        Mittente mitt = new Mittente();
-                        mitt.EmailMittente = dtn.GetEmailByIdDipendente(idMittenteLogato);
-                        decimal id_dip = dtn.RestituisciIDdestinatarioDaEmail(mitt.EmailMittente);
-                        DipendentiModel dmod = dtn.RestituisciDipendenteByID(id_dip);
-                        mitt.Nominativo = dmod.nome + " " + dmod.cognome;
-                        var ddss = dtn.GetListDestinatari(nmod.idNotifica);
-                        foreach (var x in ddss)
-                        {
-                            string nome_ = dtn.RestituisciDipendenteByID(x.idDipendente).nome;
-                            string cognome_ = dtn.RestituisciDipendenteByID(x.idDipendente).cognome;
-                            string nominativo_ = nome_ + " " + cognome_;
-                            if (!x.ToCc)
-                            {
-                                dest.EmailDestinatario = dtn.GetEmailByIdDipendente(x.idDipendente);
-                                dest.Nominativo = nominativo_;
-                                modMSGmail.destinatario.Add(dest);
-                            }
-                            else
-                            {
-                                destToCc.EmailDestinatario = dtn.GetEmailByIdDipendente(x.idDipendente);
-                                destToCc.Nominativo = nominativo_;
-                                modMSGmail.cc.Add(destToCc);
-                            }
-                            //qui non dimenticare di aggiungere a toCc tutti gli amministratori non in dest
-                        }
-                        modMSGmail.mittente = mitt;
-                        gmail.sendMail(modMSGmail);
-                    }
+                    return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
                 }
             }
-            return PartialView("ListaNotifiche", lnm);
         }
+
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult RegistraNotifiche(FormCollection CollectionMessaggio)
         {
-            FormCollection fc = new FormCollection(Request.Unvalidated().Form);
-            string testo = fc["contenutoMessaggio"];
-            return PartialView("ListaNotifiche");
+            try
+            {
+                FormCollection fc = new FormCollection(Request.Unvalidated().Form);
+                string testo = fc["contenutoMessaggio"];
+                return PartialView("ListaNotifiche");
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
         }
         public ActionResult VisualizzaDestinatari(decimal idNotifica)
         {
             List<DestinatarioModel> nm = new List<DestinatarioModel>();
-            using (dtNotifiche dn = new dtNotifiche())
+            try
             {
-                nm = dn.GetListDestinatari(idNotifica).ToList();
+                using (dtNotifiche dn = new dtNotifiche())
+                {
+                    nm = dn.GetListDestinatari(idNotifica).ToList();
+                }
+                return PartialView(nm);
             }
-            return PartialView(nm);
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
         }
 
         public ActionResult VisualizzaMittente(decimal idNotifica)
         {
             List<DipendentiModel> nm = new List<DipendentiModel>();
-            using (dtNotifiche dn = new dtNotifiche())
+            try
             {
-                nm = dn.GetMittente(idNotifica).ToList();
+                using (dtNotifiche dn = new dtNotifiche())
+                {
+                    nm = dn.GetMittente(idNotifica).ToList();
+                }
+                return PartialView(nm);
             }
-            return PartialView(nm);
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
         }
 
         void AggiornaLista()
@@ -465,16 +520,21 @@ namespace NewISE.Controllers
         {
             byte[] Blob;
             NotificheModel documento = new NotificheModel();
-
-            using (dtNotifiche dtd = new dtNotifiche())
+            try
             {
-                documento = dtd.GetDatiDocumentoById(id);
-                Blob = dtd.GetDocumentoByteById(id);
+                using (dtNotifiche dtd = new dtNotifiche())
+                {
+                    documento = dtd.GetDatiDocumentoById(id);
+                    Blob = dtd.GetDocumentoByteById(id);
 
-                Response.AddHeader("Content-Disposition", "inline; filename=" + documento.idNotifica + ";");
-                return File(Blob, "application/pdf");
+                    Response.AddHeader("Content-Disposition", "inline; filename=" + documento.idNotifica + ";");
+                    return File(Blob, "application/pdf");
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-        
     }
 }
