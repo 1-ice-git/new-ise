@@ -22,7 +22,14 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult MaggiorazioneAbitazione(decimal idTrasferimento)
         {
-            ViewData.Add("idTrasferimento", idTrasferimento);
+            try
+            { 
+                ViewData.Add("idTrasferimento", idTrasferimento);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
             return PartialView();
         }
@@ -68,19 +75,17 @@ namespace NewISE.Controllers
                                     soloLettura = true;
                                 }
                             }
+                            mavm.idAttivazioneMAB = amm.idAttivazioneMAB;
 
-                            mam = dtma.GetMaggiorazioneAbitazione(amm);
+                            mam = dtma.GetMaggiorazioneAbitazionePartenza(idTrasferimento);
 
-                            mavm.idAttivazioneMAB = mam.idAttivazioneMAB;
                             mavm.idMAB = mam.idMAB;
 
                             rmm = dtma.GetRinunciaMAB(mam);
 
-                            vmam = dtma.GetVariazioniMAB(mam);
+                            vmam = dtma.GetVariazioniMABPartenza(idTrasferimento);
 
-
-                            CANONEMAB cm = dtma.GetCanoneMAB(vmam);
-
+                            CANONEMAB cm = dtma.GetCanoneMABPartenza(vmam);
 
                             mavm.importo_canone = cm.IMPORTOCANONE;
                             mavm.dataInizioMAB = vmam.DataInizioMAB;
@@ -89,14 +94,12 @@ namespace NewISE.Controllers
 
                             using (dtValute dtv = new dtValute())
                             {
-                                var v = dtv.GetValutaByIdCanone(cm.IDCANONE);
-
-                                    mavm.descrizioneValuta = v.descrizioneValuta;
-                                    mavm.id_Valuta = v.idValuta;
+                                var v = dtv.GetValutaByIdCanone(cm.IDCANONE,db);
+                                mavm.descrizioneValuta = v.descrizioneValuta;
+                                mavm.id_Valuta = v.idValuta;
                             }
-                                //}
 
-                            var lpc = dtma.GetListPagatoCondivisoMAB(mavm);
+                            var lpc = dtma.GetListPagatoCondivisoMABPartenza(mavm);
 
                             if (lpc.Count() > 0)
                             {
@@ -112,6 +115,11 @@ namespace NewISE.Controllers
                             var t = dtt.GetTrasferimentoById(idTrasferimento);
                             statoTrasferimento = t.idStatoTrasferimento;
                             if (statoTrasferimento == EnumStatoTraferimento.Annullato)
+                            {
+                                soloLettura = true;
+                            }
+
+                            if (rmm.rinuncia)
                             {
                                 soloLettura = true;
                             }
@@ -160,6 +168,7 @@ namespace NewISE.Controllers
             bool siDocModulo5 = false;
             bool siDocCopiaContratto = false;
             bool siDocCopiaRicevuta = false;
+            bool chkRinuncia = false;
             decimal idDocModulo1 = 0;
             decimal idDocModulo2 = 0;
             decimal idDocModulo3 = 0;
@@ -212,6 +221,13 @@ namespace NewISE.Controllers
                             }
                         }
 
+                        var ma = dtma.GetMaggiorazioneAbitazionePartenza(idTrasferimento);
+                        var rmab = dtma.GetRinunciaMAB(ma);
+                        if(rmab.rinuncia)
+                        {
+                            chkRinuncia = true;
+                        }
+
                     }
                     decimal NumAttivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
 
@@ -231,6 +247,7 @@ namespace NewISE.Controllers
                     ViewData.Add("idDocModulo4", idDocModulo4);
                     ViewData.Add("idDocModulo5", idDocModulo5);
                     ViewData.Add("soloLettura", soloLettura);
+                    ViewData.Add("chkRinuncia", chkRinuncia);
                     ViewData.Add("NumAttivazioni", NumAttivazioni);
                 }
 
@@ -249,6 +266,7 @@ namespace NewISE.Controllers
             AttivazioneMABModel amm = new AttivazioneMABModel();
             MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
             VariazioniMABModel vmam = new VariazioniMABModel();
+            RinunciaMABModel rmab = new RinunciaMABModel();
 
             try
             {
@@ -268,8 +286,9 @@ namespace NewISE.Controllers
                 {
                     amm = dtma.GetAttivazionePartenzaMAB(idTrasferimento);
                     num_attivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
-                    mam = dtma.GetMaggiorazioneAbitazione(amm);
-                    vmam = dtma.GetVariazioniMAB(mam);
+                    mam = dtma.GetMaggiorazioneAbitazionePartenza(idTrasferimento);
+                    vmam = dtma.GetVariazioniMABPartenza(idTrasferimento);
+                    rmab = dtma.GetRinunciaMAB(mam);
 
                     var ldocModulo1 = dtma.GetDocumentiMABbyTipoDoc(amm.idAttivazioneMAB, (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione);
                     if (ldocModulo1.Count > 0)
@@ -332,6 +351,16 @@ namespace NewISE.Controllers
                         hiddenAnnullaRichiesta = "";
                     }
                 }
+                //gestione pulsanti in caso di rinuncia
+                if (notificaRichiesta && attivaRichiesta == false && rmab.rinuncia && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                {
+                    disabledAttivaRichiesta = "";
+                    disabledAnnullaRichiesta = "";
+                }
+                if (rmab.rinuncia && notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                {
+                    disabledNotificaRichiesta = "";
+                }
 
                 ViewData.Add("idTrasferimento", idTrasferimento);
                 ViewData.Add("idAttivazioneMAB", idAttivazioneMAB);
@@ -375,7 +404,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -635,6 +664,21 @@ namespace NewISE.Controllers
                             using (dtTrasferimento dtt = new dtTrasferimento())
                             {
 
+                                var ma = dtma.GetMaggiorazioneAbitazioneByID(idMAB);
+
+                                var vmam = dtma.GetVariazioniMABPartenza(ma.IDTRASFERIMENTO);
+
+                                CANONEMAB cm = dtma.GetCanoneMABPartenza(vmam);
+
+                                mam.importo_canone = cm.IMPORTOCANONE;
+                                mam.dataInizioMAB = vmam.DataInizioMAB;
+                                mam.dataFineMAB = vmam.DataFineMAB;
+                                mam.anticipoAnnuale = vmam.AnticipoAnnuale;
+
+                                var vm = dtv.GetValutaByIdCanone(cm.IDCANONE,db);
+                                mam.descrizioneValuta = vm.descrizioneValuta;
+                                mam.id_Valuta = vm.idValuta;
+
                                 var lv = dtv.GetElencoValute(db);
 
                                 if (lv != null && lv.Count > 0)
@@ -652,93 +696,36 @@ namespace NewISE.Controllers
                                 lValute = r;
                                 ViewBag.lValute = lValute;
 
-                                var ma = dtma.GetMaggiorazioneAbitazioneByID(idMAB);
                                 var t = dtt.GetTrasferimentoById(ma.IDTRASFERIMENTO);
                                 mam.idMAB = ma.IDMAB;
-                                //mam.dataPartenza = t.dataPartenza;
                                 mam.idTrasferimento = ma.IDTRASFERIMENTO;
-                                //mam.idAttivazioneMAB = ma.IDATTIVAZIONEMAB;
-
-                                //mam.dataInizioMAB = ma.DATAINIZIOMAB;
-                                //mam.dataFineMAB = ma.DATAFINEMAB;
-                                //mam.ut_dataFineMAB = ma.DATAFINEMAB;
-                                //mam.AnticipoAnnuale = ma.ANTICIPOANNUALE;
+                                var amab=dtma.GetAttivazioneMAB(ma.IDTRASFERIMENTO);
+                                mam.idAttivazioneMAB = amab.idAttivazioneMAB;
 
                                 mam.idMagAnnuali = 0;
-                                //var mann = dtma.GetMaggiorazioneAnnuale(mam, db);
-                                //if (mann.idMagAnnuali > 0)
-                                //{
-                                //    mam.idMagAnnuali = mann.idMagAnnuali;
-                                //}
+                                var mann = dtma.GetMaggiorazioneAnnuale(vmam, db);
+                                if (mann.idMagAnnuali > 0)
+                                {
+                                    mam.idMagAnnuali = mann.idMagAnnuali;
+                                }
 
-                                var lpc = dtma.GetListPagatoCondivisoMAB(mam);
+                                var lpc = dtma.GetListPagatoCondivisoMABPartenza(mam);
 
                                 if (lpc.Count() > 0)
                                 {
                                     var pc = lpc.First();
                                     mam.canone_condiviso = pc.CONDIVISO;
                                     mam.canone_pagato = pc.PAGATO;
-
-                                    //#region inserisce eventuale pagato condiviso
-                                    //if (mam.canone_condiviso)
-                                    //{
-                                    //    //PAGATOCONDIVISOMAB pc = dtma.SetPagatoCondivisoMAB(mvm, db);
-
-                                    //    pc.PAGATO = mam.canone_pagato;
-                                    //    pc.CONDIVISO = mam.canone_condiviso;
-                                    //    pc.DATAINIZIOVALIDITA = mam.dataInizioMAB;
-                                    //    pc.DATAFINEVALIDITA = mam.dataFineMAB;
-                                    //    pc.DATAAGGIORNAMENTO = DateTime.Now;
-
-                                    //    if (db.SaveChanges() > 0)
-                                    //    {
-
-                                    //        #region associa percentuale condivisione
-                                    //        var lpercCond = dtma.GetListaPercentualeCondivisione(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
-                                    //        if (lpercCond?.Any() ?? false)
-                                    //        {
-                                    //            //rimuovo precedenti associazioni percentuali
-                                    //            dtma.RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, db);
-
-                                    //            //riassocio le percentuali
-                                    //            foreach (var percCond in lpercCond)
-                                    //            {
-                                    //                dtma.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
-                                    //            }
-                                    //        }
-                                    //        else
-                                    //        {
-                                    //            throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
-                                    //        }
-                                    //        #endregion
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        throw new Exception("Errore nell'aggiornamento di PAgatoCondivisoMAB.");
-                                    //    }
-
-
-                                    //}
-                                    //#endregion
                                 }
 
-                                //if (ma.DATAFINEMAB == Utility.DataFineStop())
-                                //{
-                                //    mam.ut_dataFineMAB = null;
-                                //}
-
-                                
-                                //var canone = dtma.GetCanoneMAB(mam);
-
-                                //if (canone.IDCANONE > 0)
-                                //{
-                                //    mam.importo_canone = canone.IMPORTOCANONE;
-                                //    var v = dtv.GetValutaByIdCanone(canone.IDCANONE);
-                                //    mam.id_Valuta = v.idValuta;
-                                //}
+                                mam.ut_dataFineMAB = vmam.DataFineMAB;
+                                if (vmam.DataFineMAB == Utility.DataFineStop())
+                                {
+                                    mam.ut_dataFineMAB = null;
+                                }
 
                                 ViewData.Add("idMAB", idMAB);
-                                ViewData.Add("idTrasferimento", mam.idTrasferimento);
+                                ViewData.Add("idTrasferimento", ma.IDTRASFERIMENTO);
                                 ViewBag.lValute = lValute;
 
                                 return PartialView(mam);
@@ -980,6 +967,72 @@ namespace NewISE.Controllers
             return PartialView(msg);
         }
 
+        public ActionResult GestioneRinunciaMABPartenza(decimal idTrasferimento)
+        {
+            RinunciaMABModel rmabm = new RinunciaMABModel();
+            bool soloLettura = false;
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
+                    {
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
+
+                            var mam = dtmab.GetMaggiorazioneAbitazionePartenza(idTrasferimento);
+
+                            rmabm = dtmab.GetRinunciaMAB(mam);
+
+                            var amm = dtmab.GetAttivazionePartenzaMAB(idTrasferimento);
+
+                            EnumStatoTraferimento statoTrasferimento = 0;
+                            statoTrasferimento = t.idStatoTrasferimento;
+                            if (statoTrasferimento == EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Attivo)
+                            {
+                                soloLettura = true;
+                            }
+                            if (rmabm.rinuncia && amm.notificaRichiesta)
+                            {
+                                soloLettura = true;
+                            }
+                            if (amm.notificaRichiesta)
+                            {
+                                soloLettura = true;
+                            }
+
+                            ViewData.Add("soloLettura", soloLettura);
+
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(rmabm);
+        }
+
+        public JsonResult AggiornaRinunciaMABPartenza(decimal idRinunciaMAB)
+        {
+            try
+            {
+                using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
+                {
+                    dtmab.Aggiorna_RinunciaMABPartenza(idRinunciaMAB);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { errore = ex.Message, msg = "" });
+            }
+            return Json(new { errore = "", msg = "Aggiornamento eseguito correttamente." });
+        }
 
     }
 }

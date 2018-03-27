@@ -1867,16 +1867,23 @@ namespace NewISE.Controllers
 
         public ActionResult GestioneTrasferimento(decimal idTrasferimento)
         {
-            using (dtTrasferimento dtt = new dtTrasferimento())
-            {
-                var msgmail = dtt.GetMessaggioAnnullaTrasf(idTrasferimento);
-                var msg = msgmail.corpoMsg;
-                ViewBag.msgAnnulla = msg;
+            try
+            { 
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var msgmail = dtt.GetMessaggioAnnullaTrasf(idTrasferimento);
+                    var msg = msgmail.corpoMsg;
+                    ViewBag.msgAnnulla = msg;
+                }
+
+                ViewBag.idTrasferimento = idTrasferimento;
+
+                return PartialView();
             }
-
-            ViewBag.idTrasferimento = idTrasferimento;
-
-            return PartialView();
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
         }
 
         public ActionResult AttivitaTrasferimento(decimal idTrasferimento)
@@ -2187,7 +2194,7 @@ namespace NewISE.Controllers
                             using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                             {
                                 AttivazioneMABModel amm = dtma.GetUltimaAttivazioneMAB(idTrasferimento);
-                                MaggiorazioneAbitazioneModel mam = dtma.GetMaggiorazioneAbitazione(amm);
+                                MaggiorazioneAbitazioneModel mam = dtma.GetMaggiorazioneAbitazionePartenza(idTrasferimento);
 
                                 if (mam.idMAB.ToString() != null)
                                 {

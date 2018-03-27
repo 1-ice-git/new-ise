@@ -1,4 +1,4 @@
-﻿function GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento) {
+﻿function GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento) {
     //debugger;
     var rotta = "/MaggiorazioneAbitazione/GestionePulsantiMAB";
     $.ajax({
@@ -250,7 +250,7 @@ function SalvaDocumentoMAB(idTrasferimento, idTipoDocumento) {
 
                     CloseTimeModalMAB(idTrasferimento);
 
-                    GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
+                    GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
                 }
 
             },
@@ -305,7 +305,8 @@ function ConfermaNotificaRichiestaMAB() {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
-                GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
+                GestioneRinunciaMABPartenza(idTrasferimento);
+                GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {
                 ErroreElaborazioneAjax(result.err);
@@ -345,7 +346,8 @@ function ConfermaAnnullaRichiestaMAB() {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
-                GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
+                GestioneRinunciaMABPartenza(idTrasferimento);
+                GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {
                 ErroreElaborazioneAjax(result.err);
@@ -383,7 +385,7 @@ function ConfermaAttivaRichiestaMAB() {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
-                GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
+                GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {
                 ErroreElaborazioneAjax(result.err);
@@ -457,4 +459,75 @@ function MessaggioAnnullaRichiestaMAB() {
             ErroreElaborazioneAjax(msg);
         }
     });
+}
+
+function GestioneRinunciaMABPartenza(idTrasferimento) {
+    //debugger;
+    var rotta = "/MaggiorazioneAbitazione/GestioneRinunciaMABPartenza";
+
+    $.ajax({
+        type: "POST",
+        url: rotta,
+        data: { idTrasferimento: idTrasferimento },
+        dataType: 'html',
+        beforeSend: function () {
+            //debugger;
+            VerificaAutenticazione();
+        },
+        success: function (result) {
+            //debugger;
+            $("#divRinunciaMABPartenza").empty();
+            $("#divRinunciaMABPartenza").html(result);
+            Sblocca();
+        },
+        complete: function () {
+
+        },
+        error: function (jqXHR, textStatus, errorThrow) {
+            //debugger;
+            var msg = errorThrow.err;
+            ErroreElaborazioneAjax(msg);
+        }
+
+    });
+}
+
+function AggiornaRinunciaMABPartenza(idRinunciaMAB) {
+    //debugger;
+    var rotta = "/MaggiorazioneAbitazione/AggiornaRinunciaMABPartenza";
+
+    $.ajax({
+        url: rotta,
+        type: "POST", //Le info testuali saranno passate in POST
+        data: { idRinunciaMAB: idRinunciaMAB },
+        dataType: 'json',
+        async: false,
+        beforeSend: function () {
+            //debugger;
+            VerificaAutenticazione();
+            Blocca();
+
+        },
+        success: function (result) {
+            //debugger;
+            if (result.errore === "") {
+                var idTrasferimento = parseInt($('#hi_idTrasferimento').val());
+                AttivitaMAB(idTrasferimento);
+                FormulariMAB(idTrasferimento);
+                GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
+            } else {
+                ErroreElaborazioneAjax(result.msg);
+            }
+        },
+        complete: function () {
+            Sblocca();
+        },
+        error: function (error) {
+            //debugger;
+            Sblocca();
+            var msg = error.responseText;
+            ErroreElaborazioneAjax(msg);
+        }
+    });
+
 }

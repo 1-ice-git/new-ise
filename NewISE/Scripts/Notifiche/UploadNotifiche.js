@@ -250,7 +250,7 @@ function SalvaDocumentoMAB(idTrasferimento, idTipoDocumento) {
 
                     CloseTimeModalMAB(idTrasferimento);
 
-                    GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
+                    GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
                 }
 
             },
@@ -305,7 +305,7 @@ function ConfermaNotificaRichiestaMAB() {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
-                GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
+                GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {
                 ErroreElaborazioneAjax(result.err);
@@ -345,7 +345,7 @@ function ConfermaAnnullaRichiestaMAB() {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
-                GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
+                GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {
                 ErroreElaborazioneAjax(result.err);
@@ -383,7 +383,7 @@ function ConfermaAttivaRichiestaMAB() {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
-                GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
+                GestionePulsantiNotificaAttivaAnnullaMABPartenza(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {
                 ErroreElaborazioneAjax(result.err);

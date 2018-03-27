@@ -20,10 +20,10 @@
             {
                 @Ajax.ActionLink("Modifica", "ModificaMAB", "MaggiorazioneAbitazione", new { idMAB = idMAB }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica Maggiorazione Abitazione", @id = "linkEditMAB" })
             }
-            else
+            @*else
             {
                 @Ajax.ActionLink("Nuovo", "NuovaMAB", "MaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB" })
-            }
+            }*@
         }
     </div>
     <table id="tabMAB" class="table table-striped">
@@ -39,7 +39,7 @@
                     @Html.DisplayNameFor(model => model.importo_canone)
                 </th>
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.dataInizioMAB )
+                    @Html.DisplayNameFor(model => model.dataInizioMAB)
                 </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataFineMAB)

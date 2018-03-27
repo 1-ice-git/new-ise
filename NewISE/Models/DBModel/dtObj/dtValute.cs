@@ -33,33 +33,30 @@ namespace NewISE.Models.DBModel.dtObj
             return vm;
         }
 
-        public ValuteModel GetValutaByIdCanone(decimal idCanone)
+        public ValuteModel GetValutaByIdCanone(decimal idCanone,ModelDBISE db)
         {
-            using (ModelDBISE db = new ModelDBISE())
+            ValuteModel valm = new ValuteModel();
+
+            CANONEMAB cm = db.CANONEMAB.Find(idCanone);
+
+            if (cm.IDCANONE > 0)
             {
-                ValuteModel valm = new ValuteModel();
-
-                CANONEMAB cm = db.CANONEMAB.Find(idCanone);
-
-                if (cm.IDCANONE > 0)
+                var tfrl = cm.TFR.Where(X => X.ANNULLATO == false).ToList();
+                if (tfrl?.Any() ?? false)
                 {
-                    var tfrl = cm.TFR.Where(X => X.ANNULLATO == false).ToList();
-                    if (tfrl?.Any() ?? false)
+                    TFR tfr = tfrl.First();
+                    var v = tfr.VALUTE;
+                    ValuteModel vm = new ValuteModel()
                     {
-                        TFR tfr = tfrl.First();
-                        var v = tfr.VALUTE;
-                        ValuteModel vm = new ValuteModel()
-                        {
-                            idValuta = v.IDVALUTA,
-                            descrizioneValuta = v.DESCRIZIONEVALUTA,
-                            valutaUfficiale = v.VALUTAUFFICIALE
-                        };
-                        valm = vm;
-                    }
+                        idValuta = v.IDVALUTA,
+                        descrizioneValuta = v.DESCRIZIONEVALUTA,
+                        valutaUfficiale = v.VALUTAUFFICIALE
+                    };
+                    valm = vm;
                 }
-
-                return valm;
             }
+
+            return valm;
         }
 
 

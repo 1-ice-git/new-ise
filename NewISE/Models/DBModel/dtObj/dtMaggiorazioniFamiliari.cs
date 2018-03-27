@@ -145,18 +145,131 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 //imposta coniuge e figli con statorecord da da_attivare a attivato
                                 var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
                                 foreach (var c in lc)
                                 {
                                     c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                    db.SaveChanges();
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore in fase di impostazione a record attivato (coniuge).");
+                                    }
+                                    #region riassocia percentuali coniuge
+                                    using (dtConiuge dtc = new dtConiuge())
+                                    {
+                                        using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                                        {
+                                            var cm = dtc.GetConiugebyID(c.IDCONIUGE);
+                                            DateTime dtIni = cm.dataInizio.Value;
+                                            DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
+
+                                            var pccl = c.PERCENTUALEMAGCONIUGE;
+                                            foreach (var pcc in pccl)
+                                            {
+                                                c.PERCENTUALEMAGCONIUGE.Remove(pcc);
+                                                if(db.SaveChanges()<=0)
+                                                {
+                                                    throw new Exception("Errore in fase di riassociazione percentuale coniuge (elimina associazione precedente).");
+                                                }
+                                            }
+
+                                            List<PercentualeMagConiugeModel> lpmcm =
+                                                dtpc.GetListaPercentualiMagConiugeByRangeDate(cm.idTipologiaConiuge, dtIni, dtFin, db)
+                                                    .ToList();
+
+                                            if (lpmcm?.Any() ?? false)
+                                            {
+                                                foreach (var pmcm in lpmcm)
+                                                {
+                                                    dtpc.AssociaPercentualeMaggiorazioneConiuge(cm.idConiuge, pmcm.idPercentualeConiuge, db);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Non è presente nessuna percentuale del coniuge.");
+                                            }
+                                        }
+                                    }
+                                    #endregion
                                 }
+                                var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
                                 foreach (var f in lf)
                                 {
                                     f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                    db.SaveChanges();
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore in fase di impostazione a record attivato (figli).");
+                                    }
+
+                                    #region reimposta percentuali figli
+                                    using (dtFigli dtf = new dtFigli())
+                                    {
+                                        using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+                                        {
+                                            using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
+                                            {
+                                                var fm = dtf.GetFigliobyID(f.IDFIGLI);
+
+                                                DateTime dtIni = fm.dataInizio.Value;
+                                                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+
+                                                var pcfl = f.PERCENTUALEMAGFIGLI;
+                                                foreach (var pcf in pcfl)
+                                                {
+                                                    f.PERCENTUALEMAGFIGLI.Remove(pcf);
+                                                    if (db.SaveChanges() <= 0)
+                                                    {
+                                                        throw new Exception("Errore in fase di riassociazione percentuale figli (elimina associazione precedente).");
+                                                    }
+                                                }
+                                                List<PercentualeMagFigliModel> lpmfm =
+                                                    dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni,
+                                                        dtFin, db).ToList();
+
+                                                if (lpmfm?.Any() ?? false)
+                                                {
+                                                    foreach (var pmfm in lpmfm)
+                                                    {
+                                                        dtpf.AssociaPercentualeMaggiorazioneFigli(fm.idFigli, pmfm.idPercMagFigli, db);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception("Non è presente nessuna percentuale per il figlio.");
+                                                }
+
+                                                dtIni = fm.dataInizio.Value;
+                                                dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+
+                                                var pcpsl = f.INDENNITAPRIMOSEGRETARIO;
+                                                foreach (var pcps in pcpsl)
+                                                {
+                                                    f.INDENNITAPRIMOSEGRETARIO.Remove(pcps);
+                                                    if (db.SaveChanges() <= 0)
+                                                    {
+                                                        throw new Exception("Errore in fase di riassociazione indennita primo segretario (elimina associazione precedente).");
+                                                    }
+                                                }
+                                                List<IndennitaPrimoSegretModel> lipsm =
+                                                    dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                                                if (lipsm?.Any() ?? false)
+                                                {
+                                                    foreach (var ipsm in lipsm)
+                                                    {
+                                                        dtips.AssociaIndennitaPrimoSegretarioFiglio(fm.idFigli, ipsm.idIndPrimoSegr, db);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception(
+                                                        "Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
+                                                }
+                                            }
+                                        }
+                                    }   
+                                    #endregion
                                 }
 
+                                //----------------------------------
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
                                     using (dtTrasferimento dtt = new dtTrasferimento())

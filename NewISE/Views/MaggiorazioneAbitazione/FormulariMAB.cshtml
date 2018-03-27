@@ -16,6 +16,7 @@
     decimal idDocModulo4 = Convert.ToDecimal(ViewData["idDocModulo4"]);
     decimal idDocModulo5 = Convert.ToDecimal(ViewData["idDocModulo5"]);
     bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    bool chkRinuncia = Convert.ToBoolean(ViewData["chkRinuncia"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal NumAttivazioni = Convert.ToDecimal(ViewData["NumAttivazioni"]);
 }
@@ -39,7 +40,7 @@
                     </b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (siDocModulo1)
+                    @if (siDocModulo1 && chkRinuncia==false)
                     {
                         <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo1})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
@@ -51,7 +52,7 @@
                     }
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (soloLettura == false)
+                    @if (soloLettura == false && chkRinuncia==false)
                     {
                         <a href="#" onclick="UploadDocumentoMABModal(@Convert.ToDecimal(@EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione),@idTrasferimento);" id="uploadDoc1MAB">
                             @if (siDocModulo1)
