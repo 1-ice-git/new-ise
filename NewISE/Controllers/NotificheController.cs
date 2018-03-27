@@ -210,27 +210,27 @@ namespace NewISE.Controllers
                                 dimensioneMaxConsentita + " Mb).");
                         }
                     }
-                    using (dtNotifiche dn = new dtNotifiche())
+                    bool tutti = false;
+                    using (dtNotifiche dtn = new dtNotifiche())
                     {
-                        uta = dn.RestituisciAutorizzato(idMittenteLogato);
-                        InserimentoEffettuatoinDB = dn.InsertNotifiche(nmod);
+                        uta = dtn.RestituisciAutorizzato(idMittenteLogato);
+                        InserimentoEffettuatoinDB = dtn.InsertNotifiche(nmod, out tutti);
                         db.Database.CurrentTransaction.Commit();
                         idMittenteLogato = nmod.idMittente;// Utility.UtenteAutorizzato().idDipendente;
-                        lnm = dn.GetNotifiche(idMittenteLogato).ToList();
-                    }
-                    //*************************************************************************
-                    //INVIARE EMAIL SE NON SI E' VERIFICATO NESSUN ERRORE
-                    //*************************************************************************
-                    if (InserimentoEffettuatoinDB)
-                    {
-                        using (GestioneEmail gmail = new GestioneEmail())
+                        lnm = dtn.GetNotifiche(idMittenteLogato).ToList();
+
+                        //*************************************************************************
+                        //INVIARE EMAIL SE NON SI E' VERIFICATO NESSUN ERRORE
+                        //*************************************************************************
+                        if (InserimentoEffettuatoinDB)
                         {
-                            ModelloAllegatoMail allegato = new ModelloAllegatoMail();
-                            Destinatario dest = new Destinatario();
-                            Destinatario destToCc = new Destinatario();
-                            ModelloMsgMail modMSGmail = new ModelloMsgMail();
-                            using (dtNotifiche dtn = new dtNotifiche())
+                            using (GestioneEmail gmail = new GestioneEmail())
                             {
+                                ModelloAllegatoMail allegato = new ModelloAllegatoMail();
+                                Destinatario dest = new Destinatario();
+                                Destinatario destToCc = new Destinatario();
+                                ModelloMsgMail modMSGmail = new ModelloMsgMail();
+
                                 if (nmod.Allegato != null)
                                 {
                                     var docByte = dtn.GetDocumentoByteById(nmod.idNotifica);
@@ -254,13 +254,14 @@ namespace NewISE.Controllers
                                     string nominativo_ = nome_ + " " + cognome_;
                                     if (!x.ToCc)
                                     {
+                                        dest = new Destinatario();
                                         dest.EmailDestinatario = dtn.GetEmailByIdDipendente(x.idDipendente);
                                         dest.Nominativo = nominativo_;
                                         modMSGmail.destinatario.Add(dest);
-
                                     }
                                     else
                                     {
+                                        destToCc = new Destinatario();
                                         destToCc.EmailDestinatario = dtn.GetEmailByIdDipendente(x.idDipendente);
                                         destToCc.Nominativo = nominativo_;
                                         modMSGmail.cc.Add(destToCc);
@@ -269,22 +270,60 @@ namespace NewISE.Controllers
                                 //Qui aggiungere tutti gli amministratori in toCC escluso il mittente amministratore
                                 idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
                                 uta = dtn.RestituisciAutorizzato(idMittenteLogato);
-                                List<DipendentiModel>lls= dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Amministratore);
+                                List<DipendentiModel> lls = dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Amministratore);
                                 foreach (var zz in lls)
                                 {
                                     foreach (var x in ddss)
                                     {
                                         if (zz.idDipendente != x.idDipendente)
                                         {
-                                            destToCc.EmailDestinatario = dtn.GetEmailByIdDipendente(zz.idDipendente);
-                                            string nome_cc = dtn.RestituisciDipendenteByID(zz.idDipendente).nome;
-                                            string cognome_cc = dtn.RestituisciDipendenteByID(zz.idDipendente).cognome;
-                                            string nominativo_cc = nome_cc + " " + cognome_cc;
-                                            destToCc.Nominativo = nominativo_cc;
-                                            modMSGmail.cc.Add(destToCc);
+                                            if (tutti == false)
+                                            {
+                                                destToCc = new Destinatario();
+                                                destToCc.EmailDestinatario = dtn.GetEmailByIdDipendente(zz.idDipendente);
+                                                string nome_cc = dtn.RestituisciDipendenteByID(zz.idDipendente).nome;
+                                                string cognome_cc = dtn.RestituisciDipendenteByID(zz.idDipendente).cognome;
+                                                string nominativo_cc = nome_cc + " " + cognome_cc;
+                                                destToCc.Nominativo = nominativo_cc;
+                                                foreach (var h in modMSGmail.cc)
+                                                {
+                                                    if (h.EmailDestinatario.ToUpper().Trim() != destToCc.EmailDestinatario.ToUpper().Trim())
+                                                    {
+                                                        modMSGmail.cc.Add(destToCc);
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                /////////////Controllare il ToCC in modo che contenga tutti gli amministratori
+                                bool found = false;
+                                foreach (var x in lls)
+                                {
+                                    if (modMSGmail.cc.Count != 0)
+                                    {
+                                        found = false;
+                                        foreach (var h in modMSGmail.cc)
+                                        {
+                                            if (h.EmailDestinatario.ToUpper().Trim() == x.email.ToUpper().Trim())
+                                            {
+                                                found = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (found == false)
+                                    {
+                                        destToCc = new Destinatario();
+                                        string nome_cc = x.nome;
+                                        string cognome_cc = x.cognome;
+                                        destToCc.EmailDestinatario = x.email;
+                                        string nominativo_cc = nome_cc + " " + cognome_cc;
+                                        destToCc.Nominativo = nominativo_cc;
+                                        modMSGmail.cc.Add(destToCc);
+                                    }
+                                }
+                                ///////////////////////////////////////////////////////
                                 modMSGmail.mittente = mitt;
                                 gmail.sendMail(modMSGmail);
                             }
@@ -294,7 +333,7 @@ namespace NewISE.Controllers
                 }
                 catch (Exception ex)
                 {
-                    db.Database.CurrentTransaction.Rollback();
+                 //   db.Database.CurrentTransaction.Rollback();
                     return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
                 }
             }

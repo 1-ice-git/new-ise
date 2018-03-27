@@ -387,8 +387,9 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
-        public bool InsertNotifiche(NotificheModel NM)
+        public bool InsertNotifiche(NotificheModel NM, out bool tutti)
         {
+            tutti = false;
             List<DESTINATARI> listDest = new List<DESTINATARI>();
             decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
             using (dtNotifiche dtn = new dtNotifiche())
@@ -400,6 +401,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (ld.Length == 1 && ld[0].ToUpper() == "TUTTI")
                 {
+                    tutti = true;
                     UtentiAutorizzatiModel uta = dtn.RestituisciAutorizzato(idMittenteLogato);
                     var tmp = new List<SelectListItem>();
                     if (uta.idRouloUtente == (decimal)EnumRuoloAccesso.Amministratore)
