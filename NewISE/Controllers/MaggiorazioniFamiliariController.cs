@@ -88,11 +88,17 @@ namespace NewISE.Controllers
         public ActionResult ElencoFormulariInseriti(decimal idAttivazioneMagFam)
         {
             bool solaLettura = false;
+            try
+            { 
+                solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
 
-            solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
-
-            ViewData.Add("solaLettura", solaLettura);
-            ViewData["idAttivazioneMagFam"] = idAttivazioneMagFam;
+                ViewData.Add("solaLettura", solaLettura);
+                ViewData["idAttivazioneMagFam"] = idAttivazioneMagFam;
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
             return PartialView();
         }
@@ -126,8 +132,14 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult NuovoFormularioMF(decimal idAttivazioneMagFam)
         {
-
-            ViewData["idAttivazioneMagFam"] = idAttivazioneMagFam;
+            try
+            { 
+                ViewData["idAttivazioneMagFam"] = idAttivazioneMagFam;
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
             return PartialView();
         }
@@ -268,13 +280,6 @@ namespace NewISE.Controllers
             try
             {
                 amministratore = Utility.Amministratore();
-
-                //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                //{
-
-                //}
-
-
 
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                 {

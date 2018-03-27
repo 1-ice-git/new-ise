@@ -16,6 +16,7 @@ namespace NewISE.Models.ViewModel
         public decimal importo_canone { get; set; }
         public decimal id_Valuta { get; set; }
         public decimal idMagAnnuali { get; set; }
+        public decimal idAttivazioneMAB { get; set; }
 
         [Display(Name = "Valuta")]
         public string descrizioneValuta { get; set; }
@@ -23,14 +24,18 @@ namespace NewISE.Models.ViewModel
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? ut_dataFineMAB { get; set; }
 
-        [Display(Name = "Canone condiviso")]
+        [Display(Name = "Canone Condiviso")]
         public bool canone_condiviso { get; set; }
         [Display(Name = "Pagato")]
         public bool canone_pagato { get; set; }
 
         public bool anticipoAnnuale { get; set; }
 
+        [Display(Name = "Data Inizio")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dataInizioMAB { get; set; }
+        [Display(Name = "Data Fine")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dataFineMAB { get; set; }
 
     }

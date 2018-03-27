@@ -264,22 +264,29 @@ namespace NewISE.Controllers
 
         public ActionResult NuovoDocumentoTEPartenza(EnumTipoDoc idTipoDocumento, decimal idTrasportoEffettiPartenza)
         {
-            string titoloPagina = string.Empty;
+            try
+            { 
+                string titoloPagina = string.Empty;
 
-            using (dtDocumenti dtd = new dtDocumenti())
-            {
-                titoloPagina = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento((decimal)idTipoDocumento);
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    titoloPagina = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento((decimal)idTipoDocumento);
+                }
+
+                ViewData.Add("titoloPagina", titoloPagina);
+                ViewData.Add("idTipoDocumento", (decimal)idTipoDocumento);
+                ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+
+                return PartialView();
             }
-
-            ViewData.Add("titoloPagina", titoloPagina);
-            ViewData.Add("idTipoDocumento", (decimal)idTipoDocumento);
-            ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
-
-            return PartialView();
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
         }
 
 
-        public ActionResult SalvaDocumentoTEPartenza(decimal idTipoDocumento, decimal idTrasportoEffettiPartenza)
+        public JsonResult SalvaDocumentoTEPartenza(decimal idTipoDocumento, decimal idTrasportoEffettiPartenza)
         {
             using (ModelDBISE db = new ModelDBISE())
             {

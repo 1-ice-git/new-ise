@@ -3433,6 +3433,7 @@
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\MessaggioAnnullaMAB_var.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\ModificaMAB_var.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovaMAB_var.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\GestioneRinunciaMABPartenza.cshtml" />
     <Content Include="Views\Notifiche\NotificheRicevute.cshtml" />
     <Content Include="Views\Notifiche\VisualizzaMittente.cshtml" />
     <None Include="Web.Debug.config">

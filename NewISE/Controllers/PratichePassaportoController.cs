@@ -51,10 +51,16 @@ namespace NewISE.Controllers
         public ActionResult ColonnaElencoDoc(decimal idAttivazionePassaporto, decimal idFamiliarePassaporto, EnumParentela parentela)
         {
             ElencoFamiliariPassaportoModel efm = new ElencoFamiliariPassaportoModel();
-
-            using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+            try
+            { 
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    efm = dtpp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
+                }
+            }
+            catch (Exception ex)
             {
-                efm = dtpp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             return PartialView(efm);
