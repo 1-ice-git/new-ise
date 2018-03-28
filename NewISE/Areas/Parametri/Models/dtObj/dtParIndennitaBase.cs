@@ -423,7 +423,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDLIVELLO = ibm.idLivello,
                                 };
                                 //qui annullo tutti i record rimanenti dalla data inizio inserita
-                                libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst).ToList();
+                                libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO==ibm.idLivello).ToList().Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst).ToList();
                                 foreach (var elem in libNew)
                                 {
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDENNITABASE), db);
@@ -478,7 +478,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAAGGIORNAMENTO = DateTime.Now,
                                         IDLIVELLO = ibm.idLivello,
                                     };
-                                    libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO==ibm.idLivello).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
                                     foreach (var elem in libNew)
                                     {
                                         RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDENNITABASE), db);
@@ -545,7 +545,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAAGGIORNAMENTO = DateTime.Now,
                                         IDLIVELLO = ibm.idLivello,
                                     };
-                                    libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.LIVELLI.IDLIVELLO==ibm.idLivello).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
                                     foreach (var elem in libNew)
                                     {
                                         RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDENNITABASE), db);
