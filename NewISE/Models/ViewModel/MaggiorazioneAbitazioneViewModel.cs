@@ -24,17 +24,17 @@ namespace NewISE.Models.ViewModel
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? ut_dataFineMAB { get; set; }
 
-        [Display(Name = "Canone Condiviso")]
+        [Display(Name = "Canone condiviso")]
         public bool canone_condiviso { get; set; }
         [Display(Name = "Pagato")]
         public bool canone_pagato { get; set; }
-
+        [Display(Name = "Anticipo annuale")]
         public bool anticipoAnnuale { get; set; }
 
-        [Display(Name = "Data Inizio")]
+        [Display(Name = "Data inizio")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dataInizioMAB { get; set; }
-        [Display(Name = "Data Fine")]
+        [Display(Name = "Data fine")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dataFineMAB { get; set; }
 

@@ -27,7 +27,7 @@
             <hr />
             @Html.Hidden("idTrasferimento", idTrasferimento)
             @Html.Hidden("dataPartenza", Model.dataInizioMAB)
-            @Html.Hidden("idMagAnnuali", Model.idMagAnnuali )
+            @Html.Hidden("idMagAnnuali", Model.idMagAnnuali)
             @Html.Hidden("idMAB", idMAB)
             <div class="row">
                 <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
@@ -35,12 +35,12 @@
                         <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.anticipoAnnuale, new { @class = "control-label col-xs-3" })
-                                @if (Model.idMagAnnuali>0)
+                                @if (Model.idMagAnnuali > 0)
                                 {
                                     if (Model.anticipoAnnuale)
                                     {
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model=>Model.anticipoAnnuale, "false") Semestrale</label>
+                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false") Semestrale</label>
                                         </div>
                                         <div class="col-xs-2">
                                             <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { @checked = true }) Annuale</label>
@@ -90,12 +90,12 @@
                             @Html.TextBoxFor(model => model.dataInizioMAB, "{0:dd/MM/yyyy}", new { disabled = "disabled", @class = "form-control col-xs-3" })
                         </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(Model => Model.dataFineMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
-                        <div class="col-xs-2">
-                            @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new { disabled = "disabled", @class = "form-control col-xs-2" })
-                        </div>
-                    </div>
+                    @*<div class="form-group">
+                            @Html.LabelFor(Model => Model.dataFineMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
+                            <div class="col-xs-2">
+                                @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new { disabled = "disabled", @class = "form-control col-xs-2" })
+                            </div>
+                        </div>*@
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.canone_condiviso, htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="col-xs-1">
@@ -138,7 +138,7 @@
             </div>
         </div>
     </div>
-}
+                                }
 
 <p style="padding-left: 15px;">
     @Ajax.ActionLink("Torna indietro", "GestioneMAB", "MaggiorazioneAbitazione", new { idTrasferimento = Model.idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
@@ -154,7 +154,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-            break;
+                break;
         }
     }
 
@@ -222,12 +222,9 @@
 
     $('#imp_canone').autoNumeric('init',
     {
-       aSep: '.',
-       aDec: ',',
-       nSep: true
+        aSep: '.',
+        aDec: ',',
+        nSep: true
     });
 
 </script>
-
-
-
