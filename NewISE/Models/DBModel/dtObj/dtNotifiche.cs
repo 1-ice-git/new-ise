@@ -75,10 +75,10 @@ namespace NewISE.Models.DBModel.dtObj
                         where d.IDRUOLOUTENTE == idRuoloUtente && d.IDDIPENDENTE > 0
                         select new UtentiAutorizzatiModel()
                         {
-                             idDipendente=(decimal)d.IDDIPENDENTE,
-                             idRouloUtente= idRuoloUtente,
-                             idUtenteAutorizzato=d.IDUTENTEAUTORIZZATO,
-                             Utente=d.UTENTE
+                            idDipendente = (decimal)d.IDDIPENDENTE,
+                            idRouloUtente = idRuoloUtente,
+                            idUtenteAutorizzato = d.IDUTENTEAUTORIZZATO,
+                            Utente = d.UTENTE
                         }).ToList();
 
                 foreach (var ut in uaut)
@@ -91,10 +91,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 && (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                                 select new DipendentiModel()
                                 {
+                                    matricola = t.DIPENDENTI.MATRICOLA,
                                     nome = t.DIPENDENTI.NOME == null ? "" : t.DIPENDENTI.NOME,
                                     cognome = t.DIPENDENTI.COGNOME == null ? "" : t.DIPENDENTI.COGNOME,
                                     email = t.DIPENDENTI.EMAIL == null ? "" : t.DIPENDENTI.EMAIL,
-                                    idDipendente = t.IDDIPENDENTE
+                                    idDipendente = t.IDDIPENDENTE,
                                 }).ToList();
                     }
                     else if (idRuoloUtente == (Decimal)EnumRuoloAccesso.Amministratore)
@@ -103,13 +104,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 where t.IDDIPENDENTE == ut.idDipendente
                                 select new DipendentiModel()
                                 {
+                                    matricola = t.MATRICOLA,
                                     nome = t.NOME == null ? "" : t.NOME,
                                     cognome = t.COGNOME == null ? "" : t.COGNOME,
                                     email = t.EMAIL == null ? "" : t.EMAIL,
                                     idDipendente = t.IDDIPENDENTE
                                 }).ToList();
                     }
-                    
+
 
                     if (ldes.Count != 0)
                     {
@@ -241,7 +243,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 lnot = (from e in db.NOTIFICHE
                         where e.IDMITTENTE == idMittenteLogato
-                        orderby e.DATANOTIFICA
+                        orderby e.DATANOTIFICA descending
                         select new NotificheModel()
                         {
                             idNotifica = e.IDNOTIFICA,
@@ -284,35 +286,6 @@ namespace NewISE.Models.DBModel.dtObj
             List<NotificheModel> lnot = new List<NotificheModel>();
             using (ModelDBISE db = new ModelDBISE())
             {
-                //List<NOTIFICHE> z = new List<NOTIFICHE>();
-                //var x =  db.DESTINATARI.Where(d=>d.IDDIPENDENTE==idMittenteLogato).ToList();
-                //foreach(var y in x)
-                //{
-                //    z = db.NOTIFICHE.Where(n => n.IDNOTIFICA == y.IDNOTIFICA).ToList();
-                //}
-                //foreach (var k in z)
-                //{
-                //    lnot = (from e in z where e.IDNOTIFICA==k.IDNOTIFICA
-                //               select new NotificheModel()
-                //               {
-                //                   idNotifica = e.IDNOTIFICA,
-                //                   idMittente = e.IDMITTENTE,
-                //                   Oggetto = e.OGGETTO,
-                //                   NumeroDestinatari = e.DESTINATARI.Count,
-                //                   corpoMessaggio = e.CORPOMESSAGGIO,
-                //                   dataNotifica = e.DATANOTIFICA,
-                //                   Allegato = e.ALLEGATO,
-                //                   Nominativo = e.DIPENDENTI.NOME + "  " + e.DIPENDENTI.COGNOME
-                //               }).ToList();
-                //}
-
-                //var notifiche = db.NOTIFICHE.Where(a => a.DESTINATARI.Where(b => b.IDDIPENDENTE == idDipendenteLogato).Any()).OrderByDescending(a => a.DATANOTIFICA).ToList();
-
-                //foreach (var n in notifiche)
-                //{
-                //    var d = n.DESTINATARI.Where(a => a.IDDIPENDENTE == idDipendenteLogato && a.IDNOTIFICA == n.IDNOTIFICA).First();
-
-                //}
                 var lDest = db.DESTINATARI.Where(a => a.IDDIPENDENTE == idDipendenteLogato).ToList();
 
                 foreach (var d in lDest)
@@ -600,6 +573,85 @@ namespace NewISE.Models.DBModel.dtObj
                 dm.email = d.EMAIL; d.INDIRIZZO = d.INDIRIZZO;
             }
             return dm;
+        }
+        public List<DipendentiModel> TuttiListaDestinatari(decimal idRuoloAccesso)
+        {
+            List<DipendentiModel> ldesdef = new List<DipendentiModel>();
+            DateTime dtNow = DateTime.Now.Date;// Convert.ToDateTime("01/04/2018");
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                if ((EnumRuoloAccesso)idRuoloAccesso == EnumRuoloAccesso.Utente)
+                {
+                    var ld =
+                    db.DIPENDENTI.Where(
+                        a =>
+                            a.ABILITATO == true &&
+                            a.UTENTIAUTORIZZATI.Where(
+                                b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente).Any() &&
+                            a.TRASFERIMENTO.Where(
+                                c =>
+                                    (c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                     c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                                    dtNow >= c.DATAPARTENZA &&
+                                    dtNow <= (c.DATARIENTRO.HasValue == true ? c.DATARIENTRO.Value : new DateTime(9999, 12, 31))).Any()).ToList();
+
+                    if (ld?.Any() ?? false)
+                    {
+                        ldesdef = (from e in ld
+                                   select new DipendentiModel()
+                                   {
+                                       idDipendente = e.IDDIPENDENTE,
+                                       abilitato = e.ABILITATO,
+                                       cap = e.CAP,
+                                       citta = e.CITTA,
+                                       cognome = e.COGNOME,
+                                       dataAssunzione = e.DATAASSUNZIONE,
+                                       dataCessazione = e.DATACESSAZIONE,
+                                       dataInizioRicalcoli = e.DATAINIZIORICALCOLI,
+                                       email = e.EMAIL,
+                                       fax = e.FAX,
+                                       indirizzo = e.INDIRIZZO,
+                                       matricola = e.MATRICOLA,
+                                       nome = e.NOME,
+                                       provincia = e.PROVINCIA,
+                                       telefono = e.TELEFONO
+                                   }).ToList();
+                    }
+                }
+                else if ((EnumRuoloAccesso)idRuoloAccesso == EnumRuoloAccesso.Amministratore)
+                {
+                    var ld =
+                    db.DIPENDENTI.Where(
+                        a =>
+                            a.ABILITATO == true &&
+                            a.UTENTIAUTORIZZATI.Where(
+                                b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).Any()).ToList();
+
+                    if (ld?.Any() ?? false)
+                    {
+                        ldesdef = (from e in ld
+                                   select new DipendentiModel()
+                                   {
+                                       idDipendente = e.IDDIPENDENTE,
+                                       abilitato = e.ABILITATO,
+                                       cap = e.CAP,
+                                       citta = e.CITTA,
+                                       cognome = e.COGNOME,
+                                       dataAssunzione = e.DATAASSUNZIONE,
+                                       dataCessazione = e.DATACESSAZIONE,
+                                       dataInizioRicalcoli = e.DATAINIZIORICALCOLI,
+                                       email = e.EMAIL,
+                                       fax = e.FAX,
+                                       indirizzo = e.INDIRIZZO,
+                                       matricola = e.MATRICOLA,
+                                       nome = e.NOME,
+                                       provincia = e.PROVINCIA,
+                                       telefono = e.TELEFONO
+                                   }).ToList();
+                    }
+                }
+            }
+            return ldesdef;
         }
     }
 }

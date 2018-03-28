@@ -226,8 +226,10 @@ function Register() {
 
 //$('#formNuovaNotifica').submit(function (e) {
 function SalvaNotificaConPDF() {
-  //  debugger;
+    //  debugger;
+   
     hideAll();
+  
     var listaDest1 = $("#lDestinatari").select2('val');
      var listaDest2 = $("#toCc").select2('val');
     if (listaDest1 == null) {
@@ -247,13 +249,15 @@ function SalvaNotificaConPDF() {
         $('#vaiCorpoMess').show();
         CKEDITOR.instances.corpoMessaggio.focus();
         return false;
-    }
+    }    
     var CorpoMessaggio = CKEDITOR.instances.corpoMessaggio.getData().toString().trim();
+   
     SalvaDocumentoNotifica(listaDest1, listaDest2, Oggetto, CorpoMessaggio);
 }
 function SalvaDocumentoNotifica(listaMailPrincipale, listaMailToCc, Oggetto, CorpoMessaggio)
 {
-   // debugger;
+    // debugger;
+    Blocca('Please wait...');
     var datiForm = new FormData();
     var rotta = "/Notifiche/InserisciNuovaNotifica";
 
@@ -274,8 +278,8 @@ function SalvaDocumentoNotifica(listaMailPrincipale, listaMailToCc, Oggetto, Cor
             async: false,
             beforeSend: function () {
                 //debugger;
-               // VerificaAutenticazione();
-                //Blocca();
+               VerificaAutenticazione();
+                Blocca();
             },
             processData: false, //Serve per NON far convertire l’oggetto
             //FormData in una stringa, preservando il file
