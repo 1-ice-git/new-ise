@@ -101,6 +101,7 @@ namespace NewISE.EF
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<RUOLOUFFICIO> RUOLOUFFICIO { get; set; }
+        public virtual DbSet<SELECTDOCVC> SELECTDOCVC { get; set; }
         public virtual DbSet<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual DbSet<STATORECORD> STATORECORD { get; set; }
         public virtual DbSet<STATOTRASFERIMENTO> STATOTRASFERIMENTO { get; set; }

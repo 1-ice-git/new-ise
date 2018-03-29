@@ -24,6 +24,7 @@ namespace NewISE.EF
             this.RICHIAMO = new HashSet<RICHIAMO>();
             this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
+            this.VIAGGICONGEDO = new HashSet<VIAGGICONGEDO>();
             this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
@@ -67,7 +68,8 @@ namespace NewISE.EF
         public virtual TIPOLOGIACOAN TIPOLOGIACOAN { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
         public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
-        public virtual VIAGGICONGEDO VIAGGICONGEDO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }

@@ -2489,6 +2489,9 @@
     <Compile Include="EF\RINUNCIA_TE_R.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\SELECTDOCVC.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\STATORECORD.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>

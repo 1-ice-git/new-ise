@@ -172,7 +172,7 @@
             <PropertyRef Name="IDATTIVAZIONEVC" />
           </Key>
           <Property Name="IDATTIVAZIONEVC" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDVIAGGICONGEDO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVIAGGIOCONGEDO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="date" />
           <Property Name="ATTIVARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -243,14 +243,6 @@
             <PropertyRef Name="IDDOCUMENTO" />
           </Key>
           <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AVC_D">
-          <Key>
-            <PropertyRef Name="IDATTIVAZIONEVC" />
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDATTIVAZIONEVC" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="C_P">
@@ -1196,6 +1188,15 @@
           <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DESCRUOLO" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
+        <EntityType Name="SELECTDOCVC">
+          <Key>
+            <PropertyRef Name="IDATTIVAZIONEVC" />
+            <PropertyRef Name="IDDOCUMENTO" />
+          </Key>
+          <Property Name="IDATTIVAZIONEVC" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DOCSELEZIONATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="SOSPENSIONE">
           <Key>
             <PropertyRef Name="IDSOSPENSIONE" />
@@ -1494,9 +1495,10 @@
         </EntityType>
         <EntityType Name="VIAGGICONGEDO">
           <Key>
-            <PropertyRef Name="IDVIAGGICONGEDO" />
+            <PropertyRef Name="IDVIAGGIOCONGEDO" />
           </Key>
-          <Property Name="IDVIAGGICONGEDO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVIAGGIOCONGEDO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="VMAB_PMAB">
           <Key>
@@ -1954,12 +1956,12 @@
           <End Role="ATTIVAZIONIVIAGGICONGEDO" Type="Self.ATTIVAZIONIVIAGGICONGEDO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AVC_D" Type="Self.AVC_D" Multiplicity="*" />
+          <End Role="SELECTDOCVC" Type="Self.SELECTDOCVC" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ATTIVAZIONIVIAGGICONGEDO">
               <PropertyRef Name="IDATTIVAZIONEVC" />
             </Principal>
-            <Dependent Role="AVC_D">
+            <Dependent Role="SELECTDOCVC">
               <PropertyRef Name="IDATTIVAZIONEVC" />
             </Dependent>
           </ReferentialConstraint>
@@ -2206,12 +2208,12 @@
           <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AVC_D" Type="Self.AVC_D" Multiplicity="*" />
+          <End Role="SELECTDOCVC" Type="Self.SELECTDOCVC" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DOCUMENTI">
               <PropertyRef Name="IDDOCUMENTO" />
             </Principal>
-            <Dependent Role="AVC_D">
+            <Dependent Role="SELECTDOCVC">
               <PropertyRef Name="IDDOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -3954,13 +3956,13 @@
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VIAGGICONGEDO" Type="Self.VIAGGICONGEDO" Multiplicity="0..1" />
+          <End Role="VIAGGICONGEDO" Type="Self.VIAGGICONGEDO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TRASFERIMENTO">
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Principal>
             <Dependent Role="VIAGGICONGEDO">
-              <PropertyRef Name="IDVIAGGICONGEDO" />
+              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4559,10 +4561,10 @@
           <End Role="ATTIVAZIONIVIAGGICONGEDO" Type="Self.ATTIVAZIONIVIAGGICONGEDO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VIAGGICONGEDO">
-              <PropertyRef Name="IDVIAGGICONGEDO" />
+              <PropertyRef Name="IDVIAGGIOCONGEDO" />
             </Principal>
             <Dependent Role="ATTIVAZIONIVIAGGICONGEDO">
-              <PropertyRef Name="IDVIAGGICONGEDO" />
+              <PropertyRef Name="IDVIAGGIOCONGEDO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4629,7 +4631,6 @@
           <EntitySet Name="ATTIVITATERIENTRO" EntityType="Self.ATTIVITATERIENTRO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ATTMAGFAM_DOC" EntityType="Self.ATTMAGFAM_DOC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ATV_DOC" EntityType="Self.ATV_DOC" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="AVC_D" EntityType="Self.AVC_D" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="C_P" EntityType="Self.C_P" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="C_PC" EntityType="Self.C_PC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="CALENDARIOEVENTI" EntityType="Self.CALENDARIOEVENTI" Schema="ISESIM" store:Type="Tables" />
@@ -4720,6 +4721,7 @@
           <EntitySet Name="RUOLOACCESSO" EntityType="Self.RUOLOACCESSO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RUOLODIPENDENTE" EntityType="Self.RUOLODIPENDENTE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RUOLOUFFICIO" EntityType="Self.RUOLOUFFICIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="SELECTDOCVC" EntityType="Self.SELECTDOCVC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="SOSPENSIONE" EntityType="Self.SOSPENSIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="STATORECORD" EntityType="Self.STATORECORD" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="STATOTRASFERIMENTO" EntityType="Self.STATOTRASFERIMENTO" Schema="ISESIM" store:Type="Tables" />
@@ -4883,7 +4885,7 @@
           </AssociationSet>
           <AssociationSet Name="R_AVC_AVCD" Association="Self.R_AVC_AVCD">
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
-            <End Role="AVC_D" EntitySet="AVC_D" />
+            <End Role="SELECTDOCVC" EntitySet="SELECTDOCVC" />
           </AssociationSet>
           <AssociationSet Name="R_C_ADF" Association="Self.R_C_ADF">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -4955,7 +4957,7 @@
           </AssociationSet>
           <AssociationSet Name="R_D_AVCD" Association="Self.R_D_AVCD">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="AVC_D" EntitySet="AVC_D" />
+            <End Role="SELECTDOCVC" EntitySet="SELECTDOCVC" />
           </AssociationSet>
           <AssociationSet Name="R_D_CD" Association="Self.R_D_CD">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -5723,6 +5725,7 @@
           <EntitySet Name="RUOLOACCESSO" EntityType="DBISEPRO.RUOLOACCESSO" />
           <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISEPRO.RUOLODIPENDENTE" />
           <EntitySet Name="RUOLOUFFICIO" EntityType="DBISEPRO.RUOLOUFFICIO" />
+          <EntitySet Name="SELECTDOCVC" EntityType="DBISEPRO.SELECTDOCVC" />
           <EntitySet Name="SOSPENSIONE" EntityType="DBISEPRO.SOSPENSIONE" />
           <EntitySet Name="STATORECORD" EntityType="DBISEPRO.STATORECORD" />
           <EntitySet Name="STATOTRASFERIMENTO" EntityType="DBISEPRO.STATOTRASFERIMENTO" />
@@ -5854,6 +5857,10 @@
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
             <End Role="ATTIVAZIONIVIAGGICONGEDO1" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
           </AssociationSet>
+          <AssociationSet Name="R_AVC_AVCD" Association="DBISEPRO.R_AVC_AVCD">
+            <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
+            <End Role="SELECTDOCVC" EntitySet="SELECTDOCVC" />
+          </AssociationSet>
           <AssociationSet Name="R_VC_AVC" Association="DBISEPRO.R_VC_AVC">
             <End Role="VIAGGICONGEDO" EntitySet="VIAGGICONGEDO" />
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
@@ -5973,6 +5980,10 @@
           <AssociationSet Name="R_D_DATER" Association="DBISEPRO.R_D_DATER">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="DOC_ATER" EntitySet="DOC_ATER" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_AVCD" Association="DBISEPRO.R_D_AVCD">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="SELECTDOCVC" EntitySet="SELECTDOCVC" />
           </AssociationSet>
           <AssociationSet Name="R_D_D" Association="DBISEPRO.R_D_D">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -6326,10 +6337,6 @@
             <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
-          <AssociationSet Name="AVC_D" Association="DBISEPRO.AVC_D">
-            <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-          </AssociationSet>
           <AssociationSet Name="C_P" Association="DBISEPRO.C_P">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="PENSIONE" EntitySet="PENSIONE" />
@@ -6621,7 +6628,7 @@
             <PropertyRef Name="IDATTIVAZIONEVC" />
           </Key>
           <Property Name="IDATTIVAZIONEVC" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDVIAGGICONGEDO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDVIAGGIOCONGEDO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
           <Property Name="ATTIVARICHIESTA" Type="Boolean" Nullable="false" />
@@ -6631,8 +6638,8 @@
           <Property Name="FK_IDATTIVAZIONEVC" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO1" Relationship="DBISEPRO.R_AVC_AVC" FromRole="ATTIVAZIONIVIAGGICONGEDO" ToRole="ATTIVAZIONIVIAGGICONGEDO1" />
           <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO2" Relationship="DBISEPRO.R_AVC_AVC" FromRole="ATTIVAZIONIVIAGGICONGEDO1" ToRole="ATTIVAZIONIVIAGGICONGEDO" />
+          <NavigationProperty Name="SELECTDOCVC" Relationship="DBISEPRO.R_AVC_AVCD" FromRole="ATTIVAZIONIVIAGGICONGEDO" ToRole="SELECTDOCVC" />
           <NavigationProperty Name="VIAGGICONGEDO" Relationship="DBISEPRO.R_VC_AVC" FromRole="ATTIVAZIONIVIAGGICONGEDO" ToRole="VIAGGICONGEDO" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.AVC_D" FromRole="ATTIVAZIONIVIAGGICONGEDO" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="ATTIVITAANTICIPI">
           <Key>
@@ -6884,13 +6891,13 @@
           <Property Name="MODIFICATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="DOC_ATER" Relationship="DBISEPRO.R_D_DATER" FromRole="DOCUMENTI" ToRole="DOC_ATER" />
+          <NavigationProperty Name="SELECTDOCVC" Relationship="DBISEPRO.R_D_AVCD" FromRole="DOCUMENTI" ToRole="SELECTDOCVC" />
           <NavigationProperty Name="DOCUMENTI1" Relationship="DBISEPRO.R_D_D" FromRole="DOCUMENTI" ToRole="DOCUMENTI1" />
           <NavigationProperty Name="DOCUMENTI2" Relationship="DBISEPRO.R_D_D" FromRole="DOCUMENTI1" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="DOCUMENTI" ToRole="TIPODOCUMENTI" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.AMAB_DOC" FromRole="DOCUMENTI" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISEPRO.ATTMAGFAM_DOC" FromRole="DOCUMENTI" ToRole="ATTIVAZIONIMAGFAM" />
           <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISEPRO.ATV_DOC" FromRole="DOCUMENTI" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
-          <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO" Relationship="DBISEPRO.AVC_D" FromRole="DOCUMENTI" ToRole="ATTIVAZIONIVIAGGICONGEDO" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="DOCUMENTI" ToRole="CONIUGE" />
           <NavigationProperty Name="CONIUGETITOLIVIAGGIO" Relationship="DBISEPRO.CTV_DOC" FromRole="DOCUMENTI" ToRole="CONIUGETITOLIVIAGGIO" />
           <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISEPRO.DOC_ATEP" FromRole="DOCUMENTI" ToRole="ATTIVITATEPARTENZA" />
@@ -7621,6 +7628,17 @@
           <Property Name="DESCRUOLO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.R_RU_RD" FromRole="RUOLOUFFICIO" ToRole="RUOLODIPENDENTE" />
         </EntityType>
+        <EntityType Name="SELECTDOCVC">
+          <Key>
+            <PropertyRef Name="IDATTIVAZIONEVC" />
+            <PropertyRef Name="IDDOCUMENTO" />
+          </Key>
+          <Property Name="IDATTIVAZIONEVC" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDDOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DOCSELEZIONATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO" Relationship="DBISEPRO.R_AVC_AVCD" FromRole="SELECTDOCVC" ToRole="ATTIVAZIONIVIAGGICONGEDO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_AVCD" FromRole="SELECTDOCVC" ToRole="DOCUMENTI" />
+        </EntityType>
         <EntityType Name="SOSPENSIONE">
           <Key>
             <PropertyRef Name="IDSOSPENSIONE" />
@@ -7971,9 +7989,10 @@
         </EntityType>
         <EntityType Name="VIAGGICONGEDO">
           <Key>
-            <PropertyRef Name="IDVIAGGICONGEDO" />
+            <PropertyRef Name="IDVIAGGIOCONGEDO" />
           </Key>
-          <Property Name="IDVIAGGICONGEDO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDVIAGGIOCONGEDO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO" Relationship="DBISEPRO.R_VC_AVC" FromRole="VIAGGICONGEDO" ToRole="ATTIVAZIONIVIAGGICONGEDO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_VC" FromRole="VIAGGICONGEDO" ToRole="TRASFERIMENTO" />
         </EntityType>
@@ -8340,6 +8359,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_AVC_AVCD">
+          <End Type="DBISEPRO.ATTIVAZIONIVIAGGICONGEDO" Role="ATTIVAZIONIVIAGGICONGEDO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.SELECTDOCVC" Role="SELECTDOCVC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONIVIAGGICONGEDO">
+              <PropertyRef Name="IDATTIVAZIONEVC" />
+            </Principal>
+            <Dependent Role="SELECTDOCVC">
+              <PropertyRef Name="IDATTIVAZIONEVC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_VC_AVC">
           <End Type="DBISEPRO.VIAGGICONGEDO" Role="VIAGGICONGEDO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8347,10 +8380,10 @@
           <End Type="DBISEPRO.ATTIVAZIONIVIAGGICONGEDO" Role="ATTIVAZIONIVIAGGICONGEDO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VIAGGICONGEDO">
-              <PropertyRef Name="IDVIAGGICONGEDO" />
+              <PropertyRef Name="IDVIAGGIOCONGEDO" />
             </Principal>
             <Dependent Role="ATTIVAZIONIVIAGGICONGEDO">
-              <PropertyRef Name="IDVIAGGICONGEDO" />
+              <PropertyRef Name="IDVIAGGIOCONGEDO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8752,6 +8785,20 @@
               <PropertyRef Name="IDDOCUMENTO" />
             </Principal>
             <Dependent Role="DOC_ATER">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_AVCD">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.SELECTDOCVC" Role="SELECTDOCVC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Principal>
+            <Dependent Role="SELECTDOCVC">
               <PropertyRef Name="IDDOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -9810,13 +9857,13 @@
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="DBISEPRO.VIAGGICONGEDO" Role="VIAGGICONGEDO" Multiplicity="0..1" />
+          <End Type="DBISEPRO.VIAGGICONGEDO" Role="VIAGGICONGEDO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TRASFERIMENTO">
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Principal>
             <Dependent Role="VIAGGICONGEDO">
-              <PropertyRef Name="IDVIAGGICONGEDO" />
+              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9906,10 +9953,6 @@
         </Association>
         <Association Name="ATV_DOC">
           <End Type="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" Role="ATTIVAZIONETITOLIVIAGGIO" Multiplicity="*" />
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-        </Association>
-        <Association Name="AVC_D">
-          <End Type="DBISEPRO.ATTIVAZIONIVIAGGICONGEDO" Role="ATTIVAZIONIVIAGGICONGEDO" Multiplicity="*" />
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
         </Association>
         <Association Name="C_P">
@@ -10186,7 +10229,7 @@
                 <ScalarProperty Name="ATTIVARICHIESTA" ColumnName="ATTIVARICHIESTA" />
                 <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />
                 <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
-                <ScalarProperty Name="IDVIAGGICONGEDO" ColumnName="IDVIAGGICONGEDO" />
+                <ScalarProperty Name="IDVIAGGIOCONGEDO" ColumnName="IDVIAGGIOCONGEDO" />
                 <ScalarProperty Name="IDATTIVAZIONEVC" ColumnName="IDATTIVAZIONEVC" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -11022,6 +11065,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SELECTDOCVC">
+            <EntityTypeMapping TypeName="DBISEPRO.SELECTDOCVC">
+              <MappingFragment StoreEntitySet="SELECTDOCVC">
+                <ScalarProperty Name="DOCSELEZIONATO" ColumnName="DOCSELEZIONATO" />
+                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+                <ScalarProperty Name="IDATTIVAZIONEVC" ColumnName="IDATTIVAZIONEVC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SOSPENSIONE">
             <EntityTypeMapping TypeName="DBISEPRO.SOSPENSIONE">
               <MappingFragment StoreEntitySet="SOSPENSIONE">
@@ -11310,7 +11362,8 @@
           <EntitySetMapping Name="VIAGGICONGEDO">
             <EntityTypeMapping TypeName="DBISEPRO.VIAGGICONGEDO">
               <MappingFragment StoreEntitySet="VIAGGICONGEDO">
-                <ScalarProperty Name="IDVIAGGICONGEDO" ColumnName="IDVIAGGICONGEDO" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDVIAGGIOCONGEDO" ColumnName="IDVIAGGIOCONGEDO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -11387,14 +11440,6 @@
             </EndProperty>
             <EndProperty Name="ATTIVAZIONETITOLIVIAGGIO">
               <ScalarProperty Name="IDATTIVAZIONETITOLIVIAGGIO" ColumnName="IDATTIVAZIONETITOLIVIAGGIO" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="AVC_D" TypeName="DBISEPRO.AVC_D" StoreEntitySet="AVC_D">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="ATTIVAZIONIVIAGGICONGEDO">
-              <ScalarProperty Name="IDATTIVAZIONEVC" ColumnName="IDATTIVAZIONEVC" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="C_P" TypeName="DBISEPRO.C_P" StoreEntitySet="C_P">

@@ -18,11 +18,11 @@ namespace NewISE.EF
         public DOCUMENTI()
         {
             this.DOC_ATER = new HashSet<DOC_ATER>();
+            this.SELECTDOCVC = new HashSet<SELECTDOCVC>();
             this.DOCUMENTI1 = new HashSet<DOCUMENTI>();
             this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
             this.ATTIVAZIONETITOLIVIAGGIO = new HashSet<ATTIVAZIONETITOLIVIAGGIO>();
-            this.ATTIVAZIONIVIAGGICONGEDO = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
             this.CONIUGE = new HashSet<CONIUGE>();
             this.CONIUGETITOLIVIAGGIO = new HashSet<CONIUGETITOLIVIAGGIO>();
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
@@ -46,6 +46,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOC_ATER> DOC_ATER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SELECTDOCVC> SELECTDOCVC { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI1 { get; set; }
         public virtual DOCUMENTI DOCUMENTI2 { get; set; }
         public virtual TIPODOCUMENTI TIPODOCUMENTI { get; set; }
@@ -55,8 +57,6 @@ namespace NewISE.EF
         public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

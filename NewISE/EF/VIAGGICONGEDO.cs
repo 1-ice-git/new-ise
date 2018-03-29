@@ -20,7 +20,8 @@ namespace NewISE.EF
             this.ATTIVAZIONIVIAGGICONGEDO = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
         }
     
-        public decimal IDVIAGGICONGEDO { get; set; }
+        public decimal IDVIAGGIOCONGEDO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
