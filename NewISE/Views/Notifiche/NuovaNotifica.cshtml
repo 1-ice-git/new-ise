@@ -8,12 +8,17 @@
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
 <script src="~/Scripts/Notifiche/UploadNotifiche.js"></script>
-
+<script src="~/Scripts/MyJs.js"></script>
 @{
     decimal idMittenteLogato = (decimal)ViewBag.idMittenteLogato;
     var errori = ViewData.ModelState;
-  //  var attached = ViewBag.Allegato!=null? ViewBag.Allegato:null;
-   // var percorso = ViewBag.percorso == null ? "" : (string)ViewBag.percorso;
+    //  var attached = ViewBag.Allegato!=null? ViewBag.Allegato:null;
+    // var percorso = ViewBag.percorso == null ? "" : (string)ViewBag.percorso;
+    int CountError = 0;
+    if (ViewBag.ModelStateCount != null)
+    {
+        CountError = (int)ViewBag.ModelStateCount;
+    }
 }
 
 @*@using (Ajax.BeginForm("InserisciNuovaNotifica", "Notifiche", FormMethod.Post, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelNotifiche", OnFailure = "ErroreElaborazioneAjax" }, new { enctype = "multipart/form-data" }))*@
@@ -25,7 +30,11 @@
         <hr />
         @Html.HiddenFor(x => x.idNotifica)
         <input type="hidden" id="idMittente" name="idMittente" value="@idMittenteLogato.ToString()"/>
-       
+
+        <div id="Alert" class="alert alert-danger hide">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        </div>
+
         <div class="row">
             <div class="col-xs-offset-2 col-xs-10">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -66,16 +75,20 @@
             </div>
 
         <div class="form-group"  >
-            <div ass="col-md-10">
+            <div ass="col-md-10" >
                 @*@Html.TextBoxFor(model=>model.corpoMessaggio, new { @id = "corpoMessaggio", @class = "ckeditor"})*@ 
-                <textarea id="corpoMessaggio" name="corpoMessaggio"></textarea>
+                <textarea id="corpoMessaggio" name="corpoMessaggio" style="height:50px"  ></textarea>
                 @Html.ValidationMessageFor(model => model.corpoMessaggio, "", new { @class = "text-danger" })
                 <script type="text/javascript">                  
                     CKEDITOR.config.readOnly = false;
                     //for (instance in CKEDITOR.instances) {
                     //    CKEDITOR.instances[instance].updateElement();
                     //}
-                </script> @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })*@
+                    CKEDITOR.editorConfig = function (config) {
+                        config.title = "";//levare il tooltip 
+                    }
+                   
+                </script> 
             </div>
             <div id="vaiCorpoMess" style="display:none; " class="text-danger">
                 @Html.Label("lblvai1", "Messaggio vuoto")
@@ -95,14 +108,14 @@
                 @*@Html.Label("spanNomeFile", @percorso.ToString())*@
             </div>
         </div>
-
+        
         <div class="form-group">
           
             <div class="row" style="text-align:left">
                 <div class="col-xs-2"> 
                     @*<input type="submit" value="Invia" class="btn btn-default" />*@
                     @*<input type="button" value="Invia" class="btn btn-default" onclick="MandaDati(@attached)" />*@
-                    <button id="btInviaMailconPDF" type="button" class="btn btn-info" onclick="SalvaNotificaConPDF();">Invia</button>
+                    <button id="btInviaMailconPDF" type="button" class="btn btn-success" onclick="InviaTutto();">Invia</button>
                 </div>                
                 <div id="divPercorso" style="display:none; " class="text-danger">
                     @Html.Label("lblPercorso", "")
@@ -150,7 +163,7 @@
 <script type="text/javascript">
 
     $(function () {
-        CKEDITOR.replace("corpoMessaggio", { customConfig: "~/Scripts/ckeditor/config.js" });
+        CKEDITOR.replace("corpoMessaggio", { customConfig: "~/Scripts/ckeditor/config.js", height: 72 });
     })
 
     $("#idBtnAllegato").click(function () {
@@ -204,7 +217,7 @@
         var file = $("#PDFUpload")[0].files[0];
 
         if (Validazione()) {
-            
+
             @*datiForm.append("idAttivazioneMagFam", @idAttivazioneMagFam);*@
             datiForm.append("file", file);
             var percorso = $("#spanNomeFile").html();// $("#spanNomeFile").val();
@@ -223,7 +236,7 @@
                 contentType: false, //Serve per NON far inserire automaticamente
                 //un content type errato
                 success: function (result) {
-                   
+
                 },
                 complete: function () {
                     //$("#btUpload").removeAttr("disabled");
@@ -257,5 +270,25 @@
     }
 
     
+    $(function () {
+        if (parseInt('@CountError') > 0) {
+            $("#Alert").removeClass("hide");
+            $("#Alert").css("show");
+        }
 
+        $("form").submit(function () {
+            //if ($("form").valid()) {
+                Blocca();
+           // }
+
+        });
+
+    });
+    function InviaTutto() {
+        $("#btInviaMailconPDF").attr('value', 'Attendere');
+        $("#btInviaMailconPDF").attr("disabled", true);;
+        Blocca();
+        SalvaNotificaConPDF();
+    };
+   
 </script>
