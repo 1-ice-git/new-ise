@@ -12,7 +12,7 @@
 }
 
 
-<div >
+<div>
     <div style="padding-top: 10px;padding-bottom:10px;padding-left:5px">
         @if (soloLettura == false)
         {
@@ -21,9 +21,9 @@
                 @Ajax.ActionLink("Modifica", "ModificaMAB", "MaggiorazioneAbitazione", new { idMAB = idMAB }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica Maggiorazione Abitazione", @id = "linkEditMAB" })
             }
             @*else
-            {
-                @Ajax.ActionLink("Nuovo", "NuovaMAB", "MaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB" })
-            }*@
+                {
+                    @Ajax.ActionLink("Nuovo", "NuovaMAB", "MaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB" })
+                }*@
         }
     </div>
     <table id="tabMAB" class="table table-striped">
@@ -33,7 +33,7 @@
                     Tipo Anticipo
                 </th>
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.descrizioneValuta )
+                    @Html.DisplayNameFor(model => model.descrizioneValuta)
                 </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.importo_canone)

@@ -19,7 +19,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             var v = db.VALUTE.Find(idValuta);
 
-            if (v!= null && v.IDVALUTA > 0)
+            if (v != null && v.IDVALUTA > 0)
             {
                 vm = new ValuteModel()
                 {
@@ -29,11 +29,11 @@ namespace NewISE.Models.DBModel.dtObj
                 };
             }
 
-            
+
             return vm;
         }
 
-        public ValuteModel GetValutaByIdCanone(decimal idCanone,ModelDBISE db)
+        public ValuteModel GetValutaByCanonePartenza(decimal idCanone, ModelDBISE db)
         {
             ValuteModel valm = new ValuteModel();
 
@@ -41,7 +41,12 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (cm.IDCANONE > 0)
             {
-                var tfrl = cm.TFR.Where(X => X.ANNULLATO == false).ToList();
+                var tfrl =
+                    cm.TFR.Where(
+                        X =>
+                            X.ANNULLATO == false && X.DATAFINEVALIDITA >= cm.DATAINIZIOVALIDITA &&
+                            X.DATAINIZIOVALIDITA <= cm.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
                 if (tfrl?.Any() ?? false)
                 {
                     TFR tfr = tfrl.First();
@@ -79,7 +84,7 @@ namespace NewISE.Models.DBModel.dtObj
                     };
                 }
             }
-                       
+
 
             return vm;
         }

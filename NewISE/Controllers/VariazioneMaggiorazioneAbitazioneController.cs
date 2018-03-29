@@ -80,7 +80,7 @@
 //                            {
 //                                using (dtValute dtv = new dtValute())
 //                                {
-//                                    var v = dtv.GetValutaByIdCanone(cm.IDCANONE);
+//                                    var v = dtv.GetValutaByCanonePartenza(cm.IDCANONE);
 
 //                                    mavm.descrizioneValuta = v.descrizioneValuta;
 //                                    mavm.id_Valuta = v.idValuta;
@@ -721,7 +721,7 @@
 //                                if (canone.IDCANONE > 0)
 //                                {
 //                                    mam.importo_canone = canone.IMPORTOCANONE;
-//                                    var v = dtv.GetValutaByIdCanone(canone.IDCANONE);
+//                                    var v = dtv.GetValutaByCanonePartenza(canone.IDCANONE);
 //                                    mam.id_Valuta = v.idValuta;
 //                                }
 

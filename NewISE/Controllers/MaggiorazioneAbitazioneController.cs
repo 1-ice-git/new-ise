@@ -23,7 +23,7 @@ namespace NewISE.Controllers
         public ActionResult MaggiorazioneAbitazione(decimal idTrasferimento)
         {
             try
-            { 
+            {
                 ViewData.Add("idTrasferimento", idTrasferimento);
             }
             catch (Exception ex)
@@ -55,7 +55,7 @@ namespace NewISE.Controllers
 
                     bool soloLettura = false;
                     bool siDati = false;
-                    EnumStatoTraferimento statoTrasferimento=0;
+                    EnumStatoTraferimento statoTrasferimento = 0;
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
 
@@ -94,7 +94,7 @@ namespace NewISE.Controllers
 
                             using (dtValute dtv = new dtValute())
                             {
-                                var v = dtv.GetValutaByIdCanone(cm.IDCANONE,db);
+                                var v = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
                                 mavm.descrizioneValuta = v.descrizioneValuta;
                                 mavm.id_Valuta = v.idValuta;
                             }
@@ -139,9 +139,9 @@ namespace NewISE.Controllers
                 }
 
             }
-                
+
             return PartialView(mavml);
-            
+
         }
 
         public ActionResult GestioneMAB(decimal idTrasferimento)
@@ -223,7 +223,7 @@ namespace NewISE.Controllers
 
                         var ma = dtma.GetMaggiorazioneAbitazionePartenza(idTrasferimento);
                         var rmab = dtma.GetRinunciaMAB(ma);
-                        if(rmab.rinuncia)
+                        if (rmab.rinuncia)
                         {
                             chkRinuncia = true;
                         }
@@ -675,7 +675,7 @@ namespace NewISE.Controllers
                                 mam.dataFineMAB = vmam.DataFineMAB;
                                 mam.anticipoAnnuale = vmam.AnticipoAnnuale;
 
-                                var vm = dtv.GetValutaByIdCanone(cm.IDCANONE,db);
+                                var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
                                 mam.descrizioneValuta = vm.descrizioneValuta;
                                 mam.id_Valuta = vm.idValuta;
 
@@ -699,7 +699,7 @@ namespace NewISE.Controllers
                                 var t = dtt.GetTrasferimentoById(ma.IDTRASFERIMENTO);
                                 mam.idMAB = ma.IDMAB;
                                 mam.idTrasferimento = ma.IDTRASFERIMENTO;
-                                var amab=dtma.GetAttivazioneMAB(ma.IDTRASFERIMENTO);
+                                var amab = dtma.GetAttivazioneMAB(ma.IDTRASFERIMENTO);
                                 mam.idAttivazioneMAB = amab.idAttivazioneMAB;
 
                                 mam.idMagAnnuali = 0;
