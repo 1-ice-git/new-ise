@@ -75,16 +75,20 @@
             </div>
 
         <div class="form-group"  >
-            <div ass="col-md-10">
+            <div ass="col-md-10" >
                 @*@Html.TextBoxFor(model=>model.corpoMessaggio, new { @id = "corpoMessaggio", @class = "ckeditor"})*@ 
-                <textarea id="corpoMessaggio" name="corpoMessaggio"></textarea>
+                <textarea id="corpoMessaggio" name="corpoMessaggio" style="height:50px"  ></textarea>
                 @Html.ValidationMessageFor(model => model.corpoMessaggio, "", new { @class = "text-danger" })
                 <script type="text/javascript">                  
                     CKEDITOR.config.readOnly = false;
                     //for (instance in CKEDITOR.instances) {
                     //    CKEDITOR.instances[instance].updateElement();
                     //}
-                </script> @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })*@
+                    CKEDITOR.editorConfig = function (config) {
+                        config.title = "";//levare il tooltip 
+                    }
+                   
+                </script> 
             </div>
             <div id="vaiCorpoMess" style="display:none; " class="text-danger">
                 @Html.Label("lblvai1", "Messaggio vuoto")
@@ -111,7 +115,7 @@
                 <div class="col-xs-2"> 
                     @*<input type="submit" value="Invia" class="btn btn-default" />*@
                     @*<input type="button" value="Invia" class="btn btn-default" onclick="MandaDati(@attached)" />*@
-                    <button id="btInviaMailconPDF" type="button" class="btn btn-info" onclick="SalvaNotificaConPDF();">Invia</button>
+                    <button id="btInviaMailconPDF" type="button" class="btn btn-success" onclick="InviaTutto();">Invia</button>
                 </div>                
                 <div id="divPercorso" style="display:none; " class="text-danger">
                     @Html.Label("lblPercorso", "")
@@ -159,7 +163,7 @@
 <script type="text/javascript">
 
     $(function () {
-        CKEDITOR.replace("corpoMessaggio", { customConfig: "~/Scripts/ckeditor/config.js" });
+        CKEDITOR.replace("corpoMessaggio", { customConfig: "~/Scripts/ckeditor/config.js", height: 72 });
     })
 
     $("#idBtnAllegato").click(function () {
@@ -280,4 +284,11 @@
         });
 
     });
+    function InviaTutto() {
+        $("#btInviaMailconPDF").attr('value', 'Attendere');
+        $("#btInviaMailconPDF").attr("disabled", true);;
+        Blocca();
+        SalvaNotificaConPDF();
+    };
+   
 </script>

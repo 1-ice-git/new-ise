@@ -226,20 +226,28 @@ function Register() {
 
 //$('#formNuovaNotifica').submit(function (e) {
 function SalvaNotificaConPDF() {
-    //  debugger;
-   
+    //debugger;
+    $("#btInviaMailconPDF").attr("disabled", true);;
+    $("#btInviaMailconPDF").attr('value', 'Attendere');
+    Blocca();
     hideAll();
-  
+   
     var listaDest1 = $("#lDestinatari").select2('val');
      var listaDest2 = $("#toCc").select2('val');
     if (listaDest1 == null) {
         $('#vaiDest').show();
         $("#lDestinatari").focus();
+        $("#btInviaMailconPDF").attr("disabled", false);
+        $("#btInviaMailconPDF").attr('value', 'Invia');;
+        Sblocca();
         return false;
     }
     if ($("#Oggetto").val().toString().trim() == '') {
         $('#vaiOgg').show();
         $("#Oggetto").focus();
+        $("#btInviaMailconPDF").attr("disabled", false);
+        $("#btInviaMailconPDF").attr('value', 'Invia');
+        Sblocca();
         return false;
     }
     var Oggetto = $("#Oggetto").val().toString().trim();
@@ -248,6 +256,8 @@ function SalvaNotificaConPDF() {
     if (CKEDITOR.instances.corpoMessaggio.getData().toString().trim() == '') {
         $('#vaiCorpoMess').show();
         CKEDITOR.instances.corpoMessaggio.focus();
+        $("#btInviaMailconPDF").attr("disabled", false);
+        Sblocca();
         return false;
     }    
     var CorpoMessaggio = CKEDITOR.instances.corpoMessaggio.getData().toString().trim();
@@ -256,8 +266,8 @@ function SalvaNotificaConPDF() {
 }
 function SalvaDocumentoNotifica(listaMailPrincipale, listaMailToCc, Oggetto, CorpoMessaggio)
 {
-    // debugger;
-    Blocca('Please wait...');
+    //debugger;
+    Blocca();
     var datiForm = new FormData();
     var rotta = "/Notifiche/InserisciNuovaNotifica";
 
@@ -277,9 +287,9 @@ function SalvaDocumentoNotifica(listaMailPrincipale, listaMailToCc, Oggetto, Cor
             cache: false,
             async: false,
             beforeSend: function () {
-                //debugger;
-               VerificaAutenticazione();
+                //debugger; 
                 Blocca();
+               VerificaAutenticazione();
             },
             processData: false, //Serve per NON far convertire l’oggetto
             //FormData in una stringa, preservando il file
@@ -291,6 +301,7 @@ function SalvaDocumentoNotifica(listaMailPrincipale, listaMailToCc, Oggetto, Cor
                 }
                 $("#divPanelNotifiche").empty();
                 $("#divPanelNotifiche").html(result);
+                Sblocca();
             },
             complete: function () {
                 //$("#btUpload").removeAttr("disabled");
