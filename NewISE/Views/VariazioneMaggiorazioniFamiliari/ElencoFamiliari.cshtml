@@ -1,4 +1,7 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.DBModel.Enum
+@using NewISE.Models.Tools
+
 @model IEnumerable<NewISE.Models.DBModel.VariazioneElencoFamiliariModel>
 
 @{
@@ -72,6 +75,9 @@
                 </th>
                 <th>
                 </th>
+                <th style="text-align: center;">
+                    @Html.DisplayNameFor(model => model.statoRecord )
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -90,7 +96,7 @@
                     <td style="text-align: center;">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
-                    @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
+                    @if (item.dataFine.HasValue && item.dataFine.Value < Utility.DataFineStop())
                     {
                         <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.dataFine)
@@ -105,35 +111,67 @@
                     {
                         if (item.HasPensione)
                         {
-                            <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
-                                <img src='~/Immagini/Simbolo semplice Euro Green.png' width='17' title="Pensione" />
-                            </a>
+                            if (item.pensione_modificata)
+                            {
+                                <a href="#" onclick="Pensione(@item.idFamiliare,@Convert.ToDecimal(item.modificabile));" id="linkPensione">
+                                    <img src='~/Immagini/Simbolo semplice Euro Yellow.png' width='17' title="Pensione" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="Pensione(@item.idFamiliare,@Convert.ToDecimal(item.modificabile));" id="linkPensione">
+                                    <img src='~/Immagini/Simbolo semplice Euro Green.png' width='17' title="Pensione" />
+                                </a>
+                            }
                         }
                         else
                         {
-                            <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
-                                <img src="~/Immagini/Simbolo semplice Euro Red.png" width="17" title="Pensione" />
+                            <a href="#" onclick="Pensione(@item.idFamiliare,@Convert.ToDecimal(item.modificabile));" id="linkPensione">
+                                <img src="~/Immagini/Simbolo semplice Euro Grey.png" width="17" title="Pensione" />
                             </a>
                         }
                     }
                     </td>
                     @if (item.idAltriDati > 0)
                     {
-                        if (item.parentela == EnumParentela.Coniuge)
+                        if (item.adf_modificati)
                         {
-                            <td style="text-align: center;">
-                                <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
-                                    <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                                </a>
-                            </td>
+                            if (item.parentela == EnumParentela.Coniuge)
+                            {
+                                <td style="text-align: center;">
+                                    <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare, @item.idAltriDati, @idMaggiorazioniFamiliari,@Convert.ToDecimal(item.modificabile));" id="linkAltriDatiFam">
+                                        <img src="~/Immagini/Plus_Yellow.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                    </a>
+                                </td>
+                            }
+                            if (item.parentela == EnumParentela.Figlio)
+                            {
+                                <td style="text-align: center;">
+                                    <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari,@Convert.ToDecimal(item.modificabile));" id="linkAltriDatiFam">
+                                        <img src="~/Immagini/Plus_Yellow.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                    </a>
+                                </td>
+                            }
                         }
-                        if (item.parentela == EnumParentela.Figlio)
+                        else
                         {
-                            <td style="text-align: center;">
-                                <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
-                                    <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                                </a>
-                            </td>
+                            if (item.parentela == EnumParentela.Coniuge)
+                            {
+                                <td style="text-align: center;">
+                                    <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare, @item.idAltriDati, @idMaggiorazioniFamiliari,@Convert.ToDecimal(item.modificabile));" id="linkAltriDatiFam">
+                                        <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                    </a>
+                                </td>
+                            }
+                            if (item.parentela == EnumParentela.Figlio)
+                            {
+                                <td style="text-align: center;">
+                                    <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari,@Convert.ToDecimal(item.modificabile));" id="linkAltriDatiFam">
+                                        <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                    </a>
+                                </td>
+                            }
+
                         }
                     }
                     else
@@ -141,15 +179,15 @@
                         if (item.parentela == EnumParentela.Coniuge)
                         {
                             <td style="text-align: center;">
-                                <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
-                                    <img  src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare, @item.idAltriDati, @idMaggiorazioniFamiliari,@Convert.ToDecimal(item.modificabile));" id="linkAltriDatiFam">
+                                    <img  src="~/Immagini/Plus_Grey.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
                                 </a>
                             </td>
                         }
                         if (item.parentela == EnumParentela.Figlio)
                         {
                             <td style="text-align: center;">
-                                <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
+                                <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari,@Convert.ToDecimal(item.modificabile));" id="linkAltriDatiFam">
                                     <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
                                 </a>
                             </td>
@@ -159,7 +197,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick="ElencoDocumentiFamiliare(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Variazione_Maggiorazioni_Familiari ),@idMaggiorazioniFamiliari ) ">
+                            <a href="#" onclick="ElencoDocumentiFamiliare(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Variazione_Maggiorazioni_Familiari ),@idMaggiorazioniFamiliari, @Convert.ToDecimal(item.modificabile) ) ">
                                 <img width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -167,7 +205,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick="ElencoDocumentiFamiliare(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Variazione_Maggiorazioni_Familiari),@idMaggiorazioniFamiliari) ">
+                            <a href="#" onclick="ElencoDocumentiFamiliare(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Variazione_Maggiorazioni_Familiari),@idMaggiorazioniFamiliari, @Convert.ToDecimal(item.modificabile)) ">
                                 <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti" />
                             </a>
                         </td>
@@ -177,18 +215,25 @@
                     {
                         if (!solaLettura)
                         {
-                            if (item.parentela == EnumParentela.Coniuge)
+                            if (item.modificabile)
                             {
-                                <a href="#" onclick="ModificaConiuge(@item.idFamiliare); ">
-                                    <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Coniuge" /> 
-                                </a>
+                                if (item.parentela == EnumParentela.Coniuge)
+                                {
+                                    <a href="#" onclick="ModificaConiuge(@item.idFamiliare); ">
+                                        <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Coniuge" /> 
+                                    </a>
+                                }
+                                if (item.parentela == EnumParentela.Figlio)
+                                {
+                                    <a href="#" onclick="ModificaFiglio(@item.idFamiliare); ">
+                                        <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Figlio" />
+                                    </a>
+                                }
                             }
-                            if (item.parentela == EnumParentela.Figlio)
+                            @*else
                             {
-                                <a href="#" onclick="ModificaFiglio(@item.idFamiliare); ">
-                                    <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Figlio" />
-                                </a>
-                            }
+                                <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                            }*@
                         }
                     }
                     </td>
@@ -204,7 +249,6 @@
                                     <a href="#" onclick="EliminaConiuge(@item.idFamiliare);">
                                         <img width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Coniuge" />
                                     </a>
-
                                 }
                                 if (item.parentela == EnumParentela.Figlio)
                                 {
@@ -213,14 +257,28 @@
                                     </a>
                                 }
                             }
-                            else
+                            @*else
                             {
                                 <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
-                            }
+                            }*@
 
                         }
                     }
                     
+                    </td>
+                    <td style="text-align: center;">
+                        @if (item.statoRecord == EnumStatoRecord.Attivato)
+                        {
+                            <img width="17" src="~/Immagini/Button-Green.png" title="Attivato" />
+                        }
+                        @if (item.statoRecord == EnumStatoRecord.Da_Attivare)
+                        {
+                            <img width="17" src="~/Immagini/Button-Yellow.png" title="Da Attivare" />
+                        }
+                        @if (item.statoRecord == EnumStatoRecord.In_Lavorazione)
+                        {
+                            <img width="17" src="~/Immagini/Button-Red.png" title="In Lavorazione" />
+                        }
                     </td>
                 </tr>
             }
@@ -306,7 +364,7 @@
         "searching": false,
         "paging": false,
         "bJQueryUI": true,
-        "sDom": 'lfrtip',
+        "sDom": 'lfrtip'
       });
 
 
@@ -324,14 +382,14 @@
 
 
 
-    function Pensione(idConiuge) {
+    function Pensione(idConiuge,modificabile) {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoPensioniConiuge";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: {idConiuge:idConiuge},
+            data: {idConiuge:idConiuge, modificabile:modificabile},
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -359,14 +417,19 @@
 
     }
 
-    function AltriDatiFamiliariConiuge(idConiuge, idMaggiorazioniFamiliari) {
+    function AltriDatiFamiliariConiuge(idConiuge, idAltridati, idMaggiorazioniFamiliari,modificabile) {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/AltriDatiFamiliariConiuge";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idConiuge: idConiuge, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            data: { 
+                idConiuge: idConiuge, 
+                idAltridati: idAltridati,
+                //idMaggiorazioniFamiliari: idMaggiorazioniFamiliari,
+                modificabile: modificabile
+            },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -394,14 +457,18 @@
 
     }
 
-    function AltriDatiFamiliariFiglio(idFiglio, idMaggiorazioniFamiliari) {
+    function AltriDatiFamiliariFiglio(idFiglio, idMaggiorazioniFamiliari,modificabile) {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/AltriDatiFamiliariFiglio";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idFiglio: idFiglio, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            data: { 
+                    idFiglio: idFiglio,
+                    idMaggiorazioniFamiliari: idMaggiorazioniFamiliari,
+                    modificabile: modificabile
+            },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -430,7 +497,7 @@
     }
 
 
-    function ElencoDocumentiFamiliare(idFamiliare, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
+    function ElencoDocumentiFamiliare(idFamiliare, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari, modificabile) {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoDocumenti";
 
@@ -442,7 +509,8 @@
                 tipoDoc: tipoDoc,
                 parentela: idParentela,
                 chiamante: chiamante,
-                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari,
+                modificabile: modificabile
             },
             dataType: 'html',
             async: false,

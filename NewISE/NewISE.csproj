@@ -1046,6 +1046,9 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Immagini\2.GIF" />
     <Content Include="Immagini\39.gif" />
+    <Content Include="Immagini\Button-Green.png" />
+    <Content Include="Immagini\Button-Red.png" />
+    <Content Include="Immagini\Button-Yellow.png" />
     <Content Include="Immagini\delete.png" />
     <Content Include="Immagini\delete_grey.png" />
     <Content Include="Immagini\edit-button.png" />
@@ -1062,7 +1065,10 @@
     <Content Include="Immagini\Loading\loader.gif" />
     <Content Include="Immagini\Logo Rit PNG.PNG" />
     <Content Include="Immagini\piu.png" />
+    <Content Include="Immagini\Plus_Grey.png" />
+    <Content Include="Immagini\Plus_Yellow.png" />
     <Content Include="Immagini\Simbolo semplice Euro Grey.png" />
+    <Content Include="Immagini\Simbolo semplice Euro Yellow.png" />
     <Content Include="Immagini\switch.png" />
     <Content Include="Immagini\switch3.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />

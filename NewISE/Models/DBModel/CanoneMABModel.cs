@@ -37,5 +37,7 @@ namespace NewISE.Models.DBModel
 
         public TFRModel TFR;
 
+        public decimal idValuta { get; set; }
+
     }
 }

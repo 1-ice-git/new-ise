@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net.Configuration;
 using NewISE.Interfacce;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Controllers
 {
@@ -206,7 +207,7 @@ namespace NewISE.Controllers
                 //Lista Coniugi
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    List<VariazioneConiugeModel> lcm = dtc.GetListaAttivazioniConiugeByIdMagFam(idMaggiorazioniFamiliari).ToList();
+                    List<VariazioneConiugeModel> lcm = dtc.GetListaAttivazioniConiugeByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a=>a.progressivo).ThenByDescending(a=>a.StatoRecord).ToList();
 
                     var check_nuovo_coniuge = 1;
 
@@ -227,10 +228,14 @@ namespace NewISE.Controllers
                                         dataInizio = e.dataInizio,
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtvmf.GetAltriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
+                                        idAltriDati = dtvmf.GetAdfValidiByIDConiuge(e.idConiuge,e.StatoRecord).idAltriDatiFam,
                                         Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge, idMaggiorazioniFamiliari),
                                         HasPensione = dtp.HasPensione(e.idConiuge),
-                                        eliminabile = e.eliminabile
+                                        eliminabile = e.eliminabile,
+                                        statoRecord = e.StatoRecord,
+                                        modificabile = e.modificabile,
+                                        pensione_modificata = dtp.PensioneModificataByIDConiuge(e.idConiuge),
+                                        adf_modificati = dtvmf.GetAdfValidiByIDConiuge(e.idConiuge,e.StatoRecord).modificato
                                     };
                                     lefm.Add(efm);
                                     if (efm.dataFine == Utility.DataFineStop())
@@ -247,7 +252,7 @@ namespace NewISE.Controllers
                 // Lista Figli
                 using (dtFigli dtf = new dtFigli())
                 {
-                    List<VariazioneFigliModel> lfm = dtf.GetListaAttivazioniFigliByIdMagFam(idMaggiorazioniFamiliari).ToList();
+                    List<VariazioneFigliModel> lfm = dtf.GetListaAttivazioniFigliByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a => a.progressivo).ThenByDescending(a => a.StatoRecord).ToList();
 
                     var check_nuovo_figlio = 1;
 
@@ -271,7 +276,9 @@ namespace NewISE.Controllers
                                         idAltriDati = dtvmf.GetAltriDatiFamiliariFiglio(e.idFigli, idMaggiorazioniFamiliari).idAltriDatiFam,
                                         Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio, idMaggiorazioniFamiliari),
                                         HasPensione = dtp.HasPensione(e.idFigli),
-                                        eliminabile = e.eliminabile
+                                        eliminabile = e.eliminabile,
+                                        statoRecord=e.StatoRecord,
+                                        modificabile = e.modificabile
                                     };
                                     lefm.Add(efm);
                                     if (efm.dataFine == Utility.DataFineStop())
@@ -674,7 +681,7 @@ namespace NewISE.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
+        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge, decimal idAltridati, decimal modificabile=1)
         {
             AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
@@ -688,16 +695,17 @@ namespace NewISE.Controllers
                 {
                     idMaggiorazioniFamiliari = dtvmf.GetMaggiorazioneFamiliareConiuge(idConiuge);
 
-                    adf = dtvmf.GetAltriDatiFamiliariConiuge(idConiuge);
+                    //adf = dtvmf.GetAltriDatiFamiliariConiuge(idConiuge);
+                    using (dtAltriDatiFamiliari dtAdf = new dtAltriDatiFamiliari())
+                    {
+                        adf = dtAdf.GetAltriDatiFamiliariConiuge(idAltridati);
+                    }
 
                     amf = dtvmf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
 
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
                     ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
-                }
 
-                using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
-                {
                     bool rinunciaMagFam = false;
                     bool richiestaAttivazione = false;
                     bool attivazione = false;
@@ -712,7 +720,7 @@ namespace NewISE.Controllers
                     bool solaLettura = false;
                     bool trasfSolaLettura = false;
 
-                    dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    dtvmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
 
@@ -724,55 +732,36 @@ namespace NewISE.Controllers
                     {
                         solaLettura = false;
                     }
-                    ViewData.Add("solaLettura", solaLettura);
-                    ViewData.Add("trasfSolaLettura", trasfSolaLettura);
-                }
 
-                //using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                //{
-                //    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
-
-                //    if (pc != null && pc.HasValue())
-                //    {
-                //        switch (pc.idTipologiaConiuge)
-                //        {
-                //            case EnumTipologiaConiuge.Residente:
-                //                adf.residente = true;
-                //                adf.ulterioreMagConiuge = false;
-                //                break;
-
-                //            case EnumTipologiaConiuge.NonResidente_A_Carico:
-                //                adf.residente = false;
-                //                adf.ulterioreMagConiuge = true;
-                //                break;
-
-                //            default:
-                //                break;
-                //        }
-                //    }
-                //}
-                using (dtConiuge dtc = new dtConiuge())
-                {
-                    ConiugeModel c = dtc.GetConiugebyID(idConiuge);
-
-                    if (c != null && c.HasValue())
+                    using (dtConiuge dtc = new dtConiuge())
                     {
-                        switch (c.idTipologiaConiuge)
+                        ConiugeModel c = dtc.GetConiugebyID(idConiuge);
+
+                        if (c != null && c.HasValue())
                         {
-                            case EnumTipologiaConiuge.Residente:
-                                adf.residente = true;
-                                adf.ulterioreMagConiuge = false;
-                                break;
+                            switch (c.idTipologiaConiuge)
+                            {
+                                case EnumTipologiaConiuge.Residente:
+                                    adf.residente = true;
+                                    adf.ulterioreMagConiuge = false;
+                                    break;
 
-                            case EnumTipologiaConiuge.NonResidente_A_Carico:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = true;
-                                break;
+                                case EnumTipologiaConiuge.NonResidente_A_Carico:
+                                    adf.residente = false;
+                                    adf.ulterioreMagConiuge = true;
+                                    break;
 
-                            default:
-                                break;
+                                default:
+                                    break;
+                            }
+                        }
+                        if(modificabile==0)
+                        {
+                            solaLettura = true;
                         }
                     }
+                    ViewData.Add("solaLettura", solaLettura);
+                    ViewData.Add("trasfSolaLettura", trasfSolaLettura);
                 }
             }
             catch (Exception ex)
@@ -812,7 +801,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio)
+        public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio, decimal modificabile=1)
         {
             AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
@@ -824,99 +813,73 @@ namespace NewISE.Controllers
 
                 using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                 {
-                    idMaggiorazioniFamiliari = dtvmf.GetMaggiorazioneFamiliareFiglio(idFiglio);
-
-                    adf = dtvmf.GetAltriDatiFamiliariFiglio(idFiglio, idMaggiorazioniFamiliari);
-
-                    amf = dtvmf.GetAttivazioneById(idFiglio, EnumTipoTabella.Figli);
-
-                    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-                    ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
-                }
-
-
-                using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
-                {
-                    bool rinunciaMagFam = false;
-                    bool richiestaAttivazione = false;
-                    bool attivazione = false;
-                    bool datiConiuge = false;
-                    bool datiParzialiConiuge = false;
-                    bool datiFigli = false;
-                    bool datiParzialiFigli = false;
-                    bool siDocConiuge = false;
-                    bool siDocFigli = false;
-                    bool docFormulario = false;
-                    bool inLavorazione = false;
-                    bool solaLettura = false;
-                    bool trasfSolaLettura = false;
-
-                    dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
-
-                    if (richiestaAttivazione == true)
+                    using (dtFigli dtf = new dtFigli())
                     {
-                        solaLettura = true;
-                    }
-                    else
-                    {
-                        solaLettura = false;
-                    }
 
-                    ViewData.Add("solaLettura", solaLettura);
-                    ViewData.Add("trasfSolaLettura", trasfSolaLettura);
-                }
+                        idMaggiorazioniFamiliari = dtvmf.GetMaggiorazioneFamiliareFiglio(idFiglio);
 
-                //using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
-                //{
-                //    PercentualeMagFigliModel pf = dtpf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now.Date);
+                        adf = dtvmf.GetAltriDatiFamiliariFiglio(idFiglio, idMaggiorazioniFamiliari);
 
-                //    if (pf != null && pf.HasValue())
-                //    {
-                //        switch (pf.idTipologiaFiglio)
-                //        {
-                //            case EnumTipologiaFiglio.Residente:
-                //                adf.residente = true;
-                //                adf.studente = false;
-                //                break;
+                        amf = dtvmf.GetAttivazioneById(idFiglio, EnumTipoTabella.Figli);
 
-                //            case EnumTipologiaFiglio.StudenteResidente:
-                //                adf.studente = true;
-                //                adf.residente = true;
-                //                break;
-                //            case EnumTipologiaFiglio.StudenteNonResidente:
-                //                adf.studente = true;
-                //                adf.residente = false;
-                //                break;
+                        ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+                        ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
 
-                //            default:
-                //                break;
-                //        }
-                //    }
-                //}
-                using (dtFigli dtf = new dtFigli())
-                {
-                    FigliModel f = dtf.GetFigliobyID(idFiglio);
-                    if (f != null && f.HasValue())
-                    {
-                        switch (f.idTipologiaFiglio)
+                        bool rinunciaMagFam = false;
+                        bool richiestaAttivazione = false;
+                        bool attivazione = false;
+                        bool datiConiuge = false;
+                        bool datiParzialiConiuge = false;
+                        bool datiFigli = false;
+                        bool datiParzialiFigli = false;
+                        bool siDocConiuge = false;
+                        bool siDocFigli = false;
+                        bool docFormulario = false;
+                        bool inLavorazione = false;
+                        bool solaLettura = false;
+                        bool trasfSolaLettura = false;
+
+                        dtvmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                            out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
+
+                        if (richiestaAttivazione == true)
                         {
-                            case EnumTipologiaFiglio.Residente:
-                                adf.residente = true;
-                                adf.studente = false;
-                                break;
-                            case EnumTipologiaFiglio.StudenteResidente:
-                                adf.studente = true;
-                                adf.residente = true;
-                                break;
-                            case EnumTipologiaFiglio.StudenteNonResidente:
-                                adf.studente = true;
-                                adf.residente = false;
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
+                            solaLettura = true;
                         }
+                        else
+                        {
+                            solaLettura = false;
+                        }
+
+                        FigliModel f = dtf.GetFigliobyID(idFiglio);
+                        if (f != null && f.HasValue())
+                        {
+                            switch (f.idTipologiaFiglio)
+                            {
+                                case EnumTipologiaFiglio.Residente:
+                                    adf.residente = true;
+                                    adf.studente = false;
+                                    break;
+                                case EnumTipologiaFiglio.StudenteResidente:
+                                    adf.studente = true;
+                                    adf.residente = true;
+                                    break;
+                                case EnumTipologiaFiglio.StudenteNonResidente:
+                                    adf.studente = true;
+                                    adf.residente = false;
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                        if (modificabile==0)
+                        {
+                            solaLettura = true;
+                        }
+
+                        ViewData.Add("solaLettura", solaLettura);
+                        ViewData.Add("trasfSolaLettura", trasfSolaLettura);
                     }
                 }
             }
@@ -1098,6 +1061,8 @@ namespace NewISE.Controllers
 
         public ActionResult ConfermaModificaAdfConiuge(AltriDatiFamConiugeModel adfm)
         {
+            decimal idAdf;
+
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
@@ -1107,7 +1072,7 @@ namespace NewISE.Controllers
                 {
                     using (dtVariazioniMaggiorazioneFamiliare dtadf = new dtVariazioniMaggiorazioneFamiliare())
                     {
-                        dtadf.EditVariazioneAltriDatiFamiliariConiuge(adfm);
+                        idAdf = dtadf.EditVariazioneAltriDatiFamiliariConiuge(adfm);
                     }
                 }
                 else
@@ -1120,7 +1085,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge });
+            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge, idAltriDati=idAdf });
 
 
         }
@@ -1152,7 +1117,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult ElencoPensioniConiuge(decimal idConiuge)
+        public ActionResult ElencoPensioniConiuge(decimal idConiuge, decimal modificabile=1)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
@@ -1195,6 +1160,12 @@ namespace NewISE.Controllers
                         {
                             solaLettura = false;
                         }
+
+                        if (modificabile==0)
+                        {
+                            solaLettura = true;
+                        }
+
                         ViewData.Add("solaLettura", solaLettura);
                         ViewData.Add("trasfSolaLettura", trasfSolaLettura);
                     }
@@ -1596,7 +1567,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ElencoDocumenti(decimal idFamiliare, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante, decimal idMaggiorazioniFamiliari)
+        public ActionResult ElencoDocumenti(decimal idFamiliare, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante, decimal idMaggiorazioniFamiliari, decimal modificabile)
         {
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
             ConiugeModel cm = new ConiugeModel();
@@ -1646,8 +1617,15 @@ namespace NewISE.Controllers
                             {
                                 solaLettura = false;
                             }
+
+                            if (modificabile==0)
+                            {
+                                solaLettura = true;
+                            }
                             break;
                     }
+
+                   
                 }
             }
             catch (Exception ex)

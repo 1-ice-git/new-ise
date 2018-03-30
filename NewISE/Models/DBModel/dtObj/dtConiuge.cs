@@ -309,6 +309,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = c.DATAINIZIOVALIDITA,
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
+                        StatoRecord=(EnumStatoRecord)c.IDSTATORECORD
                     };
                 }
             }
@@ -465,7 +466,6 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<VariazioneConiugeModel> lcm = new List<VariazioneConiugeModel>();
             List<CONIUGE> lc = new List<CONIUGE>();
-            //CONIUGE c = new CONIUGE();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -476,28 +476,24 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var amfl = mf.ATTIVAZIONIMAGFAM
                             .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
-                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
-
-                    //var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
-
-
-                    bool modificabile = false;
+                            .OrderBy(a => a.IDATTIVAZIONEMAGFAM).ToList();
 
                     if (amfl?.Any() ?? false)
                     {
+                        var progressivo = 100;
+
                         foreach (var e in amfl)
                         {
-                            //var e = amfl.First();
-
-                            lc = e.CONIUGE.Where(y => y.IDSTATORECORD ==(decimal)EnumStatoRecord.Attivato).ToList();
+                            lc = e.CONIUGE.Where(y => y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
                             if (lc?.Any() ?? false)
                             {
                                 foreach (var c in lc)
                                 {
                                     VariazioneConiugeModel cm = new VariazioneConiugeModel()
                                     {
-                                        eliminabile = ((c.FK_IDCONIUGE > 0 || c.IDSTATORECORD ==(decimal)EnumStatoRecord.In_Lavorazione) || e.ATTIVAZIONEMAGFAM) ? false : true,
-                                        modificabile = modificabile,
+                                        eliminabile = (c.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione) ? true : false,
+                                        modificabile = true,
+                                        progressivo=progressivo,
                                         idConiuge = c.IDCONIUGE,
                                         idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                                         idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
@@ -511,8 +507,19 @@ namespace NewISE.Models.DBModel.dtObj
                                         FK_idConiuge = c.FK_IDCONIUGE
                                     };
                                     lcm.Add(cm);
-                                    //break;
                                 }
+                            }
+                            progressivo++;
+                        }
+
+                        //corregge le informazioni utilizzate per visualizzare e ordinare i dati
+                        foreach (var e in lcm)
+                        {
+                            if(e.FK_idConiuge>0)
+                            {
+                                var id = e.FK_idConiuge;
+                                lcm.Where(a => a.idConiuge == id).First().modificabile = false;
+                                lcm.Where(a => a.idConiuge == id).First().progressivo = e.progressivo;
                             }
                         }
                     }

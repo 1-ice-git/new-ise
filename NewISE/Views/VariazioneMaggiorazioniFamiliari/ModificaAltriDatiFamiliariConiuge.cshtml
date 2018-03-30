@@ -5,6 +5,7 @@
     List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
     var idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     var idAttivazione = Convert.ToDecimal(ViewData["idAttivazione"]);
+    var idAdf = Convert.ToDecimal(Model.idAltriDatiFam);
     var errori = ViewData.ModelState;
 }
 
@@ -22,6 +23,7 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.idAltriDatiFam)
             @Html.HiddenFor(model => model.idConiuge)
+
 
             <div class="form-group">
                 @Html.LabelFor(model => model.nazionalita, new { @class = "control-label col-md-2" })
@@ -138,7 +140,7 @@
 }
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "AltriDatiFamiliariConiuge", "VariazioneMaggiorazioniFamiliari", new { idConiuge = Model.idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "AltriDatiFamiliariConiuge", "VariazioneMaggiorazioniFamiliari", new { idConiuge = Model.idConiuge, idAltridati = idAdf }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 @if (comuni != null && comuni.Any())
 {

@@ -112,10 +112,15 @@ namespace NewISE.Models.DBModel.dtObj
                 var u = t.UFFICI;
                 um.descUfficio = u.DESCRIZIONEUFFICIO;
 
+                //mal = u.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false &&
+                //                                        a.DATAINIZIOVALIDITA <= vmab.DATAINIZIOMAB &&
+                //                                        a.DATAFINEVALIDITA >= vmab.DATAFINEMAB)
+                //                                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
                 mal = u.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false &&
-                                                        a.DATAINIZIOVALIDITA <= vmab.DATAINIZIOMAB &&
-                                                        a.DATAFINEVALIDITA >= vmab.DATAFINEMAB)
-                                                        .OrderBy(a => a.IDMAGANNUALI).ToList();
+                                                      vmab.DATAINIZIOMAB >= a.DATAINIZIOVALIDITA &&
+                                                      vmab.DATAINIZIOMAB <= a.DATAFINEVALIDITA)
+                                                      .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
 
                 if (mal?.Any() ?? false)
                 {
@@ -149,7 +154,8 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                 PERCENTUALEMAB p = new PERCENTUALEMAB();
-                List<PERCENTUALEMAB> pl = new List<PERCENTUALEMAB>();
+                List<PERCENTUALEMAB> plAll = new List<PERCENTUALEMAB>();
+                //List<PERCENTUALEMAB> pl = new List<PERCENTUALEMAB>();
 
                 var vmab = db.VARIAZIONIMAB.Find(vmabm.idVariazioniMAB);
                 var ma = vmab.MAGGIORAZIONEABITAZIONE;
@@ -158,14 +164,25 @@ namespace NewISE.Models.DBModel.dtObj
                 UFFICI u = t.UFFICI;
                 DIPENDENTI d = t.DIPENDENTI;
 
-                var l = d.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false).ToList().First();
+                var livelli = d.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= vmabm.DataInizioMAB && a.DATAINIZIOVALIDITA <= vmabm.DataFineMAB).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
-                                                    a.DATAINIZIOVALIDITA <= vmabm.DataInizioMAB &&
-                                                    a.DATAFINEVALIDITA >= vmabm.DataFineMAB &&
+                foreach (var l in livelli)
+                {
+                    var pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
+                                                    a.DATAFINEVALIDITA >= l.DATAINIZIOVALIDITA &&
+                                                    a.DATAINIZIOVALIDITA <= l.DATAFINEVALIDITA &&
                                                     a.IDUFFICIO == u.IDUFFICIO &&
                                                     a.IDLIVELLO == l.IDLIVELLO).ToList();
-                return pl;
+
+                    if (!pl?.Any() ?? false)
+                    {
+                        throw new Exception("La percentuale mab per il livello " + l.LIVELLI.LIVELLO + " non è presente.");
+                    }
+
+                    plAll.AddRange(pl);
+                }                
+                
+                return plAll;
             }
             catch (Exception ex)
             {
@@ -399,7 +416,8 @@ namespace NewISE.Models.DBModel.dtObj
                             DATAFINEVALIDITA = cm_row.DATAFINEVALIDITA,
                             IMPORTOCANONE = cm_row.IMPORTOCANONE,
                             DATAAGGIORNAMENTO = cm_row.DATAAGGIORNAMENTO,
-                            IDSTATORECORD = cm_row.IDSTATORECORD
+                            IDSTATORECORD = cm_row.IDSTATORECORD,
+                            IDVALUTA = cm_row.IDVALUTA
                         };
 
                     }
@@ -549,6 +567,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 fk_IDVariazioniMAB = vmab.FK_IDVARIAZIONIMAB
                             };
 
+                        }else
+                        {
+                            throw new Exception(string.Format("nessuna variazione MAB trovata."));
                         }
                     }
                     else
@@ -836,10 +857,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 this.RimuoviAssociazioneCanoneMAB_TFR(cm.IDCANONE, db);
                                 using (dtTFR dtt = new dtTFR())
                                 {
-                                    using (dtValute dtv = new dtValute())
-                                    {
-                                        var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
-                                        var ltfr = dtt.GetListaTfrByValuta_RangeDate(tm, vm.idValuta, cm.DATAINIZIOVALIDITA, cm.DATAFINEVALIDITA, db);
+                                    //using (dtValute dtv = new dtValute())
+                                    //{
+                                        //var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
+                                        var ltfr = dtt.GetListaTfrByValuta_RangeDate(tm, cm.IDVALUTA, cm.DATAINIZIOVALIDITA, cm.DATAFINEVALIDITA, db);
 
                                         if (ltfr?.Any() ?? false)
                                         {
@@ -848,7 +869,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 this.Associa_TFR_CanoneMAB(tfr.idTFR, cm.IDCANONE, db);
                                             }
                                         }
-                                    }
+                                    //}
 
                                 }
                                 #endregion
@@ -1134,7 +1155,8 @@ namespace NewISE.Models.DBModel.dtObj
                             IMPORTOCANONE = old_canone.IMPORTOCANONE,
                             IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
                             DATAAGGIORNAMENTO = DateTime.Now,
-                            FK_IDCANONE = old_canone.FK_IDCANONE
+                            FK_IDCANONE = old_canone.FK_IDCANONE,
+                            IDVALUTA = old_canone.IDVALUTA
                         };
 
 
@@ -1643,7 +1665,8 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEVALIDITA = mvm.dataFineMAB,
                     IMPORTOCANONE = mvm.importo_canone,
                     DATAAGGIORNAMENTO = DateTime.Now,
-                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                    IDVALUTA = mvm.id_Valuta
                 };
 
                 db.CANONEMAB.Add(cm);
@@ -2168,7 +2191,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var mab = db.MAGGIORAZIONEABITAZIONE.Find(idMAB);
                 var item = db.Entry<MAGGIORAZIONEABITAZIONE>(mab);
                 item.State = System.Data.Entity.EntityState.Modified;
-                //item.Collection(a => a.DOCUMENTI).Load();
+                item.Collection(a => a.MAGGIORAZIONIANNUALI).Load();
                 var ma = db.MAGGIORAZIONIANNUALI.Find(idMaggiorazioniAnnuali);
                 mab.MAGGIORAZIONIANNUALI.Add(ma);
                 int i = db.SaveChanges();
@@ -2239,7 +2262,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var tfr = db.TFR.Find(idTFR);
                 var item = db.Entry<TFR>(tfr);
                 item.State = System.Data.Entity.EntityState.Modified;
-                //item.Collection(a => a.DOCUMENTI).Load();
+                item.Collection(a => a.CANONEMAB).Load();
                 var c = db.CANONEMAB.Find(idCanoneMAB);
                 tfr.CANONEMAB.Add(c);
                 int i = db.SaveChanges();
@@ -2291,7 +2314,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var a = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
                 var item = db.Entry<ATTIVAZIONEMAB>(a);
                 item.State = System.Data.Entity.EntityState.Modified;
-                //item.Collection(a => a.DOCUMENTI).Load();
+                item.Collection(x => x.DOCUMENTI).Load();
                 var d = db.DOCUMENTI.Find(idDocumento);
                 a.DOCUMENTI.Add(d);
                 int i = db.SaveChanges();
@@ -2541,19 +2564,15 @@ namespace NewISE.Models.DBModel.dtObj
 
             cm = this.CreaCanoneMABPartenza(vmabm, db);
 
-            using (dtValute dtv = new dtValute())
+
+            using (dtTFR dtTfr = new dtTFR())
             {
-                using (dtTFR dtTFR = new dtTFR())
-                {
-                    vm = dtv.GetValutaUfficiale(db);
+                ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cm.idValuta, cm.DataInizioValidita, cm.DataFineValidita, db);
+            }
 
-                    ltfrm = dtTFR.GetListaTfrByValuta_RangeDate(trm, vm.idValuta, cm.DataInizioValidita, cm.DataFineValidita, db);
-
-                    foreach (var tfrm in ltfrm)
-                    {
-                        this.Associa_TFR_CanoneMAB(tfrm.idTFR, cm.idCanone, db);
-                    }
-                }
+            foreach (var tfrm in ltfrm)
+            {
+                this.Associa_TFR_CanoneMAB(tfrm.idTFR, cm.idCanone, db);
             }
         }
 
@@ -2670,47 +2689,58 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
-                CanoneMABModel cmabm = new CanoneMABModel();
 
-                CANONEMAB cmab = new CANONEMAB()
+                using (dtValute dtv = new dtValute())
                 {
-                    IDATTIVAZIONEMAB = vmabm.idAttivazioneMAB,
-                    IDMAB = vmabm.idMAB,
-                    DATAINIZIOVALIDITA = vmabm.DataInizioMAB,
-                    DATAFINEVALIDITA = vmabm.DataFineMAB,
-                    IMPORTOCANONE = 0,
-                    DATAAGGIORNAMENTO = DateTime.Now,
-                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-                    FK_IDCANONE = null
-                };
-                db.CANONEMAB.Add(cmab);
-
-                if (db.SaveChanges() > 0)
-                {
-                    cmabm = new CanoneMABModel()
+                    using (dtTFR dtTFR = new dtTFR())
                     {
-                        idCanone = cmab.IDCANONE,
-                        IDAttivazioneMAB = cmab.IDATTIVAZIONEMAB,
-                        IDMAB = cmab.IDMAB,
-                        DataInizioValidita = cmab.DATAINIZIOVALIDITA,
-                        DataFineValidita = cmab.DATAFINEVALIDITA,
-                        ImportoCanone = cmab.IMPORTOCANONE,
-                        DataAggiornamento = cmab.DATAAGGIORNAMENTO,
-                        idStatoRecord = cmab.IDSTATORECORD,
-                        FK_IDCanone = cmab.FK_IDCANONE
-                    };
+                        var vm = dtv.GetValutaUfficiale(db);
 
-                    var t = db.VARIAZIONIMAB.Find(vmabm.idVariazioniMAB).MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+                        CanoneMABModel cmabm = new CanoneMABModel();
 
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento CanoneMAB", "CANONEMAB", db,
-                            t.IDTRASFERIMENTO, cmab.IDCANONE);
+                        CANONEMAB cmab = new CANONEMAB()
+                        {
+                            IDATTIVAZIONEMAB = vmabm.idAttivazioneMAB,
+                            IDMAB = vmabm.idMAB,
+                            DATAINIZIOVALIDITA = vmabm.DataInizioMAB,
+                            DATAFINEVALIDITA = vmabm.DataFineMAB,
+                            IMPORTOCANONE = 0,
+                            DATAAGGIORNAMENTO = DateTime.Now,
+                            IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                            FK_IDCANONE = null,
+                            IDVALUTA = vm.idValuta
+                        };
+                        db.CANONEMAB.Add(cmab);
+
+                        if (db.SaveChanges() > 0)
+                        {
+                            cmabm = new CanoneMABModel()
+                            {
+                                idCanone = cmab.IDCANONE,
+                                IDAttivazioneMAB = cmab.IDATTIVAZIONEMAB,
+                                IDMAB = cmab.IDMAB,
+                                DataInizioValidita = cmab.DATAINIZIOVALIDITA,
+                                DataFineValidita = cmab.DATAFINEVALIDITA,
+                                ImportoCanone = cmab.IMPORTOCANONE,
+                                DataAggiornamento = cmab.DATAAGGIORNAMENTO,
+                                idStatoRecord = cmab.IDSTATORECORD,
+                                FK_IDCanone = cmab.FK_IDCANONE,
+                                idValuta = cmab.IDVALUTA
+                            };
+
+                            var t = db.VARIAZIONIMAB.Find(vmabm.idVariazioniMAB).MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento CanoneMAB", "CANONEMAB", db,
+                                    t.IDTRASFERIMENTO, cmab.IDCANONE);
+                        }
+                        else
+                        {
+                            throw new Exception("Errore in fase di creazione CanoneMAB in partenza.");
+                        }
+        
+                        return cmabm;
+                    }
                 }
-                else
-                {
-                    throw new Exception("Errore in fase di creazione CanoneMAB in partenza.");
-                }
-
-                return cmabm;
 
             }
             catch (Exception ex)
