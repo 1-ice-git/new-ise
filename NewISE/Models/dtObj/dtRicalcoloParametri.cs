@@ -22,34 +22,43 @@ namespace NewISE.Models.dtObj
             {
                 var tfr = db.TFR.Find(idTFR);
                 var item = db.Entry<TFR>(tfr);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.CANONEMAB).Load();
+
 
                 var lCanoneMAB =
                     db.CANONEMAB.Where(
                         a =>
-                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.DATAFINEVALIDITA >= tfr.DATAINIZIOVALIDITA &&
-                            a.DATAINIZIOVALIDITA <= tfr.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.DATAFINEVALIDITA >= tfr.DATAINIZIOVALIDITA &&
+                            a.DATAINIZIOVALIDITA <= tfr.DATAFINEVALIDITA && a.IDVALUTA == tfr.IDVALUTA)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA)
+                        .ToList();
 
-                foreach (var cmab in lCanoneMAB)
+                if (lCanoneMAB?.Any() ?? false)
                 {
-                    var nCmab = tfr.CANONEMAB.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCANONE == cmab.IDCANONE);
-                    if (nCmab <= 0)
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.CANONEMAB).Load();
+
+                    foreach (var cmab in lCanoneMAB)
                     {
-                        tfr.CANONEMAB.Add(cmab);
+                        var nCmab = tfr.CANONEMAB.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCANONE == cmab.IDCANONE);
+                        if (nCmab <= 0)
+                        {
+                            tfr.CANONEMAB.Add(cmab);
 
-                        var t = cmab.ATTIVAZIONEMAB.TRASFERIMENTO;
+                            var t = cmab.ATTIVAZIONEMAB.TRASFERIMENTO;
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
+                        }
+                    }
+
+                    int i = db.SaveChanges();
+
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione del canome MAB al TFR.");
                     }
                 }
 
-                int i = db.SaveChanges();
-
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione del canome MAB al TFR.");
-                }
 
             }
             catch (Exception ex)
@@ -65,8 +74,7 @@ namespace NewISE.Models.dtObj
             {
                 var riduzioni = db.RIDUZIONI.Find(idRiduzioni);
                 var item = db.Entry<RIDUZIONI>(riduzioni);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.COEFFICIENTEINDRICHIAMO).Load();
+
 
                 var lcir =
                     db.COEFFICIENTEINDRICHIAMO.Where(
@@ -76,25 +84,32 @@ namespace NewISE.Models.dtObj
                         .OrderBy(a => a.DATAINIZIOVALIDITA)
                         .ToList();
 
-                foreach (var cir in lcir)
+                if (lcir?.Any() ?? false)
                 {
-                    var nConta =
-                        riduzioni.COEFFICIENTEINDRICHIAMO.Count(
-                            a => a.ANNULLATO == false && a.IDCOEFINDRICHIAMO == cir.IDCOEFINDRICHIAMO);
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.COEFFICIENTEINDRICHIAMO).Load();
 
-                    if (nConta <= 0)
+
+                    foreach (var cir in lcir)
                     {
-                        riduzioni.COEFFICIENTEINDRICHIAMO.Add(cir);
+                        var nConta =
+                            riduzioni.COEFFICIENTEINDRICHIAMO.Count(
+                                a => a.ANNULLATO == false && a.IDCOEFINDRICHIAMO == cir.IDCOEFINDRICHIAMO);
 
-                        var lr = cir.RICHIAMO;
-
-                        foreach (var r in lr)
+                        if (nConta <= 0)
                         {
-                            var t = r.TRASFERIMENTO;
+                            riduzioni.COEFFICIENTEINDRICHIAMO.Add(cir);
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, riduzioni.DATAINIZIOVALIDITA, db);
+                            var lr = cir.RICHIAMO;
+
+                            foreach (var r in lr)
+                            {
+                                var t = r.TRASFERIMENTO;
+
+                                Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, riduzioni.DATAINIZIOVALIDITA, db);
+                            }
+
                         }
-
                     }
                 }
 
@@ -519,8 +534,7 @@ namespace NewISE.Models.dtObj
             {
                 var tfr = db.TFR.Find(idTFR);
                 var item = db.Entry<TFR>(tfr);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.INDENNITA).Load();
+
 
                 var lTrsferimento =
                     db.TRASFERIMENTO.Where(
@@ -530,25 +544,31 @@ namespace NewISE.Models.dtObj
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
 
-                foreach (var t in lTrsferimento)
+                if (lTrsferimento?.Any() ?? false)
                 {
-                    var indennita = t.INDENNITA;
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.INDENNITA).Load();
 
-                    var nCont = tfr.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
-
-                    if (nCont <= 0)
+                    foreach (var t in lTrsferimento)
                     {
-                        tfr.INDENNITA.Add(indennita);
+                        var indennita = t.INDENNITA;
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
+                        var nCont = tfr.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
+
+                        if (nCont <= 0)
+                        {
+                            tfr.INDENNITA.Add(indennita);
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
+                        }
                     }
-                }
 
-                int i = db.SaveChanges();
+                    int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione dell'indennità al TFR.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione dell'indennità al TFR.");
+                    }
                 }
 
             }
@@ -565,8 +585,7 @@ namespace NewISE.Models.dtObj
             {
                 var pm = db.PERCENTUALEMAB.Find(idPerceMAB);
                 var item = db.Entry<PERCENTUALEMAB>(pm);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.VARIAZIONIMAB).Load();
+
 
                 var lvmab =
                     db.VARIAZIONIMAB.Where(
@@ -576,31 +595,39 @@ namespace NewISE.Models.dtObj
                         .OrderBy(a => a.DATAINIZIOMAB)
                         .ToList();
 
-                foreach (var vmab in lvmab)
+                if (lvmab?.Any() ?? false)
                 {
-                    var nConta =
-                        pm.VARIAZIONIMAB.Count(
-                            a =>
-                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                a.IDVARIAZIONIMAB == vmab.IDVARIAZIONIMAB);
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.VARIAZIONIMAB).Load();
 
-                    if (nConta <= 0)
+                    foreach (var vmab in lvmab)
                     {
-                        pm.VARIAZIONIMAB.Add(vmab);
+                        var nConta =
+                            pm.VARIAZIONIMAB.Count(
+                                a =>
+                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                    a.IDVARIAZIONIMAB == vmab.IDVARIAZIONIMAB);
 
-                        var t = vmab.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+                        if (nConta <= 0)
+                        {
+                            pm.VARIAZIONIMAB.Add(vmab);
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);
+                            var t = vmab.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);
+                        }
+
+                    }
+
+                    int i = db.SaveChanges();
+
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella VariazioneMAB.");
                     }
 
                 }
 
-                int i = db.SaveChanges();
-
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella VariazioneMAB.");
-                }
             }
             catch (Exception ex)
             {

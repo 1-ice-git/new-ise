@@ -3236,7 +3236,7 @@
     <Compile Include="Models\dtObj\dtAccount.cs" />
     <Compile Include="Models\DBModel\dtObj\dtLivelliDipendente.cs" />
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
-    <Compile Include="Models\dtObj\dtRicalcoloParametri.cs" />
+    <Compile Include="Models\dtObj\DtRicalcoloParametri.cs" />
     <Compile Include="Models\dtObj\dtUtenteAutorizzato.cs" />
     <Compile Include="Models\dtObj\Interfacce\IricalcoloParametri.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
