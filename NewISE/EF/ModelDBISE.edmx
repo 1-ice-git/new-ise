@@ -287,6 +287,7 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FK_IDCANONE" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
@@ -4512,6 +4513,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_V_CMAB">
+          <End Role="VALUTE" Type="Self.VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CANONEMAB" Type="Self.CANONEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="CANONEMAB">
+              <PropertyRef Name="IDVALUTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_V_N">
           <End Role="VOCI" Type="Self.VOCI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5615,6 +5630,10 @@
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
           </AssociationSet>
+          <AssociationSet Name="R_V_CMAB" Association="Self.R_V_CMAB">
+            <End Role="VALUTE" EntitySet="VALUTE" />
+            <End Role="CANONEMAB" EntitySet="CANONEMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_V_N" Association="Self.R_V_N">
             <End Role="VOCI" EntitySet="VOCI" />
             <End Role="NETTO" EntitySet="NETTO" />
@@ -5903,6 +5922,10 @@
           </AssociationSet>
           <AssociationSet Name="R_MAB_CMAB" Association="DBISEPRO.R_MAB_CMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="CANONEMAB" EntitySet="CANONEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_V_CMAB" Association="DBISEPRO.R_V_CMAB">
+            <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
           <AssociationSet Name="RELATIONSHIP10" Association="DBISEPRO.RELATIONSHIP10">
@@ -6727,10 +6750,12 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FK_IDCANONE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_CMAB" FromRole="CANONEMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANONEMAB1" Relationship="DBISEPRO.R_CMAB_CMAB" FromRole="CANONEMAB" ToRole="CANONEMAB1" />
           <NavigationProperty Name="CANONEMAB2" Relationship="DBISEPRO.R_CMAB_CMAB" FromRole="CANONEMAB1" ToRole="CANONEMAB" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_CMAB" FromRole="CANONEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="VALUTE" Relationship="DBISEPRO.R_V_CMAB" FromRole="CANONEMAB" ToRole="VALUTE" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISEPRO.RELATIONSHIP10" FromRole="CANONEMAB" ToRole="STATORECORD" />
           <NavigationProperty Name="TFR" Relationship="DBISEPRO.CMAB_TFR" FromRole="CANONEMAB" ToRole="TFR" />
         </EntityType>
@@ -7964,6 +7989,7 @@
           <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEVALUTA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="VALUTAUFFICIALE" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CANONEMAB" Relationship="DBISEPRO.R_V_CMAB" FromRole="VALUTE" ToRole="CANONEMAB" />
           <NavigationProperty Name="TFR" Relationship="DBISEPRO.R_VALUTE_TFR" FromRole="VALUTE" ToRole="TFR" />
           <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISEPRO.R_VALUTE_VALUFF" FromRole="VALUTE" ToRole="VALUTAUFFICIO" />
         </EntityType>
@@ -8524,6 +8550,20 @@
             </Principal>
             <Dependent Role="CANONEMAB">
               <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_V_CMAB">
+          <End Type="DBISEPRO.VALUTE" Role="VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CANONEMAB" Role="CANONEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="CANONEMAB">
+              <PropertyRef Name="IDVALUTA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10303,6 +10343,7 @@
           <EntitySetMapping Name="CANONEMAB">
             <EntityTypeMapping TypeName="DBISEPRO.CANONEMAB">
               <MappingFragment StoreEntitySet="CANONEMAB">
+                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
                 <ScalarProperty Name="FK_IDCANONE" ColumnName="FK_IDCANONE" />
                 <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
