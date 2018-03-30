@@ -30,7 +30,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     libm = (from e in lib
                             select new TFRModel()
-                            {   
+                            {
                                 idTFR = e.IDTFR,
                                 idValuta = e.IDVALUTA,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
@@ -137,7 +137,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     if (escludiAnnullati == true)
                         lib = db.TFR.Where(a => a.ANNULLATO == false && a.IDVALUTA == idValuta).ToList();
                     else
-                        lib = db.TFR.Where(a =>a.IDVALUTA == idValuta).ToList();
+                        lib = db.TFR.Where(a => a.IDVALUTA == idValuta).ToList();
 
                     libm = (from e in lib
                             select new TFRModel()
@@ -145,10 +145,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idTFR = e.IDTFR,
                                 idValuta = e.IDVALUTA,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Annullato = e.ANNULLATO,
-                                tassoCambio=e.TASSOCAMBIO,
+                                tassoCambio = e.TASSOCAMBIO,
                                 DescrizioneValuta = new ValuteModel()
                                 {
                                     idValuta = e.VALUTE.IDVALUTA,
@@ -169,7 +169,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        
+
 
         public bool EsistonoMovimentiPrima(TFRModel ibm)
         {
@@ -208,7 +208,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-        
+
         public bool EsistonoMovimentiPrimaUguale(TFRModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -281,7 +281,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 return db.TFR.Where(a => a.IDTFR == ibm.idTFR).First().ANNULLATO == true ? true : false;
             }
-        }        
+        }
         public decimal Get_Id_TFRPrimoNonAnnullato(decimal idValuta)
         {
             decimal tmp = 0;
@@ -330,7 +330,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return vr;
         }
-        
+
         public TFR RestituisciIlRecordPrecedente(decimal idMagCon)
         {
             TFR tmp = null;
@@ -489,10 +489,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public void SetTfr(TFRModel ibm, bool aggiornaTutto)
         {
             List<TFR> libNew = new List<TFR>();
-            TFR ibPrecedente = new TFR();
+            //TFR ibPrecedente = new TFR();
             TFR ibNew1 = new TFR();
             TFR ibNew2 = new TFR();
-            List<TFR> lArchivioIB = new List<TFR>();
+            //List<TFR> lArchivioIB = new List<TFR>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -509,7 +509,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
+                            //decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new TFR()
                             {
