@@ -14,7 +14,7 @@ using System.Linq.Dynamic;
 namespace NewISE.Models.dtObj
 {
 
-    public class dtRicalcoloParametri : IDisposable, IricalcoloParametri
+    public class DtRicalcoloParametri : IDisposable, IricalcoloParametri
     {
         public void AssociaCanoneMAB_TFR(decimal idTFR, ModelDBISE db)
         {

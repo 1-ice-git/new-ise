@@ -20,7 +20,7 @@ namespace NewISE.Models.dtObj.Tests
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtRicalcoloParametri dtrp = new dtRicalcoloParametri())
+                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                     {
                         dtrp.AssociaConiuge_PMC(2, db);
                     }
