@@ -658,14 +658,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.RIDUZIONI.Add(ibNew1);
                             db.SaveChanges();
 
+                            RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
                                 dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db);
-                                //TODO: terminare di inserire la chiamata della funzione per associare il coefficente richiamo e tutte le altre funzione per le riduzioni.
+                                dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db);
                             }
-
-
-                            RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -721,8 +721,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.RIDUZIONI.AddRange(libNew);
                                 db.SaveChanges();
+
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var r in libNew)
+                                    {
+
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -784,8 +797,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.RIDUZIONI.AddRange(libNew);
                                 db.SaveChanges();
+
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var r in libNew)
+                                    {
+
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -809,6 +835,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.RIDUZIONI.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                    dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                    dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -839,6 +873,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.RIDUZIONI.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -866,6 +908,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.RIDUZIONI.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var r in libNew)
+                                        {
+
+                                            dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db);
+                                            dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db);
+                                            dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db);
+                                        }
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }

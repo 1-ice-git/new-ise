@@ -546,13 +546,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.TFR.Add(ibNew1);
                             db.SaveChanges();
 
+
+
+                            RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
                                 dtrp.AssociaCanoneMAB_TFR(ibNew1.IDTFR, db);
                                 dtrp.AssociaIndennita_TFR(ibNew1.IDTFR, db);
                             }
-
-                            RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -609,6 +611,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.TFR.AddRange(libNew);
                                 db.SaveChanges();
 
+                                //annullare l'intervallo trovato
+                                RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
                                     foreach (var tfr in libNew)
@@ -619,9 +624,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 }
 
-
-                                //annullare l'intervallo trovato
-                                RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -684,6 +686,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.TFR.AddRange(libNew);
                                 db.SaveChanges();
 
+                                //annullare l'intervallo trovato
+                                RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
                                     foreach (var tfr in libNew)
@@ -693,8 +698,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     }
 
                                 }
-                                //annullare l'intervallo trovato
-                                RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -752,12 +756,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.Database.BeginTransaction();
                                     db.TFR.Add(ibNew1);
                                     db.SaveChanges();
+
+                                    RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
                                         dtrp.AssociaCanoneMAB_TFR(ibNew1.IDTFR, db);
                                         dtrp.AssociaIndennita_TFR(ibNew1.IDTFR, db);
                                     }
-                                    RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -784,6 +791,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.Database.BeginTransaction();
                                     db.TFR.AddRange(libNew);
                                     db.SaveChanges();
+
+                                    RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
                                         foreach (var tfr in libNew)
@@ -793,7 +803,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         }
 
                                     }
-                                    RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }

@@ -11,4 +11,11 @@ namespace NewISE.Models.Enumeratori
         Conferma = 2,
         Annulla = 3
     }
+
+    public enum EnumFunzioniRiduzione
+    {
+        Indennita_Base = 1,
+        Indennita_Sistemazione = 2,
+        Coefficente_Richiamo = 3
+    }
 }

@@ -10,6 +10,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.Enum;
 using NewISE.Models.Tools;
 using System.Linq.Dynamic;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.dtObj
 {
@@ -73,51 +74,59 @@ namespace NewISE.Models.dtObj
             try
             {
                 var riduzioni = db.RIDUZIONI.Find(idRiduzioni);
-                var item = db.Entry<RIDUZIONI>(riduzioni);
 
 
-                var lcir =
-                    db.COEFFICIENTEINDRICHIAMO.Where(
-                        a =>
-                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= riduzioni.DATAINIZIOVALIDITA &&
-                            a.DATAINIZIOVALIDITA <= riduzioni.DATAFINEVALIDITA)
-                        .OrderBy(a => a.DATAINIZIOVALIDITA)
-                        .ToList();
-
-                if (lcir?.Any() ?? false)
+                if (riduzioni.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Coefficente_Richiamo)
                 {
-                    item.State = EntityState.Modified;
-                    item.Collection(a => a.COEFFICIENTEINDRICHIAMO).Load();
+                    var item = db.Entry<RIDUZIONI>(riduzioni);
 
 
-                    foreach (var cir in lcir)
+                    var lcir =
+                        db.COEFFICIENTEINDRICHIAMO.Where(
+                            a =>
+                                a.ANNULLATO == false && a.DATAFINEVALIDITA >= riduzioni.DATAINIZIOVALIDITA &&
+                                a.DATAINIZIOVALIDITA <= riduzioni.DATAFINEVALIDITA)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
+
+                    if (lcir?.Any() ?? false)
                     {
-                        var nConta =
-                            riduzioni.COEFFICIENTEINDRICHIAMO.Count(
-                                a => a.ANNULLATO == false && a.IDCOEFINDRICHIAMO == cir.IDCOEFINDRICHIAMO);
+                        item.State = EntityState.Modified;
+                        item.Collection(a => a.COEFFICIENTEINDRICHIAMO).Load();
 
-                        if (nConta <= 0)
+
+                        foreach (var cir in lcir)
                         {
-                            riduzioni.COEFFICIENTEINDRICHIAMO.Add(cir);
+                            var nConta =
+                                riduzioni.COEFFICIENTEINDRICHIAMO.Count(
+                                    a => a.ANNULLATO == false && a.IDCOEFINDRICHIAMO == cir.IDCOEFINDRICHIAMO);
 
-                            var lr = cir.RICHIAMO;
-
-                            foreach (var r in lr)
+                            if (nConta <= 0)
                             {
-                                var t = r.TRASFERIMENTO;
+                                riduzioni.COEFFICIENTEINDRICHIAMO.Add(cir);
 
-                                Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, riduzioni.DATAINIZIOVALIDITA, db);
+                                var lr = cir.RICHIAMO;
+
+                                foreach (var r in lr)
+                                {
+                                    var t = r.TRASFERIMENTO;
+
+                                    Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, riduzioni.DATAINIZIOVALIDITA, db);
+                                }
+
                             }
-
                         }
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Errore nella fase di associazione del coefficente di richiamo alle riduzioni.");
+                        }
+
                     }
-                }
 
-                int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione del coefficente di richiamo alle riduzioni.");
                 }
 
             }
@@ -133,8 +142,7 @@ namespace NewISE.Models.dtObj
             {
                 var pmc = db.PERCENTUALEMAGCONIUGE.Find(idPercMagConiuge);
                 var item = db.Entry<PERCENTUALEMAGCONIUGE>(pmc);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.CONIUGE).Load();
+
 
                 var lc =
                     db.CONIUGE.Where(
@@ -146,27 +154,33 @@ namespace NewISE.Models.dtObj
                                     b.ATTIVAZIONEMAGFAM == true).Any() && a.DATAFINEVALIDITA >= pmc.DATAINIZIOVALIDITA &&
                             a.DATAINIZIOVALIDITA <= pmc.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                foreach (var c in lc)
+                if (lc?.Any() ?? false)
                 {
-                    var nConta =
-                        pmc.CONIUGE.Count(
-                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCONIUGE == c.IDCONIUGE);
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.CONIUGE).Load();
 
-                    if (nConta <= 0)
+                    foreach (var c in lc)
                     {
-                        pmc.CONIUGE.Add(c);
+                        var nConta =
+                            pmc.CONIUGE.Count(
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCONIUGE == c.IDCONIUGE);
 
-                        var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                        if (nConta <= 0)
+                        {
+                            pmc.CONIUGE.Add(c);
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmc.DATAINIZIOVALIDITA, db);
+                            var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmc.DATAINIZIOVALIDITA, db);
+                        }
                     }
-                }
 
-                int i = db.SaveChanges();
+                    int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione dell'indennità al TFR.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione dell'indennità al TFR.");
+                    }
                 }
 
             }
@@ -184,8 +198,7 @@ namespace NewISE.Models.dtObj
             {
                 var pmf = db.PERCENTUALEMAGFIGLI.Find(idPercFiglio);
                 var item = db.Entry<PERCENTUALEMAGFIGLI>(pmf);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.FIGLI).Load();
+
 
                 var lf = db.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                              a.ATTIVAZIONIMAGFAM.Where(
@@ -197,25 +210,31 @@ namespace NewISE.Models.dtObj
                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                     .ToList();
 
-                foreach (var f in lf)
+                if (lf?.Any() ?? false)
                 {
-                    var nConta =
-                        pmf.FIGLI.Count(
-                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
-                    if (nConta <= 0)
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.FIGLI).Load();
+
+                    foreach (var f in lf)
                     {
-                        pmf.FIGLI.Add(f);
-                        var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                        var nConta =
+                            pmf.FIGLI.Count(
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
+                        if (nConta <= 0)
+                        {
+                            pmf.FIGLI.Add(f);
+                            var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmf.DATAINIZIOVALIDITA, db);
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmf.DATAINIZIOVALIDITA, db);
+                        }
                     }
-                }
 
-                int i = db.SaveChanges();
+                    int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione della percentuale figli alla tabella figli.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione della percentuale figli alla tabella figli.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -231,8 +250,7 @@ namespace NewISE.Models.dtObj
             {
                 var ips = db.INDENNITAPRIMOSEGRETARIO.Find(idPrimoSegretario);
                 var item = db.Entry<INDENNITAPRIMOSEGRETARIO>(ips);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.FIGLI).Load();
+
 
                 var lf = db.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                              a.ATTIVAZIONIMAGFAM.Where(
@@ -244,25 +262,31 @@ namespace NewISE.Models.dtObj
                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                     .ToList();
 
-                foreach (var f in lf)
+                if (lf?.Any() ?? false)
                 {
-                    var nConta =
-                        ips.FIGLI.Count(
-                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.FIGLI).Load();
 
-                    if (nConta <= 0)
+                    foreach (var f in lf)
                     {
-                        ips.FIGLI.Add(f);
-                        var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ips.DATAINIZIOVALIDITA, db);
+                        var nConta =
+                            ips.FIGLI.Count(
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
+
+                        if (nConta <= 0)
+                        {
+                            ips.FIGLI.Add(f);
+                            var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ips.DATAINIZIOVALIDITA, db);
+                        }
                     }
-                }
 
-                int i = db.SaveChanges();
+                    int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione dell'indennità di primo segretario alla tabella figli.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione dell'indennità di primo segretario alla tabella figli.");
+                    }
                 }
 
             }
@@ -279,8 +303,7 @@ namespace NewISE.Models.dtObj
             {
                 var pd = db.PERCENTUALEDISAGIO.Find(idPercDisagio);
                 var item = db.Entry<PERCENTUALEDISAGIO>(pd);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.INDENNITA).Load();
+
 
                 var lTrsferimento =
                     db.TRASFERIMENTO.Where(
@@ -290,24 +313,30 @@ namespace NewISE.Models.dtObj
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
 
-                foreach (var t in lTrsferimento)
+                if (lTrsferimento?.Any() ?? false)
                 {
-                    var indennita = t.INDENNITA;
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.INDENNITA).Load();
 
-                    var nCont = pd.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
-                    if (nCont <= 0)
+                    foreach (var t in lTrsferimento)
                     {
-                        pd.INDENNITA.Add(indennita);
+                        var indennita = t.INDENNITA;
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pd.DATAINIZIOVALIDITA, db);
+                        var nCont = pd.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
+                        if (nCont <= 0)
+                        {
+                            pd.INDENNITA.Add(indennita);
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pd.DATAINIZIOVALIDITA, db);
+                        }
                     }
-                }
 
-                int i = db.SaveChanges();
+                    int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di asscoiazione dell'indennità al TFR.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di asscoiazione dell'indennità al TFR.");
+                    }
                 }
 
             }
@@ -324,8 +353,7 @@ namespace NewISE.Models.dtObj
             {
                 var ib = db.INDENNITABASE.Find(idIndBase);
                 var item = db.Entry<INDENNITABASE>(ib);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.INDENNITA).Load();
+
 
                 var lTrsferimento =
                     db.TRASFERIMENTO.Where(
@@ -335,24 +363,30 @@ namespace NewISE.Models.dtObj
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
 
-                foreach (var t in lTrsferimento)
+                if (lTrsferimento?.Any() ?? false)
                 {
-                    var indennita = t.INDENNITA;
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.INDENNITA).Load();
 
-                    var nCont = ib.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
-                    if (nCont <= 0)
+                    foreach (var t in lTrsferimento)
                     {
-                        ib.INDENNITA.Add(indennita);
+                        var indennita = t.INDENNITA;
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                        var nCont = ib.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
+                        if (nCont <= 0)
+                        {
+                            ib.INDENNITA.Add(indennita);
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                        }
                     }
-                }
 
-                int i = db.SaveChanges();
+                    int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione dell'indennità di base alla tabella Indennita.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione dell'indennità di base alla tabella Indennita.");
+                    }
                 }
 
 
@@ -369,49 +403,60 @@ namespace NewISE.Models.dtObj
             try
             {
                 var r = db.RIDUZIONI.Find(idRiduzioni);
-                var item = db.Entry<RIDUZIONI>(r);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.INDENNITABASE).Load();
 
-                var lib =
-                    db.INDENNITABASE.Where(
-                        a =>
-                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
-                            a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-                foreach (INDENNITABASE ib in lib)
+                if (r.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Indennita_Base)
                 {
-                    var nConta =
-                        r.INDENNITABASE.Count(a => a.ANNULLATO == false && a.IDINDENNITABASE == ib.IDINDENNITABASE);
+                    var item = db.Entry<RIDUZIONI>(r);
 
-                    if (nConta <= 0)
+
+                    var lib =
+                        db.INDENNITABASE.Where(
+                            a =>
+                                a.ANNULLATO == false && a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
+                                a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+
+                    if (lib?.Any() ?? false)
                     {
-                        r.INDENNITABASE.Add(ib);
+                        item.State = EntityState.Modified;
+                        item.Collection(a => a.INDENNITABASE).Load();
 
-                        var li =
-                            ib.INDENNITA.Where(
-                                a =>
-                                    a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                                    a.TRASFERIMENTO.DATARIENTRO >= r.DATAINIZIOVALIDITA &&
-                                    a.TRASFERIMENTO.DATAPARTENZA <= r.DATAFINEVALIDITA).ToList();
-
-                        foreach (var i in li)
+                        foreach (INDENNITABASE ib in lib)
                         {
-                            var t = i.TRASFERIMENTO;
+                            var nConta =
+                                r.INDENNITABASE.Count(a => a.ANNULLATO == false && a.IDINDENNITABASE == ib.IDINDENNITABASE);
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+                            if (nConta <= 0)
+                            {
+                                r.INDENNITABASE.Add(ib);
 
+                                var li =
+                                    ib.INDENNITA.Where(
+                                        a =>
+                                            a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                            a.TRASFERIMENTO.DATARIENTRO >= r.DATAINIZIOVALIDITA &&
+                                            a.TRASFERIMENTO.DATAPARTENZA <= r.DATAFINEVALIDITA).ToList();
+
+                                foreach (var i in li)
+                                {
+                                    var t = i.TRASFERIMENTO;
+
+                                    Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+
+                                }
+
+                            }
                         }
 
+
+                        int j = db.SaveChanges();
+
+                        if (j <= 0)
+                        {
+                            throw new Exception("Errore nella fase di associazione dell'indennità di base alla tabella Riduzioni.");
+                        }
                     }
-                }
-
-
-                int j = db.SaveChanges();
-
-                if (j <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione dell'indennità di base alla tabella Riduzioni.");
                 }
 
 
@@ -428,49 +473,58 @@ namespace NewISE.Models.dtObj
             try
             {
                 var r = db.RIDUZIONI.Find(idRiduzioni);
-                var item = db.Entry<RIDUZIONI>(r);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.INDENNITASISTEMAZIONE).Load();
 
-                var lis =
-                    db.INDENNITASISTEMAZIONE.Where(
-                        a =>
-                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
-                            a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                foreach (INDENNITASISTEMAZIONE isist in lis)
+                if (r.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Indennita_Sistemazione)
                 {
-                    var nConta =
-                        r.INDENNITASISTEMAZIONE.Count(a => a.ANNULLATO == false && a.IDINDSIST == isist.IDINDSIST);
+                    var item = db.Entry<RIDUZIONI>(r);
 
-                    if (nConta <= 0)
+
+                    var lis =
+                        db.INDENNITASISTEMAZIONE.Where(
+                            a =>
+                                a.ANNULLATO == false && a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
+                                a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                    if (lis?.Any() ?? false)
                     {
-                        r.INDENNITASISTEMAZIONE.Add(isist);
+                        item.State = EntityState.Modified;
+                        item.Collection(a => a.INDENNITASISTEMAZIONE).Load();
 
-                        var li =
-                            isist.PRIMASITEMAZIONE.Where(
-                                a =>
-                                    a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                                    a.TRASFERIMENTO.DATARIENTRO >= r.DATAINIZIOVALIDITA &&
-                                    a.TRASFERIMENTO.DATAPARTENZA <= r.DATAFINEVALIDITA).ToList();
-
-                        foreach (var i in li)
+                        foreach (INDENNITASISTEMAZIONE isist in lis)
                         {
-                            var t = i.TRASFERIMENTO;
+                            var nConta =
+                                r.INDENNITASISTEMAZIONE.Count(a => a.ANNULLATO == false && a.IDINDSIST == isist.IDINDSIST);
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+                            if (nConta <= 0)
+                            {
+                                r.INDENNITASISTEMAZIONE.Add(isist);
 
+                                var li =
+                                    isist.PRIMASITEMAZIONE.Where(
+                                        a =>
+                                            a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                            a.TRASFERIMENTO.DATARIENTRO >= r.DATAINIZIOVALIDITA &&
+                                            a.TRASFERIMENTO.DATAPARTENZA <= r.DATAFINEVALIDITA).ToList();
+
+                                foreach (var i in li)
+                                {
+                                    var t = i.TRASFERIMENTO;
+
+                                    Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+
+                                }
+
+                            }
                         }
 
+                        int j = db.SaveChanges();
+
+                        if (j <= 0)
+                        {
+                            throw new Exception("Errore nella fase di associazione dell'indennità di sistemazione alla tabella Riduzioni.");
+                        }
                     }
-                }
-
-                int j = db.SaveChanges();
-
-                if (j <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione dell'indennità di sistemazione alla tabella Riduzioni.");
                 }
 
             }
@@ -487,8 +541,7 @@ namespace NewISE.Models.dtObj
             {
                 var cs = db.COEFFICIENTESEDE.Find(idCoefficenteSede);
                 var item = db.Entry<COEFFICIENTESEDE>(cs);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.INDENNITA).Load();
+
 
                 var lTrsferimento =
                         db.TRASFERIMENTO.Where(
@@ -498,24 +551,30 @@ namespace NewISE.Models.dtObj
                             .OrderBy(a => a.DATAPARTENZA)
                             .ToList();
 
-                foreach (var t in lTrsferimento)
+                if (lTrsferimento?.Any() ?? false)
                 {
-                    var indennita = t.INDENNITA;
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.INDENNITA).Load();
 
-                    var nCont = cs.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
-                    if (nCont <= 0)
+                    foreach (var t in lTrsferimento)
                     {
-                        cs.INDENNITA.Add(indennita);
+                        var indennita = t.INDENNITA;
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cs.DATAINIZIOVALIDITA, db);
+                        var nCont = cs.INDENNITA.Count(a => a.IDTRASFINDENNITA == t.INDENNITA.IDTRASFINDENNITA);
+                        if (nCont <= 0)
+                        {
+                            cs.INDENNITA.Add(indennita);
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cs.DATAINIZIOVALIDITA, db);
+                        }
                     }
-                }
 
-                int i = db.SaveChanges();
+                    int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione dell'indennità al coefficiente di sede.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione dell'indennità al coefficiente di sede.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -642,8 +701,7 @@ namespace NewISE.Models.dtObj
             {
                 var ma = db.MAGGIORAZIONIANNUALI.Find(idMagAnnuali);
                 var item = db.Entry<MAGGIORAZIONIANNUALI>(ma);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.MAGGIORAZIONEABITAZIONE).Load();
+
 
                 var lmab =
                     db.MAGGIORAZIONEABITAZIONE.Where(
@@ -654,32 +712,38 @@ namespace NewISE.Models.dtObj
                                     b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA && b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA)
                                 .Any()).OrderBy(a => a.IDMAB).ToList();
 
-                foreach (var mab in lmab)
+                if (lmab?.Any() ?? false)
                 {
-                    var nConta =
-                        ma.MAGGIORAZIONEABITAZIONE.Count(
-                            a =>
-                                a.IDMAB == mab.IDMAB &&
-                                a.VARIAZIONIMAB.Any(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                                         b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA &&
-                                                         b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA));
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.MAGGIORAZIONEABITAZIONE).Load();
 
-                    if (nConta <= 0)
+                    foreach (var mab in lmab)
                     {
-                        ma.MAGGIORAZIONEABITAZIONE.Add(mab);
+                        var nConta =
+                            ma.MAGGIORAZIONEABITAZIONE.Count(
+                                a =>
+                                    a.IDMAB == mab.IDMAB &&
+                                    a.VARIAZIONIMAB.Any(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                             b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA &&
+                                                             b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA));
 
-                        var t = mab.TRASFERIMENTO;
+                        if (nConta <= 0)
+                        {
+                            ma.MAGGIORAZIONEABITAZIONE.Add(mab);
 
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ma.DATAINIZIOVALIDITA, db);
+                            var t = mab.TRASFERIMENTO;
+
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ma.DATAINIZIOVALIDITA, db);
+                        }
+
                     }
 
-                }
+                    int i = db.SaveChanges();
 
-                int i = db.SaveChanges();
-
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione delle maggiorazioni annuali sulla tabella MaggiorazioneAbitazione.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione delle maggiorazioni annuali sulla tabella MaggiorazioneAbitazione.");
+                    }
                 }
 
             }
@@ -696,8 +760,7 @@ namespace NewISE.Models.dtObj
             {
                 var pc = db.PERCENTUALECONDIVISIONE.Find(idPercentualeCondivisione);
                 var item = db.Entry<PERCENTUALECONDIVISIONE>(pc);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.PAGATOCONDIVISOMAB).Load();
+
 
                 var lpc =
                     db.PAGATOCONDIVISOMAB.Where(
@@ -707,31 +770,37 @@ namespace NewISE.Models.dtObj
                         .OrderBy(a => a.DATAINIZIOVALIDITA)
                         .ToList();
 
-                foreach (var pgc in lpc)
+                if (lpc?.Any() ?? false)
                 {
-                    var nConta =
-                        pc.PAGATOCONDIVISOMAB.Count(
-                            a =>
-                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                a.IDPAGATOCONDIVISO == pgc.IDPAGATOCONDIVISO);
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.PAGATOCONDIVISOMAB).Load();
 
-
-                    if (nConta <= 0)
+                    foreach (var pgc in lpc)
                     {
-                        pc.PAGATOCONDIVISOMAB.Add(pgc);
+                        var nConta =
+                            pc.PAGATOCONDIVISOMAB.Count(
+                                a =>
+                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                    a.IDPAGATOCONDIVISO == pgc.IDPAGATOCONDIVISO);
 
-                        var t = pgc.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pc.DATAINIZIOVALIDITA, db);
+
+                        if (nConta <= 0)
+                        {
+                            pc.PAGATOCONDIVISOMAB.Add(pgc);
+
+                            var t = pgc.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pc.DATAINIZIOVALIDITA, db);
+
+                        }
 
                     }
 
-                }
+                    int i = db.SaveChanges();
 
-                int i = db.SaveChanges();
-
-                if (i <= 0)
-                {
-                    throw new Exception("Errore nella fase di associazione della percentuale di condivisione alla tabella PagatoConvisoMAB.");
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione della percentuale di condivisione alla tabella PagatoConvisoMAB.");
+                    }
                 }
 
             }
@@ -748,8 +817,7 @@ namespace NewISE.Models.dtObj
             {
                 var patep = db.PERCENTUALEANTICIPOTE.Find(idPercentualeAnticipoTEP);
                 var item = db.Entry<PERCENTUALEANTICIPOTE>(patep);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.TEPARTENZA).Load();
+
 
                 var ltep =
                     db.TEPARTENZA.Where(
@@ -760,24 +828,36 @@ namespace NewISE.Models.dtObj
                         .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
                         .ToList();
 
-                foreach (var tep in ltep)
+                if (ltep?.Any() ?? false)
                 {
-                    var nConta =
-                        db.TEPARTENZA.Count(
-                            a =>
-                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                                a.IDTEPARTENZA == tep.IDTEPARTENZA);
+                    item.State = EntityState.Modified;
+                    item.Collection(a => a.TEPARTENZA).Load();
 
+                    foreach (var tep in ltep)
+                    {
+                        var nConta =
+                            patep.TEPARTENZA.Count(
+                                a =>
+                                    a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                    a.IDTEPARTENZA == tep.IDTEPARTENZA);
 
+                        if (nConta <= 0)
+                        {
+                            patep.TEPARTENZA.Add(tep);
 
+                            var t = tep.TRASFERIMENTO;
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, patep.DATAINIZIOVALIDITA, db);
+                        }
 
+                    }
 
+                    int i = db.SaveChanges();
+
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di associazione della percentuale di anticipo trasporto effetti fase partenza alla tabella TEPartenza.");
+                    }
                 }
-
-
-
-
-
 
             }
             catch (Exception ex)
@@ -804,7 +884,49 @@ namespace NewISE.Models.dtObj
 
         public void AssociaRichiamo_CR(decimal idCoeffRichiamo, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            var cr = db.COEFFICIENTEINDRICHIAMO.Find(idCoeffRichiamo);
+            var item = db.Entry<COEFFICIENTEINDRICHIAMO>(cr);
+
+
+            var lr =
+                db.RICHIAMO.Where(
+                    a =>
+                        a.ANNULLATO == false &&
+                        a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato &&
+                        a.DATARIENTRO >= cr.DATAINIZIOVALIDITA).OrderBy(a => a.DATARIENTRO).ToList();
+
+            if (lr?.Any() ?? false)
+            {
+                item.State = EntityState.Modified;
+                item.Collection(a => a.RICHIAMO).Load();
+
+                foreach (var r in lr)
+                {
+                    var nConta =
+                        cr.RICHIAMO.Count(
+                            a =>
+                                a.ANNULLATO == false &&
+                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato && a.IDRICHIAMO == r.IDRICHIAMO);
+
+                    if (nConta <= 0)
+                    {
+                        cr.RICHIAMO.Add(r);
+                        var t = r.TRASFERIMENTO;
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cr.DATAINIZIOVALIDITA, db);
+                    }
+
+
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione del coefficente di richiamo alla tabella Richiamo.");
+                }
+            }
+
+
         }
 
         public void AssociaRichiamo_PKM(decimal idPercKM, ModelDBISE db)
