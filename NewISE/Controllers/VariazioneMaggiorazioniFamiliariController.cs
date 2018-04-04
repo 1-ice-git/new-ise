@@ -228,14 +228,10 @@ namespace NewISE.Controllers
                                         dataInizio = e.dataInizio,
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtvmf.GetAdfValidiByIDConiuge(e.idConiuge,e.StatoRecord).idAltriDatiFam,
+                                        idAltriDati = dtvmf.GetAltriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
                                         Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge, idMaggiorazioniFamiliari),
                                         HasPensione = dtp.HasPensione(e.idConiuge),
-                                        eliminabile = e.eliminabile,
-                                        statoRecord = e.StatoRecord,
-                                        modificabile = e.modificabile,
-                                        pensione_modificata = dtp.PensioneModificataByIDConiuge(e.idConiuge),
-                                        adf_modificati = dtvmf.GetAdfValidiByIDConiuge(e.idConiuge,e.StatoRecord).modificato
+                                        eliminabile = e.eliminabile
                                     };
                                     lefm.Add(efm);
                                     if (efm.dataFine == Utility.DataFineStop())
