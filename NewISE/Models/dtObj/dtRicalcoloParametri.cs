@@ -936,12 +936,107 @@ namespace NewISE.Models.dtObj
 
         public void AssociaRiduzioniIB(decimal idIndBase, ModelDBISE db)
         {
+            var ib = db.INDENNITABASE.Find(idIndBase);
+            var item = db.Entry<INDENNITABASE>(ib);
+
+            var lr =
+                db.RIDUZIONI.Where(
+                    a =>
+                        a.ANNULLATO == false && a.DATAFINEVALIDITA >= ib.DATAINIZIOVALIDITA &&
+                        a.DATAINIZIOVALIDITA <= ib.DATAFINEVALIDITA &&
+                        a.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Indennita_Base)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+            if (lr?.Any() ?? false)
+            {
+                item.State = EntityState.Modified;
+                item.Collection(a => a.RIDUZIONI).Load();
+
+                foreach (var r in lr)
+                {
+                    var nConta = ib.RIDUZIONI.Count(a => a.ANNULLATO == false && a.IDRIDUZIONI == r.IDRIDUZIONI);
+
+                    if (nConta <= 0)
+                    {
+                        ib.RIDUZIONI.Add(r);
+
+                        var li =
+                            ib.INDENNITA.Where(
+                                a =>
+                                    a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                    a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                                .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
+                                .ToList();
+
+                        foreach (var ind in li)
+                        {
+                            var t = ind.TRASFERIMENTO;
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                        }
+
+                    }
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione dell'indennità di base alla tabella Riduzioni.");
+                }
+            }
 
         }
 
         public void AssociaRiduzioni_CR(decimal idCoeffRichiamo, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            var cr = db.COEFFICIENTEINDRICHIAMO.Find(idCoeffRichiamo);
+            var item = db.Entry<COEFFICIENTEINDRICHIAMO>(cr);
+
+            var lr =
+                db.RIDUZIONI.Where(
+                    a =>
+                        a.ANNULLATO == false && a.DATAFINEVALIDITA >= cr.DATAINIZIOVALIDITA &&
+                        a.DATAINIZIOVALIDITA <= cr.DATAFINEVALIDITA &&
+                        a.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Coefficente_Richiamo)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+            if (lr?.Any() ?? false)
+            {
+                item.State = EntityState.Modified;
+                item.Collection(a => a.RIDUZIONI).Load();
+
+                foreach (var r in lr)
+                {
+                    var nConta = cr.RIDUZIONI.Count(a => a.ANNULLATO == false && a.IDRIDUZIONI == r.IDRIDUZIONI);
+
+                    if (nConta <= 0)
+                    {
+                        cr.RIDUZIONI.Add(r);
+
+                        var lric = cr.RICHIAMO.Where(a => a.ANNULLATO == false).ToList();
+
+                        foreach (var ric in lric)
+                        {
+                            var t = ric.TRASFERIMENTO;
+                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cr.DATAINIZIOVALIDITA, db);
+                        }
+
+                    }
+
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione del coefficente di richiamo alla tabella Riduzioni.");
+                }
+
+
+            }
+
         }
 
         public void AssociaRiduzioni_IS(decimal idIndSistemazione, ModelDBISE db)

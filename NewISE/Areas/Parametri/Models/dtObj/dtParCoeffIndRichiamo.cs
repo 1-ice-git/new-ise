@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -32,7 +33,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                               // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
@@ -94,7 +95,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     List<COEFFICIENTEINDRICHIAMO> lib = new List<COEFFICIENTEINDRICHIAMO>();
                     if (escludiAnnullati == true)
-                        lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a=>a.DATAINIZIOVALIDITA).OrderBy(a=>a.DATAFINEVALIDITA).ToList();
+                        lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
                     else
                         lib = db.COEFFICIENTEINDRICHIAMO.OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
 
@@ -109,7 +110,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                             }).ToList();
-            }
+                }
                 return libm;
             }
             catch (Exception ex)
@@ -457,7 +458,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return Utility.GetData_Inizio_Base();
         }
-        
+
         public decimal Get_Id_CoeffIndRichiamoPrimoNonAnnullato()
         {
             decimal tmp = 0;
@@ -681,10 +682,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<COEFFICIENTEINDRICHIAMO> libNew = new List<COEFFICIENTEINDRICHIAMO>();
 
-            COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
+            //COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
             COEFFICIENTEINDRICHIAMO ibNew1 = new COEFFICIENTEINDRICHIAMO();
             COEFFICIENTEINDRICHIAMO ibNew2 = new COEFFICIENTEINDRICHIAMO();
-            List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
+            //List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
+
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -702,8 +704,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
-                            decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
+                            //decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
+                            //decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
 
                             ibNew1 = new COEFFICIENTEINDRICHIAMO()
                             {
@@ -735,6 +737,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.COEFFICIENTEINDRICHIAMO.Add(ibNew1);
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaRichiamo_CR(ibNew1.IDCOEFINDRICHIAMO, db);
+                                dtrp.AssociaRiduzioni_CR(ibNew1.IDCOEFINDRICHIAMO, db);
+                            }
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -797,13 +805,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var cr in libNew)
+                                    {
+                                        dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db);
+                                        dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
                         //Se il nuovo record si trova in un intervallo non annullato con data fine non uguale al 31/12/9999
                         if (giafatta == false)
                         {
-
                             lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita);
                             if (lista.Count != 0)
                             {
@@ -859,6 +877,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var cr in libNew)
+                                    {
+                                        dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db);
+                                        dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -875,7 +903,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                    COEFFICIENTEINDBASE=ibm.coefficienteIndBase,
+                                    COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 libNew.Add(ibNew1);
@@ -890,7 +918,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 giafatta = true;
                                 //se il nuovo record rappresenta la data variazione uguale alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
                                 //occorre annullare il record esistente in questione ed aggiungere un nuovo con la stessa data inizio e l'altro campo da aggiornare con il nuovo
-                               
+
                                 decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
                                 DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
@@ -914,6 +942,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.COEFFICIENTEINDRICHIAMO.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaRichiamo_CR(ibNew1.IDCOEFINDRICHIAMO, db);
+                                        dtrp.AssociaRiduzioni_CR(ibNew1.IDCOEFINDRICHIAMO, db);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -944,22 +979,35 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var cr in libNew)
+                                        {
+                                            dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db);
+                                            dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db);
+                                        }
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
                         }
-                        //INSERIMENTO DATI NELLA TABELLA CIR_R PER LE RELAZIONI MOLTI A MOLTI
-                        decimal idCoeffIndRichiamo1 = ibNew1.IDCOEFINDRICHIAMO;
-                        decimal idRiduzione1 = dataInizioValiditaAccettataPerRiduzione(ibNew1.DATAINIZIOVALIDITA).First().idRiduzioni;
-                       
-                        this.Associa_Riduzione_CoeffIndRichiamo(idRiduzione1, idCoeffIndRichiamo1, db);
 
-                        if (ibNew2.IDCOEFINDRICHIAMO != 0)
-                        {
-                            decimal idCoeffIndRichiamo2 = ibNew2.IDCOEFINDRICHIAMO;
-                            decimal idRiduzione2 = dataInizioValiditaAccettataPerRiduzione(ibNew2.DATAINIZIOVALIDITA).First().idRiduzioni;
-                            this.Associa_Riduzione_CoeffIndRichiamo(idRiduzione2, idCoeffIndRichiamo2, db);
-                        }
+                        //TODO: Verificare con RICK l'utilità di questo codice.
+                        //INSERIMENTO DATI NELLA TABELLA CIR_R PER LE RELAZIONI MOLTI A MOLTI
+                        //decimal idCoeffIndRichiamo1 = ibNew1.IDCOEFINDRICHIAMO;
+                        //decimal idRiduzione1 = dataInizioValiditaAccettataPerRiduzione(ibNew1.DATAINIZIOVALIDITA).First().idRiduzioni;
+
+                        //this.Associa_Riduzione_CoeffIndRichiamo(idRiduzione1, idCoeffIndRichiamo1, db);
+
+                        //if (ibNew2.IDCOEFINDRICHIAMO != 0)
+                        //{
+                        //    decimal idCoeffIndRichiamo2 = ibNew2.IDCOEFINDRICHIAMO;
+                        //    decimal idRiduzione2 = dataInizioValiditaAccettataPerRiduzione(ibNew2.DATAINIZIOVALIDITA).First().idRiduzioni;
+                        //    this.Associa_Riduzione_CoeffIndRichiamo(idRiduzione2, idCoeffIndRichiamo2, db);
+                        //}
                     }
                 }
                 catch (Exception ex)
@@ -969,7 +1017,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-        decimal RestituisciIdRecordNuovo(DateTime d1,DateTime d2)
+        decimal RestituisciIdRecordNuovo(DateTime d1, DateTime d2)
         {
             decimal tmp = 0;
 
@@ -996,7 +1044,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-       
+
         public static ValidationResult VerificaPercentualeRICHIAMO(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;

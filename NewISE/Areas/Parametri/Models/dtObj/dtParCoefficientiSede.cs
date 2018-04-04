@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -34,7 +35,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -172,7 +173,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<COEFFICIENTESEDE> libm = new List<COEFFICIENTESEDE>();
                 libm = db.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false
-                && a.IDUFFICIO==idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                && a.IDUFFICIO == idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
                 if (libm.Count != 0)
                     tmp = libm.First().IDCOEFFICIENTESEDE;
             }
@@ -373,10 +374,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<COEFFICIENTESEDE> libNew = new List<COEFFICIENTESEDE>();
 
-            COEFFICIENTESEDE ibPrecedente = new COEFFICIENTESEDE();
+            //COEFFICIENTESEDE ibPrecedente = new COEFFICIENTESEDE();
             COEFFICIENTESEDE ibNew1 = new COEFFICIENTESEDE();
             COEFFICIENTESEDE ibNew2 = new COEFFICIENTESEDE();
-            List<COEFFICIENTESEDE> lArchivioIB = new List<COEFFICIENTESEDE>();
+            //List<COEFFICIENTESEDE> lArchivioIB = new List<COEFFICIENTESEDE>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -393,15 +394,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
+                            //decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new COEFFICIENTESEDE()
                             {
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = dataInizioFirst,
                                 DATAFINEVALIDITA = dataFineFirst,
-                               // ALIQUOTA = ibm.aliquota,
-                                VALORECOEFFICIENTE=ibm.valore,
+                                // ALIQUOTA = ibm.aliquota,
+                                VALORECOEFFICIENTE = ibm.valore,
                                 DATAAGGIORNAMENTO = DateTime.Now,
                             };
 
@@ -428,6 +429,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.COEFFICIENTESEDE.Add(ibNew1);
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db);
+                            }
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -485,6 +491,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var cs in libNew)
+                                    {
+                                        dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -508,7 +523,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = dataInizio,
                                     DATAFINEVALIDITA = NewdataFine1,
                                     //ALIQUOTA = aliquota,
-                                    VALORECOEFFICIENTE=aliquota,
+                                    VALORECOEFFICIENTE = aliquota,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 ibNew2 = new COEFFICIENTESEDE()
@@ -516,8 +531,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = dataFine,
-                                   // ALIQUOTA = ibm.aliquota,
-                                     VALORECOEFFICIENTE=ibm.valore,
+                                    // ALIQUOTA = ibm.aliquota,
+                                    VALORECOEFFICIENTE = ibm.valore,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
 
@@ -528,8 +543,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                       // ALIQUOTA = ibm.aliquota,
-                                       VALORECOEFFICIENTE=ibm.valore,
+                                        // ALIQUOTA = ibm.aliquota,
+                                        VALORECOEFFICIENTE = ibm.valore,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == ibm.idUfficio
@@ -547,6 +562,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var cs in libNew)
+                                    {
+                                        dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -563,13 +587,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
                                     VALORECOEFFICIENTE = ibm.valore,
-                                    IDUFFICIO=ibm.idUfficio,
+                                    IDUFFICIO = ibm.idUfficio,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 libNew.Add(ibNew1);
                                 db.Database.BeginTransaction();
                                 db.COEFFICIENTESEDE.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db);
+                                }
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -578,7 +607,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 giafatta = true;
                                 //se il nuovo record rappresenta la data variazione uguale alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
                                 //occorre annullare il record esistente in questione ed aggiungere un nuovo con la stessa data inizio e l'altro campo da aggiornare con il nuovo
-                               
+
                                 decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
                                 DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
@@ -591,8 +620,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = dataFineUltimo,
-                                       // ALIQUOTA = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
-                                        VALORECOEFFICIENTE=ibm.valore,
+                                        // ALIQUOTA = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
+                                        VALORECOEFFICIENTE = ibm.valore,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1);
@@ -600,6 +629,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.COEFFICIENTESEDE.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -627,6 +662,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.COEFFICIENTESEDE.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var cs in libNew)
+                                        {
+                                            dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db);
+                                        }
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -645,7 +690,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio && a.ANNULLATO==false).Count() > 0 ? true : false;
+                return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio && a.ANNULLATO == false).Count() > 0 ? true : false;
             }
         }
 
@@ -770,7 +815,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                             DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                             //ALIQUOTA = precedenteIB.ALIQUOTA,
-                            VALORECOEFFICIENTE=precedenteIB.VALORECOEFFICIENTE,
+                            VALORECOEFFICIENTE = precedenteIB.VALORECOEFFICIENTE,
                             DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
                             ANNULLATO = false
                         };
@@ -822,7 +867,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.COEFFICIENTESEDE.Where(a => a.IDCOEFFICIENTESEDE == ibm.idCoefficientiSede && a.IDUFFICIO == ibm.idUfficio).First().ANNULLATO == true ? true : false;
             }
         }
-        
+
         public void DelCOEFFICIENTESEDE(decimal idCoefSede)
         {
             COEFFICIENTESEDE precedenteIB = new COEFFICIENTESEDE();
@@ -889,7 +934,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return Utility.GetData_Inizio_Base();
         }
-      
+
         public decimal Get_Id_COEFFICIENTESEDEPrimoNonAnnullato(decimal idUfficio)
         {
             decimal tmp = 0;
