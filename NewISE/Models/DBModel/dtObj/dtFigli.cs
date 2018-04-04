@@ -388,22 +388,21 @@ namespace NewISE.Models.DBModel.dtObj
                             .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
                             .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
 
+                    bool modificabile = false;
+
                     if (amfl?.Any() ?? false)
                     {
-                        var progressivo = 200;
-
                         foreach (var e in amfl)
                         {
-                            lf = e.FIGLI.Where(y => y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                            lf = e.FIGLI.Where(y => y.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                             if (lf?.Any() ?? false)
                             {
                                 foreach (var f in lf)
                                 {
                                     VariazioneFigliModel fm = new VariazioneFigliModel()
                                     {
-                                        eliminabile = (f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione) ? true : false,
-                                        modificabile = true,
-                                        progressivo = progressivo,
+                                        eliminabile = ((f.FK_IDFIGLI > 0 || f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione) || e.ATTIVAZIONEMAGFAM) ? false : true,
+                                        modificabile = modificabile,
                                         idFigli = f.IDFIGLI,
                                         idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
                                         idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
@@ -413,27 +412,13 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataInizio = f.DATAINIZIOVALIDITA,
                                         dataFine = f.DATAFINEVALIDITA,
                                         dataAggiornamento = f.DATAAGGIORNAMENTO,
-                                        StatoRecord =(EnumStatoRecord)f.IDSTATORECORD,
+                                        StatoRecord = (EnumStatoRecord)f.IDSTATORECORD,
                                         FK_IdFigli = f.FK_IDFIGLI
                                     };
                                     lfm.Add(fm);
                                 }
                             }
-                            progressivo++;
                         }
-
-
-                        //corregge le informazioni utilizzate per visualizzare e ordinare i dati
-                        foreach (var e in lfm)
-                        {
-                            if (e.FK_IdFigli > 0)
-                            {
-                                var id = e.FK_IdFigli;
-                                lfm.Where(a => a.idFigli == id).First().modificabile = false;
-                                lfm.Where(a => a.idFigli == id).First().progressivo = e.progressivo;
-                            }
-                        }
-
                     }
                 }
             }

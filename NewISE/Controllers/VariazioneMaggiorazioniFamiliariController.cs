@@ -228,14 +228,10 @@ namespace NewISE.Controllers
                                         dataInizio = e.dataInizio,
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtvmf.GetAdfValidiByIDConiuge(e.idConiuge,e.StatoRecord).idAltriDatiFam,
+                                        idAltriDati = dtvmf.GetAltriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
                                         Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge, idMaggiorazioniFamiliari),
                                         HasPensione = dtp.HasPensione(e.idConiuge),
-                                        eliminabile = e.eliminabile,
-                                        statoRecord = e.StatoRecord,
-                                        modificabile = e.modificabile,
-                                        pensione_modificata = dtp.PensioneModificataByIDConiuge(e.idConiuge),
-                                        adf_modificati = dtvmf.GetAdfValidiByIDConiuge(e.idConiuge,e.StatoRecord).modificato
+                                        eliminabile = e.eliminabile
                                     };
                                     lefm.Add(efm);
                                     if (efm.dataFine == Utility.DataFineStop())
@@ -681,7 +677,7 @@ namespace NewISE.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge, decimal idAltridati, decimal modificabile=1)
+        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
         {
             AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
@@ -695,11 +691,7 @@ namespace NewISE.Controllers
                 {
                     idMaggiorazioniFamiliari = dtvmf.GetMaggiorazioneFamiliareConiuge(idConiuge);
 
-                    //adf = dtvmf.GetAltriDatiFamiliariConiuge(idConiuge);
-                    using (dtAltriDatiFamiliari dtAdf = new dtAltriDatiFamiliari())
-                    {
-                        adf = dtAdf.GetAltriDatiFamiliariConiuge(idAltridati);
-                    }
+                    adf = dtvmf.GetAltriDatiFamiliariConiuge(idConiuge);
 
                     amf = dtvmf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
 
@@ -755,10 +747,7 @@ namespace NewISE.Controllers
                                     break;
                             }
                         }
-                        if(modificabile==0)
-                        {
-                            solaLettura = true;
-                        }
+                       
                     }
                     ViewData.Add("solaLettura", solaLettura);
                     ViewData.Add("trasfSolaLettura", trasfSolaLettura);
@@ -801,7 +790,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio, decimal modificabile=1)
+        public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio)
         {
             AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
@@ -872,10 +861,6 @@ namespace NewISE.Controllers
                                 default:
                                     throw new ArgumentOutOfRangeException();
                             }
-                        }
-                        if (modificabile==0)
-                        {
-                            solaLettura = true;
                         }
 
                         ViewData.Add("solaLettura", solaLettura);
@@ -1117,7 +1102,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult ElencoPensioniConiuge(decimal idConiuge, decimal modificabile=1)
+        public ActionResult ElencoPensioniConiuge(decimal idConiuge)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
@@ -1159,11 +1144,6 @@ namespace NewISE.Controllers
                         else
                         {
                             solaLettura = false;
-                        }
-
-                        if (modificabile==0)
-                        {
-                            solaLettura = true;
                         }
 
                         ViewData.Add("solaLettura", solaLettura);
@@ -1567,7 +1547,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ElencoDocumenti(decimal idFamiliare, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante, decimal idMaggiorazioniFamiliari, decimal modificabile)
+        public ActionResult ElencoDocumenti(decimal idFamiliare, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante, decimal idMaggiorazioniFamiliari)
         {
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
             ConiugeModel cm = new ConiugeModel();
@@ -1618,10 +1598,6 @@ namespace NewISE.Controllers
                                 solaLettura = false;
                             }
 
-                            if (modificabile==0)
-                            {
-                                solaLettura = true;
-                            }
                             break;
                     }
 
