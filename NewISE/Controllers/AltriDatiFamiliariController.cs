@@ -57,30 +57,6 @@ namespace NewISE.Controllers
 
                     ViewData.Add("solaLettura", solaLettura);
                 }
-                //using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
-                //{
-                //    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
-                //    if (pf != null && pf.HasValue())
-                //    {
-                //        switch (pf.idTipologiaFiglio)
-                //        {
-                //            case EnumTipologiaFiglio.Residente:
-                //                adf.residente = true;
-                //                adf.studente = false;
-                //                break;
-                //            case EnumTipologiaFiglio.StudenteResidente:
-                //                adf.studente = true;
-                //                adf.residente = true;
-                //                break;
-                //            case EnumTipologiaFiglio.StudenteNonResidente:
-                //                adf.studente = true;
-                //                adf.residente = false;
-                //                break;
-                //            default:
-                //                throw new ArgumentOutOfRangeException();
-                //        }
-                //    }
-                //}
                 using (dtFigli dtf = new dtFigli())
                 {
                     FigliModel f = dtf.GetFigliobyID(idFiglio);

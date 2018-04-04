@@ -817,5 +817,37 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+        public bool PensioneModificataByIDConiuge(decimal idConiuge)
+        {
+            bool modificata = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var c = db.CONIUGE.Find(idConiuge);
+
+                var last_pcl = c.PENSIONE.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDPENSIONE).ToList();
+
+                if (last_pcl?.Any() ?? false)
+                {
+                    var last_pc = last_pcl.First();
+
+                    var attl = last_pc.ATTIVAZIONIMAGFAM.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                    if (attl?.Any() ?? false)
+                    {
+                        var att = attl.First();
+                        if (att.ATTIVAZIONEMAGFAM == false)
+                        {
+                            modificata = true;
+                        }
+                    }
+
+                }
+            }
+
+            return modificata;
+            
+        }
+
     }
 }

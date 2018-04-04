@@ -91,12 +91,12 @@ namespace NewISE.Controllers
                             mavm.dataInizioMAB = vmam.DataInizioMAB;
                             mavm.dataFineMAB = vmam.DataFineMAB;
                             mavm.anticipoAnnuale = vmam.AnticipoAnnuale;
+                            mavm.id_Valuta = cm.IDVALUTA;
 
                             using (dtValute dtv = new dtValute())
                             {
-                                var v = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
+                                var v = dtv.GetValuta(mavm.id_Valuta, db);
                                 mavm.descrizioneValuta = v.descrizioneValuta;
-                                mavm.id_Valuta = v.idValuta;
                             }
 
                             var lpc = dtma.GetListPagatoCondivisoMABPartenza(mavm);
@@ -674,10 +674,10 @@ namespace NewISE.Controllers
                                 mam.dataInizioMAB = vmam.DataInizioMAB;
                                 mam.dataFineMAB = vmam.DataFineMAB;
                                 mam.anticipoAnnuale = vmam.AnticipoAnnuale;
+                                mam.id_Valuta = cm.IDVALUTA;
 
-                                var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
+                                var vm = dtv.GetValuta(mam.id_Valuta, db);
                                 mam.descrizioneValuta = vm.descrizioneValuta;
-                                mam.id_Valuta = vm.idValuta;
 
                                 var lv = dtv.GetElencoValute(db);
 

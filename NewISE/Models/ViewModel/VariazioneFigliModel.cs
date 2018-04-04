@@ -13,6 +13,6 @@ namespace NewISE.Models.DBModel
     {
         public bool modificabile;
         public bool eliminabile;
-
+        public decimal progressivo;
     }
 }
