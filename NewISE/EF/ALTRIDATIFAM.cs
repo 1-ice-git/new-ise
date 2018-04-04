@@ -33,10 +33,11 @@ namespace NewISE.EF
         public string COMUNERESIDENZA { get; set; }
         public string PROVINCIARESIDENZA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        public decimal IDSTATORECORD { get; set; }
     
         public virtual CONIUGE CONIUGE { get; set; }
         public virtual FIGLI FIGLI { get; set; }
+        public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
     }

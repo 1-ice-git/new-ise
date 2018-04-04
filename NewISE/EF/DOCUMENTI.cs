@@ -42,6 +42,7 @@ namespace NewISE.EF
         public System.DateTime DATAINSERIMENTO { get; set; }
         public bool MODIFICATO { get; set; }
         public Nullable<decimal> FK_IDDOCUMENTO { get; set; }
+        public decimal IDSTATORECORD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOC_ATER> DOC_ATER { get; set; }
@@ -50,6 +51,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI1 { get; set; }
         public virtual DOCUMENTI DOCUMENTI2 { get; set; }
+        public virtual STATORECORD STATORECORD { get; set; }
         public virtual TIPODOCUMENTI TIPODOCUMENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
