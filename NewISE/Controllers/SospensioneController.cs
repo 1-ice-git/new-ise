@@ -140,8 +140,7 @@ namespace NewISE.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult ElencoSospensioni(decimal idTrasferimento)
         {
-             ViewData["idTrasferimento"] = idTrasferimento;
-            
+            ViewData["idTrasferimento"] = idTrasferimento;
             try
             {
                 return PartialView();

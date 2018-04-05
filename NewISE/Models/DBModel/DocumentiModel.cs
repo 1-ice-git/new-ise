@@ -40,6 +40,7 @@ namespace NewISE.Models.DBModel
         Formulario_Titoli_Viaggio = 13,
         Copia_Ricevuta_Pagamento_Locazione = 42,
         MAB_Modulo4_Dichiarazione_Costo_Locazione = 43,
+        Preventivo_Viaggio=44
     }
 
 

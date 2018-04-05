@@ -1,0 +1,291 @@
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.ElencoTitoliViaggioModel>
+
+@{
+    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
+    bool richiestaEseguita = Convert.ToBoolean(ViewData["richiestaEseguita"]);
+    EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
+}
+
+
+<p style="margin-top: 10px">
+    <h4>Richiesta Titoli di viaggio/Carta d'imbarco</h4>
+    <hr />
+
+    <div style="padding-top: 10px;">
+        <table id="tabElencoTitoliViaggio" class="table-striped" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nominativo)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.CodiceFiscale)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.dataInizio)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.dataFine)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.parentela)
+                    </th>
+                    <th class="text-center">
+                        Altri dati
+                    </th>
+                    <th class="text-center">
+                        Richiedi
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataInizio)
+                        </td>
+                        @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
+                        {
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.dataFine)
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="text-center"></td>
+                        }
+                        <td class="text-center">
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.parentela)</span>
+                        </td>
+                        @if (item.parentela == EnumParentela.Coniuge || item.parentela == EnumParentela.Figlio)
+                        {
+                            if (item.idAltriDati > 0)
+                            {
+                                if (item.parentela == EnumParentela.Coniuge)
+                                {
+                                    <td class="text-center">
+                                        <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare);" id="linkAltriDatiFam">
+                                            <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                        </a>
+                                    </td>
+                                }
+                                if (item.parentela == EnumParentela.Figlio)
+                                {
+                                    <td class="text-center">
+                                        <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare);" id="linkAltriDatiFam">
+                                            <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                        </a>
+                                    </td>
+                                }
+                            }
+                            else
+                            {
+                                <td class="text-center">
+                                    <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                </td>
+
+                            }
+                        }
+                        else
+                        {
+                            <td class="text-center"></td>
+                        }
+                        <td class="text-center">
+                            @if (richiestaEseguita || statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
+                            {
+                                if (item.RichiediTitoloViaggio)
+                                {
+                                    <input type="checkbox" disabled checked="checked">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" disabled>
+                                }
+                            }
+                            else
+                            {
+                                if (item.RichiediTitoloViaggio)
+                                {
+                                    <input type="checkbox" checked="checked" onclick="AggiornaStatoRichiediTitoloViaggio(@Convert.ToDecimal(@item.parentela), @item.idFamiliare)">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" onclick="AggiornaStatoRichiediTitoloViaggio(@Convert.ToDecimal(@item.parentela), @item.idFamiliare)">
+                                }
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-5" style="margin-top:10px">
+            <table id="tabUploadTitoliViaggio">
+                @Html.Action("ElencoUploadTitoliViaggio", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio })
+            </table>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+    $("#tabElencoTitoliViaggio").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "order": [[4, "desc"]]
+    });
+
+
+    //GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+
+    function AggiornaStatoRichiediTitoloViaggio(idParentela, idFamiliare) {
+        //debugger;
+        var idAttivazioneTitoliViaggio = parseInt('@idAttivazioneTitoliViaggio');
+        var rotta = "/TitoliViaggio/AggiornaStatoRichiediTitoloViaggio";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idParentela: idParentela, idAttivazioneTitoliViaggio: idAttivazioneTitoliViaggio, idFamiliare: idFamiliare },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.errore === "") {
+                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariConiuge(idFamiliare) {
+        //debugger;
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var rotta = "/TitoliViaggio/AltriDatiFamiliariConiuge";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {idTitoliViaggio:idTitoliViaggio,idConiuge: idFamiliare },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divTitoliViaggio").empty();
+                $("#divTitoliViaggio").html(result);
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariFiglio(idFamiliare) {
+        //debugger;
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var rotta = "/TitoliViaggio/AltriDatiFamiliariFiglio";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTitoliViaggio: idTitoliViaggio, idFiglio: idFamiliare },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divTitoliViaggio").empty();
+                $("#divTitoliViaggio").html(result);
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    </script>
+
+
