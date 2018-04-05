@@ -890,7 +890,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             dataInizio = c.DATAINIZIOVALIDITA,
                                             dataFine = c.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Coniuge,
-                                            idAltriDati = c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
+                                            idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD!= (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = cp.INCLUDIPASSAPORTO,
                                             HasDoc = new HasDoc()
                                             {
@@ -915,7 +915,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             dataInizio = c.DATAINIZIOVALIDITA,
                                             dataFine = c.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Coniuge,
-                                            idAltriDati = c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
+                                            idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = cp.INCLUDIPASSAPORTO,
                                             HasDoc = new HasDoc()
                                             {
@@ -982,7 +982,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             dataInizio = f.DATAINIZIOVALIDITA,
                                             dataFine = f.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Figlio,
-                                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
+                                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = fp.INCLUDIPASSAPORTO,
                                             HasDoc = new HasDoc()
                                             {
@@ -1006,7 +1006,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             dataInizio = f.DATAINIZIOVALIDITA,
                                             dataFine = f.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Figlio,
-                                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
+                                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = fp.INCLUDIPASSAPORTO,
                                             HasDoc = new HasDoc()
                                             {
@@ -1590,7 +1590,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var c = cp.CONIUGE;
 
                             var ad =
-                                c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
+                                c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                     .OrderByDescending(a => a.IDALTRIDATIFAM)
                                     .First();
 
@@ -1643,7 +1643,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var f = fp.FIGLI;
 
                             var ad =
-                                f.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
+                                f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                     .OrderByDescending(a => a.IDALTRIDATIFAM)
                                     .First();
 

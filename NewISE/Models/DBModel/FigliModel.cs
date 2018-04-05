@@ -80,7 +80,7 @@ namespace NewISE.Models.DBModel
 
         public MaggiorazioniFamiliariModel MaggiorazioniFamiliari { get; set; }
 
-        public EnumStatoRecord StatoRecord { get; set; }
+        public decimal idStatoRecord { get; set; }
 
         public bool HasValue()
         {

@@ -1,5 +1,6 @@
 ﻿using NewISE.Models;
 using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using System;
@@ -145,7 +146,7 @@ namespace NewISE.Controllers
                             return PartialView("NuovoImportoPensione", pcm);
                         }
                         pcm.dataAggiornamento = DateTime.Now;
-                        pcm.annullato = false;
+                        pcm.idStatoRecord = (decimal)EnumStatoRecord.Annullato;
                         if (!pcm.dataFineValidita.HasValue)
                         {
                             pcm.dataFineValidita = Utility.DataFineStop();

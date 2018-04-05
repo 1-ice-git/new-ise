@@ -52,7 +52,7 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                    var lrmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a=>a.ANNULLATO==false).ToList();
+                    var lrmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a=>a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
                     if(lrmf?.Any()??false)
                     {
                         var rmf = lrmf.First();
@@ -88,7 +88,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
                                     {
                                         var rmf =
-                                            mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                                            mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                                 .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
                                                 .First();
 
@@ -111,7 +111,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 foreach (var c in lc)
                                                 {
-                                                    var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+                                                    var nadc = c.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
 
                                                     if (nadc > 0)
                                                     {
@@ -154,7 +154,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 foreach (var f in lf)
                                                 {
-                                                    var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+                                                    var nadf = f.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
 
                                                     if (nadf > 0)
                                                     {
@@ -192,7 +192,7 @@ namespace NewISE.Models.DBModel.dtObj
                             else
                             {
                                 // se non ci sono in lavorazione imposta i controlli di notifica
-                                var rmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                                var rmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                                .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
                                                .First();
                                 rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
@@ -215,7 +215,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         foreach (var c in lc)
                                         {
-                                            var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+                                            var nadc = c.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
 
                                             if (nadc > 0)
                                             {
@@ -258,7 +258,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         foreach (var f in lf)
                                         {
-                                            var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+                                            var nadf = f.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
 
                                             if (nadf > 0)
                                             {
@@ -345,7 +345,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
                     {
-                        var rmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                        var rmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                     .OrderByDescending(a => a.IDRINUNCIAMAGFAM).First();
 
                         rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
@@ -366,7 +366,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 datiConiuge = true;
                                 foreach (var c in lc)
                                 {
-                                    var nadc = c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false && a.IDCONIUGE > 0).Count();
+                                    var nadc = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDCONIUGE > 0).Count();
                                     if (nadc > 0)
                                     {
                                         datiParzialiConiuge = false;
@@ -382,7 +382,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         siDocConiuge = true;
                                     }
 
-                                    var npc = c.PENSIONE.Where(a => a.ANNULLATO == false).Count();
+                                    var npc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).Count();
                                     if (npc > 0)
                                     {
                                         siPensioniConiuge = true;
@@ -400,7 +400,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 datiFigli = true;
                                 foreach (var f in lf)
                                 {
-                                    var nadf = f.ALTRIDATIFAM.Where(a => a.ANNULLATO == false && a.IDFIGLI > 0).Count();
+                                    var nadf = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDFIGLI > 0).Count();
                                     if (nadf > 0)
                                     {
                                         datiParzialiFigli = false;
@@ -512,13 +512,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     escludiTitoloViaggio = cm.escludiTitoloViaggio,
                                     dataNotificaTV = cm.dataNotificaTV,
                                     FK_idConiuge = cm.idConiuge,
-                                    StatoRecord = EnumStatoRecord.In_Lavorazione
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
                                 };
 
                                 decimal new_idconiuge = this.SetConiuge(ref newc, db, attivazione_aperta.IDATTIVAZIONEMAGFAM);
 
                                 //replico eventuali altri dati familiari e li associo
-                                var adfc = this.GetAdfValidiByIDConiuge(cm.idConiuge, cm.StatoRecord);
+                                var adfc = this.GetAdfValidiByIDConiuge(cm.idConiuge, cm.idStatoRecord);
 
                                 //var adfc = c.ALTRIDATIFAM.OrderByDescending(a=>a.IDALTRIDATIFAM).First();
                                 ALTRIDATIFAM adf_new = new ALTRIDATIFAM()
@@ -533,7 +533,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     INDIRIZZORESIDENZA = adfc.indirizzoResidenza,
                                     CAPRESIDENZA = adfc.capResidenza,
                                     DATAAGGIORNAMENTO = DateTime.Now,
-                                    ANNULLATO = false
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                                 };
                                 db.ALTRIDATIFAM.Add(adf_new);
 
@@ -553,7 +553,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         this.Associa_Doc_Coniuge_ById(dc.IDDOCUMENTO, new_idconiuge, db);
                                     }
                                     //riassocia eventuali pensioni
-                                    var lpc = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(x => x.ANNULLATO == false).ToList();
+                                    var lpc = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
                                     foreach (var pc in lpc)
                                     {
                                         this.Associa_Pensioni_Coniuge_ById(pc.IDPENSIONE, new_idconiuge, db);
@@ -747,13 +747,13 @@ namespace NewISE.Models.DBModel.dtObj
                                 escludiTitoloViaggio = cm.escludiTitoloViaggio,
                                 dataNotificaTV = cm.dataNotificaTV,
                                 FK_idConiuge = cm.idConiuge,
-                                StatoRecord = EnumStatoRecord.In_Lavorazione
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
                             };
 
                             decimal new_idconiuge = this.SetConiuge(ref newc, db, newmf.IDATTIVAZIONEMAGFAM);
 
                             //replico eventuali altri dati familiari e li associo
-                            var adfc = this.GetAdfValidiByIDConiuge(cm.idConiuge, cm.StatoRecord);
+                            var adfc = this.GetAdfValidiByIDConiuge(cm.idConiuge, cm.idStatoRecord);
                             //var adfc = c.ALTRIDATIFAM.OrderByDescending(a=>a.IDALTRIDATIFAM).First();
                             ALTRIDATIFAM adf_new = new ALTRIDATIFAM()
                             {
@@ -767,7 +767,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 INDIRIZZORESIDENZA = adfc.indirizzoResidenza,
                                 CAPRESIDENZA = adfc.capResidenza,
                                 DATAAGGIORNAMENTO = DateTime.Now,
-                                ANNULLATO = adfc.annullato
+                                IDSTATORECORD = adfc.idStatoRecord
                             };
                             db.ALTRIDATIFAM.Add(adf_new);
 
@@ -788,7 +788,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     this.Associa_Doc_Coniuge_ById(dc.IDDOCUMENTO, new_idconiuge, db);
                                 }
                                 //riassocia eventuali pensioni
-                                var lpc = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(x => x.ANNULLATO == false).ToList();
+                                var lpc = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
                                 foreach (var pc in lpc)
                                 {
                                     this.Associa_Pensioni_Coniuge_ById(pc.IDPENSIONE, new_idconiuge, db);
@@ -930,7 +930,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = cm.dataAggiornamento,
                     FK_IDCONIUGE = cm.FK_idConiuge,
-                    IDSTATORECORD = (decimal)cm.StatoRecord
+                    IDSTATORECORD = cm.idStatoRecord
                 };
 
                 db.CONIUGE.Add(c);
@@ -1072,7 +1072,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     escludiTitoloViaggio = fm.escludiTitoloViaggio,
                                     dataNotificaTV = fm.dataNotificaTV,
                                     FK_IdFigli = fm.idFigli,
-                                    StatoRecord = EnumStatoRecord.In_Lavorazione
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
                                 };
 
                                 decimal new_idfiglio = this.SetFiglio(ref newf, db, attivazione_aperta.IDATTIVAZIONEMAGFAM);
@@ -1092,7 +1092,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     INDIRIZZORESIDENZA = adff.INDIRIZZORESIDENZA,
                                     CAPRESIDENZA = adff.CAPRESIDENZA,
                                     DATAAGGIORNAMENTO = DateTime.Now,
-                                    ANNULLATO = false
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                                 };
                                 db.ALTRIDATIFAM.Add(adf_new);
 
@@ -1304,7 +1304,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 escludiTitoloViaggio = fm.escludiTitoloViaggio,
                                 dataNotificaTV = fm.dataNotificaTV,
                                 FK_IdFigli = fm.idFigli,
-                                StatoRecord = EnumStatoRecord.In_Lavorazione
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
                             };
 
                             decimal new_idfiglio = this.SetFiglio(ref newf, db, newamf.IDATTIVAZIONEMAGFAM);
@@ -1324,7 +1324,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 INDIRIZZORESIDENZA = adff.INDIRIZZORESIDENZA,
                                 CAPRESIDENZA = adff.CAPRESIDENZA,
                                 DATAAGGIORNAMENTO = DateTime.Now,
-                                ANNULLATO = adff.ANNULLATO
+                                IDSTATORECORD = adff.IDSTATORECORD
                             };
                             db.ALTRIDATIFAM.Add(adf_new);
 
@@ -1478,7 +1478,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = fm.dataAggiornamento,
                     FK_IDFIGLI = fm.FK_IdFigli,
-                    IDSTATORECORD = (decimal)fm.StatoRecord
+                    IDSTATORECORD = fm.idStatoRecord
                 };
 
                 db.FIGLI.Add(f);
@@ -1640,7 +1640,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //var att = c.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First(); ;
                     if (c?.IDCONIUGE > 0)
                     {
-                        var ladfc = c.ALTRIDATIFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDALTRIDATIFAM).ToList();
+                        var ladfc = c.ALTRIDATIFAM.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(x => x.IDALTRIDATIFAM).ToList();
 
 
                         if (ladfc?.Any() ?? false)
@@ -1657,7 +1657,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 comuneResidenza = adfc.COMUNERESIDENZA,
                                 provinciaResidenza = adfc.PROVINCIARESIDENZA,
                                 dataAggiornamento = adfc.DATAAGGIORNAMENTO,
-                                annullato = adfc.ANNULLATO
+                                idStatoRecord = adfc.IDSTATORECORD
                             };
                             ladfcm.Add(adfm);
                         }
@@ -1771,7 +1771,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var f = db.FIGLI.Find(idFiglio);
                     if (f?.IDFIGLI > 0)
                     {
-                        var ladff = f.ALTRIDATIFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDALTRIDATIFAM).ToList();
+                        var ladff = f.ALTRIDATIFAM.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(x => x.IDALTRIDATIFAM).ToList();
 
                         if (ladff?.Any() ?? false)
                         {
@@ -1791,7 +1791,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 comuneResidenza = adff.COMUNERESIDENZA,
                                 provinciaResidenza = adff.PROVINCIARESIDENZA,
                                 dataAggiornamento = adff.DATAAGGIORNAMENTO,
-                                annullato = adff.ANNULLATO
+                                idStatoRecord = adff.IDSTATORECORD
                             };
                             //ladffm.Add(adffm);
                         }
@@ -1859,7 +1859,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 COMUNERESIDENZA = adfm.comuneResidenza,
                                 PROVINCIARESIDENZA = adfm.provinciaResidenza,
                                 DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                                ANNULLATO = adfm.annullato
+                                IDSTATORECORD = adfm.idStatoRecord
                             };
 
                             db.ALTRIDATIFAM.Add(adfNew);
@@ -1957,7 +1957,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 COMUNERESIDENZA = adfm.comuneResidenza,
                                 PROVINCIARESIDENZA = adfm.provinciaResidenza,
                                 DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                                ANNULLATO = adfm.annullato
+                                IDSTATORECORD = adfm.idStatoRecord
                             };
 
                             db.ALTRIDATIFAM.Add(adfNew);
@@ -1988,7 +1988,7 @@ namespace NewISE.Models.DBModel.dtObj
                             adf.COMUNERESIDENZA = adfm.comuneResidenza;
                             adf.PROVINCIARESIDENZA = adfm.provinciaResidenza;
                             adf.DATAAGGIORNAMENTO = DateTime.Now;
-                            adf.ANNULLATO = adfm.annullato;
+                            adf.IDSTATORECORD = adfm.idStatoRecord;
 
                             if (db.SaveChanges() < 0)
                             {
@@ -2673,7 +2673,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 c = db.CONIUGE.Find(idConiuge);
 
-                lp = c.PENSIONE.Where(x => x.ANNULLATO == false).ToList();
+                lp = c.PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
 
                 if (lp?.Any() ?? false)
                 {
@@ -2686,7 +2686,7 @@ namespace NewISE.Models.DBModel.dtObj
                             importoPensione = p.IMPORTOPENSIONE,
                             dataInizioValidita = p.DATAINIZIO,
                             dataFineValidita = p.DATAFINE,
-                            annullato = p.ANNULLATO,
+                            idStatoRecord = p.IDSTATORECORD,
                             dataAggiornamento = p.DATAAGGIORNAMENTO
                             #endregion
                         };
@@ -3154,7 +3154,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public AltriDatiFamConiugeModel GetAdfValidiByIDConiuge(decimal idConiuge, EnumStatoRecord StatoRecord)
+        public AltriDatiFamConiugeModel GetAdfValidiByIDConiuge(decimal idConiuge, decimal idStatoRecord)
         {
             bool modificati = false;
             List<ALTRIDATIFAM> adfcl = new List<ALTRIDATIFAM>();
@@ -3165,7 +3165,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var c = db.CONIUGE.Find(idConiuge);
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI);
 
-                if (StatoRecord == EnumStatoRecord.Attivato)
+                if (idStatoRecord == (decimal)EnumStatoRecord.Attivato)
                 {
                     //verifico se esiste un coniuge in lavorazione
                     bool trovato = false;
@@ -3188,7 +3188,7 @@ namespace NewISE.Models.DBModel.dtObj
                         adfcl = mf.ATTIVAZIONIMAGFAM
                                 .Where(a => a.ATTIVAZIONEMAGFAM == false).
                                 OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First()
-                                .ALTRIDATIFAM.Where(a => a.ANNULLATO == false && a.IDCONIUGE == idConiuge)
+                                .ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDCONIUGE == idConiuge)
                                 .OrderByDescending(a => a.IDALTRIDATIFAM).ToList();
                         if(adfcl?.Any()??false)
                         {
@@ -3200,7 +3200,7 @@ namespace NewISE.Models.DBModel.dtObj
                         adfcl = mf.ATTIVAZIONIMAGFAM
                                 .Where(a => a.ATTIVAZIONEMAGFAM == true).
                                 OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First()
-                                .ALTRIDATIFAM.Where(a => a.ANNULLATO == false && a.IDCONIUGE == idConiuge)
+                                .ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDCONIUGE == idConiuge)
                                 .OrderByDescending(a => a.IDALTRIDATIFAM).ToList();
                     }
 
@@ -3210,7 +3210,7 @@ namespace NewISE.Models.DBModel.dtObj
                     adfcl = mf.ATTIVAZIONIMAGFAM
                             .Where(a => a.ATTIVAZIONEMAGFAM == false).
                             OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First()
-                            .ALTRIDATIFAM.Where(a => a.ANNULLATO == false && a.IDCONIUGE == idConiuge)
+                            .ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDCONIUGE == idConiuge)
                             .OrderByDescending(a => a.IDALTRIDATIFAM).ToList();
                     if (adfcl?.Any() ?? false)
                     {
@@ -3233,7 +3233,7 @@ namespace NewISE.Models.DBModel.dtObj
                         comuneResidenza = adfc.COMUNERESIDENZA,
                         provinciaResidenza = adfc.PROVINCIARESIDENZA,
                         dataAggiornamento = adfc.DATAAGGIORNAMENTO,
-                        annullato = adfc.ANNULLATO,
+                        idStatoRecord = adfc.IDSTATORECORD,
                         modificato = modificati
                     };
                 }

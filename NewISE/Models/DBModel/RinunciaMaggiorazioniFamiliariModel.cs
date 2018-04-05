@@ -33,5 +33,7 @@ namespace NewISE.Models.DBModel
         {
             return idRinunciaMagFam > 0 ? true : false;
         }
+
+        public decimal idStatoRecord { get; set; }
     }
 }

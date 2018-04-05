@@ -127,7 +127,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 comuneResidenza = adf.COMUNERESIDENZA,
                                 provinciaResidenza = adf.PROVINCIARESIDENZA,
                                 dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                                annullato = adf.ANNULLATO,
+                                idStatoRecord = adf.IDSTATORECORD,
                                 Figli = new FigliModel()
                                 {
                                     idFigli = f.IDFIGLI,
@@ -139,7 +139,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataInizio = f.DATAINIZIOVALIDITA,
                                     dataFine = f.DATAFINEVALIDITA,
                                     dataAggiornamento = f.DATAAGGIORNAMENTO,
-                                    StatoRecord = (EnumStatoRecord)f.IDSTATORECORD,
+                                    idStatoRecord = f.IDSTATORECORD,
                                     FK_IdFigli = f.FK_IDFIGLI
                                 }
                             };
@@ -222,7 +222,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 comuneResidenza = adf.COMUNERESIDENZA,
                                 provinciaResidenza = adf.PROVINCIARESIDENZA,
                                 dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                                annullato = adf.ANNULLATO,
+                                idStatoRecord = adf.IDSTATORECORD,
                                 Coniuge = new ConiugeModel()
                                 {
                                     idConiuge = c.IDCONIUGE,
@@ -234,7 +234,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataInizio = c.DATAINIZIOVALIDITA,
                                     dataFine = c.DATAFINEVALIDITA,
                                     dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                    StatoRecord =(EnumStatoRecord)c.IDSTATORECORD,
+                                    idStatoRecord = c.IDSTATORECORD,
                                     FK_idConiuge = c.FK_IDCONIUGE
                                 }
                             };
@@ -302,7 +302,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var ladf =
                             f.ALTRIDATIFAM.Where(
                                 a =>
-                                    a.ANNULLATO == false &&
+                                    a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato &&
                                     a.ATTIVAZIONIMAGFAM.Any(
                                         b => b.ANNULLATO == false && b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam));
 
@@ -325,7 +325,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 comuneResidenza = adf.COMUNERESIDENZA,
                                 provinciaResidenza = adf.PROVINCIARESIDENZA,
                                 dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                                annullato = adf.ANNULLATO
+                                idStatoRecord = adf.IDSTATORECORD
                             };
                         }
                     }
@@ -492,7 +492,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var ladf =
                             c.ALTRIDATIFAM.Where(
                                 a =>
-                                    a.ANNULLATO == false &&
+                                    a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato &&
                                     a.ATTIVAZIONIMAGFAM.Any(
                                         b => b.ANNULLATO == false && b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam));
 
@@ -511,7 +511,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 comuneResidenza = adf.COMUNERESIDENZA,
                                 provinciaResidenza = adf.PROVINCIARESIDENZA,
                                 dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                                annullato = adf.ANNULLATO                               
+                                idStatoRecord = adf.IDSTATORECORD                               
                             };
                         }
                     }
@@ -542,7 +542,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (adf != null && adfm.idAltriDatiFam > 0)
                     {
-                        adf.ANNULLATO = true;
+                        adf.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
 
                         if (db.SaveChanges() > 0)
@@ -571,7 +571,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 COMUNERESIDENZA = adfm.comuneResidenza,
                                 PROVINCIARESIDENZA = adfm.provinciaResidenza,
                                 DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                                ANNULLATO = adfm.annullato
+                                IDSTATORECORD = adfm.idStatoRecord
                             };
 
                             db.ALTRIDATIFAM.Add(adfNew);
@@ -633,7 +633,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (adf != null && adfm.idAltriDatiFam > 0)
                     {
-                        adf.ANNULLATO = true;
+                        adf.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato ;
 
 
                         if (db.SaveChanges() > 0)
@@ -663,7 +663,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     COMUNERESIDENZA = adfm.comuneResidenza,
                                     PROVINCIARESIDENZA = adfm.provinciaResidenza,
                                     DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                                    ANNULLATO = adfm.annullato
+                                    IDSTATORECORD = adfm.idStatoRecord
                                 };
 
                                 db.ALTRIDATIFAM.Add(adfNew);
@@ -733,7 +733,7 @@ namespace NewISE.Models.DBModel.dtObj
                         COMUNERESIDENZA = adfm.comuneResidenza,
                         PROVINCIARESIDENZA = adfm.provinciaResidenza,
                         DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                        ANNULLATO = adfm.annullato
+                        IDSTATORECORD = adfm.idStatoRecord
                     };
 
                     db.FIGLI.Find(adfm.idFigli).ALTRIDATIFAM.Add(adf);
@@ -789,7 +789,7 @@ namespace NewISE.Models.DBModel.dtObj
                         COMUNERESIDENZA = adfm.comuneResidenza,
                         PROVINCIARESIDENZA = adfm.provinciaResidenza,
                         DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                        ANNULLATO = adfm.annullato
+                        IDSTATORECORD = adfm.idStatoRecord
                     };
 
                     db.CONIUGE.Find(adfm.idConiuge).ALTRIDATIFAM.Add(adf);
@@ -842,7 +842,7 @@ namespace NewISE.Models.DBModel.dtObj
                 COMUNERESIDENZA = adfm.comuneResidenza,
                 PROVINCIARESIDENZA = adfm.provinciaResidenza,
                 DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                ANNULLATO = adfm.annullato
+                IDSTATORECORD = adfm.idStatoRecord
             };
 
             db.CONIUGE.Find(adfm.idConiuge).ALTRIDATIFAM.Add(adf);

@@ -72,10 +72,10 @@ namespace NewISE.Models.DBModel
         [ScaffoldColumn(false)]
         public DateTime dataAggiornamento { get; set; }
 
-        [DefaultValue(false)]
-        [Display(Name = "Annullato")]
-        [ScaffoldColumn(false)]
-        public bool annullato { get; set; }
+        //[DefaultValue(false)]
+        //[Display(Name = "Annullato")]
+        //[ScaffoldColumn(false)]
+        //public bool annullato { get; set; }
 
         [ScaffoldColumn(false)]
         public FigliModel Figli { get; set; }
@@ -87,5 +87,7 @@ namespace NewISE.Models.DBModel
         {
             return idAltriDatiFam > 0 ? true : false;
         }
+
+        public decimal idStatoRecord { get; set; }
     }
 }

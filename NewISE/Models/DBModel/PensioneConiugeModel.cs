@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel
 {
@@ -34,7 +35,7 @@ namespace NewISE.Models.DBModel
         public DateTime dataAggiornamento { get; set; }
         [Display(Name = "Annullato", AutoGenerateField = false)]
         [ScaffoldColumn(false)]
-        public bool annullato { get; set; }
+        public decimal idStatoRecord { get; set; }
 
         public IList<ConiugeModel> Coniugi { get; set; }
 
@@ -49,7 +50,7 @@ namespace NewISE.Models.DBModel
             var p = db.PENSIONE.Find(this.idPensioneConiuge);
             if (p != null && p.IDPENSIONE > 0)
             {
-                p.ANNULLATO = true;
+                p.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
 
                 int i = db.SaveChanges();

@@ -309,7 +309,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = c.DATAINIZIOVALIDITA,
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
-                        StatoRecord=(EnumStatoRecord)c.IDSTATORECORD
+                        idStatoRecord=c.IDSTATORECORD
                     };
                 }
             }
@@ -346,7 +346,7 @@ namespace NewISE.Models.DBModel.dtObj
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                FK_idConiuge = e.FK_IDCONIUGE,
                                idAttivazioneMagFam = idAttivazioneMagFam,
-                               StatoRecord = (EnumStatoRecord)e.IDSTATORECORD
+                               idStatoRecord = e.IDSTATORECORD
 
                            }).ToList();
                 }
@@ -368,7 +368,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = cm.dataInizio.Value,
                 DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                IDSTATORECORD = (decimal)cm.StatoRecord,
+                IDSTATORECORD = cm.idStatoRecord,
                 FK_IDCONIUGE = cm.FK_idConiuge
 
 
@@ -508,7 +508,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataInizio = c.DATAINIZIOVALIDITA,
                                         dataFine = c.DATAFINEVALIDITA,
                                         dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                        StatoRecord = (EnumStatoRecord)c.IDSTATORECORD,
+                                        idStatoRecord = c.IDSTATORECORD,
                                         FK_idConiuge = c.FK_IDCONIUGE
                                     };
                                     lcm.Add(cm);
