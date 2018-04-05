@@ -45,7 +45,14 @@
                 <li class="disabled" id="mnGestioneTrasferimento"><a id="lkGestioneTrasferimento" disabled href="#tabGestioneTrasferimento" data-toggle="tab">Gestione Trasferimento</a></li>
                 <li class="disabled" id="mnMaggiorazioneFamiliare"><a id="lkMaggiorazioneFamiliare" disabled href="#tabMaggiorazioneFamiliare" data-toggle="tab">Maggiorazione Familiare</a></li>
                 <li class="disabled" id="mnMaggiorazioneAbitazione"><a id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
-                <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab">Viaggi di congedo</a></li>
+                @if (admin)
+                {
+                    <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab" onclick="ViaggiCongedoPermesso();">Viaggi di congedo</a></li>
+                }
+                else
+                {
+                    <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab">Viaggi di congedo</a></li>
+                }
                 @if (admin)
                 {
                     <li class="disabled" id="mnSospensione"><a id="lkSospensione" disabled href="#tabSospensione" data-toggle="tab" onclick="Sospensione();">Sospensione</a></li>
@@ -246,7 +253,7 @@
 
 
     function Sospensione() {
-        //debugger;
+      //  debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         rotta = "/Sospensione/AttivitaSospensione";
 
@@ -514,6 +521,17 @@
             $("#lkSospensione").removeAttr("onClick");
         }
 
+        if (MenuViaggiCongedo(idTrasferimento) == 1) {
+            $("#lkCongediPermessi").removeAttr("disabled");
+            $("#mnCongediPermessi").removeClass("disabled");
+            $('#lkCongediPermessi').attr('onClick', 'ViaggiCongedoPermesso();');
+        }
+        else {
+            $("#lkCongediPermessi").attr("disabled", "disabled");
+            $("#mnCongediPermessi").addClass("disabled");
+            $("#lkCongediPermessi").removeAttr("onClick");
+        }
+
         //if (MenuRichiamo(idTrasferimento) == 1) {
         //    $("#lkRichiamo").removeAttr("disabled");
         //    $("#mnRichiamo").removeClass("disabled");
@@ -547,7 +565,6 @@
         $("#tabRichiamo").empty();
         $("#tabIndennita").empty();
         $("#RiepilogoVoci").empty();
-
 
     }
 
@@ -797,4 +814,90 @@
         return valoreRitorno;
     }
 
+    function MenuViaggiCongedo(idTrasferimento) {
+       // debugger;
+        var rotta = "/ViaggiCongedo/VerificaViaggiCongedo";
+
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    // debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaSospensione != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function ViaggiCongedoPermesso() {
+        debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/ViaggiCongedo/PreventiviDiViaggio";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabCongediPermessi").empty();
+                $("#tabCongediPermessi").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnCongediPermessi");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+    
 </script>

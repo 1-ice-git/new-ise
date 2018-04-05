@@ -74,7 +74,7 @@ namespace NewISE.EF
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
-        public virtual DbSet<MESSAGGIVARIAZIONI> MESSAGGIVARIAZIONI { get; set; }
+        public virtual DbSet<MODIFICHEMAGFAM> MODIFICHEMAGFAM { get; set; }
         public virtual DbSet<NETTO> NETTO { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
@@ -119,6 +119,7 @@ namespace NewISE.EF
         public virtual DbSet<TIPOLOGIACOAN> TIPOLOGIACOAN { get; set; }
         public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
         public virtual DbSet<TIPOLOGIAFIGLIO> TIPOLOGIAFIGLIO { get; set; }
+        public virtual DbSet<TIPOLOGIAMODIFICHE> TIPOLOGIAMODIFICHE { get; set; }
         public virtual DbSet<TIPOMOVIMENTO> TIPOMOVIMENTO { get; set; }
         public virtual DbSet<TIPOREGOLACALCOLO> TIPOREGOLACALCOLO { get; set; }
         public virtual DbSet<TIPOSOSPENSIONE> TIPOSOSPENSIONE { get; set; }
@@ -132,7 +133,6 @@ namespace NewISE.EF
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VARIAZIONIMAB> VARIAZIONIMAB { get; set; }
-        public virtual DbSet<VARIAZIONIMAGFAM> VARIAZIONIMAGFAM { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
     }
