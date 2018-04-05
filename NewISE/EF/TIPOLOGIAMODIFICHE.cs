@@ -12,14 +12,18 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class VARIAZIONIMAGFAM
+    public partial class TIPOLOGIAMODIFICHE
     {
-        public decimal IDVARMAGFAM { get; set; }
-        public decimal IDATTIVAZIONEMAGFAM { get; set; }
-        public decimal IDMSGVAR { get; set; }
-        public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TIPOLOGIAMODIFICHE()
+        {
+            this.MODIFICHEMAGFAM = new HashSet<MODIFICHEMAGFAM>();
+        }
     
-        public virtual ATTIVAZIONIMAGFAM ATTIVAZIONIMAGFAM { get; set; }
-        public virtual MESSAGGIVARIAZIONI MESSAGGIVARIAZIONI { get; set; }
+        public decimal IDMSGVAR { get; set; }
+        public string MSG { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MODIFICHEMAGFAM> MODIFICHEMAGFAM { get; set; }
     }
 }
