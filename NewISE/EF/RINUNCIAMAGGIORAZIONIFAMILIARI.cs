@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RINUNCIAMAGGIORAZIONIFAMILIARI()
         {
+            this.RINUNCIAMAGGIORAZIONIFAMILIARI1 = new HashSet<RINUNCIAMAGGIORAZIONIFAMILIARI>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
         }
     
@@ -27,8 +28,12 @@ namespace NewISE.EF
         public Nullable<System.DateTime> DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public decimal IDSTATORECORD { get; set; }
+        public Nullable<decimal> FK_IDRINUNCIAMAGFAM { get; set; }
     
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI1 { get; set; }
+        public virtual RINUNCIAMAGGIORAZIONIFAMILIARI RINUNCIAMAGGIORAZIONIFAMILIARI2 { get; set; }
         public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }

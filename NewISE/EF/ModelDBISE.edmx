@@ -44,6 +44,7 @@
           <Property Name="PROVINCIARESIDENZA" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FK_IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="AMAB_DOC">
           <Key>
@@ -961,6 +962,7 @@
           <Property Name="DATAFINE" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FK_IDPENSIONE" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="PERCENTUALEANTICIPOTE">
           <Key>
@@ -1173,6 +1175,7 @@
           <Property Name="DATAFINE" Type="date" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FK_IDRINUNCIAMAGFAM" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="RUOLOACCESSO">
           <Key>
@@ -1618,6 +1621,20 @@
             </Principal>
             <Dependent Role="ATT_ADF">
               <PropertyRef Name="IDALTRIDATIFAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ADF_ADF">
+          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ALTRIDATIFAM1" Type="Self.ALTRIDATIFAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALTRIDATIFAM">
+              <PropertyRef Name="IDALTRIDATIFAM" />
+            </Principal>
+            <Dependent Role="ALTRIDATIFAM1">
+              <PropertyRef Name="FK_IDALTRIDATIFAM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3271,6 +3288,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_P_P">
+          <End Role="PENSIONE" Type="Self.PENSIONE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PENSIONE1" Type="Self.PENSIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PENSIONE">
+              <PropertyRef Name="IDPENSIONE" />
+            </Principal>
+            <Dependent Role="PENSIONE1">
+              <PropertyRef Name="FK_IDPENSIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_P_PR">
           <End Role="PASSAPORTI" Type="Self.PASSAPORTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3674,6 +3705,20 @@
             </Principal>
             <Dependent Role="ATT_RMF">
               <PropertyRef Name="IDRINUNCIAMAGFAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_RMF_RMF">
+          <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI" Type="Self.RINUNCIAMAGGIORAZIONIFAMILIARI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI1" Type="Self.RINUNCIAMAGGIORAZIONIFAMILIARI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RINUNCIAMAGGIORAZIONIFAMILIARI">
+              <PropertyRef Name="IDRINUNCIAMAGFAM" />
+            </Principal>
+            <Dependent Role="RINUNCIAMAGGIORAZIONIFAMILIARI1">
+              <PropertyRef Name="FK_IDRINUNCIAMAGFAM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4902,6 +4947,10 @@
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
             <End Role="ATT_ADF" EntitySet="ATT_ADF" />
           </AssociationSet>
+          <AssociationSet Name="R_ADF_ADF" Association="Self.R_ADF_ADF">
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="ALTRIDATIFAM1" EntitySet="ALTRIDATIFAM" />
+          </AssociationSet>
           <AssociationSet Name="R_AMAB_AMADOC" Association="Self.R_AMAB_AMADOC">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="AMAB_DOC" EntitySet="AMAB_DOC" />
@@ -5374,6 +5423,10 @@
             <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
             <End Role="FIGLIPASSAPORTO" EntitySet="FIGLIPASSAPORTO" />
           </AssociationSet>
+          <AssociationSet Name="R_P_P" Association="Self.R_P_P">
+            <End Role="PENSIONE" EntitySet="PENSIONE" />
+            <End Role="PENSIONE1" EntitySet="PENSIONE" />
+          </AssociationSet>
           <AssociationSet Name="R_P_PR" Association="Self.R_P_PR">
             <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
             <End Role="PASSAPORTORICHIEDENTE" EntitySet="PASSAPORTORICHIEDENTE" />
@@ -5489,6 +5542,10 @@
           <AssociationSet Name="R_RMF_ARMF" Association="Self.R_RMF_ARMF">
             <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
             <End Role="ATT_RMF" EntitySet="ATT_RMF" />
+          </AssociationSet>
+          <AssociationSet Name="R_RMF_RMF" Association="Self.R_RMF_RMF">
+            <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
+            <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI1" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
           </AssociationSet>
           <AssociationSet Name="R_RU_RD" Association="Self.R_RU_RD">
             <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
@@ -5917,6 +5974,10 @@
           <AssociationSet Name="R_TC_AC" Association="DBISEPRO.R_TC_AC">
             <End Role="TIPOALIQUOTECONTRIBUTIVE" EntitySet="TIPOALIQUOTECONTRIBUTIVE" />
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+          </AssociationSet>
+          <AssociationSet Name="R_ADF_ADF" Association="DBISEPRO.R_ADF_ADF">
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="ALTRIDATIFAM1" EntitySet="ALTRIDATIFAM" />
           </AssociationSet>
           <AssociationSet Name="R_C_ADF" Association="DBISEPRO.R_C_ADF">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -6350,6 +6411,10 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
           </AssociationSet>
+          <AssociationSet Name="R_P_P" Association="DBISEPRO.R_P_P">
+            <End Role="PENSIONE" EntitySet="PENSIONE" />
+            <End Role="PENSIONE1" EntitySet="PENSIONE" />
+          </AssociationSet>
           <AssociationSet Name="R_SR_P" Association="DBISEPRO.R_SR_P">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
             <End Role="PENSIONE" EntitySet="PENSIONE" />
@@ -6385,6 +6450,10 @@
           <AssociationSet Name="R_T_R" Association="DBISEPRO.R_T_R">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+          </AssociationSet>
+          <AssociationSet Name="R_RMF_RMF" Association="DBISEPRO.R_RMF_RMF">
+            <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
+            <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI1" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
           </AssociationSet>
           <AssociationSet Name="R_SR_RMF" Association="DBISEPRO.R_SR_RMF">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
@@ -6694,6 +6763,9 @@
           <Property Name="PROVINCIARESIDENZA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="FK_IDALTRIDATIFAM" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ALTRIDATIFAM1" Relationship="DBISEPRO.R_ADF_ADF" FromRole="ALTRIDATIFAM" ToRole="ALTRIDATIFAM1" />
+          <NavigationProperty Name="ALTRIDATIFAM2" Relationship="DBISEPRO.R_ADF_ADF" FromRole="ALTRIDATIFAM1" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.R_C_ADF" FromRole="ALTRIDATIFAM" ToRole="CONIUGE" />
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_F_ADF" FromRole="ALTRIDATIFAM" ToRole="FIGLI" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISEPRO.R_SR_ADF" FromRole="ALTRIDATIFAM" ToRole="STATORECORD" />
@@ -7576,6 +7648,9 @@
           <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="FK_IDPENSIONE" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="PENSIONE1" Relationship="DBISEPRO.R_P_P" FromRole="PENSIONE" ToRole="PENSIONE1" />
+          <NavigationProperty Name="PENSIONE2" Relationship="DBISEPRO.R_P_P" FromRole="PENSIONE1" ToRole="PENSIONE" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISEPRO.R_SR_P" FromRole="PENSIONE" ToRole="STATORECORD" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISEPRO.ATT_PENSIONE" FromRole="PENSIONE" ToRole="ATTIVAZIONIMAGFAM" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.C_P" FromRole="PENSIONE" ToRole="CONIUGE" />
@@ -7791,7 +7866,10 @@
           <Property Name="DATAFINE" Type="DateTime" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="FK_IDRINUNCIAMAGFAM" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_MF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="MAGGIORAZIONIFAMILIARI" />
+          <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI1" Relationship="DBISEPRO.R_RMF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI1" />
+          <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI2" Relationship="DBISEPRO.R_RMF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI1" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISEPRO.R_SR_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="STATORECORD" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISEPRO.ATT_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="ATTIVAZIONIMAGFAM" />
         </EntityType>
@@ -8258,6 +8336,20 @@
             </Principal>
             <Dependent Role="ALIQUOTECONTRIBUTIVE">
               <PropertyRef Name="IDTIPOCONTRIBUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ADF_ADF">
+          <End Type="DBISEPRO.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.ALTRIDATIFAM" Role="ALTRIDATIFAM1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALTRIDATIFAM">
+              <PropertyRef Name="IDALTRIDATIFAM" />
+            </Principal>
+            <Dependent Role="ALTRIDATIFAM1">
+              <PropertyRef Name="FK_IDALTRIDATIFAM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9769,6 +9861,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_P_P">
+          <End Type="DBISEPRO.PENSIONE" Role="PENSIONE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PENSIONE" Role="PENSIONE1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PENSIONE">
+              <PropertyRef Name="IDPENSIONE" />
+            </Principal>
+            <Dependent Role="PENSIONE1">
+              <PropertyRef Name="FK_IDPENSIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_SR_P">
           <End Type="DBISEPRO.STATORECORD" Role="STATORECORD" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -9892,6 +9998,20 @@
             </Principal>
             <Dependent Role="RICHIAMO">
               <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_RMF_RMF">
+          <End Type="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" Role="RINUNCIAMAGGIORAZIONIFAMILIARI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" Role="RINUNCIAMAGGIORAZIONIFAMILIARI1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RINUNCIAMAGGIORAZIONIFAMILIARI">
+              <PropertyRef Name="IDRINUNCIAMAGFAM" />
+            </Principal>
+            <Dependent Role="RINUNCIAMAGGIORAZIONIFAMILIARI1">
+              <PropertyRef Name="FK_IDRINUNCIAMAGFAM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10431,6 +10551,7 @@
           <EntitySetMapping Name="ALTRIDATIFAM">
             <EntityTypeMapping TypeName="DBISEPRO.ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="ALTRIDATIFAM">
+                <ScalarProperty Name="FK_IDALTRIDATIFAM" ColumnName="FK_IDALTRIDATIFAM" />
                 <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="PROVINCIARESIDENZA" ColumnName="PROVINCIARESIDENZA" />
@@ -11160,6 +11281,7 @@
           <EntitySetMapping Name="PENSIONE">
             <EntityTypeMapping TypeName="DBISEPRO.PENSIONE">
               <MappingFragment StoreEntitySet="PENSIONE">
+                <ScalarProperty Name="FK_IDPENSIONE" ColumnName="FK_IDPENSIONE" />
                 <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
@@ -11347,6 +11469,7 @@
           <EntitySetMapping Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
             <EntityTypeMapping TypeName="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI">
               <MappingFragment StoreEntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI">
+                <ScalarProperty Name="FK_IDRINUNCIAMAGFAM" ColumnName="FK_IDRINUNCIAMAGFAM" />
                 <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
