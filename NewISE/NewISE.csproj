@@ -2450,6 +2450,7 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
     <Compile Include="EF\DOC_ATER.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
@@ -3100,6 +3101,7 @@
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
+    <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
     <Compile Include="Models\DBModel\PagatoCondivisoMABModel.cs" />
     <Compile Include="Models\DBModel\VariazioniMABModel.cs" />
@@ -3440,6 +3442,8 @@
     <Content Include="Views\MaggiorazioneAbitazione\GestioneRinunciaMABPartenza.cshtml" />
     <Content Include="Views\Notifiche\NotificheRicevute.cshtml" />
     <Content Include="Views\Notifiche\VisualizzaMittente.cshtml" />
+    <Content Include="Views\ViaggiCongedo\PreventiviDiViaggio.cshtml" />
+    <Content Include="Views\ViaggiCongedo\ElencoPreventiviDiViaggio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

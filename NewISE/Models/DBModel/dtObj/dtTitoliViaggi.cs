@@ -741,7 +741,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         //verifico se su ConiugeTitoloViaggio esistono i record relativi ai coniugi residenti
                         //(se non esistono li creo)
-                        var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true & a.RICHIESTAATTIVAZIONE == true).First();
+                        var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true && a.RICHIESTAATTIVAZIONE == true).First();
                         var lctv = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
                         if(lctv.Count()==0)
                         {
