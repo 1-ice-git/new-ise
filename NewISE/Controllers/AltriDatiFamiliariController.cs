@@ -1,6 +1,7 @@
 ﻿using NewISE.DBComuniItalia;
 using NewISE.Models;
 using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.DBModel.dtObj;
 using Newtonsoft.Json;
 using System;
@@ -470,7 +471,7 @@ namespace NewISE.Controllers
             try
             {
                 adf.dataAggiornamento = DateTime.Now;
-                adf.annullato = false;
+                adf.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 if (ModelState.IsValid)
                 {
@@ -518,7 +519,7 @@ namespace NewISE.Controllers
             try
             {
                 adf.dataAggiornamento = DateTime.Now;
-                adf.annullato = false;
+                adf.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 if (ModelState.IsValid)
                 {
@@ -692,7 +693,7 @@ namespace NewISE.Controllers
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
-                adfm.annullato = false;
+                adfm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
 
                 if (ModelState.IsValid)
@@ -748,7 +749,7 @@ namespace NewISE.Controllers
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
-                adfm.annullato = false;
+                adfm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 if (ModelState.IsValid)
                 {

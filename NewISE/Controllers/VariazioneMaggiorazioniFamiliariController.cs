@@ -207,7 +207,7 @@ namespace NewISE.Controllers
                 //Lista Coniugi
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    List<VariazioneConiugeModel> lcm = dtc.GetListaAttivazioniConiugeByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a=>a.progressivo).ThenByDescending(a=>a.StatoRecord).ToList();
+                    List<VariazioneConiugeModel> lcm = dtc.GetListaAttivazioniConiugeByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a=>a.progressivo).ThenByDescending(a=>a.idStatoRecord).ToList();
 
                     var check_nuovo_coniuge = 1;
 
@@ -248,7 +248,7 @@ namespace NewISE.Controllers
                 // Lista Figli
                 using (dtFigli dtf = new dtFigli())
                 {
-                    List<VariazioneFigliModel> lfm = dtf.GetListaAttivazioniFigliByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a => a.progressivo).ThenByDescending(a => a.StatoRecord).ToList();
+                    List<VariazioneFigliModel> lfm = dtf.GetListaAttivazioniFigliByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a => a.progressivo).ThenByDescending(a => a.idStatoRecord).ToList();
 
                     var check_nuovo_figlio = 1;
 
@@ -273,7 +273,7 @@ namespace NewISE.Controllers
                                         Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio, idMaggiorazioniFamiliari),
                                         HasPensione = dtp.HasPensione(e.idFigli),
                                         eliminabile = e.eliminabile,
-                                        statoRecord=e.StatoRecord,
+                                        idStatoRecord=e.idStatoRecord,
                                         modificabile = e.modificabile
                                     };
                                     lefm.Add(efm);
@@ -1051,7 +1051,7 @@ namespace NewISE.Controllers
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
-                adfm.annullato = false;
+                adfm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 if (ModelState.IsValid)
                 {
@@ -1080,7 +1080,7 @@ namespace NewISE.Controllers
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
-                adfm.annullato = false;
+                adfm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 if (ModelState.IsValid)
                 {
@@ -1192,8 +1192,7 @@ namespace NewISE.Controllers
                                     return PartialView("NuovoImportoPensione", pcm);
                                 }
                                 pcm.dataAggiornamento = DateTime.Now;
-                                pcm.annullato = false;
-                                if (!pcm.dataFineValidita.HasValue)
+                                pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;                             if (!pcm.dataFineValidita.HasValue)
                                 {
                                     pcm.dataFineValidita = Utility.DataFineStop();
                                 }
@@ -2114,7 +2113,7 @@ namespace NewISE.Controllers
                                     dataInizioValidita = e.dataInizioValidita,
                                     dataFineValidita = e.dataFineValidita,
                                     dataAggiornamento = e.dataAggiornamento,
-                                    annullato = e.annullato
+                                    idStatoRecord = e.idStatoRecord
                                 }).ToList();
                     }
                 }
@@ -2318,7 +2317,7 @@ namespace NewISE.Controllers
             try
             {
                 adf.dataAggiornamento = DateTime.Now;
-                adf.annullato = false;
+                adf.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 if (ModelState.IsValid)
                 {
@@ -2356,7 +2355,7 @@ namespace NewISE.Controllers
             try
             {
                 adf.dataAggiornamento = DateTime.Now;
-                adf.annullato = false;
+                adf.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 if (ModelState.IsValid)
                 {

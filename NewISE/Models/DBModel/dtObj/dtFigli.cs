@@ -192,7 +192,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = fm.dataInizio.Value,
                 DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = fm.dataAggiornamento,
-                IDSTATORECORD=(decimal)fm.StatoRecord,
+                IDSTATORECORD=fm.idStatoRecord,
                 FK_IDFIGLI=fm.FK_IdFigli
             };
 
@@ -247,7 +247,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = f.DATAINIZIOVALIDITA,
                         dataFine = f.DATAFINEVALIDITA,
                         dataAggiornamento = f.DATAAGGIORNAMENTO,
-                        StatoRecord = (EnumStatoRecord)f.IDSTATORECORD
+                        idStatoRecord = f.IDSTATORECORD
                     };
                 }
             }
@@ -333,7 +333,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataInizio = item.DATAINIZIOVALIDITA,
                                 dataFine = item.DATAFINEVALIDITA,
                                 dataAggiornamento = item.DATAAGGIORNAMENTO,
-                                StatoRecord = (EnumStatoRecord)item.IDSTATORECORD,
+                                idStatoRecord = item.IDSTATORECORD,
                                 FK_IdFigli = item.FK_IDFIGLI,
                                 idAttivazioneMagFam = idAttivazioneMagFam
 
@@ -412,7 +412,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataInizio = f.DATAINIZIOVALIDITA,
                                         dataFine = f.DATAFINEVALIDITA,
                                         dataAggiornamento = f.DATAAGGIORNAMENTO,
-                                        StatoRecord = (EnumStatoRecord)f.IDSTATORECORD,
+                                        idStatoRecord = f.IDSTATORECORD,
                                         FK_IdFigli = f.FK_IDFIGLI
                                     };
                                     lfm.Add(fm);

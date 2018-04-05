@@ -76,7 +76,7 @@ namespace NewISE.Models.DBModel.dtObj
                 IDMAGGIORAZIONIFAMILIARI = rmfm.idMaggiorazioniFamiliari,
                 RINUNCIAMAGGIORAZIONI = rmfm.rinunciaMaggiorazioni,
                 DATAAGGIORNAMENTO = rmfm.dataAggiornamento,
-                ANNULLATO = rmfm.annullato
+                IDSTATORECORD = rmfm.idStatoRecord
             };
 
             db.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(rmf);
@@ -770,7 +770,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 #region Altri dati familiari coniuge
                                                 ///Prelevo la vecchia riga di altri dati familiari collegati alla vecchia riga del coniuge.
                                                 var ladfOld =
-                                                    cOld.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
+                                                    cOld.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                                         .OrderByDescending(a => a.IDALTRIDATIFAM);
 
                                                 if (ladfOld?.Any() ?? false)///Esiste questo controllo ma è impossibile che si verifichi il contrario perché gli altri dati familiari sono obbligatori per attivare il ciclo di autorizzazione.
@@ -790,7 +790,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                         COMUNERESIDENZA = adfOld.COMUNERESIDENZA,
                                                         PROVINCIARESIDENZA = adfOld.PROVINCIARESIDENZA,
                                                         DATAAGGIORNAMENTO = adfOld.DATAAGGIORNAMENTO,
-                                                        ANNULLATO = adfOld.ANNULLATO
+                                                        IDSTATORECORD = adfOld.IDSTATORECORD
                                                     };
 
                                                     cNew.ALTRIDATIFAM.Add(adfNew);///La consolido e l'associo al coniuge
@@ -859,7 +859,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 #region Pensioni
 
-                                                var lpOld = cOld.PENSIONE.Where(a => a.ANNULLATO == false);
+                                                var lpOld = cOld.PENSIONE.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato);
 
                                                 foreach (PENSIONE pOld in lpOld)
                                                 {
@@ -869,7 +869,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                         DATAINIZIO = pOld.DATAINIZIO,
                                                         DATAFINE = pOld.DATAFINE,
                                                         DATAAGGIORNAMENTO = pOld.DATAAGGIORNAMENTO,
-                                                        ANNULLATO = pOld.ANNULLATO
+                                                        IDSTATORECORD = pOld.IDSTATORECORD
                                                     };
 
                                                     cNew.PENSIONE.Add(pNew);
@@ -949,7 +949,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 #region Altri dati familiari
                                                 ///Prelevo la vecchia riga di altri dati familiari collegati alla vecchia riga del coniuge.
                                                 var ladfOld =
-                                                    fOld.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
+                                                    fOld.ALTRIDATIFAM.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
                                                         .OrderByDescending(a => a.IDALTRIDATIFAM);
 
                                                 if (ladfOld?.Any() ?? false)///Esiste questo controllo ma è impossibile che si verifichi il contrario perché gli altri dati familiari sono obbligatori per attivare il ciclo di autorizzazione.
@@ -969,7 +969,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                         COMUNERESIDENZA = adfOld.COMUNERESIDENZA,
                                                         PROVINCIARESIDENZA = adfOld.PROVINCIARESIDENZA,
                                                         DATAAGGIORNAMENTO = adfOld.DATAAGGIORNAMENTO,
-                                                        ANNULLATO = adfOld.ANNULLATO
+                                                        IDSTATORECORD = adfOld.IDSTATORECORD
                                                     };
 
                                                     fNew.ALTRIDATIFAM.Add(adfNew);///La consolido e l'associo al figlio
@@ -1215,7 +1215,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (datiConiuge == false && datiFigli == false)
                                 {
                                     var rmf =
-                                        amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                                        amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
                                             .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
                                             .First();
 
@@ -1398,7 +1398,7 @@ namespace NewISE.Models.DBModel.dtObj
                     if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
                     {
                         var lrmf =
-                            amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                            amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD !=(decimal)EnumStatoRecord.Annullato)
                                 .OrderByDescending(a => a.IDRINUNCIAMAGFAM);
 
                         if (lrmf?.Any() ?? false)
@@ -1432,7 +1432,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 datiConiuge = true;
                                 foreach (var c in lc)
                                 {
-                                    var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+                                    var nadc = c.ALTRIDATIFAM.Count(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato);
 
                                     if (nadc > 0)
                                     {
@@ -1476,7 +1476,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 datiFigli = true;
                                 foreach (var f in lf)
                                 {
-                                    var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+                                    var nadf = f.ALTRIDATIFAM.Count(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato);
 
                                     if (nadf > 0)
                                     {
@@ -1640,7 +1640,7 @@ namespace NewISE.Models.DBModel.dtObj
                     using (dtFigli dtf = new dtFigli())
                     {
                         fm.dataAggiornamento = DateTime.Now;
-                        fm.StatoRecord = Enum.EnumStatoRecord.In_Lavorazione;
+                        fm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
                         fm.FK_IdFigli = null;
 
                         dtf.SetFiglio(ref fm, db);
@@ -1718,7 +1718,7 @@ namespace NewISE.Models.DBModel.dtObj
                     using (dtConiuge dtc = new dtConiuge())
                     {
                         cm.dataAggiornamento = DateTime.Now;
-                        cm.StatoRecord = Enum.EnumStatoRecord.In_Lavorazione;
+                        cm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
                         cm.FK_idConiuge = null;
 
                         dtc.SetConiuge(ref cm, db);

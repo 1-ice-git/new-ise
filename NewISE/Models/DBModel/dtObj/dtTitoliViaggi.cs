@@ -486,7 +486,7 @@ namespace NewISE.Models.DBModel.dtObj
                         comuneResidenza = adfc.COMUNERESIDENZA,
                         provinciaResidenza = adfc.PROVINCIARESIDENZA,
                         dataAggiornamento = adfc.DATAAGGIORNAMENTO,
-                        annullato = adfc.ANNULLATO
+                        idStatoRecord = adfc.IDSTATORECORD
                     };
 
                 }
@@ -511,7 +511,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     adffm = new AltriDatiFamFiglioModel()
                     {
-                        annullato = adff.ANNULLATO,
+                        idStatoRecord = adff.IDSTATORECORD,
                         capResidenza = adff.CAPRESIDENZA,
                         comuneResidenza = adff.COMUNERESIDENZA,
                         idAltriDatiFam = adff.IDALTRIDATIFAM,

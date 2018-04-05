@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using NewISE.EF;
 using NewISE.Models.Tools;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -20,13 +21,13 @@ namespace NewISE.Models.DBModel.dtObj
             var amfNew = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFamNew);
 
             var lrmf =
-                amfOld.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false && a.RINUNCIAMAGGIORAZIONI == true)
+                amfOld.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAGGIORAZIONI == true)
                     .OrderByDescending(a => a.IDRINUNCIAMAGFAM);
             if (lrmf?.Any() ?? false)
             {
                 var rmf = lrmf.First();
                 rmf.DATAAGGIORNAMENTO = DateTime.Now;
-                rmf.ANNULLATO = true;
+                rmf.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                 int i = db.SaveChanges();
 
@@ -39,7 +40,7 @@ namespace NewISE.Models.DBModel.dtObj
                         IDMAGGIORAZIONIFAMILIARI = rmf.IDMAGGIORAZIONIFAMILIARI,
                         RINUNCIAMAGGIORAZIONI = false,
                         DATAAGGIORNAMENTO = DateTime.Now,
-                        ANNULLATO = false
+                        IDSTATORECORD =(decimal)EnumStatoRecord.In_Lavorazione
                     };
 
                     amfNew.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(rmfNew);

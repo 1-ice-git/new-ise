@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime;
 using NewISE.Models.Tools;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -49,7 +50,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var c = amf.CONIUGE.First(a => a.IDCONIUGE == idConiuge);
 
 
-                var lp = c.PENSIONE.Where(a => a.ANNULLATO == false)
+                var lp = c.PENSIONE.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
                     .OrderBy(a => a.DATAINIZIO)
                     .ToList();
                 if (lp?.Any() ?? false)
@@ -62,7 +63,7 @@ namespace NewISE.Models.DBModel.dtObj
                                dataInizioValidita = e.DATAINIZIO,
                                dataFineValidita = e.DATAFINE,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                               annullato = e.ANNULLATO
+                               idStatoRecord = e.IDSTATORECORD
                            }).ToList();
                 }
 
@@ -84,7 +85,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             var lp =
                 db.CONIUGE.Find(idConiuge)
-                    .PENSIONE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIO && dt <= a.DATAFINE)
+                    .PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && dt >= a.DATAINIZIO && dt <= a.DATAFINE)
                     .OrderByDescending(a => a.DATAINIZIO)
                     .ToList();
             if (lp?.Any() ?? false)
@@ -98,7 +99,7 @@ namespace NewISE.Models.DBModel.dtObj
                                dataInizioValidita = e.DATAINIZIO,
                                dataFineValidita = e.DATAFINE,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                               annullato = e.ANNULLATO
+                               idStatoRecord = e.IDSTATORECORD
                            }).ToList();
 
                 pc = lpc.First();
@@ -114,7 +115,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             var lp =
                 db.CONIUGE.Find(idConiuge)
-                    .PENSIONE.Where(a => a.ANNULLATO == false)
+                    .PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                     .OrderBy(a => a.DATAINIZIO)
                     .ToList();
             if (lp?.Any() ?? false)
@@ -127,7 +128,7 @@ namespace NewISE.Models.DBModel.dtObj
                            dataInizioValidita = e.DATAINIZIO,
                            dataFineValidita = e.DATAFINE,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           annullato = e.ANNULLATO
+                           idStatoRecord = e.IDSTATORECORD
                        }).ToList();
             }
 
@@ -144,7 +145,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var lp =
                 db.CONIUGE.Find(idConiuge)
-                    .PENSIONE.Where(a => a.ANNULLATO == false)
+                    .PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                     .OrderBy(a => a.DATAINIZIO)
                     .ToList();
                 if (lp?.Any() ?? false)
@@ -157,7 +158,7 @@ namespace NewISE.Models.DBModel.dtObj
                                dataInizioValidita = e.DATAINIZIO,
                                dataFineValidita = e.DATAFINE,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                               annullato = e.ANNULLATO
+                               idStatoRecord = e.IDSTATORECORD
                            }).ToList();
                 }
             }
@@ -184,7 +185,7 @@ namespace NewISE.Models.DBModel.dtObj
                     dataInizioValidita = pc.DATAINIZIO,
                     dataFineValidita = pc.DATAFINE,
                     dataAggiornamento = pc.DATAAGGIORNAMENTO,
-                    annullato = pc.ANNULLATO,
+                    idStatoRecord = pc.IDSTATORECORD,
                     //Coniugi = (from e in pc.CONIUGE
                     //           select new ConiugeModel()
                     //           {
@@ -222,7 +223,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataFineValidita = pcm.dataFineValidita,
                             importoPensione = pcmPrecedente.importoPensione,
                             dataAggiornamento = DateTime.Now,
-                            annullato = false,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                         };
 
                         SetPensioneConiuge(ref pcmNew, idConiuge, idAttivazioneMagFam, db);
@@ -281,7 +282,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataInizioValidita = pcmPrecedente.dataInizioValidita,
                                         dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
                                         dataAggiornamento = DateTime.Now,
-                                        annullato = false,
+                                        idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                     };
 
                                     SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
@@ -298,7 +299,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
                                         dataFineValidita = pcmSuccessivo.dataFineValidita,
                                         dataAggiornamento = DateTime.Now,
-                                        annullato = false,
+                                        idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
                                     };
 
                                     SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
@@ -323,7 +324,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataInizioValidita = pcm.dataInizioValidita,
                                     dataFineValidita = pcm.dataFineValidita,
                                     dataAggiornamento = DateTime.Now,
-                                    annullato = false,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
                                 };
 
                                 SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
@@ -378,7 +379,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizioValidita = pcmPrecedente.dataInizioValidita,
                             dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
                             dataAggiornamento = DateTime.Now,
-                            annullato = false,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                         };
 
                         SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
@@ -395,7 +396,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
                             dataFineValidita = pcmSuccessivo.dataFineValidita,
                             dataAggiornamento = DateTime.Now,
-                            annullato = false,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                         };
 
                         SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
@@ -453,7 +454,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataInizioValidita = pcmPrecedente.dataInizioValidita,
                                 dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
                                 dataAggiornamento = DateTime.Now,
-                                annullato = false,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                             };
 
                             SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
@@ -470,7 +471,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
                                 dataFineValidita = pcmSuccessivo.dataFineValidita,
                                 dataAggiornamento = DateTime.Now,
-                                annullato = false,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                             };
 
                             SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
@@ -500,7 +501,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var lpc =
                     db.CONIUGE.Find(idConiuge)
-                        .PENSIONE.Where(a => a.ANNULLATO == false && a.DATAFINE < pcm.dataInizioValidita)
+                        .PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.DATAFINE < pcm.dataInizioValidita)
                         .OrderByDescending(a => a.DATAFINE)
                         .ToList();
 
@@ -515,7 +516,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizioValidita = pc.DATAINIZIO,
                         dataFineValidita = pc.DATAFINE,
                         dataAggiornamento = pc.DATAAGGIORNAMENTO,
-                        annullato = pc.ANNULLATO
+                        idStatoRecord = pc.IDSTATORECORD
 
                     };
                 }
@@ -540,7 +541,7 @@ namespace NewISE.Models.DBModel.dtObj
                 db.CONIUGE.Find(idConiuge)
                     .PENSIONE.Where(
                         a =>
-                            a.ANNULLATO == false && a.DATAINIZIO <= dtFin &&
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.DATAINIZIO <= dtFin &&
                             a.DATAFINE >= dtIni)
                     .OrderBy(a => a.DATAINIZIO)
                     .ToList();
@@ -556,7 +557,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizioValidita = e.DATAINIZIO,
                             dataFineValidita = e.DATAFINE,
                             dataAggiornamento = e.DATAAGGIORNAMENTO,
-                            annullato = e.ANNULLATO
+                            idStatoRecord = e.IDSTATORECORD
                         }).ToList();
             }
 
@@ -577,7 +578,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIO = pcm.dataInizioValidita,
                     DATAFINE = pcm.dataFineValidita.Value,
                     DATAAGGIORNAMENTO = pcm.dataAggiornamento,
-                    ANNULLATO = pcm.annullato
+                    IDSTATORECORD = pcm.idStatoRecord
                 };
 
                 c.PENSIONE.Add(pc);
@@ -640,7 +641,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIO = pcm.dataInizioValidita,
                     DATAFINE = pcm.dataFineValidita.HasValue ? pcm.dataFineValidita.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = pcm.dataAggiornamento,
-                    ANNULLATO = pcm.annullato
+                    IDSTATORECORD = pcm.idStatoRecord
                 };
 
                 db.PENSIONE.Add(p);
@@ -660,7 +661,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIO = pcm.dataInizioValidita,
                 DATAFINE = pcm.dataFineValidita.HasValue ? pcm.dataFineValidita.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = pcm.dataAggiornamento,
-                ANNULLATO = pcm.annullato
+                IDSTATORECORD = pcm.idStatoRecord
             };
 
             db.PENSIONE.Add(p);
@@ -681,7 +682,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIO).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.DATAINIZIO).ToList();
 
                     if (lpc?.Any() ?? false)
                     {
@@ -693,7 +694,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataInizioValidita = e.DATAINIZIO,
                                     dataFineValidita = e.DATAFINE,
                                     dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                    annullato = e.ANNULLATO
+                                    idStatoRecord = e.IDSTATORECORD
                                 }).ToList();
                     }
                 }
@@ -750,7 +751,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.ANNULLATO == false).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
                     if (lpc?.Any() ?? false)
                     {
                         ret = true;
@@ -780,7 +781,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.ANNULLATO == false && a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam)).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam)).ToList();
                     if (lpc?.Any() ?? false)
                     {
                         ret = true;
@@ -806,7 +807,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var pc = db.PENSIONE.Find(i.idPensioneConiuge);
                     if (pc != null && pc.IDPENSIONE > 0)
                     {
-                        pc.ANNULLATO = true;
+                        pc.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                         db.SaveChanges();
                     }
@@ -826,7 +827,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var c = db.CONIUGE.Find(idConiuge);
 
-                var last_pcl = c.PENSIONE.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDPENSIONE).ToList();
+                var last_pcl = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPENSIONE).ToList();
 
                 if (last_pcl?.Any() ?? false)
                 {

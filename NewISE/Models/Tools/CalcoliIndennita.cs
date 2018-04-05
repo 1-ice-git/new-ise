@@ -291,7 +291,7 @@ namespace NewISE.Models.Tools
                                         var lpensioni =
                                             coniuge.PENSIONE.Where(
                                                 a =>
-                                                    a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIO &&
+                                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && dtDatiParametri >= a.DATAINIZIO &&
                                                     dtDatiParametri <= a.DATAFINE)
                                                 .OrderByDescending(a => a.DATAINIZIO)
                                                 .ToList();

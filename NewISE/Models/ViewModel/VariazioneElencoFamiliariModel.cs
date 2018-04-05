@@ -66,7 +66,7 @@ namespace NewISE.Models.DBModel
         public bool doc_modificati { get; set; }
 
         [Display(Name = "Stato")]
-        public EnumStatoRecord statoRecord { get; set; }
+        public decimal idStatoRecord { get; set; }
 
     }
 }

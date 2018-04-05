@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel
 {
@@ -80,7 +79,7 @@ namespace NewISE.Models.DBModel
 
         public MaggiorazioniFamiliariModel MaggiorazioniFamiliari { get; set; }
 
-        public EnumStatoRecord StatoRecord { get; set; }
+        public decimal idStatoRecord { get; set; }
 
         public bool HasValue()
         {
