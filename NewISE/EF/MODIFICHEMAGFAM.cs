@@ -18,6 +18,7 @@ namespace NewISE.EF
         public decimal IDATTIVAZIONEMAGFAM { get; set; }
         public decimal IDMSGVAR { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public string VALORE { get; set; }
     
         public virtual ATTIVAZIONIMAGFAM ATTIVAZIONIMAGFAM { get; set; }
         public virtual TIPOLOGIAMODIFICHE TIPOLOGIAMODIFICHE { get; set; }

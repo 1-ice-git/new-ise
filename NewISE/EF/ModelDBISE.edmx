@@ -850,6 +850,7 @@
           <Property Name="IDATTIVAZIONEMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDMSGVAR" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="VALORE" Type="varchar2" MaxLength="1500" />
         </EntityType>
         <EntityType Name="NETTO">
           <Key>
@@ -7454,6 +7455,7 @@
           <Property Name="IDATTIVAZIONEMAGFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMSGVAR" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="VALORE" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISEPRO.R_AMF_MMF" FromRole="MODIFICHEMAGFAM" ToRole="ATTIVAZIONIMAGFAM" />
           <NavigationProperty Name="TIPOLOGIAMODIFICHE" Relationship="DBISEPRO.R_TM_MMF" FromRole="MODIFICHEMAGFAM" ToRole="TIPOLOGIAMODIFICHE" />
         </EntityType>
@@ -11057,6 +11059,7 @@
           <EntitySetMapping Name="MODIFICHEMAGFAM">
             <EntityTypeMapping TypeName="DBISEPRO.MODIFICHEMAGFAM">
               <MappingFragment StoreEntitySet="MODIFICHEMAGFAM">
+                <ScalarProperty Name="VALORE" ColumnName="VALORE" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="IDMSGVAR" ColumnName="IDMSGVAR" />
                 <ScalarProperty Name="IDATTIVAZIONEMAGFAM" ColumnName="IDATTIVAZIONEMAGFAM" />
