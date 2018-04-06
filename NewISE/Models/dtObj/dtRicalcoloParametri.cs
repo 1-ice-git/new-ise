@@ -94,7 +94,6 @@ namespace NewISE.Models.dtObj
                         item.State = EntityState.Modified;
                         item.Collection(a => a.COEFFICIENTEINDRICHIAMO).Load();
 
-
                         foreach (var cir in lcir)
                         {
                             var nConta =
@@ -477,7 +476,6 @@ namespace NewISE.Models.dtObj
                 if (r.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Indennita_Sistemazione)
                 {
                     var item = db.Entry<RIDUZIONI>(r);
-
 
                     var lis =
                         db.INDENNITASISTEMAZIONE.Where(
@@ -874,7 +872,52 @@ namespace NewISE.Models.dtObj
 
         public void AssociaPrimaSistemazione_IS(decimal idIndSistemazione, ModelDBISE db)
         {
-            throw new NotImplementedException();
+            var indSist = db.INDENNITASISTEMAZIONE.Find(idIndSistemazione);
+            var item = db.Entry<INDENNITASISTEMAZIONE>(indSist);
+
+            var lps =
+                db.PRIMASITEMAZIONE.Where(
+                    a =>
+                        (a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                         a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Da_Attivare ||
+                         a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                        a.TRASFERIMENTO.DATARIENTRO >= indSist.DATAINIZIOVALIDITA &&
+                        a.TRASFERIMENTO.DATAPARTENZA <= indSist.DATAFINEVALIDITA &&
+                        a.TRASFERIMENTO.IDTIPOTRASFERIMENTO == indSist.IDTIPOTRASFERIMENTO)
+                    .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
+                    .ToList();
+
+            if (lps?.Any() ?? false)
+            {
+                item.State = EntityState.Modified;
+                item.Collection(a => a.PRIMASITEMAZIONE).Load();
+
+                foreach (var ps in lps)
+                {
+                    var nConta =
+                        indSist.PRIMASITEMAZIONE.Count(
+                            a =>
+                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                a.TRASFERIMENTO.IDTIPOTRASFERIMENTO == ps.TRASFERIMENTO.IDTIPOTRASFERIMENTO &&
+                                a.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE);
+
+                    if (nConta <= 0)
+                    {
+                        indSist.PRIMASITEMAZIONE.Add(ps);
+                        var t = ps.TRASFERIMENTO;
+                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, indSist.DATAINIZIOVALIDITA, db);
+                    }
+                }
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di associazione dell'indennità di sistemazione alla tabella PRIMASITEMAZIONE.");
+                }
+
+            }
+
         }
 
         public void AssociaPrimaSistemazione_PKM(decimal idPercKM, ModelDBISE db)
