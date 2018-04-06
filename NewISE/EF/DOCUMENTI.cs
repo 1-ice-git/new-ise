@@ -24,10 +24,12 @@ namespace NewISE.EF
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
             this.ATTIVAZIONETITOLIVIAGGIO = new HashSet<ATTIVAZIONETITOLIVIAGGIO>();
             this.CONIUGE = new HashSet<CONIUGE>();
+            this.CONIUGEPASSAPORTO = new HashSet<CONIUGEPASSAPORTO>();
             this.CONIUGETITOLIVIAGGIO = new HashSet<CONIUGETITOLIVIAGGIO>();
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
             this.NORMACALCOLO = new HashSet<NORMACALCOLO>();
             this.FIGLI = new HashSet<FIGLI>();
+            this.FIGLIPASSAPORTO = new HashSet<FIGLIPASSAPORTO>();
             this.FIGLITITOLIVIAGGIO = new HashSet<FIGLITITOLIVIAGGIO>();
             this.PASSAPORTORICHIEDENTE = new HashSet<PASSAPORTORICHIEDENTE>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
@@ -62,6 +64,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
@@ -69,6 +73,8 @@ namespace NewISE.EF
         public virtual ICollection<NORMACALCOLO> NORMACALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLI> FIGLI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

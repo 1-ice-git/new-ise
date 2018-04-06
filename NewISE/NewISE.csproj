@@ -2473,6 +2473,9 @@
     <Compile Include="EF\ELABTRASPEFFETTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\FASEPASSAPORTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\FLUSSICEDOLINO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
