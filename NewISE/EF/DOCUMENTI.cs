@@ -21,6 +21,7 @@ namespace NewISE.EF
             this.SELECTDOCVC = new HashSet<SELECTDOCVC>();
             this.DOCUMENTI1 = new HashSet<DOCUMENTI>();
             this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
+            this.ATTIVAZIONIPROVSCOLASTICHE = new HashSet<ATTIVAZIONIPROVSCOLASTICHE>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
             this.ATTIVAZIONETITOLIVIAGGIO = new HashSet<ATTIVAZIONETITOLIVIAGGIO>();
             this.CONIUGE = new HashSet<CONIUGE>();
@@ -57,6 +58,8 @@ namespace NewISE.EF
         public virtual TIPODOCUMENTI TIPODOCUMENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVAZIONIPROVSCOLASTICHE> ATTIVAZIONIPROVSCOLASTICHE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
