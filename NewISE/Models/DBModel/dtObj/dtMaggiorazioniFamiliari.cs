@@ -51,23 +51,15 @@ namespace NewISE.Models.DBModel.dtObj
                     idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
                     rinunciaMaggiorazioni = false,
                     dataAggiornamento = DateTime.Now,
-                    annullato = false
+                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                    FK_IdRinunciaMagFam = null
                 };
 
                 this.SetRinunciaMaggiorazioniFamiliari(ref rmfm, db);
 
                 dtamf.AssociaRinunciaMagFam(amfm.idAttivazioneMagFam, rmfm.idRinunciaMagFam, db);
             }
-
-
-
-
-
-
         }
-
-
-
 
         public void SetRinunciaMaggiorazioniFamiliari(ref RinunciaMaggiorazioniFamiliariModel rmfm, ModelDBISE db)
         {
@@ -76,7 +68,8 @@ namespace NewISE.Models.DBModel.dtObj
                 IDMAGGIORAZIONIFAMILIARI = rmfm.idMaggiorazioniFamiliari,
                 RINUNCIAMAGGIORAZIONI = rmfm.rinunciaMaggiorazioni,
                 DATAAGGIORNAMENTO = rmfm.dataAggiornamento,
-                IDSTATORECORD = rmfm.idStatoRecord
+                IDSTATORECORD = rmfm.idStatoRecord,
+                FK_IDRINUNCIAMAGFAM = rmfm.FK_IdRinunciaMagFam
             };
 
             db.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(rmf);
@@ -1215,91 +1208,66 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (datiConiuge == false && datiFigli == false)
                                 {
                                     var rmf =
-                                        amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
+                                        amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione)
                                             .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
                                             .First();
 
                                     rmf.RINUNCIAMAGGIORAZIONI = true;
                                     amf.RICHIESTAATTIVAZIONE = true;
                                     amf.DATARICHIESTAATTIVAZIONE = DateTime.Now;
-
-                                    i = db.SaveChanges();
-                                    if (i <= 0)
+                                    rmf.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                    if (db.SaveChanges() <= 0)
                                     {
                                         throw new Exception("Errore nella fase d'inserimento per la rinuncia delle maggiorazioni familiari.");
                                     }
-                                    else
+                                    this.ModificaStatoRecord(amf, EnumTipoTabella.Coniuge, EnumStatoRecord.In_Lavorazione, EnumStatoRecord.Da_Attivare, db);
+
+                                    this.ModificaStatoRecord(amf, EnumTipoTabella.Figli, EnumStatoRecord.In_Lavorazione, EnumStatoRecord.Da_Attivare, db);
+
+                                    this.ModificaStatoRecord(amf, EnumTipoTabella.Documenti, EnumStatoRecord.In_Lavorazione, EnumStatoRecord.Da_Attivare, db);
+
+                                    using (dtDipendenti dtd = new dtDipendenti())
                                     {
-                                        //imposta coniuge e figli con statorecord da in_lavorazione a da_attivare
-                                        var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                                        var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                                        foreach (var c in lc)
+                                        using (dtTrasferimento dtt = new dtTrasferimento())
                                         {
-                                            c.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
-                                            db.SaveChanges();
-                                        }
-                                        foreach (var f in lf)
-                                        {
-                                            f.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
-                                            db.SaveChanges();
-                                        }
-
-                                        using (dtDipendenti dtd = new dtDipendenti())
-                                        {
-                                            using (dtTrasferimento dtt = new dtTrasferimento())
+                                            using (dtUffici dtu = new dtUffici())
                                             {
-                                                using (dtUffici dtu = new dtUffici())
+                                                var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
+
+                                                if (t?.idTrasferimento > 0)
                                                 {
-                                                    var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
+                                                    var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                                    var uff = dtu.GetUffici(t.idUfficio);
 
-                                                    if (t?.idTrasferimento > 0)
-                                                    {
-                                                        var dip = dtd.GetDipendenteByID(t.idDipendente);
-                                                        var uff = dtu.GetUffici(t.idUfficio);
+                                                    EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazioni_Familiari,
+                                                                    amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                    Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari,
+                                                                    string.Format(Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                    db);
 
-                                                        EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazioni_Familiari,
-                                                                                        amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                                                        Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari,
-                                                                                        string.Format(Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")", t.dataPartenza.ToShortDateString(), uff.descUfficio + " (" + uff.codiceUfficio + ")"),
-                                                                                        db);
-                                                    }
                                                 }
                                             }
                                         }
-                                        //this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
+                                    }
+                                    //this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
 
-                                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                    {
+                                        CalendarioEventiModel cem = new CalendarioEventiModel()
                                         {
-                                            CalendarioEventiModel cem = new CalendarioEventiModel()
-                                            {
-                                                idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
-                                                idTrasferimento = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                DataInizioEvento = DateTime.Now.Date,
-                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
-                                            };
+                                            idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
+                                            idTrasferimento = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                            DataInizioEvento = DateTime.Now.Date,
+                                            DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
+                                        };
 
-                                            dtce.InsertCalendarioEvento(ref cem, db);
-                                        }
+                                        dtce.InsertCalendarioEvento(ref cem, db);
                                     }
                                 }
                                 else if (datiConiuge == true || datiFigli == true)
                                 {
                                     if (datiParzialiConiuge == false && datiParzialiFigli == false)
                                     {
-                                        //imposta coniuge e figli con statorecord da in_lavorazione a da_attivare
-                                        var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                                        var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                                        foreach (var c in lc)
-                                        {
-                                            c.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
-                                            db.SaveChanges();
-                                        }
-                                        foreach (var f in lf)
-                                        {
-                                            f.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
-                                            db.SaveChanges();
-                                        }
-
                                         amf.RICHIESTAATTIVAZIONE = true;
                                         amf.DATARICHIESTAATTIVAZIONE = DateTime.Now;
 
@@ -1308,22 +1276,26 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione per le maggiorazioni familiari.");
                                         }
-                                        else
+
+                                        this.ModificaStatoRecord(amf, EnumTipoTabella.Coniuge, EnumStatoRecord.In_Lavorazione, EnumStatoRecord.Da_Attivare, db);
+
+                                        this.ModificaStatoRecord(amf, EnumTipoTabella.Figli, EnumStatoRecord.In_Lavorazione, EnumStatoRecord.Da_Attivare, db);
+
+                                        this.ModificaStatoRecord(amf, EnumTipoTabella.Documenti, EnumStatoRecord.In_Lavorazione, EnumStatoRecord.Da_Attivare, db);
+
+                                        this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
+                                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                         {
-                                            this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
-                                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                            CalendarioEventiModel cem = new CalendarioEventiModel()
                                             {
-                                                CalendarioEventiModel cem = new CalendarioEventiModel()
-                                                {
-                                                    idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
-                                                    idTrasferimento = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                    DataInizioEvento = DateTime.Now.Date,
-                                                    DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
+                                                idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
+                                                idTrasferimento = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                DataInizioEvento = DateTime.Now.Date,
+                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
 
-                                                };
+                                            };
 
-                                                dtce.InsertCalendarioEvento(ref cem, db);
-                                            }
+                                            dtce.InsertCalendarioEvento(ref cem, db);
                                         }
                                     }
                                 }
@@ -1382,8 +1354,6 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                 var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
-
-                //var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false);
 
                 if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
@@ -2001,6 +1971,109 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+
+        public void ModificaStatoRecord(ATTIVAZIONIMAGFAM amf, EnumTipoTabella idChiamante,EnumStatoRecord StatoRecordDa, EnumStatoRecord StatoRecordA, ModelDBISE db)
+        {
+            try
+            {
+
+                switch (idChiamante)
+                {
+                    case EnumTipoTabella.Coniuge:
+                        var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)StatoRecordDa).ToList();
+                        foreach (var c in lc)
+                        {
+                            c.IDSTATORECORD = (decimal)StatoRecordA;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore nella fase di notifica delle maggiorazioni familiari (coniuge).");
+                            }
+                            //adf
+                            var ladfc = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)StatoRecordDa).ToList();
+                            foreach (var adfc in ladfc)
+                            {
+                                adfc.IDSTATORECORD = (decimal)StatoRecordA;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di notifica delle maggiorazioni familiari (altri dati familiari coniuge).");
+                                }
+                            }
+                            //documenti
+                            var ldc = c.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)StatoRecordDa).ToList();
+                            foreach (var dc in ldc)
+                            {
+                                dc.IDSTATORECORD = (decimal)StatoRecordA;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di notifica delle maggiorazioni familiari (documenti coniuge).");
+                                }
+                            }
+                            //pensione
+                            var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)StatoRecordDa).ToList();
+                            foreach (var pc in lpc)
+                            {
+                                pc.IDSTATORECORD = (decimal)StatoRecordA;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di notifica delle maggiorazioni familiari (pensione coniuge).");
+                                }
+                            }
+                        }
+                        break;
+
+                    case EnumTipoTabella.Figli:
+
+                        var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)StatoRecordDa).ToList();
+                        foreach (var f in lf)
+                        {
+                            f.IDSTATORECORD = (decimal)StatoRecordA;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore nella fase di notifica delle maggiorazioni familiari (figlio).");
+                            }
+                            //adf
+                            var ladff = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)StatoRecordDa).ToList();
+                            foreach (var adff in ladff)
+                            {
+                                adff.IDSTATORECORD = (decimal)StatoRecordA;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di notifica delle maggiorazioni familiari (altri dati familiari figlio).");
+                                }
+                            }
+                            //documenti
+                            var ldf = f.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)StatoRecordDa).ToList();
+                            foreach (var df in ldf)
+                            {
+                                df.IDSTATORECORD = (decimal)StatoRecordA;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di notifica delle maggiorazioni familiari (documenti figlio).");
+                                }
+                            }
+                        }
+                        break;
+                    case EnumTipoTabella.Documenti:
+                        var ld = amf.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)StatoRecordDa && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari).ToList();
+                        foreach (var d in ld)
+                        {
+                            d.IDSTATORECORD = (decimal)StatoRecordA;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore nella fase di notifica delle maggiorazioni familiari (formulari).");
+                            }
+
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
 
 

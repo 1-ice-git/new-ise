@@ -23,10 +23,7 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data agg.")]
         public DateTime dataAggiornamento { get; set; }
-        [Required]
-        [DefaultValue(false)]
-        public bool annullato { get; set; }
-
+       
         public MaggiorazioniFamiliariModel MaggiorazioniFamiliari { get; set; }
 
         public bool HasValue()
@@ -35,5 +32,7 @@ namespace NewISE.Models.DBModel
         }
 
         public decimal idStatoRecord { get; set; }
+
+        public decimal? FK_IdRinunciaMagFam { get; set; }
     }
 }

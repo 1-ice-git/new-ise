@@ -89,5 +89,6 @@ namespace NewISE.Models.DBModel
         }
 
         public decimal idStatoRecord { get; set; }
+        public decimal? FK_idAltriDatiFam { get; set; }
     }
 }

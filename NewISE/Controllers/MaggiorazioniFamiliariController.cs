@@ -384,7 +384,7 @@ namespace NewISE.Controllers
                                         dataInizio = e.dataInizio,
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Figlio,
-                                        idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli, idAttivazioneMagFam).idAltriDatiFam,
+                                        idAltriDati = dtadf.GetAltriDatiFamiliariFiglio(e.idFigli, idAttivazioneMagFam).idAltriDatiFam,
                                         Documenti = dtd.GetDocumentiIdentitaFigli(e.idFigli, idAttivazioneMagFam)
                                     };
 

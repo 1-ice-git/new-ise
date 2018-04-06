@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -789,6 +790,8 @@ namespace NewISE.Models.DBModel.dtObj
                 d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
+                d.FK_IDDOCUMENTO = null;
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
                 amf.DOCUMENTI.Add(d);
 
                 if (db.SaveChanges() > 0)
@@ -861,7 +864,7 @@ namespace NewISE.Models.DBModel.dtObj
             var f = db.FIGLI.Find(idFiglio);
             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-            if (f.IDFIGLI != null && f.IDFIGLI > 0)
+            if (f.IDFIGLI > 0)
             {
                 MemoryStream ms = new MemoryStream();
                 DOCUMENTI d = new DOCUMENTI();
@@ -872,6 +875,8 @@ namespace NewISE.Models.DBModel.dtObj
                 d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
+                d.FK_IDDOCUMENTO = dm.fk_iddocumento;
+                d.IDSTATORECORD = dm.idStatoRecord;
 
                 f.DOCUMENTI.Add(d);
 
@@ -904,6 +909,8 @@ namespace NewISE.Models.DBModel.dtObj
                 d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
+                d.FK_IDDOCUMENTO = dm.fk_iddocumento;
+                d.IDSTATORECORD = dm.idStatoRecord;
 
                 c.DOCUMENTI.Add(d);
 
@@ -937,6 +944,8 @@ namespace NewISE.Models.DBModel.dtObj
                 d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
+                d.FK_IDDOCUMENTO = dm.fk_iddocumento;
+                d.IDSTATORECORD = dm.idStatoRecord;
 
                 pr.DOCUMENTI.Add(d);
 
@@ -955,30 +964,6 @@ namespace NewISE.Models.DBModel.dtObj
         public void AddDocumentoTitoloViaggioFromRichiedente(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
         {
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
-            //if (t != null && t.IDTRASFERIMENTO > 0)
-            //{
-            //    var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
-            //    if (tv != null && tv.IDTITOLOVIAGGIO > 0)
-            //    {
-            //        MemoryStream ms = new MemoryStream();
-            //        DOCUMENTI d = new DOCUMENTI();
-            //        dm.file.InputStream.CopyTo(ms);
-
-            //        d.NOMEDOCUMENTO = dm.nomeDocumento;
-            //        d.ESTENSIONE = dm.estensione;
-            //        d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
-            //        d.DATAINSERIMENTO = dm.dataInserimento;
-            //        d.FILEDOCUMENTO = ms.ToArray();
-
-            //        tv.DOCUMENTI.Add(d);
-
-            //        if (db.SaveChanges() > 0)
-            //        {
-            //            dm.idDocumenti = d.IDDOCUMENTO;
-            //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
-            //        }
-            //    }
-            //}
         }
 
 

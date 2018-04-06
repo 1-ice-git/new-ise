@@ -19,38 +19,16 @@
 
 <div class="form-group">
 
-    @*<table class="table">
-            <thead>
-
-            </thead>
-            <tbody>
-                @foreach (DocumentiModel d in Model)
-                {
-                    <tr>
-                        <td>
-                            @d.nomeDocumento
-                        </td>
-                        <td>
-                            <a href="@Url.RouteUrl("LeggiDocumento", new { id = d.idDocumenti })" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>*@
-
-
-
-
     @if (Model?.Any() ?? false)
     {
         <div class="col-xs-1">
-            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30px" height="30px" onclick=" ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ); " src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare l'elenco formulari." />
+            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30" height="30" onclick="ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ); " src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare l'elenco formulari." />
         </div>
     }
     else
     {
         <div class="col-xs-1">
-            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30px" height="30px" onclick=" ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ); " src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" title="Click per visualizzare l'elenco formulari." />
+            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30" height="30" onclick="ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ); " src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" title="Click per visualizzare l'elenco formulari." />
         </div>
     }
 

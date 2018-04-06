@@ -33,7 +33,7 @@
 
 @Html.Hidden("hiEliminaDoc")
 
-<p style="padding-left: 15px;">
+<p style="padding-top: 5px;">
     @*@Ajax.ActionLink("Nuovo documento", "NuovoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })*@
 
     @if (solaLettura)
@@ -47,7 +47,7 @@
 
 </p>
 
-<div style="padding-left: 15px; padding-right: 5px; padding-top: 0px;">
+<div style="padding-top: 0px;">
     <table id="tabElencoDoc" cellspacing="0">
         <thead>
             <tr>
@@ -79,7 +79,7 @@
                     <td class="text-center" style="width: 10%;">
                         @Html.DisplayFor(modelItem => item.dataInserimento)
                     </td>
-                    <td style="text-align: center; width: 10%;">
+                    <td class="text-center" style="width: 10%;">
                         <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
                             <img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                         </a>
@@ -233,32 +233,7 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "destroy": true,
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "width": "150px"
-        //    }
-
-        //]
-        //dom: 'Bfrtip',
-        //buttons: [
-        //    {
-        //        text: 'Nuovo Coniuge',
-        //        className: 'green',
-        //        action: function (e, dt, node, config) {
-        //            NuovoConiuge();
-        //        }
-        //    }
-        //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
+        "destroy": true
     });
 
 
