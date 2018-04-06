@@ -63,6 +63,7 @@ namespace NewISE.Models.DBModel
         public bool modificato { get; set; }
 
         public decimal idStatoRecord { get; set; }
+        public decimal? FK_idAltriDatiFam { get; set; }
 
     }
 }

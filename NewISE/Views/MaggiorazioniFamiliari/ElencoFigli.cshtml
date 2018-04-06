@@ -6,7 +6,7 @@
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
-<p style="padding-left: 15px; margin-top: 10px;">
+<p style="margin-top: 10px;">
     @if (solaLettura)
     {
         <button class="btn btn-default disabled" disabled="disabled">Nuovo figlio</button>
@@ -17,7 +17,7 @@
     }
 
 </p>
-<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
+<div style="padding-top: 10px;">
     <table id="tabElencoFigli" class="table table-striped">
         <thead>
             <tr>
@@ -69,7 +69,7 @@
                     @if (item.idAltriDati > 0)
                     {
                         <td class="text-center">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); ">
+                            <a href="#" onclick="AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); ">
                                 <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -77,7 +77,7 @@
                     else
                     {
                         <td class="text-center">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); ">
+                            <a href="#" onclick="AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); ">
                                 <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -85,7 +85,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td class="text-center">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
+                            <a href="#" onclick="ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -93,7 +93,7 @@
                     else
                     {
                         <td class="text-center">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
+                            <a href="#" onclick="ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti" />
                             </a>
                         </td>

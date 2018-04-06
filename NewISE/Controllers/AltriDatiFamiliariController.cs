@@ -23,7 +23,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio, idAttivazioneMagFam);
+                    adf = dtadf.GetAltriDatiFamiliariFiglio(idFiglio, idAttivazioneMagFam);
                 }
 
 
@@ -472,6 +472,7 @@ namespace NewISE.Controllers
             {
                 adf.dataAggiornamento = DateTime.Now;
                 adf.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                adf.FK_idAltriDatiFam = null;
 
                 if (ModelState.IsValid)
                 {
@@ -520,6 +521,7 @@ namespace NewISE.Controllers
             {
                 adf.dataAggiornamento = DateTime.Now;
                 adf.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                adf.FK_idAltriDatiFam = null;
 
                 if (ModelState.IsValid)
                 {
@@ -563,33 +565,6 @@ namespace NewISE.Controllers
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
                     adfm = dtadf.GetAltriDatiFamiliariFiglio(idAltriDatiFam);
-                    //if (adfm != null && adfm.HasValue())
-                    //{
-                    //    using (dtFigli dtf = new dtFigli())
-                    //    {
-                    //        FigliModel f = dtf.GetFigliobyID(adfm.idFigli);
-                    //        if (f != null && f.HasValue())
-                    //        {
-                    //            switch (f.idTipologiaFiglio)
-                    //            {
-                    //                case EnumTipologiaFiglio.Residente:
-                    //                    adfm.residente = true;
-                    //                    adfm.studente = false;
-                    //                    break;
-                    //                case EnumTipologiaFiglio.StudenteResidente:
-                    //                    adfm.studente = true;
-                    //                    adfm.residente = true;
-                    //                    break;
-                    //                case EnumTipologiaFiglio.StudenteNonResidente:
-                    //                    adfm.studente = true;
-                    //                    adfm.residente = false;
-                    //                    break;
-                    //                default:
-                    //                    throw new ArgumentOutOfRangeException();
-                    //            }
-                    //        }
-                    //    }
-                    //}
                 }
             }
             catch (Exception ex)
@@ -629,31 +604,6 @@ namespace NewISE.Controllers
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
                     adfm = dtadf.GetAltriDatiFamiliariConiuge(idAltriDatiFam);
-                    //if (adfm != null && adfm.HasValue())
-                    //{
-                    //    using (dtConiuge dtc = new dtConiuge())
-                    //    {
-                    //        ConiugeModel c = dtc.GetConiugebyID(adfm.idConiuge);
-                    //        if (c != null && c.HasValue())
-                    //        {
-                    //            switch (c.idTipologiaConiuge)
-                    //            {
-                    //                case EnumTipologiaConiuge.Residente:
-                    //                    adfm.residente = true;
-                    //                    adfm.ulterioreMagConiuge = false;
-                    //                    break;
-
-                    //                case EnumTipologiaConiuge.NonResidente_A_Carico:
-                    //                    adfm.residente = false;
-                    //                    adfm.ulterioreMagConiuge = true;
-                    //                    break;
-
-                    //                default:
-                    //                    break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
                 }
             }
             catch (Exception ex)
@@ -694,6 +644,7 @@ namespace NewISE.Controllers
             {
                 adfm.dataAggiornamento = DateTime.Now;
                 adfm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                adfm.FK_idAltriDatiFam = adfm.FK_idAltriDatiFam;
 
 
                 if (ModelState.IsValid)

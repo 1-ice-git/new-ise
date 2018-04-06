@@ -69,7 +69,9 @@ namespace NewISE.Models.DBModel
         public DateTime dataInserimento { get; set; }
 
 
-        public decimal fk_iddocumento { get; set; }
+        public decimal? fk_iddocumento { get; set; }
+
+        public decimal idStatoRecord { get; set; }
 
         [DefaultValue(false)]
         [Required]

@@ -1530,7 +1530,8 @@ namespace NewISE.Models.DBModel.dtObj
                     idMaggiorazioniFamiliari = idMaggiorazioniFamiliari,
                     rinunciaMaggiorazioni = false,
                     dataAggiornamento = DateTime.Now,
-                    annullato = false
+                    FK_IdRinunciaMagFam=null,
+                    idStatoRecord=(decimal)EnumStatoRecord.In_Lavorazione
                 };
 
                 dtmf.SetRinunciaMaggiorazioniFamiliari(ref rmfm, db);

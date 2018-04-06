@@ -21,7 +21,7 @@
 @using (@Ajax.BeginForm("InserisciAltriDatiFamiliariFiglio", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
 {
     @Html.AntiForgeryToken()
-    <div style="padding-left: 15px; padding-right:5px;">
+    <div>
         <div class="form-horizontal">
             <h5> Inserisci Altri Dati Familiari (@nominativo)</h5>
 

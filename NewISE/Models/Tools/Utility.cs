@@ -1,6 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models.Config.s_admin;
 using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.dtObj;
 
 using System;
@@ -263,6 +264,8 @@ namespace NewISE.Models.Tools
                         dm.tipoDocumento = tipoDoc;
                         dm.dataInserimento = DateTime.Now;
                         dm.file = file;
+                        dm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                        dm.fk_iddocumento = null;
 
                         dimensioneConsentita = true;
                     }
