@@ -20,7 +20,8 @@ namespace NewISE.Models.DBModel
         Passaporti = 5,
         Variazione_Maggiorazioni_Familiari = 6,
         Maggiorazione_Abitazione = 7,
-        Anticipi = 8
+        Anticipi = 8,
+        ProvvidenzeScolastiche = 9
     }
 
     public enum EnumTipoDoc
@@ -40,7 +41,8 @@ namespace NewISE.Models.DBModel
         Formulario_Titoli_Viaggio = 13,
         Copia_Ricevuta_Pagamento_Locazione = 42,
         MAB_Modulo4_Dichiarazione_Costo_Locazione = 43,
-        Preventivo_Viaggio=44
+        Preventivo_Viaggio=44,
+        Formulario_Provvidenze_Scolastiche = 45
     }
 
 

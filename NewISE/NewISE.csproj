@@ -2456,6 +2456,7 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
     <Compile Include="EF\ATTIVAZIONIPROVSCOLASTICHE.cs">
@@ -2539,6 +2540,7 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtParPercAnticipoTE.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
@@ -3122,6 +3124,7 @@
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
+    <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
     <Compile Include="Models\DBModel\PagatoCondivisoMABModel.cs" />
@@ -3465,6 +3468,14 @@
     <Content Include="Views\Notifiche\VisualizzaMittente.cshtml" />
     <Content Include="Views\ViaggiCongedo\PreventiviDiViaggio.cshtml" />
     <Content Include="Views\ViaggiCongedo\ElencoPreventiviDiViaggio.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\Index.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\ElencoFormulariInseriti.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\NuovoFormularioPS.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\ElencoProvvidenze.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\VisualizzaProvvidenze.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\AttivitaProvvidenze.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\TabFormulariInseriti.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\ElencoDocumentiFormulario.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

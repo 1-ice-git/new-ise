@@ -1,0 +1,167 @@
+﻿@{
+    decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+}
+
+<h4>Richiesta Provvidenze Scolastiche</h4>
+<hr />
+
+<div class="row">
+    <div class="col-xs-3">
+
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <button class="btn btn-default btn-sm" onclick="DownloadFormulario();">
+                <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                Download formulario
+            </button>
+
+        </div>
+    </div>
+    <div class="col-xs-2">
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+
+                <button class="btn btn-default btn-sm" onclick="NuovoFormulario();">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                    Inserisci formulario
+                </button>
+           
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divTabElencoFormulari">
+            @Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche })
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="ModalDownloadFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DownloadFormularioLabel">Formulari Provvidenze Scolastiche</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="divFormularioMF">
+                    @Html.Action("ElencoDocumentiFormulario", "ProvvidenzeScolastiche")
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalNuovoFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoFormularioLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="NuovoFormularioLabel">Nuovo Formulario Provvidenze Scolastiche</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="divViewNuovoFormulario">
+                    @*@Html.Action("ElencoFormulariInseriti", "MaggiorazioniFamiliari", new {idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari})*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=" SalvaDocumento(); ">Invia</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function DownloadFormulario() {
+        $('#ModalDownloadFormulario').modal().show();
+    }
+
+    function NuovoFormulario() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/NuovoFormularioPS";
+        var idTrasfProvScolastiche = @idTrasfProvScolastiche;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+                $('#ModalNuovoFormulario').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divViewNuovoFormulario").empty();
+                $("#divViewNuovoFormulario").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    function TabElencoFormulari() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/TabFormulariInseriti";
+        var idTrasfProvScolastiche = @idTrasfProvScolastiche;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+                //$('#ModalNuovoFormulario').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divTabElencoFormulari").empty();
+                $("#divTabElencoFormulari").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    $("#ModalNuovoFormulario").on("hidden.bs.modal", function () {
+        //debugger;
+        TabElencoFormulari();
+        
+        
+        //PulsantiNotificaAttivaMagFam();
+    });
+
+
+</script>
