@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Ricalcoli;
 
@@ -223,9 +224,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
-                            using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                            //using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                            //{
+                            //    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                            //}
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+
                             }
 
                             db.Database.CurrentTransaction.Commit();
