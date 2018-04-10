@@ -2,7 +2,7 @@
 
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    decimal idTitoliViaggio = 0;// Convert.ToDecimal(ViewData["idTitoliViaggio"]);
 }
 
 <link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
@@ -10,7 +10,7 @@
 <div class="row" style="padding-right: 15px;">
     <div class="col-xs-12">
         <div id="divTitoliViaggio" style="padding-top: 5px;border-bottom:solid;border-width:1px;border-color:limegreen">
-            @Html.Action("ElencoPreventiviDiViaggio", "ViaggiCongedo", new { idTitoliViaggio = idTitoliViaggio })
+            @Html.Action("ElencoPreventiviDiViaggio", "ViaggiCongedo", new { idTrasferimento = idTrasferimento })
         </div>
     </div>
 </div>

@@ -424,7 +424,7 @@
     }
 
     function GestioneMenu() {
-        //debugger;
+     //   debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         var admin = '@admin';
 
@@ -475,7 +475,7 @@
     }
 
     function GestioneAbilitazioneMenu(idTrasferimento) {
-        //debugger;
+       // debugger;
 
         if (MenuGestioneTrasferimento(idTrasferimento) == 1) {
             $("#lkGestioneTrasferimento").removeAttr("disabled");
@@ -520,13 +520,15 @@
             $("#mnSospensione").addClass("disabled");
             $("#lkSospensione").removeAttr("onClick");
         }
-
+        
         if (MenuViaggiCongedo(idTrasferimento) == 1) {
+          //  debugger;
             $("#lkCongediPermessi").removeAttr("disabled");
             $("#mnCongediPermessi").removeClass("disabled");
             $('#lkCongediPermessi').attr('onClick', 'ViaggiCongedoPermesso();');
         }
         else {
+            //debugger;
             $("#lkCongediPermessi").attr("disabled", "disabled");
             $("#mnCongediPermessi").addClass("disabled");
             $("#lkCongediPermessi").removeAttr("onClick");
@@ -543,9 +545,7 @@
         //    $("#lkRichiamo").removeAttr("onClick");
         //}
 
-        //$("#lkSospensione").removeAttr("disabled");
-        //$("#mnSospensione").removeClass("disabled");
-        //$('#lkSospensione').attr('onClick', 'Sospensione();');
+        
 
         $("#lkRichiamo").removeAttr("disabled");
         $("#mnRichiamo").removeClass("disabled");
@@ -833,10 +833,10 @@
 
                 },
                 success: function (result) {
-                    // debugger;
+                     //debugger;
 
                     if (result.err == "" || result.err == undefined) {
-                        if (result.VerificaSospensione != 0) {
+                        if (result.VerificaViaggiCongedo != 0) {
                             valoreRitorno = 1;
                         }
                         else {
@@ -864,10 +864,10 @@
     }
 
     function ViaggiCongedoPermesso() {
-        debugger;
+     //   debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
-        rotta = "/ViaggiCongedo/PreventiviDiViaggio";
-
+        //rotta = "/ViaggiCongedo/PreventiviDiViaggio";
+        rotta = "/ViaggiCongedo/ElencoPreventiviDiViaggio";
         $.ajax({
             type: "POST",
             url: rotta,
