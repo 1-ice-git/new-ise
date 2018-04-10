@@ -5,7 +5,7 @@
 @if (Model.HasDoc.esisteDoc)
 {
 
-    <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) ) ">
+    <a href="#" onclick="ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) )">
         <img class="SfondoBordoImg" height="17px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
     </a>
 
@@ -14,7 +14,7 @@
 else
 {
 
-    <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) ) ">
+    <a href="#" onclick="ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) )">
         <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" height="17" title="Documenti" />
     </a>
 

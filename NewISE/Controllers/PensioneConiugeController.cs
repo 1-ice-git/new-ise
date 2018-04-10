@@ -146,11 +146,11 @@ namespace NewISE.Controllers
                             return PartialView("NuovoImportoPensione", pcm);
                         }
                         pcm.dataAggiornamento = DateTime.Now;
-                        pcm.idStatoRecord = (decimal)EnumStatoRecord.Annullato;
-                        if (!pcm.dataFineValidita.HasValue)
-                        {
+                        pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                        //if (!pcm.dataFineValidita.HasValue)
+                        //{
                             pcm.dataFineValidita = Utility.DataFineStop();
-                        }
+                        //}
 
                         dtp.SetNuovoImportoPensione(ref pcm, idConiuge, idAttivazioneMagFam);
                     }

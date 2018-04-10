@@ -38,5 +38,8 @@ namespace NewISE.Models.ViewModel
         public bool richiedi { get; set; }
 
         public HasDoc HasDoc { get; set; }
+
+        public decimal ordinamento { get; set; }
+
     }
 }

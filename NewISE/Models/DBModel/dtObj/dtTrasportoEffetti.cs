@@ -6,6 +6,7 @@ using NewISE.EF;
 using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.Tools;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.ViewModel;
 using NewISE.Models.ModelRest;
 using System.Diagnostics;
@@ -232,10 +233,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                     }
 
-                    rtepm = this.GetRinunciaTEPartenza(last_atep.IDATEPARTENZA, db);
-                    if (rtepm.rinunciaTE)
+                    if (last_atep.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                     {
-                        rinunciaTE = true;
+                        rtepm = this.GetRinunciaTEPartenza(last_atep.IDATEPARTENZA, db);
+                        if (rtepm.rinunciaTE)
+                        {
+                            rinunciaTE = true;
+                        }
                     }
 
                     NumAttivazioni = GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
@@ -347,7 +351,28 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                             }
 
-                            this.EmailNotificaRichiestaTEPartenza(idAttivitaTEPartenza, db);
+                            #region ciclo attivazione documenti TE
+                            var ldte = atep.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var dte in ldte)
+                            {
+                                dte.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante il ciclo di attivazione trasporto effetti (notifica documenti)");
+                                }
+                            }
+                            #endregion
+
+
+                            EmailTrasferimento.EmailNotifica(EnumChiamante.Trasporto_Effetti,
+                                                            atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                            Resources.msgEmail.OggettoNotificaTrasportoEffettiPartenza,
+                                                            Resources.msgEmail.MessaggioNotificaTrasportoEffettiPartenza,
+                                                            db);
+
+
+
+                            //this.EmailNotificaRichiestaTEPartenza(idAttivitaTEPartenza, db);
 
                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                             {
@@ -380,90 +405,90 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        private void EmailNotificaRichiestaTEPartenza(decimal idAttivitaTEPartenza, ModelDBISE db)
-        {
-            TEPARTENZA tep = new TEPARTENZA();
-            AccountModel am = new AccountModel();
-            Mittente mittente = new Mittente();
-            Destinatario to = new Destinatario();
-            Destinatario cc = new Destinatario();
-            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+        //private void EmailNotificaRichiestaTEPartenza(decimal idAttivitaTEPartenza, ModelDBISE db)
+        //{
+        //    TEPARTENZA tep = new TEPARTENZA();
+        //    AccountModel am = new AccountModel();
+        //    Mittente mittente = new Mittente();
+        //    Destinatario to = new Destinatario();
+        //    Destinatario cc = new Destinatario();
+        //    List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
 
 
-            try
-            {
-                am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
+        //    try
+        //    {
+        //        am = Utility.UtenteAutorizzato();
+        //        mittente.Nominativo = am.nominativo;
+        //        mittente.EmailMittente = am.eMail;
 
-                var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTEPartenza);
+        //        var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTEPartenza);
 
-                tep = atep.TEPARTENZA;
+        //        tep = atep.TEPARTENZA;
 
-                if (tep?.IDTEPARTENZA > 0)
-                {
-                    TRASFERIMENTO tr = tep.TRASFERIMENTO;
-                    DIPENDENTI d = tr.DIPENDENTI;
+        //        if (tep?.IDTEPARTENZA > 0)
+        //        {
+        //            TRASFERIMENTO tr = tep.TRASFERIMENTO;
+        //            DIPENDENTI d = tr.DIPENDENTI;
 
-                    UFFICI u = tr.UFFICI;
+        //            UFFICI u = tr.UFFICI;
 
-                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-                    {
-                        using (GestioneEmail gmail = new GestioneEmail())
-                        {
-                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
-                            {
+        //            using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+        //            {
+        //                using (GestioneEmail gmail = new GestioneEmail())
+        //                {
+        //                    using (ModelloMsgMail msgMail = new ModelloMsgMail())
+        //                    {
 
-                                cc = new Destinatario()
-                                {
-                                    Nominativo = am.nominativo,
-                                    EmailDestinatario = am.eMail
-                                };
+        //                        cc = new Destinatario()
+        //                        {
+        //                            Nominativo = am.nominativo,
+        //                            EmailDestinatario = am.eMail
+        //                        };
 
-                                msgMail.mittente = mittente;
-                                msgMail.cc.Add(cc);
+        //                        msgMail.mittente = mittente;
+        //                        msgMail.cc.Add(cc);
 
-                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+        //                        luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
 
-                                foreach (var uam in luam)
-                                {
-                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
-                                    {
-                                        to = new Destinatario()
-                                        {
-                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                            EmailDestinatario = amministratore.EMAIL
-                                        };
+        //                        foreach (var uam in luam)
+        //                        {
+        //                            var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+        //                            if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+        //                            {
+        //                                to = new Destinatario()
+        //                                {
+        //                                    Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+        //                                    EmailDestinatario = amministratore.EMAIL
+        //                                };
 
-                                        msgMail.destinatario.Add(to);
-                                    }
+        //                                msgMail.destinatario.Add(to);
+        //                            }
 
 
-                                }
-                                msgMail.oggetto = Resources.msgEmail.OggettoNotificaTrasportoEffettiPartenza;
-                                msgMail.corpoMsg =
-                                        string.Format(
-                                            Resources.msgEmail.MessaggioNotificaTrasportoEffettiPartenza,
-                                            d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                            tr.DATAPARTENZA.ToLongDateString(),
-                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
+        //                        }
+        //                        msgMail.oggetto = Resources.msgEmail.OggettoNotificaTrasportoEffettiPartenza;
+        //                        msgMail.corpoMsg =
+        //                                string.Format(
+        //                                    Resources.msgEmail.MessaggioNotificaTrasportoEffettiPartenza,
+        //                                    d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
+        //                                    tr.DATAPARTENZA.ToLongDateString(),
+        //                                    u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
 
-                                gmail.sendMail(msgMail);
+        //                        gmail.sendMail(msgMail);
 
-                            }
-                        }
+        //                    }
+        //                }
 
-                    }
-                }
+        //            }
+        //        }
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
 
         public List<VariazioneDocumentiModel> GetDocumentiTEPartenza(decimal idTrasportoEffettiPartenza, decimal idTipoDoc)
@@ -487,10 +512,21 @@ namespace NewISE.Models.DBModel.dtObj
                         var rtep = atep.RINUNCIA_TE_P;
 
                         bool modificabile = false;
-                        if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false && rtep.RINUNCIATE==false)
+                        if (atep.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                         {
-                            modificabile = true;
+                            if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false && rtep.RINUNCIATE == false)
+                            {
+                                modificabile = true;
+                            }
                         }
+                        else
+                        {
+                            if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false)
+                            {
+                                modificabile = true;
+                            }
+                        }
+
 
                         if (statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
                         {
@@ -507,7 +543,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 nomeDocumento = doc.NOMEDOCUMENTO,
                                 Modificabile = modificabile,
                                 IdAttivazione = atep.IDATEPARTENZA,
-                                DataAggiornamento = atep.DATAAGGIORNAMENTO
+                                DataAggiornamento = atep.DATAAGGIORNAMENTO,
+                                fk_iddocumento=doc.FK_IDDOCUMENTO,
+                                idStatoRecord=doc.IDSTATORECORD
                             };
 
                             ldm.Add(amf);
@@ -565,6 +603,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.MODIFICATO = false;
                 d.FK_IDDOCUMENTO = null;
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 atep.DOCUMENTI.Add(d);
 
@@ -752,10 +791,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                 FILEDOCUMENTO = doc_Old.FILEDOCUMENTO,
                                                 DATAINSERIMENTO = doc_Old.DATAINSERIMENTO,
                                                 MODIFICATO = doc_Old.MODIFICATO,
-                                                FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO
+                                                FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO,
+                                                IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione
                                             };
 
                                             atep_New.DOCUMENTI.Add(doc_New);
+                                            doc_Old.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                             int y = db.SaveChanges();
 
@@ -807,63 +848,63 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public void EmailAnnullaRichiestaTEPartenza(decimal idAttivitaTrasportoEffettiPartenza, ModelDBISE db)
-        {
-            AccountModel am = new AccountModel();
-            Mittente mittente = new Mittente();
-            Destinatario to = new Destinatario();
-            Destinatario cc = new Destinatario();
+        //public void EmailAnnullaRichiestaTEPartenza(decimal idAttivitaTrasportoEffettiPartenza, ModelDBISE db)
+        //{
+        //    AccountModel am = new AccountModel();
+        //    Mittente mittente = new Mittente();
+        //    Destinatario to = new Destinatario();
+        //    Destinatario cc = new Destinatario();
 
-            try
-            {
-                am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
+        //    try
+        //    {
+        //        am = Utility.UtenteAutorizzato();
+        //        mittente.Nominativo = am.nominativo;
+        //        mittente.EmailMittente = am.eMail;
 
-                var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTrasportoEffettiPartenza);
+        //        var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTrasportoEffettiPartenza);
 
-                if (atep?.IDATEPARTENZA > 0)
-                {
-                    TRASFERIMENTO tr = atep.TEPARTENZA.TRASFERIMENTO;
-                    DIPENDENTI dip = tr.DIPENDENTI;
-                    UFFICI uff = tr.UFFICI;
+        //        if (atep?.IDATEPARTENZA > 0)
+        //        {
+        //            TRASFERIMENTO tr = atep.TEPARTENZA.TRASFERIMENTO;
+        //            DIPENDENTI dip = tr.DIPENDENTI;
+        //            UFFICI uff = tr.UFFICI;
 
-                    using (GestioneEmail gmail = new GestioneEmail())
-                    {
-                        using (ModelloMsgMail msgMail = new ModelloMsgMail())
-                        {
-                            cc = new Destinatario()
-                            {
-                                Nominativo = am.nominativo,
-                                EmailDestinatario = am.eMail
-                            };
+        //            using (GestioneEmail gmail = new GestioneEmail())
+        //            {
+        //                using (ModelloMsgMail msgMail = new ModelloMsgMail())
+        //                {
+        //                    cc = new Destinatario()
+        //                    {
+        //                        Nominativo = am.nominativo,
+        //                        EmailDestinatario = am.eMail
+        //                    };
 
-                            to = new Destinatario()
-                            {
-                                Nominativo = dip.NOME + " " + dip.COGNOME,
-                                EmailDestinatario = dip.EMAIL,
-                            };
+        //                    to = new Destinatario()
+        //                    {
+        //                        Nominativo = dip.NOME + " " + dip.COGNOME,
+        //                        EmailDestinatario = dip.EMAIL,
+        //                    };
 
-                            msgMail.mittente = mittente;
-                            msgMail.cc.Add(cc);
-                            msgMail.destinatario.Add(to);
+        //                    msgMail.mittente = mittente;
+        //                    msgMail.cc.Add(cc);
+        //                    msgMail.destinatario.Add(to);
 
-                            msgMail.oggetto =
-                            Resources.msgEmail.OggettoAnnullaRichiestaTrasportoPartenza;
-                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaTrasportoEffettiPartenza, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
+        //                    msgMail.oggetto =
+        //                    Resources.msgEmail.OggettoAnnullaRichiestaTrasportoPartenza;
+        //                    msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaTrasportoEffettiPartenza, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
 
-                            gmail.sendMail(msgMail);
-                        }
-                    }
+        //                    gmail.sendMail(msgMail);
+        //                }
+        //            }
 
-                }
-            }
-            catch (Exception ex)
-            {
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public void AttivaRichiestaTEPartenza(decimal idAttivitaTrasportoEffettiPartenza)
         {
@@ -890,6 +931,20 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
+                                #region ciclo attivazione documenti TE
+                                var ldte = atep.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                foreach (var dte in ldte)
+                                {
+                                    dte.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante il ciclo di attivazione trasporto effetti (attiva documenti)");
+                                    }
+                                }
+                                #endregion
+
+
+
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Attivazione trasporto effetti in partenza.", "ATTIVITATEPARTENZA", db,
                                     atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, atep.IDATEPARTENZA);
@@ -898,7 +953,15 @@ namespace NewISE.Models.DBModel.dtObj
                                     dtce.ModificaInCompletatoCalendarioEvento(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza, db);
                                 }
 
-                                this.EmailAttivaRichiestaTEPartenza(atep.IDATEPARTENZA, db);
+
+                                var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenza;
+                                var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenza;
+
+                                EmailTrasferimento.EmailAttiva(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                    oggettoAttiva,
+                                                    messaggioAttiva,
+                                                    db);
+                                //this.EmailAttivaRichiestaTEPartenza(atep.IDATEPARTENZA, db);
 
                             }
                         }
@@ -914,90 +977,90 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        private void EmailAttivaRichiestaTEPartenza(decimal idAttivitaTrasportoEffettiPartenza, ModelDBISE db)
-        {
-            TEPARTENZA tep = new TEPARTENZA();
-            AccountModel am = new AccountModel();
-            Mittente mittente = new Mittente();
-            Destinatario to = new Destinatario();
-            Destinatario cc = new Destinatario();
-            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+        //private void EmailAttivaRichiestaTEPartenza(decimal idAttivitaTrasportoEffettiPartenza, ModelDBISE db)
+        //{
+        //    TEPARTENZA tep = new TEPARTENZA();
+        //    AccountModel am = new AccountModel();
+        //    Mittente mittente = new Mittente();
+        //    Destinatario to = new Destinatario();
+        //    Destinatario cc = new Destinatario();
+        //    List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
 
 
-            try
-            {
-                am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
+        //    try
+        //    {
+        //        am = Utility.UtenteAutorizzato();
+        //        mittente.Nominativo = am.nominativo;
+        //        mittente.EmailMittente = am.eMail;
 
-                var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTrasportoEffettiPartenza);
+        //        var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTrasportoEffettiPartenza);
 
-                tep = atep.TEPARTENZA;
+        //        tep = atep.TEPARTENZA;
 
-                if (tep?.IDTEPARTENZA > 0)
-                {
-                    TRASFERIMENTO tr = tep.TRASFERIMENTO;
-                    DIPENDENTI d = tr.DIPENDENTI;
-                    UFFICI u = tr.UFFICI;
+        //        if (tep?.IDTEPARTENZA > 0)
+        //        {
+        //            TRASFERIMENTO tr = tep.TRASFERIMENTO;
+        //            DIPENDENTI d = tr.DIPENDENTI;
+        //            UFFICI u = tr.UFFICI;
 
-                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-                    {
-                        using (GestioneEmail gmail = new GestioneEmail())
-                        {
-                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
-                            {
+        //            using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+        //            {
+        //                using (GestioneEmail gmail = new GestioneEmail())
+        //                {
+        //                    using (ModelloMsgMail msgMail = new ModelloMsgMail())
+        //                    {
 
-                                cc = new Destinatario()
-                                {
-                                    Nominativo = am.nominativo,
-                                    EmailDestinatario = am.eMail
-                                };
+        //                        cc = new Destinatario()
+        //                        {
+        //                            Nominativo = am.nominativo,
+        //                            EmailDestinatario = am.eMail
+        //                        };
 
-                                msgMail.mittente = mittente;
-                                msgMail.cc.Add(cc);
+        //                        msgMail.mittente = mittente;
+        //                        msgMail.cc.Add(cc);
 
-                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+        //                        luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
 
-                                foreach (var uam in luam)
-                                {
-                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
-                                    {
-                                        to = new Destinatario()
-                                        {
-                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                            EmailDestinatario = amministratore.EMAIL
-                                        };
+        //                        foreach (var uam in luam)
+        //                        {
+        //                            var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+        //                            if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+        //                            {
+        //                                to = new Destinatario()
+        //                                {
+        //                                    Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+        //                                    EmailDestinatario = amministratore.EMAIL
+        //                                };
 
-                                        msgMail.destinatario.Add(to);
-                                    }
+        //                                msgMail.destinatario.Add(to);
+        //                            }
 
 
-                                }
-                                msgMail.oggetto = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenza;
+        //                        }
+        //                        msgMail.oggetto = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenza;
 
-                                msgMail.corpoMsg =
-                                        string.Format(
-                                            Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenza,
-                                            d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                            tr.DATAPARTENZA.ToLongDateString(),
-                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
+        //                        msgMail.corpoMsg =
+        //                                string.Format(
+        //                                    Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenza,
+        //                                    d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
+        //                                    tr.DATAPARTENZA.ToLongDateString(),
+        //                                    u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
 
-                                gmail.sendMail(msgMail);
+        //                        gmail.sendMail(msgMail);
 
-                            }
-                        }
+        //                    }
+        //                }
 
-                    }
-                }
+        //            }
+        //        }
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public PERCENTUALEANTICIPOTE GetPercentualeAnticipoTEPartenza(decimal idTEPartenza, decimal idTipoAnticipo)
         {
@@ -1075,28 +1138,23 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 RinunciaTEPartenzaModel rtepm = new RinunciaTEPartenzaModel();
                 var atep = db.ATTIVITATEPARTENZA.Find(idATEPartenza);
-                //var atep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATEPARTENZA).First();
-                var rtep = atep.RINUNCIA_TE_P;
-                if (rtep != null)
+                if (atep.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                 {
-                    rtepm = new RinunciaTEPartenzaModel()
+                    //var atep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATEPARTENZA).First();
+                    var rtep = atep.RINUNCIA_TE_P;
+                    if (rtep != null)
                     {
-                        idATEPartenza = rtep.IDATEPARTENZA,
-                        rinunciaTE = rtep.RINUNCIATE,
-                        dataAggiornamento = rtep.DATAAGGIORNAMENTO
-                    };
-                }
-                else
-                {
-                    throw new Exception("Non esiste nessuna informazione sulla rinuncia TE in partenza associata all'attivazione.");
-
-                    //var new_rtep = this.CreaRinunciaTEPartenza(atep.IDATEPARTENZA, db);
-                    //rtepm = new RinunciaTEPartenzaModel()
-                    //{
-                    //    idATEPartenza = new_rtep.IDATEPARTENZA,
-                    //    rinunciaTE = new_rtep.RINUNCIATE,
-                    //    dataAggiornamento = new_rtep.DATAAGGIORNAMENTO
-                    //};
+                        rtepm = new RinunciaTEPartenzaModel()
+                        {
+                            idATEPartenza = rtep.IDATEPARTENZA,
+                            rinunciaTE = rtep.RINUNCIATE,
+                            dataAggiornamento = rtep.DATAAGGIORNAMENTO
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("Non esiste nessuna informazione sulla rinuncia TE in partenza associata all'attivazione.");
+                    }
                 }
 
                 return rtepm;

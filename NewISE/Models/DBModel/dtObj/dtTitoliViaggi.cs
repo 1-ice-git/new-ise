@@ -7,6 +7,7 @@ using NewISE.EF;
 using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.Tools;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.ViewModel;
 using NewISE.Models.ModelRest;
 using System.Diagnostics;
@@ -22,208 +23,6 @@ namespace NewISE.Models.DBModel.dtObj
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-        }
-
-
-        private void EmailAttivaRichiestaTV(decimal idAttivazioneTitoliViaggio, ModelDBISE db)
-        {
-            TITOLIVIAGGIO tv = new TITOLIVIAGGIO();
-            AccountModel am = new AccountModel();
-            Mittente mittente = new Mittente();
-            Destinatario to = new Destinatario();
-            Destinatario cc = new Destinatario();
-            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
-
-
-            try
-            {
-                am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
-    
-                var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
-    
-                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
-
-                tv = atv.TITOLIVIAGGIO;
-
-                if (tv?.IDTITOLOVIAGGIO > 0)
-                {
-                    TRASFERIMENTO tr = tv.TRASFERIMENTO;
-                    DIPENDENTI d = tr.DIPENDENTI;
-                    UFFICI u = tr.UFFICI;
-    
-    
-                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-                    {
-                        using (GestioneEmail gmail = new GestioneEmail())
-                        {
-                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
-                            {
-
-                                cc = new Destinatario()
-                                {
-                                    Nominativo = am.nominativo,
-                                    EmailDestinatario = am.eMail
-                                };
-
-                                msgMail.mittente = mittente;
-                                msgMail.cc.Add(cc);
-
-                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-
-                                foreach (var uam in luam)
-                                {
-                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
-                                    {
-                                        to = new Destinatario()
-                                        {
-                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                            EmailDestinatario = amministratore.EMAIL
-                                        };
-
-                                        msgMail.destinatario.Add(to);
-                                    }
-
-
-                                }
-                                if (conta_attivazioni == 1)
-                                {
-                                    msgMail.oggetto = Resources.msgEmail.OggettoAttivaRichiestaInizialeTitoloViaggio;
-                                    msgMail.corpoMsg =
-                                            string.Format(
-                                                Resources.msgEmail.MessaggioAttivaRichiestaInizialeTitoliViaggio,
-                                                d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                                tr.DATAPARTENZA.ToLongDateString(),
-                                                u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
-
-                                }
-                                else
-                                {
-                                    msgMail.oggetto = Resources.msgEmail.OggettoAttivaRichiestaSuccessivaTitoloViaggio;
-                                    msgMail.corpoMsg =
-                                            string.Format(
-                                                Resources.msgEmail.MessaggioAttivaRichiestaSuccessivaTitoliViaggio,
-                                                d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                                tr.DATAPARTENZA.ToLongDateString(),
-                                                u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
-                                }
-                                gmail.sendMail(msgMail);
-                            }
-    
-                        }
-                    }
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
-
-        private void EmailNotificaRichiestaTV(decimal idAttivazioneTitoliViaggio, ModelDBISE db)
-        {
-            TITOLIVIAGGIO tv = new TITOLIVIAGGIO();
-            AccountModel am = new AccountModel();
-            Mittente mittente = new Mittente();
-            Destinatario to = new Destinatario();
-            Destinatario cc = new Destinatario();
-            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
-
-
-            try
-            {
-                am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
-
-                var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
-
-                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
-
-                tv = atv.TITOLIVIAGGIO;
-
-                if (tv?.IDTITOLOVIAGGIO > 0)
-                {
-                    TRASFERIMENTO tr = tv.TRASFERIMENTO;
-                    DIPENDENTI d = tr.DIPENDENTI;
-                    UFFICI u = tr.UFFICI;
-
-
-                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-                    {
-                        using (GestioneEmail gmail = new GestioneEmail())
-                        {
-                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
-                            {
-
-                                cc = new Destinatario()
-                                {
-                                    Nominativo = am.nominativo,
-                                    EmailDestinatario = am.eMail
-                                };
-
-                                msgMail.mittente = mittente;
-                                msgMail.cc.Add(cc);
-
-                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-
-                                foreach (var uam in luam)
-                                {
-                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
-                                    {
-                                        to = new Destinatario()
-                                        {
-                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                            EmailDestinatario = amministratore.EMAIL
-                                        };
-
-                                        msgMail.destinatario.Add(to);
-                                    }
-
-
-                                }
-                                if(conta_attivazioni==1)
-                                {
-                                    msgMail.oggetto =  Resources.msgEmail.OggettoNotificaRichiestaInizialeTitoloViaggio;
-                                    msgMail.corpoMsg =
-                                            string.Format(
-                                                Resources.msgEmail.MessaggioNotificaRichiestaInizialeTitoliViaggio,
-                                                d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                                tr.DATAPARTENZA.ToLongDateString(),
-                                                u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
-
-                                }
-                                else
-                                {
-                                    msgMail.oggetto = Resources.msgEmail.OggettoNotificaRichiestaSuccessivaTitoloViaggio;
-                                    msgMail.corpoMsg =
-                                            string.Format(
-                                                Resources.msgEmail.MessaggioNotificaRichiestaSuccessivaTitoliViaggio,
-                                                d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                                tr.DATAPARTENZA.ToLongDateString(),
-                                                u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
-                                }
-                                gmail.sendMail(msgMail);
-
-                            }
-                        }
-
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
         }
 
 
@@ -250,6 +49,19 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
+                            #region ciclo attivazione documenti TV
+                            var ldtv = atv.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var dtv in ldtv)
+                            {
+                                dtv.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante il ciclo di attivazione titoli viaggio (notifica documenti)");
+                                }
+                            }
+                            #endregion
+
+
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -347,6 +159,20 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
+                                #region ciclo attivazione documenti TV
+                                var ldtv = atv.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                foreach (var dtv in ldtv)
+                                {
+                                    dtv.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante il ciclo di attivazione titoli viaggio (attiva documenti)");
+                                    }
+                                }
+                                #endregion
+
+
+
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Attivazione titoli di viaggio.", "ATTIVAZIONITITOLIVIAGGIO", db,
                                     atv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, atv.IDATTIVAZIONETITOLIVIAGGIO);
@@ -1093,23 +919,6 @@ namespace NewISE.Models.DBModel.dtObj
                             };
                             latvm.Add(new_atv);
 
-
-
-
-
-
-                            //latvm = (from e in latv
-                            //         select new AttivazioneTitoliViaggioModel()
-                            //         {
-                            //             idAttivazioneTitoliViaggio = e.IDATTIVAZIONETITOLIVIAGGIO,
-                            //             idTitoloViaggio = e.IDTITOLOVIAGGIO,
-                            //             AttivazioneRichiesta = e.ATTIVAZIONERICHIESTA,
-                            //             dataAttivazioneRichiesta = e.DATAATTIVAZIONERICHIESTA,
-                            //             notificaRichiesta = e.ATTIVAZIONERICHIESTA,
-                            //             dataNotificaRichiesta = e.DATANOTIFICARICHIESTA,
-                            //             dataAggiornamento = e.DATAAGGIORNAMENTO,
-                            //             Annullato = e.ANNULLATO
-                            //         }).ToList();
                         }
                     }
                 }
@@ -1345,6 +1154,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.MODIFICATO = false;
                 d.FK_IDDOCUMENTO = null;
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 atv.DOCUMENTI.Add(d);
 
@@ -1927,11 +1737,13 @@ namespace NewISE.Models.DBModel.dtObj
                                                 FILEDOCUMENTO = doc_Old.FILEDOCUMENTO,
                                                 DATAINSERIMENTO = doc_Old.DATAINSERIMENTO,
                                                 MODIFICATO = doc_Old.MODIFICATO,
-                                                FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO
+                                                FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO,
+                                                IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione
                                             };
 
                                             //db.DOCUMENTI.Add(doc_New);
                                             atv_New.DOCUMENTI.Add(doc_New);
+                                            doc_Old.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                             int y = db.SaveChanges();
 
@@ -1992,78 +1804,6 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
-
-
-  
-
-        public void EmailAnnullaRichiestaTitoliViaggio(decimal idAttivazioneTitoliViaggio, ModelDBISE db)
-        {
-            AccountModel am = new AccountModel();
-            Mittente mittente = new Mittente();
-            Destinatario to = new Destinatario();
-            Destinatario cc = new Destinatario();
-
-            try
-            {
-                am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
-
-                var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
-
-                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
-
-                if (atv?.IDATTIVAZIONETITOLIVIAGGIO > 0)
-                {
-                    TRASFERIMENTO tr = atv.TITOLIVIAGGIO.TRASFERIMENTO;
-                    DIPENDENTI dip = tr.DIPENDENTI;
-                    UFFICI uff = tr.UFFICI;
-
-                    using (GestioneEmail gmail = new GestioneEmail())
-                    {
-                        using (ModelloMsgMail msgMail = new ModelloMsgMail())
-                        {
-                            cc = new Destinatario()
-                            {
-                                Nominativo = am.nominativo,
-                                EmailDestinatario = am.eMail
-                            };
-
-                            to = new Destinatario()
-                            {
-                                Nominativo = dip.NOME + " " + dip.COGNOME,
-                                EmailDestinatario = dip.EMAIL,
-                            };
-
-                            msgMail.mittente = mittente;
-                            msgMail.cc.Add(cc);
-                            msgMail.destinatario.Add(to);
-
-                            if(conta_attivazioni==1)
-                            {
-                                msgMail.oggetto =
-                                Resources.msgEmail.OggettoAnnullaRichiestaInizialeTitoliViaggio;
-                                msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaInizialeTitoloViaggio, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
-                            }
-                            else
-                            {
-                                msgMail.oggetto =
-                                Resources.msgEmail.OggettoAnnullaRichiestaSuccessivaTitioliViaggio;
-                                msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaSuccessivaTitoloViaggio, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
-                            }
-                            gmail.sendMail(msgMail);
-                        }
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
 
     }
 }

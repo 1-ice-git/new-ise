@@ -152,7 +152,10 @@ namespace NewISE.Controllers
                     using (ModelDBISE db = new ModelDBISE())
                     {
                         var rtep = dtte.GetRinunciaTEPartenza(atep.IDATEPARTENZA, db);
-                        rinunciaTEPartenza = rtep.rinunciaTE;
+                        if (rtep.idATEPartenza > 0)
+                        {
+                            rinunciaTEPartenza = rtep.rinunciaTE;
+                        }
                     }
 
                     NumAttivazioniTEPartenza = dtte.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);

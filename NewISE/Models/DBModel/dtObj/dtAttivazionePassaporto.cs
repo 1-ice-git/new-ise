@@ -292,7 +292,8 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAPRATICACONCLUSA = apm.dataPraticaConclusa,
                 //ESCLUDIPASSAPORTO = apm.escludiPassaporto,
                 DATAAGGIORNAMENTO = apm.dataAggiornamento,
-                ANNULLATO = apm.annullato
+                ANNULLATO = apm.annullato,
+                IDFASEPASSAPORTI = apm.idFasePassaporti
             };
 
             var p = db.PASSAPORTI.Find(ap.IDPASSAPORTI);
