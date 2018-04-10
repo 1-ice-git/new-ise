@@ -12,34 +12,29 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class ATTIVAZIONIVIAGGICONGEDO
+    public partial class ATTIVAZIONIPROVSCOLASTICHE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ATTIVAZIONIVIAGGICONGEDO()
+        public ATTIVAZIONIPROVSCOLASTICHE()
         {
-            this.ATTIVAZIONIVIAGGICONGEDO1 = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
-            this.SELECTDOCVC = new HashSet<SELECTDOCVC>();
+            this.ATTIVAZIONIPROVSCOLASTICHE1 = new HashSet<ATTIVAZIONIPROVSCOLASTICHE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
-        public decimal IDATTIVAZIONEVC { get; set; }
-        public decimal IDVIAGGIOCONGEDO { get; set; }
+        public decimal IDPROVSCOLASTICHE { get; set; }
+        public decimal IDTRASFPROVSCOLASTICHE { get; set; }
         public bool NOTIFICARICHIESTA { get; set; }
-        public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
+        public Nullable<System.DateTime> DATANOTIFICA { get; set; }
         public bool ATTIVARICHIESTA { get; set; }
-        public Nullable<System.DateTime> DATAATTIVARICHIESTA { get; set; }
+        public Nullable<System.DateTime> DATAATTIVAZIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public Nullable<decimal> FK_IDATTIVAZIONEVC { get; set; }
-        public decimal IDFASEVC { get; set; }
+        public decimal FK_IDPROVSCOLASTICHE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO1 { get; set; }
-        public virtual ATTIVAZIONIVIAGGICONGEDO ATTIVAZIONIVIAGGICONGEDO2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SELECTDOCVC> SELECTDOCVC { get; set; }
-        public virtual FASEVIAGGICONGEDO FASEVIAGGICONGEDO { get; set; }
-        public virtual VIAGGICONGEDO VIAGGICONGEDO { get; set; }
+        public virtual ICollection<ATTIVAZIONIPROVSCOLASTICHE> ATTIVAZIONIPROVSCOLASTICHE1 { get; set; }
+        public virtual ATTIVAZIONIPROVSCOLASTICHE ATTIVAZIONIPROVSCOLASTICHE2 { get; set; }
+        public virtual PROVVIDENZESCOLASTICHE PROVVIDENZESCOLASTICHE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }

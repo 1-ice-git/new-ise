@@ -31,6 +31,7 @@ namespace NewISE.EF
         public System.DateTime DATAVARIAZIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
+        public decimal IDFASEPASSAPORTI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
@@ -38,6 +39,7 @@ namespace NewISE.EF
         public virtual ICollection<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
+        public virtual FASEPASSAPORTI FASEPASSAPORTI { get; set; }
         public virtual PASSAPORTI PASSAPORTI { get; set; }
     }
 }

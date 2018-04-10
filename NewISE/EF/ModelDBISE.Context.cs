@@ -34,6 +34,7 @@ namespace NewISE.EF
         public virtual DbSet<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
         public virtual DbSet<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         public virtual DbSet<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
+        public virtual DbSet<ATTIVAZIONIPROVSCOLASTICHE> ATTIVAZIONIPROVSCOLASTICHE { get; set; }
         public virtual DbSet<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
         public virtual DbSet<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
@@ -57,6 +58,8 @@ namespace NewISE.EF
         public virtual DbSet<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
         public virtual DbSet<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
         public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }
+        public virtual DbSet<FASEPASSAPORTI> FASEPASSAPORTI { get; set; }
+        public virtual DbSet<FASEVIAGGICONGEDO> FASEVIAGGICONGEDO { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
         public virtual DbSet<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
@@ -91,6 +94,7 @@ namespace NewISE.EF
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
         public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
+        public virtual DbSet<PROVVIDENZESCOLASTICHE> PROVVIDENZESCOLASTICHE { get; set; }
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }

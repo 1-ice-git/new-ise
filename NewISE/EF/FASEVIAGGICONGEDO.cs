@@ -12,26 +12,18 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class FIGLIPASSAPORTO
+    public partial class FASEVIAGGICONGEDO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FIGLIPASSAPORTO()
+        public FASEVIAGGICONGEDO()
         {
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.ATTIVAZIONIVIAGGICONGEDO = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
         }
     
-        public decimal IDFIGLIPASSAPORTO { get; set; }
-        public decimal IDFIGLI { get; set; }
-        public decimal IDPASSAPORTI { get; set; }
-        public decimal IDATTIVAZIONIPASSAPORTI { get; set; }
-        public bool INCLUDIPASSAPORTO { get; set; }
-        public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        public decimal IDFASEVC { get; set; }
+        public string DESCFASE { get; set; }
     
-        public virtual ATTIVAZIONIPASSAPORTI ATTIVAZIONIPASSAPORTI { get; set; }
-        public virtual FIGLI FIGLI { get; set; }
-        public virtual PASSAPORTI PASSAPORTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual ICollection<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
     }
 }

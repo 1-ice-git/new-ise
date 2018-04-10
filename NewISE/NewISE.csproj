@@ -2458,6 +2458,9 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
+    <Compile Include="EF\ATTIVAZIONIPROVSCOLASTICHE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\DOC_ATER.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2473,6 +2476,12 @@
     <Compile Include="EF\ELABTRASPEFFETTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\FASEPASSAPORTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FASEVIAGGICONGEDO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\FLUSSICEDOLINO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2486,6 +2495,9 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\PERCENTUALECONDIVISIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PROVVIDENZESCOLASTICHE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RINUNCIAANTICIPI.cs">
