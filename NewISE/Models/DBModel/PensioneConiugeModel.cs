@@ -15,7 +15,7 @@ namespace NewISE.Models.DBModel
         public decimal idPensioneConiuge { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
-        [Display(Name = "Data iniz. valid.")]
+        [Display(Name = "Data Inizio Validità")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime dataInizioValidita { get; set; }

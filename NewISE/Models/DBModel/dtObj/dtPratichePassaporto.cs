@@ -255,6 +255,25 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
+                                #region ciclo attivazione doc richiedente
+                                var lpr = ap.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO == false).ToList();
+                                if (lpr?.Any() ?? false)
+                                {
+                                    foreach (var pr in lpr)
+                                    {
+                                        var ldpr = pr.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                        foreach (var dpr in ldpr)
+                                        {
+                                            dpr.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                            if (db.SaveChanges() <= 0)
+                                            {
+                                                throw new Exception("Errore durante il ciclo di attivazione passaporti (conferma documento richiedente)");
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Completamento delle pratiche del passaporto.", "ATTIVAZIONIPASSAPORTI", db,
                                     ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, ap.IDATTIVAZIONIPASSAPORTI);
@@ -338,7 +357,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     PRATICACONCLUSA = false,
                                     DATAVARIAZIONE = DateTime.Now,
                                     DATAAGGIORNAMENTO = DateTime.Now,
-                                    ANNULLATO = false
+                                    ANNULLATO = false,
+                                    IDFASEPASSAPORTI=(decimal)EnumFasePassaporti.Richiesta_Passaporti
                                 };
 
                                 db.ATTIVAZIONIPASSAPORTI.Add(apNew);
@@ -397,7 +417,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             prOld.DOCUMENTI.Where(
                                                 a =>
                                                     a.MODIFICATO == false &&
-                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
+                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                                    a.IDSTATORECORD==(decimal)EnumStatoRecord.Da_Attivare)
                                                 .OrderBy(a => a.DATAINSERIMENTO);
 
                                             if (ldocOld?.Any() ?? false)
@@ -412,16 +433,18 @@ namespace NewISE.Models.DBModel.dtObj
                                                         FILEDOCUMENTO = docOld.FILEDOCUMENTO,
                                                         DATAINSERIMENTO = docOld.DATAINSERIMENTO,
                                                         MODIFICATO = docOld.MODIFICATO,
-                                                        FK_IDDOCUMENTO = docOld.FK_IDDOCUMENTO
+                                                        FK_IDDOCUMENTO = docOld.FK_IDDOCUMENTO,
+                                                        IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione
                                                     };
 
                                                     prNew.DOCUMENTI.Add(docNew);
+                                                    docOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                                     int y = db.SaveChanges();
 
                                                     if (y <= 0)
                                                     {
-                                                        throw new Exception("Errore - Impossibile asscoire il documento per il richiedente. (" + docNew.NOMEDOCUMENTO + ")");
+                                                        throw new Exception("Errore - Impossibile associare il documento per il richiedente. (" + docNew.NOMEDOCUMENTO + ")");
                                                     }
                                                     else
                                                     {
@@ -580,6 +603,26 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
+                                #region ciclo attivazione doc richiedente
+                                var lpr = ap.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO == false).ToList();
+                                if (lpr?.Any()??false)
+                                {
+                                    foreach(var pr in lpr )
+                                    {
+                                        var ldpr = pr.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        foreach(var dpr in ldpr)
+                                        {
+                                            dpr.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                            if(db.SaveChanges()<=0)
+                                            {
+                                                throw new Exception("Errore durante il ciclo di attivazione passaporti (notifica documento richiedente)");
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
+
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Notifica della richiesta per i passaporti.", "ATTIVAZIONIPASSAPORTI", db,
                                     ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, ap.IDATTIVAZIONIPASSAPORTI);
@@ -750,7 +793,6 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 db.Database.BeginTransaction();
 
-
                 try
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
@@ -797,12 +839,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 ap = lap.First();
                             }
 
+                            decimal ordine=100;
+
                             #region Richiedente
 
                             var lpr =
                                 ap.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO == false)
                                     .OrderBy(a => a.IDPASSAPORTORICHIEDENTE);
-
+                            
                             if (!lpr?.Any() ?? false)
                             {
                                 pr = new PASSAPORTORICHIEDENTE()
@@ -838,9 +882,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 richiedi = pr.INCLUDIPASSAPORTO,
                                 HasDoc = new HasDoc()
                                 {
-                                    esisteDoc = pr.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)?.Any() ?? false,
+                                    esisteDoc = pr.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)?.Any() ?? false,
                                     tipoDoc = EnumTipoDoc.Documento_Identita
-                                }
+                                },
+                                ordinamento=ordine
                             };
 
                             lefm.Add(richiedente);
@@ -860,6 +905,8 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var c in lc)
                                 {
+                                    ordine++;
+
                                     var lcp = c.CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDCONIUGEPASSAPORTO);
 
                                     if (!lcp?.Any() ?? false)
@@ -894,9 +941,10 @@ namespace NewISE.Models.DBModel.dtObj
                                             richiedi = cp.INCLUDIPASSAPORTO,
                                             HasDoc = new HasDoc()
                                             {
-                                                esisteDoc = c.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)?.Any() ?? false,
+                                                esisteDoc = c.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD== (decimal)EnumStatoRecord.Attivato)?.Any() ?? false,
                                                 tipoDoc = EnumTipoDoc.Documento_Identita
-                                            }
+                                            },
+                                            ordinamento=ordine
 
                                         };
 
@@ -915,13 +963,14 @@ namespace NewISE.Models.DBModel.dtObj
                                             dataInizio = c.DATAINIZIOVALIDITA,
                                             dataFine = c.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Coniuge,
-                                            idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
+                                            idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = cp.INCLUDIPASSAPORTO,
                                             HasDoc = new HasDoc()
                                             {
                                                 esisteDoc = c.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)?.Any() ?? false,
                                                 tipoDoc = EnumTipoDoc.Documento_Identita
-                                            }
+                                            },
+                                            ordinamento=ordine
 
                                         };
 
@@ -952,6 +1001,8 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var f in lf)
                                 {
+                                    ordine++;
+
                                     var lfp = f.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDFIGLIPASSAPORTO);
 
                                     if (!lfp?.Any() ?? false)
@@ -982,13 +1033,14 @@ namespace NewISE.Models.DBModel.dtObj
                                             dataInizio = f.DATAINIZIOVALIDITA,
                                             dataFine = f.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Figlio,
-                                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
+                                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = fp.INCLUDIPASSAPORTO,
                                             HasDoc = new HasDoc()
                                             {
-                                                esisteDoc = f.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)?.Any() ?? false,
+                                                esisteDoc = f.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)?.Any() ?? false,
                                                 tipoDoc = EnumTipoDoc.Documento_Identita
-                                            }
+                                            },
+                                            ordinamento=ordine
                                         };
 
                                         lFiglio.Add(figlio);
@@ -1006,13 +1058,14 @@ namespace NewISE.Models.DBModel.dtObj
                                             dataInizio = f.DATAINIZIOVALIDITA,
                                             dataFine = f.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Figlio,
-                                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
+                                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = fp.INCLUDIPASSAPORTO,
                                             HasDoc = new HasDoc()
                                             {
-                                                esisteDoc = f.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)?.Any() ?? false,
+                                                esisteDoc = f.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)?.Any() ?? false,
                                                 tipoDoc = EnumTipoDoc.Documento_Identita
-                                            }
+                                            },
+                                            ordinamento=ordine
                                         };
 
                                         lFiglio.Add(figlio);
@@ -1027,6 +1080,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                             #endregion
+
 
                         }
                     }
@@ -1066,393 +1120,6 @@ namespace NewISE.Models.DBModel.dtObj
             return pm;
         }
 
-
-        //private void InvioEmailPraticaPassaportoConclusa(decimal idPassaporto, ModelDBISE db)
-        //{
-        //    AccountModel am = new AccountModel();
-        //    PassaportoModel pm = new PassaportoModel();
-        //    List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
-        //    string nominativiDellaRichiesta = string.Empty;
-
-        //    try
-        //    {
-        //        pm = this.GetPassaportoByID(idPassaporto, db);
-        //        if (pm != null && pm.idPassaporto > 0)
-        //        {
-        //            if (pm.notificaRichiesta == true && pm.praticaConclusa == true)
-        //            {
-        //                using (GestioneEmail gmail = new GestioneEmail())
-        //                {
-        //                    using (ModelloMsgMail msgMail = new ModelloMsgMail())
-        //                    {
-        //                        using (dtDipendenti dtd = new dtDipendenti())
-        //                        {
-        //                            using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-        //                            {
-        //                                am = Utility.UtenteAutorizzato();
-
-        //                                luam = dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore, db).ToList();
-        //                                if (luam?.Any() ?? false)
-        //                                {
-
-        //                                    foreach (var uam in luam)
-        //                                    {
-        //                                        var dm = dtd.GetDipendenteByMatricola(uam.matricola, db);
-
-        //                                        if (dm != null && dm.HasValue() && dm.email != string.Empty)
-        //                                        {
-        //                                            msgMail.destinatario.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
-        //                                        }
-        //                                        else
-        //                                        {
-        //                                            if (am.idRuoloUtente == 1)
-        //                                            {
-        //                                                msgMail.destinatario.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
-        //                                            }
-
-        //                                        }
-
-        //                                    }
-
-
-        //                                    msgMail.cc.Add(new Destinatario() { Nominativo = am.nominativo, EmailDestinatario = am.eMail });
-
-        //                                    using (dtTrasferimento dttr = new dtTrasferimento())
-        //                                    {
-        //                                        var trm = dttr.GetSoloTrasferimentoById(pm.idPassaporto);
-        //                                        if (trm != null && trm.idTrasferimento > 0)
-        //                                        {
-        //                                            var dm = dtd.GetDipendenteByID(trm.idDipendente, db);
-        //                                            if (dm != null && dm.idDipendente > 0)
-        //                                            {
-        //                                                nominativiDellaRichiesta = dm.Nominativo;
-        //                                                msgMail.cc.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
-
-        //                                            }
-        //                                        }
-        //                                    }
-
-        //                                    using (dtConiuge dtc = new dtConiuge())
-        //                                    {
-        //                                        var lcm = dtc.GetListaConiugeByIdPassaporto(pm.idPassaporto, db).ToList();
-        //                                        if (lcm?.Any() ?? false)
-        //                                        {
-        //                                            nominativiDellaRichiesta = lcm.Aggregate(nominativiDellaRichiesta,
-        //                                                (current, cm) => current + (", " + cm.nominativo));
-        //                                        }
-        //                                    }
-
-        //                                    using (dtFigli dtf = new dtFigli())
-        //                                    {
-        //                                        var lfm = dtf.GetListaFigliByIdPassaporto(pm.idPassaporto, db).ToList();
-        //                                        if (lfm?.Any() ?? false)
-        //                                        {
-        //                                            nominativiDellaRichiesta += lfm.Aggregate(nominativiDellaRichiesta,
-        //                                                (current, fm) => current + (", " + fm.nominativo));
-        //                                        }
-        //                                    }
-
-        //                                    if (msgMail.destinatario?.Any() ?? false)
-        //                                    {
-        //                                        msgMail.oggetto = Resources.msgEmail.OggettoRichiestaPratichePassaportoConcluse;
-        //                                        msgMail.corpoMsg = string.Format(
-        //                                            Resources.msgEmail.MessaggioRichiestaPratichePassaportoConcluse, nominativiDellaRichiesta);
-        //                                        gmail.sendMail(msgMail);
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        throw new Exception("Non è stato possibile inviare l'email.");
-        //                                    }
-
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-        //}
-
-        //private void InvioEmailPratichePassaportoRichiesta(decimal idPassaporto, ModelDBISE db)
-        //{
-        //    AccountModel am = new AccountModel();
-        //    PassaportoModel pm = new PassaportoModel();
-        //    List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
-        //    string nominativiDellaRichiesta = string.Empty;
-
-        //    try
-        //    {
-        //        pm = this.GetPassaportoByID(idPassaporto, db);
-        //        if (pm != null && pm.idPassaporto > 0)
-        //        {
-        //            if (pm.notificaRichiesta == true && pm.praticaConclusa == false)
-        //            {
-        //                using (GestioneEmail gmail = new GestioneEmail())
-        //                {
-        //                    using (ModelloMsgMail msgMail = new ModelloMsgMail())
-        //                    {
-        //                        using (dtDipendenti dtd = new dtDipendenti())
-        //                        {
-        //                            var destUggs = System.Configuration.ConfigurationManager.AppSettings["EmailUfficioGestioneGiuridicaEsviluppo"];
-        //                            msgMail.destinatario.Add(new Destinatario() { Nominativo = "Ufficio Gestione Giuridica e Sviluppo", EmailDestinatario = destUggs });
-
-        //                            using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-        //                            {
-        //                                luam = dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore, db).ToList();
-        //                                if (luam?.Any() ?? false)
-        //                                {
-
-        //                                    foreach (var uam in luam)
-        //                                    {
-        //                                        var dm = dtd.GetDipendenteByMatricola(uam.matricola, db);
-
-        //                                        if (dm != null && dm.HasValue() && dm.email != string.Empty)
-        //                                        {
-        //                                            msgMail.destinatario.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
-        //                                        }
-
-        //                                    }
-
-
-        //                                }
-        //                            }
-
-        //                            am = Utility.UtenteAutorizzato();
-        //                            msgMail.cc.Add(new Destinatario() { Nominativo = am.nominativo, EmailDestinatario = am.eMail });
-
-        //                            using (dtTrasferimento dttr = new dtTrasferimento())
-        //                            {
-        //                                var trm = dttr.GetSoloTrasferimentoById(pm.idPassaporto);
-        //                                if (trm != null && trm.idTrasferimento > 0)
-        //                                {
-        //                                    var dm = dtd.GetDipendenteByID(trm.idDipendente, db);
-        //                                    if (dm != null && dm.idDipendente > 0)
-        //                                    {
-        //                                        nominativiDellaRichiesta = dm.Nominativo;
-
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-
-        //                        using (dtConiuge dtc = new dtConiuge())
-        //                        {
-        //                            var lcm = dtc.GetListaConiugeByIdPassaporto(pm.idPassaporto, db).ToList();
-        //                            if (lcm?.Any() ?? false)
-        //                            {
-        //                                nominativiDellaRichiesta = lcm.Aggregate(nominativiDellaRichiesta,
-        //                                    (current, cm) => current + (", " + cm.nominativo));
-        //                            }
-        //                        }
-
-        //                        using (dtFigli dtf = new dtFigli())
-        //                        {
-        //                            var lfm = dtf.GetListaFigliByIdPassaporto(pm.idPassaporto, db).ToList();
-        //                            if (lfm?.Any() ?? false)
-        //                            {
-        //                                nominativiDellaRichiesta += lfm.Aggregate(nominativiDellaRichiesta,
-        //                                    (current, fm) => current + (", " + fm.nominativo));
-        //                            }
-        //                        }
-
-        //                        if (msgMail.destinatario?.Any() ?? false)
-        //                        {
-        //                            msgMail.oggetto = Resources.msgEmail.OggettoRichiestaPratichePassaporto;
-        //                            msgMail.corpoMsg = string.Format(
-        //                                Resources.msgEmail.MessaggioRichiestaPratichePassaporto, nominativiDellaRichiesta);
-        //                            gmail.sendMail(msgMail);
-        //                        }
-        //                        else
-        //                        {
-        //                            throw new Exception("Non è stato possibile inviare l'email.");
-        //                        }
-
-
-        //                    }
-        //                }
-
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-
-        //}
-
-        //public void SetConcludiPassaporto(decimal idTrasferimento)
-        //{
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        db.Database.BeginTransaction();
-
-        //        try
-        //        {
-        //            var t = db.TRASFERIMENTO.Find(idTrasferimento);
-        //            var p = t.PASSAPORTI;
-        //            ///.Where(a => a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == false).OrderBy(a => a.IDPASSAPORTI);
-
-        //            var lap =
-        //                p.ATTIVAZIONIPASSAPORTI.Where(
-        //                    a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == false)
-        //                    .OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
-
-
-
-
-        //            if (lap?.Any() ?? false)
-        //            {
-        //                var ap = lap.First();
-
-        //                ap.PRATICACONCLUSA = true;
-        //                ap.DATAPRATICACONCLUSA = DateTime.Now;
-
-        //                int i = db.SaveChanges();
-
-        //                if (i <= 0)
-        //                {
-        //                    throw new Exception("Non è stato posssibile chiudere la richiesta per le pratiche del passaporto.");
-        //                }
-        //                else
-        //                {
-        //                    this.InvioEmailPraticaPassaportoConclusa(p.IDPASSAPORTI, db);
-        //                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-        //                        "Chiusura della richiesta del passaporto/visto.", "ATTIVAZIONIPASSAPORTI", db,
-        //                        idTrasferimento, ap.IDATTIVAZIONIPASSAPORTI);
-
-        //                }
-        //            }
-
-        //            db.Database.CurrentTransaction.Commit();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            db.Database.CurrentTransaction.Rollback();
-        //            throw ex;
-        //        }
-        //    }
-        //}
-
-        //public void SetNotificaRichiesta(decimal idTrasferimento)
-        //{
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        db.Database.BeginTransaction();
-
-        //        try
-        //        {
-        //            var t = db.TRASFERIMENTO.Find(idTrasferimento);
-        //            var p = t.PASSAPORTI;
-        //            ///.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false).OrderBy(a => a.IDPASSAPORTI);
-        //            var lap =
-        //                p.ATTIVAZIONIPASSAPORTI.Where(
-        //                    a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
-        //                    .OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
-
-
-        //            if (lap?.Any() ?? false)
-        //            {
-        //                var ap = lap.First();
-
-        //                ap.NOTIFICARICHIESTA = true;
-        //                ap.DATANOTIFICARICHIESTA = DateTime.Now;
-
-        //                int i = db.SaveChanges();
-
-        //                if (i <= 0)
-        //                {
-        //                    throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
-        //                }
-        //                else
-        //                {
-        //                    Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
-        //                        "Notifica della richiesta del passaporto/visto.", "ATTIVAZIONIPASSAPORTI", db,
-        //                        idTrasferimento, ap.IDATTIVAZIONIPASSAPORTI);
-
-        //                    this.InvioEmailPratichePassaportoRichiesta(p.IDPASSAPORTI, db);
-
-        //                    var lc =
-        //                    p.CONIUGE.Where(
-        //                        a =>
-        //                            a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false &&
-        //                            a.DATANOTIFICAPP.HasValue == false).ToList();
-        //                    if (lc?.Any() ?? false)
-        //                    {
-        //                        foreach (var c in lc)
-        //                        {
-
-        //                            c.DATANOTIFICAPP = DateTime.Now;
-
-        //                            Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
-        //                                "Notifica della richiesta del passaporto/visto.", "CONIUGE", db,
-        //                                idTrasferimento, c.IDCONIUGE);
-
-        //                        }
-        //                    }
-
-        //                    var lf =
-        //                        p.FIGLI.Where(
-        //                            a =>
-        //                                a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false &&
-        //                                a.DATANOTIFICAPP.HasValue == false).ToList();
-        //                    if (lf?.Any() ?? false)
-        //                    {
-        //                        foreach (var f in lf)
-        //                        {
-        //                            f.DATANOTIFICAPP = DateTime.Now;
-
-        //                            Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
-        //                               "Notifica della richiesta del passaporto/visto.", "Figli", db,
-        //                               idTrasferimento, f.IDFIGLI);
-        //                        }
-        //                    }
-        //                    if ((lc?.Any() ?? false) || (lf?.Any() ?? false))
-        //                    {
-
-        //                        int j = db.SaveChanges();
-
-        //                        if (j <= 0)
-        //                        {
-        //                            //var log = db.Database.Log;
-
-        //                            throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
-        //                        }
-        //                    }
-
-
-        //                }
-        //            }
-
-
-
-
-
-        //            db.Database.CurrentTransaction.Commit();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            db.Database.CurrentTransaction.Rollback();
-        //            throw ex;
-        //        }
-
-        //    }
-        //}
-
-
-
-
-
-
-
-
         public void PreSetPassaporto(decimal idTrasferimento, ModelDBISE db)
         {
 
@@ -1481,6 +1148,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idPassaporti = p.IDPASSAPORTI,
                         notificaRichiesta = false,
                         praticaConclusa = false,
+                        idFasePassaporti=(decimal)EnumFasePassaporti.Richiesta_Passaporti
                     };
 
                     dtap.SetAttivazioniPassaporti(ref apm, db);
@@ -1506,13 +1174,9 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-
-
-
         public PassaportoModel GetPassaportoByID(decimal idPassaporto, ModelDBISE db)
         {
             PassaportoModel pm = new PassaportoModel();
-
 
             var p = db.PASSAPORTI.Find(idPassaporto);
 
@@ -1520,7 +1184,6 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 idPassaporto = p.IDPASSAPORTI,
             };
-
 
             return pm;
         }
@@ -1538,22 +1201,6 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     idPassaporto = p.IDPASSAPORTI,
 
-                    //trasferimento = new TrasferimentoModel()
-                    //{
-                    //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
-                    //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
-                    //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
-                    //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
-                    //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
-                    //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
-                    //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
-                    //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
-                    //    coan = p.TRASFERIMENTO.COAN,
-                    //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
-                    //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
-                    //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
-                    //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
-                    //}
                 };
             }
 
@@ -1590,7 +1237,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var c = cp.CONIUGE;
 
                             var ad =
-                                c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
                                     .OrderByDescending(a => a.IDALTRIDATIFAM)
                                     .First();
 
@@ -1600,7 +1247,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lDoc = c.DOCUMENTI.Where(
                                 a =>
                                     (a.MODIFICATO == false || a.FK_IDDOCUMENTO.HasValue == false) &&
-                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato);
 
                             if (lDoc?.Any() ?? false)
                             {
@@ -1643,7 +1290,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var f = fp.FIGLI;
 
                             var ad =
-                                f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
                                     .OrderByDescending(a => a.IDALTRIDATIFAM)
                                     .First();
 
@@ -1652,7 +1299,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lDoc = f.DOCUMENTI.Where(
                                 a =>
                                     (a.MODIFICATO == false || a.FK_IDDOCUMENTO.HasValue == false) &&
-                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD== (decimal)EnumStatoRecord.Attivato);
 
                             if (lDoc?.Any() ?? false)
                             {
@@ -1688,7 +1335,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumParentela.Richiedente:
                         var lpr =
                             ap.PASSAPORTORICHIEDENTE.Where(
-                                a => a.ANNULLATO == false && a.IDPASSAPORTORICHIEDENTE == idAttivazionePassaporto);
+                                a => a.ANNULLATO == false && a.IDATTIVAZIONIPASSAPORTI == idAttivazionePassaporto);
 
                         if (lpr?.Any() ?? false)
                         {
@@ -1701,7 +1348,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lDoc = pr.DOCUMENTI.Where(
                                 a =>
                                     (a.MODIFICATO == false || a.FK_IDDOCUMENTO.HasValue == false) &&
-                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD!= (decimal)EnumStatoRecord.Annullato);
 
                             if (lDoc?.Any() ?? false)
                             {

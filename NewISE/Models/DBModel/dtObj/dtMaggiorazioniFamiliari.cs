@@ -123,10 +123,14 @@ namespace NewISE.Models.DBModel.dtObj
                         if (rinunciaMagFam == true && richiestaAttivazione == true && attivazione == false)
                         {
                             var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
-
-
                             amf.ATTIVAZIONEMAGFAM = true;
                             amf.DATAATTIVAZIONEMAGFAM = DateTime.Now;
+
+                            var rmf =
+                                amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
+                                    .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
+                                    .First();
+                            rmf.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
 
                             i = db.SaveChanges();
 
@@ -136,16 +140,10 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
-                                //imposta coniuge e figli con statorecord da da_attivare a attivato
+                                #region riassocia percentuali coniuge
                                 var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
                                 foreach (var c in lc)
                                 {
-                                    c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception("Errore in fase di impostazione a record attivato (coniuge).");
-                                    }
-                                    #region riassocia percentuali coniuge
                                     using (dtConiuge dtc = new dtConiuge())
                                     {
                                         using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
@@ -181,18 +179,13 @@ namespace NewISE.Models.DBModel.dtObj
                                             }
                                         }
                                     }
-                                    #endregion
                                 }
+                                #endregion
+
+                                #region reimposta percentuali figli
                                 var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
                                 foreach (var f in lf)
                                 {
-                                    f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception("Errore in fase di impostazione a record attivato (figli).");
-                                    }
-
-                                    #region reimposta percentuali figli
                                     using (dtFigli dtf = new dtFigli())
                                     {
                                         using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
@@ -259,8 +252,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             }
                                         }
                                     }   
-                                    #endregion
                                 }
+                                #endregion
 
                                 //----------------------------------
                                 using (dtDipendenti dtd = new dtDipendenti())
@@ -273,6 +266,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             if (t?.idTrasferimento > 0)
                                             {
+
+                                                this.ModificaStatoRecord(amf, EnumTipoTabella.Coniuge, EnumStatoRecord.Da_Attivare, EnumStatoRecord.Attivato, db);
+
+                                                this.ModificaStatoRecord(amf, EnumTipoTabella.Figli, EnumStatoRecord.Da_Attivare, EnumStatoRecord.Attivato, db);
+
+                                                this.ModificaStatoRecord(amf, EnumTipoTabella.Documenti, EnumStatoRecord.Da_Attivare, EnumStatoRecord.Attivato, db);
+
                                                 var dip = dtd.GetDipendenteByID(t.idDipendente);
                                                 var uff = dtu.GetUffici(t.idUfficio);
 
@@ -301,21 +301,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-                                        //imposta coniuge e figli con statorecord da da_attivare a attivato
-                                        var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                        var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                        foreach (var c in lc)
-                                        {
-                                            c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                            db.SaveChanges();
-                                        }
-                                        foreach (var f in lf)
-                                        {
-                                            f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                            db.SaveChanges();
-                                        }
-
                                         amf.ATTIVAZIONEMAGFAM = true;
+
+                                        var rmf =
+                                            amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
+                                                .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
+                                                .First();
+                                        rmf.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
 
                                         i = db.SaveChanges();
 
@@ -325,6 +317,131 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
                                         else
                                         {
+
+                                            #region riassocia percentuali coniuge
+                                            var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                            foreach (var c in lc)
+                                            {
+                                                using (dtConiuge dtc = new dtConiuge())
+                                                {
+                                                    using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                                                    {
+                                                        var cm = dtc.GetConiugebyID(c.IDCONIUGE);
+                                                        DateTime dtIni = cm.dataInizio.Value;
+                                                        DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
+
+                                                        var pccl = c.PERCENTUALEMAGCONIUGE.ToList();
+                                                        if (pccl?.Any() ?? false)
+                                                        {
+                                                            foreach (var pcc in pccl)
+                                                            {
+                                                                c.PERCENTUALEMAGCONIUGE.Remove(pcc);
+                                                            }
+                                                            if (db.SaveChanges() <= 0)
+                                                            {
+                                                                throw new Exception("Errore in fase di riassociazione percentuale coniuge (elimina associazione precedente).");
+                                                            }
+                                                        }
+
+                                                        List<PercentualeMagConiugeModel> lpmcm =
+                                                            dtpc.GetListaPercentualiMagConiugeByRangeDate(cm.idTipologiaConiuge, dtIni, dtFin, db)
+                                                                .ToList();
+
+                                                        if (lpmcm?.Any() ?? false)
+                                                        {
+                                                            foreach (var pmcm in lpmcm)
+                                                            {
+                                                                dtpc.AssociaPercentualeMaggiorazioneConiuge(cm.idConiuge, pmcm.idPercentualeConiuge, db);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            throw new Exception("Non è presente nessuna percentuale del coniuge.");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            #endregion
+
+                                            #region reimposta percentuali figli
+                                            var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                            foreach (var f in lf)
+                                            {
+                                                using (dtFigli dtf = new dtFigli())
+                                                {
+                                                    using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+                                                    {
+                                                        using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
+                                                        {
+                                                            var fm = dtf.GetFigliobyID(f.IDFIGLI);
+
+                                                            DateTime dtIni = fm.dataInizio.Value;
+                                                            DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+
+                                                            var pcfl = f.PERCENTUALEMAGFIGLI.ToList();
+                                                            if (pcfl?.Any() ?? false)
+                                                            {
+                                                                foreach (var pcf in pcfl)
+                                                                {
+                                                                    f.PERCENTUALEMAGFIGLI.Remove(pcf);
+                                                                }
+                                                                if (db.SaveChanges() <= 0)
+                                                                {
+                                                                    throw new Exception("Errore in fase di riassociazione percentuale figli (elimina associazione precedente).");
+                                                                }
+                                                            }
+                                                            List<PercentualeMagFigliModel> lpmfm =
+                                                                dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni,
+                                                                    dtFin, db).ToList();
+
+                                                            if (lpmfm?.Any() ?? false)
+                                                            {
+                                                                foreach (var pmfm in lpmfm)
+                                                                {
+                                                                    dtpf.AssociaPercentualeMaggiorazioneFigli(fm.idFigli, pmfm.idPercMagFigli, db);
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                throw new Exception("Non è presente nessuna percentuale per il figlio.");
+                                                            }
+
+                                                            dtIni = fm.dataInizio.Value;
+                                                            dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+
+                                                            var pcpsl = f.INDENNITAPRIMOSEGRETARIO.ToList();
+                                                            if (pcpsl?.Any()??false)
+                                                            {
+                                                                foreach (var pcps in pcpsl)
+                                                                {
+                                                                    f.INDENNITAPRIMOSEGRETARIO.Remove(pcps);
+                                                                }
+                                                                if (db.SaveChanges() <= 0)
+                                                                {
+                                                                    throw new Exception("Errore in fase di riassociazione indennita primo segretario (elimina associazione precedente).");
+                                                                }
+                                                            }
+                                                            List<IndennitaPrimoSegretModel> lipsm =
+                                                                dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                                                            if (lipsm?.Any() ?? false)
+                                                            {
+                                                                foreach (var ipsm in lipsm)
+                                                                {
+                                                                    dtips.AssociaIndennitaPrimoSegretarioFiglio(fm.idFigli, ipsm.idIndPrimoSegr, db);
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                throw new Exception(
+                                                                    "Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            #endregion
+
                                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                             {
                                                 dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
@@ -342,6 +459,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                         {
                                                             var dip = dtd.GetDipendenteByID(t.idDipendente);
                                                             var uff = dtu.GetUffici(t.idUfficio);
+
+                                                            this.ModificaStatoRecord(amf, EnumTipoTabella.Coniuge, EnumStatoRecord.Da_Attivare, EnumStatoRecord.Attivato, db);
+
+                                                            this.ModificaStatoRecord(amf, EnumTipoTabella.Figli, EnumStatoRecord.Da_Attivare, EnumStatoRecord.Attivato, db);
+
+                                                            this.ModificaStatoRecord(amf, EnumTipoTabella.Documenti, EnumStatoRecord.Da_Attivare, EnumStatoRecord.Attivato, db);
 
                                                             EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                                                 Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
@@ -730,6 +853,27 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     idAttivazioneMagFamNew = amfNew.IDATTIVAZIONEMAGFAM;
 
+                                    var rmfOld =
+                                        amfOld.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
+                                            .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
+                                            .First();
+                                    rmfOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                                    RINUNCIAMAGGIORAZIONIFAMILIARI rmfNew = new RINUNCIAMAGGIORAZIONIFAMILIARI()
+                                    {
+                                        IDMAGGIORAZIONIFAMILIARI = rmfOld.IDMAGGIORAZIONIFAMILIARI,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        RINUNCIAMAGGIORAZIONI = rmfOld.RINUNCIAMAGGIORAZIONI,
+                                        DATAINI = rmfOld.DATAINI,
+                                        DATAFINE = rmfOld.DATAFINE,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        FK_IDRINUNCIAMAGFAM=rmfOld.FK_IDRINUNCIAMAGFAM
+                                    };
+                                    amfNew.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(rmfNew);
+                                    if(db.SaveChanges()<=0)
+                                    {
+                                        throw new Exception("Errore nella fase di annulla richiesta (rinuncia).");
+                                    }
+
                                     using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                                     {
                                         #region Coniuge
@@ -783,10 +927,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                         COMUNERESIDENZA = adfOld.COMUNERESIDENZA,
                                                         PROVINCIARESIDENZA = adfOld.PROVINCIARESIDENZA,
                                                         DATAAGGIORNAMENTO = adfOld.DATAAGGIORNAMENTO,
-                                                        IDSTATORECORD = adfOld.IDSTATORECORD
+                                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                                        FK_IDALTRIDATIFAM=adfOld.FK_IDALTRIDATIFAM
                                                     };
 
                                                     cNew.ALTRIDATIFAM.Add(adfNew);///La consolido e l'associo al coniuge
+                                                    adfOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                                     int j3 = db.SaveChanges();
 
@@ -827,10 +973,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                         FILEDOCUMENTO = dOld.FILEDOCUMENTO,
                                                         DATAINSERIMENTO = dOld.DATAINSERIMENTO,
                                                         MODIFICATO = dOld.MODIFICATO,
-                                                        FK_IDDOCUMENTO = dOld.FK_IDDOCUMENTO
+                                                        FK_IDDOCUMENTO = dOld.FK_IDDOCUMENTO,
+                                                        IDSTATORECORD= (decimal)EnumStatoRecord.In_Lavorazione
                                                     };
 
                                                     cNew.DOCUMENTI.Add(dNew);///Consolido il documento associandolo alla nuova riga del coniuge.
+                                                    dOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                                     int j4 = db.SaveChanges();
 
@@ -862,10 +1010,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                         DATAINIZIO = pOld.DATAINIZIO,
                                                         DATAFINE = pOld.DATAFINE,
                                                         DATAAGGIORNAMENTO = pOld.DATAAGGIORNAMENTO,
-                                                        IDSTATORECORD = pOld.IDSTATORECORD
+                                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                                        FK_IDPENSIONE=null
                                                     };
 
                                                     cNew.PENSIONE.Add(pNew);
+                                                    pOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                                     int j5 = db.SaveChanges();
 
@@ -962,10 +1112,11 @@ namespace NewISE.Models.DBModel.dtObj
                                                         COMUNERESIDENZA = adfOld.COMUNERESIDENZA,
                                                         PROVINCIARESIDENZA = adfOld.PROVINCIARESIDENZA,
                                                         DATAAGGIORNAMENTO = adfOld.DATAAGGIORNAMENTO,
-                                                        IDSTATORECORD = adfOld.IDSTATORECORD
+                                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                                                     };
 
                                                     fNew.ALTRIDATIFAM.Add(adfNew);///La consolido e l'associo al figlio
+                                                    adfOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                                     int x2 = db.SaveChanges();
 
@@ -1005,10 +1156,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                         FILEDOCUMENTO = dOld.FILEDOCUMENTO,
                                                         DATAINSERIMENTO = dOld.DATAINSERIMENTO,
                                                         MODIFICATO = dOld.MODIFICATO,
-                                                        FK_IDDOCUMENTO = dOld.FK_IDDOCUMENTO
+                                                        FK_IDDOCUMENTO = dOld.FK_IDDOCUMENTO,
+                                                        IDSTATORECORD= (decimal)EnumStatoRecord.In_Lavorazione
                                                     };
 
                                                     fNew.DOCUMENTI.Add(dNew);///Consolido il documento associandolo alla nuova riga del coniuge.
+                                                    dOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                                     int j4 = db.SaveChanges();
 
@@ -1103,10 +1256,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                 FILEDOCUMENTO = d.FILEDOCUMENTO,
                                                 DATAINSERIMENTO = d.DATAINSERIMENTO,
                                                 MODIFICATO = d.MODIFICATO,
-                                                FK_IDDOCUMENTO = d.FK_IDDOCUMENTO
+                                                FK_IDDOCUMENTO = d.FK_IDDOCUMENTO,
+                                                IDSTATORECORD= (decimal)EnumStatoRecord.In_Lavorazione
                                             };
 
                                             amfNew.DOCUMENTI.Add(dNew);
+                                            d.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
                                             if (db.SaveChanges() <= 0)
                                             {
@@ -1268,8 +1423,15 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     if (datiParzialiConiuge == false && datiParzialiFigli == false)
                                     {
+                                        var rmf =
+                                            amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                                                .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
+                                                .First();
+
+                                        rmf.RINUNCIAMAGGIORAZIONI = false;
                                         amf.RICHIESTAATTIVAZIONE = true;
                                         amf.DATARICHIESTAATTIVAZIONE = DateTime.Now;
+                                        rmf.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
 
                                         i = db.SaveChanges();
                                         if (i <= 0)
@@ -1394,9 +1556,9 @@ namespace NewISE.Models.DBModel.dtObj
                             docFormulario = true;
                         }
 
-                        if (mf.CONIUGE != null)
+                        if (amf.CONIUGE != null)
                         {
-                            var lc = mf.CONIUGE.ToList();
+                            var lc = amf.CONIUGE.ToList();
                             if (lc?.Any() ?? false)
                             {
                                 datiConiuge = true;
@@ -1437,9 +1599,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                         }
 
-                        if (mf.FIGLI != null)
+                        if (amf.FIGLI != null)
                         {
-                            var lf = mf.FIGLI.ToList();
+                            var lf = amf.FIGLI.ToList();
 
                             if (lf?.Any() ?? false)
                             {

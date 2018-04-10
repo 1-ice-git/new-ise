@@ -687,6 +687,8 @@ namespace NewISE.Models.DBModel.dtObj
             d_new.DATAINSERIMENTO = dm.dataInserimento;
             d_new.FILEDOCUMENTO = ms.ToArray();
             d_new.MODIFICATO = false;
+            d_new.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
+            d_new.FK_IDDOCUMENTO = null;
 
 
             db.DOCUMENTI.Add(d_new);
@@ -727,6 +729,8 @@ namespace NewISE.Models.DBModel.dtObj
             d.DATAINSERIMENTO = dm.dataInserimento;
             d.FILEDOCUMENTO = ms.ToArray();
             d.MODIFICATO = false;
+            d.FK_IDDOCUMENTO = null;
+            d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
 
             db.DOCUMENTI.Add(d);
@@ -883,6 +887,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 var pcmab = am.PAGATOCONDIVISOMAB.OrderBy(a => a.IDPAGATOCONDIVISO).First();
                                 this.UpdateStatoPagatoCondivisoMAB(pcmab.IDPAGATOCONDIVISO, EnumStatoRecord.Attivato, db);
+
+                                var dm = am.DOCUMENTI.OrderBy(a => a.IDDOCUMENTO).Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione).First();
+                                this.UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, EnumStatoRecord.Attivato, db);
                                 #endregion
 
                                 using (dtDipendenti dtd = new dtDipendenti())
@@ -1279,10 +1286,12 @@ namespace NewISE.Models.DBModel.dtObj
                             FILEDOCUMENTO = d.FILEDOCUMENTO,
                             DATAINSERIMENTO = d.DATAINSERIMENTO,
                             MODIFICATO = d.MODIFICATO,
-                            FK_IDDOCUMENTO = d.FK_IDDOCUMENTO
+                            FK_IDDOCUMENTO = d.FK_IDDOCUMENTO,
+                            IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione
                         };
 
                         am_New.DOCUMENTI.Add(dNew);
+                        d.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
                     }
                     #endregion
 
@@ -1398,6 +1407,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 var pcm = am.PAGATOCONDIVISOMAB.OrderBy(a => a.IDPAGATOCONDIVISO).First();
                                 this.UpdateStatoPagatoCondivisoMAB(pcm.IDPAGATOCONDIVISO, EnumStatoRecord.Da_Attivare, db);
+
+                                var dm = am.DOCUMENTI.OrderBy(a => a.IDDOCUMENTO).Where(a=>a.MODIFICATO==false && a.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione && a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione).First();
+                                this.UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, EnumStatoRecord.Da_Attivare, db);
                                 #endregion
 
                                 #region incaso di rinuncia reimposto i dati con i valori di default e cancello il documento
@@ -2827,6 +2839,35 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica CanoneMAB", "VARIAZIONIMAB", db,
                             pcm.ATTIVAZIONEMAB.IDTRASFERIMENTO, pcm.IDPAGATOCONDIVISO);
+                    }
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateStatoDocumentiMAB(decimal idDocumentoMAB, EnumStatoRecord stato, ModelDBISE db)
+        {
+            try
+            {
+                DOCUMENTI dm = db.DOCUMENTI.Find(idDocumentoMAB);
+                if (dm.IDDOCUMENTO > 0)
+                {
+                    dm.IDSTATORECORD = (decimal)stato;
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore in fase di aggiornamento dello statorecord relativo a Documenti MAB.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica Documenti MAB", "DOCUMENTI", db,
+                            dm.ATTIVAZIONEMAB.First().IDTRASFERIMENTO, dm.IDDOCUMENTO);
                     }
 
                 }

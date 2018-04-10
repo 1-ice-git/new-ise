@@ -247,32 +247,6 @@ namespace NewISE.Controllers
             return PartialView(dit);
         }
 
-        //[Authorize(Roles = "1 ,2")]
-        //[AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        //public ActionResult VerificaTrasferimento(string matricola, bool ricaricaInfoTrasf = false)
-        //{
-        //    try
-        //    {
-        //        using (dtTrasferimento dttr = new dtTrasferimento())
-        //        {
-        //            var trm = dttr.GetUltimoTrasferimentoByMatricola(matricola);
-
-        //            if (trm != null && trm.HasValue())
-        //            {
-        //                return RedirectToAction("", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
-        //            }
-        //            else
-        //            {
-        //                return RedirectToAction("NuovoTrasferimento", new { matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-        //    }
-        //}
-
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
         public ActionResult NuovoTrasferimentoDaUt(decimal idTrasfOld)
@@ -429,8 +403,6 @@ namespace NewISE.Controllers
             }
 
         }
-
-
 
         [Authorize(Roles = "1 ,2")]
         public ActionResult NuovoTrasferimento(int matricola, decimal idTrasferimento = 0, bool ricaricaInfoTrasf = false, bool ricaricaTrasferimenti = false, decimal idRuoloDipendente = 0)

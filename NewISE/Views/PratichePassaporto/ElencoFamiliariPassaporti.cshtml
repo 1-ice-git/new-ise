@@ -9,6 +9,7 @@
     <table cellspacing="0" id="tabElencoFamiliariPass" class="table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th>
                     @Html.DisplayNameFor(model => model.nominativo)
                 </th>
@@ -39,6 +40,7 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>@Html.HiddenFor(modelItem => item.ordinamento) </td>
                     <td style="text-align: left;">
                         @Html.DisplayFor(modelItem => item.nominativo)
                     </td>
@@ -133,6 +135,7 @@
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
         },
+        "columnDefs":[{"visible":false,"targets":[0]}],
         "info": false,
         "lengthChange": false,
         "pageLength": 5,
@@ -140,8 +143,9 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "order": [[4, "desc"]]
-        //dom: 'Bfrtip',
+        "order": [0]
+        //"order": [[4, "desc"]]
+    //dom: 'Bfrtip',
         //buttons: [
         //    {
         //        text: 'Nuovo Coniuge',
