@@ -2552,7 +2552,6 @@
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffFasciaKmController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParametriController.cs" />
-    <Compile Include="Areas\Parametri\Controllers\ParamFasciaKmController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamIndennitaBaseController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamIndRichiamoController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamIndSistemazController.cs" />

@@ -503,8 +503,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.COEFFICIENTEINDRICHIAMO.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaRichiamo_CR(NuovoPrecedente.IDCOEFINDRICHIAMO, db);
+                            dtrp.AssociaRiduzioni_CR(NuovoPrecedente.IDCOEFINDRICHIAMO, db);
+                        }
+
+
                     }
-                    db.SaveChanges();
+
                     using (objLogAttivita log = new objLogAttivita())
                     {
                         log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "COEFFICIENTEINDRICHIAMO", idCoefIndRichiamo);

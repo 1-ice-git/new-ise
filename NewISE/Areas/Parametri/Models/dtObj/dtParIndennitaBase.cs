@@ -811,9 +811,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             };
 
                             db.INDENNITABASE.Add(ibOld1);
+
+                            db.SaveChanges();
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaIndennitaBase_IB(ibOld1.IDINDENNITABASE, db);
+                                dtrp.AssociaRiduzioniIB(ibOld1.IDINDENNITABASE, db);
+                            }
                         }
 
-                        db.SaveChanges();
+
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
