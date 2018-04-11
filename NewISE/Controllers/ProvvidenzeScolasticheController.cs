@@ -50,34 +50,44 @@ namespace NewISE.Controllers
         }
 
         public ActionResult AttivitaProvvidenze(decimal idTrasferimento)
-        {
-
-            //MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
+        {  
             ProvvidenzeScolasticheModel psm = new ProvvidenzeScolasticheModel();
 
             try
             {
                 ViewData["idTrasferimento"] = idTrasferimento;
-                // Inserire una funzione GetAttivitàProvvScolastiche (vd GetAttivazioneMagFamIniziale)
 
-                //using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                //{
-                //    mfm = dtmf.GetMaggiorazioniFamiliariByID(idTrasferimento);
-                //    if (mfm?.idMaggiorazioniFamiliari > 0)
-                //    {
-                //        using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                //        {
-                //            var amf = dtamf.GetAttivazioneMagFamIniziale(mfm.idMaggiorazioniFamiliari);
 
-                //            ViewData.Add("idAttivazioneMagFam", amf.idAttivazioneMagFam);
-                //        }
-                //    }
-                //    else
-                //    {
-                //        throw new Exception("Maggiorazione familiare non trovata. IDTrasferimento: " + idTrasferimento);
-                //    }
+                using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
+                {
+                    psm = dtps.GetProvvidenzeScolasticheByID(idTrasferimento);
 
-                //}
+                    if (psm?.idTrasfProvScolastiche > 0)
+                    {
+                        using (dtAttivazioniProvScol dtaps = new dtAttivazioniProvScol())
+                        {
+                            var aps = dtaps.GetAttivazioneProvScol(psm.idTrasfProvScolastiche);
+
+                            if (aps.idProvScolastiche == 0)
+                            {
+                                dtaps.CreaAttivazioneProvvidenzeScolastiche(psm.idTrasfProvScolastiche);
+
+                            }
+
+                            ViewData.Add("idTrasfProvScolastiche", aps.idTrasfProvScolastiche);
+                        }
+                    }
+                    else
+                    {
+                        //throw new Exception("Provvidenza scolastica non trovata. IDTrasferimento: " + idTrasferimento);
+                        using (dtAttivazioniProvScol dtaps = new dtAttivazioniProvScol())
+                        {
+                            var aps = dtaps.CreaProvvidenzeScolastiche(idTrasferimento);
+                        }
+                    }
+
+                }
+
 
             }
             catch (Exception ex)
