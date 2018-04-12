@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -72,7 +73,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita =e.ANNUALITA,
+                                annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                                 DescrizioneUfficio = new UfficiModel()
@@ -100,7 +101,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     List<MAGGIORAZIONIANNUALI> lib = new List<MAGGIORAZIONIANNUALI>();
-                    if(escludiAnnullati==true)
+                    if (escludiAnnullati == true)
                         db.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
                     else
                         db.MAGGIORAZIONIANNUALI.ToList().OrderBy(b => b.DATAINIZIOVALIDITA);
@@ -140,10 +141,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     List<MAGGIORAZIONIANNUALI> lib = new List<MAGGIORAZIONIANNUALI>();
-                    if(escludiAnnullati==true)
-                        lib=db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == false).OrderBy(b=>b.DATAINIZIOVALIDITA).ToList();
+                    if (escludiAnnullati == true)
+                        lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
                     else
-                        lib=db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
+                        lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
 
                     libm = (from e in lib
                             select new MaggiorazioniAnnualiModel()
@@ -151,7 +152,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -179,10 +180,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<MAGGIORAZIONIANNUALI> libNew = new List<MAGGIORAZIONIANNUALI>();
 
-            MAGGIORAZIONIANNUALI ibPrecedente = new MAGGIORAZIONIANNUALI();
+            //MAGGIORAZIONIANNUALI ibPrecedente = new MAGGIORAZIONIANNUALI();
             MAGGIORAZIONIANNUALI ibNew1 = new MAGGIORAZIONIANNUALI();
             MAGGIORAZIONIANNUALI ibNew2 = new MAGGIORAZIONIANNUALI();
-            List<MAGGIORAZIONIANNUALI> lArchivioIB = new List<MAGGIORAZIONIANNUALI>();
+            //List<MAGGIORAZIONIANNUALI> lArchivioIB = new List<MAGGIORAZIONIANNUALI>();
+
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -193,20 +195,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         //Se la data variazione coincide con una data inizio esistente
                         lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, ibm.idUfficio);
+
                         if (lista.Count != 0)
                         {
                             giafatta = true;
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
+                            //decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new MAGGIORAZIONIANNUALI()
                             {
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = dataInizioFirst,
                                 DATAFINEVALIDITA = dataFineFirst,
-                                ANNUALITA=ibm.annualita,
+                                ANNUALITA = ibm.annualita,
                                 DATAAGGIORNAMENTO = DateTime.Now,
                             };
 
@@ -217,7 +220,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = dataInizioFirst,
                                     DATAFINEVALIDITA = Utility.DataFineStop(),
-                                    ANNUALITA=ibm.annualita,
+                                    ANNUALITA = ibm.annualita,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 //qui annullo tutti i record rimanenti dalla data inizio inserita
@@ -232,6 +235,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.MAGGIORAZIONIANNUALI.Add(ibNew1);
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db);
+                            }
+
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -252,7 +261,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = dataInizioLast,
                                     DATAFINEVALIDITA = dataFineLast.AddDays(-1),
-                                    ANNUALITA=ibm.annualita,
+                                    ANNUALITA = ibm.annualita,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 ibNew2 = new MAGGIORAZIONIANNUALI()
@@ -260,7 +269,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDUFFICIO = ibm.idUfficio,
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
-                                    ANNUALITA=ibm.annualita,
+                                    ANNUALITA = ibm.annualita,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
                                 if (aggiornaTutto)
@@ -270,7 +279,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                        ANNUALITA=ibm.annualita,
+                                        ANNUALITA = ibm.annualita,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == ibm.idUfficio
@@ -289,6 +298,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var ma in libNew)
+                                    {
+                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -302,7 +320,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 decimal idIntervallo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizio = Convert.ToDateTime(lista[1]);
                                 DateTime dataFine = Convert.ToDateTime(lista[2]);
-                                bool Annualita = Convert.ToBoolean(Convert.ToDecimal(lista[3]));
+                                //bool Annualita = Convert.ToBoolean(Convert.ToDecimal(lista[3]));
 
                                 DateTime NewdataFine1 = ibm.dataInizioValidita.AddDays(-1);
 
@@ -330,7 +348,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                        ANNUALITA = ibm.annualita,                                       
+                                        ANNUALITA = ibm.annualita,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == ibm.idUfficio
@@ -348,6 +366,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var ma in libNew)
+                                    {
+                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -363,7 +390,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
-                                    ANNUALITA=ibm.annualita,
+                                    ANNUALITA = ibm.annualita,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     IDUFFICIO = ibm.idUfficio,
                                 };
@@ -371,6 +398,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.MAGGIORAZIONIANNUALI.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db);
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -399,6 +432,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.MAGGIORAZIONIANNUALI.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -426,6 +465,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.MAGGIORAZIONIANNUALI.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var ma in libNew)
+                                        {
+                                            dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db);
+                                        }
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -526,9 +575,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             };
 
                             db.MAGGIORAZIONIANNUALI.Add(ibOld1);
+
+                            db.SaveChanges();
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaMaggiorazioniAbitazione_MA(ibOld1.IDMAGANNUALI, db);
+                            }
                         }
 
-                        db.SaveChanges();
+
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
@@ -555,7 +611,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.MAGGIORAZIONIANNUALI.Where(a => a.IDMAGANNUALI == ibm.idMagAnnuali && a.IDUFFICIO == ibm.idUfficio).First().ANNULLATO == true ? true : false;
             }
         }
-        
+
         public decimal Get_Id_MaggAnnualiNonAnnullato(decimal idLivello)
         {
             decimal tmp = 0;
@@ -623,7 +679,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
-        
+
         public void DelMAGGIORAZIONIANNUALI(decimal IDMAGANNUALI)
         {
             MAGGIORAZIONIANNUALI precedenteIB = new MAGGIORAZIONIANNUALI();
@@ -648,7 +704,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             IDUFFICIO = precedenteIB.IDUFFICIO,
                             DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                             DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                         // COEFFICIENTE = precedenteIB.COEFFICIENTE,
+                            // COEFFICIENTE = precedenteIB.COEFFICIENTE,
                             DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
                             ANNULLATO = false
                         };
@@ -698,7 +754,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return vr;
         }
-        
+
         public static DateTime DataInizioMinimaNonAnnullataIndennitaBase(decimal idUfficio)
         {
             using (ModelDBISE db = new ModelDBISE())

@@ -430,7 +430,7 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region MaggiorazioneAbitazione
-                var lma = t.MAGGIORAZIONEABITAZIONE.Where(x=>x.VARIAZIONE==false).OrderBy(x => x.IDMAB);
+                var lma = t.MAGGIORAZIONEABITAZIONE.Where(x => x.VARIAZIONE == false).OrderBy(x => x.IDMAB);
                 if (lma?.Any() ?? false)
                 {
                     var ma = lma.First();
@@ -1252,13 +1252,11 @@ namespace NewISE.Models.DBModel.dtObj
                 DATALETTERA = trm.dataLettera,
                 NOTIFICATRASFERIMENTO = trm.notificaTrasferimento,
                 DATAAGGIORNAMENTO = trm.dataAggiornamento,
-
             };
 
             db.TRASFERIMENTO.Add(tr);
 
             int i = db.SaveChanges();
-
 
             if (i > 0)
             {
@@ -1880,9 +1878,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             EmailTrasferimento.EmailAttiva(t.IDTRASFERIMENTO,
                                                                             oggettoAttiva,
-                                                                            string.Format(messaggioAttiva,dip.cognome + " " + dip.nome + " (" + dip.matricola + ") " ,uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString()),
+                                                                            string.Format(messaggioAttiva, dip.cognome + " " + dip.nome + " (" + dip.matricola + ") ", uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString()),
                                                                             db);
-                                            
+
                                         }
                                     }
                                 }
@@ -2079,7 +2077,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 var dipAdmin = ua.DIPENDENTI;
 
-                                if (dipAdmin!=null)
+                                if (dipAdmin != null)
                                 {
                                     cc = new Destinatario()
                                     {

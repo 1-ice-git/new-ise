@@ -1193,7 +1193,6 @@ namespace NewISE.Controllers
                 }
 
 
-
                 if (ModelState.IsValid)
                 {
                     try
@@ -1840,7 +1839,7 @@ namespace NewISE.Controllers
         public ActionResult GestioneTrasferimento(decimal idTrasferimento)
         {
             try
-            { 
+            {
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var msgmail = dtt.GetMessaggioAnnullaTrasf(idTrasferimento);
@@ -2084,7 +2083,7 @@ namespace NewISE.Controllers
         public JsonResult ConfermaAnnullaTrasf(FormCollection fc)
         {
             FormCollection collection = new FormCollection(Request.Unvalidated().Form);
-           
+
             string errore = "";
             decimal idTrasferimento = Convert.ToDecimal(collection["idTrasferimento"]);
             string testoAnnullaTrasf = collection["msg"];

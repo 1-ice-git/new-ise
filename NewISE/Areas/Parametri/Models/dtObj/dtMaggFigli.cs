@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -146,7 +147,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                dataAggiornamento=e.DATAAGGIORNAMENTO,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Figlio = new TipologiaFiglioModel()
                                 {
                                     idTipologiaFiglio = e.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO,
@@ -465,7 +466,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         //    }
 
         //}
-        
+
         public bool PercMaggiorazioneFiglioAnnullato(PercMagFigliModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -473,7 +474,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.PERCENTUALEMAGFIGLI.Where(a => a.IDPERCMAGFIGLI == ibm.idPercMagFigli).First().ANNULLATO == true ? true : false;
             }
         }
-       
+
         public decimal Get_Id_PercentualFiglioPrimoNonAnnullato(decimal idTipologiaFiglio)
         {
             decimal tmp = 0;
@@ -724,12 +725,22 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.PERCENTUALEMAGFIGLI.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+
+                            dtrp.AssociaFiglio_PMF(NuovoPrecedente.IDPERCMAGFIGLI, db);
+
+                        }
+
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale Maggiorazione figli.", "PERCENTUALEFIGLI", idMagCon);
+                        }
                     }
-                    db.SaveChanges();
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale Maggiorazione figli.", "PERCENTUALEFIGLI", idMagCon);
-                    }
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -743,11 +754,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public void SetMaggiorazioneFiglio(PercMagFigliModel ibm, bool aggiornaTutto)
         {
             List<PERCENTUALEMAGFIGLI> libNew = new List<PERCENTUALEMAGFIGLI>();
-            PERCENTUALEMAGFIGLI ibPrecedente = new PERCENTUALEMAGFIGLI();
+            //PERCENTUALEMAGFIGLI ibPrecedente = new PERCENTUALEMAGFIGLI();
             PERCENTUALEMAGFIGLI ibNew1 = new PERCENTUALEMAGFIGLI();
             PERCENTUALEMAGFIGLI ibNew2 = new PERCENTUALEMAGFIGLI();
-            List<PERCENTUALEMAGFIGLI> lArchivioIB = new List<PERCENTUALEMAGFIGLI>();
+            //List<PERCENTUALEMAGFIGLI> lArchivioIB = new List<PERCENTUALEMAGFIGLI>();
             List<string> lista = new List<string>();
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 bool giafatta = false;
@@ -757,13 +769,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         //Se la data variazione coincide con una data inizio esistente
                         lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, Convert.ToDecimal(ibm.idTipologiaFiglio));
+
                         if (lista.Count != 0)
                         {
                             giafatta = true;
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
+                            //decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new PERCENTUALEMAGFIGLI()
                             {
@@ -799,6 +812,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.PERCENTUALEMAGFIGLI.Add(ibNew1);
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db);
+                            }
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -856,6 +874,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pmf in libNew)
+                                    {
+                                        dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -919,6 +947,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pmf in libNew)
+                                    {
+                                        dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -942,6 +980,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.PERCENTUALEMAGFIGLI.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+
+                                    dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db);
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -972,6 +1018,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEMAGFIGLI.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+
+                                        dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db);
+
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -999,6 +1054,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEMAGFIGLI.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var pmf in libNew)
+                                        {
+                                            dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db);
+                                        }
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }

@@ -36,7 +36,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 r.Add(new SelectListItem() { Text = "Valuta Ufficio", Value = "14" });
                 r.Add(new SelectListItem() { Text = "Percentuale Disagio", Value = "15" });
                 r.Add(new SelectListItem() { Text = "Percentuale Anticipo TE", Value = "16" });
-                r.Add(new SelectListItem() { Text = "Percentuale Condivisione MAP", Value = "17" });
+                r.Add(new SelectListItem() { Text = "Percentuale Condivisione MAB", Value = "17" });
 
                 r = r.OrderBy(x => x.Text).ToList();
 

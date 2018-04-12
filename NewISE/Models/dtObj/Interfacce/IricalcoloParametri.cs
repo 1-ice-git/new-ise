@@ -94,7 +94,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPercentualeAnticipoTEP"></param>
         /// <param name="db"></param>
-        void AssociaPercentualeAnticipoTER(decimal idPercentualeAnticipoTEP, ModelDBISE db);
+        void AssociaPercentualeAnticipoTER(decimal idPercentualeAnticipoTER, ModelDBISE db);
         #endregion
 
         #region Percentuale condivisione

@@ -820,8 +820,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.COEFFICIENTESEDE.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaIndennita_CS(NuovoPrecedente.IDCOEFFICIENTESEDE, db);
+                        }
                     }
-                    db.SaveChanges();
+
+
                     using (objLogAttivita log = new objLogAttivita())
                     {
                         log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "COEFFICIENTESEDE", idCoefSede);

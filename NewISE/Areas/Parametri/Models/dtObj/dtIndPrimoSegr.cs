@@ -199,6 +199,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 bool giafatta = false;
+
                 try
                 {
                     using (dtIndPrimoSegr dtal = new dtIndPrimoSegr())
@@ -669,8 +670,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.INDENNITAPRIMOSEGRETARIO.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaFigli_IPS(NuovoPrecedente.IDINDPRIMOSEGR, db);
+                        }
                     }
-                    db.SaveChanges();
+
+
                     using (objLogAttivita log = new objLogAttivita())
                     {
                         log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Idennità Primo Segretario.", "INDENNITAPRIMOSEGRETARIO", idIndPrimoSegr);

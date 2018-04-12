@@ -19,7 +19,6 @@ namespace NewISE.Models.DBModel.dtObj
         {
             PrimaSistemazioneModel psm = new PrimaSistemazioneModel();
 
-
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
             var ps = t.PRIMASITEMAZIONE;
@@ -29,7 +28,6 @@ namespace NewISE.Models.DBModel.dtObj
                 idPrimaSistemazione = ps.IDPRIMASISTEMAZIONE,
 
             };
-
 
             return psm;
         }
