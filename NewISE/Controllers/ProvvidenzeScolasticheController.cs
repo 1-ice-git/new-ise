@@ -104,7 +104,6 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
-
         
         public ActionResult ElencoFormulariInseriti(decimal idTrasferimento)
         {
@@ -183,7 +182,6 @@ namespace NewISE.Controllers
             }
         }
 
-
         public JsonResult SalvaDocumentoTEPartenza(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -247,7 +245,6 @@ namespace NewISE.Controllers
                 };
             }
         }
-
 
         public static void PreSetDocumentoTEPartenza(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
         {
