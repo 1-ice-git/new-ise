@@ -1,11 +1,18 @@
-﻿using NewISE.Models;
-using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.dtObj;
+﻿using System.Web.Routing;
+using NewISE.EF;
+using NewISE.Models.Tools;
+using Newtonsoft.Json;
+using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.Models;
+using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.ViewModel;
+using NewISE.Interfacce;
 
 namespace NewISE.Controllers
 {
@@ -161,5 +168,142 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
+
+        public ActionResult NuovoDocumentoPS(decimal idTrasfProvScolastiche)
+        {
+            try
+            {                   
+                ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
+
+                return PartialView();
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
+
+        public JsonResult SalvaDocumentoTEPartenza(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
+
+                    foreach (string item in Request.Files)
+                    {
+
+                        HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
+
+                        using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                        {
+                            using (dtDocumenti dtd = new dtDocumenti())
+                            {
+                                DocumentiModel dm = new DocumentiModel();
+                                bool esisteFile = false;
+                                bool gestisceEstensioni = false;
+                                bool dimensioneConsentita = false;
+                                string dimensioneMaxConsentita = string.Empty;
+
+                                PreSetDocumentoTEPartenza(file, out dm, out esisteFile, out gestisceEstensioni,
+                                    out dimensioneConsentita, out dimensioneMaxConsentita, idTipoDocumento);
+
+                                if (esisteFile)
+                                {
+                                    if (gestisceEstensioni == false)
+                                    {
+                                        throw new Exception(
+                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                                    }
+
+                                    if (dimensioneConsentita)
+                                    {
+                                        dtte.SetDocumentoTEPartenza(ref dm, idTrasfProvScolastiche, db, idTipoDocumento);
+
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Il documento selezionato supera la dimensione massima consentita (" +
+                                            dimensioneMaxConsentita + " Mb).");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Il documento è obbligatorio.");
+                                }
+                            }
+                        }
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { error = ex.Message });
+                };
+            }
+        }
+
+
+        public static void PreSetDocumentoTEPartenza(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
+        {
+            dm = new DocumentiModel();
+            gestisceEstensioni = false;
+            dimensioneConsentita = false;
+            esisteFile = false;
+            dimensioneMaxDocumento = string.Empty;
+
+            try
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    esisteFile = true;
+
+                    var estensioniGestite = new[] { ".pdf" };
+                    var estensione = Path.GetExtension(file.FileName);
+                    var nomeFileNoEstensione = Path.GetFileNameWithoutExtension(file.FileName);
+                    if (!estensioniGestite.Contains(estensione.ToLower()))
+                    {
+                        gestisceEstensioni = false;
+                    }
+                    else
+                    {
+                        gestisceEstensioni = true;
+                    }
+                    var keyDimensioneDocumento = System.Configuration.ConfigurationManager.AppSettings["DimensioneDocumento"];
+
+                    dimensioneMaxDocumento = keyDimensioneDocumento;
+
+                    if (file.ContentLength / 1024 <= Convert.ToInt32(keyDimensioneDocumento))
+                    {
+                        dm.nomeDocumento = nomeFileNoEstensione;
+                        dm.estensione = estensione;
+                        dm.tipoDocumento = (EnumTipoDoc)idTipoDocumento;
+                        dm.dataInserimento = DateTime.Now;
+                        dm.file = file;
+                        dimensioneConsentita = true;
+                    }
+                    else
+                    {
+                        dimensioneConsentita = false;
+                    }
+
+                }
+                else
+                {
+                    esisteFile = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
     }
 }
