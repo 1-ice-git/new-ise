@@ -19,6 +19,7 @@ namespace NewISE.EF
         {
             this.ATTIVAZIONIVIAGGICONGEDO1 = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
             this.SELECTDOCVC = new HashSet<SELECTDOCVC>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDATTIVAZIONEVC { get; set; }
@@ -30,12 +31,16 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
         public Nullable<decimal> FK_IDATTIVAZIONEVC { get; set; }
+        public decimal IDFASEVC { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO1 { get; set; }
         public virtual ATTIVAZIONIVIAGGICONGEDO ATTIVAZIONIVIAGGICONGEDO2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SELECTDOCVC> SELECTDOCVC { get; set; }
+        public virtual FASEVIAGGICONGEDO FASEVIAGGICONGEDO { get; set; }
         public virtual VIAGGICONGEDO VIAGGICONGEDO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

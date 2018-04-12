@@ -2479,6 +2479,9 @@
     <Compile Include="EF\FASEPASSAPORTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\FASEVIAGGICONGEDO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\FLUSSICEDOLINO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2539,6 +2542,7 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtParPercAnticipoTE.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
@@ -3122,6 +3126,7 @@
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\Enum\EnumFasePassaporti.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
+    <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
     <Compile Include="Models\DBModel\PagatoCondivisoMABModel.cs" />
@@ -3465,6 +3470,11 @@
     <Content Include="Views\Notifiche\VisualizzaMittente.cshtml" />
     <Content Include="Views\ViaggiCongedo\PreventiviDiViaggio.cshtml" />
     <Content Include="Views\ViaggiCongedo\ElencoPreventiviDiViaggio.cshtml" />
+    <Content Include="Views\ViaggiCongedo\ElencoUploadDocumentiViaggiCongedo.cshtml" />
+    <Content Include="Views\ViaggiCongedo\ElencoUploadPreventiviViaggiCongedo.cshtml" />
+    <Content Include="Views\ViaggiCongedo\NuovoDocumentoPreventivi.cshtml" />
+    <Content Include="Views\ViaggiCongedo\ListaPreventiviDiViaggio.cshtml" />
+    <Content Include="Views\ViaggiCongedo\PulsantiPreventiviDiViaggio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

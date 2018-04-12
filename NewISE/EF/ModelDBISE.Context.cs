@@ -59,6 +59,7 @@ namespace NewISE.EF
         public virtual DbSet<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
         public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }
         public virtual DbSet<FASEPASSAPORTI> FASEPASSAPORTI { get; set; }
+        public virtual DbSet<FASEVIAGGICONGEDO> FASEVIAGGICONGEDO { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
         public virtual DbSet<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }

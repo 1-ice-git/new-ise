@@ -13,7 +13,14 @@ namespace NewISE.Models.DBModel
         public decimal idViaggioCongedo { get; set; }
         public decimal idTrasferimento { get; set; }
         [Required(ErrorMessage = "Il nome del file è richiesto.")]
+        [Display(Name = "Nome File")]
         public string NomeFile { get; set; }
+        public decimal idTipoDocumento { get; set; }
+        public decimal idAttivazioneVC { get; set; }
+        public bool NotificaRichiesta { get; set; }
+        public bool AttivaRichiesta { get; set; }
+        public decimal idDocumento { get; set; }
+        public string Estensione { get; set; }
         public bool HasValue()
         {
             return idTrasferimento > 0 ? true : false;

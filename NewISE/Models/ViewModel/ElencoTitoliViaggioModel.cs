@@ -26,9 +26,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Parentela")]
         public EnumParentela parentela { get; set; }
         public decimal idAltriDati { get; set; }
-
-
-
+        
         [Display(Name = "Richiedi")]
         [DefaultValue(false)]
         public bool RichiediTitoloViaggio { get; set; }

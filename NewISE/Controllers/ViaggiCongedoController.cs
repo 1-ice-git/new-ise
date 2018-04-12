@@ -34,7 +34,7 @@ namespace NewISE.Controllers
         {
             return View();
         }
-       
+
         public JsonResult VerificaViaggiCongedo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -64,39 +64,46 @@ namespace NewISE.Controllers
             }
         }
 
-        public ActionResult ElencoPreventiviDiViaggio(decimal idTitoliViaggio)
+        public ActionResult ElencoPreventiviDiViaggio(decimal idTrasferimento)
         {
+            ViewData["idTrasferimento"] = idTrasferimento;
+           // List<ViaggioCongedoModel> lpv = new List<ViaggioCongedoModel>();
             try
             {
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+               return PartialView();
+              
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
+        public ActionResult ListaPreventiviDiViaggio(decimal idTrasferimento)
+        {
+            ViewData["idTrasferimento"] = idTrasferimento;
+            List<ViaggioCongedoModel> lpv = new List<ViaggioCongedoModel>();
+            try
+            {
+                using (dtViaggiCongedo dttv = new dtViaggiCongedo())
                 {
-                    List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
+                    //AGGIORNAMENTO TABELLE
+                    decimal id_Viaggio_Congedo = dttv.Identifica_Id_UltimoViaggioCongedoDisponibile(idTrasferimento);
+                    decimal id_Attiv_Viaggio_Congedo = dttv.Cerca_Id_AttivazioniViaggiCongedoDisponibile(id_Viaggio_Congedo);
 
-                    var atv = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
-
-                    decimal idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO;
-
-                    if (idAttivazioneTitoliViaggio > 0)
+                    if (id_Attiv_Viaggio_Congedo == 0)
                     {
-                        ltvm = dttv.ElencoTitoliViaggio(idTitoliViaggio);
+                        id_Viaggio_Congedo = dttv.Crea_Viaggi_Congedo(idTrasferimento);
+                        id_Attiv_Viaggio_Congedo = dttv.Crea_Attivazioni_Viaggi_Congedo(id_Viaggio_Congedo);
                     }
 
-                    using (dtTrasferimento dtt = new dtTrasferimento())
-                    {
-                        var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
-                        EnumStatoTraferimento statoTrasferimento = t.idStatoTrasferimento;
-                        ViewData.Add("statoTrasferimento", statoTrasferimento);
-                    }
+                    ViewData["id_Viaggio_Congedo"] = id_Viaggio_Congedo;
+                    ViewData["id_Attiv_Viaggio_Congedo"] = id_Attiv_Viaggio_Congedo;
 
-
-                    bool richiestaEseguita = dttv.richiestaEseguita(idTitoliViaggio);
-
-                    ViewData.Add("richiestaEseguita", richiestaEseguita);
-                    ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                    ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
-
-
-                    return PartialView(ltvm);
+                    lpv = dttv.GetUltimiPreventiviViaggio(id_Attiv_Viaggio_Congedo);
+                    bool admin = Utility.Amministratore();
+                    ViewBag.Amministratore = admin;
+                    return PartialView(lpv);
                 }
             }
             catch (Exception ex)
@@ -111,9 +118,58 @@ namespace NewISE.Controllers
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
                     var idTitoliViaggio = dttv.GetIdTitoliViaggio(idTrasferimento);
-
                     ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                     ViewData.Add("idTrasferimento", idTrasferimento);
+                    return PartialView();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
+        public ActionResult ElencoUploadDocumentiViaggiCongedo(decimal idViaggioCongedo)
+        {
+            try
+            {
+
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                {
+                    bool notificaEseguita = false;
+                    bool richiediNotifica = false;
+                    bool richiediAttivazione = false;
+                    bool richiediConiuge = false;
+                    bool richiediRichiedente = false;
+                    bool richiediFigli = false;
+                    bool DocTitoliViaggio = false;
+                    bool DocCartaImbarco = false;
+                    bool inLavorazione = false;
+                    bool trasfAnnullato = false;
+
+                    //var nDocCartaImbarco = dttv.GetNumDocumenti(idViaggioCongedo, EnumTipoDoc.Carta_Imbarco);
+                    //var nDocTitoliViaggio = dttv.GetNumDocumenti(idViaggioCongedo, EnumTipoDoc.Titolo_Viaggio);
+
+                    var nDocCartaImbarco = 0;// dttv.GetNumDocumenti(idViaggioCongedo, EnumTipoDoc.Carta_Imbarco);
+                    var nDocTitoliViaggio = 0;// dttv.GetNumDocumenti(idViaggioCongedo, EnumTipoDoc.Titolo_Viaggio);
+
+                    //var atv_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio);
+
+                    //dttv.SituazioneTitoliViaggio(idViaggioCongedo,
+                    //               out richiediNotifica, out richiediAttivazione,
+                    //               out richiediConiuge, out richiediRichiedente,
+                    //               out richiediFigli, out DocTitoliViaggio,
+                    //               out DocCartaImbarco, out inLavorazione, out trasfAnnullato);
+
+                    if (richiediAttivazione)
+                    {
+                        notificaEseguita = true;
+                    }
+
+                    ViewData.Add("notificaEseguita", notificaEseguita);
+                    ViewData.Add("idViaggioCongedo", idViaggioCongedo);
+                    ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
+                    ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
 
                     return PartialView();
                 }
@@ -122,6 +178,142 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
+        }
+
+        public ActionResult ElencoUploadPreventiviViaggiCongedo(decimal idViaggioCongedo,decimal idAttivViaggioCongedo, decimal idTrasferimento)
+        {
+            ViewData["id_Viaggio_Congedo"] = idViaggioCongedo;
+            ViewData["id_Attiv_Viaggio_Congedo"] = idAttivViaggioCongedo;
+            ViewData["idTrasferimento"] = idTrasferimento;
+            return PartialView();
+        }
+        
+        public ActionResult NuovoDocumentoPreventivi(decimal idTrasferimento)
+        {
+            ViewData["idTrasferimento"] = idTrasferimento;
+            try
+            {
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                {
+                    var idTitoliViaggio = dttv.GetIdTitoliViaggio(idTrasferimento);
+
+                  //  ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+                  //  ViewData.Add("idTrasferimento", idTrasferimento);
+
+                    return PartialView();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+        //
+        public ActionResult SalvaPreventivi(decimal idTrasferimento)
+        {
+            List<SelectDocVc> lDocVC = new List<SelectDocVc>();
+            SelectDocVc DocVC = new SelectDocVc();
+            decimal id_Viaggio_Congedo=0;
+            decimal id_Attiv_Viaggio_Congedo = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
+                    //throw new Exception("Simulazione errore");
+                    using (dtViaggiCongedo dtvc = new dtViaggiCongedo())
+                    {
+                        //AGGIORNAMENTO TABELLE
+                        id_Viaggio_Congedo = dtvc.Identifica_Id_UltimoViaggioCongedoDisponibile(idTrasferimento);
+                        id_Attiv_Viaggio_Congedo = dtvc.Cerca_Id_AttivazioniViaggiCongedoDisponibile(id_Viaggio_Congedo);
+                        if (id_Attiv_Viaggio_Congedo == 0)
+                        {
+                            id_Viaggio_Congedo= dtvc.Crea_Viaggi_Congedo(idTrasferimento);
+                            id_Attiv_Viaggio_Congedo = dtvc.Crea_Attivazioni_Viaggi_Congedo(id_Viaggio_Congedo);
+                        }
+                      
+                        foreach (string item in Request.Files)
+                        {
+                            HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
+
+                            DocumentiModel dm = new DocumentiModel();
+                            bool esisteFile = false;
+                            bool gestisceEstensioni = false;
+                            bool dimensioneConsentita = false;
+                            string dimensioneMaxConsentita = string.Empty;
+
+                            Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                                out dimensioneConsentita, out dimensioneMaxConsentita, EnumTipoDoc.Preventivo_Viaggio);
+
+                            if (esisteFile)
+                            {
+                                if (gestisceEstensioni == false)
+                                {
+                                    throw new Exception(
+                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                                }
+
+                                if (dimensioneConsentita)
+                                {
+                                    dtvc.SetPreventiviViaggiCongedio(ref dm, db, idTrasferimento);
+                                    DocVC = new SelectDocVc();DocVC.idDocumento = dm.idDocumenti;DocVC.DocSelezionato = false;
+                                    lDocVC.Add(DocVC);
+                                }
+                                else
+                                {
+                                    throw new Exception(
+                                        "Il documento selezionato supera la dimensione massima consentita (" +
+                                        dimensioneMaxConsentita + " Mb).");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Il documento è obbligatorio.");
+                            }
+                        }
+                        dtvc.AggiornaTabellaCorrellata(id_Attiv_Viaggio_Congedo, lDocVC, db);
+
+                    }
+                 //   db.Database.CurrentTransaction.Commit();
+                    return Json(new { });
+                }
+                catch (Exception ex)
+                {
+                    //db.Database.CurrentTransaction.Rollback();
+                    return Json(new { error = ex.Message });
+                };
+            }
+        }
+        public ActionResult LeggiViaggiCongedoPDF(decimal id)
+        {
+            byte[] Blob;
+            DocumentiModel documento = new DocumentiModel();
+            using (dtDocumenti dtd = new dtDocumenti())
+            {
+                documento = dtd.GetDatiDocumentoById(id);
+                Blob = dtd.GetDocumentoByteById(id);
+
+                Response.AddHeader("Content-Disposition", "inline; filename=" + documento.idDocumenti + documento.estensione.ToLower() + ";");
+
+                switch (documento.estensione.ToLower())
+                {
+                    case ".pdf":
+                        return File(Blob, "application/pdf");
+                    default:
+                        return File(Blob, "application/pdf");
+                }
+            }
+        }
+        public ActionResult PulsantiPreventiviDiViaggio(decimal idViaggioCongedo , decimal idAttivViaggioCongedo , decimal idTrasferimento)
+        {
+            bool admin = Utility.Amministratore();
+            ViewBag.Amministratore = admin;
+            return PartialView();
+        }
+        //GestionePulsantiNotificaAttivaAnnulla
+        public ActionResult GestionePulsantiNotificaAttivaAnnulla(decimal idTrasferimento)
+        {
+            return PartialView();
         }
     }
 }

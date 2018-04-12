@@ -1,0 +1,93 @@
+﻿@using NewISE.Models.DBModel
+
+@{
+    // decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
+    decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
+    bool notificaEseguita = Convert.ToBoolean(ViewData["notificaEseguita"]);
+    decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+}
+<tr>
+    <td style="font-weight:bold; padding-bottom: 10px;padding-right: 10px;">
+       @*Allega Preventivi di Viaggio:*@
+    </td>
+    <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
+        @*@if (nDocCartaImbarco > 0)
+        {*@
+            @*<a href="#" onclick="NuovoDocumentoPreventivi();" id="linkElencoDocPreventivi">
+                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Preventivo di Viaggio" />
+            </a>*@
+            <input type="button" value="Allega Preventivi di Viaggio" id="linkElencoDocPreventivi" class="btn-danger" onclick="NuovoDocumentoPreventivi();" />
+        <input type="button" value="Nuovo" id="linkElencoDocPreventivi" class="btn-danger" onclick="" />
+        @*}
+        else
+        {
+            <a href="#" onclick="NuovoDocumentoPreventivi();" id="linkElencoDocPreventivi">
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
+            </a>
+        }*@
+    </td>
+</tr>
+<div class="modal fade " id="NewDocPreventiviModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="NewPreventiviModelLabel">Documenti</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="NewViewPreventiviDocumento">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function NuovoDocumentoPreventivi() {
+        //debugger;
+        var rotta = "/ViaggiCongedo/NuovoDocumentoPreventivi";
+        var TipoDocumento = parseInt(@tipoDoc);
+        var idTrasferimento = parseInt(@idTrasferimento);
+       @*// var Parentela = parseInt(@parentela);*@
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+                $("#NewDocPreventiviModal").modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#NewViewPreventiviDocumento").empty();
+                $("#NewViewPreventiviDocumento").html(result);
+
+                var titoloPagina = $("#titoloPagina").val();
+                $("#NewPreventiviModelLabel").empty();
+                $("#NewPreventiviModelLabel").html('Allega Preventivi');
+            },
+            complete: {
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+</script>
