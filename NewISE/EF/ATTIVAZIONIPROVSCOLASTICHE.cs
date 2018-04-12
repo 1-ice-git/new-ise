@@ -29,7 +29,7 @@ namespace NewISE.EF
         public Nullable<System.DateTime> DATAATTIVAZIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal FK_IDPROVSCOLASTICHE { get; set; }
+        public Nullable<decimal> FK_IDPROVSCOLASTICHE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIPROVSCOLASTICHE> ATTIVAZIONIPROVSCOLASTICHE1 { get; set; }

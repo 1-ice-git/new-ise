@@ -189,7 +189,7 @@
           <Property Name="DATAATTIVAZIONE" Type="date" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="FK_IDPROVSCOLASTICHE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FK_IDPROVSCOLASTICHE" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="ATTIVAZIONIVIAGGICONGEDO">
           <Key>
@@ -548,6 +548,7 @@
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="FK_IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="ELABMAB">
           <Key>
@@ -1917,7 +1918,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_APS_APS">
-          <End Role="ATTIVAZIONIPROVSCOLASTICHE" Type="Self.ATTIVAZIONIPROVSCOLASTICHE" Multiplicity="1">
+          <End Role="ATTIVAZIONIPROVSCOLASTICHE" Type="Self.ATTIVAZIONIPROVSCOLASTICHE" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="ATTIVAZIONIPROVSCOLASTICHE1" Type="Self.ATTIVAZIONIPROVSCOLASTICHE" Multiplicity="*" />
@@ -2725,6 +2726,20 @@
             </Principal>
             <Dependent Role="TEORICI">
               <PropertyRef Name="IDELABIND" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_EIS_EIS">
+          <End Role="ELABINDSISTEMAZIONE" Type="Self.ELABINDSISTEMAZIONE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABINDSISTEMAZIONE1" Type="Self.ELABINDSISTEMAZIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABINDSISTEMAZIONE">
+              <PropertyRef Name="IDINDSISTLORDA" />
+            </Principal>
+            <Dependent Role="ELABINDSISTEMAZIONE1">
+              <PropertyRef Name="FK_IDINDSISTLORDA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5501,6 +5516,10 @@
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
             <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
+          <AssociationSet Name="R_EIS_EIS" Association="Self.R_EIS_EIS">
+            <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
+            <End Role="ELABINDSISTEMAZIONE1" EntitySet="ELABINDSISTEMAZIONE" />
+          </AssociationSet>
           <AssociationSet Name="R_EIS_ETE" Association="Self.R_EIS_ETE">
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
             <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
@@ -6561,6 +6580,10 @@
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
           </AssociationSet>
+          <AssociationSet Name="R_EIS_EIS" Association="DBISEPRO.R_EIS_EIS">
+            <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
+            <End Role="ELABINDSISTEMAZIONE1" EntitySet="ELABINDSISTEMAZIONE" />
+          </AssociationSet>
           <AssociationSet Name="R_EIS_ETE" Association="DBISEPRO.R_EIS_ETE">
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
             <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
@@ -7238,7 +7261,7 @@
           <Property Name="DATAATTIVAZIONE" Type="DateTime" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="FK_IDPROVSCOLASTICHE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="FK_IDPROVSCOLASTICHE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONIPROVSCOLASTICHE1" Relationship="DBISEPRO.R_APS_APS" FromRole="ATTIVAZIONIPROVSCOLASTICHE" ToRole="ATTIVAZIONIPROVSCOLASTICHE1" />
           <NavigationProperty Name="ATTIVAZIONIPROVSCOLASTICHE2" Relationship="DBISEPRO.R_APS_APS" FromRole="ATTIVAZIONIPROVSCOLASTICHE1" ToRole="ATTIVAZIONIPROVSCOLASTICHE" />
           <NavigationProperty Name="PROVVIDENZESCOLASTICHE" Relationship="DBISEPRO.R_PS_APS" FromRole="ATTIVAZIONIPROVSCOLASTICHE" ToRole="PROVVIDENZESCOLASTICHE" />
@@ -7582,6 +7605,9 @@
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="FK_IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ELABINDSISTEMAZIONE1" Relationship="DBISEPRO.R_EIS_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABINDSISTEMAZIONE1" />
+          <NavigationProperty Name="ELABINDSISTEMAZIONE2" Relationship="DBISEPRO.R_EIS_EIS" FromRole="ELABINDSISTEMAZIONE1" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISEPRO.R_EIS_ETE" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABTRASPEFFETTI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_EIS_T" FromRole="ELABINDSISTEMAZIONE" ToRole="TEORICI" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_PS_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="PRIMASITEMAZIONE" />
@@ -9094,7 +9120,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_APS_APS">
-          <End Type="DBISEPRO.ATTIVAZIONIPROVSCOLASTICHE" Role="ATTIVAZIONIPROVSCOLASTICHE" Multiplicity="1">
+          <End Type="DBISEPRO.ATTIVAZIONIPROVSCOLASTICHE" Role="ATTIVAZIONIPROVSCOLASTICHE" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISEPRO.ATTIVAZIONIPROVSCOLASTICHE" Role="ATTIVAZIONIPROVSCOLASTICHE1" Multiplicity="*" />
@@ -9688,6 +9714,20 @@
             </Principal>
             <Dependent Role="ELABINDENNITA">
               <PropertyRef Name="IDREGOLA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_EIS_EIS">
+          <End Type="DBISEPRO.ELABINDSISTEMAZIONE" Role="ELABINDSISTEMAZIONE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.ELABINDSISTEMAZIONE" Role="ELABINDSISTEMAZIONE1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABINDSISTEMAZIONE">
+              <PropertyRef Name="IDINDSISTLORDA" />
+            </Principal>
+            <Dependent Role="ELABINDSISTEMAZIONE1">
+              <PropertyRef Name="FK_IDINDSISTLORDA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11407,6 +11447,7 @@
           <EntitySetMapping Name="ELABINDSISTEMAZIONE">
             <EntityTypeMapping TypeName="DBISEPRO.ELABINDSISTEMAZIONE">
               <MappingFragment StoreEntitySet="ELABINDSISTEMAZIONE">
+                <ScalarProperty Name="FK_IDINDSISTLORDA" ColumnName="FK_IDINDSISTLORDA" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />

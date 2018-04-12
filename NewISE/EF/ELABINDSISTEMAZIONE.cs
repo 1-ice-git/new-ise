@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ELABINDSISTEMAZIONE()
         {
+            this.ELABINDSISTEMAZIONE1 = new HashSet<ELABINDSISTEMAZIONE>();
             this.ELABTRASPEFFETTI = new HashSet<ELABTRASPEFFETTI>();
             this.TEORICI = new HashSet<TEORICI>();
         }
@@ -36,7 +37,11 @@ namespace NewISE.EF
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ELABORATO { get; set; }
         public bool ANNULLATO { get; set; }
+        public Nullable<decimal> FK_IDINDSISTLORDA { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE1 { get; set; }
+        public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
