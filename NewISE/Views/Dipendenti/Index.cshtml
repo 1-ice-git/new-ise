@@ -73,6 +73,7 @@
 
                 <li class="disabled" id="mnIndennità"><a id="lkIndennità" disabled href="#tabIndennita" data-toggle="tab">Indennità</a></li>
                 <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#RiepilogoVoci" data-toggle="tab">Riepilogo Voci</a></li>
+                <li class="disabled" id="mnProvvidenzeScolastiche"><a id="lkProvvidenzeScolastiche" disabled href="#tabProvvidenzeScolastiche" data-toggle="tab" onclick="ProvvidenzeScolastiche();">Provv.</a></li>
             </ul>
         </div>
         <div id="tabContenuti" class="tab-content">
@@ -85,6 +86,8 @@
             <div class="tab-pane" id="tabRichiamo"></div>
             <div class="tab-pane" id="tabIndennita"></div>
             <div class="tab-pane" id="RiepilogoVoci"></div>
+            <div class="tab-pane" id="tabProvvidenzeScolastiche"></div>
+            
         </div>
     </div>
 </div>
@@ -251,9 +254,8 @@
         });
     }
 
-
     function Sospensione() {
-      //  debugger;
+        //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         rotta = "/Sospensione/AttivitaSospensione";
 
@@ -317,6 +319,43 @@
             },
             complete: function () {
                 $("#hMenuInLavorazione").val("mnRichiamo");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function ProvvidenzeScolastiche() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/ProvvidenzeScolastiche/AttivitaProvvidenze";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabProvvidenzeScolastiche").empty();
+                $("#tabProvvidenzeScolastiche").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnProvvidenzeScolastiche");
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -470,6 +509,9 @@
             $("#lkRiepilogoVoci").attr("disabled", "disabled");
             $("#mnRiepilogoVoci").addClass("disabled");
 
+            $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
+            $("#mnProvvidenzeScolastiche").addClass("disabled");
+            
         }
 
     }
@@ -551,6 +593,18 @@
         $("#mnRichiamo").removeClass("disabled");
         $('#lkRichiamo').attr('onClick', 'Richiamo();');
 
+
+        if (MenuProvvidenzeScolastiche(idTrasferimento) == 1) {
+            $("#lkProvvidenzeScolastiche").removeAttr("disabled");
+            $("#mnProvvidenzeScolastiche").removeClass("disabled");
+            $('#lkProvvidenzeScolastiche').attr('onClick', 'ProvvidenzeScolastiche();');
+        }
+        else {
+            $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
+            $("#mnProvvidenzeScolastiche").addClass("disabled");
+            $("#lkProvvidenzeScolastiche").removeAttr("onClick");
+        }
+
     }
 
     function SvuotaTab() {
@@ -565,7 +619,8 @@
         $("#tabRichiamo").empty();
         $("#tabIndennita").empty();
         $("#RiepilogoVoci").empty();
-
+        $("#tabProvvidenzeScolastiche").empty();
+        
     }
 
     function MenuGestioneTrasferimento(idTrasferimento) {
@@ -713,7 +768,6 @@
 
         return valoreRitorno;
     }
-
 
     function MenuSospensione(idTrasferimento) {
         //debugger;
@@ -899,5 +953,54 @@
 
         });
     }
-    
+   
+    function MenuProvvidenzeScolastiche(idTrasferimento) {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/VerificaProvvidenze";
+
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    // debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaProvvidenze != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
 </script>
