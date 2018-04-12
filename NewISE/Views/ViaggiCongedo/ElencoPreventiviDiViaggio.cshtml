@@ -2,137 +2,99 @@
 @model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
 
 @{
-    decimal idViaggioCongedo = Convert.ToDecimal(ViewData["idViaggioCongedo"]);
+   // decimal idViaggioCongedo = Convert.ToDecimal(ViewData["idViaggioCongedo"]);
     //decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
     //bool richiestaEseguita = Convert.ToBoolean(ViewData["richiestaEseguita"]);
     //EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    decimal id_Viaggio_Congedo= Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]) ;
+    decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);   
 }
 
 
 <p>   
     <hr />
     <div class="row">
-        <div class="col-xs-5" style="margin-top:5px;left:300px">
+        <div class="col-xs-5" style="margin-top:5px;left:10px">
             <table id="tabUploadPreventiviViaggio">
-                @Html.Action("ElencoUploadPreventiviViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = idViaggioCongedo, idTrasferimento=idTrasferimento })
+                @Html.Action("ElencoUploadPreventiviViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo= id_Attiv_Viaggio_Congedo, idTrasferimento=idTrasferimento })
             </table>
         </div>
     </div>
-    <div style="padding-top: 10px;">
-        <table id="tabElencoPreventiviViaggio" class="table-striped" cellspacing="0">
-            <thead>
-                <tr>
-                    <th class="text-center">
-                        @Html.DisplayNameFor(model => model.NomeFile)
-                    </th>
-                    <th class="text-center">
-                       Visualizza
-                    </th>
-                    <th class="text-center">
-                      Operazioni
-                    </th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="text-center">
-                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFile)</span>
-                        </td>
-                        <td style="text-align: center;">
-                            <a href="@Url.RouteUrl("LeggiViaggiCongedoPDF", new { id = @item.idDocumento })" target="_blank">
-                                <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
-                            </a>
-                        </td>
-                        @if(admin)
-                         {   
-                            <td class="text-center">
-                                <input type="radio" name='abc' value='@item.idAttivazioneVC'>
-                            </td>
-                          }
-                            else
-                            {
-                                <td  class="text-center">
-                                    <input disabled type="radio" name='abc' value='@item.idAttivazioneVC'>
-                                </td>
-                            }
-                    </tr> 
-                }
-            </tbody>
-        </table>
-    </div>
+    <div  class="row">
+            <div id="tabListaPreventiviDiViaggi" class="pull-left" style="margin-top:5px;margin-left:40px;width:1110px">
+                <table >
+                    @Html.Action("ListaPreventiviDiViaggio", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento })
+                </table>
+            </div>
+     </div>
 
-   
+        <div class="row">
+            <div id="tabPulsantiPreventiviDiViaggi" style="margin-top:5px;margin-left:40px;width:500px">
+                @*<div class="col-md-5" style="margin-top:10px; left:150px">
+                    <table id="tabUploadDocumentiViaggiCongedo">
+                        @Html.Action("ElencoUploadDocumentiViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo })
+                    </table>
+                </div>
+                <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+                    <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Notifica richiesta
+                    </button>
 
-    <div class="row">
-        <div class="col-md-5" style="margin-top:10px; left:150px">
-            <table id="tabUploadDocumentiViaggiCongedo">
-                @Html.Action("ElencoUploadDocumentiViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = idViaggioCongedo })
-            </table>
-        </div>
-        <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModalNotificaRichiesta();">
-                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                Notifica richiesta
-            </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Attiva preventivo
+                    </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam" onclick="ModalAttivaRichiesta(); ">
-                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                Attiva preventivo
-            </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+                </div>*@
+                <table>
+                    @Html.Action("PulsantiPreventiviDiViaggio", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento })
+                </table>
+            </div>
+            </div>
+        <script type="text/javascript">
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaMagFam" onclick="ModalAnnullaRichiesta();">
-                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                Annulla richiesta
-            </button>
-        </div>
-    </div>
+           
+            function TabElencoPreventivi() {
+                //debugger;
+                var rotta = "/ViaggiCongedo/ListaPreventiviDiViaggio";
+                var idTrasferimento = @idTrasferimento;
+                //   var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
 
-    <script type="text/javascript">
-
-        $("#tabElencoPreventiviViaggio").DataTable({
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                $.ajax({
+                    url: rotta,
+                    type: "POST", //Le info testuali saranno passate in POST
+                    data: { idTrasferimento: idTrasferimento },
+                    dataType: 'html',
+                    async: false,
+                    beforeSend: function () {
+                        //debugger;
+                        VerificaAutenticazione();
+                        //$('#inviaDocModal').modal('show');
+                      //  Blocca();
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#tabListaPreventiviDiViaggi").empty();
+                        $("#tabListaPreventiviDiViaggi").html(result);
+                    },
+                    error: function (error) {
+                        //debugger;
+                   //     Sblocca();
+                        var msg = error.responseText;
+                        ErroreElaborazioneAjax(msg);
+                    }
+                });
             }
-        },
-        //"info": false,
-        "lengthChange": false,
-        "pageLength": 5,
-        //"searching": false,
-        //"paging": false,
-        //"bJQueryUI": true,
-        //"sDom": 'lfrtip',
-        //"order": [[4, "desc"]]
-    });
 
 
-   
 
-  
-
-    </script>
+        </script>
 
 

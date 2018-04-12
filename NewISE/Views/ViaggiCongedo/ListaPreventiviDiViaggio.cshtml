@@ -1,0 +1,118 @@
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    decimal id_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]);
+    decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+}
+<div style="padding-top: 10px;left:20px">
+    <table id="tabElencoPreventiviViaggio" class="table">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.NomeFile)
+                </th>
+                <th class="text-center">
+                    Visualizza
+                </th>
+                <th class="text-center">
+                    Operazioni
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFile)</span>
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="@Url.RouteUrl("LeggiViaggiCongedoPDF", new { id = @item.idDocumento })" target="_blank">
+                            <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
+                        </a>
+                    </td>
+                    @if (admin)
+                    {
+                        <td class="text-center">
+                            <input type="radio" onclick="AttivarePreventivo()" id="attivare"  name='attivare' value='@item.idDocumento'>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text-center">
+                            <input disabled type="radio" name='attivare' value='@item.idDocumento'>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<script type="text/javascript">
+    $("#tabElencoPreventiviViaggio").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        //"info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        //"searching": false,
+        //"paging": false,
+        //"bJQueryUI": true,
+        //"sDom": 'lfrtip',
+        //"order": [[4, "desc"]]
+    });
+
+
+    $("#NewDocPreventiviModal").on("hidden.bs.modal", function () {
+        //debugger;
+        TabElencoPreventivi();
+        @*ElencoUploadDocumentiTV();
+        ElencoDocumentiTV(@idTipoDocumento, @idTitoliViaggio);*@
+        });
+
+    function AttivarePreventivo() {
+      //  debugger;
+        var abilitato_ = $('input:radio[name="attivare"]:checked').val();
+        var idTrasferimento=@idTrasferimento;
+        //var chk = false;
+        //if (abilitato_ == "1") {
+        //    chk = true;
+        //}
+        //alert(abilitato_);
+        //$("#btAttivaPreventivi").removeAttr("disabled");
+      //  $("#btAttivaPreventivi").attr('disabled','disabled');
+        $("#btAttivaPreventivi").prop('disabled', false);
+        $("#btAttivaPreventivi").removeClass('disabled')
+        //var rotta = "/ViaggiCongedo/GestionePulsantiNotificaAttivaAnnulla";
+
+    }
+        
+</script>

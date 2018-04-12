@@ -10,14 +10,16 @@
 }
 <tr>
     <td style="font-weight:bold; padding-bottom: 10px;padding-right: 10px;">
-       Allega Preventivi di Viaggio:
+       @*Allega Preventivi di Viaggio:*@
     </td>
     <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
         @*@if (nDocCartaImbarco > 0)
         {*@
-            <a href="#" onclick="NuovoDocumentoPreventivi();" id="linkElencoDocPreventivi">
+            @*<a href="#" onclick="NuovoDocumentoPreventivi();" id="linkElencoDocPreventivi">
                 <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Preventivo di Viaggio" />
-            </a>
+            </a>*@
+            <input type="button" value="Allega Preventivi di Viaggio" id="linkElencoDocPreventivi" class="btn-danger" onclick="NuovoDocumentoPreventivi();" />
+        <input type="button" value="Nuovo" id="linkElencoDocPreventivi" class="btn-danger" onclick="" />
         @*}
         else
         {

@@ -1,0 +1,39 @@
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
+
+@{
+    // decimal idViaggioCongedo = Convert.ToDecimal(ViewData["idViaggioCongedo"]);
+    //decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
+    //bool richiestaEseguita = Convert.ToBoolean(ViewData["richiestaEseguita"]);
+    //EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    decimal id_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]);
+    decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+}
+<div class="row">
+    <div class="col-md-5" style="margin-top:5px; left:100px"><br />
+        <table id="tabUploadDocumentiViaggiCongedo">
+            @Html.Action("ElencoUploadDocumentiViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo })
+        </table>
+    </div>
+
+    <div class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
+        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Notifica richiesta
+        </button>
+        @if(@admin)
+       { 
+            <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Attiva preventivo
+            </button>
+
+            <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Annulla richiesta
+            </button>
+        }
+    </div>
+</div>

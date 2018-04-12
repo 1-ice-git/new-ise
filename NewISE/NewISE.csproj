@@ -3473,6 +3473,8 @@
     <Content Include="Views\ViaggiCongedo\ElencoUploadDocumentiViaggiCongedo.cshtml" />
     <Content Include="Views\ViaggiCongedo\ElencoUploadPreventiviViaggiCongedo.cshtml" />
     <Content Include="Views\ViaggiCongedo\NuovoDocumentoPreventivi.cshtml" />
+    <Content Include="Views\ViaggiCongedo\ListaPreventiviDiViaggio.cshtml" />
+    <Content Include="Views\ViaggiCongedo\PulsantiPreventiviDiViaggio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

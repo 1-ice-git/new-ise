@@ -67,12 +67,40 @@ namespace NewISE.Controllers
         public ActionResult ElencoPreventiviDiViaggio(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
+           // List<ViaggioCongedoModel> lpv = new List<ViaggioCongedoModel>();
+            try
+            {
+               return PartialView();
+              
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
+        public ActionResult ListaPreventiviDiViaggio(decimal idTrasferimento)
+        {
+            ViewData["idTrasferimento"] = idTrasferimento;
             List<ViaggioCongedoModel> lpv = new List<ViaggioCongedoModel>();
             try
             {
                 using (dtViaggiCongedo dttv = new dtViaggiCongedo())
                 {
-                    lpv = dttv.GetUltimiPreventiviViaggio(idTrasferimento);
+                    //AGGIORNAMENTO TABELLE
+                    decimal id_Viaggio_Congedo = dttv.Identifica_Id_UltimoViaggioCongedoDisponibile(idTrasferimento);
+                    decimal id_Attiv_Viaggio_Congedo = dttv.Cerca_Id_AttivazioniViaggiCongedoDisponibile(id_Viaggio_Congedo);
+
+                    if (id_Attiv_Viaggio_Congedo == 0)
+                    {
+                        id_Viaggio_Congedo = dttv.Crea_Viaggi_Congedo(idTrasferimento);
+                        id_Attiv_Viaggio_Congedo = dttv.Crea_Attivazioni_Viaggi_Congedo(id_Viaggio_Congedo);
+                    }
+
+                    ViewData["id_Viaggio_Congedo"] = id_Viaggio_Congedo;
+                    ViewData["id_Attiv_Viaggio_Congedo"] = id_Attiv_Viaggio_Congedo;
+
+                    lpv = dttv.GetUltimiPreventiviViaggio(id_Attiv_Viaggio_Congedo);
                     bool admin = Utility.Amministratore();
                     ViewBag.Amministratore = admin;
                     return PartialView(lpv);
@@ -90,10 +118,8 @@ namespace NewISE.Controllers
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
                     var idTitoliViaggio = dttv.GetIdTitoliViaggio(idTrasferimento);
-
                     ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                     ViewData.Add("idTrasferimento", idTrasferimento);
-
                     return PartialView();
                 }
             }
@@ -154,9 +180,10 @@ namespace NewISE.Controllers
             }
         }
 
-        public ActionResult ElencoUploadPreventiviViaggiCongedo(decimal idViaggioCongedo,decimal idTrasferimento)
+        public ActionResult ElencoUploadPreventiviViaggiCongedo(decimal idViaggioCongedo,decimal idAttivViaggioCongedo, decimal idTrasferimento)
         {
-            ViewData["idViaggioCongedo"] = idViaggioCongedo;
+            ViewData["id_Viaggio_Congedo"] = idViaggioCongedo;
+            ViewData["id_Attiv_Viaggio_Congedo"] = idAttivViaggioCongedo;
             ViewData["idTrasferimento"] = idTrasferimento;
             return PartialView();
         }
@@ -186,6 +213,8 @@ namespace NewISE.Controllers
         {
             List<SelectDocVc> lDocVC = new List<SelectDocVc>();
             SelectDocVc DocVC = new SelectDocVc();
+            decimal id_Viaggio_Congedo=0;
+            decimal id_Attiv_Viaggio_Congedo = 0;
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
@@ -194,10 +223,18 @@ namespace NewISE.Controllers
                     //throw new Exception("Simulazione errore");
                     using (dtViaggiCongedo dtvc = new dtViaggiCongedo())
                     {
+                        //AGGIORNAMENTO TABELLE
+                        id_Viaggio_Congedo = dtvc.Identifica_Id_UltimoViaggioCongedoDisponibile(idTrasferimento);
+                        id_Attiv_Viaggio_Congedo = dtvc.Cerca_Id_AttivazioniViaggiCongedoDisponibile(id_Viaggio_Congedo);
+                        if (id_Attiv_Viaggio_Congedo == 0)
+                        {
+                            id_Viaggio_Congedo= dtvc.Crea_Viaggi_Congedo(idTrasferimento);
+                            id_Attiv_Viaggio_Congedo = dtvc.Crea_Attivazioni_Viaggi_Congedo(id_Viaggio_Congedo);
+                        }
+                      
                         foreach (string item in Request.Files)
                         {
                             HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
-
 
                             DocumentiModel dm = new DocumentiModel();
                             bool esisteFile = false;
@@ -233,17 +270,16 @@ namespace NewISE.Controllers
                             {
                                 throw new Exception("Il documento è obbligatorio.");
                             }
-
                         }
-                        //AGGIORNAMENTO TABELLE
-                        dtvc.AggiornaTabelleCorrellate(idTrasferimento, lDocVC, db);                        
+                        dtvc.AggiornaTabellaCorrellata(id_Attiv_Viaggio_Congedo, lDocVC, db);
+
                     }
-                    db.Database.CurrentTransaction.Commit();
+                 //   db.Database.CurrentTransaction.Commit();
                     return Json(new { });
                 }
                 catch (Exception ex)
                 {
-                    db.Database.CurrentTransaction.Rollback();
+                    //db.Database.CurrentTransaction.Rollback();
                     return Json(new { error = ex.Message });
                 };
             }
@@ -267,6 +303,17 @@ namespace NewISE.Controllers
                         return File(Blob, "application/pdf");
                 }
             }
+        }
+        public ActionResult PulsantiPreventiviDiViaggio(decimal idViaggioCongedo , decimal idAttivViaggioCongedo , decimal idTrasferimento)
+        {
+            bool admin = Utility.Amministratore();
+            ViewBag.Amministratore = admin;
+            return PartialView();
+        }
+        //GestionePulsantiNotificaAttivaAnnulla
+        public ActionResult GestionePulsantiNotificaAttivaAnnulla(decimal idTrasferimento)
+        {
+            return PartialView();
         }
     }
 }
