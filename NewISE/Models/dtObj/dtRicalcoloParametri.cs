@@ -30,6 +30,7 @@ namespace NewISE.Models.dtObj
                     db.CANONEMAB.Where(
                         a =>
                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.IDVALUTA == tfr.IDVALUTA &&
                             a.DATAFINEVALIDITA >= tfr.DATAINIZIOVALIDITA &&
                             a.DATAINIZIOVALIDITA <= tfr.DATAFINEVALIDITA && a.IDVALUTA == tfr.IDVALUTA)
                         .OrderBy(a => a.DATAINIZIOVALIDITA)
@@ -148,6 +149,7 @@ namespace NewISE.Models.dtObj
                     db.CONIUGE.Where(
                         a =>
                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.IDTIPOLOGIACONIUGE == pmc.IDTIPOLOGIACONIUGE &&
                             a.ATTIVAZIONIMAGFAM.Where(
                                 b =>
                                     b.ANNULLATO == false && b.RICHIESTAATTIVAZIONE == true &&
@@ -201,6 +203,7 @@ namespace NewISE.Models.dtObj
 
 
                 var lf = db.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                             a.IDTIPOLOGIAFIGLIO == pmf.IDTIPOLOGIAFIGLIO &&
                                              a.ATTIVAZIONIMAGFAM.Where(
                                                  b =>
                                                      b.ANNULLATO == false && b.RICHIESTAATTIVAZIONE == true &&
@@ -209,6 +212,7 @@ namespace NewISE.Models.dtObj
                                              a.DATAINIZIOVALIDITA <= pmf.DATAFINEVALIDITA)
                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                     .ToList();
+
 
                 if (lf?.Any() ?? false)
                 {
@@ -304,11 +308,11 @@ namespace NewISE.Models.dtObj
                 var pd = db.PERCENTUALEDISAGIO.Find(idPercDisagio);
                 var item = db.Entry<PERCENTUALEDISAGIO>(pd);
 
-
                 var lTrsferimento =
                     db.TRASFERIMENTO.Where(
                         a =>
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                            a.IDUFFICIO == pd.IDUFFICIO &&
                             a.DATARIENTRO >= pd.DATAINIZIOVALIDITA && a.DATAPARTENZA <= pd.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
@@ -335,7 +339,7 @@ namespace NewISE.Models.dtObj
 
                     if (i <= 0)
                     {
-                        throw new Exception("Errore nella fase di asscoiazione dell'indennità al TFR.");
+                        throw new Exception("Errore nella fase di associazione della percentuale di disagio alla tabella indennità.");
                     }
                 }
 
@@ -604,6 +608,11 @@ namespace NewISE.Models.dtObj
                     db.TRASFERIMENTO.Where(
                         a =>
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                            a.UFFICI.VALUTAUFFICIO.Any(
+                                b =>
+                                    b.ANNULLATO == false && b.IDVALUTA == tfr.IDVALUTA &&
+                                    b.DATAFINEVALIDITA >= tfr.DATAINIZIOVALIDITA &&
+                                    b.DATAINIZIOVALIDITA <= tfr.DATAFINEVALIDITA) &&
                             a.DATARIENTRO >= tfr.DATAINIZIOVALIDITA && a.DATAPARTENZA <= tfr.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
@@ -650,11 +659,15 @@ namespace NewISE.Models.dtObj
                 var pm = db.PERCENTUALEMAB.Find(idPerceMAB);
                 var item = db.Entry<PERCENTUALEMAB>(pm);
 
-
                 var lvmab =
                     db.VARIAZIONIMAB.Where(
                         a =>
                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO.IDUFFICIO == pm.IDUFFICIO &&
+                            a.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO.DIPENDENTI.LIVELLIDIPENDENTI.Any(
+                                b =>
+                                    b.ANNULLATO == false && b.DATAFINEVALIDITA >= pm.DATAINIZIOVALIDITA &&
+                                    b.DATAINIZIOVALIDITA <= pm.DATAFINEVALIDITA && b.IDLIVELLO == pm.IDLIVELLO) &&
                             a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA && a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAINIZIOMAB)
                         .ToList();

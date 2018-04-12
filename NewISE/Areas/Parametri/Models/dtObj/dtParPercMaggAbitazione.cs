@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -16,7 +17,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             GC.SuppressFinalize(this);
         }
-         public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione()
+        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione()
         {
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
 
@@ -70,7 +71,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -107,7 +108,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -128,7 +129,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione(decimal idLivello, decimal idUfficio,bool escludiAnnullati = false)
+        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione(decimal idLivello, decimal idUfficio, bool escludiAnnullati = false)
         {
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
             try
@@ -136,10 +137,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     List<PERCENTUALEMAB> lib = new List<PERCENTUALEMAB>();
-                    if(escludiAnnullati==true)
-                        lib= db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.IDUFFICIO==idUfficio && a.ANNULLATO == false).ToList();
+                    if (escludiAnnullati == true)
+                        lib = db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.IDUFFICIO == idUfficio && a.ANNULLATO == false).ToList();
                     else
-                        lib= db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.IDUFFICIO==idUfficio).ToList();
+                        lib = db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.IDUFFICIO == idUfficio).ToList();
 
                     libm = (from e in lib
                             select new PercMaggAbitazModel()
@@ -148,7 +149,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idLivello = e.IDLIVELLO,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -376,10 +377,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<PERCENTUALEMAB> libNew = new List<PERCENTUALEMAB>();
 
-            PERCENTUALEMAB ibPrecedente = new PERCENTUALEMAB();
+            //PERCENTUALEMAB ibPrecedente = new PERCENTUALEMAB();
             PERCENTUALEMAB ibNew1 = new PERCENTUALEMAB();
             PERCENTUALEMAB ibNew2 = new PERCENTUALEMAB();
-            List<PERCENTUALEMAB> lArchivioIB = new List<PERCENTUALEMAB>();
+            //List<PERCENTUALEMAB> lArchivioIB = new List<PERCENTUALEMAB>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -396,8 +397,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal PercentualeFirst = Convert.ToDecimal(lista[3]);
-                            decimal PercentualeRespFirst = Convert.ToDecimal(lista[4]);
+                            //decimal PercentualeFirst = Convert.ToDecimal(lista[3]);
+                            //decimal PercentualeRespFirst = Convert.ToDecimal(lista[4]);
 
                             ibNew1 = new PERCENTUALEMAB()
                             {
@@ -435,6 +436,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db);
+                            }
+
                             db.Database.CurrentTransaction.Commit();
                         }
                         ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
@@ -448,8 +454,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DateTime dataInizioLast = Convert.ToDateTime(lista[1]);
                                 DateTime dataFineLast = Convert.ToDateTime(lista[2]);
                                 // decimal aliquotaLast = Convert.ToDecimal(lista[3]);
-                                decimal PercentualeLast = Convert.ToDecimal(lista[3]);
-                                decimal PercentualeRespLast = Convert.ToDecimal(lista[4]);
+                                //decimal PercentualeLast = Convert.ToDecimal(lista[3]);
+                                //decimal PercentualeRespLast = Convert.ToDecimal(lista[4]);
 
                                 ibNew1 = new PERCENTUALEMAB()
                                 {
@@ -500,6 +506,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pmab in libNew)
+                                    {
+                                        dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -567,6 +583,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pmab in libNew)
+                                    {
+                                        dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -576,6 +602,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             //Attenzione qui se la lista non contiene nessun elemento
                             //significa che non esiste nessun elemento corrispondentemente al livello selezionato
                             lista = dtal.RestituisciLaRigaMassima(ibm.idLivello, ibm.idUfficio);
+
                             if (lista.Count == 0)
                             {
                                 ibNew1 = new PERCENTUALEMAB()
@@ -593,6 +620,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.PERCENTUALEMAB.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+
+                                    dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db);
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -624,6 +659,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEMAB.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+
+                                        dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db);
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -655,6 +698,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEMAB.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var pmab in libNew)
+                                        {
+                                            dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db);
+                                        }
+
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -772,7 +826,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         //        }
         //    }
         //}
-       public void DelMaggiorazioneAbitazione(decimal IDPERCMAB)
+        public void DelMaggiorazioneAbitazione(decimal IDPERCMAB)
         {
             PERCENTUALEMAB precedenteIB = new PERCENTUALEMAB();
             PERCENTUALEMAB delIB = new PERCENTUALEMAB();
@@ -782,7 +836,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 try
                 {
                     db.Database.BeginTransaction();
+
                     var lib = db.PERCENTUALEMAB.Where(a => a.IDPERCMAB == IDPERCMAB);
+
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
@@ -794,7 +850,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         var NuovoPrecedente = new PERCENTUALEMAB()
                         {
                             IDUFFICIO = precedenteIB.IDUFFICIO,
-                            IDLIVELLO=precedenteIB.IDLIVELLO,
+                            IDLIVELLO = precedenteIB.IDLIVELLO,
                             DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                             DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                             //ALIQUOTA = precedenteIB.ALIQUOTA,
@@ -804,12 +860,22 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.PERCENTUALEMAB.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+
+                            dtrp.AssociaMAB_VMAB(NuovoPrecedente.IDPERCMAB, db);
+
+                        }
+
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione percentuale maggiorazione abitazione.", "PERCENTUALEMAB", IDPERCMAB);
+                        }
                     }
-                    db.SaveChanges();
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "PERCENTUALEMAB", IDPERCMAB);
-                    }
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -827,7 +893,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             if (fm != null)
             {
-                DateTime d = DataInizioMinimaNonAnnullataMaggAbitazione(fm.idUfficio,fm.idUfficio);
+                DateTime d = DataInizioMinimaNonAnnullataMaggAbitazione(fm.idUfficio, fm.idUfficio);
                 if (fm.dataInizioValidita < d)
                 {
                     vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di Base ({0}).", d.ToShortDateString()));

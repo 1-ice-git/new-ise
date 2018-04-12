@@ -559,6 +559,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             RIDUZIONI precedenteIB = new RIDUZIONI();
             RIDUZIONI delIB = new RIDUZIONI();
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
@@ -584,12 +585,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.RIDUZIONI.Add(NuovoPrecedente);
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaCoefficienteRichiamo_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db);
+                            dtrp.AssociaIndennitaBase_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db);
+                            dtrp.AssociaIndennitaSistemazione_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db);
+                        }
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale Maggiorazione figli.", "PERCENTUALE", idMagCon);
+                        }
                     }
-                    db.SaveChanges();
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale Maggiorazione figli.", "PERCENTUALE", idMagCon);
-                    }
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)

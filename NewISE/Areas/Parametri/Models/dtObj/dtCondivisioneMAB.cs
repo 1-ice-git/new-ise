@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -31,7 +32,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idPercCond = e.IDPERCCOND,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 Percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO
@@ -80,7 +81,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     List<PERCENTUALECONDIVISIONE> lib = new List<PERCENTUALECONDIVISIONE>();
                     if (escludiAnnullati == true)
-                        lib = db.PERCENTUALECONDIVISIONE.Where(a =>  a.ANNULLATO == false).ToList();
+                        lib = db.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
                     else
                         lib = db.PERCENTUALECONDIVISIONE.ToList();
 
@@ -89,11 +90,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idPercCond = e.IDPERCCOND,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita =e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 Percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO
-                            }).OrderBy(a=>a.dataInizioValidita).ToList();
+                            }).OrderBy(a => a.dataInizioValidita).ToList();
                 }
                 return libm;
             }
@@ -120,7 +121,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idPercCond = e.IDPERCCOND,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita =Utility.DataFineStop(),
+                                dataFineValidita = Utility.DataFineStop(),
                                 Percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO
@@ -139,7 +140,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-      
+
         public bool EsistonoMovimentiPrima(percCondivisioneMABModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -162,7 +163,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].IDPERCCOND.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].PERCENTUALE.ToString());                    
+                    tmp.Add(libm[0].PERCENTUALE.ToString());
                 }
             }
             return tmp;
@@ -189,10 +190,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<PERCENTUALECONDIVISIONE> libNew = new List<PERCENTUALECONDIVISIONE>();
 
-            PERCENTUALECONDIVISIONE ibPrecedente = new PERCENTUALECONDIVISIONE();
+            //PERCENTUALECONDIVISIONE ibPrecedente = new PERCENTUALECONDIVISIONE();
             PERCENTUALECONDIVISIONE ibNew1 = new PERCENTUALECONDIVISIONE();
             PERCENTUALECONDIVISIONE ibNew2 = new PERCENTUALECONDIVISIONE();
-            List<PERCENTUALECONDIVISIONE> lArchivioIB = new List<PERCENTUALECONDIVISIONE>();
+            //List<PERCENTUALECONDIVISIONE> lArchivioIB = new List<PERCENTUALECONDIVISIONE>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -209,8 +210,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
-                         //   decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
+                            //decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
+                            //   decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
 
                             ibNew1 = new PERCENTUALECONDIVISIONE()
                             {
@@ -241,6 +242,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db);
+                            }
+
                             db.Database.CurrentTransaction.Commit();
                         }
                         ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
@@ -260,14 +266,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = dataInizioLast,
                                     DATAFINEVALIDITA = dataFineLast.AddDays(-1),
                                     //COEFFICIENTEKM = aliquotaLast,
-                                    PERCENTUALE = aliquotaLast,                                   
+                                    PERCENTUALE = aliquotaLast,
                                 };
                                 ibNew2 = new PERCENTUALECONDIVISIONE()
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
                                     //COEFFICIENTEKM = ibm.coefficienteKm,
-                                    PERCENTUALE=ibm.Percentuale,
+                                    PERCENTUALE = ibm.Percentuale,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
                                 if (aggiornaTutto)
@@ -277,7 +283,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm, 
-                                        PERCENTUALE=ibm.Percentuale,                                      
+                                        PERCENTUALE = ibm.Percentuale,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
@@ -295,6 +301,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pc in libNew)
+                                    {
+                                        dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -311,7 +327,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DateTime dataFine = Convert.ToDateTime(lista[2]);
                                 //  decimal aliquota = Convert.ToDecimal(lista[3]);
                                 decimal Percentuale = Convert.ToDecimal(lista[3]);
-                              //  decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
+                                //  decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
                                 DateTime NewdataFine1 = ibm.dataInizioValidita.AddDays(-1);
 
                                 ibNew1 = new PERCENTUALECONDIVISIONE()
@@ -328,7 +344,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAFINEVALIDITA = dataFine,
                                     //COEFFICIENTEKM = ibm.coefficienteKm,
                                     PERCENTUALE = ibm.Percentuale,
-                                  //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                    //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
 
@@ -340,7 +356,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm,
                                         PERCENTUALE = ibm.Percentuale,
-                                       // COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                        // COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
@@ -356,6 +372,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pc in libNew)
+                                    {
+                                        dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -371,14 +397,22 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
-                                    PERCENTUALE=ibm.Percentuale,
+                                    PERCENTUALE = ibm.Percentuale,
                                     DATAAGGIORNAMENTO = DateTime.Now,
-                                   
+
                                 };
                                 libNew.Add(ibNew1);
                                 db.Database.BeginTransaction();
                                 db.PERCENTUALECONDIVISIONE.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+
+                                    dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db);
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -392,7 +426,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
                                 //  decimal aliquotaUltimo = Convert.ToDecimal(lista[3]);
                                 decimal PERCENTUALE_Ultimo = Convert.ToDecimal(lista[3]);
-                               // decimal COEFFICIENTEINDBASE_Ultimo = Convert.ToDecimal(lista[4]);
+                                // decimal COEFFICIENTEINDBASE_Ultimo = Convert.ToDecimal(lista[4]);
 
                                 if (dataInizioUltimo == ibm.dataInizioValidita)
                                 {
@@ -402,7 +436,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = dataFineUltimo,
                                         // COEFFICIENTEKM = ibm.coefficienteKm,//nuova aliquota rispetto alla vecchia registrata
                                         PERCENTUALE = ibm.Percentuale,
-                                      //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                        //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1);
@@ -410,6 +444,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALECONDIVISIONE.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -421,7 +461,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
                                         // COEFFICIENTEKM = aliquotaUltimo,
                                         PERCENTUALE = PERCENTUALE_Ultimo,
-                                      //  COEFFICIENTEINDBASE = COEFFICIENTEINDBASE_Ultimo,
+                                        //  COEFFICIENTEINDBASE = COEFFICIENTEINDBASE_Ultimo,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     ibNew2 = new PERCENTUALECONDIVISIONE()
@@ -431,7 +471,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm,//nuova aliquota rispetto alla vecchia registrata
                                         PERCENTUALE = ibm.Percentuale,
-                                      //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                        //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1); libNew.Add(ibNew2);
@@ -440,15 +480,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALECONDIVISIONE.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var pc in libNew)
+                                        {
+                                            dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db);
+                                        }
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
                         }
                         //INSERIMENTO DATI NELLA TABELLA CIR_R PER LE RELAZIONI MOLTI A MOLTI
                         decimal idPercCond = ibNew1.IDPERCCOND;
-                     //   decimal idRiduzione1 = dataInizioValiditaAccettataPerRiduzione(ibNew1.DATAINIZIOVALIDITA).First().idRiduzioni;
+                        //   decimal idRiduzione1 = dataInizioValiditaAccettataPerRiduzione(ibNew1.DATAINIZIOVALIDITA).First().idRiduzioni;
 
-                     //   this.Associa_Riduzione_CoeffIndRichiamo(idRiduzione1, idCoeffIndRichiamo1, db);
+                        //   this.Associa_Riduzione_CoeffIndRichiamo(idRiduzione1, idCoeffIndRichiamo1, db);
 
                         //if (ibNew2.IDCOEFINDRICHIAMO != 0)
                         //{
@@ -494,7 +544,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return tmp;
         }
-      
+
         public PERCENTUALECONDIVISIONE RestituisciIlRecordPrecedente(decimal idPercCond)
         {
             PERCENTUALECONDIVISIONE tmp = null;
@@ -532,17 +582,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             // ALIQUOTA = precedenteIB.ALIQUOTA,
                             //COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
                             //COEFFICIENTEINDBASE = precedenteIB.COEFFICIENTEINDBASE,
-                            PERCENTUALE=precedenteIB.PERCENTUALE,
+                            PERCENTUALE = precedenteIB.PERCENTUALE,
                             DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
                             ANNULLATO = false
                         };
                         db.PERCENTUALECONDIVISIONE.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaPagatoCondivisoMAB(NuovoPrecedente.IDPERCCOND, db);
+                        }
+
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Idennità Primo Segretario.", "PERCENTUALECONDIVISIONE", idPercCond);
+                        }
                     }
-                    db.SaveChanges();
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Idennità Primo Segretario.", "PERCENTUALECONDIVISIONE", idPercCond);
-                    }
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -590,7 +648,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     lm = new percCondivisioneMABModel()
                     {
                         idPercCond = liv.IDPERCCOND,
-                        Percentuale = liv.PERCENTUALE                        
+                        Percentuale = liv.PERCENTUALE
                     };
                 }
                 return lm;
@@ -646,7 +704,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.PERCENTUALECONDIVISIONE.Where(a => a.IDPERCCOND == ibm.idPercCond).First().ANNULLATO == true ? true : false;
             }
         }
-        
+
         public decimal Get_Id_IndCondivisioneMABAnnullato()
         {
             decimal tmp = 0;
