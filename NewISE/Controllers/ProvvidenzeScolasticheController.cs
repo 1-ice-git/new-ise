@@ -110,9 +110,10 @@ namespace NewISE.Controllers
 
             try
             {
-               //solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
+                //solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
 
-               // ViewData.Add("solaLettura", solaLettura);
+                // ViewData.Add("solaLettura", solaLettura);
+                ViewData["idTipoDocumento"] = EnumTipoDoc.Formulario_Provvidenze_Scolastiche;
                 ViewData["idTrasferimento"] = idTrasferimento;
             }
             catch (Exception ex)
@@ -168,10 +169,11 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
-        public ActionResult NuovoDocumentoPS(decimal idTrasfProvScolastiche)
+        public ActionResult NuovoDocumentoPS(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
         {
             try
-            {                   
+            {
+                ViewData.Add("idTipoDocumento", idTipoDocumento);
                 ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
 
                 return PartialView();
@@ -182,7 +184,62 @@ namespace NewISE.Controllers
             }
         }
 
-        public JsonResult SalvaDocumentoTEPartenza(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
+        public static void PreSetDocumentoPS(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
+        {
+            dm = new DocumentiModel();
+            gestisceEstensioni = false;
+            dimensioneConsentita = false;
+            esisteFile = false;
+            dimensioneMaxDocumento = string.Empty;
+
+            try
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    esisteFile = true;
+
+                    var estensioniGestite = new[] { ".pdf" };
+                    var estensione = Path.GetExtension(file.FileName);
+                    var nomeFileNoEstensione = Path.GetFileNameWithoutExtension(file.FileName);
+                    if (!estensioniGestite.Contains(estensione.ToLower()))
+                    {
+                        gestisceEstensioni = false;
+                    }
+                    else
+                    {
+                        gestisceEstensioni = true;
+                    }
+                    var keyDimensioneDocumento = System.Configuration.ConfigurationManager.AppSettings["DimensioneDocumento"];
+
+                    dimensioneMaxDocumento = keyDimensioneDocumento;
+
+                    if (file.ContentLength / 1024 <= Convert.ToInt32(keyDimensioneDocumento))
+                    {
+                        dm.nomeDocumento = nomeFileNoEstensione;
+                        dm.estensione = estensione;
+                        dm.tipoDocumento = (EnumTipoDoc)idTipoDocumento;
+                        dm.dataInserimento = DateTime.Now;
+                        dm.file = file;
+                        dimensioneConsentita = true;
+                    }
+                    else
+                    {
+                        dimensioneConsentita = false;
+                    }
+
+                }
+                else
+                {
+                    esisteFile = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public JsonResult SalvaDocumentoPS(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -195,7 +252,7 @@ namespace NewISE.Controllers
 
                         HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
 
-                        using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                        using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                         {
                             using (dtDocumenti dtd = new dtDocumenti())
                             {
@@ -205,7 +262,7 @@ namespace NewISE.Controllers
                                 bool dimensioneConsentita = false;
                                 string dimensioneMaxConsentita = string.Empty;
 
-                                PreSetDocumentoTEPartenza(file, out dm, out esisteFile, out gestisceEstensioni,
+                                PreSetDocumentoPS(file, out dm, out esisteFile, out gestisceEstensioni,
                                     out dimensioneConsentita, out dimensioneMaxConsentita, idTipoDocumento);
 
                                 if (esisteFile)
@@ -218,7 +275,7 @@ namespace NewISE.Controllers
 
                                     if (dimensioneConsentita)
                                     {
-                                        dtte.SetDocumentoTEPartenza(ref dm, idTrasfProvScolastiche, db, idTipoDocumento);
+                                        dtps.SetDocumentoPS(ref dm, idTrasfProvScolastiche, db, idTipoDocumento);
 
                                     }
                                     else

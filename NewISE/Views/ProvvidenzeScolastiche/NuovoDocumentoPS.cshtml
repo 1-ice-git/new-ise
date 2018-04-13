@@ -9,9 +9,11 @@
 <script src="~/Scripts/locales/it.js"></script>
 
 @{
-    
-    decimal idTrasfProvScolastiche = (decimal)ViewData["idTrasfProvScolastiche"];
+    decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
+    decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasfProvScolastiche"]);
 }
+
+
 
 <div style="padding-left: 15px; padding-right: 10px;">
     <input id="files" name="files[]" type="file" multiple class="file-loading">
@@ -58,6 +60,7 @@
         validateInitialCount: true,
         uploadExtraData: function () {
             return {
+                idTipoDocumento: parseInt('@idTipoDocumento'),
                 idTrasfProvScolastiche: parseInt('@idTrasfProvScolastiche'),
             };
         },

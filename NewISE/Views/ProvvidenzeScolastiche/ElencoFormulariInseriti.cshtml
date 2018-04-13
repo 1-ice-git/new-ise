@@ -37,11 +37,13 @@
     <div class="col-xs-3">
         <div style="margin-top: 10px; margin-bottom: 10px;">
 
-            <button class="btn btn-default btn-sm" onclick="NuovoDocumentoPS();">
-                <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
-                Aggiungi Documento
-            </button>
-
+            
+                <button class="btn btn-default btn-sm" onclick="NuovoDocumentoPS();">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                    Aggiungi Documento
+                </button>
+           
+            
         </div>
 
     </div>
@@ -193,15 +195,17 @@
 
 
     function NuovoDocumentoPS() {
-        //debugger;
+        debugger;
         var rotta = "/ProvvidenzeScolastiche/NuovoDocumentoPS";
-        var idTrasfProvScolastiche = @idTrasfProvScolastiche;
-       
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        var idTipoDocumento = parseInt('@idTipoDocumento');
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche,
+                idTipoDocumento:idTipoDocumento
+            },
             dataType: 'html',
             async: false,
             beforeSend: function () {
