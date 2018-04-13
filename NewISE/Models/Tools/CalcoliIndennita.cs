@@ -178,7 +178,6 @@ namespace NewISE.Models.Tools
                                     indennitaBaseRiduzione = valRespIB;
                                 }
 
-
                             }
                             else
                             {
@@ -213,7 +212,8 @@ namespace NewISE.Models.Tools
                                 indennita.COEFFICIENTESEDE.Where(
                                     a =>
                                         a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                        dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA);
+                                        dtDatiParametri <= a.DATAFINEVALIDITA)
+                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
                             if (lcs?.Any() ?? false)
                             {
                                 var coefficenteSede = lcs.First();
@@ -224,6 +224,7 @@ namespace NewISE.Models.Tools
                                             a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                                             dtDatiParametri <= a.DATAFINEVALIDITA)
                                         .OrderByDescending(a => a.DATAINIZIOVALIDITA);
+
                                 if (lpd?.Any() ?? false)
                                 {
                                     var percentualeDisagio = lpd.First();
@@ -244,7 +245,6 @@ namespace NewISE.Models.Tools
                             {
                                 #region Maggiorazioni familiari
 
-
                                 decimal valoreMF = 0;
 
                                 var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
@@ -262,7 +262,7 @@ namespace NewISE.Models.Tools
                                     var lc =
                                         mf.CONIUGE.Where(
                                             a =>
-                                                a.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                                                 dtDatiParametri <= a.DATAFINEVALIDITA)
                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA);
 
