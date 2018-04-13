@@ -202,6 +202,66 @@ namespace NewISE.Controllers
             }
         }
 
+        [HttpPost]
+
+        public JsonResult InserisciFormularioPS(decimal idProvScolastiche, HttpPostedFileBase file)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        DocumentiModel dm = new DocumentiModel();
+                        bool esisteFile = false;
+                        bool gestisceEstensioni = false;
+                        bool dimensioneConsentita = false;
+                        string dimensioneMaxConsentita = string.Empty;
+
+                        Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                            out dimensioneConsentita, out dimensioneMaxConsentita,
+                            EnumTipoDoc.Formulario_Provvidenze_Scolastiche);
+
+                        if (esisteFile)
+                        {
+                            if (gestisceEstensioni == false)
+                            {
+                                throw new Exception(
+                                    "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                            }
+
+                            if (dimensioneConsentita)
+                            {
+                                dtd.SetFormularioProvvidenzeScolastiche(ref dm, idProvScolastiche, db);
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Il documento selezionato supera la dimensione massima consentita (" +
+                                    dimensioneMaxConsentita + " Mb).");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Il documento è obbligatorio.");
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il formulario è stata inserito." });
+                }
+                catch (Exception ex)
+                {
+
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
+
+
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult InserisciLetteraTrasferimento(decimal idTrasferimento, string protocolloLettera,

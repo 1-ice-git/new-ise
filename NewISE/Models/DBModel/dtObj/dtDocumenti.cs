@@ -95,6 +95,37 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public IList<DocumentiModel> GetFormulariAttivazioneProvvScol(decimal idTrasfProvScolastiche)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var amf = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idTrasfProvScolastiche);
+
+
+                if (amf?.IDTRASFPROVSCOLASTICHE > 0)
+                {
+
+                    var ld =
+                        amf.DOCUMENTI.Where(
+                            a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
+                            .OrderByDescending(a => a.DATAINSERIMENTO);
+                    if (ld?.Any() ?? false)
+                    {
+                        ldm.AddRange(ld.Select(d => this.GetDocumento(d.IDDOCUMENTO, db)));
+                    }
+
+
+                }
+
+
+            }
+
+            return ldm;
+
+        }
+
 
         public IList<DocumentiModel> GetDocumentiIdentitaRichiedentePassaporto(decimal idPassaportoRichiedente)
         {
@@ -815,6 +846,49 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
+
+
+        public void SetFormularioProvvidenzeScolastiche(ref DocumentiModel dm, decimal idProvScolastiche, ModelDBISE db)
+        {
+            MemoryStream ms = new MemoryStream();
+            DOCUMENTI d = new DOCUMENTI();
+
+            dm.file.InputStream.CopyTo(ms);
+            var amf = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idProvScolastiche);
+
+            if (amf?.IDPROVSCOLASTICHE > 0)
+            {
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+                d.FK_IDDOCUMENTO = null;
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
+                amf.DOCUMENTI.Add(d);
+
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                    var mf = amf.PROVVIDENZESCOLASTICHE;
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario provvidenze scolastiche).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
+                }
+                else
+                {
+                    throw new Exception("Errore nella fase di inserimento del formulario provvidenze scolastiche.");
+                }
+            }
+            else
+            {
+                throw new Exception("Errore nella fase di inserimento del formulario provvidenze scolastiche.");
+            }
+
+
+
+
+        }
+
 
         public void SetLetteraTrasferimento(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
         {
