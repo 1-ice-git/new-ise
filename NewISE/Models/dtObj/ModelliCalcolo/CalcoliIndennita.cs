@@ -18,7 +18,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _coefficenteDiSede = 0;
         private decimal _percentualeDisagio = 0;
         private decimal _indennitaDiServizio = 0;
-        private decimal _coefficenteRiduzione = 0;
         private decimal _percentualeMaggiorazioneConiuge = 0;
         private decimal _maggiorazioneConiuge = 0;
         private decimal _pensioneConiuge = 0;
@@ -30,6 +29,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _maggiorazioniFimailiri = 0;
         private decimal _indennitaPersonale = 0;
         private decimal _indennitaSistemazione = 0;
+        private decimal _percentualeRiduzionePrimaSistemazione = 0;
         private decimal _indennitaSistemazioneAnticipabile = 0;
         private decimal _anticipoSistemazione = 0;
         private decimal _saldoSistemazione = 0;
@@ -57,8 +57,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         [ReadOnly(true)]
         public decimal IndennitaDiServizio => _indennitaDiServizio;
         [ReadOnly(true)]
-        public decimal CoefficenteDiRiduzione => _coefficenteRiduzione;
-        [ReadOnly(true)]
         public decimal PercentualeMAggiorazioneConiuge => _percentualeMaggiorazioneConiuge;
         [ReadOnly(true)]
         public decimal MaggiorazioneConiuge => _maggiorazioneConiuge;
@@ -81,6 +79,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         [ReadOnly(true)]
         public decimal IndennitaSistemazione => _indennitaSistemazione;
         [ReadOnly(true)]
+        public decimal PercentualeRiduzionePrimaSistemazione => _percentualeRiduzionePrimaSistemazione;
+        [ReadOnly(true)]
         public decimal IndennitaSistemazioneAnticipabile => _indennitaSistemazioneAnticipabile;
         [ReadOnly(true)]
         public decimal AnticipoSistemazione => _anticipoSistemazione;
@@ -99,6 +99,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
             using (ModelDBISE db = new ModelDBISE())
             {
+                db.Database.BeginTransaction();
 
                 try
                 {
@@ -143,7 +144,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         }
                     }
 
-
+                    this.Indennita();
+                    this.RuoloDipendente_Ufficio();
+                    this.PrelevaIndennitaDiBase();
+                    this.PrelevaCoefficenteDiSede();
+                    this.PrelevaPercentualeDisagio();
+                    this.CalcolaIndennitaDiServizio();
+                    this.CalcolaMaggiorazioneFamiliare();
+                    this.CalcolaIndennitaPersonale();
 
 
                 }
@@ -289,12 +297,13 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         private void CalcolaIndennitaDiServizio()
         {
+
             if (_indennitaDiBase > 0)
             {
-                indServ = (((_indennitaDiBase * _coefficenteDiSede) +
-                        _indennitaDiBase) +
-                       (((_indennitaDiBase * _coefficenteDiSede) +
-                         _indennitaDiBase) / 100 * _percentualeDisagio));
+                var indServ = (((_indennitaDiBase * _coefficenteDiSede) +
+                                _indennitaDiBase) +
+                               (((_indennitaDiBase * _coefficenteDiSede) +
+                                 _indennitaDiBase) / 100 * _percentualeDisagio));
 
                 _indennitaDiServizio = indServ;
             }
@@ -450,251 +459,54 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             _indennitaPersonale = _indennitaDiServizio + _maggiorazioniFimailiri;
         }
 
-
-
-
-        public void CalcoloIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita = null)
+        private void CalcolaPrimaSistemazione()
         {
-            DateTime? dt;
-            RUOLODIPENDENTE ruoloDipendente = new RUOLODIPENDENTE();
-            RUOLOUFFICIO ruoloUfficio = new RUOLOUFFICIO();
-            DateTime dtDatiParametri;
+            RIDUZIONI riduzioniPS = new RIDUZIONI();
 
+            var primaSistemazione = _trasferimento.PRIMASITEMAZIONE;
 
-            using (ModelDBISE db = new ModelDBISE())
+            var lis =
+                primaSistemazione.INDENNITASISTEMAZIONE.Where(
+                    a =>
+                        a.ANNULLATO == false && a.IDTIPOTRASFERIMENTO == _trasferimento.IDTIPOTRASFERIMENTO &&
+                        _dtDatiParametri >= a.DATAINIZIOVALIDITA && _dtDatiParametri <= a.DATAFINEVALIDITA)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+            if (lis?.Any() ?? false)
             {
-                db.Database.BeginTransaction();
+                var indSist = lis.First();
 
-                try
+
+                var lr =
+                    indSist.RIDUZIONI.Where(
+                        a =>
+                            a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                            _dtDatiParametri <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (lr?.Any() ?? false)
                 {
-                    if (dataCalcoloIndennita.HasValue)
-                    {
-                        dt = dataCalcoloIndennita;
-                    }
-                    else
-                    {
-                        dt = DateTime.Now;
-                    }
-
-                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-
-                    if (trasferimento.DATARIENTRO.HasValue)
-                    {
-                        if (trasferimento.DATARIENTRO.Value < dt.Value)
-                        {
-                            dtDatiParametri = trasferimento.DATARIENTRO.Value;
-                        }
-                        else
-                        {
-                            if (trasferimento.DATAPARTENZA > dt.Value)
-                            {
-                                dtDatiParametri = trasferimento.DATAPARTENZA;
-                            }
-                            else
-                            {
-                                dtDatiParametri = dt.Value;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (trasferimento.DATAPARTENZA > dt.Value)
-                        {
-                            dtDatiParametri = trasferimento.DATAPARTENZA;
-                        }
-                        else
-                        {
-                            dtDatiParametri = dt.Value;
-                        }
-                    }
-
-                    var indennita = trasferimento.INDENNITA;
-
-                    var lrd =
-                        trasferimento.RUOLODIPENDENTE.Where(
-                            a =>
-                                a.ANNULLATO == false && dtDatiParametri >= a.DATAINZIOVALIDITA &&
-                                dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINZIOVALIDITA);
-
-                    if (lrd?.Any() ?? false)
-                    {
-                        #region Ruolo dipendente
-                        ruoloDipendente = lrd.First();
-                        ruoloUfficio = ruoloDipendente.RUOLOUFFICIO;
-                        #endregion
-
-                        #region Indennita di base estera
-                        RIDUZIONI riduzioniIB = new RIDUZIONI();
-
-                        var lib =
-                            indennita.INDENNITABASE.Where(
-                                a =>
-                                    a.ANNULLATO == false &&
-                                    dtDatiParametri >= a.DATAINIZIOVALIDITA && dtDatiParametri <= a.DATAFINEVALIDITA)
-                                .OrderByDescending(a => a.DATAINIZIOVALIDITA);
-
-                        if (lib?.Any() ?? false)
-                        {
-                            var indennitaBase = lib.First();
-
-                            var lr =
-                                indennitaBase.RIDUZIONI.Where(
-                                    a =>
-                                        a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                        dtDatiParametri <= a.DATAFINEVALIDITA)
-                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA);
-
-                            if (lr?.Any() ?? false)
-                            {
-                                riduzioniIB = lr.First();
-                            }
-
-                            if (ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Dirigente || ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Responsabile)
-                            {
-                                decimal valRespIB = indennitaBase.VALORERESP;
-                                decimal valRidIB = 0;
-
-                                if (riduzioniIB?.IDRIDUZIONI > 0)
-                                {
-                                    valRidIB = riduzioniIB.PERCENTUALE;
-                                }
-                                if (valRidIB > 0)
-                                {
-                                    _indennitaDiBase = valRespIB * valRidIB / 100;
-                                }
-                                else
-                                {
-                                    _indennitaDiBase = valRespIB;
-                                }
-                            }
-                            else
-                            {
-                                decimal valIB = indennitaBase.VALORE;
-                                decimal valRidIB = 0;
-
-                                if (riduzioniIB?.IDRIDUZIONI > 0)
-                                {
-                                    valRidIB = riduzioniIB.PERCENTUALE;
-                                }
-                                if (valRidIB > 0)
-                                {
-                                    _indennitaDiBase = valIB * valRidIB / 100;
-                                }
-                                else
-                                {
-                                    _indennitaDiBase = valIB;
-                                }
-
-                            }
-                        }
-
-                        #endregion
-
-                        if (_indennitaDiBase > 0)
-                        {
-                            #region Indennità di servizio
-                            var lcs =
-                                indennita.COEFFICIENTESEDE.Where(
-                                    a =>
-                                        a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                        dtDatiParametri <= a.DATAFINEVALIDITA)
-                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-
-                            if (lcs?.Any() ?? false)
-                            {
-                                var coefficenteSede = lcs.First();
-                                _coefficenteDiSede = coefficenteSede.VALORECOEFFICIENTE;
-
-                                var lpd =
-                                    indennita.PERCENTUALEDISAGIO.Where(
-                                        a =>
-                                            a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                            dtDatiParametri <= a.DATAFINEVALIDITA)
-                                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-
-                                if (lpd?.Any() ?? false)
-                                {
-                                    var percentualeDisagio = lpd.First();
-                                    _percentualeDisagio = percentualeDisagio.PERCENTUALE;
-
-                                    _indennitaDiServizio = (((_indennitaDiBase * coefficenteSede.VALORECOEFFICIENTE) +
-                                                             _indennitaDiBase) +
-                                                            (((_indennitaDiBase * coefficenteSede.VALORECOEFFICIENTE) +
-                                                              _indennitaDiBase) / 100 * percentualeDisagio.PERCENTUALE));
-                                }
-                            }
-                            #endregion
-
-                            if (_indennitaDiServizio > 0)
-                            {
-                                #region Maggiorazioni familiari
-                                decimal valoreMF = 0;
-                                var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
-
-                                var lattivazioneMF =
-                                    mf.ATTIVAZIONIMAGFAM.Where(
-                                        a =>
-                                            a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true &&
-                                            a.ATTIVAZIONEMAGFAM == true)
-                                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
-
-                                if (lattivazioneMF?.Any() ?? false)
-                                {
-                                    var lc =
-                                        mf.CONIUGE.Where(
-                                            a =>
-                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                                dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                                dtDatiParametri <= a.DATAFINEVALIDITA)
-                                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-
-                                    if (lc?.Any() ?? false)
-                                    {
-                                        var coniuge = lc.First();
-                                        var lpmc =
-                                            coniuge.PERCENTUALEMAGCONIUGE.Where(
-                                                a =>
-                                                    a.ANNULLATO == false &&
-                                                    a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE &&
-                                                    dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                                    dtDatiParametri <= a.DATAFINEVALIDITA)
-                                                .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-                                        if (lpmc?.Any() ?? false)
-                                        {
-                                            var percentualeMaggiorazioneConiuge = lpmc.First();
-
-                                            _maggiorazioneConiuge = _indennitaDiServizio *
-                                                                   percentualeMaggiorazioneConiuge.PERCENTUALECONIUGE /
-                                                                   100;
-                                        }
-                                    }
-
-
-                                }
-                                #endregion
-                            }
-                        }
-
-                    }
-
-
-                }
-                catch (Exception ex)
-                {
-
-                    throw ex;
+                    riduzioniPS = lr.First();
+                    _percentualeRiduzionePrimaSistemazione = riduzioniPS.PERCENTUALE;
                 }
 
-
+                if (_percentualeRiduzionePrimaSistemazione > 0)
+                {
+                    _indennitaSistemazione = (indSist.COEFFICIENTE * _percentualeRiduzionePrimaSistemazione) * _indennitaPersonale;
+                    _indennitaSistemazioneAnticipabile = (indSist.COEFFICIENTE * _percentualeRiduzionePrimaSistemazione) * _indennitaDiServizio;
+                }
+                else
+                {
+                    _indennitaSistemazione = indSist.COEFFICIENTE * _indennitaPersonale;
+                    _indennitaSistemazioneAnticipabile = indSist.COEFFICIENTE * _indennitaDiServizio;
+                }
 
 
             }
 
 
-
-
         }
-
 
 
 
