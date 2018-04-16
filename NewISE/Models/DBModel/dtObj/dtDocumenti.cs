@@ -109,7 +109,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var ld =
                         amf.DOCUMENTI.Where(
-                            a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
+                            a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche)
                             .OrderByDescending(a => a.DATAINSERIMENTO);
                     if (ld?.Any() ?? false)
                     {

@@ -1,7 +1,11 @@
 ﻿@using NewISE.Controllers
 
 @{
-    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+    //decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idTrasportoEffettiPartenza = Convert.ToDecimal(ViewData["idTrasportoEffettiPartenza"]);
+    decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasferimento"]);
 }
 
 @Html.Hidden("idTrasferimento", idTrasferimento)
@@ -132,7 +136,7 @@
 
 
 <script type="text/javascript">
-   
+
     ElencoFormulariInseriti();
 
     function ElencoFormulariInseriti() {
@@ -172,6 +176,48 @@
 
         });
     }
+
+    function ElencoDocumentiPS(idTipoDocumento) {
+        //debugger;
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        var rotta = "/ProvvidenzeScolastiche/ElencoDocumentiPS";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTipoDocumento: idTipoDocumento,
+                idTrasfProvScolastiche: idTrasfProvScolastiche
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTrasportoEffettiPartenza").empty();
+                $("#divTrasportoEffettiPartenza").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
 
 </script>
 

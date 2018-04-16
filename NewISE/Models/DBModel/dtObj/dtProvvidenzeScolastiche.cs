@@ -47,6 +47,75 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public List<DocumentiModel> GetDocumentiPS(decimal idTrasfProvScolastiche, decimal idTipoDoc)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var tep = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
+                var statoTrasferimento = tep.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+
+                var latep = tep.ATTIVAZIONIPROVSCOLASTICHE.Where(a => (a.ATTIVARICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false).OrderBy(a => a.IDTRASFPROVSCOLASTICHE).ToList();
+
+
+                if (latep?.Any() ?? false)
+                {
+                    foreach (var atep in latep)
+                    {
+                        var ld = atep.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).OrderByDescending(a => a.DATAINSERIMENTO).ToList();
+
+                        //var rtep = atep.RINUNCIA_TE_P;
+
+                        bool modificabile = false;
+                        //if (atep.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
+                        //{
+                        //    if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false && rtep.RINUNCIATE == false)
+                        //    {
+                        //        modificabile = true;
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false)
+                        //    {
+                        //        modificabile = true;
+                        //    }
+                        //}
+
+
+                        if (statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
+                        {
+                            modificabile = false;
+                        }
+
+                        foreach (var doc in ld)
+                        {
+                            var amf = new VariazioneDocumentiModel()
+                            {
+                                dataInserimento = doc.DATAINSERIMENTO,
+                                estensione = doc.ESTENSIONE,
+                                idDocumenti = doc.IDDOCUMENTO,
+                                nomeDocumento = doc.NOMEDOCUMENTO,
+                                Modificabile = modificabile,
+                                //IdAttivazione = atep.IDATEPARTENZA,
+                                DataAggiornamento = atep.DATAAGGIORNAMENTO,
+                                fk_iddocumento = doc.FK_IDDOCUMENTO,
+                                idStatoRecord = doc.IDSTATORECORD
+                            };
+
+                            ldm.Add(amf);
+                        }
+
+                    }
+
+                }
+            }
+
+            return ldm;
+
+        }
+
         public ATTIVAZIONIPROVSCOLASTICHE CreaAttivitaPS(decimal idTrasfProvScolastiche, ModelDBISE db)
         {
 

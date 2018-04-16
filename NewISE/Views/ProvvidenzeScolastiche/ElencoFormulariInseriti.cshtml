@@ -51,7 +51,10 @@
 <div class="row">
     <div class="col-xs-12">
         <div id="divTabElencoFormulari">
-            @Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche })
+            @*@Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche})*@
+
+            @Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche, idTipoDocumento= idTipoDocumento })
+            
         </div>
     </div>
 </div>
@@ -121,6 +124,8 @@
 </div>
 
 <script type="text/javascript">
+    $('#hiNuovoDocumento').val(@idTipoDocumento);
+
 
     function DownloadFormulario() {
         $('#ModalDownloadFormulario').modal().show();
@@ -162,13 +167,15 @@
 
     function TabElencoFormulari() {
         //debugger;
-        var rotta = "/ProvvidenzeScolastiche/TabFormulariInseriti";
+        var rotta = "/ProvvidenzeScolastiche/TabDocumentiPSInseriti";
         var idTrasfProvScolastiche = @idTrasfProvScolastiche;
+        var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche,
+                TipoDocumento:idTipoDocumento},
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -195,7 +202,7 @@
 
 
     function NuovoDocumentoPS() {
-        debugger;
+        //debugger;
         var rotta = "/ProvvidenzeScolastiche/NuovoDocumentoPS";
         var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
         var idTipoDocumento = parseInt('@idTipoDocumento');
@@ -229,13 +236,133 @@
         });
     }
 
-
-
-
-    $("#ModalNuovoFormulario").on("hidden.bs.modal", function () {
+    function ElencoDocumentiPS(idTipoDocumento) {
         //debugger;
-        TabElencoFormulari();
-        //PulsantiNotificaAttivaMagFam();
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        var rotta = "/ProvvidenzeScolastiche/ElencoDocumentiPS";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTipoDocumento: idTipoDocumento,
+                idTrasfProvScolastiche: idTrasfProvScolastiche
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTrasportoEffettiPartenza").empty();
+                $("#divTrasportoEffettiPartenza").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function TabElencoDocumentiPS() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/TabDocumentiPSInseriti";
+        var idTrasfProvScolastiche = @idTrasfProvScolastiche;
+        var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idTrasfProvScolastiche: idTrasfProvScolastiche,
+                idTipoDocumento:idTipoDocumento
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divTabElencoDocumentiPS").empty();
+                $("#divTabElencoDocumentiPS").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ElencoDocumentiPS(idTipoDocumento) {
+        //debugger;
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+
+        var rotta = "/ProvvidenzeScolastiche/ElencoDocumentiPS";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTipoDocumento: idTipoDocumento,
+                idTrasfProvScolastiche: idTrasfProvScolastiche
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTabElencoFormulari").empty();
+                $("#divTabElencoFormulari").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    $("#ModalNuovoDocumentoPS").on("hidden.bs.modal", function () {
+        //debugger;
+
+        @*TabElencoFormulari();
+        ElencoDocumentiPS(@idTipoDocumento, @idTrasfProvScolastiche);*@
+        
+        TabElencoDocumentiPS();
+        ElencoDocumentiPS(@idTipoDocumento, @idTrasfProvScolastiche);
+
     });
 
 

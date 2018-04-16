@@ -3489,6 +3489,8 @@
     <Content Include="Views\ProvvidenzeScolastiche\TabFormulariInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\NuovoDocumentoPS.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\DocumentiPSInseriti.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\TabDocumentiPSInseriti.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -23,7 +23,7 @@ namespace NewISE.Controllers
         {
             return View();
         }
-
+        
         public JsonResult VerificaProvvidenze(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -125,19 +125,26 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult TabFormulariInseriti(decimal idTrasfProvScolastiche)
+        public ActionResult TabFormulariInseriti(decimal idTrasfProvScolastiche, decimal idTipoDocumento)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            
             try
             {
 
                 bool solaLettura = false;
-                //solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
+                
                 ViewData.Add("solaLettura", solaLettura);
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
                   ldm = dtd.GetFormulariAttivazioneProvvScol(idTrasfProvScolastiche).ToList();
+                }
+
+                using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
+                {
+                    ldm = dtps.GetDocumentiPS(idTrasfProvScolastiche, idTipoDocumento);
                 }
             }
             catch (Exception ex)
@@ -358,6 +365,102 @@ namespace NewISE.Controllers
             }
         }
 
+        public ActionResult TabDocumentiPSInseriti(decimal idTrasfProvScolastiche, decimal idTipoDocumento)
+        {
+            //List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
 
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            string DescrizioneTE = "";
+
+            try
+            {
+                //using (dtDocumenti dtd = new dtDocumenti())
+                //{
+                //    ldm = dtd.GetFormulariAttivazioneProvvScol(idTrasfProvScolastiche).ToList();
+                //}
+
+
+                using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
+                {
+                    ldm = dtps.GetDocumentiPS(idTrasfProvScolastiche, idTipoDocumento);
+                }
+
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("DescrizioneTE", DescrizioneTE);
+            ViewData.Add("idTipoDocumento", idTipoDocumento);
+            ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
+
+            
+            return PartialView(ldm);
+            
+        }
+        
+        public ActionResult ElencoDocumentiPS(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
+        {
+            try
+            {
+                string DescrizioneTE = "";
+                decimal idStatoTrasferimento = 0;
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var t = dtt.GetTrasferimentoByIDProvvScolastiche(idTrasfProvScolastiche);
+                    idStatoTrasferimento = (decimal)t.idStatoTrasferimento;
+                }
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                }
+
+                //using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                //{
+                //    var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
+                //    if (atep.RICHIESTATRASPORTOEFFETTI && atep.ATTIVAZIONETRASPORTOEFFETTI == false)
+                //    {
+                //        richiestaTEPartenza = true;
+                //    }
+                //    if (atep.RICHIESTATRASPORTOEFFETTI && atep.ATTIVAZIONETRASPORTOEFFETTI)
+                //    {
+                //        attivazioneTEPartenza = true;
+                //        richiestaTEPartenza = true;
+                //    }
+
+                //    using (ModelDBISE db = new ModelDBISE())
+                //    {
+                //        var rtep = dtte.GetRinunciaTEPartenza(atep.IDATEPARTENZA, db);
+                //        if (rtep.idATEPartenza > 0)
+                //        {
+                //            rinunciaTEPartenza = rtep.rinunciaTE;
+                //        }
+                //    }
+
+                //    NumAttivazioniTEPartenza = dtte.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
+                //}
+
+
+                ViewData.Add("DescrizioneTE", DescrizioneTE);
+                ViewData.Add("idTipoDocumento", idTipoDocumento);
+                ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
+                ViewData.Add("idStatoTrasferimento", idStatoTrasferimento);
+                
+                return PartialView("ElencoFormulariInseriti");
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
     }
 }
