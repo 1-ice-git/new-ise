@@ -28,60 +28,31 @@
         @foreach (var item in Model)
         {
             <tr>
-                @if (item.Modificabile)
-                {
                     <td>
                         @Html.DisplayFor(modelItem => item.nomeDocumento)
                     </td>
-                }
-                else
-                {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.nomeDocumento)
-                    </td>
-                }
-                @if (item.Modificabile)
-                {
+               
+               
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.estensione)
                     </td>
-                }
-                else
-                {
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.estensione)
-                    </td>
-                }
-
-
-                @if (item.Modificabile)
-                {
+               
+               
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInserimento)
                     </td>
-                }
-                else
-                {
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.dataInserimento)
-                    </td>
-                }
+               
 
                 <td class="text-center">
                     <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare @DescrizioneTE." /></a>
                 </td>
 
                 <td class="text-center">
-                    @if (item.Modificabile)
-                    {
+                    
                         <a href="#" onclick="EliminaDocumentoTE(@item.idDocumenti)" id="linkEliminaDocumentoTE">
                             <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina @DescrizioneTE" />
                         </a>
-                    }
-                    else
-                    {
-                        <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
-                    }
+                    
                 </td>
             </tr>
         }
@@ -96,7 +67,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                @*<h3 class="modal-title alert alert-info text-info" id="EliminaDocumentoTELabel">Elimina @DescrizioneTE</h3>*@
+                <h3 class="modal-title alert alert-info text-info" id="EliminaDocumentoTELabel">Elimina @DescrizioneTE</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <input type="hidden" id="hIdDocTE" />

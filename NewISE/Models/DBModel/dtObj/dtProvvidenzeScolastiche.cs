@@ -64,46 +64,39 @@ namespace NewISE.Models.DBModel.dtObj
                     foreach (var atep in latep)
                     {
                         var ld = atep.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).OrderByDescending(a => a.DATAINSERIMENTO).ToList();
-
-                        //var rtep = atep.RINUNCIA_TE_P;
-
-                        bool modificabile = false;
-                        //if (atep.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
+                        
+                        //bool modificabile = false;
+                        
+                        //if (statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
                         //{
-                        //    if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false && rtep.RINUNCIATE == false)
-                        //    {
-                        //        modificabile = true;
-                        //    }
+                        //    modificabile = false;
                         //}
-                        //else
-                        //{
-                        //    if (atep.ATTIVAZIONETRASPORTOEFFETTI == false && atep.RICHIESTATRASPORTOEFFETTI == false)
-                        //    {
-                        //        modificabile = true;
-                        //    }
-                        //}
-
-
-                        if (statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
-                        {
-                            modificabile = false;
-                        }
 
                         foreach (var doc in ld)
                         {
-                            var amf = new VariazioneDocumentiModel()
+                            //var amf = new VariazioneDocumentiModel()
+                            //{
+                            //    dataInserimento = doc.DATAINSERIMENTO,
+                            //    estensione = doc.ESTENSIONE,
+                            //    idDocumenti = doc.IDDOCUMENTO,
+                            //    nomeDocumento = doc.NOMEDOCUMENTO,
+                            //    Modificabile = modificabile,
+                            //    //IdAttivazione = atep.IDATEPARTENZA,
+                            //    DataAggiornamento = atep.DATAAGGIORNAMENTO,
+                            //    fk_iddocumento = doc.FK_IDDOCUMENTO,
+                            //    idStatoRecord = doc.IDSTATORECORD
+                            //};
+
+                            var amf = new DocumentiModel()
                             {
                                 dataInserimento = doc.DATAINSERIMENTO,
                                 estensione = doc.ESTENSIONE,
                                 idDocumenti = doc.IDDOCUMENTO,
                                 nomeDocumento = doc.NOMEDOCUMENTO,
-                                Modificabile = modificabile,
-                                //IdAttivazione = atep.IDATEPARTENZA,
-                                DataAggiornamento = atep.DATAAGGIORNAMENTO,
+                                //DataAggiornamento = atep.DATAAGGIORNAMENTO,
                                 fk_iddocumento = doc.FK_IDDOCUMENTO,
                                 idStatoRecord = doc.IDSTATORECORD
                             };
-
                             ldm.Add(amf);
                         }
 

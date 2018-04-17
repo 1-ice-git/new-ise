@@ -367,8 +367,7 @@ namespace NewISE.Controllers
 
         public ActionResult TabDocumentiPSInseriti(decimal idTrasfProvScolastiche, decimal idTipoDocumento)
         {
-            //List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
-
+            
             List<DocumentiModel> ldm = new List<DocumentiModel>();
             string DescrizioneTE = "";
 
@@ -423,32 +422,7 @@ namespace NewISE.Controllers
                 {
                     DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
                 }
-
-                //using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
-                //{
-                //    var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
-                //    if (atep.RICHIESTATRASPORTOEFFETTI && atep.ATTIVAZIONETRASPORTOEFFETTI == false)
-                //    {
-                //        richiestaTEPartenza = true;
-                //    }
-                //    if (atep.RICHIESTATRASPORTOEFFETTI && atep.ATTIVAZIONETRASPORTOEFFETTI)
-                //    {
-                //        attivazioneTEPartenza = true;
-                //        richiestaTEPartenza = true;
-                //    }
-
-                //    using (ModelDBISE db = new ModelDBISE())
-                //    {
-                //        var rtep = dtte.GetRinunciaTEPartenza(atep.IDATEPARTENZA, db);
-                //        if (rtep.idATEPartenza > 0)
-                //        {
-                //            rinunciaTEPartenza = rtep.rinunciaTE;
-                //        }
-                //    }
-
-                //    NumAttivazioniTEPartenza = dtte.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
-                //}
-
+                
 
                 ViewData.Add("DescrizioneTE", DescrizioneTE);
                 ViewData.Add("idTipoDocumento", idTipoDocumento);
