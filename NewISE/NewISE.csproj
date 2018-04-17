@@ -3274,6 +3274,7 @@
     <Compile Include="Models\dtObj\Interfacce\ICalcoliBase.cs" />
     <Compile Include="Models\dtObj\Interfacce\IricalcoloParametri.cs" />
     <Compile Include="Models\dtObj\ModelliCalcolo\CalcoliIndennita.cs" />
+    <Compile Include="Models\dtObj\ModelliCalcolo\GiorniRateo.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\Enumeratori\AllEnumeratori.cs" />
@@ -3298,7 +3299,6 @@
     <Compile Include="Models\Tools\CodiceFiscale.cs" />
     <Compile Include="Models\Tools\ErrorFileUpload.cs" />
     <Compile Include="Models\Tools\GestioneEmail.cs" />
-    <Compile Include="Models\Tools\CalcoliIndennita.cs" />
     <Compile Include="Models\Tools\MemoryPostedFile.cs" />
     <Compile Include="Models\Tools\ModelError.cs" />
     <Compile Include="Models\Tools\Utility.cs" />

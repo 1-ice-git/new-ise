@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.IO;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
+using NewISE.Models.dtObj.ModelliCalcolo;
 
 
 namespace NewISE.Models.DBModel.dtObj
@@ -1086,10 +1087,10 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
                             {
-                                dit.indennitaBase = ci.indennitaBaseRiduzione;
-                                dit.indennitaServizio = ci.indennitaServizio;
-                                dit.maggiorazioniFamiliari = ci.maggiorazioneFamiliari;
-                                dit.indennitaPersonale = ci.indennitaPersonaleTeorica;
+                                dit.indennitaBase = ci.IndennitaDiBase;
+                                dit.indennitaServizio = ci.IndennitaDiServizio;
+                                dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                dit.indennitaPersonale = ci.IndennitaPersonale;
                             }
                         }
                     }
@@ -1142,10 +1143,10 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
                             {
-                                dit.indennitaBase = ci.indennitaBaseRiduzione;
-                                dit.indennitaServizio = ci.indennitaServizio;
-                                dit.maggiorazioniFamiliari = ci.maggiorazioneFamiliari;
-                                dit.indennitaPersonale = ci.indennitaPersonaleTeorica;
+                                dit.indennitaBase = ci.IndennitaDiBase;
+                                dit.indennitaServizio = ci.IndennitaDiServizio;
+                                dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                dit.indennitaPersonale = ci.IndennitaPersonale;
                             }
                         }
                     }

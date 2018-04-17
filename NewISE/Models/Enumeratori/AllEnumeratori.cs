@@ -18,4 +18,10 @@ namespace NewISE.Models.Enumeratori
         Indennita_Sistemazione = 2,
         Coefficente_Richiamo = 3
     }
+
+    public enum EnumTrasportoEffetti
+    {
+        Partenza = 1,
+        Rientro = 2
+    }
 }

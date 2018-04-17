@@ -7,10 +7,11 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.Enum;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.dtObj.ModelliCalcolo
 {
-    public class CalcoliIndennita : Attribute
+    public class CalcoliIndennita : Attribute, IDisposable
     {
         #region Proprietà private
         private decimal _indennitaDiBase = 0;
@@ -31,9 +32,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _indennitaSistemazione = 0;
         private decimal _percentualeRiduzionePrimaSistemazione = 0;
         private decimal _indennitaSistemazioneAnticipabile = 0;
-        private decimal _anticipoSistemazione = 0;
-        private decimal _saldoSistemazione = 0;
-
+        private decimal _percentualeFKMPartenza = 0;
+        private decimal _anticipoContributoOmnicomprensivoPartenza = 0;
+        private decimal _percentualeAnticipoTEPartenza = 0;
+        private decimal _percentualeSaldoTEPartenza = 0;
+        private decimal _saldoContributoOmnicomprensivoPartenza = 0;
 
 
 
@@ -83,13 +86,15 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         [ReadOnly(true)]
         public decimal IndennitaSistemazioneAnticipabile => _indennitaSistemazioneAnticipabile;
         [ReadOnly(true)]
-        public decimal AnticipoSistemazione => _anticipoSistemazione;
+        public decimal PercentualeFKMPartenza => _percentualeFKMPartenza;
         [ReadOnly(true)]
-        public decimal SaldoSistemazione => _saldoSistemazione;
-
-
-
-
+        public decimal AnticipoContributoOmnicomprensivoPartenza => _anticipoContributoOmnicomprensivoPartenza;
+        [ReadOnly(true)]
+        public decimal PercentualeAnticipoTEPartenza => _percentualeAnticipoTEPartenza;
+        [ReadOnly(true)]
+        public decimal PercentualeSaldoTEPartenza => _percentualeSaldoTEPartenza;
+        [ReadOnly(true)]
+        public decimal SaldoContributoOmnicomprensivoPartenza => _saldoContributoOmnicomprensivoPartenza;
 
 
         public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita = null)
@@ -508,9 +513,52 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         }
 
+        private void CalcolaContributoOmniComprensivoPartenza()
+        {
+            var ps = _trasferimento.PRIMASITEMAZIONE;
+            var lps =
+                ps.PERCENTUALEFKM.Where(
+                    a =>
+                        a.ANNULLATO == false && _trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
+                        _trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+            if (lps?.Any() ?? false)
+            {
+                var pfkm = lps.First();
+                _percentualeFKMPartenza = pfkm.COEFFICIENTEKM;
+
+                var lpa =
+                    _trasferimento.TEPARTENZA.PERCENTUALEANTICIPOTE.Where(
+                        a =>
+                            a.ANNULLATO == false && a.IDTIPOANTICIPOTE == (decimal)EnumTrasportoEffetti.Partenza &&
+                            _trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
+                            _trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                        .ToList();
+                if (lpa?.Any() ?? false)
+                {
+                    var pa = lpa.First();
+                    _percentualeAnticipoTEPartenza = pa.PERCENTUALE;
+                    _percentualeSaldoTEPartenza = 100 - _percentualeAnticipoTEPartenza;
+
+                    _anticipoContributoOmnicomprensivoPartenza = (_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
+                                                                  (_percentualeAnticipoTEPartenza / 100));
+
+                    _saldoContributoOmnicomprensivoPartenza = (_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
+                                                                  (_percentualeSaldoTEPartenza / 100));
+
+                }
 
 
+            }
 
 
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

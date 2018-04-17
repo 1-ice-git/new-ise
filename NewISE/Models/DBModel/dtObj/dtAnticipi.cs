@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
+using NewISE.Models.dtObj.ModelliCalcolo;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -79,9 +80,9 @@ namespace NewISE.Models.DBModel.dtObj
         {
             ANTICIPI new_a = new ANTICIPI()
             {
-                IDATTIVITAANTICIPI=idAttivitaAnticipi,
-                IDTIPOLOGIAANTICIPI=(decimal)EnumTipologiaAnticipi.Prima_Sistemazione,
-                PERCENTUALEANTICIPO=0,
+                IDATTIVITAANTICIPI = idAttivitaAnticipi,
+                IDTIPOLOGIAANTICIPI = (decimal)EnumTipologiaAnticipi.Prima_Sistemazione,
+                PERCENTUALEANTICIPO = 0,
                 ANNULLATO = false,
                 DATAAGGIORNAMENTO = DateTime.Now,
             };
@@ -108,26 +109,27 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var ps = db.PRIMASITEMAZIONE.Find(idPrimaSistemazione);
 
-                var aal = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderByDescending(a=>a.IDATTIVITAANTICIPI).ToList();
+                var aal = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVITAANTICIPI).ToList();
 
-                if (aal?.Any()??false)
+                if (aal?.Any() ?? false)
                 {
                     var aa = aal.First();
 
                     aam = new AttivitaAnticipiModel()
                     {
-                        idAttivitaAnticipi=aa.IDATTIVITAANTICIPI,
+                        idAttivitaAnticipi = aa.IDATTIVITAANTICIPI,
                         idPrimaSistemazione = aa.IDPRIMASISTEMAZIONE,
-                        notificaRichiestaAnticipi=aa.NOTIFICARICHIESTA,
-                        dataNotificaRichiesta=aa.DATANOTIFICARICHIESTA,
-                        attivaRichiestaAnticipi=aa.ATTIVARICHIESTA,
-                        dataAttivaRichiesta=aa.DATAATTIVARICHIESTA,
-                        dataAggiornamento=aa.DATAAGGIORNAMENTO,
-                        annullato=aa.ANNULLATO
+                        notificaRichiestaAnticipi = aa.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = aa.DATANOTIFICARICHIESTA,
+                        attivaRichiestaAnticipi = aa.ATTIVARICHIESTA,
+                        dataAttivaRichiesta = aa.DATAATTIVARICHIESTA,
+                        dataAggiornamento = aa.DATAAGGIORNAMENTO,
+                        annullato = aa.ANNULLATO
                     };
-                }else
+                }
+                else
                 {
-                    var aa_new =this.CreaAttivitaAnticipi(idPrimaSistemazione, db);
+                    var aa_new = this.CreaAttivitaAnticipi(idPrimaSistemazione, db);
 
                     aam = new AttivitaAnticipiModel()
                     {
@@ -162,28 +164,28 @@ namespace NewISE.Models.DBModel.dtObj
 
                 using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
                 {
-                    var importoPrevisto =Math.Round(ci.anticipoIndennitaSistemazioneLorda,2);
-    
-                    var al = db.ANTICIPI.Where(x=>x.IDATTIVITAANTICIPI==idAttivitaAnticipi).ToList();
+                    var importoPrevisto = Math.Round(ci.IndennitaSistemazioneAnticipabile, 2);
 
-                    if(al?.Any()??false)
+                    var al = db.ANTICIPI.Where(x => x.IDATTIVITAANTICIPI == idAttivitaAnticipi).ToList();
+
+                    if (al?.Any() ?? false)
                     {
                         a = al.First();
-                          
+
                         avm = new AnticipiViewModel()
                         {
-                            idAttivitaAnticipi=a.IDATTIVITAANTICIPI,
-                            idTipologiaAnticipi=a.IDTIPOLOGIAANTICIPI,
-                            dataAggiornamento=a.DATAAGGIORNAMENTO,
-                            annullato=a.ANNULLATO,
-                            ImportoPrevisto=importoPrevisto,
-                            PercentualeAnticipoRichiesto=a.PERCENTUALEANTICIPO
+                            idAttivitaAnticipi = a.IDATTIVITAANTICIPI,
+                            idTipologiaAnticipi = a.IDTIPOLOGIAANTICIPI,
+                            dataAggiornamento = a.DATAAGGIORNAMENTO,
+                            annullato = a.ANNULLATO,
+                            ImportoPrevisto = importoPrevisto,
+                            PercentualeAnticipoRichiesto = a.PERCENTUALEANTICIPO
                         };
                     }
                     else
                     {
                         a = this.CreaAnticipi(idAttivitaAnticipi, db);
-        
+
                         var new_avm = new AnticipiViewModel()
                         {
                             idAttivitaAnticipi = a.IDATTIVITAANTICIPI,
@@ -221,9 +223,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                     using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
                     {
-                        var importoPrevisto = ci.anticipoIndennitaSistemazioneLorda;
+                        var importoPrevisto = ci.IndennitaSistemazioneAnticipabile;
 
-                        importoPercepito = Math.Round((importoPrevisto * (percRichiesta / 100)),2);
+                        importoPercepito = Math.Round((importoPrevisto * (percRichiesta / 100)), 2);
 
                     }
                 }
@@ -374,13 +376,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     #region anticipo
                                     var ant_Old =
                                         aa_Old.ANTICIPI.Where(
-                                            a => a.ANNULLATO==false && a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipologiaAnticipi.Prima_Sistemazione).First();
+                                            a => a.ANNULLATO == false && a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipologiaAnticipi.Prima_Sistemazione).First();
 
-                                    if (ant_Old!=null && ant_Old.IDATTIVITAANTICIPI>0)
+                                    if (ant_Old != null && ant_Old.IDATTIVITAANTICIPI > 0)
                                     {
                                         ANTICIPI ant_New = new ANTICIPI()
                                         {
-                                            IDATTIVITAANTICIPI=aa_New.IDATTIVITAANTICIPI,
+                                            IDATTIVITAANTICIPI = aa_New.IDATTIVITAANTICIPI,
                                             IDTIPOLOGIAANTICIPI = ant_Old.IDTIPOLOGIAANTICIPI,
                                             PERCENTUALEANTICIPO = ant_Old.PERCENTUALEANTICIPO,
                                             DATAAGGIORNAMENTO = ant_Old.DATAAGGIORNAMENTO,
@@ -444,7 +446,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                         }
-                       
+
 
                     }
 
@@ -603,7 +605,7 @@ namespace NewISE.Models.DBModel.dtObj
                 mittente.Nominativo = am.nominativo;
                 mittente.EmailMittente = am.eMail;
 
-                var aa= db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi);
+                var aa = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi);
 
                 ps = aa.PRIMASITEMAZIONE;
 
@@ -793,7 +795,7 @@ namespace NewISE.Models.DBModel.dtObj
                 RinunciaAnticipiModel ram = new RinunciaAnticipiModel();
                 var aa = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi);
                 var ra = aa.RINUNCIAANTICIPI;
-                if (ra!=null)
+                if (ra != null)
                 {
                     ram = new RinunciaAnticipiModel()
                     {
@@ -831,7 +833,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var aa = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi);
                     var ra = aa.RINUNCIAANTICIPI;
 
-                    if (ra!=null)
+                    if (ra != null)
                     {
                         var stato_ra = ra.RINUNCIAANT;
                         if (stato_ra)

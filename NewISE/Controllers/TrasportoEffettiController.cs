@@ -13,6 +13,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
+using NewISE.Models.dtObj.ModelliCalcolo;
 
 namespace NewISE.Controllers
 {
@@ -51,20 +52,20 @@ namespace NewISE.Controllers
 
                         TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
 
-                        var atep=dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
+                        var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
 
                         dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
                                                     out richiestaTE, out attivazioneTE,
-                                                    out DocContributo, out DocAttestazione, 
+                                                    out DocContributo, out DocAttestazione,
                                                     out NumAttivazioni, out trasfAnnullato, out rinunciaTEPartenza);
 
                         var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
 
                         CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
 
-                        tepm.indennitaPrimaSistemazione = Math.Round(ci.indennitaSistemazioneLorda, 2);
-                        tepm.percKM = ci.percentualeFasciaKmTrasferimento;
-                        tepm.contributoLordo = Math.Round(ci.contributoOmnicomprensivoTrasferimentoAnticipo, 2);
+                        tepm.indennitaPrimaSistemazione = Math.Round(ci.IndennitaSistemazione, 2);
+                        tepm.percKM = ci.PercentualeFKMPartenza;
+                        tepm.contributoLordo = Math.Round(ci.AnticipoContributoOmnicomprensivoPartenza, 2);
                         var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza(idTrasportoEffettiPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
                         tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
                         tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100, 2);
@@ -224,7 +225,7 @@ namespace NewISE.Controllers
             decimal NumAttivazioni = 0;
             bool trasfAnnullato = false;
             bool rinunciaTE = false;
-            
+
             try
             {
                 amministratore = Utility.Amministratore();
@@ -268,7 +269,7 @@ namespace NewISE.Controllers
         public ActionResult NuovoDocumentoTEPartenza(EnumTipoDoc idTipoDocumento, decimal idTrasportoEffettiPartenza)
         {
             try
-            { 
+            {
                 string titoloPagina = string.Empty;
 
                 using (dtDocumenti dtd = new dtDocumenti())
@@ -533,7 +534,7 @@ namespace NewISE.Controllers
                         using (dtTrasferimento dtt = new dtTrasferimento())
                         {
                             var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
-                            if (atep.RICHIESTATRASPORTOEFFETTI == true || atep.IDANTICIPOSALDOTE==(decimal)EnumTipoAnticipoSaldoTE.Saldo)
+                            if (atep.RICHIESTATRASPORTOEFFETTI == true || atep.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo)
                             {
                                 soloLettura = true;
                             }
@@ -550,7 +551,7 @@ namespace NewISE.Controllers
 
                             var n_att = dtte.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
 
-                            if(n_att>0)
+                            if (n_att > 0)
                             {
                                 soloLettura = true;
                             }
