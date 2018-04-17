@@ -24,4 +24,9 @@ namespace NewISE.Models.Enumeratori
         Partenza = 1,
         Rientro = 2
     }
+
+    public enum EnumTipoAnticipi
+    {
+        Prima_sistemazione = 1
+    }
 }

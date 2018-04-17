@@ -157,6 +157,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     this.CalcolaIndennitaDiServizio();
                     this.CalcolaMaggiorazioneFamiliare();
                     this.CalcolaIndennitaPersonale();
+                    this.CalcolaPrimaSistemazione();
+                    this.CalcolaContributoOmniComprensivoPartenza();
 
 
                 }
@@ -171,6 +173,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
 
 
+        #region Metodi per il calcolo degli importi
         /// <summary>
         /// Istanzia l'indennità
         /// </summary>
@@ -555,6 +558,22 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
 
         }
+        #endregion
+
+
+
+        /// <summary>
+        /// Preleva l'importo dell'anticipo.
+        /// </summary>
+        /// <param name="percentualeAnticipo"></param>
+        /// <returns></returns>
+        public decimal AnticipoPrimaSistemazione(decimal percentualeAnticipo)
+        {
+            return _indennitaSistemazioneAnticipabile * percentualeAnticipo / 100;
+        }
+
+
+
 
         public void Dispose()
         {
