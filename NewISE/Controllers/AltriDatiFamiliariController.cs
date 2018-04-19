@@ -146,6 +146,12 @@ namespace NewISE.Controllers
                 {
                     tm = dtt.GetTrasferimentoByIdFiglio(adf.idFigli);
                 }
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    var idFasePassaportiCorrente = dtpp.GetFasePassaporti_Corrente(tm.idTrasferimento);
+                    ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
+                }
+
 
             }
             catch (Exception ex)
@@ -380,6 +386,12 @@ namespace NewISE.Controllers
                 {
                     tm = dtt.GetTrasferimentoByIdConiuge(adf.idConiuge);
                 }
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    var idFasePassaportiCorrente = dtpp.GetFasePassaporti_Corrente(tm.idTrasferimento);
+                    ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
+                }
+
 
             }
             catch (Exception ex)

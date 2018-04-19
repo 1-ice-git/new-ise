@@ -888,8 +888,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 var pcmab = am.PAGATOCONDIVISOMAB.OrderBy(a => a.IDPAGATOCONDIVISO).First();
                                 this.UpdateStatoPagatoCondivisoMAB(pcmab.IDPAGATOCONDIVISO, EnumStatoRecord.Attivato, db);
 
-                                var dm = am.DOCUMENTI.OrderBy(a => a.IDDOCUMENTO).Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione).First();
-                                this.UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, EnumStatoRecord.Attivato, db);
+                                //se non ho rinunciato cambio stato documenti
+                                var mam = this.GetMaggiorazioneAbitazionePartenza(am.IDTRASFERIMENTO);
+                                var rmab = this.GetRinunciaMAB(mam);
+                                if (rmab.rinuncia == false)
+                                {
+                                    var dm = am.DOCUMENTI.OrderBy(a => a.IDDOCUMENTO).Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione).First();
+                                    this.UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, EnumStatoRecord.Attivato, db);
+                                }
                                 #endregion
 
                                 using (dtDipendenti dtd = new dtDipendenti())
@@ -1408,8 +1414,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 var pcm = am.PAGATOCONDIVISOMAB.OrderBy(a => a.IDPAGATOCONDIVISO).First();
                                 this.UpdateStatoPagatoCondivisoMAB(pcm.IDPAGATOCONDIVISO, EnumStatoRecord.Da_Attivare, db);
 
-                                var dm = am.DOCUMENTI.OrderBy(a => a.IDDOCUMENTO).Where(a=>a.MODIFICATO==false && a.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione && a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione).First();
-                                this.UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, EnumStatoRecord.Da_Attivare, db);
+                                //var dm = am.DOCUMENTI.OrderBy(a => a.IDDOCUMENTO).Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione).First();
+                                //this.UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, EnumStatoRecord.Da_Attivare, db);
                                 #endregion
 
                                 #region incaso di rinuncia reimposto i dati con i valori di default e cancello il documento
@@ -1455,6 +1461,12 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
                                     }
 
+                                }
+                                else
+                                {
+                                    //se non ho rinunciato aggiorno stato documenti inseriti
+                                    var dm = am.DOCUMENTI.OrderBy(a => a.IDDOCUMENTO).Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione).First();
+                                    this.UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, EnumStatoRecord.Da_Attivare, db);
                                 }
                                 #endregion
 

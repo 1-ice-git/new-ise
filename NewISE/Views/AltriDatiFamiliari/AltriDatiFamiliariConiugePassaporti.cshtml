@@ -1,8 +1,10 @@
-﻿@model NewISE.Models.DBModel.AltriDatiFamConiugeModel
+﻿@using NewISE.Models.DBModel.Enum
+
+@model NewISE.Models.DBModel.AltriDatiFamConiugeModel
 
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["IdTrasferimento"]);
-
+    decimal idFasePassaportiCorrente = Convert.ToDecimal(ViewData["idFasePassaportiCorrente"]);
 }
 
 
@@ -78,8 +80,17 @@
 
     </dl>
 </div>
-<p style="padding-left: 15px;">
 
-    @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+@if (idFasePassaportiCorrente == (decimal)EnumFasePassaporti.Richiesta_Passaporti)
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Richiesta", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+else
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Invio", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
 
-</p>

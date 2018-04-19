@@ -3,6 +3,7 @@ using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models;
 using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.dtObj;
 using NewISE.Models.Tools;
@@ -168,6 +169,9 @@ namespace NewISE.Controllers
 
             bool richiestaPP = false;
             bool conclusePP = false;
+            bool faseRichiestaPPattivata = false;
+            bool faseInvioPPattivata = false;
+
             bool richiesteTV = false;
             bool concluseTV = false;
             bool richiestaTE = false;
@@ -186,7 +190,9 @@ namespace NewISE.Controllers
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF,
-                        out richiestaPP, out conclusePP, out richiesteTV, out concluseTV, out richiestaTE, out attivazioneTE,
+                        out richiestaPP, out conclusePP,
+                        out faseRichiestaPPattivata, out faseInvioPPattivata,
+                        out richiesteTV, out concluseTV, out richiestaTE, out attivazioneTE,
                         out richiestaAnticipi, out attivazioneAnticipi, out richiestaMAB, out attivazioneMAB,
                         out solaLettura);
                 }
@@ -207,6 +213,8 @@ namespace NewISE.Controllers
                         attivazioneMF = attivazioneMF,
                         richiestaPP = richiestaPP,
                         conclusePP = conclusePP,
+                        faseRichiestaPPattivata = faseRichiestaPPattivata,
+                        faseInvioPPattivata= faseInvioPPattivata,
                         richiesteTV = richiesteTV,
                         concluseTV = concluseTV,
                         richiestaTE = richiestaTE,
@@ -1249,10 +1257,10 @@ namespace NewISE.Controllers
                                     }
                                     #endregion
 
-                                    #region passaporto
+                                    #region passaporto (fasi richiesta)
                                     using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                                     {
-                                        dtpp.PreSetPassaporto(trm.idTrasferimento, db);
+                                        dtpp.PreSetPassaporto(trm.idTrasferimento, (decimal)EnumFasePassaporti.Richiesta_Passaporti, db);
                                     }
                                     #endregion
 

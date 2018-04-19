@@ -197,7 +197,7 @@
     <value>Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito dal {1} verso l'ufficio di {2}.</value>
   </data>
   <data name="MessaggioRichiestaPratichePassaportoConcluse" xml:space="preserve">
-    <value>Si notifica che la pratica per la richiesta dei passaporto per il trasferimento presso la sede di {0} del {1} è stata conclusa.</value>
+    <value>Si notifica che la pratica per la richiesta del passaporto per il trasferimento presso la sede di {0} del {1} è stata conclusa. Si prega di inviare copia del passaporto, appena ricevuto.</value>
   </data>
   <data name="MessaggioRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
     <value>Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento presso la sede di {1}.</value>
@@ -285,5 +285,24 @@
   </data>
   <data name="OggettoRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
     <value>Notifica richiesta rimborso successivo titoli di viaggio.</value>
+  </data>
+  <data name="OggettoAnnullaInvioPassaporto" xml:space="preserve">
+    <value>Notifica dell'annullamento dell'invio del passaporto.</value>
+  </data>
+  <data name="OggettoInvioPratichePassaporto" xml:space="preserve">
+    <value>Notifica dell'invio del passaporto/visti.</value>
+  </data>
+  <data name="OggettoInvioPratichePassaportoConcluse" xml:space="preserve">
+    <value>Notifica della chiusura della pratica di invio passaporto/visto.</value>
+  </data>
+  <data name="MessaggioAnnullaInvioPassaporto" xml:space="preserve">
+    <value>&lt;p&gt;Si notifica che l'invio dei passaporti per il trasferimento presso la sede di &lt;br&gt;&lt;center&gt;&lt;h4&gt;{0}&lt;/h4&gt; &lt;/center&gt;a partire dal giorno  &lt;br&gt;&lt;center&gt;&lt;h4&gt;{1}&lt;/h4&gt;&lt;/center&gt;è stata annullato.&lt;/p&gt;
+&lt;p&gt;Contattare l'amministratore per maggiori dettagli.&lt;/p&gt;</value>
+  </data>
+  <data name="MessaggioInvioPratichePassaporto" xml:space="preserve">
+    <value>Notifica dell'invio dei passaporti/visti per il dipendente {0}, trasferito dal {1} verso l'ufficio di {2}.</value>
+  </data>
+  <data name="MessaggioInvioPratichePassaportoConcluse" xml:space="preserve">
+    <value>Si notifica l'invio dei passaporto per il trasferimento presso la sede di {0} del {1} è stato confermato.</value>
   </data>
 </root>

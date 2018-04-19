@@ -61,6 +61,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che l&apos;invio dei passaporti per il trasferimento presso la sede di &lt;br&gt;&lt;center&gt;&lt;h4&gt;{0}&lt;/h4&gt; &lt;/center&gt;a partire dal giorno  &lt;br&gt;&lt;center&gt;&lt;h4&gt;{1}&lt;/h4&gt;&lt;/center&gt;è stata annullato.&lt;/p&gt;
+        ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;.
+        /// </summary>
+        internal static string MessaggioAnnullaInvioPassaporto {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaInvioPassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si informa il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullamentoTrasferimento {
@@ -215,6 +225,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;invio dei passaporti/visti per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
+        /// </summary>
+        internal static string MessaggioInvioPratichePassaporto {
+            get {
+                return ResourceManager.GetString("MessaggioInvioPratichePassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica l&apos;invio dei passaporto per il trasferimento presso la sede di {0} del {1} è stato confermato..
+        /// </summary>
+        internal static string MessaggioInvioPratichePassaportoConcluse {
+            get {
+                return ResourceManager.GetString("MessaggioInvioPratichePassaportoConcluse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di maggiorazione abitazione..
         /// </summary>
         internal static string MessaggioNotificaMaggiorazioneAbitazione {
@@ -296,7 +324,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per il trasferimento presso la sede di {0} del {1} è stata conclusa..
+        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta del passaporto per il trasferimento presso la sede di {0} del {1} è stata conclusa. Si prega di inviare copia del passaporto, appena ricevuto..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaportoConcluse {
             get {
@@ -310,6 +338,15 @@ namespace Resources {
         internal static string MessaggioRimborsoSuccessivoTitoliViaggio {
             get {
                 return ResourceManager.GetString("MessaggioRimborsoSuccessivoTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento dell&apos;invio del passaporto..
+        /// </summary>
+        internal static string OggettoAnnullaInvioPassaporto {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaInvioPassaporto", resourceCulture);
             }
         }
         
@@ -463,6 +500,24 @@ namespace Resources {
         internal static string OggettoAttivazioneTrasportoEffettiRientro {
             get {
                 return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;invio del passaporto/visti..
+        /// </summary>
+        internal static string OggettoInvioPratichePassaporto {
+            get {
+                return ResourceManager.GetString("OggettoInvioPratichePassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della chiusura della pratica di invio passaporto/visto..
+        /// </summary>
+        internal static string OggettoInvioPratichePassaportoConcluse {
+            get {
+                return ResourceManager.GetString("OggettoInvioPratichePassaportoConcluse", resourceCulture);
             }
         }
         

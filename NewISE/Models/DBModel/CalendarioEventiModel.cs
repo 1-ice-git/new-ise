@@ -10,14 +10,14 @@ namespace NewISE.Models.DBModel
     public enum EnumFunzioniEventi
     {
         RichiestaMaggiorazioniFamiliari = 1,
-        RichiestePratichePassaporto = 2,
+        RichiestaPassaporto = 2,
         RichiestaTitoliViaggio = 3,
         RichiestaTrasportoEffettiPartenza = 21,
         RichiestaTrasportoEffettiRientro = 22,
         RichiestaAnticipi = 23,
         RichiestaMaggiorazioneAbitazione = 24,
         AttivaTrasferimento = 25,
-        Funzione9 = 26,
+        InvioPassaporto = 26,
         Funzione10 = 27
     }
     public class CalendarioEventiModel

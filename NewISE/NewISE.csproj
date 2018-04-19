@@ -1062,6 +1062,7 @@
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Grey.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
+    <Content Include="Immagini\images.jpg" />
     <Content Include="Immagini\Loading\loader.gif" />
     <Content Include="Immagini\Logo Rit PNG.PNG" />
     <Content Include="Immagini\piu.png" />
@@ -1092,6 +1093,7 @@
     <Content Include="Immagini\switch_grey.png" />
     <Content Include="Immagini\switch_old.png" />
     <Content Include="Immagini\switch2.png" />
+    <Content Include="Immagini\th.jpg" />
     <Content Include="Lib\fullcalendar.css" />
     <Content Include="Lib\fullcalendar.js" />
     <Content Include="Lib\fullcalendar.min.css" />
@@ -3349,12 +3351,12 @@
     <Content Include="Views\MaggiorazioniFamiliari\NuovoFiglio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\InserisciAltriDatiFamiliariFiglio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\ModificaAltriDatiFamiliariFiglio.cshtml" />
-    <Content Include="Views\PratichePassaporto\ElencoFamiliariPassaporti.cshtml" />
-    <Content Include="Views\PratichePassaporto\Passaporti.cshtml" />
+    <Content Include="Views\PratichePassaporto\ElencoFamiliariPassaporti_Richiesta.cshtml" />
+    <Content Include="Views\PratichePassaporto\Passaporti_Richiesta.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugePassaporti.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioPassaporto.cshtml" />
     <Content Include="Views\PratichePassaporto\ColonnaElencoDoc.cshtml" />
-    <Content Include="Views\PratichePassaporto\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
+    <Content Include="Views\PratichePassaporto\GestPulsantiNotificaAndPraticaConclusa_Richiesta.cshtml" />
     <Content Include="Views\TitoliViaggio\TitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioTitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugeTitoliViaggio.cshtml" />
@@ -3443,7 +3445,7 @@
     <Content Include="Views\UtenzeDipendenti\VisualizzaEmailSecondaria.cshtml" />
     <Content Include="Views\Trasferimento\MessaggioAnnullaTrasf.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\MessaggioAnnullaMF.cshtml" />
-    <Content Include="Views\PratichePassaporto\MessaggioAnnullaPassaporto.cshtml" />
+    <Content Include="Views\PratichePassaporto\MessaggioAnnullaRichiestaPassaporto.cshtml" />
     <Content Include="Views\TitoliViaggio\MessaggioAnnullaTV.cshtml" />
     <Content Include="Views\Anticipi\MessaggioAnnullaAnticipi.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\MessaggioAnnullaMAB.cshtml" />
@@ -3466,6 +3468,14 @@
     <Content Include="Views\Notifiche\VisualizzaMittente.cshtml" />
     <Content Include="Views\ViaggiCongedo\PreventiviDiViaggio.cshtml" />
     <Content Include="Views\ViaggiCongedo\ElencoPreventiviDiViaggio.cshtml" />
+    <Content Include="Views\PratichePassaporto\ColonnaElencoDocPassaporti.cshtml" />
+    <Content Include="Views\PratichePassaporto\DocumentoPassaporto.cshtml" />
+    <Content Include="Views\PratichePassaporto\Passaporti_Invio.cshtml" />
+    <Content Include="Views\PratichePassaporto\ElencoFamiliariPassaporti_Invio.cshtml" />
+    <Content Include="Views\PratichePassaporto\Passaporti.cshtml" />
+    <Content Include="Views\PratichePassaporto\GestPulsantiNotificaAndPraticaConclusa_Invio.cshtml" />
+    <Content Include="Views\PratichePassaporto\MessaggioAnnullaInvioPassaporto.cshtml" />
+    <Content Include="Views\PratichePassaporto\MessaggioAttivaRichiestaPassaporto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

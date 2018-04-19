@@ -1,10 +1,14 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.DBModel.Enum
+@using NewISE.Models.Tools
 @using NewISE.Models.ViewModel
-@model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel>
+@model IEnumerable<ElencoFamiliariPassaportoModel>
+@{ 
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+}
 
-
-<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
-    <h4>Pratiche passaporto</h4>
+<div style="padding-left: 0px; padding-right: 5px; padding-top: 10px;">
+    <h4>PRATICHE PASSAPORTO - Richiesta Passaporto</h4>
     <hr />
     <table cellspacing="0" id="tabElencoFamiliariPass" class="table-striped">
         <thead>
@@ -29,7 +33,9 @@
                     @Html.DisplayNameFor(model => model.idAltriDati)
                 </th>
 
-                <th></th>
+                <th class="text-center">
+                    Doc. Iden.
+                </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.richiedi)
                 </th>
@@ -51,7 +57,7 @@
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
                     <td class="text-center">
-                        @if (item.dataFine != Convert.ToDateTime("31/12/9999"))
+                        @if (item.dataFine != Utility.DataFineStop())
                         {
                             @Html.DisplayFor(modelItem => item.dataFine)
                         }
@@ -65,14 +71,14 @@
                         {
                             case EnumParentela.Coniuge:
                                 <td class="text-center">
-                                    <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariConiuge(@item.idAltriDati); ">
+                                    <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariConiuge(@item.idAltriDati); ">
                                         <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                     </a>
                                 </td>
                                 break;
                             case EnumParentela.Figlio:
                                 <td class="text-center">
-                                    <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariFiglio(@item.idAltriDati); ">
+                                    <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariFiglio(@item.idAltriDati); ">
                                         <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                     </a>
                                 </td>
@@ -93,13 +99,12 @@
                         <input id="hColElencoDocIdFamiliare" type="hidden" value="@item.idFamiliarePassaporto" />
                         <input id="hColElencoDocParentela" type="hidden" value="@Convert.ToDecimal(item.parentela)" />
                         <div id="divColElencoDoc">
-                            @Html.Action("ColonnaElencoDoc", "PratichePassaporto", new { idAttivazionePassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela })
+                            @Html.Action("ColonnaElencoDoc", "PratichePassaporto", new { idAttivazionePassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela})
                         </div>
                     </td>
                     <td class="text-center">
                         @Html.Action("ChkIncludiPassaporto", "PratichePassaporto", new { idAttivitaPassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, esisteDoc = item.HasDoc.esisteDoc, includiPassaporto = item.richiedi })
                     </td>
-
                 </tr>
             }
         </tbody>
@@ -135,7 +140,12 @@
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
         },
-        "columnDefs":[{"visible":false,"targets":[0]}],
+        "bSort": false,
+        "bSortable": false,
+        "columnDefs": [
+            { "visible": false, "targets": [0] },
+            { "orderable": false, "targets": [0] },
+    ],
         "info": false,
         "lengthChange": false,
         "pageLength": 5,
@@ -331,7 +341,7 @@
                 if (result.err == "") {
                     chkEscludi.checked = result.chk;
                     ColElencoDoc(result.idAttivazioniPassaporto, id, parentela);
-                    GestionePulsantiNotificaAndConcludiPassaporto();
+                    GestionePulsantiNotificaAndConcludiPassaporto_Richiesta();
 
                 } else {
                     chkEscludi.checked = !chkEscludi.checked;
@@ -395,80 +405,6 @@
 
     }
 
-    function AltriDatiFamiliariConiuge(idAltriDati) {
-        //debugger;
-        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariConiugePassaporti";
 
-        $.ajax({
-            url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { idAltriDati: idAltriDati },
-            dataType: 'html',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //$('#ModalPensione').modal('show');
-                //Blocca();
-
-            },
-            success: function (result) {
-                //debugger;
-                //$("#viewPensione").empty();
-                //$("#viewPensione").html(result);
-                $("#divPassaporto").empty();
-                $("#divPassaporto").html(result);
-
-            },
-            complete: function () {
-
-            },
-            error: function (error) {
-                //debugger;
-                //Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-
-    }
-
-    function AltriDatiFamiliariFiglio(idAltriDati) {
-        //debugger;
-        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariFiglioPassaporto";
-
-        $.ajax({
-            url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { idAltriDati: idAltriDati },
-            dataType: 'html',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //$('#ModalPensione').modal('show');
-                //Blocca();
-
-            },
-            success: function (result) {
-                //debugger;
-                //$("#viewPensione").empty();
-                //$("#viewPensione").html(result);
-                $("#divPassaporto").empty();
-                $("#divPassaporto").html(result);
-
-            },
-            complete: function () {
-
-            },
-            error: function (error) {
-                //debugger;
-                //Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-
-    }
 
 </script>

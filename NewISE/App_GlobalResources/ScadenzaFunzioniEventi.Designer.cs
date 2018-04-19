@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 15.
+        /// </summary>
+        internal static string InvioPassaporto {
+            get {
+                return ResourceManager.GetString("InvioPassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 10.
         /// </summary>
         internal static string RichiestaAnticipi {
@@ -90,9 +99,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to 15.
         /// </summary>
-        internal static string RichiestaPratichePassaporto {
+        internal static string RichiestaPassaporto {
             get {
-                return ResourceManager.GetString("RichiestaPratichePassaporto", resourceCulture);
+                return ResourceManager.GetString("RichiestaPassaporto", resourceCulture);
             }
         }
         
