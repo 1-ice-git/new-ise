@@ -2,7 +2,6 @@
 
 @{
     //decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
-
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal idTrasportoEffettiPartenza = Convert.ToDecimal(ViewData["idTrasportoEffettiPartenza"]);
     decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasferimento"]);
@@ -48,17 +47,17 @@
 
 <div class="row">
         <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModalNotificaRichiesta();">
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPS" onclick="ModalNotificaRichiesta();">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                 Notifica richiesta
             </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam" onclick="ModalAttivaRichiesta(); ">
+            <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPS" onclick="ModalAttivaRichiesta(); ">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                 Attiva provvidenze
             </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaMagFam" onclick="ModalAnnullaRichiesta();">
+            <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPS" onclick="ModalAnnullaRichiesta();">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                 Annulla richiesta
             </button>
@@ -116,7 +115,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Messaggio di annullamento richiesta Maggiorazioni Familiari</h3>
+                    <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Messaggio di annullamento richiesta Provvidenze Scolastiche</h3>
                 </div>
                 <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                     <p id="viewAnnullaRichiesta">
@@ -134,7 +133,102 @@
 
 <script type="text/javascript">
 
+    //GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
     ElencoFormulariInseriti();
+
+
+    function GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    var admin = result.admin;
+                    var richiestaPS = result.richiestaPS;
+                    var attivazionePS = result.attivazionePS;
+                    var DocContributo = result.DocContributo;
+                    var DocAttestazione = result.DocAttestazione;
+                    var NumAttivazioni = result.NumAttivazioni;
+                    var trasfAnnullato = result.trasfAnnullato;
+                    var rinunciaPS = result.rinunciaPS;
+                    
+                    $("#btNotificaRichiestaPS").attr("disabled", "disabled");
+                    $("#btNotificaRichiestaPS").addClass("disabled");
+
+                    $("#btNotificaRichiestaPS").removeAttr("hidden");
+                    $("#btNotificaRichiestaPS").removeClass("hidden");
+
+
+                    //se amministratore vedo i pulsanti altrimenti solo notifica
+                    if (admin) {
+                        $("#btAttivaRichiestaPS").removeAttr("hidden");
+                        $("#btAttivaRichiestaPS").removeClass("hidden");
+
+                        $("#btAnnullaRichiestaPS").removeAttr("hidden");
+                        $("#btAnnullaRichiestaPS").removeClass("hidden");
+
+                        $("#btAttivaRichiestaPS").attr("disabled", "disabled");
+                        $("#btAttivaRichiestaPS").addClass("disabled");
+
+                        $("#btAnnullaRichiestaPS").attr("disabled", "disabled");
+                        $("#btAnnullaRichiestaPS").addClass("disabled");
+                    }
+
+                    //Se risulta in lavorazione con almeno un documento abilito la il pulsante notifica
+                    if (
+                            (
+                                (
+                                    (NumAttivazioni == 0 && richiestaPS == false && attivazionePS == false && DocContributo) ||
+                                    (NumAttivazioni > 0 && richiestaPS == false && attivazionePS == false && DocAttestazione)
+                                ) &&
+                                    trasfAnnullato == false
+                                &&
+                                    rinunciaPS == false
+
+                            ) ||
+                            (
+                                richiestaPS == false && attivazionePS == false && trasfAnnullato == false && rinunciaTE == true
+                            )
+                        ) {
+                        $("#btNotificaRichiestaPS").removeAttr("disabled");
+                        $("#btNotificaRichiestaPS").removeClass("disabled");
+                    } else {
+                        if (admin) {
+                            if (richiestaPS && attivazionePS == false && trasfAnnullato == false) {
+                                $("#btAttivaRichiestaPS").removeAttr("disabled");
+                                $("#btAttivaRichiestaPS").removeClass("disabled");
+                                $("#btAnnullaRichiestaPS").removeAttr("disabled");
+                                $("#btAnnullaRichiestaPS").removeClass("disabled");
+                            }
+                        }
+                    }
+                    GestioneAttivitaTrasferimento();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
 
     function ElencoFormulariInseriti() {
         //debugger;

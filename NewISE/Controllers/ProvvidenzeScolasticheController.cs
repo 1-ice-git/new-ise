@@ -55,7 +55,6 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
-
         public ActionResult AttivitaProvvidenze(decimal idTrasferimento)
         {  
             ProvvidenzeScolasticheModel psm = new ProvvidenzeScolasticheModel();
@@ -104,7 +103,6 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
-        
         public ActionResult ElencoFormulariInseriti(decimal idTrasferimento)
         {
 
@@ -127,25 +125,27 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult TabFormulariInseriti(decimal idTrasfProvScolastiche, decimal idTipoDocumento)
         {
-            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+            string DescrizioneTE = "";
 
-            
             try
             {
 
-                bool solaLettura = false;
-                
-                ViewData.Add("solaLettura", solaLettura);
+                //bool solaLettura = false;
 
-                using (dtDocumenti dtd = new dtDocumenti())
-                {
-                  ldm = dtd.GetFormulariAttivazioneProvvScol(idTrasfProvScolastiche).ToList();
-                }
+                //ViewData.Add("solaLettura", solaLettura);
 
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
                     ldm = dtps.GetDocumentiPS(idTrasfProvScolastiche, idTipoDocumento);
                 }
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                }
+
+                
             }
             catch (Exception ex)
             {
@@ -154,6 +154,29 @@ namespace NewISE.Controllers
 
             return PartialView(ldm);
             
+        }
+
+        public ActionResult TabFormulariInseriti1(decimal idTrasfProvScolastiche)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            try
+            {
+
+                //bool solaLettura = false;
+                //solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
+                //ViewData.Add("solaLettura", solaLettura);
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    ldm = dtd.GetFormulariAttivazioneProvvScol(idTrasfProvScolastiche).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("TabFormulariInseriti", ldm);
         }
 
         public ActionResult ElencoDocumentiFormulario()
@@ -175,7 +198,6 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
-
         public ActionResult NuovoDocumentoPS(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
         {
             try
@@ -190,7 +212,6 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-
         public static void PreSetDocumentoPS(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
         {
             dm = new DocumentiModel();
@@ -245,7 +266,6 @@ namespace NewISE.Controllers
                 throw ex;
             }
         }
-
         public JsonResult SalvaDocumentoPS(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -309,7 +329,6 @@ namespace NewISE.Controllers
                 };
             }
         }
-
         public static void PreSetDocumentoTEPartenza(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
         {
             dm = new DocumentiModel();
@@ -364,21 +383,15 @@ namespace NewISE.Controllers
                 throw ex;
             }
         }
-
         public ActionResult TabDocumentiPSInseriti(decimal idTrasfProvScolastiche, decimal idTipoDocumento)
         {
             
-            List<DocumentiModel> ldm = new List<DocumentiModel>();
-            string DescrizioneTE = "";
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+            string DescrizionePS = "";
 
             try
             {
-                //using (dtDocumenti dtd = new dtDocumenti())
-                //{
-                //    ldm = dtd.GetFormulariAttivazioneProvvScol(idTrasfProvScolastiche).ToList();
-                //}
-
-
+                
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
                     ldm = dtps.GetDocumentiPS(idTrasfProvScolastiche, idTipoDocumento);
@@ -387,7 +400,7 @@ namespace NewISE.Controllers
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                    DescrizionePS = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
                 }
 
             }
@@ -396,7 +409,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("DescrizioneTE", DescrizioneTE);
+            ViewData.Add("DescrizionePS", DescrizionePS);
             ViewData.Add("idTipoDocumento", idTipoDocumento);
             ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
 
@@ -404,12 +417,11 @@ namespace NewISE.Controllers
             return PartialView(ldm);
             
         }
-        
         public ActionResult ElencoDocumentiPS(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
         {
             try
             {
-                string DescrizioneTE = "";
+                string DescrizionePS = "";
                 decimal idStatoTrasferimento = 0;
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -420,11 +432,11 @@ namespace NewISE.Controllers
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                    DescrizionePS = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
                 }
                 
 
-                ViewData.Add("DescrizioneTE", DescrizioneTE);
+                ViewData.Add("DescrizionePS", DescrizionePS);
                 ViewData.Add("idTipoDocumento", idTipoDocumento);
                 ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
                 ViewData.Add("idStatoTrasferimento", idStatoTrasferimento);
@@ -436,5 +448,66 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
+        public JsonResult EliminaDocumentoPS(decimal idDocumento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtProvvidenzeScolastiche dtte = new dtProvvidenzeScolastiche())
+                    {
+                        dtte.DeleteDocumentoPS(idDocumento);
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il documento relativo alle provvidenze scolastiche è stato eliminato." });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
+        public ActionResult GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
+        {
+            try
+            {
+                using (dtProvvidenzeScolastiche dtte = new dtProvvidenzeScolastiche())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        bool richiestaPS = false;
+                        bool attivazionePS = false;
+                        bool DocContributo = false;
+                        bool DocAttestazione = false;
+                        //decimal NumAttivazioni = 0;
+                        //bool trasfAnnullato = false;
+                        bool rinunciaPS = false;
+                        
+                        AttivazioniProvScolasticheModel apsm = new AttivazioniProvScolasticheModel();
+
+                        ViewData.Add("rinunciaPS", rinunciaPS);
+                        ViewData.Add("richiestaPS", richiestaPS);
+                        ViewData.Add("attivazionePS", attivazionePS);
+                        ViewData.Add("DocContributo", DocContributo);
+                        ViewData.Add("DocAttestazione", DocAttestazione);
+                        ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
+
+                        return PartialView("AttivitaProvvidenze", apsm);
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            
+        }
+        
     }
 }

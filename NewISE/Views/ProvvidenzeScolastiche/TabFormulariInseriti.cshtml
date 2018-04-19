@@ -3,9 +3,13 @@
 
 @{
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-    decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasferimento"]);
     EnumChiamante enChiamante = EnumChiamante.ProvvidenzeScolastiche;
+    string DescrizionePS = Convert.ToString(ViewData["DescrizionePS"]);
+    decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
+    decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasfProvScolastiche"]);
 }
+
+
 
 <table class="table table-striped" id="tabElencoFormulariInseriti">
     <thead>
@@ -59,21 +63,21 @@
 
 </table>
 
-<div class="modal fade" id="ModalEliminaFormularioMF" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaFormularioMFLabel" aria-hidden="true">
+<div class="modal fade" id="ModalEliminaFormularioPS" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaFormularioPSLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="EliminaFormularioMFLabel">Elimina Formulario Maggiorazioni Familiari</h3>
+                <h3 class="modal-title alert alert-info text-info" id="EliminaFormularioPSLabel">Elimina Formulario Provvidenze Scolastiche</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <input type="hidden" id="hIdDocFormularioMF" />
+                <input type="hidden" id="hIdDocFormularioPS" />
                 <p><label>Eliminare il formulario selezionato?</label></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaFormularioMF();">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaFormularioPS();">Ok</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
@@ -134,15 +138,15 @@
     });
 
     function EliminaFormulario(idDoc) {
-        $("#hIdDocFormularioMF").val(idDoc);
-        $("#ModalEliminaFormularioMF").modal("show");
+        $("#hIdDocFormularioPS").val(idDoc);
+        $("#ModalEliminaFormularioPS").modal("show");
     }
 
-    function ConfermaEliminaFormularioMF() {
+    function ConfermaEliminaFormularioPS() {
         //debugger;
-        var rotta = "/Documenti/EliminaFormularioMF";
-        var idDoc = $("#hIdDocFormularioMF").val();
-        $("#ModalEliminaFormularioMF").modal("hide");
+        var rotta = "/Documenti/EliminaFormularioPS";
+        var idDoc = $("#hIdDocFormularioPS").val();
+        $("#ModalEliminaFormularioPS").modal("hide");
         var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
 
         $.ajax({
@@ -168,8 +172,8 @@
 
                     //InfoElaborazioneAjax(result.msg);
                     //CloseTimeModalFormulario();
-                    //TabElencoFormulari();
-                    PulsantiNotificaAttivaMagFam();
+                    //AttivitaProvvidenze();
+                    //PulsantiNotificaAttivaMagFam();
                 }
             },
             complete: function () {
@@ -184,11 +188,45 @@
         });
     }
 
-    $("#ModalEliminaFormularioMF").on("hidden.bs.modal", function () {
+
+    function TabFormulariInseriti1() {
         //debugger;
-        TabElencoFormulari();
 
+        var rotta = "/ProvvidenzeScolastiche/TabFormulariInseriti1";
+        var idTrasfProvScolastiche = @idTrasfProvScolastiche;
+        //var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
 
-        //PulsantiNotificaAttivaMagFam();
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idTrasfProvScolastiche: idTrasfProvScolastiche
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                //$("#tabElencoFormulariInseriti").empty();
+                //$("#tabElencoFormulariInseriti").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    $("#ModalEliminaFormularioPS").on("hidden.bs.modal", function () {
+        //debugger;
+        
+        ElencoFormulariInseriti();
     });
 </script>

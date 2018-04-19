@@ -3,10 +3,9 @@
 
 @{
     //bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-    //decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasferimento"]);
-    //EnumChiamante enChiamante = EnumChiamante.ProvvidenzeScolastiche;
-
-    string DescrizioneTE = Convert.ToString(ViewData["DescrizioneTE"]);
+    
+    EnumChiamante enChiamante = EnumChiamante.ProvvidenzeScolastiche;
+    string DescrizionePS= Convert.ToString(ViewData["DescrizionePS"]);
     decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
     decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasfProvScolastiche"]);
 }
@@ -44,7 +43,7 @@
                     <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
                 </td>
                 <td class="text-center">
-                    @if (solaLettura)
+                    @*@if (solaLettura)
                     {
                         //<button class="btn btn-link disabled" disabled="disabled">Elimina</button>
                         <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" />
@@ -54,7 +53,11 @@
                         <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
                             <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
                         </a>
-                    }
+                    }*@
+
+                    <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
+                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                    </a>
 
                 </td>
             </tr>
@@ -63,21 +66,21 @@
 
 </table>
 
-<div class="modal fade" id="ModalEliminaFormularioMF" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaFormularioMFLabel" aria-hidden="true">
+<div class="modal fade" id="ModalEliminaFormularioPS" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaFormularioPSLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="EliminaFormularioMFLabel">Elimina Formulario Maggiorazioni Familiari</h3>
+                <h3 class="modal-title alert alert-info text-info" id="EliminaFormularioPSLabel">Elimina Formulario Provvidenze Scolastiche</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <input type="hidden" id="hIdDocFormularioMF" />
+                <input type="hidden" id="hIdDocFormularioPS" />
                 <p><label>Eliminare il formulario selezionato?</label></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaFormularioMF();">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaFormularioPS();">Ok</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
@@ -138,15 +141,15 @@
     });
 
     function EliminaFormulario(idDoc) {
-        $("#hIdDocFormularioMF").val(idDoc);
-        $("#ModalEliminaFormularioMF").modal("show");
+        $("#hIdDocFormularioPS").val(idDoc);
+        $("#ModalEliminaFormularioPS").modal("show");
     }
 
-    function ConfermaEliminaFormularioMF() {
+    function ConfermaEliminaFormularioPS() {
         //debugger;
-        var rotta = "/Documenti/EliminaFormularioMF";
-        var idDoc = $("#hIdDocFormularioMF").val();
-        $("#ModalEliminaFormularioMF").modal("hide");
+        var rotta = "/Documenti/EliminaFormularioPS";
+        var idDoc = $("#hIdDocFormularioPS").val();
+        $("#ModalEliminaFormularioPS").modal("hide");
         var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
 
         $.ajax({
@@ -188,12 +191,9 @@
         });
     }
 
-    $("#ModalEliminaFormularioMF").on("hidden.bs.modal", function () {
-        //debugger;
-        TabElencoFormulari();
-
-
-        //PulsantiNotificaAttivaMagFam();
+    $("#ModalEliminaFormularioPS").on("hidden.bs.modal", function () {
+        debugger;
+        AttivitaProvvidenze();
     });
 </script>
 

@@ -45,11 +45,9 @@ namespace NewISE.Models.DBModel.dtObj
 
             return mcm;
         }
-
-
-        public List<DocumentiModel> GetDocumentiPS(decimal idTrasfProvScolastiche, decimal idTipoDoc)
+        public List<VariazioneDocumentiModel> GetDocumentiPS(decimal idTrasfProvScolastiche, decimal idTipoDoc)
         {
-            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -64,39 +62,39 @@ namespace NewISE.Models.DBModel.dtObj
                     foreach (var atep in latep)
                     {
                         var ld = atep.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).OrderByDescending(a => a.DATAINSERIMENTO).ToList();
-                        
-                        //bool modificabile = false;
-                        
-                        //if (statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
-                        //{
-                        //    modificabile = false;
-                        //}
+
+                        bool modificabile = false;
+
+                        if (statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
+                        {
+                            modificabile = false;
+                        }
 
                         foreach (var doc in ld)
                         {
-                            //var amf = new VariazioneDocumentiModel()
-                            //{
-                            //    dataInserimento = doc.DATAINSERIMENTO,
-                            //    estensione = doc.ESTENSIONE,
-                            //    idDocumenti = doc.IDDOCUMENTO,
-                            //    nomeDocumento = doc.NOMEDOCUMENTO,
-                            //    Modificabile = modificabile,
-                            //    //IdAttivazione = atep.IDATEPARTENZA,
-                            //    DataAggiornamento = atep.DATAAGGIORNAMENTO,
-                            //    fk_iddocumento = doc.FK_IDDOCUMENTO,
-                            //    idStatoRecord = doc.IDSTATORECORD
-                            //};
-
-                            var amf = new DocumentiModel()
+                            var amf = new VariazioneDocumentiModel()
                             {
                                 dataInserimento = doc.DATAINSERIMENTO,
                                 estensione = doc.ESTENSIONE,
                                 idDocumenti = doc.IDDOCUMENTO,
                                 nomeDocumento = doc.NOMEDOCUMENTO,
-                                //DataAggiornamento = atep.DATAAGGIORNAMENTO,
+                                Modificabile = modificabile,
+                                //IdAttivazione = atep.IDATEPARTENZA,
+                                DataAggiornamento = atep.DATAAGGIORNAMENTO,
                                 fk_iddocumento = doc.FK_IDDOCUMENTO,
                                 idStatoRecord = doc.IDSTATORECORD
                             };
+
+                            //var amf = new DocumentiModel()
+                            //{
+                            //    dataInserimento = doc.DATAINSERIMENTO,
+                            //    estensione = doc.ESTENSIONE,
+                            //    idDocumenti = doc.IDDOCUMENTO,
+                            //    nomeDocumento = doc.NOMEDOCUMENTO,
+                            //    //DataAggiornamento = atep.DATAAGGIORNAMENTO,
+                            //    fk_iddocumento = doc.FK_IDDOCUMENTO,
+                            //    idStatoRecord = doc.IDSTATORECORD
+                            //};
                             ldm.Add(amf);
                         }
 
@@ -108,7 +106,6 @@ namespace NewISE.Models.DBModel.dtObj
             return ldm;
 
         }
-
         public ATTIVAZIONIPROVSCOLASTICHE CreaAttivitaPS(decimal idTrasfProvScolastiche, ModelDBISE db)
         {
 
@@ -137,7 +134,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             return new_atep;
         }
-
         public void SetDocumentoPS(ref DocumentiModel dm, decimal idTrasfProvScolastiche, ModelDBISE db, decimal idTipoDocumento)
         {
             try
@@ -190,6 +186,38 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw ex;
             }
+        }
+        public void DeleteDocumentoPS(decimal idDocumento)
+        {
+            PROVVIDENZESCOLASTICHE ps = new PROVVIDENZESCOLASTICHE();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var d = db.DOCUMENTI.Find(idDocumento);
+
+                    if (d != null && d.IDDOCUMENTO > 0)
+                    {
+                        db.DOCUMENTI.Remove(d);
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception(string.Format("Non è stato possibile effettuare l'eliminazione del documento ({0}).", d.NOMEDOCUMENTO + d.ESTENSIONE));
+                        }
+                        else
+                        {
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + ((EnumTipoDoc)d.IDTIPODOCUMENTO).ToString() + ").", "Documenti", db, ps.IDTRASFPROVSCOLASTICHE, d.IDDOCUMENTO);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
 
     }

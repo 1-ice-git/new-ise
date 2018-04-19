@@ -1215,6 +1215,9 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
                         t = d.ATTIVAZIONIMAGFAM.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
                         break;
+                    case EnumTipoDoc.Formulario_Provvidenze_Scolastiche:
+                        t = d.ATTIVAZIONIPROVSCOLASTICHE.First().PROVVIDENZESCOLASTICHE.TRASFERIMENTO;
+                        break;
                     case EnumTipoDoc.Documento_Identita:
 
                         switch (chiamante)
