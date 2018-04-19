@@ -535,13 +535,15 @@
           </Key>
           <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDREGOLA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEDISAGIO" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="COEFFICENTERIDUZIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="MAGGIORAZIONICONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="MAGGIORAZIONIFIGLIO" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="COEFFICENTEINDSIST" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALERIDUZIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALEMAGCONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PENSIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="INDENNITAPRIMOSEGRETARIO" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALEMAGFIGLIO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANTICIPO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="SALDO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="UNICASOLUZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -549,6 +551,7 @@
           <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
+          <Property Name="PERCANTSALDOUNISOL" Type="number" Precision="18" Scale="8" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABMAB">
           <Key>
@@ -1320,8 +1323,9 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABTRASPEFFETTI" Type="number" Precision="38" Scale="0" />
@@ -1394,13 +1398,6 @@
           </Key>
           <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TIPOELABORAZIONE">
-          <Key>
-            <PropertyRef Name="IDTIPOELABORAZIONE" />
-          </Key>
-          <Property Name="IDTIPOELABORAZIONE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLIQUIDAZIONE">
           <Key>
@@ -1478,7 +1475,6 @@
             <PropertyRef Name="IDTIPOVOCE" />
           </Key>
           <Property Name="IDTIPOVOCE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDTIPOELABOPRAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="TITOLIVIAGGIO">
@@ -1608,6 +1604,7 @@
           <Property Name="IDTIPOVOCE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CODICEVOCE" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="FLAGDIRETTO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <Association Name="R_AA_A">
           <End Role="ATTIVITAANTICIPI" Type="Self.ATTIVITAANTICIPI" Multiplicity="1">
@@ -3903,20 +3900,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_RC_EIS">
-          <End Role="REGOLECALCOLO" Type="Self.REGOLECALCOLO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELABINDSISTEMAZIONE" Type="Self.ELABINDSISTEMAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="REGOLECALCOLO">
-              <PropertyRef Name="IDREGOLA" />
-            </Principal>
-            <Dependent Role="ELABINDSISTEMAZIONE">
-              <PropertyRef Name="IDREGOLA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_RC_EMAB">
           <End Role="REGOLECALCOLO" Type="Self.REGOLECALCOLO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4225,20 +4208,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_N">
-          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="NETTO" Type="Self.NETTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEORICI">
-              <PropertyRef Name="IDTEORICI" />
-            </Principal>
-            <Dependent Role="NETTO">
-              <PropertyRef Name="IDTEORICI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_P">
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4446,20 +4415,6 @@
             </Principal>
             <Dependent Role="DOCUMENTI">
               <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TE_TV">
-          <End Role="TIPOELABORAZIONE" Type="Self.TIPOELABORAZIONE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TIPOVOCE" Type="Self.TIPOVOCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPOELABORAZIONE">
-              <PropertyRef Name="IDTIPOELABORAZIONE" />
-            </Principal>
-            <Dependent Role="TIPOVOCE">
-              <PropertyRef Name="IDTIPOELABOPRAZIONE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4939,16 +4894,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_V_N">
+        <Association Name="R_V_T">
           <End Role="VOCI" Type="Self.VOCI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="NETTO" Type="Self.NETTO" Multiplicity="*" />
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VOCI">
               <PropertyRef Name="IDVOCI" />
             </Principal>
-            <Dependent Role="NETTO">
+            <Dependent Role="TEORICI">
               <PropertyRef Name="IDVOCI" />
             </Dependent>
           </ReferentialConstraint>
@@ -5171,7 +5126,6 @@
           <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="Self.TIPOALIQUOTECONTRIBUTIVE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPOANTICIPOTRASPORTOEFFETTI" EntityType="Self.TIPOANTICIPOTRASPORTOEFFETTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPODOCUMENTI" EntityType="Self.TIPODOCUMENTI" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="TIPOELABORAZIONE" EntityType="Self.TIPOELABORAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPOLIQUIDAZIONE" EntityType="Self.TIPOLIQUIDAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPOLOGIAANTICIPI" EntityType="Self.TIPOLOGIAANTICIPI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPOLOGIACOAN" EntityType="Self.TIPOLOGIACOAN" Schema="ISESIM" store:Type="Tables" />
@@ -5852,10 +5806,6 @@
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
           </AssociationSet>
-          <AssociationSet Name="R_RC_EIS" Association="Self.R_RC_EIS">
-            <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
-            <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
-          </AssociationSet>
           <AssociationSet Name="R_RC_EMAB" Association="Self.R_RC_EMAB">
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
@@ -5944,10 +5894,6 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
           </AssociationSet>
-          <AssociationSet Name="R_T_N" Association="Self.R_T_N">
-            <End Role="TEORICI" EntitySet="TEORICI" />
-            <End Role="NETTO" EntitySet="NETTO" />
-          </AssociationSet>
           <AssociationSet Name="R_T_P" Association="Self.R_T_P">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
@@ -6007,10 +5953,6 @@
           <AssociationSet Name="R_TD_D" Association="Self.R_TD_D">
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_TE_TV" Association="Self.R_TE_TV">
-            <End Role="TIPOELABORAZIONE" EntitySet="TIPOELABORAZIONE" />
-            <End Role="TIPOVOCE" EntitySet="TIPOVOCE" />
           </AssociationSet>
           <AssociationSet Name="R_TEP_ATEP" Association="Self.R_TEP_ATEP">
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
@@ -6148,9 +6090,9 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_V_N" Association="Self.R_V_N">
+          <AssociationSet Name="R_V_T" Association="Self.R_V_T">
             <End Role="VOCI" EntitySet="VOCI" />
-            <End Role="NETTO" EntitySet="NETTO" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_VALUTE_TFR" Association="Self.R_VALUTE_TFR">
             <End Role="VALUTE" EntitySet="VALUTE" />
@@ -6274,7 +6216,6 @@
           <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="DBISEPRO.TIPOALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="TIPOANTICIPOTRASPORTOEFFETTI" EntityType="DBISEPRO.TIPOANTICIPOTRASPORTOEFFETTI" />
           <EntitySet Name="TIPODOCUMENTI" EntityType="DBISEPRO.TIPODOCUMENTI" />
-          <EntitySet Name="TIPOELABORAZIONE" EntityType="DBISEPRO.TIPOELABORAZIONE" />
           <EntitySet Name="TIPOLIQUIDAZIONE" EntityType="DBISEPRO.TIPOLIQUIDAZIONE" />
           <EntitySet Name="TIPOLOGIAANTICIPI" EntityType="DBISEPRO.TIPOLOGIAANTICIPI" />
           <EntitySet Name="TIPOLOGIACOAN" EntityType="DBISEPRO.TIPOLOGIACOAN" />
@@ -6596,10 +6537,6 @@
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_RC_EIS" Association="DBISEPRO.R_RC_EIS">
-            <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
-            <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
-          </AssociationSet>
           <AssociationSet Name="R_EMAB_EMAB" Association="DBISEPRO.R_EMAB_EMAB">
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="ELABMAB1" EntitySet="ELABMAB" />
@@ -6736,14 +6673,6 @@
             <End Role="TIPOLOGIAMODIFICHE" EntitySet="TIPOLOGIAMODIFICHE" />
             <End Role="MODIFICHEMAGFAM" EntitySet="MODIFICHEMAGFAM" />
           </AssociationSet>
-          <AssociationSet Name="R_T_N" Association="DBISEPRO.R_T_N">
-            <End Role="TEORICI" EntitySet="TEORICI" />
-            <End Role="NETTO" EntitySet="NETTO" />
-          </AssociationSet>
-          <AssociationSet Name="R_V_N" Association="DBISEPRO.R_V_N">
-            <End Role="VOCI" EntitySet="VOCI" />
-            <End Role="NETTO" EntitySet="NETTO" />
-          </AssociationSet>
           <AssociationSet Name="R_NC_RC" Association="DBISEPRO.R_NC_RC">
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
@@ -6848,6 +6777,10 @@
             <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
             <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
+          <AssociationSet Name="R_V_T" Association="DBISEPRO.R_V_T">
+            <End Role="VOCI" EntitySet="VOCI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
           <AssociationSet Name="R_T_TEP" Association="DBISEPRO.R_T_TEP">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
@@ -6859,10 +6792,6 @@
           <AssociationSet Name="R_VALUTE_TFR" Association="DBISEPRO.R_VALUTE_TFR">
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="TFR" EntitySet="TFR" />
-          </AssociationSet>
-          <AssociationSet Name="R_TE_TV" Association="DBISEPRO.R_TE_TV">
-            <End Role="TIPOELABORAZIONE" EntitySet="TIPOELABORAZIONE" />
-            <End Role="TIPOVOCE" EntitySet="TIPOVOCE" />
           </AssociationSet>
           <AssociationSet Name="R_TL_V" Association="DBISEPRO.R_TL_V">
             <End Role="TIPOLIQUIDAZIONE" EntitySet="TIPOLIQUIDAZIONE" />
@@ -7592,13 +7521,15 @@
           </Key>
           <Property Name="IDINDSISTLORDA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDREGOLA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="COEFFICENTERIDUZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="MAGGIORAZIONICONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="MAGGIORAZIONIFIGLIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="COEFFICENTEINDSIST" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALERIDUZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALEMAGCONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="INDENNITAPRIMOSEGRETARIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALEMAGFIGLIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ANTICIPO" Type="Boolean" Nullable="false" />
           <Property Name="SALDO" Type="Boolean" Nullable="false" />
           <Property Name="UNICASOLUZIONE" Type="Boolean" Nullable="false" />
@@ -7606,12 +7537,12 @@
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="PERCANTSALDOUNISOL" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE1" Relationship="DBISEPRO.R_EIS_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABINDSISTEMAZIONE1" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE2" Relationship="DBISEPRO.R_EIS_EIS" FromRole="ELABINDSISTEMAZIONE1" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISEPRO.R_EIS_ETE" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABTRASPEFFETTI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_EIS_T" FromRole="ELABINDSISTEMAZIONE" ToRole="TEORICI" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_PS_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="PRIMASITEMAZIONE" />
-          <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISEPRO.R_RC_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="REGOLECALCOLO" />
         </EntityType>
         <EntityType Name="ELABMAB">
           <Key>
@@ -7964,8 +7895,6 @@
           <Property Name="IMPORTONETTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISEPRO.R_AC_N" FromRole="NETTO" ToRole="ALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="FLUSSICEDOLINO" Relationship="DBISEPRO.R_N_S" FromRole="NETTO" ToRole="FLUSSICEDOLINO" />
-          <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_N" FromRole="NETTO" ToRole="TEORICI" />
-          <NavigationProperty Name="VOCI" Relationship="DBISEPRO.R_V_N" FromRole="NETTO" ToRole="VOCI" />
           <NavigationProperty Name="OA" Relationship="DBISEPRO.CONT_OA" FromRole="NETTO" ToRole="OA" />
         </EntityType>
         <EntityType Name="NORMACALCOLO">
@@ -8209,7 +8138,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISEPRO.R_RC_EI" FromRole="REGOLECALCOLO" ToRole="ELABINDENNITA" />
-          <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISEPRO.R_RC_EIS" FromRole="REGOLECALCOLO" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISEPRO.R_RC_EMAB" FromRole="REGOLECALCOLO" ToRole="ELABMAB" />
           <NavigationProperty Name="NORMACALCOLO" Relationship="DBISEPRO.R_NC_RC" FromRole="REGOLECALCOLO" ToRole="NORMACALCOLO" />
           <NavigationProperty Name="TIPOREGOLACALCOLO" Relationship="DBISEPRO.R_TRC_RC" FromRole="REGOLECALCOLO" ToRole="TIPOREGOLACALCOLO" />
@@ -8386,8 +8314,9 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDELABIND" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABTRASPEFFETTI" Type="Decimal" Precision="38" Scale="0" />
@@ -8402,8 +8331,8 @@
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISEPRO.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISEPRO.R_EMAB_T" FromRole="TEORICI" ToRole="ELABMAB" />
           <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISEPRO.R_ETE_T" FromRole="TEORICI" ToRole="ELABTRASPEFFETTI" />
-          <NavigationProperty Name="NETTO" Relationship="DBISEPRO.R_T_N" FromRole="TEORICI" ToRole="NETTO" />
           <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISEPRO.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
+          <NavigationProperty Name="VOCI" Relationship="DBISEPRO.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
         </EntityType>
         <EntityType Name="TEPARTENZA">
           <Key>
@@ -8463,14 +8392,6 @@
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="TIPODOCUMENTI" ToRole="DOCUMENTI" />
-        </EntityType>
-        <EntityType Name="TIPOELABORAZIONE">
-          <Key>
-            <PropertyRef Name="IDTIPOELABORAZIONE" />
-          </Key>
-          <Property Name="IDTIPOELABORAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TIPOVOCE" Relationship="DBISEPRO.R_TE_TV" FromRole="TIPOELABORAZIONE" ToRole="TIPOVOCE" />
         </EntityType>
         <EntityType Name="TIPOLIQUIDAZIONE">
           <Key>
@@ -8561,9 +8482,7 @@
             <PropertyRef Name="IDTIPOVOCE" />
           </Key>
           <Property Name="IDTIPOVOCE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTIPOELABOPRAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TIPOELABORAZIONE" Relationship="DBISEPRO.R_TE_TV" FromRole="TIPOVOCE" ToRole="TIPOELABORAZIONE" />
           <NavigationProperty Name="VOCI" Relationship="DBISEPRO.R_TV_V" FromRole="TIPOVOCE" ToRole="VOCI" />
         </EntityType>
         <EntityType Name="TITOLIVIAGGIO">
@@ -8723,7 +8642,8 @@
           <Property Name="IDTIPOVOCE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CODICEVOCE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="NETTO" Relationship="DBISEPRO.R_V_N" FromRole="VOCI" ToRole="NETTO" />
+          <Property Name="FLAGDIRETTO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_V_T" FromRole="VOCI" ToRole="TEORICI" />
           <NavigationProperty Name="TIPOLIQUIDAZIONE" Relationship="DBISEPRO.R_TL_V" FromRole="VOCI" ToRole="TIPOLIQUIDAZIONE" />
           <NavigationProperty Name="TIPOVOCE" Relationship="DBISEPRO.R_TV_V" FromRole="VOCI" ToRole="TIPOVOCE" />
         </EntityType>
@@ -9773,20 +9693,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_RC_EIS">
-          <End Type="DBISEPRO.REGOLECALCOLO" Role="REGOLECALCOLO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.ELABINDSISTEMAZIONE" Role="ELABINDSISTEMAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="REGOLECALCOLO">
-              <PropertyRef Name="IDREGOLA" />
-            </Principal>
-            <Dependent Role="ELABINDSISTEMAZIONE">
-              <PropertyRef Name="IDREGOLA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_EMAB_EMAB">
           <End Type="DBISEPRO.ELABMAB" Role="ELABMAB" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -10263,34 +10169,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_N">
-          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.NETTO" Role="NETTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEORICI">
-              <PropertyRef Name="IDTEORICI" />
-            </Principal>
-            <Dependent Role="NETTO">
-              <PropertyRef Name="IDTEORICI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_V_N">
-          <End Type="DBISEPRO.VOCI" Role="VOCI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.NETTO" Role="NETTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VOCI">
-              <PropertyRef Name="IDVOCI" />
-            </Principal>
-            <Dependent Role="NETTO">
-              <PropertyRef Name="IDVOCI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_NC_RC">
           <End Type="DBISEPRO.NORMACALCOLO" Role="NORMACALCOLO" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -10655,6 +10533,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_V_T">
+          <End Type="DBISEPRO.VOCI" Role="VOCI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VOCI">
+              <PropertyRef Name="IDVOCI" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDVOCI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_TEP">
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -10694,20 +10586,6 @@
             </Principal>
             <Dependent Role="TFR">
               <PropertyRef Name="IDVALUTA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TE_TV">
-          <End Type="DBISEPRO.TIPOELABORAZIONE" Role="TIPOELABORAZIONE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TIPOVOCE" Role="TIPOVOCE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPOELABORAZIONE">
-              <PropertyRef Name="IDTIPOELABORAZIONE" />
-            </Principal>
-            <Dependent Role="TIPOVOCE">
-              <PropertyRef Name="IDTIPOELABOPRAZIONE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11447,6 +11325,7 @@
           <EntitySetMapping Name="ELABINDSISTEMAZIONE">
             <EntityTypeMapping TypeName="DBISEPRO.ELABINDSISTEMAZIONE">
               <MappingFragment StoreEntitySet="ELABINDSISTEMAZIONE">
+                <ScalarProperty Name="PERCANTSALDOUNISOL" ColumnName="PERCANTSALDOUNISOL" />
                 <ScalarProperty Name="FK_IDINDSISTLORDA" ColumnName="FK_IDINDSISTLORDA" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
@@ -11454,13 +11333,15 @@
                 <ScalarProperty Name="UNICASOLUZIONE" ColumnName="UNICASOLUZIONE" />
                 <ScalarProperty Name="SALDO" ColumnName="SALDO" />
                 <ScalarProperty Name="ANTICIPO" ColumnName="ANTICIPO" />
-                <ScalarProperty Name="MAGGIORAZIONIFIGLIO" ColumnName="MAGGIORAZIONIFIGLIO" />
-                <ScalarProperty Name="MAGGIORAZIONICONIUGE" ColumnName="MAGGIORAZIONICONIUGE" />
-                <ScalarProperty Name="COEFFICENTERIDUZIONE" ColumnName="COEFFICENTERIDUZIONE" />
+                <ScalarProperty Name="PERCENTUALEMAGFIGLIO" ColumnName="PERCENTUALEMAGFIGLIO" />
+                <ScalarProperty Name="INDENNITAPRIMOSEGRETARIO" ColumnName="INDENNITAPRIMOSEGRETARIO" />
+                <ScalarProperty Name="PENSIONECONIUGE" ColumnName="PENSIONECONIUGE" />
+                <ScalarProperty Name="PERCENTUALEMAGCONIUGE" ColumnName="PERCENTUALEMAGCONIUGE" />
+                <ScalarProperty Name="PERCENTUALERIDUZIONE" ColumnName="PERCENTUALERIDUZIONE" />
+                <ScalarProperty Name="COEFFICENTEINDSIST" ColumnName="COEFFICENTEINDSIST" />
                 <ScalarProperty Name="PERCENTUALEDISAGIO" ColumnName="PERCENTUALEDISAGIO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />
-                <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
                 <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
                 <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
               </MappingFragment>
@@ -12131,8 +12012,9 @@
                 <ScalarProperty Name="IDELABTRASPEFFETTI" ColumnName="IDELABTRASPEFFETTI" />
                 <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
                 <ScalarProperty Name="IDELABIND" ColumnName="IDELABIND" />
-                <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
+                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
                 <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
+                <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
                 <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -12186,14 +12068,6 @@
               <MappingFragment StoreEntitySet="TIPODOCUMENTI">
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
                 <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TIPOELABORAZIONE">
-            <EntityTypeMapping TypeName="DBISEPRO.TIPOELABORAZIONE">
-              <MappingFragment StoreEntitySet="TIPOELABORAZIONE">
-                <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
-                <ScalarProperty Name="IDTIPOELABORAZIONE" ColumnName="IDTIPOELABORAZIONE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -12282,7 +12156,6 @@
             <EntityTypeMapping TypeName="DBISEPRO.TIPOVOCE">
               <MappingFragment StoreEntitySet="TIPOVOCE">
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
-                <ScalarProperty Name="IDTIPOELABOPRAZIONE" ColumnName="IDTIPOELABOPRAZIONE" />
                 <ScalarProperty Name="IDTIPOVOCE" ColumnName="IDTIPOVOCE" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -12393,6 +12266,7 @@
           <EntitySetMapping Name="VOCI">
             <EntityTypeMapping TypeName="DBISEPRO.VOCI">
               <MappingFragment StoreEntitySet="VOCI">
+                <ScalarProperty Name="FLAGDIRETTO" ColumnName="FLAGDIRETTO" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
                 <ScalarProperty Name="CODICEVOCE" ColumnName="CODICEVOCE" />
                 <ScalarProperty Name="IDTIPOVOCE" ColumnName="IDTIPOVOCE" />

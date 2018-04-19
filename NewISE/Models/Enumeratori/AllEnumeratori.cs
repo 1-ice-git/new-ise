@@ -29,4 +29,6 @@ namespace NewISE.Models.Enumeratori
     {
         Prima_sistemazione = 1
     }
+
+
 }

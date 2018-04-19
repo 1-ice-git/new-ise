@@ -29,31 +29,78 @@ namespace NewISE.Models.DBModel.dtObj
                     var lanticipi =
                         aa.ANTICIPI.Where(
                             a =>
-                                a.ANNULLATO =
-                                    false && a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipoAnticipi.Prima_sistemazione)
+                                a.ANNULLATO == false &&
+                                a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipoAnticipi.Prima_sistemazione)
                             .ToList();
 
                     if (lanticipi?.Any() ?? false)
                     {
                         var anticipi = lanticipi.First();
-                        using (CalcoliIndennita ci = new CalcoliIndennita(t.IDTRASFERIMENTO))
+                        using (CalcoliIndennita ci = new CalcoliIndennita(t.IDTRASFERIMENTO, t.DATAPARTENZA))
                         {
-                            decimal importoAnticipo = ci.AnticipoPrimaSistemazione(anticipi.PERCENTUALEANTICIPO);
+                            //decimal importoAnticipo = ci.AnticipoPrimaSistemazione(anticipi.PERCENTUALEANTICIPO);
+                            ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
+                            {
+                                IDPRIMASISTEMAZIONE = ps.IDPRIMASISTEMAZIONE,
+                                INDENNITABASE = ci.IndennitaDiBase,
+                                COEFFICENTESEDE = ci.CoefficienteDiSede,
+                                PERCENTUALEDISAGIO = ci.PercentualeDisagio,
+                                COEFFICENTEINDSIST = ci.CoefficienteIndennitaSistemazione,
+                                PERCENTUALERIDUZIONE = ci.PercentualeRiduzionePrimaSistemazione,
+                                PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                                PENSIONECONIUGE = ci.PensioneConiuge,
+                                INDENNITAPRIMOSEGRETARIO = ci.IndennitaPrimoSegretario,
+                                PERCENTUALEMAGFIGLIO = ci.PercentualeMaggiorazioneFigli,
+                                ANTICIPO = true,
+                                SALDO = false,
+                                UNICASOLUZIONE = false,
+                                PERCANTSALDOUNISOL = anticipi.PERCENTUALEANTICIPO,
+                                DATAOPERAZIONE = DateTime.Now,
+                                ELABORATO = false,
+                                ANNULLATO = false
+                            };
 
 
+                            var leis =
+                                db.ELABINDSISTEMAZIONE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE &&
+                                        a.ANTICIPO == true)
+                                    .OrderByDescending(a => a.IDINDSISTLORDA)
+                                    .ToList();
 
+                            if (leis?.Any() == false)
+                            {
+                                var eisOld = leis.First();
+                                eis.FK_IDINDSISTLORDA = eisOld.IDINDSISTLORDA;
+
+                            }
+
+                            db.ELABINDSISTEMAZIONE.Add(eis);
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore nella fase d'inderimento dell'anticipo di prima sistemazione.");
+                            }
+
+                            var importoAnticipo = CalcoliIndennita.ElaboraAnticipoPrimaSistemazione(eis.INDENNITABASE,
+                                eis.COEFFICENTESEDE, eis.PERCENTUALEDISAGIO, eis.PERCENTUALERIDUZIONE,
+                                eis.COEFFICENTEINDSIST, eis.PERCANTSALDOUNISOL);
+
+                            TEORICI teorici = new TEORICI()
+                            {
+
+                            };
 
 
                         }
-
-
-
                     }
+
+
                 }
-
-
-
-
 
 
             }
@@ -63,5 +110,15 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+        private void InserisciTeoriciPrimaSistemazione(ELABINDSISTEMAZIONE eis, ModelDBISE db)
+        {
+
+        }
+
+
+
+
+
     }
 }

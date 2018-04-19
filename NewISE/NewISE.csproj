@@ -2525,9 +2525,6 @@
     <Compile Include="EF\TEORICI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\TIPOELABORAZIONE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\TIPOLIQUIDAZIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
