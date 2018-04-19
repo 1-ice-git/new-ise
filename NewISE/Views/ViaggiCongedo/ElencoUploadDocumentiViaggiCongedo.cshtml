@@ -2,11 +2,16 @@
 @using NewISE.Models.DBModel
 
 @{
-    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
     decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
     decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
-    bool notificaEseguita = Convert.ToBoolean(ViewData["notificaEseguita"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
+    bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
+    decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
+    decimal idAttivViaggioCongedo= Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
 }
+
 
 <tr>
     <td style="font-weight:bold; padding-bottom: 10px;padding-right: 10px;">
@@ -15,15 +20,21 @@
     <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
         @if (nDocCartaImbarco > 0)
         {
-            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idTitoliViaggio);" id="linkElencoDocTV">
+            @*<a href="#" onclick="ElencoDocumentiViaggioCongedo();" id="linkElencoDocTV">
                 <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Carte d'Imbarco" />
-            </a>
+            </a>*@
+            <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idAttivViaggioCongedo);" id="linkElencoDocVC">
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Carte d'Imbarco" />
+                </a>
         }
         else
         {
-            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco), @idTitoliViaggio);" id="linkElencoDocTV">
+            @*<a href="#" onclick="ElencoDocumentiViaggioCongedo();" id="linkElencoDocVC">
                 <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
-            </a>
+            </a>*@
+            <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco), @idAttivViaggioCongedo);" id="linkElencoDocVC">
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
+                </a>
         }
     </td>
 </tr>
@@ -34,29 +45,38 @@
     <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
         @if (nDocTitoliViaggio > 0)
         {
-            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idTitoliViaggio);" id="linkElencoDocTV">
+            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idAttivViaggioCongedo);" id="linkElencoDocTV">
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Titoli di Viaggio" />
+                </a>
+            @*<a href="#" onclick="ElencoDocumentiViaggioCongedo();" id="linkElencoDocVC">
                 <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Titoli di Viaggio" />
-            </a>
+            </a>*@
         }
         else
         {
-            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio), @idTitoliViaggio);" id="linkElencoDocTV">
+            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio), @idAttivViaggioCongedo);" id="linkElencoDocTV">
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Titoli di Viaggio" />
+                </a>
+            @*<a href="#" onclick="ElencoDocumentiViaggioCongedo();" id="linkElencoDocVC">
                 <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Titoli di Viaggio" />
-            </a>
+            </a>*@
         }
     </td>
 </tr>
 
 
 <script type="text/javascript">
-    function ElencoDocumentiTV(idTipoDocumento, idTitoliViaggio) {
-        //debugger;
-        var rotta = "/TitoliViaggio/ElencoDocumentiTV";
 
+    function ElencoDocumentiVC(idTipoDocumento, idAttivViaggioCongedo) {
+      //  debugger;
+        var rotta = "/ViaggiCongedo/ElencoDocumentiVC";
+        var idTipoDocumento = parseInt(idTipoDocumento);
+        var idAttivViaggioCongedo = parseInt('@idAttivViaggioCongedo');
+        var idTrasferimento = parseInt('@idTrasferimento');
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTipoDocumento: idTipoDocumento, idTitoliViaggio: idTitoliViaggio },
+            data: { idTrasferimento:idTrasferimento,idTipoDocumento: idTipoDocumento, idAttivViaggioCongedo: idAttivViaggioCongedo },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -67,8 +87,8 @@
             success: function (result) {
                 //debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divTitoliViaggio").empty();
-                $("#divTitoliViaggio").html(result);
+                $("#divViaggioCongedioMain").empty();
+                $("#divViaggioCongedioMain").html(result);
 
                 //RicercaDocumenti();
 

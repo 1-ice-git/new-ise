@@ -1,34 +1,58 @@
 ﻿@using NewISE.Models.DBModel
-
+@using NewISE.Models.DBModel.Enum;
 @{
     // decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
     decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
-    bool notificaEseguita = Convert.ToBoolean(ViewData["notificaEseguita"]);
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    bool NotificaInviata =Convert.ToBoolean(ViewData["NotificaInviata"]);
+    bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
+    decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
+
 }
-<tr>
-    <td style="font-weight:bold; padding-bottom: 10px;padding-right: 10px;">
-       @*Allega Preventivi di Viaggio:*@
-    </td>
-    <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
-        @*@if (nDocCartaImbarco > 0)
-        {*@
-            @*<a href="#" onclick="NuovoDocumentoPreventivi();" id="linkElencoDocPreventivi">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Preventivo di Viaggio" />
-            </a>*@
-            <input type="button" value="Allega Preventivi di Viaggio" id="linkElencoDocPreventivi" class="btn-danger" onclick="NuovoDocumentoPreventivi();" />
-        <input type="button" value="Nuovo" id="linkElencoDocPreventivi" class="btn-danger" onclick="" />
-        @*}
-        else
+<div id="PulsantiUploadPreventivi" class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
+
+        @if ((AttivazioneInviata || NotificaInviata) && idFaseInCorso==(decimal)EnumFaseViaggioCongedo.Preventivi)
         {
-            <a href="#" onclick="NuovoDocumentoPreventivi();" id="linkElencoDocPreventivi">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
-            </a>
-        }*@
-    </td>
-</tr>
+            <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Allega Preventivi di Viaggio
+            </button>
+
+            <button class="btn btn-default btn-sm disabled" disabled id="NuovoDocPreventivi" onclick="">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Nuovo
+            </button>
+        }
+        else
+        if (NotificaInviata== false && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Preventivi)
+        {
+                <button class="btn btn-default btn-sm" id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Allega Preventivi di Viaggio
+                </button>
+
+                <button class="btn btn-default btn-sm disabled" disabled id="NuovoDocPreventivi" onclick="">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Nuovo
+                </button>          
+        }
+        else
+        if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+        {
+            <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Allega Preventivi di Viaggio
+            </button>
+
+            <button class="btn btn-default btn-sm disabled" disabled id="NuovoDocPreventivi" onclick="">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Nuovo
+            </button>
+        }
+       
+</div>
 <div class="modal fade " id="NewDocPreventiviModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

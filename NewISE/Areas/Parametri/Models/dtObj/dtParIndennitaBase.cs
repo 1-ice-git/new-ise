@@ -896,8 +896,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<INDENNITABASE> libm = new List<INDENNITABASE>();
                 libm = db.INDENNITABASE.Where(a => a.ANNULLATO == false
-                && a.IDLIVELLO == idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA &&
-                  b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
+                && a.IDLIVELLO == idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA).ToList();// &&
+                  //b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
                 if (libm.Count != 0)
                 {
                     tmp.Add(libm[0].IDINDENNITABASE.ToString());

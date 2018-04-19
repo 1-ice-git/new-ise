@@ -124,6 +124,68 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+        public bool NotificaPreventiviInviata(decimal id_Attiv_Viaggio_Congedo,decimal idFaseInCorso)
+        {
+            bool tmp = false;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    //db.Database.BeginTransaction();
+                    var AVC = db.ATTIVAZIONIVIAGGICONGEDO.Where(a=>a.IDATTIVAZIONEVC==id_Attiv_Viaggio_Congedo && a.IDFASEVC==idFaseInCorso).ToList();
+                    if(AVC.Count!=0)
+                     tmp = Convert.ToBoolean(AVC.First().NOTIFICARICHIESTA);
+                }
+                catch (Exception ex)
+                {
+                    
+                    throw ex;
+                }
+                return tmp;
+            }
+        }
+        public bool AttivazionePreventiviInviata(decimal id_Attiv_Viaggio_Congedo,decimal idFaseInCorso)
+        {
+            bool tmp = false;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    //db.Database.BeginTransaction();
+                    var AVC = db.ATTIVAZIONIVIAGGICONGEDO.Where(a=>a.IDATTIVAZIONEVC==id_Attiv_Viaggio_Congedo && a.IDFASEVC==idFaseInCorso).ToList();
+                    if(AVC?.Any()??false)
+                        tmp = Convert.ToBoolean(AVC.First().ATTIVARICHIESTA);
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+                return tmp;
+            }
+        }
+
+        public decimal IdentificaDocumentoSelezionato(decimal id_Attiv_Viaggio_Congedo)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    var lSelDoc = db.SELECTDOCVC.Where(x => x.IDATTIVAZIONEVC == id_Attiv_Viaggio_Congedo && x.DOCSELEZIONATO==true).ToList();
+                    if(lSelDoc?.Any()??false)
+                    {
+                        tmp = lSelDoc.First().IDDOCUMENTO;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+                return tmp;
+            }
+        }
 
 
         private void EmailNotificaRichiestaTV(decimal idAttivazioneTitoliViaggio, ModelDBISE db)
@@ -220,7 +282,7 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
-        public decimal Crea_Attivazioni_Viaggi_Congedo(decimal id_Viaggio_Congedo)
+        public decimal Crea_Attivazioni_Viaggi_Congedo(decimal id_Viaggio_Congedo,decimal idFaseVC)
         {
             decimal tmp = 0;
             ATTIVAZIONIVIAGGICONGEDO atvViaggCong = new ATTIVAZIONIVIAGGICONGEDO();
@@ -228,17 +290,30 @@ namespace NewISE.Models.DBModel.dtObj
             atvViaggCong.NOTIFICARICHIESTA = false;
             atvViaggCong.ATTIVARICHIESTA = false;
             atvViaggCong.DATAAGGIORNAMENTO = DateTime.Now;
+            atvViaggCong.ANNULLATO = false;
+            atvViaggCong.DATAAGGIORNAMENTO = DateTime.Now;
+            atvViaggCong.IDFASEVC = idFaseVC;// (decimal)EnumFaseViaggioCongedo.Preventivi;
+          //  atvViaggCong.VIAGGICONGEDO.IDVIAGGIOCONGEDO = id_Viaggio_Congedo;
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                db.Database.BeginTransaction();
-                var VC = db.VIAGGICONGEDO.Find(id_Viaggio_Congedo);                
-                VC.ATTIVAZIONIVIAGGICONGEDO.Add(atvViaggCong);
-                db.SaveChanges();
-                db.Database.CurrentTransaction.Commit();
-                tmp = atvViaggCong.IDATTIVAZIONEVC;
+                try
+                {
+                    //db.Database.BeginTransaction();
+                    var VC = db.VIAGGICONGEDO.Find(id_Viaggio_Congedo);
+                    VC.ATTIVAZIONIVIAGGICONGEDO.Add(atvViaggCong);
+                    db.SaveChanges();
+                    //db.Database.CurrentTransaction.Commit();
+                    tmp = atvViaggCong.IDATTIVAZIONEVC;
+
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+                return tmp;
             }
-            return tmp;
         }
 
         public decimal Crea_Viaggi_Congedo(decimal idTrasferimento)
@@ -316,21 +391,88 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
-        public decimal Cerca_Id_AttivazioniViaggiCongedoDisponibile(decimal idViaggiCongedio)
+       public decimal Restituisci_ID_Viagg_CONG_DA(decimal idAttivazioneVC)
         {
             decimal tmp = 0;
             using (ModelDBISE db = new ModelDBISE())
             {
-                var vc = db.VIAGGICONGEDO.Find(idViaggiCongedio);
-                var lavc = vc.ATTIVAZIONIVIAGGICONGEDO.Where(y=>y.ATTIVARICHIESTA == false &&
-                y.ANNULLATO==false).OrderByDescending(a => a.IDATTIVAZIONEVC);
-                if (lavc?.Any() ?? false)
+                var atvc = db.ATTIVAZIONIVIAGGICONGEDO.Find(idAttivazioneVC);
+                tmp = atvc.IDVIAGGIOCONGEDO;
+            }
+            return tmp;
+        }
+        public decimal Restituisci_LivelloFase_Da_ATT_Viagg_CONG(decimal idViaggioCongedio)
+        {           
+            decimal tmp = (decimal)EnumFaseViaggioCongedo.Preventivi;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var atvc = db.ATTIVAZIONIVIAGGICONGEDO.Where(x => x.IDVIAGGIOCONGEDO == idViaggioCongedio).OrderByDescending(y=>y.IDFASEVC);
+                if(atvc?.Any()??false)// non lo è
                 {
-                    tmp = lavc.First().IDATTIVAZIONEVC;
+                   tmp= atvc.First().IDFASEVC;
                 }
             }
             return tmp;
         }
+        public List<AttivazioniViaggiCongedoModel> Cerca_Id_AttivazioniViaggiCongedoDisponibile(decimal idViaggiCongedio,decimal idFaseInCorso)
+        {
+            List<AttivazioniViaggiCongedoModel> tmp = new List<AttivazioniViaggiCongedoModel>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var vc = db.VIAGGICONGEDO.Find(idViaggiCongedio);
+                var lavc = vc.ATTIVAZIONIVIAGGICONGEDO.Where(y => y.ANNULLATO == false
+                 && y.IDFASEVC==idFaseInCorso).OrderByDescending(a => a.IDATTIVAZIONEVC).ToList();
+                
+                tmp = (from e in lavc
+                       select new AttivazioniViaggiCongedoModel()
+                       {
+                            idViaggioCongedo=idViaggiCongedio,
+                             Annullato=e.ANNULLATO,
+                             AttivaRichiesta=e.ATTIVARICHIESTA,
+                              DataAggiornamento=e.DATAAGGIORNAMENTO,
+                               //DataAttivaRichiesta= e.DATAATTIVARICHIESTA.Value,
+                               //DataNotificaRichiesta=e.DATANOTIFICARICHIESTA.Value,
+                                 // FK_IDAttivazioneVC=(decimal)e.FK_IDATTIVAZIONEVC,
+                                   idAttivazioneVC=e.IDATTIVAZIONEVC,
+                                    idFaseVC=e.IDFASEVC,
+                                     NotificaRichiesta=e.NOTIFICARICHIESTA
+                           
+                       }).ToList();
+                            }
+            return tmp;
+        }
+
+        public decimal AttivaPreventiviRichiesta(decimal idAttivazioneVC,decimal idDocumento)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+                try
+                {
+                    var a = db.ATTIVAZIONIVIAGGICONGEDO.Find(idAttivazioneVC);
+                    a.ATTIVARICHIESTA = true;
+                    a.DATAATTIVARICHIESTA= DateTime.Now;
+                    a.DATAAGGIORNAMENTO = DateTime.Now;                  
+
+                    var s = a.SELECTDOCVC.Where(y=>y.IDDOCUMENTO== idDocumento).ToList().First();
+                    s.DOCSELEZIONATO = true;
+                    db.SaveChanges();
+                    db.Database.CurrentTransaction.Commit();
+
+                    tmp = Crea_Attivazioni_Viaggi_Congedo(a.VIAGGICONGEDO.IDVIAGGIOCONGEDO, (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio);
+                    
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+            return tmp;
+        }
+        
+
         public void NotificaRichiestaTV(decimal idAttivazioneTitoliViaggio)
         {
             try
@@ -421,85 +563,18 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
-        public void AttivaRichiestaTV(decimal idAttivazioneTitoliViaggio)
+        public void NotificaPreventiviRichiesta(decimal idAttivazioneVC)
         {
-
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 db.Database.BeginTransaction();
-
                 try
                 {
-                    var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
-                    if (atv?.IDATTIVAZIONETITOLIVIAGGIO > 0)
-                    {
-                        if (atv.NOTIFICARICHIESTA == true)
-                        {
-                            atv.ATTIVAZIONERICHIESTA = true;
-                            atv.DATAATTIVAZIONERICHIESTA = DateTime.Now;
-                            atv.DATAAGGIORNAMENTO = DateTime.Now;
-
-                            int i = db.SaveChanges();
-
-                            if (i <= 0)
-                            {
-                                throw new Exception("Errore: Impossibile completare l'attivazione dei titoli di viaggio.");
-                            }
-                            else
-                            {
-                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                                    "Attivazione titoli di viaggio.", "ATTIVAZIONITITOLIVIAGGIO", db,
-                                    atv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, atv.IDATTIVAZIONETITOLIVIAGGIO);
-                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                                {
-                                    dtce.ModificaInCompletatoCalendarioEvento(atv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTitoliViaggio, db);
-                                }
-
-                                using (dtDipendenti dtd = new dtDipendenti())
-                                {
-                                    using (dtTrasferimento dtt = new dtTrasferimento())
-                                    {
-                                        using (dtUffici dtu = new dtUffici())
-                                        {
-                                            var t = dtt.GetTrasferimentoByIdTitoloViaggio(atv.IDTITOLOVIAGGIO);
-
-                                            if (t?.idTrasferimento > 0)
-                                            {
-                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
-                                                var uff = dtu.GetUffici(t.idUfficio);
-
-                                                var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
-                                                string messaggioAttiva = "";
-                                                string oggettoAttiva = "";
-
-                                                if (conta_attivazioni == 1)
-                                                {
-                                                    messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaInizialeTitoliViaggio;
-                                                    oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaInizialeTitoloViaggio;
-
-                                                }
-                                                else
-                                                {
-                                                    messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaSuccessivaTitoliViaggio;
-                                                    oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaSuccessivaTitoloViaggio;
-                                                }
-
-                                                EmailTrasferimento.EmailAttiva(t.idTrasferimento,
-                                                                    oggettoAttiva,
-                                                                    string.Format(messaggioAttiva, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
-                                                                    db);
-                                            }
-                                        }
-                                    }
-                                }
-                                //this.EmailAttivaRichiestaTV(atv.IDATTIVAZIONETITOLIVIAGGIO, db);
-
-                            }
-                        }
-                    }
-
+                    var a = db.ATTIVAZIONIVIAGGICONGEDO.Find(idAttivazioneVC);
+                    a.NOTIFICARICHIESTA = true;
+                    a.DATANOTIFICARICHIESTA= DateTime.Now;
+                    a.DATAAGGIORNAMENTO = DateTime.Now;
+                    db.SaveChanges();
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -509,6 +584,114 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
+        public decimal ConteggiaPreventiviRichiesta(decimal idAttivazioneVC)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+                try
+                {
+                    var a = db.ATTIVAZIONIVIAGGICONGEDO.Find(idAttivazioneVC);
+                    var sel = a.SELECTDOCVC.ToList();
+                    tmp = sel.Count;
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+            return tmp;
+        }
+
+        //public void AttivaRichiestaTV(decimal idAttivazioneTitoliViaggio)
+        //{
+
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        db.Database.BeginTransaction();
+
+        //        try
+        //        {
+        //            var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
+        //            if (atv?.IDATTIVAZIONETITOLIVIAGGIO > 0)
+        //            {
+        //                if (atv.NOTIFICARICHIESTA == true)
+        //                {
+        //                    atv.ATTIVAZIONERICHIESTA = true;
+        //                    atv.DATAATTIVAZIONERICHIESTA = DateTime.Now;
+        //                    atv.DATAAGGIORNAMENTO = DateTime.Now;
+
+        //                    int i = db.SaveChanges();
+
+        //                    if (i <= 0)
+        //                    {
+        //                        throw new Exception("Errore: Impossibile completare l'attivazione dei titoli di viaggio.");
+        //                    }
+        //                    else
+        //                    {
+        //                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+        //                            "Attivazione titoli di viaggio.", "ATTIVAZIONITITOLIVIAGGIO", db,
+        //                            atv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, atv.IDATTIVAZIONETITOLIVIAGGIO);
+        //                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+        //                        {
+        //                            dtce.ModificaInCompletatoCalendarioEvento(atv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTitoliViaggio, db);
+        //                        }
+
+        //                        using (dtDipendenti dtd = new dtDipendenti())
+        //                        {
+        //                            using (dtTrasferimento dtt = new dtTrasferimento())
+        //                            {
+        //                                using (dtUffici dtu = new dtUffici())
+        //                                {
+        //                                    var t = dtt.GetTrasferimentoByIdTitoloViaggio(atv.IDTITOLOVIAGGIO);
+
+        //                                    if (t?.idTrasferimento > 0)
+        //                                    {
+        //                                        var dip = dtd.GetDipendenteByID(t.idDipendente);
+        //                                        var uff = dtu.GetUffici(t.idUfficio);
+
+        //                                        var conta_attivazioni = this.GetNumAttivazioniTV(atv.IDTITOLOVIAGGIO, db);
+        //                                        string messaggioAttiva = "";
+        //                                        string oggettoAttiva = "";
+
+        //                                        if (conta_attivazioni == 1)
+        //                                        {
+        //                                            messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaInizialeTitoliViaggio;
+        //                                            oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaInizialeTitoloViaggio;
+
+        //                                        }
+        //                                        else
+        //                                        {
+        //                                            messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaSuccessivaTitoliViaggio;
+        //                                            oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaSuccessivaTitoloViaggio;
+        //                                        }
+
+        //                                        EmailTrasferimento.EmailAttiva(t.idTrasferimento,
+        //                                                            oggettoAttiva,
+        //                                                            string.Format(messaggioAttiva, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+        //                                                            db);
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                        //this.EmailAttivaRichiestaTV(atv.IDATTIVAZIONETITOLIVIAGGIO, db);
+
+        //                    }
+        //                }
+        //            }
+
+        //            db.Database.CurrentTransaction.Commit();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            db.Database.CurrentTransaction.Rollback();
+        //            throw ex;
+        //        }
+        //    }
+        //}
 
 
         public void PreSetTitoloViaggio(decimal idTrasferimento, ModelDBISE db)
@@ -562,79 +745,7 @@ namespace NewISE.Models.DBModel.dtObj
                 return idAltridatiFamiliari;
             }
         }
-
-        public AltriDatiFamConiugeModel GetAltriDatiFamiliariConiuge(decimal idTitoliViaggio, decimal idFamiliare)
-        {
-
-            AltriDatiFamConiugeModel adfcm = new AltriDatiFamConiugeModel();
-
-            using (ModelDBISE db = new ModelDBISE())
-            {
-
-                var ctv = db.CONIUGETITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.IDCONIUGE == idFamiliare).First();
-                var adfc = ctv.CONIUGE.ALTRIDATIFAM.First();
-
-                if (adfc.IDALTRIDATIFAM > 0)
-                {
-
-                    adfcm = new AltriDatiFamConiugeModel()
-                    {
-
-                        idAltriDatiFam = adfc.IDALTRIDATIFAM,
-                        idConiuge = adfc.IDCONIUGE.Value,
-                        nazionalita = adfc.NAZIONALITA,
-                        indirizzoResidenza = adfc.INDIRIZZORESIDENZA,
-                        capResidenza = adfc.CAPRESIDENZA,
-                        comuneResidenza = adfc.COMUNERESIDENZA,
-                        provinciaResidenza = adfc.PROVINCIARESIDENZA,
-                        dataAggiornamento = adfc.DATAAGGIORNAMENTO,
-                        idStatoRecord = adfc.IDSTATORECORD
-                    };
-
-                }
-            }
-
-            return adfcm;
-
-        }
-
-        public AltriDatiFamFiglioModel GetAltriDatiFamiliariFiglio(decimal idTitoliViaggio, decimal idFamiliare)
-        {
-            AltriDatiFamFiglioModel adffm = new AltriDatiFamFiglioModel();
-
-            using (ModelDBISE db = new ModelDBISE())
-            {
-
-                var ftv = db.FIGLITITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.IDFIGLI == idFamiliare).First();
-                var adff = ftv.FIGLI.ALTRIDATIFAM.First();
-
-                if (adff.IDALTRIDATIFAM > 0)
-                {
-
-                    adffm = new AltriDatiFamFiglioModel()
-                    {
-                        idStatoRecord = adff.IDSTATORECORD,
-                        capResidenza = adff.CAPRESIDENZA,
-                        comuneResidenza = adff.COMUNERESIDENZA,
-                        idAltriDatiFam = adff.IDALTRIDATIFAM,
-                        idFigli = (decimal)adff.IDFIGLI,
-                        indirizzoResidenza = adff.INDIRIZZORESIDENZA,
-                        nazionalita = adff.NAZIONALITA,
-                        provinciaResidenza = adff.PROVINCIARESIDENZA,
-                        capNascita=adff.CAPNASCITA,
-                        comuneNascita=adff.COMUNENASCITA,
-                        dataNascita=adff.DATANASCITA,
-                        provinciaNascita=adff.PROVINCIANASCITA
-                    };
-
-                }
-            }
-
-            return adffm;
-
-        }
-
-
+        
         public List<ElencoTitoliViaggioModel> ElencoTitoliViaggio(decimal idTitoloViaggio)
         {
             List<ElencoTitoliViaggioModel> letvm = new List<ElencoTitoliViaggioModel>();
@@ -784,29 +895,15 @@ namespace NewISE.Models.DBModel.dtObj
                 return notificata;
             }
         }
-
-
-        public decimal GetNumDocumenti(decimal idTitoliViaggio, EnumTipoDoc tipoDocumento)
-
+        public decimal GetNumDocumenti(decimal idAttivViaggioCongedo, EnumTipoDoc tipoDocumento)
         {
+            decimal nDoc = 0;
             using (ModelDBISE db = new ModelDBISE())
             {
-                decimal nDoc = 0;
-
-                var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
-                var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO==false).ToList();
-
-                if (latv?.Any() ?? false)
-                {
-                    foreach (var atv in latv)
-                    {
-                        var ld = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipoDocumento).ToList();
-
-                        nDoc = nDoc + ld.Count();
-                    }
-                }
-                return nDoc;
-            }
+                var tv = db.ATTIVAZIONIVIAGGICONGEDO.Find(idAttivViaggioCongedo);
+                nDoc = tv.DOCUMENTI.Where(a=>a.MODIFICATO==false && a.IDTIPODOCUMENTO==(decimal)tipoDocumento).ToList().Count;
+             }
+             return nDoc;
         }
 
         public decimal GetNumAttivazioniTV(decimal idTitoliViaggio, ModelDBISE db)
@@ -821,22 +918,18 @@ namespace NewISE.Models.DBModel.dtObj
             //}
         }
 
-
-
-        public List<ViaggioCongedoModel> GetUltimiPreventiviViaggio(decimal idAttivazioniViaggiCongedo)
+        public List<ViaggioCongedoModel> GetUltimiPreventiviViaggio(List<AttivazioniViaggiCongedoModel> AttivazioniViaggiCongedo)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 List<ViaggioCongedoModel> lvcm = new List<ViaggioCongedoModel>();
-                var t = db.ATTIVAZIONIVIAGGICONGEDO.Find(idAttivazioniViaggiCongedo);
-                var dvc = t.SELECTDOCVC.ToList();
-                //if (dvc?.Any()??false)
-                //{
-                    //var vc = vcl.First();
-                    //var lAVC = vc.ATTIVAZIONIVIAGGICONGEDO.Where(b => b.ANNULLATO == false && b.ATTIVARICHIESTA==false).ToList();
+                foreach (var x in AttivazioniViaggiCongedo)
+                {
+                    decimal idAttivazioniViaggiCongedo = x.idAttivazioneVC;
+                    var t = db.ATTIVAZIONIVIAGGICONGEDO.Find(idAttivazioniViaggiCongedo);
+                    var dvc = t.SELECTDOCVC.ToList();
                     foreach (var avc in dvc)
                     {
-                    //    var dvc = avc.SELECTDOCVC.Where(a => a.IDATTIVAZIONEVC == avc.IDATTIVAZIONEVC).ToList().First();
                         ViaggioCongedoModel vcm = new ViaggioCongedoModel()
                         {
                             AttivaRichiesta = t.ATTIVARICHIESTA,
@@ -851,10 +944,76 @@ namespace NewISE.Models.DBModel.dtObj
                         };
                         lvcm.Add(vcm);
                     }
-                //}
+                }
                 return lvcm;
             }
         }
+
+        public List<ViaggioCongedoModel> GetUltimiPreventiviViaggio(decimal id_Attiv_Viaggio_Congedo)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<ViaggioCongedoModel> lvcm = new List<ViaggioCongedoModel>();
+                // List<AttivazioniViaggiCongedoModel> lvcm = new List<AttivazioniViaggiCongedoModel>();
+                //var vc = db.VIAGGICONGEDO.Find(id_Viaggio_Congedo);
+                var t = db.ATTIVAZIONIVIAGGICONGEDO.Find(id_Attiv_Viaggio_Congedo);
+                var lavc = t.SELECTDOCVC.ToList();
+
+                foreach(var avc in lavc)
+                {                    
+                        ViaggioCongedoModel vcm = new ViaggioCongedoModel()
+                        {
+                            AttivaRichiesta = t.ATTIVARICHIESTA,
+                            Estensione = avc.DOCUMENTI.ESTENSIONE,
+                            idAttivazioneVC = avc.IDATTIVAZIONEVC,
+                            idDocumento = avc.IDDOCUMENTO,
+                            idTipoDocumento = avc.DOCUMENTI.IDTIPODOCUMENTO,
+                            idTrasferimento = t.VIAGGICONGEDO.IDTRASFERIMENTO,
+                            idViaggioCongedo = t.VIAGGICONGEDO.IDVIAGGIOCONGEDO,
+                            NomeFile = avc.DOCUMENTI.NOMEDOCUMENTO,
+                            NotificaRichiesta = t.NOTIFICARICHIESTA,
+                            DocSelezionato=avc.DOCSELEZIONATO
+                        };
+                        lvcm.Add(vcm);                    
+                }
+                return lvcm;
+            }
+        }
+
+        public List<ViaggioCongedoModel> GetPrecedentiPreventiviViaggio(decimal id_Attiv_Viaggio_Congedo)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<ViaggioCongedoModel> lvcm = new List<ViaggioCongedoModel>();               
+                var t = db.ATTIVAZIONIVIAGGICONGEDO.Find(id_Attiv_Viaggio_Congedo);
+                decimal idViaggioCongedio = t.VIAGGICONGEDO.IDVIAGGIOCONGEDO;
+                var z = db.VIAGGICONGEDO.Find(idViaggioCongedio);
+                var w = z.ATTIVAZIONIVIAGGICONGEDO.Where(y=>y.IDATTIVAZIONEVC!=id_Attiv_Viaggio_Congedo).OrderByDescending(x=>x.IDATTIVAZIONEVC).ToList();
+                foreach (var q in w)
+                {
+                    var lavc = q.SELECTDOCVC.ToList();
+                    foreach (var avc in lavc)
+                    {
+                        ViaggioCongedoModel vcm = new ViaggioCongedoModel()
+                        {
+                            AttivaRichiesta = q.ATTIVARICHIESTA,
+                            Estensione = avc.DOCUMENTI.ESTENSIONE,
+                            idAttivazioneVC = avc.IDATTIVAZIONEVC,
+                            idDocumento = avc.IDDOCUMENTO,
+                            idTipoDocumento = avc.DOCUMENTI.IDTIPODOCUMENTO,
+                            idTrasferimento = q.VIAGGICONGEDO.IDTRASFERIMENTO,
+                            idViaggioCongedo = q.VIAGGICONGEDO.IDVIAGGIOCONGEDO,
+                            NomeFile = avc.DOCUMENTI.NOMEDOCUMENTO,
+                            NotificaRichiesta = q.NOTIFICARICHIESTA,
+                            DocSelezionato = avc.DOCSELEZIONATO
+                        };
+                        lvcm.Add(vcm);
+                    }
+                }
+                return lvcm;
+            }
+        }
+
 
         public bool richiestaEseguita(decimal idTitoliViaggio)
         {
@@ -973,38 +1132,37 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public IList<AttivazioneTitoliViaggioModel> GetListAttivazioniTitoliViaggioByTipoDoc(decimal idTitoliViaggio, decimal idTipoDoc)
+        public IList<ViaggioCongedoModel> GetListDocumentiViaggioCongedoByTipoDoc(decimal id_Attiv_Viaggio_Congedo, decimal idTipoDoc)
         {
-            List<AttivazioneTitoliViaggioModel> latvm = new List<AttivazioneTitoliViaggioModel>();
+            List<ViaggioCongedoModel> latvm = new List<ViaggioCongedoModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
-                var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where
-                        (a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false)
-                        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO)
-                        .ToList();
-                if (latv?.Any() ?? false)
+                var lavc = db.ATTIVAZIONIVIAGGICONGEDO.Find(id_Attiv_Viaggio_Congedo);
+                //var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where
+                //        (a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false)
+                //        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO)
+                //        .ToList();
+                var ld = lavc.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).ToList();
+                if (ld?.Any() ?? false)
                 {
-                    foreach (var atv in latv)
+                    foreach (var el in ld)
                     {
-                        var ld = atv.DOCUMENTI.Where(a=>a.IDTIPODOCUMENTO==idTipoDoc).ToList();
-                        if (ld.Count > 0)
-                        {
-                            var new_atv = new AttivazioneTitoliViaggioModel()
+                          var new_vc = new ViaggioCongedoModel()
                             {
-                                idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                                idTitoloViaggio = atv.IDTITOLOVIAGGIO,
-                                AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
-                                dataAttivazioneRichiesta = atv.DATAATTIVAZIONERICHIESTA,
-                                notificaRichiesta = atv.ATTIVAZIONERICHIESTA,
-                                dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
-                                dataAggiornamento = atv.DATAAGGIORNAMENTO,
-                                Annullato = atv.ANNULLATO
+                                  idAttivazioneVC = lavc.IDATTIVAZIONEVC,
+                                  AttivaRichiesta = lavc.ATTIVARICHIESTA,
+                                  //DocSelezionato = lavc.SELECTDOCVC,
+                                  Estensione = el.ESTENSIONE,
+                                  idDocumento = el.IDDOCUMENTO,
+                                  idTipoDocumento = el.IDTIPODOCUMENTO,
+                                  idStatoRecord = el.IDSTATORECORD,
+                                  idViaggioCongedo = lavc.IDVIAGGIOCONGEDO,
+                                  NomeFile=el.NOMEDOCUMENTO,
+                                  NotificaRichiesta=lavc.NOTIFICARICHIESTA,
+                                  idTrasferimento=lavc.VIAGGICONGEDO.IDTRASFERIMENTO
                             };
-                            latvm.Add(new_atv);
-
-                        }
+                            latvm.Add(new_vc);
                     }
                 }
             }
@@ -1977,53 +2135,7 @@ namespace NewISE.Models.DBModel.dtObj
                     dm.idDocumenti = d.IDDOCUMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, idTrasferimento, dm.idDocumenti);
                 }
-                //return;
                 
-                //INSERIMENTO IN VIAGGICONGEDO
-                //var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                //var lvc = t.VIAGGICONGEDO.OrderByDescending(a=>a.IDVIAGGIOCONGEDO).ToList();
-                //VIAGGICONGEDO vcNew = new VIAGGICONGEDO();
-                ////if(lvc?.Any()??false)
-                ////    vcNew = lvc.First();
-                ////else
-                ////{
-                //    //crea ViaggioCongedio
-                //    vcNew.IDTRASFERIMENTO = idTrasferimento;
-                //    t.VIAGGICONGEDO.Add(vcNew);
-                //    db.SaveChanges();
-                //}
-                //var vc = db.VIAGGICONGEDO.Find(vcNew.IDVIAGGIOCONGEDO);
-                //var lavc = vc.ATTIVAZIONIVIAGGICONGEDO.Where(a => a.NOTIFICARICHIESTA == false && a.ATTIVARICHIESTA == false &&
-                //a.ANNULLATO == false).OrderByDescending(b=>b.IDATTIVAZIONEVC).ToList();
-                //ATTIVAZIONIVIAGGICONGEDO avcNew = new ATTIVAZIONIVIAGGICONGEDO();
-                //if (lavc?.Any() ?? false)
-                //{
-                //     avcNew = lavc.First();
-                //}
-                //else
-                //{
-                //    //crea ATTIVAZIONIVIAGGICONGEDO
-                //    avcNew.IDVIAGGIOCONGEDO = vcNew.IDVIAGGIOCONGEDO;
-                //    avcNew.DATAAGGIORNAMENTO = DateTime.Now;
-                //    db.ATTIVAZIONIVIAGGICONGEDO.Add(avcNew);
-                //    db.SaveChanges();
-                //}
-                //var avc = db.ATTIVAZIONIVIAGGICONGEDO.Find(avcNew.IDATTIVAZIONEVC);
-                //var lSelDocVC = avc.SELECTDOCVC.ToList();
-                //SELECTDOCVC sldocVcNew = new SELECTDOCVC();
-                //if (lSelDocVC?.Any() ?? false)
-                //{
-                //    sldocVcNew = lSelDocVC.First();
-                //}
-                //else
-                //{
-                //    // add SELECTDOCVC
-                //    sldocVcNew.IDATTIVAZIONEVC = avcNew.IDATTIVAZIONEVC;
-                //    sldocVcNew.IDDOCUMENTO = dm.idDocumenti;
-                //    sldocVcNew.DOCSELEZIONATO = false;
-                //    db.SELECTDOCVC.Add(sldocVcNew);
-                //    db.SaveChanges();
-                //}
             }
             catch (Exception ex)
             {                
@@ -2031,6 +2143,44 @@ namespace NewISE.Models.DBModel.dtObj
             }
 }
 
-        
+        //public IList<AttivazioniViaggiCongedoModel> GetListAttivazioniViaggioCongedioByTipoDoc(decimal idAttivazioneVC, decimal idTipoDoc)
+        //{
+        //    List<AttivazioniViaggiCongedoModel> latvm = new List<AttivazioniViaggiCongedoModel>();
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        var tv = db.TITOLIVIAGGIO.Find(idAttivazioneVC);
+        //        var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where
+        //                (a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false)
+        //                .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO)
+        //                .ToList();
+        //        if (latv?.Any() ?? false)
+        //        {
+        //            foreach (var atv in latv)
+        //            {
+        //                var ld = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).ToList();
+        //                if (ld.Count > 0)
+        //                {
+        //                    var new_atv = new AttivazioneTitoliViaggioModel()
+        //                    {
+        //                        idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                        idTitoloViaggio = atv.IDTITOLOVIAGGIO,
+        //                        AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
+        //                        dataAttivazioneRichiesta = atv.DATAATTIVAZIONERICHIESTA,
+        //                        notificaRichiesta = atv.ATTIVAZIONERICHIESTA,
+        //                        dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
+        //                        dataAggiornamento = atv.DATAAGGIORNAMENTO,
+        //                        Annullato = atv.ANNULLATO
+        //                    };
+        //                    latvm.Add(new_atv);
+
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return latvm;
+        //}
+
     }
 }

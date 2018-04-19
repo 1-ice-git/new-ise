@@ -4,15 +4,21 @@
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
-    decimal id_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]);
-    decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
-}
-<div style="padding-top: 10px;left:20px">
+    //    decimal id_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]);
+    //  decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+    bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
+    bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
+    decimal idFaseInCorso=(decimal)ViewData["idFaseInCorso"] ;
+            }
+<div style="padding-top: 10px;left:120px">
     <table id="tabElencoPreventiviViaggio" class="table">
         <thead>
             <tr>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.NomeFile)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Estensione)
                 </th>
                 <th class="text-center">
                     Visualizza
@@ -30,6 +36,9 @@
                     <td class="text-center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFile)</span>
                     </td>
+                    <td class="text-center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Estensione)</span>
+                    </td>
                     <td style="text-align: center;">
                         <a href="@Url.RouteUrl("LeggiViaggiCongedoPDF", new { id = @item.idDocumento })" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
@@ -37,9 +46,24 @@
                     </td>
                     @if (admin)
                     {
-                        <td class="text-center">
-                            <input type="radio" onclick="AttivarePreventivo()" id="attivare"  name='attivare' value='@item.idDocumento'>
-                        </td>
+                        if (AttivazioneInviata)
+                        {
+                            <td class="text-center">
+                                <input disabled checked="@item.DocSelezionato" type="radio" onclick="AttivarePreventivo()" id="attivare" name='attivare' value='@item.idDocumento'>
+                            </td>
+                        }
+                        else if (NotificaInviata)
+                        {
+                                <td class="text-center">
+                                    <input type="radio" onclick="AttivarePreventivo()" id="attivare" name='attivare' value='@item.idDocumento'>
+                                </td>
+                            }
+                            else 
+                            {
+                                <td class="text-center">
+                                    <input disabled type="radio" name='attivare' value='@item.idDocumento'>
+                                </td>
+                            }
                     }
                     else
                     {
@@ -112,7 +136,6 @@
         $("#btAttivaPreventivi").prop('disabled', false);
         $("#btAttivaPreventivi").removeClass('disabled')
         //var rotta = "/ViaggiCongedo/GestionePulsantiNotificaAttivaAnnulla";
-
     }
         
 </script>

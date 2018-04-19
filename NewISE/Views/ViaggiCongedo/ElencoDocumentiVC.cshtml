@@ -1,0 +1,47 @@
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
+
+@{
+    // decimal idViaggioCongedo = Convert.ToDecimal(ViewData["idViaggioCongedo"]);
+    //decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
+    //bool richiestaEseguita = Convert.ToBoolean(ViewData["richiestaEseguita"]);
+    //EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    decimal id_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]);
+    decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+    decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
+    decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
+}
+<div class="text-center">
+            <h4 style="color:red">Documenti Viaggio Congedio</h4>
+</div>
+
+<div  id="DivContenitoreMainDocumentiVC">
+    <div class="row">
+        <div class="col-xs-5" style="margin-top:5px;left:10px">
+            <table id="tabUploadPreventiviViaggio">
+                @Html.Action("PulsanteNuoviDocViaggiCongedo2Fase", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento, idFaseInCorso = idFaseInCorso, idTipoDocumento = idTipoDocumento })
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div id="tabListaPreventiviDiViaggi" class="pull-left" style="margin-top:5px;margin-left:40px;width:1110px">
+            <table>
+                @Html.Action("ListaDocViaggiCongedio2Fase", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento, idFaseInCorso = idFaseInCorso, idTipoDocumento })
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-10">
+        <a href="#" onclick="TornaElencoPreventivi();">Torna all'elenco dei preventivi Viaggio Congedio</a>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#tabFase2PDFPreventiviDiViaggi").hide();
+    
+    function TornaElencoPreventivi() {
+        ViaggiCongedoPermesso();
+    }
+</script>
