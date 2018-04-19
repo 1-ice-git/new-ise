@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public VOCI()
         {
-            this.NETTO = new HashSet<NETTO>();
+            this.TEORICI = new HashSet<TEORICI>();
         }
     
         public decimal IDVOCI { get; set; }
@@ -25,9 +25,10 @@ namespace NewISE.EF
         public decimal IDTIPOVOCE { get; set; }
         public string CODICEVOCE { get; set; }
         public string DESCRIZIONE { get; set; }
+        public bool FLAGDIRETTO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NETTO> NETTO { get; set; }
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual TIPOLIQUIDAZIONE TIPOLIQUIDAZIONE { get; set; }
         public virtual TIPOVOCE TIPOVOCE { get; set; }
     }

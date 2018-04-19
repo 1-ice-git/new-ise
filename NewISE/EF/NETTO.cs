@@ -31,8 +31,6 @@ namespace NewISE.EF
         public virtual ALIQUOTECONTRIBUTIVE ALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FLUSSICEDOLINO> FLUSSICEDOLINO { get; set; }
-        public virtual TEORICI TEORICI { get; set; }
-        public virtual VOCI VOCI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OA> OA { get; set; }
     }

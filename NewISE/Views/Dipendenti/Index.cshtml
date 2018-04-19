@@ -43,8 +43,30 @@
                     <li class="disabled" id="mnNuovoTrasferimento"><a id="lkNuovoTrasferimento" disabled href="#tabNuovoTrasferimento" data-toggle="tab">Nuovo Trasferimento</a></li>
                 }
                 <li class="disabled" id="mnGestioneTrasferimento"><a id="lkGestioneTrasferimento" disabled href="#tabGestioneTrasferimento" data-toggle="tab">Gestione Trasferimento</a></li>
-                <li class="disabled" id="mnMaggiorazioneFamiliare"><a id="lkMaggiorazioneFamiliare" disabled href="#tabMaggiorazioneFamiliare" data-toggle="tab">Maggiorazione Familiare</a></li>
-                <li class="disabled" id="mnMaggiorazioneAbitazione"><a id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
+
+                <li class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                        Variazioni trasferimento
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation" class="disabled" id="mnMaggiorazioneFamiliare"><a role="menuitem" tabindex="-1" id="lkMaggiorazioneFamiliare" disabled href="#tabMaggiorazioneFamiliare" data-toggle="tab">Maggiorazione Familiare</a></li>
+                        <li role="presentation" class="disabled" id="mnPassaporto"><a role="menuitem" tabindex="-1" id="lkPassaporto" disabled href="#" data-toggle="tab">Richiesta passaporto</a></li>
+                        <li role="presentation" class="disabled" id="mnTitoliViaggio"><a role="menuitem" tabindex="-1" id="lkTitoliViaggio" disabled href="#" data-toggle="tab">Richiesta titoli di viaggio</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation" class="" id="mnSaldoTrasportoEffetti"><a role="menuitem" tabindex="-1" id="lkTitoliViaggio" href="#" data-toggle="tab">Saldo trasporto effetti</a></li>
+                        <li role="presentation" class="disabled" id="mnMaggiorazioneAbitazione"><a role="menuitem" tabindex="-1" id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
+
+
+
+                    </ul>
+                </li>
+
+
+
+
+
+
                 @if (admin)
                 {
                     <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab" onclick="ViaggiCongedoPermesso();">Viaggi di congedo</a></li>
@@ -87,7 +109,7 @@
             <div class="tab-pane" id="tabIndennita"></div>
             <div class="tab-pane" id="RiepilogoVoci"></div>
             <div class="tab-pane" id="tabProvvidenzeScolastiche"></div>
-            
+
         </div>
     </div>
 </div>
@@ -463,7 +485,7 @@
     }
 
     function GestioneMenu() {
-     //   debugger;
+        //   debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         var admin = '@admin';
 
@@ -511,13 +533,13 @@
 
             $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
             $("#mnProvvidenzeScolastiche").addClass("disabled");
-            
+
         }
 
     }
 
     function GestioneAbilitazioneMenu(idTrasferimento) {
-       // debugger;
+        // debugger;
 
         if (MenuGestioneTrasferimento(idTrasferimento) == 1) {
             $("#lkGestioneTrasferimento").removeAttr("disabled");
@@ -562,9 +584,9 @@
             $("#mnSospensione").addClass("disabled");
             $("#lkSospensione").removeAttr("onClick");
         }
-        
+
         if (MenuViaggiCongedo(idTrasferimento) == 1) {
-          //  debugger;
+            //  debugger;
             $("#lkCongediPermessi").removeAttr("disabled");
             $("#mnCongediPermessi").removeClass("disabled");
             $('#lkCongediPermessi').attr('onClick', 'ViaggiCongedoPermesso();');
@@ -587,7 +609,7 @@
         //    $("#lkRichiamo").removeAttr("onClick");
         //}
 
-        
+
 
         $("#lkRichiamo").removeAttr("disabled");
         $("#mnRichiamo").removeClass("disabled");
@@ -620,7 +642,7 @@
         $("#tabIndennita").empty();
         $("#RiepilogoVoci").empty();
         $("#tabProvvidenzeScolastiche").empty();
-        
+
     }
 
     function MenuGestioneTrasferimento(idTrasferimento) {
@@ -869,7 +891,7 @@
     }
 
     function MenuViaggiCongedo(idTrasferimento) {
-       // debugger;
+        // debugger;
         var rotta = "/ViaggiCongedo/VerificaViaggiCongedo";
 
         var valoreRitorno = 0;
@@ -887,7 +909,7 @@
 
                 },
                 success: function (result) {
-                     //debugger;
+                    //debugger;
 
                     if (result.err == "" || result.err == undefined) {
                         if (result.VerificaViaggiCongedo != 0) {
@@ -918,7 +940,7 @@
     }
 
     function ViaggiCongedoPermesso() {
-     //   debugger;
+        //   debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         //rotta = "/ViaggiCongedo/PreventiviDiViaggio";
         rotta = "/ViaggiCongedo/ElencoPreventiviDiViaggio";
@@ -953,7 +975,7 @@
 
         });
     }
-   
+
     function MenuProvvidenzeScolastiche(idTrasferimento) {
         //debugger;
         var rotta = "/ProvvidenzeScolastiche/VerificaProvvidenze";

@@ -157,7 +157,7 @@ namespace NewISE.Controllers
                             string hiddenAttivaRichiesta = "hidden";
                             string disabledAnnullaRichiesta = "disabled";
                             string hiddenAnnullaRichiesta = "hidden";
-        
+
                             aam = dta.GetUltimaAttivitaAnticipi(idPrimaSistemazione, db);
                             var idAttivitaAnticipi = aam.idAttivitaAnticipi;
 
@@ -176,15 +176,15 @@ namespace NewISE.Controllers
                             {
                                 hiddenAttivaRichiesta = "";
                                 hiddenAnnullaRichiesta = "";
-        
-                                if (notificaRichiesta && attivaRichiesta == false && statoTrasferimento!=EnumStatoTraferimento.Attivo && statoTrasferimento!=EnumStatoTraferimento.Annullato )
+
+                                if (notificaRichiesta && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
                                 {
                                     disabledAttivaRichiesta = "";
                                     disabledAnnullaRichiesta = "";
                                 }
                             }
 
-                            if(rinunciaAnticipi && notificaRichiesta ==false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            if (rinunciaAnticipi && notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledNotificaRichiesta = "";
                             }
@@ -224,7 +224,7 @@ namespace NewISE.Controllers
                         using (dtTrasferimento dtt = new dtTrasferimento())
                         {
 
-                           
+
 
                             EnumStatoTraferimento statoTrasferimento = 0;
                             var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
@@ -235,7 +235,7 @@ namespace NewISE.Controllers
                             }
 
                             var aa = dta.GetUltimaAttivitaAnticipi(idPrimaSistemazione, db);
-                            if (aa.notificaRichiestaAnticipi==true)
+                            if (aa.notificaRichiestaAnticipi == true)
                             {
                                 soloLettura = true;
                             }
@@ -316,14 +316,11 @@ namespace NewISE.Controllers
             {
                 using (dtAnticipi dta = new dtAnticipi())
                 {
-
-
                     dta.AttivaRichiestaAnticipi(idAttivitaAnticipi);
                 }
             }
             catch (Exception ex)
             {
-
                 errore = ex.Message;
             }
 

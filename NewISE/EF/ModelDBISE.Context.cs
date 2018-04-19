@@ -117,7 +117,6 @@ namespace NewISE.EF
         public virtual DbSet<TIPOALIQUOTECONTRIBUTIVE> TIPOALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<TIPOANTICIPOTRASPORTOEFFETTI> TIPOANTICIPOTRASPORTOEFFETTI { get; set; }
         public virtual DbSet<TIPODOCUMENTI> TIPODOCUMENTI { get; set; }
-        public virtual DbSet<TIPOELABORAZIONE> TIPOELABORAZIONE { get; set; }
         public virtual DbSet<TIPOLIQUIDAZIONE> TIPOLIQUIDAZIONE { get; set; }
         public virtual DbSet<TIPOLOGIAANTICIPI> TIPOLOGIAANTICIPI { get; set; }
         public virtual DbSet<TIPOLOGIACOAN> TIPOLOGIACOAN { get; set; }

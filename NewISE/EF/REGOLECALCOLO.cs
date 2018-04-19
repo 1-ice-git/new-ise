@@ -18,7 +18,6 @@ namespace NewISE.EF
         public REGOLECALCOLO()
         {
             this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
-            this.ELABINDSISTEMAZIONE = new HashSet<ELABINDSISTEMAZIONE>();
             this.ELABMAB = new HashSet<ELABMAB>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
@@ -34,8 +33,6 @@ namespace NewISE.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABMAB> ELABMAB { get; set; }
         public virtual NORMACALCOLO NORMACALCOLO { get; set; }
