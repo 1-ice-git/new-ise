@@ -1394,11 +1394,13 @@ namespace NewISE.Models.DBModel.dtObj
                                                     var dip = dtd.GetDipendenteByID(t.idDipendente);
                                                     var uff = dtu.GetUffici(t.idUfficio);
 
-                                                    EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazioni_Familiari,
-                                                                    amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                                    Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari,
-                                                                    string.Format(Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
-                                                                    db);
+                                                    //EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazioni_Familiari,
+                                                    //                amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                    //                Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari,
+                                                    //                string.Format(Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                    //                 db);
+                                                    this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
+
 
                                                 }
                                             }

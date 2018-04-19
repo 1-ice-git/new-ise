@@ -1,5 +1,6 @@
 ﻿@using NewISE.Models.DBModel
-@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
+@using NewISE.Models.DBModel.Enum
+@model IEnumerable<DocumentiModel>
 
 
 @{
@@ -9,7 +10,10 @@
     decimal idAttivazionePassaporto = Convert.ToDecimal(ViewData["idAttivazionePassaporto"]);
     decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
     decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
-
+    decimal idFasePassaporti = Convert.ToDecimal(ViewData["idFasePassaporti"]);
+    decimal idFaseRichiesta = Convert.ToDecimal(EnumFasePassaporti.Richiesta_Passaporti);
+    decimal idFasePassaportiCorrente = Convert.ToDecimal(ViewData["idFasePassaportiCorrente"]);
+    
     EnumParentela enParentela = (EnumParentela)parentela;
 
     int nDocOld = 0;
@@ -17,7 +21,6 @@
     {
         nDocOld = Model.Count();
     }
-
 
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
 
@@ -111,9 +114,18 @@
     </table>
 </div>
 
-<p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
-</p>
+@if (idFasePassaportiCorrente == (decimal)EnumFasePassaporti.Richiesta_Passaporti)
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Richiesta", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+else
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Invio", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
 
 <div class="modal fade " id="NewDocModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

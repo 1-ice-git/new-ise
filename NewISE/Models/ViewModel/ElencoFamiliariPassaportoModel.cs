@@ -13,12 +13,22 @@ namespace NewISE.Models.ViewModel
         public EnumTipoDoc tipoDoc { get; set; }
         public bool esisteDoc { get; set; }
     }
+    public struct HasDocPassaporto
+    {
+        public EnumTipoDoc tipoDocPassaporto { get; set; }
+        public bool esisteDocPassaporto { get; set; }
+        public decimal idDocPassaporto { get; set; }
+    }
 
     public class ElencoFamiliariPassaportoModel
     {
         public decimal idAttivazionePassaporti { get; set; }
 
+        public decimal idAttivazioneInvioPassaporti { get; set; }
+
         public decimal idFamiliarePassaporto { get; set; }
+
+        public decimal idFamiliareInvioPassaporto { get; set; }
         [Display(Name = "Nominativo")]
         public string nominativo { get; set; }
         [Display(Name = "Cod. Fisc.")]
@@ -37,7 +47,11 @@ namespace NewISE.Models.ViewModel
         [DefaultValue(false)]
         public bool richiedi { get; set; }
 
+        public bool notificato { get; set; }
+        public bool attivato { get; set; }
+
         public HasDoc HasDoc { get; set; }
+        public HasDocPassaporto HasDocPassaporto { get; set; }
 
         public decimal ordinamento { get; set; }
 

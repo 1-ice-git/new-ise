@@ -18,6 +18,7 @@ using NewISE.Models.ModelRest;
 using System.Diagnostics;
 using System.IO;
 using NewISE.Models.Config;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.Config.s_admin;
 using NewISE.Models.dtObj.ModelliCalcolo;
 
@@ -295,6 +296,7 @@ namespace NewISE.Models.DBModel.dtObj
         public void GestioneAttivitaTrasferimento(decimal idTrasferimento,
                                                       out bool richiestaMF, out bool attivazioneMF,
                                                       out bool richiestaPP, out bool conclusePP,
+                                                      out bool faseRichiestaPPattivata, out bool faseInvioPPattivata, 
                                                       out bool richiesteTV, out bool concluseTV,
                                                       out bool richiestaTE, out bool attivazioneTE,
                                                       out bool richiestaAnticipi, out bool attivazioneAnticipi,
@@ -306,6 +308,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             richiestaPP = false;
             conclusePP = false;
+            faseRichiestaPPattivata = false;
+            faseInvioPPattivata = false;
 
             richiesteTV = false;
             concluseTV = false;
@@ -355,18 +359,44 @@ namespace NewISE.Models.DBModel.dtObj
                 var p = t.PASSAPORTI;
                 if (p != null && p.IDPASSAPORTI > 0)
                 {
-                    var lap = p.ATTIVAZIONIPASSAPORTI.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
+                    var lap_richiesta = p.ATTIVAZIONIPASSAPORTI.Where(
+                                a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Richiesta_Passaporti).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
 
-                    if (lap?.Any() ?? false)
+                    if (lap_richiesta?.Any() ?? false)
                     {
-                        var ap = lap.First();
-
-                        richiestaPP = ap.NOTIFICARICHIESTA;
-                        conclusePP = ap.PRATICACONCLUSA;
+                        var ap_richiesta = lap_richiesta.First();
+                        if(ap_richiesta.PRATICACONCLUSA)
+                        {
+                            faseRichiestaPPattivata = true;
+                        }
+                        richiestaPP = ap_richiesta.NOTIFICARICHIESTA;
+                        conclusePP = ap_richiesta.PRATICACONCLUSA;
                     }
                     else
                     {
-                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONIPASSAPORTI non trovato.");
+                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONIPASSAPORTI (fase Richiesta) non trovato.");
+                    }
+
+
+
+                    var lap_invio = p.ATTIVAZIONIPASSAPORTI
+                            .Where(a => a.ANNULLATO == false &&
+                                        a.IDFASEPASSAPORTI==(decimal)EnumFasePassaporti.Invio_Passaporti).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
+
+                    if (lap_invio?.Any() ?? false)
+                    {
+                        var ap_invio = lap_invio.First();
+                        if (ap_invio.PRATICACONCLUSA)
+                        {
+                            faseInvioPPattivata = true;
+                        }
+                        if(faseRichiestaPPattivata)
+                        {
+                            richiestaPP = ap_invio.NOTIFICARICHIESTA;
+                            conclusePP = ap_invio.PRATICACONCLUSA;
+                        }
                     }
                 }
                 #endregion

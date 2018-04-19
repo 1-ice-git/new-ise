@@ -220,6 +220,8 @@
                     var attivazioneMF = result.attivazioneMF;
                     var richiestaPP = result.richiestaPP;
                     var conclusePP = result.conclusePP;
+                    var faseRichiestaPPattivata = result.faseRichiestaPPattivata;
+                    var faseInvioPPattivata = result.faseInvioPPattivata;
                     var richiesteTV = result.richiesteTV;
                     var concluseTV = result.concluseTV;
                     var richiestaTE = result.richiestaTE;
@@ -261,6 +263,12 @@
                         $("#chkPratichePassaportoR").each(function () { this.checked = false; });
                         $("#chkPratichePassaportoSR").each(function () { this.checked = false; });
                         EnableDisableLinkTitoliViaggio(false);
+                    }
+                    if (faseRichiestaPPattivata && faseInvioPPattivata == false)
+                    {
+                        blink('#linkPratichePassaporto');
+                    } else {
+                        $('#linkPratichePassaporto').stop().fadeIn();
                     }
 
                     //chkTitoliViaggioR
@@ -317,7 +325,7 @@
 
                     //pulsanti trasferimento
                     // attivazione
-                    if( attivazioneMF && conclusePP && concluseTV
+                    if (attivazioneMF && faseInvioPPattivata && concluseTV
                             && attivazioneTE && attivazioneAnticipi
                             && attivazioneMAB && solaLettura==false)
                     {

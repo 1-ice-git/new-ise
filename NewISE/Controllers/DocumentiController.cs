@@ -1,6 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.Enum;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using System;
@@ -626,6 +627,13 @@ namespace NewISE.Controllers
                         solaLettura = false;
                     }
 
+                    var idFasePassaportiCorrente=dtpp.GetFasePassaporti_Corrente(apm.idPassaporti);
+                    if(idFasePassaportiCorrente == EnumFasePassaporti.Invio_Passaporti)
+                    {
+                        solaLettura = true;
+                    }
+                    ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
+
                 }
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -655,6 +663,7 @@ namespace NewISE.Controllers
             ViewData.Add("parentela", (decimal)parentela);
             ViewData.Add("chiamante", (decimal)EnumChiamante.Passaporti);
             ViewData.Add("idTrasferimento", idTrasferimento);
+
 
             return PartialView(ldm);
 
