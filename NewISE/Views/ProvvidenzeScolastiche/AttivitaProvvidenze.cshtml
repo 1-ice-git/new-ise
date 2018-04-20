@@ -252,8 +252,8 @@
 
 
     function ConfermaNotificaRichiestaPS() {
-        //debugger;
-        //var rotta = "/TrasportoEffetti/ConfermaNotificaRichiestaTEPartenza";
+        debugger;
+        var rotta = "/ProvvidenzeScolastiche/ConfermaNotificaRichiestaPS";
         var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
 
         $.ajax({
@@ -270,7 +270,7 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    TrasportoEffettiPartenza();
+                    AttivitaProvvidenze();
                     //GestioneRinunciaTEPartenza();
                     GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
                     //InfoElaborazioneAjax(result.msg);

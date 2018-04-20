@@ -515,5 +515,33 @@ namespace NewISE.Controllers
 
         }
 
+
+        public JsonResult ConfermaNotificaRichiestaPS(decimal idTrasfProvScolastiche)
+        {
+            string errore = "";
+
+            try
+            {
+                using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
+                {
+                    //decimal idAttivitaTEPartenza = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza).IDATEPARTENZA;
+                    dtps.NotificaRichiestaPS(idTrasfProvScolastiche);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+
     }
 }

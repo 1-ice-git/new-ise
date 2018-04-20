@@ -219,13 +219,13 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
         }
-
         public void SituazionePRovvidenzeScolastiche(decimal idTrasfProvScolastiche,
                                        out bool richiestaPS,
                                        out bool attivazionePS,
                                        out bool DocProvvidenzeScolastiche,
                                        out bool trasfAnnullato)
         {
+
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -234,10 +234,30 @@ namespace NewISE.Models.DBModel.dtObj
                     attivazionePS = false;
                     DocProvvidenzeScolastiche = false;
                     trasfAnnullato = false;
-                    
-                   
-                    // Verificare se trovo una provvidenza scolastica
-                    
+
+                    var tps = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
+
+                    var idStatoTrasferimento = tps.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+                    if (idStatoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
+                    {
+                        trasfAnnullato = true;
+                    }
+
+                    if (tps == null)
+                    {
+                                               
+                        // Documenti in attesa di approvazione disabilito il tasto Attiva Richiesta
+
+
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore - Impossibile creare i record su Provvidenze Scolastiche.");
+                        }
+                        
+
+
+                    }
 
                 }
             }
@@ -245,6 +265,96 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw ex;
             }
+
+
         }
+
+        public void NotificaRichiestaPS(decimal idTrasfProvScolastiche)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+
+                    try
+                    {
+                        var atep = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
+                        //atep.RICHIESTATRASPORTOEFFETTI = true;
+                        //atep.DATARICHIESTATRASPORTOEFFETTI = DateTime.Now;
+                        //atep.DATAAGGIORNAMENTO = DateTime.Now;
+
+                        //var i = db.SaveChanges();
+                        //if (i <= 0)
+                        //{
+                        //    throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione trasporto effetti partenza.");
+                        //}
+                        //else
+                        //{
+                        //    //in caso di rinuncia elimino eventuali documenti associati perchè non hanno senso di esistere
+                        //    //var rtep = this.GetRinunciaTEPartenza(idAttivitaTEPartenza, db);
+                        //    //if (rtep.rinunciaTE)
+                        //    //{
+                        //    //    var ld = atep.DOCUMENTI.ToList();
+                        //    //    foreach (var d in ld)
+                        //    //    {
+                        //    //        atep.DOCUMENTI.Remove(d);
+                        //    //        db.SaveChanges();
+                        //    //    }
+                        //    //}
+
+                        //    #region ciclo attivazione documenti TE
+                        //    //var ldte = atep.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                        //    //foreach (var dte in ldte)
+                        //    //{
+                        //    //    dte.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                        //    //    if (db.SaveChanges() <= 0)
+                        //    //    {
+                        //    //        throw new Exception("Errore durante il ciclo di attivazione trasporto effetti (notifica documenti)");
+                        //    //    }
+                        //    //}
+                        //    #endregion
+
+
+                        //EmailTrasferimento.EmailNotifica(EnumChiamante.Trasporto_Effetti,
+                        //                                atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
+                        //                                Resources.msgEmail.OggettoNotificaTrasportoEffettiPartenza,
+                        //                                Resources.msgEmail.MessaggioNotificaTrasportoEffettiPartenza,
+                        //                                db);
+
+
+
+                        //    //this.EmailNotificaRichiestaTEPartenza(idAttivitaTEPartenza, db);
+
+                        //    //using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        //    //{
+                        //    //    CalendarioEventiModel cem = new CalendarioEventiModel()
+                        //    //    {
+                        //    //        idFunzioneEventi = EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza,
+                        //    //        idTrasferimento = atep.TEPARTENZA.IDTEPARTENZA,
+                        //    //        DataInizioEvento = DateTime.Now.Date,
+                        //    //        DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaTrasportoEffettiPartenza)).Date,
+                        //    //    };
+
+                        //    //    dtce.InsertCalendarioEvento(ref cem, db);
+
+                        //    //}
+                        //}
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
