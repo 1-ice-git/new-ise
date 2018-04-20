@@ -220,5 +220,31 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void SituazionePRovvidenzeScolastiche(decimal idTrasfProvScolastiche,
+                                       out bool richiestaPS,
+                                       out bool attivazionePS,
+                                       out bool DocProvvidenzeScolastiche,
+                                       out bool trasfAnnullato)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    richiestaPS = false;
+                    attivazionePS = false;
+                    DocProvvidenzeScolastiche = false;
+                    trasfAnnullato = false;
+                    
+                   
+                    // Verificare se trovo una provvidenza scolastica
+                    
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

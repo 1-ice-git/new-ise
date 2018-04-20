@@ -176,6 +176,8 @@ namespace NewISE.Controllers
             bool attivazioneAnticipi = false;
             bool richiestaMAB = false;
             bool attivazioneMAB = false;
+            bool richiestaPS = false;
+            bool attivazionePS = false;
             bool solaLettura = false;
             bool amministratore = false;
 
@@ -187,7 +189,7 @@ namespace NewISE.Controllers
                 {
                     dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF,
                         out richiestaPP, out conclusePP, out richiesteTV, out concluseTV, out richiestaTE, out attivazioneTE,
-                        out richiestaAnticipi, out attivazioneAnticipi, out richiestaMAB, out attivazioneMAB,
+                        out richiestaAnticipi, out attivazioneAnticipi, out richiestaMAB, out attivazioneMAB, out richiestaPS, out attivazionePS,
                         out solaLettura);
                 }
 
@@ -215,6 +217,8 @@ namespace NewISE.Controllers
                         attivazioneAnticipi = attivazioneAnticipi,
                         richiestaMAB = richiestaMAB,
                         attivazioneMAB = attivazioneMAB,
+                        richiestaPS = richiestaPS,
+                        attivazionePS = attivazionePS,
                         solaLettura = solaLettura
                     });
 
@@ -1477,6 +1481,13 @@ namespace NewISE.Controllers
                                     using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                                     {
                                         dtma.PreSetMaggiorazioneAbitazione(trm, db);
+                                    }
+                                    #endregion
+
+                                    #region provvidenze scolastiche
+                                    using (dtAttivazioniProvScol dtps = new dtAttivazioniProvScol())
+                                    {
+                                        //dtps.PreSetMaggiorazioneAbitazione(dtps, db);
                                     }
                                     #endregion
 

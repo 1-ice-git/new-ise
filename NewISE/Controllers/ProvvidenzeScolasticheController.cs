@@ -108,8 +108,7 @@ namespace NewISE.Controllers
 
             try
             {
-                //solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
-
+                //solaLettura = this.SolaLetturaPartenza(idTrasfProvScolastiche);
                 // ViewData.Add("solaLettura", solaLettura);
                 ViewData["idTipoDocumento"] = EnumTipoDoc.Formulario_Provvidenze_Scolastiche;
                 ViewData["idTrasferimento"] = idTrasferimento;
@@ -155,7 +154,6 @@ namespace NewISE.Controllers
             return PartialView(ldm);
             
         }
-
         public ActionResult TabFormulariInseriti1(decimal idTrasfProvScolastiche)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
@@ -178,7 +176,6 @@ namespace NewISE.Controllers
 
             return PartialView("TabFormulariInseriti", ldm);
         }
-
         public ActionResult ElencoDocumentiFormulario()
         {
             return PartialView();
@@ -471,43 +468,52 @@ namespace NewISE.Controllers
                 }
             }
         }
-        public ActionResult GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
+        
+        public JsonResult GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
         {
+
+            bool amministratore = false;
+            string errore = "";
+            bool richiestaPS = false;
+            bool attivazionePS = false;
+            bool DocProvvidenzeScolastiche = false;
+            bool trasfAnnullato = false;
+           
+
             try
             {
-                using (dtProvvidenzeScolastiche dtte = new dtProvvidenzeScolastiche())
+                amministratore = Utility.Amministratore();
+
+                using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
-                    {
-                        bool richiestaPS = false;
-                        bool attivazionePS = false;
-                        bool DocContributo = false;
-                        bool DocAttestazione = false;
-                        //decimal NumAttivazioni = 0;
-                        //bool trasfAnnullato = false;
-                        bool rinunciaPS = false;
-                        
-                        AttivazioniProvScolasticheModel apsm = new AttivazioniProvScolasticheModel();
 
-                        ViewData.Add("rinunciaPS", rinunciaPS);
-                        ViewData.Add("richiestaPS", richiestaPS);
-                        ViewData.Add("attivazionePS", attivazionePS);
-                        ViewData.Add("DocContributo", DocContributo);
-                        ViewData.Add("DocAttestazione", DocAttestazione);
-                        ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
-
-                        return PartialView("AttivitaProvvidenze", apsm);
-                    }
-
-
+                    dtps.SituazionePRovvidenzeScolastiche(idTrasfProvScolastiche,
+                                            out richiestaPS,
+                                            out attivazionePS,
+                                            out DocProvvidenzeScolastiche,
+                                            out trasfAnnullato
+                                            );
                 }
+
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                errore = ex.Message;
             }
-            
+
+            return
+                Json(
+                    new
+                    {
+                        admin = amministratore,
+                        richiestaPS = richiestaPS,
+                        attivazionePS = attivazionePS,
+                        DocProvvidenzeScolastiche = DocProvvidenzeScolastiche,
+                        trasfAnnullato = trasfAnnullato,
+                        err = errore
+                    });
+
         }
-        
+
     }
 }

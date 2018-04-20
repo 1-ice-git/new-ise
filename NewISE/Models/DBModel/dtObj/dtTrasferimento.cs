@@ -298,6 +298,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                       out bool richiestaTE, out bool attivazioneTE,
                                                       out bool richiestaAnticipi, out bool attivazioneAnticipi,
                                                       out bool richiestaMAB, out bool attivazioneMAB,
+                                                      out bool richiestaPS, out bool attivazionePS,
                                                       out bool solaLettura)
         {
             richiestaMF = false;
@@ -317,6 +318,9 @@ namespace NewISE.Models.DBModel.dtObj
 
             richiestaMAB = false;
             attivazioneMAB = false;
+
+            richiestaPS = false;
+            attivazionePS = false;
 
             solaLettura = true;
 
@@ -450,6 +454,25 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
                 #endregion
+
+                #region ProvvidenzeScolastiche
+                var lps = t.PROVVIDENZESCOLASTICHE;
+                if (lps != null && lps.IDTRASFPROVSCOLASTICHE > 0)
+                {
+                    
+                    var laps = lps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDPROVSCOLASTICHE).ToList();
+
+                    if (laps?.Any() ?? false)
+                    {
+                        var atps = laps.First();
+
+                        richiestaPS = atps.NOTIFICARICHIESTA;
+                        attivazionePS = atps.ATTIVARICHIESTA;
+                    }
+                   
+                }
+                #endregion
+
             }
         }
 
