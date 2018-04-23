@@ -245,19 +245,67 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (tps == null)
                     {
-                                               
+
                         // Documenti in attesa di approvazione disabilito il tasto Attiva Richiesta
-
-
+                        PROVVIDENZESCOLASTICHE new_tps = new PROVVIDENZESCOLASTICHE()
+                        {
+                            IDTRASFPROVSCOLASTICHE = idTrasfProvScolastiche
+                        };
+                        db.PROVVIDENZESCOLASTICHE.Add(new_tps);
 
                         if (db.SaveChanges() <= 0)
                         {
                             throw new Exception("Errore - Impossibile creare i record su Provvidenze Scolastiche.");
                         }
-                        
 
+                        tps = new_tps;
+                    }
+
+                    ATTIVAZIONIPROVSCOLASTICHE last_atps = new ATTIVAZIONIPROVSCOLASTICHE();
+
+                    var latps = tps.ATTIVAZIONIPROVSCOLASTICHE
+                                .Where(a => a.ANNULLATO == false || (a.NOTIFICARICHIESTA && a.ATTIVARICHIESTA))
+                                .OrderByDescending(a => a.IDPROVSCOLASTICHE).ToList();
+
+                    if (latps?.Any() ?? false)
+                    {
+                        //se esiste verifica se ci sono elementi associati
+
+                        //imposta l'ultima valida
+                        last_atps = latps.First();
+
+                        //verifica se è stata richiesta
+                        if (last_atps.NOTIFICARICHIESTA && last_atps.ATTIVARICHIESTA == false)
+                        {
+                            richiestaPS = true;
+                        }
+                        //verifica se è stata attivata
+                        if (last_atps.NOTIFICARICHIESTA && last_atps.ATTIVARICHIESTA)
+                        {
+                            attivazionePS = true;
+                        }
+
+                        foreach (var atps in latps)
+                        {
+                            //documenti provvidenze scolastiche
+                            var ldc = atps.DOCUMENTI.Where(a => (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche)).ToList();
+                            if (ldc?.Any() ?? false)
+                            {
+                                DocProvvidenzeScolastiche = true;
+                            }
+
+                            
+                        }
 
                     }
+                    else
+                    {
+                        last_atps = this.GetUltimaAttivazioneProvvScolastiche(idTrasfProvScolastiche);
+                        
+                    }
+
+
+                    //NumAttivazioni = GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
 
                 }
             }
@@ -269,7 +317,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AttivaRichiestaProvvidenzeScolastiche(decimal idAttivitaTrasportoEffettiPartenza)
+        public void AttivaRichiestaProvvidenzeScolastiche(decimal idAttivitaProvvidenzeScolastiche)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -277,31 +325,31 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
-                    var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTrasportoEffettiPartenza);
-                    if (atep?.IDATEPARTENZA > 0)
+                    var atps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idAttivitaProvvidenzeScolastiche);
+                    if (atps?.IDPROVSCOLASTICHE > 0)
                     {
-                        if (atep.RICHIESTATRASPORTOEFFETTI == true)
+                        if (atps.NOTIFICARICHIESTA == true)
                         {
-                            atep.ATTIVAZIONETRASPORTOEFFETTI = true;
-                            atep.DATAATTIVAZIONETE = DateTime.Now;
-                            atep.DATAAGGIORNAMENTO = DateTime.Now;
+                            atps.ATTIVARICHIESTA = true;
+                            atps.DATAATTIVAZIONE = DateTime.Now;
+                            atps.DATAAGGIORNAMENTO = DateTime.Now;
 
                             int i = db.SaveChanges();
 
                             if (i <= 0)
                             {
-                                throw new Exception("Errore: Impossibile completare l'attivazione del trasporto effetti in partenza.");
+                                throw new Exception("Errore: Impossibile completare l'attivazione delle provvidenze scolastiche.");
                             }
                             else
                             {
-                                #region ciclo attivazione documenti TE
-                                var ldte = atep.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                #region ciclo attivazione documenti PS
+                                var ldte = atps.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
                                 foreach (var dte in ldte)
                                 {
                                     dte.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
                                     if (db.SaveChanges() <= 0)
                                     {
-                                        throw new Exception("Errore durante il ciclo di attivazione trasporto effetti (attiva documenti)");
+                                        throw new Exception("Errore durante il ciclo di attivazione provvidenze scolastiche (attiva documenti)");
                                     }
                                 }
                                 #endregion
@@ -309,22 +357,22 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                                    "Attivazione trasporto effetti in partenza.", "ATTIVITATEPARTENZA", db,
-                                    atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, atep.IDATEPARTENZA);
+                                    "Attivazione provvidenze scolastiche.", "ATTIVAZIONIPROVSCOLASTICHE", db,
+                                    atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO, atps.IDPROVSCOLASTICHE);
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
-                                    dtce.ModificaInCompletatoCalendarioEvento(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza, db);
+                                    dtce.ModificaInCompletatoCalendarioEvento(atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaProvvidenzeScolastiche, db);
                                 }
 
 
-                                var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenza;
-                                var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenza;
+                                var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneProvvidenzeScolastiche;
+                                var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneProvvidenzeScolastiche;
 
-                                EmailTrasferimento.EmailAttiva(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
+                                EmailTrasferimento.EmailAttiva(atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO,
                                                     oggettoAttiva,
                                                     messaggioAttiva,
                                                     db);
-                                //this.EmailAttivaRichiestaTEPartenza(atep.IDATEPARTENZA, db);
+                               
 
                             }
                         }

@@ -551,7 +551,7 @@ namespace NewISE.Controllers
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
                     decimal idAttivazione = dtps.GetUltimaAttivazioneProvvScolastiche(idTrasfProvScolastiche).IDPROVSCOLASTICHE;
-                    //dtps.AttivaRichiestaTEPartenza(idAttivazione);
+                    dtps.AttivaRichiestaProvvidenzeScolastiche(idAttivazione);
 
                 }
 

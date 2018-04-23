@@ -197,6 +197,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Si informa la richiesta di rimborso per le provvidenze scolastiche è stata accettata..
+        /// </summary>
+        internal static string MessaggioAttivazioneProvvidenzeScolastiche {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneProvvidenzeScolastiche", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Si informa la richiesta di rimborso per il trasporto effetti in fase di partenza è stata accettata..
         /// </summary>
         internal static string MessaggioAttivazioneTrasportoEffettiPartenza {
@@ -454,6 +463,15 @@ namespace Resources {
         internal static string OggettoAttivazioneMaggiorazioniFamiliari {
             get {
                 return ResourceManager.GetString("OggettoAttivazioneMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Notifica richiesta per le provvidenze scolastiche.
+        /// </summary>
+        internal static string OggettoAttivazioneProvvidenzeScolastiche {
+            get {
+                return ResourceManager.GetString("OggettoAttivazioneProvvidenzeScolastiche", resourceCulture);
             }
         }
         
