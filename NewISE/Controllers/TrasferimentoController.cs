@@ -308,12 +308,12 @@ namespace NewISE.Controllers
 
                                 if (rm?.HasValue() ?? false)
                                 {
-                                    ViewBag.ListTipoTrasferimento =
-                                        lTipoTrasferimento.Where(
-                                            a =>
-                                                a.Value == "" ||
-                                                a.Value ==
-                                                Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                                    //ViewBag.ListTipoTrasferimento =
+                                    //    lTipoTrasferimento.Where(
+                                    //        a =>
+                                    //            a.Value == "" ||
+                                    //            a.Value ==
+                                    //            Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
 
                                     ViewBag.ListUfficio = lUffici;
                                 }
@@ -359,12 +359,12 @@ namespace NewISE.Controllers
 
                                     if (rm?.HasValue() ?? false)
                                     {
-                                        ViewBag.ListTipoTrasferimento =
-                                        lTipoTrasferimento.Where(
-                                            a =>
-                                                a.Value == "" ||
-                                                a.Value ==
-                                                Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                                        //ViewBag.ListTipoTrasferimento =
+                                        //lTipoTrasferimento.Where(
+                                        //    a =>
+                                        //        a.Value == "" ||
+                                        //        a.Value ==
+                                        //        Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
 
                                         ViewBag.ListUfficio = lUffici;
                                     }
@@ -386,7 +386,7 @@ namespace NewISE.Controllers
                             }
                             else
                             {
-                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                                //ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
                                 ViewBag.ListUfficio = lUffici;
                             }
 
@@ -458,7 +458,7 @@ namespace NewISE.Controllers
                     }
                     else
                     {
-                        ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                        //ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
                         return PartialView();
                     }
                 }
@@ -689,13 +689,13 @@ namespace NewISE.Controllers
                             trm.Ufficio = new UfficiModel();
                             trm.RuoloUfficio = new RuoloUfficioModel();
 
-                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
+                            //ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
 
                             return PartialView();
 
                         case EnumStatoTraferimento.Terminato:
                         case EnumStatoTraferimento.Annullato:
-                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
+                            //ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
                             using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {
                                 var rdm = dtrd.GetRuoloDipendenteById(idRuoloDipendente);
@@ -1200,7 +1200,6 @@ namespace NewISE.Controllers
                     }
                 }
 
-
                 if (ModelState.IsValid)
                 {
                     try
@@ -1351,8 +1350,6 @@ namespace NewISE.Controllers
                                                             {
                                                                 dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
                                                             }
-
-
                                                         }
                                                         else
                                                         {
@@ -1535,12 +1532,12 @@ namespace NewISE.Controllers
                                 var tOld = dtt.GetSoloTrasferimentoById(idTrasferimentoOld);
                                 if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                                 {
-                                    ViewBag.ListTipoTrasferimento =
-                                        lTipoTrasferimento.Where(
-                                            a =>
-                                                a.Value == "" ||
-                                                a.Value ==
-                                                Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                                    //ViewBag.ListTipoTrasferimento =
+                                    //    lTipoTrasferimento.Where(
+                                    //        a =>
+                                    //            a.Value == "" ||
+                                    //            a.Value ==
+                                    //            Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
                                     ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
                                 }
                                 else if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
@@ -1609,7 +1606,7 @@ namespace NewISE.Controllers
                             var tOld = dtt.GetSoloTrasferimentoById(idTrasferimentoOld);
                             if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                             {
-                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                                //ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
                                 ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
                             }
                             else if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
@@ -1848,16 +1845,23 @@ namespace NewISE.Controllers
         {
             try
             {
+                TrasferimentoModel tm = new TrasferimentoModel();
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var msgmail = dtt.GetMessaggioAnnullaTrasf(idTrasferimento);
                     var msg = msgmail.corpoMsg;
                     ViewBag.msgAnnulla = msg;
+
+                    tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    var dataPartenza = tm.dataPartenza.ToShortDateString();
+                    ViewData.Add("dataPartenza", dataPartenza);
+                    ViewData.Add("Trasferimento", tm);
                 }
 
                 ViewBag.idTrasferimento = idTrasferimento;
 
-                return PartialView();
+                return PartialView(tm);
             }
             catch (Exception ex)
             {
@@ -2060,9 +2064,10 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
-        public JsonResult ConfermaAttivaTrasf(decimal idTrasferimento)
+        public JsonResult ConfermaAttivaTrasf(decimal idTrasferimento, string strDataPartenzaEffettiva)
         {
             string errore = "";
+            DateTime dataPartenzaEffettiva = Convert.ToDateTime(strDataPartenzaEffettiva);
 
             try
             {
@@ -2070,7 +2075,7 @@ namespace NewISE.Controllers
                 {
 
 
-                    dtt.AttivaTrasf(idTrasferimento);
+                    dtt.AttivaTrasf(idTrasferimento, dataPartenzaEffettiva);
                 }
             }
             catch (Exception ex)

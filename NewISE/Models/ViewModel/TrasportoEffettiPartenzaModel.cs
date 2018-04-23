@@ -18,10 +18,10 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Contrib. Fisso OmniCompr. Lordo")]
         public decimal contributoLordo { get; set; }
 
-        [Display(Name = "Perc.")]
+        [Display(Name = "% Anticipo")]
         public decimal percAnticipo { get; set; }
 
-        [Display(Name = "Anticipo")]
+        [Display(Name = "Importo Anticipo")]
         public decimal anticipo { get; set; }
     }
 }
