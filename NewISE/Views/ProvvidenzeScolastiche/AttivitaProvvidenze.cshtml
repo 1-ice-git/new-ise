@@ -249,10 +249,9 @@
         //debugger;
         $('#ModalAttivaRichiestaPS').modal().show();
     }
-
-
+    
     function ConfermaNotificaRichiestaPS() {
-        debugger;
+        //debugger;
         var rotta = "/ProvvidenzeScolastiche/ConfermaNotificaRichiestaPS";
         var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
 
@@ -326,9 +325,10 @@
         });
     }
 
-    function ConfermaAttivaRichiestaPS() {
-        //debugger;
-        var rotta = "/TrasportoEffetti/ConfermaAttivaRichiestaTEPartenza";
+    
+    function ConfermaAttivazioneRichiestaPS() {
+        debugger;
+        var rotta = "/ProvvidenzeScolastiche/ConfermaAttivazioneRichiestaPS";
         var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
 
         $.ajax({
@@ -345,7 +345,7 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    TrasportoEffettiPartenza();
+                    //TrasportoEffettiPartenza();
                     //GestioneRinunciaTEPartenza();
                     GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
                     //InfoElaborazioneAjax(result.msg);

@@ -468,7 +468,6 @@ namespace NewISE.Controllers
                 }
             }
         }
-        
         public JsonResult GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
         {
 
@@ -514,18 +513,46 @@ namespace NewISE.Controllers
                     });
 
         }
-
-
         public JsonResult ConfermaNotificaRichiestaPS(decimal idTrasfProvScolastiche)
         {
             string errore = "";
 
             try
-            {
+            {  
+
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
-                    //decimal idAttivitaTEPartenza = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza).IDATEPARTENZA;
-                    dtps.NotificaRichiestaPS(idTrasfProvScolastiche);
+                    decimal idProvScolastiche = dtps.GetUltimaAttivazioneProvvScolastiche(idTrasfProvScolastiche).IDPROVSCOLASTICHE;
+                    dtps.NotificaRichiestaPS(idProvScolastiche);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+        public JsonResult ConfermaAttivazioneRichiestaPS(decimal idTrasfProvScolastiche)
+        {
+            string errore = "";
+
+            try
+            {
+
+                using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
+                {
+                    decimal idAttivazione = dtps.GetUltimaAttivazioneProvvScolastiche(idTrasfProvScolastiche).IDPROVSCOLASTICHE;
+                    //dtps.AttivaRichiestaTEPartenza(idAttivazione);
+
                 }
 
             }

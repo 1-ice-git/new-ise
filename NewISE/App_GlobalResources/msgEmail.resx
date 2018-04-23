@@ -286,4 +286,10 @@
   <data name="OggettoRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
     <value>Notifica richiesta rimborso successivo titoli di viaggio.</value>
   </data>
+  <data name="MessaggioNotificaProvvidenzeScolastiche" xml:space="preserve">
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta per le provvidenze scolastiche.</value>
+  </data>
+  <data name="OggettoNotificaProvvidenzeScolastiche" xml:space="preserve">
+    <value>Notifica richiesta provvidenze scolastiche.</value>
+  </data>
 </root>

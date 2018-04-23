@@ -17,8 +17,8 @@ namespace NewISE.Models.DBModel
         RichiestaAnticipi = 23,
         RichiestaMaggiorazioneAbitazione = 24,
         AttivaTrasferimento = 25,
-        Funzione9 = 26,
-        Funzione10 = 27
+        InvioPassaporto = 26,
+        RichiestaProvvidenzeScolastiche = 27
     }
     public class CalendarioEventiModel
     {

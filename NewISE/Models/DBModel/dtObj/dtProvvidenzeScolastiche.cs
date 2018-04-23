@@ -269,7 +269,147 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void NotificaRichiestaPS(decimal idTrasfProvScolastiche)
+        public void AttivaRichiestaProvvidenzeScolastiche(decimal idAttivitaTrasportoEffettiPartenza)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTrasportoEffettiPartenza);
+                    if (atep?.IDATEPARTENZA > 0)
+                    {
+                        if (atep.RICHIESTATRASPORTOEFFETTI == true)
+                        {
+                            atep.ATTIVAZIONETRASPORTOEFFETTI = true;
+                            atep.DATAATTIVAZIONETE = DateTime.Now;
+                            atep.DATAAGGIORNAMENTO = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore: Impossibile completare l'attivazione del trasporto effetti in partenza.");
+                            }
+                            else
+                            {
+                                #region ciclo attivazione documenti TE
+                                var ldte = atep.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                foreach (var dte in ldte)
+                                {
+                                    dte.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante il ciclo di attivazione trasporto effetti (attiva documenti)");
+                                    }
+                                }
+                                #endregion
+
+
+
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    "Attivazione trasporto effetti in partenza.", "ATTIVITATEPARTENZA", db,
+                                    atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, atep.IDATEPARTENZA);
+                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                {
+                                    dtce.ModificaInCompletatoCalendarioEvento(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza, db);
+                                }
+
+
+                                var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenza;
+                                var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenza;
+
+                                EmailTrasferimento.EmailAttiva(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                    oggettoAttiva,
+                                                    messaggioAttiva,
+                                                    db);
+                                //this.EmailAttivaRichiestaTEPartenza(atep.IDATEPARTENZA, db);
+
+                            }
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public ATTIVAZIONIPROVSCOLASTICHE GetUltimaAttivazioneProvvScolastiche(decimal idTrasfProvScolastiche)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                ATTIVAZIONIPROVSCOLASTICHE atps = new ATTIVAZIONIPROVSCOLASTICHE();
+
+
+                var tps = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
+
+                if (tps != null && tps.IDTRASFPROVSCOLASTICHE > 0)
+                {
+
+                    var latps = tps.ATTIVAZIONIPROVSCOLASTICHE
+                            .Where(a => a.ANNULLATO == false)
+                            .OrderByDescending(a => a.IDPROVSCOLASTICHE).ToList();
+                    if (latps?.Any() ?? false)
+                    {
+                        atps = latps.First();
+                    }
+                    else
+                    {
+                        //se non esiste una attivazione
+                        //ne creo una 
+                        ATTIVAZIONIPROVSCOLASTICHE new_atps = new ATTIVAZIONIPROVSCOLASTICHE()
+                        {
+                            IDTRASFPROVSCOLASTICHE = idTrasfProvScolastiche,
+                            DATANOTIFICA = null,
+                            ATTIVARICHIESTA = false,
+                            DATAATTIVAZIONE = null,
+                            DATAAGGIORNAMENTO = DateTime.Now,
+                            ANNULLATO = false
+
+                            
+
+                        };
+
+
+                        db.ATTIVAZIONIPROVSCOLASTICHE.Add(new_atps);
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore nella fase di creazione dell'attivita provvidenze scolastiche.");
+                        }
+                        else
+                        {
+                            //creo la riga relativa alla rinuncia
+                            //var rtep = this.CreaRinunciaTEPartenza(new_atep.IDATEPARTENZA, db);
+
+                            ////leggo la percentuale e la associo
+                            //var PercentualeAnticipoTE = this.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
+                            //if (PercentualeAnticipoTE.IDPERCANTICIPOTM > 0)
+                            //{
+                            //    this.Associa_TEpartenza_perceAnticipoTE(idTEPartenza, PercentualeAnticipoTE.IDPERCANTICIPOTM, db);
+
+                            //    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                            //    "Inserimento attivita trasporto effetti partenza.", "ATTIVITATEPARTENZA", db, idTEPartenza,
+                            //    new_atep.IDATEPARTENZA);
+                            //}
+                        }
+
+                        atps = new_atps;
+                    }
+                }
+
+                return atps;
+            }
+
+        }
+
+        public void NotificaRichiestaPS(decimal idProvScolastiche)
         {
             try
             {
@@ -279,67 +419,53 @@ namespace NewISE.Models.DBModel.dtObj
 
                     try
                     {
-                        var atep = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
-                        //atep.RICHIESTATRASPORTOEFFETTI = true;
-                        //atep.DATARICHIESTATRASPORTOEFFETTI = DateTime.Now;
-                        //atep.DATAAGGIORNAMENTO = DateTime.Now;
-
-                        //var i = db.SaveChanges();
-                        //if (i <= 0)
-                        //{
-                        //    throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione trasporto effetti partenza.");
-                        //}
-                        //else
-                        //{
-                        //    //in caso di rinuncia elimino eventuali documenti associati perchè non hanno senso di esistere
-                        //    //var rtep = this.GetRinunciaTEPartenza(idAttivitaTEPartenza, db);
-                        //    //if (rtep.rinunciaTE)
-                        //    //{
-                        //    //    var ld = atep.DOCUMENTI.ToList();
-                        //    //    foreach (var d in ld)
-                        //    //    {
-                        //    //        atep.DOCUMENTI.Remove(d);
-                        //    //        db.SaveChanges();
-                        //    //    }
-                        //    //}
-
-                        //    #region ciclo attivazione documenti TE
-                        //    //var ldte = atep.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                        //    //foreach (var dte in ldte)
-                        //    //{
-                        //    //    dte.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
-                        //    //    if (db.SaveChanges() <= 0)
-                        //    //    {
-                        //    //        throw new Exception("Errore durante il ciclo di attivazione trasporto effetti (notifica documenti)");
-                        //    //    }
-                        //    //}
-                        //    #endregion
+                        var atps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idProvScolastiche);
+                        atps.NOTIFICARICHIESTA = true;
+                        atps.DATAATTIVAZIONE = DateTime.Now;
+                        atps.DATAAGGIORNAMENTO = DateTime.Now;
 
 
-                        //EmailTrasferimento.EmailNotifica(EnumChiamante.Trasporto_Effetti,
-                        //                                atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
-                        //                                Resources.msgEmail.OggettoNotificaTrasportoEffettiPartenza,
-                        //                                Resources.msgEmail.MessaggioNotificaTrasportoEffettiPartenza,
-                        //                                db);
+                        var i = db.SaveChanges();
+                        if (i <= 0)
+                        {
+                            throw new Exception("Errore nella fase d'inserimento per la richiesta provvidenze scolastiche.");
+                        }
+                        
+
+                        #region ciclo attivazione documenti PS
+                        var ldps = atps.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                        foreach (var dps in ldps)
+                        {
+                            dps.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore durante il ciclo di attivazione provvidenze scolastiche");
+                            }
+                        }
+                        #endregion
 
 
+                        EmailTrasferimento.EmailNotifica(EnumChiamante.ProvvidenzeScolastiche,
+                                                        atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                        Resources.msgEmail.OggettoNotificaProvvidenzeScolastiche,
+                                                        Resources.msgEmail.MessaggioNotificaProvvidenzeScolastiche,
+                                                        db);
 
-                        //    //this.EmailNotificaRichiestaTEPartenza(idAttivitaTEPartenza, db);
 
-                        //    //using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                        //    //{
-                        //    //    CalendarioEventiModel cem = new CalendarioEventiModel()
-                        //    //    {
-                        //    //        idFunzioneEventi = EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza,
-                        //    //        idTrasferimento = atep.TEPARTENZA.IDTEPARTENZA,
-                        //    //        DataInizioEvento = DateTime.Now.Date,
-                        //    //        DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaTrasportoEffettiPartenza)).Date,
-                        //    //    };
+                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        {
+                            CalendarioEventiModel cem = new CalendarioEventiModel()
+                            {
+                                idFunzioneEventi = EnumFunzioniEventi.RichiestaProvvidenzeScolastiche,
+                                idTrasferimento = atps.PROVVIDENZESCOLASTICHE.IDTRASFPROVSCOLASTICHE,
+                                DataInizioEvento = DateTime.Now.Date,
+                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaProvvidenzeScolastiche)).Date,
+                            };
 
-                        //    //    dtce.InsertCalendarioEvento(ref cem, db);
+                            dtce.InsertCalendarioEvento(ref cem, db);
 
-                        //    //}
-                        //}
+                        }
+
 
                         db.Database.CurrentTransaction.Commit();
                     }
