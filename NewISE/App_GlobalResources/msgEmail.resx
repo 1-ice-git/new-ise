@@ -298,4 +298,10 @@
   <data name="OggettoNotificaProvvidenzeScolastiche" xml:space="preserve">
     <value>Notifica richiesta provvidenze scolastiche.</value>
   </data>
+  <data name="MessaggioAnnullaRichiestaProvvidenzeScolastiche" xml:space="preserve">
+    <value>Si notifica che la richiesta di rimborso per le provvidenze scolastiche riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
+  <data name="OggettoAnnullaRichiestaProvvidenzeScolastiche" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta di Provvidenze Scolastiche.</value>
+  </data>
 </root>

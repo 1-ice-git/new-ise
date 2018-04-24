@@ -4,11 +4,11 @@
 
     bool richiestaPS = Convert.ToBoolean(ViewData["richiestaPS"]);
     bool attivazionePS = Convert.ToBoolean(ViewData["attivazionePS"]);
-    bool DocContributo = Convert.ToBoolean(ViewData["DocContributo"]);
-    bool DocAttestazione = Convert.ToBoolean(ViewData["DocAttestazione"]);
+    bool DocProvvidenzeScolastiche = Convert.ToBoolean(ViewData["DocProvvidenzeScolastiche"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-    decimal idTrasportoEffettiPartenza = Convert.ToDecimal(ViewData["idTrasportoEffettiPartenza"]);
     decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idProvScolastiche = Convert.ToDecimal(ViewData["idProvScolastiche"]);
+    
 }
 
 @Html.Hidden("idTrasferimento", idTrasferimento)
@@ -122,7 +122,7 @@
                     <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Messaggio di annullamento richiesta Provvidenze Scolastiche</h3>
                 </div>
                 <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                    <p id="viewAnnullaRichiesta">
+                    <p id="viewAnnullaRichiestaPS">
                         <label>Procedere con l'annullamento della richiesta?</label>
                     </p>
                 </div>
@@ -161,7 +161,7 @@
                     var attivazionePS = result.attivazionePS;
                     var DocProvvidenzeScolastiche = result.DocProvvidenzeScolastiche;
                     var trasfAnnullato = result.trasfAnnullato;
-                    //var rinunciaPS = result.rinunciaPS;
+                    
 
                     $("#btNotificaRichiestaPS").attr("disabled", "disabled");
                     $("#btNotificaRichiestaPS").addClass("disabled");
@@ -189,18 +189,12 @@
                     if (
                             (
                                 (
-                        //(NumAttivazioni == 0 && richiestaPS == false && attivazionePS == false && DocContributo) ||
-                        //(NumAttivazioni > 0 && richiestaPS == false && attivazionePS == false && DocAttestazione)
-
+                        
                                     (richiestaPS == false && attivazionePS == false && DocProvvidenzeScolastiche)
                                 ) &&
                                     trasfAnnullato == false
-                        //&&
-                        //    rinunciaPS == false
-
-                            ) ||
+                               ) ||
                             (
-                        //richiestaPS == false && attivazionePS == false && trasfAnnullato == false && rinunciaTE == true
                                 richiestaPS == false && attivazionePS == false && trasfAnnullato == false
                             )
                         ) {
@@ -249,7 +243,7 @@
         //debugger;
         $('#ModalAttivaRichiestaPS').modal().show();
     }
-    
+
     function ConfermaNotificaRichiestaPS() {
         //debugger;
         var rotta = "/ProvvidenzeScolastiche/ConfermaNotificaRichiestaPS";
@@ -307,8 +301,7 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    TrasportoEffettiPartenza();
-                    //GestioneRinunciaTEPartenza();
+                    ProvvidenzeScolastiche();
                     GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
                     //InfoElaborazioneAjax(result.msg);
                 } else {
@@ -325,9 +318,9 @@
         });
     }
 
-    
+
     function ConfermaAttivazioneRichiestaPS() {
-        debugger;
+        //debugger;
         var rotta = "/ProvvidenzeScolastiche/ConfermaAttivazioneRichiestaPS";
         var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
 
@@ -345,8 +338,7 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    //TrasportoEffettiPartenza();
-                    //GestioneRinunciaTEPartenza();
+                    ProvvidenzeScolastiche();
                     GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
                     //InfoElaborazioneAjax(result.msg);
                 } else {
@@ -364,17 +356,82 @@
         });
     }
 
+    function ConfermaAnnullaRichiestaPS() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/ConfermaAnnullaRichiestaPS";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        var testoAnnullaPS = $('#FullDescription').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche, msg: testoAnnullaPS },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ProvvidenzeScolastiche();
+                    GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function MessaggioAnnullaRichiestaPS() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/MessaggioAnnullaProvvidenzeScolastiche";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaPS").empty();
+                $("#viewAnnullaRichiestaPS").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
     // *************************************************************************************************
 
     function ElencoFormulariInseriti() {
         //debugger;
         var rotta = "/ProvvidenzeScolastiche/ElencoFormulariInseriti";
         var idTrasferimento = parseInt($('#idTrasferimento').val());
+        var idProvScolastiche = parseInt('@idProvScolastiche');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idTrasferimento: idTrasferimento, idProvScolastiche: idProvScolastiche },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -444,12 +501,6 @@
         });
 
     }
-
-
-
-
-
-
 
 </script>
 

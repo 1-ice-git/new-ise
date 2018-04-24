@@ -108,7 +108,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
         public ATTIVAZIONIPROVSCOLASTICHE CreaAttivitaPS(decimal idTrasfProvScolastiche, ModelDBISE db)
         {
-
+            var NumAttivazioni = this.GetNumAttivazioniProvvidenzeScolastiche(idTrasfProvScolastiche);
             ATTIVAZIONIPROVSCOLASTICHE new_atep = new ATTIVAZIONIPROVSCOLASTICHE()
             {
                 IDTRASFPROVSCOLASTICHE = idTrasfProvScolastiche,
@@ -223,6 +223,7 @@ namespace NewISE.Models.DBModel.dtObj
                                        out bool richiestaPS,
                                        out bool attivazionePS,
                                        out bool DocProvvidenzeScolastiche,
+                                       out decimal NumAttivazioni,
                                        out bool trasfAnnullato)
         {
 
@@ -305,7 +306,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
 
-                    //NumAttivazioni = GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
+                    NumAttivazioni = GetNumAttivazioniProvvidenzeScolastiche(idTrasfProvScolastiche);
 
                 }
             }
@@ -315,6 +316,18 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
 
+        }
+
+        public decimal GetNumAttivazioniProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var NumAttivazioni = 0;
+                NumAttivazioni = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche).ATTIVAZIONIPROVSCOLASTICHE
+                                    .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true)
+                                    .OrderByDescending(a => a.IDPROVSCOLASTICHE).Count();
+                return NumAttivazioni;
+            }
         }
 
         public void AttivaRichiestaProvvidenzeScolastiche(decimal idAttivitaProvvidenzeScolastiche)
@@ -467,13 +480,24 @@ namespace NewISE.Models.DBModel.dtObj
 
                     try
                     {
-                        var atps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idProvScolastiche);
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            
+
+
+                            var atps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idProvScolastiche);
                         atps.NOTIFICARICHIESTA = true;
                         atps.DATAATTIVAZIONE = DateTime.Now;
                         atps.DATAAGGIORNAMENTO = DateTime.Now;
 
+                            var t = atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO;
 
-                        var i = db.SaveChanges();
+                            var dip = dtd.GetDipendenteByID(t.IDDIPENDENTE);
+
+
+
+
+                            var i = db.SaveChanges();
                         if (i <= 0)
                         {
                             throw new Exception("Errore nella fase d'inserimento per la richiesta provvidenze scolastiche.");
@@ -496,10 +520,10 @@ namespace NewISE.Models.DBModel.dtObj
                         EmailTrasferimento.EmailNotifica(EnumChiamante.ProvvidenzeScolastiche,
                                                         atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO,
                                                         Resources.msgEmail.OggettoNotificaProvvidenzeScolastiche,
-                                                        Resources.msgEmail.MessaggioNotificaProvvidenzeScolastiche,
+                                                        string.Format(Resources.msgEmail.MessaggioNotificaProvvidenzeScolastiche, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")"),
                                                         db);
 
-
+                            
                         using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                         {
                             CalendarioEventiModel cem = new CalendarioEventiModel()
@@ -516,6 +540,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                         db.Database.CurrentTransaction.Commit();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -527,6 +552,159 @@ namespace NewISE.Models.DBModel.dtObj
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public void AnnullaRichiestaProvvidenzeScolastiche(decimal idAttivitaProvvidenzeScolastiche, string msg)
+        {
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    
+                    var atep_Old = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idAttivitaProvvidenzeScolastiche);
+
+                    if (atep_Old?.IDPROVSCOLASTICHE > 0)
+                    {
+                        if (atep_Old.NOTIFICARICHIESTA == true && atep_Old.ATTIVARICHIESTA == false && atep_Old.ANNULLATO == false)
+                        {
+                            atep_Old.ANNULLATO = true;
+                            atep_Old.DATAAGGIORNAMENTO = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore - Impossibile annullare la notifica della richiesta provvidenze scolastiche.");
+                            }
+                            else
+                            {
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    "Annullamento della riga per il ciclo di attivazione delle provvidenze scolastiche",
+                                    "PROVVIDENZESCOLASTICHE", db, atep_Old.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                    atep_Old.IDPROVSCOLASTICHE);
+
+                                var idTrasferimento = atep_Old.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO;
+                                
+                                ATTIVAZIONIPROVSCOLASTICHE atep_New = new ATTIVAZIONIPROVSCOLASTICHE()
+                                {
+                                    IDTRASFPROVSCOLASTICHE = atep_Old.IDTRASFPROVSCOLASTICHE,
+                                    NOTIFICARICHIESTA = false,
+                                    
+                                    ATTIVARICHIESTA = false,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    ANNULLATO = false
+                                };
+
+                                db.ATTIVAZIONIPROVSCOLASTICHE.Add(atep_New);
+
+                                int j = db.SaveChanges();
+
+                                if (j <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile creare il nuovo ciclo di attivazione per le provvidenze scolastiche.");
+                                }
+                                else
+                                {
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                        "Inserimento di una nuova riga per il ciclo di attivazione relativo alle provvidenze scolastiche.",
+                                        "PROVVIDENZESCOLASTICHE", db, atep_New.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                        atep_New.IDTRASFPROVSCOLASTICHE);
+
+                                    #region ricrea rinunciaTE
+                                    //var rtep_old = this.GetRinunciaTEPartenza(atep_Old.IDATEPARTENZA, db);
+                                    //RINUNCIA_TE_P rtep_new = new RINUNCIA_TE_P()
+                                    //{
+                                    //    IDATEPARTENZA = atep_New.IDATEPARTENZA,
+                                    //    RINUNCIATE = rtep_old.rinunciaTE,
+                                    //    DATAAGGIORNAMENTO = DateTime.Now,
+                                    //};
+                                    //db.RINUNCIA_TE_P.Add(rtep_new);
+
+                                    //if (db.SaveChanges() <= 0)
+                                    //{
+                                    //    throw new Exception(string.Format("Non è stato possibile creare una nuova rinuncia trasporto effetti partenza durante il ciclo di annullamento."));
+                                    //}
+                                    //else
+                                    //{
+                                    //    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova rinuncia trasporto effetti partenza.", "RINUNCIA_TE_P", db, rtep_new.ATTIVITATEPARTENZA.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, rtep_new.IDATEPARTENZA);
+                                    //}
+
+                                    #endregion
+
+
+                                    #region documenti
+                                    var ldoc_Old =
+                                        atep_Old.DOCUMENTI.Where(
+                                            a => a.MODIFICATO == false)
+                                            .OrderBy(a => a.DATAINSERIMENTO);
+
+                                    if (ldoc_Old?.Any() ?? false)
+                                    {
+                                        foreach (var doc_Old in ldoc_Old)
+                                        {
+                                            DOCUMENTI doc_New = new DOCUMENTI()
+                                            {
+                                                IDTIPODOCUMENTO = doc_Old.IDTIPODOCUMENTO,
+                                                NOMEDOCUMENTO = doc_Old.NOMEDOCUMENTO,
+                                                ESTENSIONE = doc_Old.ESTENSIONE,
+                                                FILEDOCUMENTO = doc_Old.FILEDOCUMENTO,
+                                                DATAINSERIMENTO = doc_Old.DATAINSERIMENTO,
+                                                MODIFICATO = doc_Old.MODIFICATO,
+                                                FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO,
+                                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
+                                            };
+
+                                            atep_New.DOCUMENTI.Add(doc_New);
+                                            doc_Old.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+
+                                            int y = db.SaveChanges();
+
+                                            if (y <= 0)
+                                            {
+                                                throw new Exception("Errore - Impossibile associare il documento per le provvidenze scolastiche. (" + doc_New.NOMEDOCUMENTO + ")");
+                                            }
+                                            else
+                                            {
+                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                                    "Inserimento di una nuova riga per il documento relativo alle provvidenze scolastiche.",
+                                                    "DOCUMENTI", db,
+                                                    atep_New.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                    doc_New.IDDOCUMENTO);
+                                            }
+
+                                        }
+
+
+                                    }
+                                    #endregion
+
+                                    EmailTrasferimento.EmailAnnulla(idTrasferimento,
+                                                                    Resources.msgEmail.OggettoAnnullaRichiestaProvvidenzeScolastiche,
+                                                                    msg,
+                                                                    db);
+                                    
+                                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                    {
+                                        dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaProvvidenzeScolastiche, db);
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
             }
         }
 

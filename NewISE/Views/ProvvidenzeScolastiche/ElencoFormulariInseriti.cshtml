@@ -1,10 +1,16 @@
 ﻿@using NewISE.Models.DBModel
 
 @{
+    bool richiestaPS = Convert.ToBoolean(ViewData["richiestaPS"]);
+    bool attivazionePS = Convert.ToBoolean(ViewData["attivazionePS"]);
+    bool DocProvvidenzeScolastiche = Convert.ToBoolean(ViewData["DocProvvidenzeScolastiche"]);
+
     decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
     decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasferimento"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idProvScolastiche = Convert.ToDecimal(ViewData["idProvScolastiche"]);
+    
 }
 
 @Html.Hidden("hiNuovoDocumento")
@@ -24,7 +30,7 @@
 
         </div>
     </div>
-    <div class="col-xs-3">
+    @*<div class="col-xs-3" hidden>
         <div style="margin-top: 10px; margin-bottom: 10px;">
 
                 <button class="btn btn-default btn-sm" onclick="NuovoFormulario();">
@@ -34,7 +40,7 @@
            
         </div>
 
-    </div>
+    </div>*@
     <div class="col-xs-3">
         <div style="margin-top: 10px; margin-bottom: 10px;">
 
@@ -54,7 +60,7 @@
     <div class="col-xs-12">
         <div id="divTabElencoFormulari">
             @*@Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche})*@
-            @Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche, idTipoDocumento= idTipoDocumento })
+            @Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche, idTipoDocumento= idTipoDocumento, idProvScolastiche = idProvScolastiche })
         </div>
     </div>
 </div>

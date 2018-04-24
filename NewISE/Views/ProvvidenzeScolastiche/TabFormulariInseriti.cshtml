@@ -7,6 +7,10 @@
     string DescrizionePS = Convert.ToString(ViewData["DescrizionePS"]);
     decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
     decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasfProvScolastiche"]);
+    decimal idProvScolastiche = Convert.ToDecimal(ViewData["idProvScolastiche"]);
+    bool richiestaPS = Convert.ToBoolean(ViewData["richiestaPS"]);
+    bool attivazionePS = Convert.ToBoolean(ViewData["attivazionePS"]);
+    bool DocProvvidenzeScolastiche = Convert.ToBoolean(ViewData["DocProvvidenzeScolastiche"]);
 }
 
 
@@ -44,17 +48,19 @@
                     <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
                 </td>
                 <td class="text-center">
-                    @if (solaLettura)
-                    {
-                        //<button class="btn btn-link disabled" disabled="disabled">Elimina</button>
-                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" />
-                    }
-                    else
-                    {
-                        <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
-                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
-                        </a>
-                    }
+                    
+
+                        @if (richiestaPS == false)
+                        {
+                            //<button class="btn btn-link disabled" disabled="disabled">Elimina</button>
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" />
+                        }
+                        else
+                        {
+                            <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                            </a>
+                        }
 
                 </td>
             </tr>

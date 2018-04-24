@@ -116,6 +116,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Si notifica che la richiesta di rimborso per le provvidenze scolastiche riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaProvvidenzeScolastiche {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaProvvidenzeScolastiche", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio relativi al trasferimento presso la sede di {0} dal giorno {1} è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaSuccessivaTitoloViaggio {
@@ -382,6 +391,15 @@ namespace Resources {
         internal static string OggettoAnnullaRichiestaPassaporto {
             get {
                 return ResourceManager.GetString("OggettoAnnullaRichiestaPassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Notifica dell&apos;annullamento della richiesta di Provvidenze Scolastiche..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaProvvidenzeScolastiche {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaProvvidenzeScolastiche", resourceCulture);
             }
         }
         
