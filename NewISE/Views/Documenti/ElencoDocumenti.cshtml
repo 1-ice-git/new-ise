@@ -363,7 +363,12 @@
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: {  id: id,  },
+            data: {  id: id,  
+                tipoDoc:TipoDocumento, 
+                parentela:Parentela, 
+                Chiamante:Chiamante, 
+                idAttivazioneMagFam:idAttivazioneMagFam
+            },
             dataType: 'html',
             async: false,
             beforeSend: function () {
