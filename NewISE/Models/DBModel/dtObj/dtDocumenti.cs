@@ -109,7 +109,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var ld =
                         amf.DOCUMENTI.Where(
-                            a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
+                            a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche)
                             .OrderByDescending(a => a.DATAINSERIMENTO);
                     if (ld?.Any() ?? false)
                     {
@@ -1214,6 +1214,9 @@ namespace NewISE.Models.DBModel.dtObj
                         break;
                     case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
                         t = d.ATTIVAZIONIMAGFAM.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Formulario_Provvidenze_Scolastiche:
+                        t = d.ATTIVAZIONIPROVSCOLASTICHE.First().PROVVIDENZESCOLASTICHE.TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Documento_Identita:
 

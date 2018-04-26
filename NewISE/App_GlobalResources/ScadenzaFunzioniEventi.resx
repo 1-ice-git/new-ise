@@ -132,6 +132,9 @@
   <data name="RichiestaPassaporto" xml:space="preserve">
     <value>15</value>
   </data>
+  <data name="RichiestaProvvidenzeScolastiche" xml:space="preserve">
+    <value>90</value>
+  </data>
   <data name="RichiestaTitoliViaggio" xml:space="preserve">
     <value>10</value>
   </data>

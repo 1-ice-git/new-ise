@@ -97,7 +97,6 @@ namespace NewISE.Controllers
                 using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                 {
                     decimal idAttivitaTEPartenza = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza).IDATEPARTENZA;
-
                     dtte.NotificaRichiestaTEPartenza(idAttivitaTEPartenza);
                 }
             }

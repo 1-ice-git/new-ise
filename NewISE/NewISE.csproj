@@ -3495,12 +3495,13 @@
     <Content Include="Views\ProvvidenzeScolastiche\Index.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\ElencoFormulariInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\NuovoFormularioPS.cshtml" />
-    <Content Include="Views\ProvvidenzeScolastiche\ElencoProvvidenze.cshtml" />
-    <Content Include="Views\ProvvidenzeScolastiche\VisualizzaProvvidenze.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\AttivitaProvvidenze.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\TabFormulariInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\NuovoDocumentoPS.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\DocumentiPSInseriti.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\TabDocumentiPSInseriti.cshtml" />
+    <Content Include="Views\ProvvidenzeScolastiche\MessaggioAnnullaProvvidenzeScolastiche.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -145,6 +145,29 @@ namespace NewISE.Controllers
             }
         }
 
+        public JsonResult EliminaFormularioPS(decimal idDocumento, EnumChiamante chiamante)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        dtd.DeleteDocumento(idDocumento, chiamante, db);
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il formulario è stata eliminato." });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
+
         [HttpPost]
         public JsonResult InserisciFormularioMF(decimal idAttivazioneMagFam, HttpPostedFileBase file)
         {

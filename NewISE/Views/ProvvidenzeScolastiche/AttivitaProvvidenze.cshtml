@@ -1,12 +1,17 @@
 ﻿@using NewISE.Controllers
 
 @{
-    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+
+    bool richiestaPS = Convert.ToBoolean(ViewData["richiestaPS"]);
+    bool attivazionePS = Convert.ToBoolean(ViewData["attivazionePS"]);
+    bool DocProvvidenzeScolastiche = Convert.ToBoolean(ViewData["DocProvvidenzeScolastiche"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idProvScolastiche = Convert.ToDecimal(ViewData["idProvScolastiche"]);
+    
 }
 
 @Html.Hidden("idTrasferimento", idTrasferimento)
-
-
 
 <div class="row">
     <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
@@ -17,7 +22,6 @@
     </div>
 </div>
 
-<!-- Inserire la chiamata in un altra pagina -->
 <div class="row" hidden>
 
     <div class="col-xs-3">
@@ -47,24 +51,24 @@
 
 <div class="row">
         <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModalNotificaRichiesta();">
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPS" onclick="ModalNotificaRichiestaPS();">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                 Notifica richiesta
             </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam" onclick="ModalAttivaRichiesta(); ">
+            <button class="btn btn-default btn-sm disabled" disabled id="btAttivaRichiestaPS" onclick="ModalAttivaRichiestaPS(); ">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                Attiva maggiorazioni
+                Attiva provvidenze
             </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaMagFam" onclick="ModalAnnullaRichiesta();">
+            <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPS" onclick="ModalAnnullaRichiestaPS();">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                 Annulla richiesta
             </button>
         </div>
     </div>
 
-<div class="modal fade" id="ModalNotificaRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaLabel" aria-hidden="true">
+<div class="modal fade" id="ModalNotificaRichiestaPS" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaPSLabel" aria-hidden="true">
         <div class="modal-dialog  modal-lg" role="document" style="width:350px">
             <div class="modal-content">
                 <div class="modal-header">
@@ -79,14 +83,14 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button id="btConfermaNotifica" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaNotificaRichiesta(); ">Procedi</button>
+                    <button id="btConfermaNotifica" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaPS();">Procedi</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 </div>
             </div>
         </div>
     </div>
 
-<div class="modal fade" id="ModalAttivaRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAttivaRichiestaPS" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaPSLabel" aria-hidden="true">
         <div class="modal-dialog  modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -101,29 +105,29 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button id="btConfermaAttivazione" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaAttivazioneRichiesta(); ">Procedi</button>
+                    <button id="btConfermaAttivazione" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivazioneRichiestaPS();">Procedi</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 </div>
             </div>
         </div>
     </div>
 
-<div class="modal fade" id="ModalAnnullaRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAnnullaRichiestaPS" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaPSLabel" aria-hidden="true">
         <div class="modal-dialog  modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Messaggio di annullamento richiesta Maggiorazioni Familiari</h3>
+                    <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Messaggio di annullamento richiesta Provvidenze Scolastiche</h3>
                 </div>
                 <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                    <p id="viewAnnullaRichiesta">
-                        @*<label>Procedere con l'annullamento della richiesta?</label>*@
+                    <p id="viewAnnullaRichiestaPS">
+                        <label>Procedere con l'annullamento della richiesta?</label>
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button id="btConfermaAnnulla" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaAnnullaRichiesta(); ">Procedi</button>
+                    <button id="btConfermaAnnulla" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaPS();">Procedi</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                 </div>
             </div>
@@ -132,18 +136,302 @@
 
 
 <script type="text/javascript">
-   
+    GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
     ElencoFormulariInseriti();
+
+    function GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    var admin = result.admin;
+                    var richiestaPS = result.richiestaPS;
+                    var attivazionePS = result.attivazionePS;
+                    var DocProvvidenzeScolastiche = result.DocProvvidenzeScolastiche;
+                    var trasfAnnullato = result.trasfAnnullato;
+                    
+
+                    $("#btNotificaRichiestaPS").attr("disabled", "disabled");
+                    $("#btNotificaRichiestaPS").addClass("disabled");
+
+                    $("#btNotificaRichiestaPS").removeAttr("hidden");
+                    $("#btNotificaRichiestaPS").removeClass("hidden");
+
+
+                    //se amministratore vedo i pulsanti altrimenti solo notifica
+                    if (admin) {
+                        $("#btAttivaRichiestaPS").removeAttr("hidden");
+                        $("#btAttivaRichiestaPS").removeClass("hidden");
+
+                        $("#btAnnullaRichiestaPS").removeAttr("hidden");
+                        $("#btAnnullaRichiestaPS").removeClass("hidden");
+
+                        $("#btAttivaRichiestaPS").attr("disabled", "disabled");
+                        $("#btAttivaRichiestaPS").addClass("disabled");
+
+                        $("#btAnnullaRichiestaPS").attr("disabled", "disabled");
+                        $("#btAnnullaRichiestaPS").addClass("disabled");
+                    }
+
+                    //Se risulta in lavorazione con almeno un documento abilito la il pulsante notifica
+                    if (
+                            (
+                                (
+                        
+                                    (richiestaPS == false && attivazionePS == false && DocProvvidenzeScolastiche)
+                                ) &&
+                                    trasfAnnullato == false
+                               ) ||
+                            (
+                                richiestaPS == false && attivazionePS == false && trasfAnnullato == false
+                            )
+                        ) {
+                        $("#btNotificaRichiestaPS").removeAttr("disabled");
+                        $("#btNotificaRichiestaPS").removeClass("disabled");
+                    } else {
+                        if (admin) {
+                            if (richiestaPS && attivazionePS == false && trasfAnnullato == false) {
+                                $("#btAttivaRichiestaPS").removeAttr("disabled");
+                                $("#btAttivaRichiestaPS").removeClass("disabled");
+                                $("#btAnnullaRichiestaPS").removeAttr("disabled");
+                                $("#btAnnullaRichiestaPS").removeClass("disabled");
+                            }
+                        }
+                    }
+                    //GestioneAttivitaTrasferimento();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    // *************************************************************************************************
+
+    function ModalNotificaRichiestaPS() {
+        //debugger;
+        $('#ModalNotificaRichiestaPS').modal().show();
+    }
+
+    function ModalAnnullaRichiestaPS() {
+        //debugger;
+        MessaggioAnnullaRichiestaPS();
+        $('#ModalAnnullaRichiestaPS').modal().show();
+    }
+
+    function ModalAttivaRichiestaPS() {
+        //debugger;
+        $('#ModalAttivaRichiestaPS').modal().show();
+    }
+
+    function ConfermaNotificaRichiestaPS() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/ConfermaNotificaRichiestaPS";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    AttivitaProvvidenze();
+                    //GestioneRinunciaTEPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAnnullaRichiestaTE() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/ConfermaAnnullaRichiestaTEPartenza";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        var testoAnnullaPS = $('#FullDescription').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche, msg: testoAnnullaPS },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ProvvidenzeScolastiche();
+                    GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    function ConfermaAttivazioneRichiestaPS() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/ConfermaAttivazioneRichiestaPS";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    //ProvvidenzeScolastiche();
+                    GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaAnnullaRichiestaPS() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/ConfermaAnnullaRichiestaPS";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        var testoAnnullaPS = $('#FullDescription').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche, msg: testoAnnullaPS },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ProvvidenzeScolastiche();
+                    GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function MessaggioAnnullaRichiestaPS() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/MessaggioAnnullaProvvidenzeScolastiche";
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaPS").empty();
+                $("#viewAnnullaRichiestaPS").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    // *************************************************************************************************
 
     function ElencoFormulariInseriti() {
         //debugger;
         var rotta = "/ProvvidenzeScolastiche/ElencoFormulariInseriti";
         var idTrasferimento = parseInt($('#idTrasferimento').val());
+        var idProvScolastiche = parseInt('@idProvScolastiche');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idTrasferimento: idTrasferimento, idProvScolastiche: idProvScolastiche },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -171,6 +459,47 @@
             }
 
         });
+    }
+
+    function ElencoDocumentiPS(idTipoDocumento) {
+        //debugger;
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
+        var rotta = "/ProvvidenzeScolastiche/ElencoDocumentiPS";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTipoDocumento: idTipoDocumento,
+                idTrasfProvScolastiche: idTrasfProvScolastiche
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTrasportoEffettiPartenza").empty();
+                $("#divTrasportoEffettiPartenza").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
     }
 
 </script>

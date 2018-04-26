@@ -19,6 +19,8 @@ namespace NewISE.Models.DBModel
         AttivaTrasferimento = 25,
         InvioPassaporto = 26,
         Funzione10 = 27
+        InvioPassaporto = 26,
+        RichiestaProvvidenzeScolastiche = 27
     }
     public class CalendarioEventiModel
     {

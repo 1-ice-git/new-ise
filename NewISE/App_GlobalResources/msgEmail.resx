@@ -305,4 +305,22 @@
   <data name="MessaggioInvioPratichePassaportoConcluse" xml:space="preserve">
     <value>Si notifica l'invio dei passaporto per il trasferimento presso la sede di {0} del {1} è stato confermato.</value>
   </data>
+  <data name="MessaggioAttivazioneProvvidenzeScolastiche" xml:space="preserve">
+    <value>Si informa la richiesta di rimborso per le provvidenze scolastiche è stata accettata.</value>
+  </data>
+  <data name="MessaggioNotificaProvvidenzeScolastiche" xml:space="preserve">
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta per le provvidenze scolastiche.</value>
+  </data>
+  <data name="OggettoAttivazioneProvvidenzeScolastiche" xml:space="preserve">
+    <value>Notifica richiesta per le provvidenze scolastiche</value>
+  </data>
+  <data name="OggettoNotificaProvvidenzeScolastiche" xml:space="preserve">
+    <value>Notifica richiesta provvidenze scolastiche.</value>
+  </data>
+  <data name="MessaggioAnnullaRichiestaProvvidenzeScolastiche" xml:space="preserve">
+    <value>Si notifica che la richiesta di rimborso per le provvidenze scolastiche riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
+  <data name="OggettoAnnullaRichiestaProvvidenzeScolastiche" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta di Provvidenze Scolastiche.</value>
+  </data>
 </root>
