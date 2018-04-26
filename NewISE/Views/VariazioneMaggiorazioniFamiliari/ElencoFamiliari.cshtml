@@ -75,9 +75,10 @@
                 </th>
                 <th>
                 </th>
-                <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.statoRecord )
+                <th>
+
                 </th>
+                
             </tr>
         </thead>
         <tbody>
@@ -111,67 +112,35 @@
                     {
                         if (item.HasPensione)
                         {
-                            if (item.pensione_modificata)
-                            {
-                                <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
-                                    <img src='~/Immagini/Simbolo semplice Euro Yellow.png' width='17' title="Pensione" />
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
-                                    <img src='~/Immagini/Simbolo semplice Euro Green.png' width='17' title="Pensione" />
-                                </a>
-                            }
+                            <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
+                                <img src='~/Immagini/Simbolo semplice Euro Green.png' width='17' title="Pensione" />
+                            </a>
                         }
                         else
                         {
                             <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
-                                <img src="~/Immagini/Simbolo semplice Euro Grey.png" width="17" title="Pensione" />
+                                <img src="~/Immagini/Simbolo semplice Euro Red.png" width="17" title="Pensione" />
                             </a>
                         }
                     }
                     </td>
                     @if (item.idAltriDati > 0)
                     {
-                        if (item.adf_modificati)
+                        if (item.parentela == EnumParentela.Coniuge)
                         {
-                            if (item.parentela == EnumParentela.Coniuge)
-                            {
-                                <td style="text-align: center;">
-                                    <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare, @idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
-                                        <img src="~/Immagini/Plus_Yellow.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                                    </a>
-                                </td>
-                            }
-                            if (item.parentela == EnumParentela.Figlio)
-                            {
-                                <td style="text-align: center;">
-                                    <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
-                                        <img src="~/Immagini/Plus_Yellow.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                                    </a>
-                                </td>
-                            }
+                            <td style="text-align: center;">
+                                <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare, @idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
+                                    <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                </a>
+                            </td>
                         }
-                        else
+                        if (item.parentela == EnumParentela.Figlio)
                         {
-                            if (item.parentela == EnumParentela.Coniuge)
-                            {
-                                <td style="text-align: center;">
-                                    <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare, @idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
-                                        <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                                    </a>
-                                </td>
-                            }
-                            if (item.parentela == EnumParentela.Figlio)
-                            {
-                                <td style="text-align: center;">
-                                    <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
-                                        <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                                    </a>
-                                </td>
-                            }
-
+                            <td style="text-align: center;">
+                                <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
+                                    <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                </a>
+                            </td>
                         }
                     }
                     else
@@ -180,9 +149,9 @@
                         {
                             <td style="text-align: center;">
                                 <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare, @idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
-                                    <img  src="~/Immagini/Plus_Grey.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                                </a>
-                            </td>
+                                    <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                    </a>
+                                </td>
                         }
                         if (item.parentela == EnumParentela.Figlio)
                         {
@@ -191,9 +160,9 @@
                                     <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
                                 </a>
                             </td>
+
                         }
                     }
-
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
@@ -230,10 +199,6 @@
                                     </a>
                                 }
                             }
-                            @*else
-                            {
-                                <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
-                            }*@
                         }
                     }
                     </td>
@@ -257,29 +222,55 @@
                                     </a>
                                 }
                             }
-                            @*else
+                            if (item.modificato)
                             {
-                                <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
-                            }*@
+                                if (item.parentela == EnumParentela.Coniuge)
+                                {
+                                    <a href="#" onclick="AnnullaModificaConiuge(@item.idFamiliare);">
+                                        <img width="17" src="../../Immagini/undo.png" title="Annulla Modifica Coniuge" />
+                                    </a>
+                                }
+                                if (item.parentela == EnumParentela.Figlio)
+                                {
+                                    <a href="#" onclick="AnnullaModificaFiglio(@item.idFamiliare);">
+                                        <img width="17" src="../../Immagini/undo.png" title="Annulla Modifica iglio" />
+                                    </a>
+                                }
 
+                            }
                         }
                     }
                     
                     </td>
-                    <td style="text-align: center;">
-                        @if (item.statoRecord == EnumStatoRecord.Attivato)
+                    <td>
+                    @if (!trasfSolaLettura)
+                    {
+                        if (!solaLettura)
                         {
-                            <img width="17" src="~/Immagini/Button-Green.png" title="Attivato" />
+                            if (item.modificato)
+                            {
+                                if (item.parentela == EnumParentela.Coniuge)
+                                {
+                                    <a href="#" onclick="VisualizzaModificheConiuge(@item.FK_idFamiliare, @item.idFamiliare); ">
+                                        <img width="17" src="../../Immagini/user.png" title="Visualizza dettaglio variazioni coniuge" />
+                                    </a>
+                                }
+                                if (item.parentela == EnumParentela.Figlio)
+                                {
+                                    <a href="#" onclick="VisualizzaModificheFiglio(@item.FK_idFamiliare, @item.idFamiliare); ">
+                                        <img width="17" src="../../Immagini/user.png" title="Visualizza dettaglio variazioni Figlio" />
+                                    </a>
+                                }
+                            }
+                            if (item.nuovo)
+                            {
+                                <img width="23" src="../../Immagini/new-icon.png" title="Nuovo familiare inserito" />
+                            }
+                            
                         }
-                        @if (item.statoRecord == EnumStatoRecord.Da_Attivare)
-                        {
-                            <img width="17" src="~/Immagini/Button-Yellow.png" title="Da Attivare" />
-                        }
-                        @if (item.statoRecord == EnumStatoRecord.In_Lavorazione)
-                        {
-                            <img width="17" src="~/Immagini/Button-Red.png" title="In Lavorazione" />
-                        }
+                    }
                     </td>
+                    
                 </tr>
             }
         </tbody>
@@ -424,8 +415,8 @@
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { 
-                idConiuge: idConiuge 
+            data: {
+                idConiuge: idConiuge
                 //idMaggiorazioniFamiliari: idMaggiorazioniFamiliari,
             },
             dataType: 'html',
@@ -462,7 +453,7 @@
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { 
+            data: {
                     idFiglio: idFiglio,
                     idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
             },
@@ -707,6 +698,88 @@
         //debugger;
         ElencoFamiliari();
     });
+
+
+    function VisualizzaModificheConiuge(idFamiliareOld, idFamiliare) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/VisualizzaModificheConiuge";
+        var idMaggiorazioniFamiliari = parseInt('@idMaggiorazioniFamiliari');
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idMaggiorazioniFamiliari:idMaggiorazioniFamiliari,
+                idConiugeOld: idFamiliareOld,
+                idConiuge: idFamiliare
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+    function VisualizzaModificheFiglio(idFamiliareOld, idFamiliare) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/VisualizzaModificheFiglio";
+        var idMaggiorazioniFamiliari = parseInt('@idMaggiorazioniFamiliari');
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idMaggiorazioniFamiliari:idMaggiorazioniFamiliari,
+                idFiglioOld: idFamiliareOld,
+                idFiglio: idFamiliare
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
 
 
 

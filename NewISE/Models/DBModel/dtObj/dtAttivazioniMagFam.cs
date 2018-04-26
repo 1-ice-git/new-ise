@@ -86,10 +86,11 @@ namespace NewISE.Models.DBModel.dtObj
                     var lamf =
                         mf.ATTIVAZIONIMAGFAM.Where(
                             a =>
-                                ((a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true && a.ANNULLATO == false) ||
-                                 (a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false) ||
-                                 (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false)))
-                            .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+                                (
+                                    (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true && a.ANNULLATO == false) ||
+                                    (a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false) ||
+                                    (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false))
+                                ).OrderBy(a => a.IDATTIVAZIONEMAGFAM);
                     if (lamf?.Any() ?? false)
                     {
                         var amf = lamf.First();

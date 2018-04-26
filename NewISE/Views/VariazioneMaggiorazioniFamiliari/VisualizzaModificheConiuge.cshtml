@@ -1,0 +1,100 @@
+﻿@{
+    decimal idConiugeOld = Convert.ToDecimal(ViewData["idConiugeOld"]);
+    decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+
+    //bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divVisualizzaModificheConiugeTitolo">
+            @Html.Action("VisualizzaModificheConiugeTitolo", "VariazioneMaggiorazioniFamiliari", new { idConiugeOld = idConiugeOld, idConiuge = idConiuge })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divVisualizzaModificheConiugeDettaglio">
+            @Html.Action("VisualizzaModificheConiugeDettaglio", "VariazioneMaggiorazioniFamiliari", new { idConiugeOld = idConiugeOld, idConiuge = idConiuge })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divVisualizzaModificheConiugeLink">
+            @Html.Action("VisualizzaModificheConiugeLink", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
+        </div>
+    </div>
+</div>
+
+@Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+
+<div class="modal fade" id="ModalDettaglioPaginaConiuge" tabindex="-1" role="dialog" aria-labelledby="ModalDettaglioPaginaConiugeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DownloadFormularioLabel">Formulari Maggiorazioni Familiari</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="divDettaglioPaginaConiuge">
+                    @*@Html.Action("DettaglioPaginaFamiliare", "VariazioneMaggiorazioniFamiliari")*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function DownloadFormulario() {
+        $('#ModalDownloadFormulario_Var').modal().show();
+    }
+
+    $("#ModalNuovoFormulario_Var").on("hidden.bs.modal", function () {
+        //debugger;
+        ElencoFormulariInseriti();
+    });
+
+    function NuovoFormulario() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/NuovoFormularioMF";
+       //var idMaggiorazioniFamiliari = idMaggiorazioniFamiliari;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+                $('#ModalNuovoFormulario_Var').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divViewNuovoFormulario_Var").empty();
+                $("#divViewNuovoFormulario_Var").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+  
+
+</script>
+

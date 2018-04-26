@@ -219,24 +219,31 @@ namespace NewISE.Controllers
                             {
                                 foreach (var e in lcm)
                                 {
-                                    VariazioneElencoFamiliariModel efm = new VariazioneElencoFamiliariModel()
+                                    if (e.visualizzabile)
                                     {
-                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                        idFamiliare = e.idConiuge,
-                                        Nominativo = e.cognome + " " + e.nome,
-                                        CodiceFiscale = e.codiceFiscale,
-                                        dataInizio = e.dataInizio,
-                                        dataFine = e.dataFine,
-                                        parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtvmf.GetAltriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
-                                        Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge, idMaggiorazioniFamiliari),
-                                        HasPensione = dtp.HasPensione(e.idConiuge),
-                                        eliminabile = e.eliminabile
-                                    };
-                                    lefm.Add(efm);
-                                    if (efm.dataFine == Utility.DataFineStop())
-                                    {
-                                        check_nuovo_coniuge = 0;
+                                        VariazioneElencoFamiliariModel efm = new VariazioneElencoFamiliariModel()
+                                        {
+                                            idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                                            idFamiliare = e.idConiuge,
+                                            Nominativo = e.cognome + " " + e.nome,
+                                            CodiceFiscale = e.codiceFiscale,
+                                            dataInizio = e.dataInizio,
+                                            dataFine = e.dataFine,
+                                            parentela = EnumParentela.Coniuge,
+                                            idAltriDati = dtvmf.GetAltriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
+                                            Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge, idMaggiorazioniFamiliari),
+                                            HasPensione = dtp.HasPensione(e.idConiuge),
+                                            eliminabile = e.eliminabile,
+                                            modificabile = e.modificabile,
+                                            modificato=e.modificato,
+                                            nuovo=e.nuovo,
+                                            FK_idFamiliare=e.FK_idConiuge
+                                        };
+                                        lefm.Add(efm);
+                                        if (efm.dataFine == Utility.DataFineStop())
+                                        {
+                                            check_nuovo_coniuge = 0;
+                                        }
                                     }
                                 }
                             }
@@ -260,26 +267,32 @@ namespace NewISE.Controllers
                             {
                                 foreach (var e in lfm)
                                 {
-                                    VariazioneElencoFamiliariModel efm = new VariazioneElencoFamiliariModel()
+                                    if (e.visualizzabile)
                                     {
-                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                        idFamiliare = e.idFigli,
-                                        Nominativo = e.cognome + " " + e.nome,
-                                        CodiceFiscale = e.codiceFiscale,
-                                        dataInizio = e.dataInizio,
-                                        dataFine = e.dataFine,
-                                        parentela = EnumParentela.Figlio,
-                                        idAltriDati = dtvmf.GetAltriDatiFamiliariFiglio(e.idFigli, idMaggiorazioniFamiliari).idAltriDatiFam,
-                                        Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio, idMaggiorazioniFamiliari),
-                                        HasPensione = dtp.HasPensione(e.idFigli),
-                                        eliminabile = e.eliminabile,
-                                        idStatoRecord=e.idStatoRecord,
-                                        modificabile = e.modificabile
-                                    };
-                                    lefm.Add(efm);
-                                    if (efm.dataFine == Utility.DataFineStop())
-                                    {
-                                        check_nuovo_figlio = 0;
+                                        VariazioneElencoFamiliariModel efm = new VariazioneElencoFamiliariModel()
+                                        {
+                                            idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                                            idFamiliare = e.idFigli,
+                                            Nominativo = e.cognome + " " + e.nome,
+                                            CodiceFiscale = e.codiceFiscale,
+                                            dataInizio = e.dataInizio,
+                                            dataFine = e.dataFine,
+                                            parentela = EnumParentela.Figlio,
+                                            idAltriDati = dtvmf.GetAltriDatiFamiliariFiglio(e.idFigli, idMaggiorazioniFamiliari).idAltriDatiFam,
+                                            Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio, idMaggiorazioniFamiliari),
+                                            HasPensione = dtp.HasPensione(e.idFigli),
+                                            eliminabile = e.eliminabile,
+                                            idStatoRecord = e.idStatoRecord,
+                                            modificabile = e.modificabile,
+                                            modificato=e.modificato,
+                                            nuovo=e.nuovo,
+                                            FK_idFamiliare=e.FK_IdFigli
+                                        };
+                                        lefm.Add(efm);
+                                        if (efm.dataFine == Utility.DataFineStop())
+                                        {
+                                            check_nuovo_figlio = 0;
+                                        }
                                     }
                                 }
                             }
@@ -2453,5 +2466,95 @@ namespace NewISE.Controllers
             return PartialView(msg);
         }
 
+        public ActionResult VisualizzaModificheConiuge(decimal idMaggiorazioniFamiliari, decimal idConiugeOld, decimal idConiuge)
+        {
+
+            ViewData.Add("idConiugeOld", idConiugeOld);
+            ViewData.Add("idConiuge", idConiuge);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            return PartialView();
+        }
+        public ActionResult VisualizzaModificheFiglio(decimal idMaggiorazioniFamiliari, decimal idFiglioOld, decimal idFiglio)
+        {
+
+            ViewData.Add("idFiglioOld", idFiglioOld);
+            ViewData.Add("idFiglio", idFiglio);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            return PartialView();
+        }
+
+        public ActionResult VisualizzaModificheConiugeTitolo(decimal idConiugeOld, decimal idConiuge)
+        {
+
+                ViewData.Add("idConiugeOld", idConiugeOld);
+            ViewData.Add("idConiuge", idConiuge);
+            return PartialView();
+        }
+        public ActionResult VisualizzaModificheFiglioTitolo(decimal idFiglioOld, decimal idFiglio)
+        {
+            VariazioneFigliModel vfm = new VariazioneFigliModel();
+            using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+            {
+                vfm = dtvmf.CheckVariazioniAnagraficaFiglio(idFiglioOld, idFiglio);
+            }
+
+            ViewData.Add("idFiglioOld", idFiglioOld);
+            ViewData.Add("idFiglio", idFiglio);
+            return PartialView(vfm);
+        }
+        public ActionResult VisualizzaModificheAdfFiglio(decimal idFiglioOld, decimal idFiglio)
+        {
+            VariazioneAdfFigliModel vadffm = new VariazioneAdfFigliModel();
+            using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+            {
+                //vadffm = dtvmf.CheckVariazioniAnagraficaFiglio(idFiglioOld, idFiglio);
+            }
+
+            ViewData.Add("idFiglioOld", idFiglioOld);
+            ViewData.Add("idFiglio", idFiglio);
+            return PartialView(vadffm);
+        }
+        public ActionResult VisualizzaModificheConiugeLink(decimal idConiugeOld, decimal idConiuge)
+        {
+
+            ViewData.Add("idConiugeOld", idConiugeOld);
+            ViewData.Add("idConiuge", idConiuge);
+            return PartialView();
+        }
+        public ActionResult VisualizzaModificheFiglioLink(decimal idFiglioOld, decimal idFiglio)
+        {
+
+            ViewData.Add("idFiglioOld", idFiglioOld);
+            ViewData.Add("idFiglio", idFiglioOld);
+            return PartialView();
+        }
+        public ActionResult VisualizzaModificheConiugeDettaglio(decimal idConiugeOld, decimal idConiuge)
+        {
+            using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+            {
+                using (dtConiuge dtc = new dtConiuge())
+                {
+                    var cm = dtc.GetConiugebyID(idConiugeOld);
+                    ViewData.Add("idConiugeOld", idConiugeOld);
+                    ViewData.Add("idConiuge", idConiuge);
+                    return PartialView(cm);
+                }
+            }
+        }
+        public ActionResult VisualizzaModificheFiglioDettaglio(decimal idFiglioOld, decimal idFiglio)
+        {
+            using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+            {
+
+                VariazioneFigliModel vfm = dtvmf.CheckVariazioniAnagraficaFiglio(idFiglio,idFiglioOld);
+
+                ViewData.Add("idFiglioOld", idFiglioOld);
+                ViewData.Add("idFiglio", idFiglio);
+                return PartialView(vfm);
+            }
+        }
+
+
     }
+
 }

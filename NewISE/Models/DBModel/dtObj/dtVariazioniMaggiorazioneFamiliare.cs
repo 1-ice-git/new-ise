@@ -930,7 +930,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = cm.dataAggiornamento,
                     FK_IDCONIUGE = cm.FK_idConiuge,
-                    IDSTATORECORD = cm.idStatoRecord
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                 };
 
                 db.CONIUGE.Add(c);
@@ -1478,7 +1478,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = fm.dataAggiornamento,
                     FK_IDFIGLI = fm.FK_IdFigli,
-                    IDSTATORECORD = fm.idStatoRecord
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                 };
 
                 db.FIGLI.Add(f);
@@ -3243,6 +3243,141 @@ namespace NewISE.Models.DBModel.dtObj
 
             return adfm;
 
+        }
+
+
+        public string GetTipologiaFiglio(decimal idTipologiaFiglio)
+        {
+            try
+            {
+                var tipologiaFiglio = "";
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var tf = db.TIPOLOGIAFIGLIO.Find(idTipologiaFiglio);
+                    if(tf.IDTIPOLOGIAFIGLIO>0)
+                    {
+                        tipologiaFiglio = tf.TIPOLOGIAFIGLIO1;
+                    }
+                    else
+                    {
+                        throw new Exception("Tipologia figlio non trovata.");
+                    }
+                }
+
+                return tipologiaFiglio;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public VariazioneFigliModel CheckVariazioniAnagraficaFiglio(decimal idFiglio, decimal idFigli_new)
+        {
+            try
+            {
+                VariazioneFigliModel vfm = new VariazioneFigliModel();
+                using (dtFigli dtf = new dtFigli())
+                {
+
+                    var fm = dtf.GetFigliobyID(idFiglio);
+                    var fm_new = dtf.GetFigliobyID(idFigli_new);
+
+                    string evidenzia = ";background-color:yellow";
+                    string evidenzia_titolo = ";border-bottom:solid;border-bottom-width:4px;border-color:yellow";
+                    var tipologiaFiglio = this.GetTipologiaFiglio((decimal)fm.idTipologiaFiglio);
+                    var tipologiaFiglio_new = this.GetTipologiaFiglio((decimal)fm_new.idTipologiaFiglio);
+
+                    vfm = new VariazioneFigliModel()
+                    {
+                        tipologiaFiglio = tipologiaFiglio,
+                        ev_Tipologia = (tipologiaFiglio != tipologiaFiglio_new) ? evidenzia : "",
+                        codiceFiscale = fm.codiceFiscale,
+                        ev_codiceFiscale = (fm.codiceFiscale != fm_new.codiceFiscale) ? evidenzia : "",
+                        nome = fm.nome,
+                        ev_nome = (fm.nome != fm_new.nome) ? evidenzia : "",
+                        cognome = fm.cognome,
+                        ev_cognome = (fm.cognome != fm_new.cognome) ? evidenzia : "",
+                        dataInizio = fm.dataInizio,
+                        ev_dataInizio = (fm.dataInizio != fm_new.dataInizio) ? evidenzia : "",
+                        dataFine = fm.dataFine,
+                        ev_dataFine = (fm.dataFine != fm_new.dataFine) ? evidenzia : "",
+                        ev_anagrafica = (vfm.ev_Tipologia != "" ||
+                                            vfm.ev_codiceFiscale != "" ||
+                                            vfm.ev_nome != "" ||
+                                            vfm.ev_cognome != "" ||
+                                            vfm.ev_dataInizio != "" ||
+                                            vfm.ev_dataFine != "")?evidenzia_titolo:"",
+                        ev_altridati="",
+                        ev_documenti=""
+                    };
+                   
+                }
+                return vfm;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public VariazioneAdfFigliModel CheckVariazioniAdfFiglio(decimal idFiglio, decimal idFigli_new)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    VariazioneAdfFigliModel vadffm = new VariazioneAdfFigliModel();
+                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                    {
+
+                        var f = db.FIGLI.Find(idFiglio);
+                        var idadff = f.ALTRIDATIFAM.Where(a => a.IDFIGLI == idFiglio && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato);
+                        //var adffm = dtadf.GetAltriDatiFamiliariFiglio(.GetFigliobyID(idFiglio);
+                        //var fm_new = dtf.GetFigliobyID(idFigli_new);
+
+                        string evidenzia = ";background-color:yellow";
+                        string evidenzia_titolo = ";border-bottom:solid;border-bottom-width:4px;border-color:yellow";
+                        //var tipologiaFiglio = this.GetTipologiaFiglio((decimal)fm.idTipologiaFiglio);
+                        //var tipologiaFiglio_new = this.GetTipologiaFiglio((decimal)fm_new.idTipologiaFiglio);
+
+                        //vadffm = new VariazioneAdfFigliModel()
+                        //{
+                        //    dataNascita = tipologiaFiglio,
+                        //    ev_Tipologia = (tipologiaFiglio != tipologiaFiglio_new) ? evidenzia : "",
+                        //    codiceFiscale = fm.codiceFiscale,
+                        //    ev_codiceFiscale = (fm.codiceFiscale != fm_new.codiceFiscale) ? evidenzia : "",
+                        //    nome = fm.nome,
+                        //    ev_nome = (fm.nome != fm_new.nome) ? evidenzia : "",
+                        //    cognome = fm.cognome,
+                        //    ev_cognome = (fm.cognome != fm_new.cognome) ? evidenzia : "",
+                        //    dataInizio = fm.dataInizio,
+                        //    ev_dataInizio = (fm.dataInizio != fm_new.dataInizio) ? evidenzia : "",
+                        //    dataFine = fm.dataFine,
+                        //    ev_dataFine = (fm.dataFine != fm_new.dataFine) ? evidenzia : "",
+                        //    ev_anagrafica = (vfm.ev_Tipologia != "" ||
+                        //                        vfm.ev_codiceFiscale != "" ||
+                        //                        vfm.ev_nome != "" ||
+                        //                        vfm.ev_cognome != "" ||
+                        //                        vfm.ev_dataInizio != "" ||
+                        //                        vfm.ev_dataFine != "") ? evidenzia_titolo : "",
+                        //    ev_altridati = "",
+                        //    ev_documenti = ""
+                        //};
+
+                    }
+
+                    return vadffm;
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 

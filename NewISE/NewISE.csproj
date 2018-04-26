@@ -1046,6 +1046,9 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Immagini\2.GIF" />
     <Content Include="Immagini\39.gif" />
+    <Content Include="Immagini\new-icon.png" />
+    <Content Include="Immagini\undo.png" />
+    <Content Include="Immagini\user.png" />
     <Content Include="Immagini\Button-Green.png" />
     <Content Include="Immagini\Button-Red.png" />
     <Content Include="Immagini\Button-Yellow.png" />
@@ -3321,6 +3324,7 @@
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
     <Compile Include="Models\ViewModel\ElencoTitoliViaggioModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneAdfFigliModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneFigliModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
@@ -3501,6 +3505,15 @@
     <Content Include="Views\ProvvidenzeScolastiche\TabFormulariInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\NuovoDocumentoPS.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheConiugeTitolo.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheConiugeDettaglio.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheConiugeLink.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheFiglio.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheFiglioDettaglio.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheFiglioLink.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheFiglioTitolo.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfFiglio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

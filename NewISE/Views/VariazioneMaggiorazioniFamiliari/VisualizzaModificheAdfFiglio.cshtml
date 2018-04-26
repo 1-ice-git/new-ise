@@ -1,0 +1,86 @@
+﻿@model NewISE.Models.DBModel.VariazioneFigliModel
+
+@{
+    //decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    //string tipologiaFiglio = Convert.ToString(ViewData["tipologiaFiglio"]);
+    //bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+
+}
+
+<div style="padding-left: 15px;padding-right:50px">
+    <div class="form-horizontal">
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <table>
+                        
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.nome)
+                            </td>
+                            <td style="padding-left:10px @Model.ev_nome">
+                                <span class="text-uppercase">@Html.DisplayFor(model => model.nome)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.cognome )
+                            </td>
+                            <td style="padding-left:10px @Model.ev_cognome ">
+                                <span class="text-uppercase">@Html.DisplayFor(model => model.cognome )</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.codiceFiscale)
+                            </td>
+                            <td style="padding-left:10px @Model.ev_codiceFiscale ">
+                                <span class="text-uppercase">@Html.DisplayFor(model => model.codiceFiscale)</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.tipologiaFiglio )
+                            </td>
+                            <td style="padding-left:10px @Model.ev_Tipologia">
+                                <span class="text-uppercase">@Html.DisplayFor(model => model.tipologiaFiglio) </span>
+                            </td>
+                        </tr>                        
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.dataInizio)
+                            </td>
+                            <td style="padding-left:10px @Model.ev_dataInizio ">
+                                <span class="text-uppercase">@Html.DisplayFor(model => model.dataInizio)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.dataFine)
+                            </td>
+                            <td style="padding-left:10px @Model.ev_dataFine ">
+                                @Html.DisplayFor(model => model.dataFine)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+</div>
+<hr />
+
+
+<script type="text/javascript">
+ 
+
+
+
+</script>
+

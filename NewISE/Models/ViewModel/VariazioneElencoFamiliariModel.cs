@@ -58,6 +58,8 @@ namespace NewISE.Models.DBModel
         public bool eliminabile { get; set; }
 
         public bool modificabile { get; set; }
+        public bool modificato { get; set; }
+        public bool nuovo { get; set; }
 
         public bool pensione_modificata { get; set; }
 
@@ -67,6 +69,8 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "Stato")]
         public decimal idStatoRecord { get; set; }
+
+        public decimal? FK_idFamiliare { get; set; }
 
     }
 }

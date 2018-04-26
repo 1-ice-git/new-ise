@@ -384,25 +384,26 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                    var amfl = mf.ATTIVAZIONIMAGFAM
-                            .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
-                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+                    //var amfl = mf.ATTIVAZIONIMAGFAM
+                    //        .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
+                    //        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
 
-                    bool modificabile = false;
 
-                    if (amfl?.Any() ?? false)
-                    {
-                        foreach (var e in amfl)
-                        {
-                            lf = e.FIGLI.Where(y => y.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                    //if (amfl?.Any() ?? false)
+                    //{
+                    //    foreach (var e in amfl)
+                    //    {
+                            lf = mf.FIGLI.Where(y =>    
+                                        y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato
+                                    ).ToList();
                             if (lf?.Any() ?? false)
                             {
                                 foreach (var f in lf)
                                 {
                                     VariazioneFigliModel fm = new VariazioneFigliModel()
                                     {
-                                        eliminabile = ((f.FK_IDFIGLI > 0 || f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione) || e.ATTIVAZIONEMAGFAM) ? false : true,
-                                        modificabile = modificabile,
+                                        eliminabile = (f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && f.FK_IDFIGLI==null) ? true : false,
+                                        modificabile = (f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Da_Attivare) ? true : false,
                                         idFigli = f.IDFIGLI,
                                         idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
                                         idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
@@ -413,13 +414,17 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataFine = f.DATAFINEVALIDITA,
                                         dataAggiornamento = f.DATAAGGIORNAMENTO,
                                         idStatoRecord = f.IDSTATORECORD,
-                                        FK_IdFigli = f.FK_IDFIGLI
+                                        FK_IdFigli = f.FK_IDFIGLI,
+                                        visualizzabile = (db.FIGLI.Where(a => a.FK_IDFIGLI == f.IDFIGLI).Count() > 0) ? false : true,
+                                        //visualizzabile = (db.FIGLI.Where(a => a.IDFIGLI == f.FK_IDFIGLI).Count() > 0) ? false : true,
+                                        modificato = (f.FK_IDFIGLI>0 && f.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione)?true:false,
+                                        nuovo= (f.FK_IDFIGLI==null && f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione) ? true : false
                                     };
                                     lfm.Add(fm);
                                 }
                             }
-                        }
-                    }
+                        //}
+                    //}
                 }
             }
             return lfm;

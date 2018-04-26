@@ -12,8 +12,10 @@ namespace NewISE.Models.DBModel
     public class VariazioneConiugeModel: ConiugeModel
     {
         public bool modificabile;
+        public bool modificato;
         public bool eliminabile;
+        public bool visualizzabile;
         public decimal progressivo;
-
+        public bool nuovo;
     }
 }
