@@ -348,7 +348,7 @@
                 $('#'+ nuovoModalIns).modal('show');
             },
             success: function (result) {
-                //debugger;
+                debugger;
                 $("#NewViewDocumento").empty();
                 $("#NewViewDocumento").html(result);
 
@@ -359,7 +359,7 @@
             complete: {
             },
             error: function (error) {
-                //debugger;
+                debugger;
                 //Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);

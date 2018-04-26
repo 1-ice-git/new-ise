@@ -2700,7 +2700,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public IList<VariazioneDocumentiModel> GetDocumentiByIdTable_MF(decimal id, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente, decimal idMaggiorazioniFamiliari = 0)
+        public IList<VariazioneDocumentiModel> GetDocumentiPrecedenti(decimal idFamiliare, EnumParentela parentela = EnumParentela.Richiedente, decimal idMaggiorazioniFamiliari = 0)
         {
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
 
@@ -2710,31 +2710,26 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
                 var lamf = mf.ATTIVAZIONIMAGFAM.Where(e => e.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
-
-                switch (tipodoc)
+                switch (parentela)
                 {
-                    case EnumTipoDoc.Documento_Identita:
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                var c = db.CONIUGE.Find(id);
-                                ld = c.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc && a.MODIFICATO == false).OrderByDescending(a => a.IDDOCUMENTO).ToList();
-                                break;
-                            case EnumParentela.Figlio:
-                                var f = db.FIGLI.Find(id);
-                                ld = f.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc && a.MODIFICATO == false).OrderByDescending(a => a.IDDOCUMENTO).ToList();
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
+                    case EnumParentela.Coniuge:
+                        var c = db.CONIUGE.Find(idFamiliare);
+                        ld = c.DOCUMENTI.Where(a => 
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                a.MODIFICATO == false && 
+                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                            .OrderByDescending(a => a.IDDOCUMENTO).ToList();
                         break;
-                    case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
-                        ld = db.ATTIVAZIONIMAGFAM.Find(id)
-                            .DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc && a.MODIFICATO == false)
-                            .OrderByDescending(a => a.DATAINSERIMENTO).ToList();
+                    case EnumParentela.Figlio:
+                        var f = db.FIGLI.Find(idFamiliare);
+                        ld = f.DOCUMENTI.Where(a =>
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                a.MODIFICATO == false &&
+                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                        .OrderByDescending(a => a.IDDOCUMENTO).ToList();
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("tipodoc");
+                        throw new ArgumentOutOfRangeException("parentela");
                 }
 
                 if (ld?.Any() ?? false)
@@ -2758,22 +2753,9 @@ namespace NewISE.Models.DBModel.dtObj
                             estensione = d.ESTENSIONE,
                             tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
                             dataInserimento = d.DATAINSERIMENTO,
-                            file = f,
-                            Modificabile = (d.MODIFICATO == false && d.FK_IDDOCUMENTO == null && rich == false) ? true : false
+                            file = f
                         };
                         ldm.Add(vdm_new);
-                        //ldm.AddRange(from d in ld
-                        //             let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
-                        //             select new VariazioneDocumentiModel()
-                        //             {
-                        //                 idDocumenti = d.IDDOCUMENTO,
-                        //                 nomeDocumento = d.NOMEDOCUMENTO,
-                        //                 estensione = d.ESTENSIONE,
-                        //                 tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                        //                 dataInserimento = d.DATAINSERIMENTO,
-                        //                 file = f,
-                        //                 Modificabile = (d.MODIFICATO == false && d.FK_IDDOCUMENTO == null && d.ATTIVAZIONIMAGFAM.First().RICHIESTAATTIVAZIONE == false) ? true : false
-                        //             });
                     }
                 }
             }
@@ -3329,42 +3311,54 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     VariazioneAdfFigliModel vadffm = new VariazioneAdfFigliModel();
-                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                    using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                     {
-
-                        var f = db.FIGLI.Find(idFiglio);
-                        var idadff = f.ALTRIDATIFAM.Where(a => a.IDFIGLI == idFiglio && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato);
-                        //var adffm = dtadf.GetAltriDatiFamiliariFiglio(.GetFigliobyID(idFiglio);
-                        //var fm_new = dtf.GetFigliobyID(idFigli_new);
+                        var idMagFam = db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI.IDMAGGIORAZIONIFAMILIARI;
+                        var adff = dtvmf.GetAltriDatiFamiliariFiglio(idFiglio,idMagFam);
+                        var adff_new = dtvmf.GetAltriDatiFamiliariFiglio(idFigli_new, idMagFam);
 
                         string evidenzia = ";background-color:yellow";
                         string evidenzia_titolo = ";border-bottom:solid;border-bottom-width:4px;border-color:yellow";
-                        //var tipologiaFiglio = this.GetTipologiaFiglio((decimal)fm.idTipologiaFiglio);
-                        //var tipologiaFiglio_new = this.GetTipologiaFiglio((decimal)fm_new.idTipologiaFiglio);
 
-                        //vadffm = new VariazioneAdfFigliModel()
-                        //{
-                        //    dataNascita = tipologiaFiglio,
-                        //    ev_Tipologia = (tipologiaFiglio != tipologiaFiglio_new) ? evidenzia : "",
-                        //    codiceFiscale = fm.codiceFiscale,
-                        //    ev_codiceFiscale = (fm.codiceFiscale != fm_new.codiceFiscale) ? evidenzia : "",
-                        //    nome = fm.nome,
-                        //    ev_nome = (fm.nome != fm_new.nome) ? evidenzia : "",
-                        //    cognome = fm.cognome,
-                        //    ev_cognome = (fm.cognome != fm_new.cognome) ? evidenzia : "",
-                        //    dataInizio = fm.dataInizio,
-                        //    ev_dataInizio = (fm.dataInizio != fm_new.dataInizio) ? evidenzia : "",
-                        //    dataFine = fm.dataFine,
-                        //    ev_dataFine = (fm.dataFine != fm_new.dataFine) ? evidenzia : "",
-                        //    ev_anagrafica = (vfm.ev_Tipologia != "" ||
-                        //                        vfm.ev_codiceFiscale != "" ||
-                        //                        vfm.ev_nome != "" ||
-                        //                        vfm.ev_cognome != "" ||
-                        //                        vfm.ev_dataInizio != "" ||
-                        //                        vfm.ev_dataFine != "") ? evidenzia_titolo : "",
-                        //    ev_altridati = "",
-                        //    ev_documenti = ""
-                        //};
+                        vadffm = new VariazioneAdfFigliModel()
+                        {
+                            dataNascita = adff.dataNascita,
+                            ev_datanascita = (adff.dataNascita != adff_new.dataNascita) ? evidenzia : "",
+                            capNascita=adff.capNascita,
+                            ev_capnascita = (adff.capNascita != adff_new.capNascita) ? evidenzia : "",
+                            comuneNascita = adff.comuneNascita,
+                            ev_comunenascita = (adff.comuneNascita != adff_new.comuneNascita) ? evidenzia : "",
+                            provinciaNascita = adff.provinciaNascita,
+                            ev_provincianascita = (adff.provinciaResidenza != adff_new.provinciaResidenza) ? evidenzia : "",
+                            nazionalita = adff.nazionalita,
+                            ev_nazionalita = (adff.nazionalita != adff_new.nazionalita) ? evidenzia : "",
+                            indirizzoResidenza = adff.indirizzoResidenza,
+                            ev_indirizzoresidenza = (adff.indirizzoResidenza != adff_new.indirizzoResidenza) ? evidenzia : "",
+                            capResidenza = adff.capResidenza,
+                            ev_capresidenza = (adff.capResidenza != adff_new.capResidenza) ? evidenzia : "",
+                            comuneResidenza = adff.comuneResidenza,
+                            ev_comuneresidenza = (adff.comuneResidenza != adff_new.comuneResidenza) ? evidenzia : "",
+                            provinciaResidenza = adff.provinciaResidenza,
+                            ev_provinciaresidenza = (adff.provinciaResidenza != adff_new.provinciaResidenza) ? evidenzia : "",
+                            //    ev_anagrafica = (vfm.ev_Tipologia != "" ||
+                            //                        vfm.ev_codiceFiscale != "" ||
+                            //                        vfm.ev_nome != "" ||
+                            //                        vfm.ev_cognome != "" ||
+                            //                        vfm.ev_dataInizio != "" ||
+                            //                        vfm.ev_dataFine != "") ? evidenzia_titolo : "",
+                                ev_altridati = (vadffm.ev_datanascita != "" ||
+                                                vadffm.ev_capnascita != "" ||
+                                                vadffm.ev_comunenascita != "" ||
+                                                vadffm.ev_provincianascita != "" ||
+                                                vadffm.ev_nazionalita != "" ||
+                                                vadffm.ev_indirizzoresidenza != "" ||
+                                                vadffm.ev_capresidenza != "" ||
+                                                vadffm.ev_comuneresidenza != "" ||
+                                                vadffm.ev_provinciaresidenza != "") ? evidenzia_titolo : "",
+
+
+                            //    ev_documenti = ""
+                        };
 
                     }
 

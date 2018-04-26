@@ -15,6 +15,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Tipologia Figlio")]
         public string tipologiaFiglio;
 
+        public string ev_altridati;
         public string ev_datanascita;
         public string ev_capnascita;
         public string ev_comunenascita;

@@ -1632,6 +1632,35 @@ namespace NewISE.Controllers
             return PartialView(ldm);
         }
 
+        public ActionResult ElencoDocumentiPrecedenti(decimal idFamiliare, EnumTipoDoc tipoDoc, decimal idParentela, decimal idMaggiorazioniFamiliari)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+            ConiugeModel cm = new ConiugeModel();
+            bool solaLettura = false;
+
+            try
+            {
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
+                    ldm = dtvmf.GetDocumentiPrecedenti(idFamiliare, (EnumParentela)idParentela, idMaggiorazioniFamiliari)
+                            .OrderByDescending(a => a.dataInserimento)
+                            .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("id", idFamiliare);
+            ViewData.Add("tipoDoc", tipoDoc);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            ViewData.Add("idTrasferimento", idMaggiorazioniFamiliari);
+
+            return PartialView(ldm);
+        }
+
+
         public ActionResult SostituisciDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante, decimal idDocumento)
         {
             try
@@ -2474,11 +2503,11 @@ namespace NewISE.Controllers
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             return PartialView();
         }
-        public ActionResult VisualizzaModificheFiglio(decimal idMaggiorazioniFamiliari, decimal idFiglioOld, decimal idFiglio)
+        public ActionResult VisualizzaModificheFiglio(decimal idMaggiorazioniFamiliari, decimal idFigliOld, decimal idFigli)
         {
 
-            ViewData.Add("idFiglioOld", idFiglioOld);
-            ViewData.Add("idFiglio", idFiglio);
+            ViewData.Add("idFigliOld", idFigliOld);
+            ViewData.Add("idFigli", idFigli);
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             return PartialView();
         }
@@ -2490,28 +2519,31 @@ namespace NewISE.Controllers
             ViewData.Add("idConiuge", idConiuge);
             return PartialView();
         }
-        public ActionResult VisualizzaModificheFiglioTitolo(decimal idFiglioOld, decimal idFiglio)
+        public ActionResult VisualizzaModificheFiglioTitolo(decimal idFigliOld, decimal idFigli)
         {
             VariazioneFigliModel vfm = new VariazioneFigliModel();
             using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
             {
-                vfm = dtvmf.CheckVariazioniAnagraficaFiglio(idFiglioOld, idFiglio);
+                var vafm = dtvmf.CheckVariazioniAnagraficaFiglio(idFigliOld, idFigli);
+                var vadffm = dtvmf.CheckVariazioniAdfFiglio(idFigliOld, idFigli);
+                vfm.ev_anagrafica = vafm.ev_anagrafica;
+                vfm.ev_altridati = vadffm.ev_altridati;
             }
 
-            ViewData.Add("idFiglioOld", idFiglioOld);
-            ViewData.Add("idFiglio", idFiglio);
+            ViewData.Add("idFigliOld", idFigliOld);
+            ViewData.Add("idFigli", idFigli);
             return PartialView(vfm);
         }
-        public ActionResult VisualizzaModificheAdfFiglio(decimal idFiglioOld, decimal idFiglio)
+        public ActionResult VisualizzaModificheAdfFiglio(decimal idFigliOld, decimal idFigli)
         {
             VariazioneAdfFigliModel vadffm = new VariazioneAdfFigliModel();
             using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
             {
-                //vadffm = dtvmf.CheckVariazioniAnagraficaFiglio(idFiglioOld, idFiglio);
+                vadffm = dtvmf.CheckVariazioniAdfFiglio(idFigliOld, idFigli);
             }
 
-            ViewData.Add("idFiglioOld", idFiglioOld);
-            ViewData.Add("idFiglio", idFiglio);
+            ViewData.Add("idFigliOld", idFigliOld);
+            ViewData.Add("idFigli", idFigli);
             return PartialView(vadffm);
         }
         public ActionResult VisualizzaModificheConiugeLink(decimal idConiugeOld, decimal idConiuge)
@@ -2521,11 +2553,11 @@ namespace NewISE.Controllers
             ViewData.Add("idConiuge", idConiuge);
             return PartialView();
         }
-        public ActionResult VisualizzaModificheFiglioLink(decimal idFiglioOld, decimal idFiglio)
+        public ActionResult VisualizzaModificheFiglioLink(decimal idFigliOld, decimal idFigli)
         {
 
-            ViewData.Add("idFiglioOld", idFiglioOld);
-            ViewData.Add("idFiglio", idFiglioOld);
+            ViewData.Add("idFigliOld", idFigliOld);
+            ViewData.Add("idFigli", idFigli);
             return PartialView();
         }
         public ActionResult VisualizzaModificheConiugeDettaglio(decimal idConiugeOld, decimal idConiuge)
@@ -2541,15 +2573,15 @@ namespace NewISE.Controllers
                 }
             }
         }
-        public ActionResult VisualizzaModificheFiglioDettaglio(decimal idFiglioOld, decimal idFiglio)
+        public ActionResult VisualizzaModificheFiglioDettaglio(decimal idFigliOld, decimal idFigli)
         {
             using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
             {
 
-                VariazioneFigliModel vfm = dtvmf.CheckVariazioniAnagraficaFiglio(idFiglio,idFiglioOld);
+                VariazioneFigliModel vfm = dtvmf.CheckVariazioniAnagraficaFiglio(idFigliOld,idFigli);
 
-                ViewData.Add("idFiglioOld", idFiglioOld);
-                ViewData.Add("idFiglio", idFiglio);
+                ViewData.Add("idFigliOld", idFigliOld);
+                ViewData.Add("idFigli", idFigli);
                 return PartialView(vfm);
             }
         }

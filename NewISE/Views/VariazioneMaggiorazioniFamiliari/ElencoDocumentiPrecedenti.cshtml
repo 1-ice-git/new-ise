@@ -1,0 +1,110 @@
+﻿@using System.Diagnostics
+@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
+
+@{
+    decimal id = (decimal)ViewData["id"];
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+    decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
+    decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
+    EnumChiamante enChiamante = (EnumChiamante)ViewData["chiamante"];
+    EnumTipoDoc enTipoDoc = (EnumTipoDoc)ViewData["tipoDoc"];
+    EnumParentela enParentela = (EnumParentela)ViewData["parentela"];
+    int nDoc = 0;
+
+    if (Model != null && Model.Any())
+    {
+        nDoc = Model.Count();
+    }
+
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+}
+
+@Html.Hidden("hiEliminaDoc")
+
+
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 0px;">
+    <table id="tabElencoDocPrec" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nomeDocumento)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.estensione)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataInserimento)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.file)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                    <td class="text-center" style="width: 20%;">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                    <td style="text-align: center; width: 10%;">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
+                            <img width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+<script type="text/javascript">
+    //debugger;
+
+    $("#tabElencoDocPrec").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 3,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "destroy": true,
+        "order": [[3, "desc"]]
+    });
+
+</script>

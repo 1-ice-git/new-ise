@@ -1,7 +1,9 @@
-﻿@{
+﻿@using NewISE.Models.DBModel
+@{
     decimal idFigliOld = Convert.ToDecimal(ViewData["idFigliOld"]);
     decimal idFigli = Convert.ToDecimal(ViewData["idFigli"]);
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idParentela = Convert.ToDecimal(EnumParentela.Figlio);
 
     //bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
@@ -23,7 +25,7 @@
 <div class="row">
     <div class="col-xs-12">
         <div id="divVisualizzaModificheFigliLink">
-            @Html.Action("VisualizzaModificheFiglioLink", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
+            @Html.Action("VisualizzaModificheFiglioLink", "VariazioneMaggiorazioniFamiliari", new { idFigliOld = idFigliOld, idFigli = idFigli })
         </div>
     </div>
 </div>
@@ -37,11 +39,10 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="DownloadFormularioLabel">Formulari Maggiorazioni Familiari</h3>
+                <div class="modal-title alert alert-info text-info" id="TitoloDettaglioPagina"></div>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <div id="divDettaglioPaginaFiglio">
-                    @*@Html.Action("DettaglioPaginaFamiliare", "VariazioneMaggiorazioniFamiliari")*@
                 </div>
             </div>
             <div class="modal-footer">
@@ -52,26 +53,19 @@
 </div>
 
 <script type="text/javascript">
-    function VisualizzaDettaglioAdfFiglio() {
-        $('#ModalDettaglioPaginaFiglio').modal().show();
-        VisualizzaPaginaAdfFiglio();
 
-    }
-
-    //$("#ModalNuovoFormulario_Var").on("hidden.bs.modal", function () {
-    //    //debugger;
-    //    ElencoFormulariInseriti();
-    //});
-
-    function VisualizzaDettaglioAdfFiglio() {
+    function VisualizzaDettaglioAdfFiglio(idFigliOld, idFigli) {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/VisualizzaModificheAdfFiglio";
-       //var idMaggiorazioniFamiliari = idMaggiorazioniFamiliari;
+        //var idMaggiorazioniFamiliari = idMaggiorazioniFamiliari;
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            data: {
+                idFigliOld: idFigliOld,
+                idFigli: idFigli
+            },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -79,6 +73,9 @@
                 VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 //Blocca();
+                $("#TitoloDettaglioPagina").empty();
+                $("#TitoloDettaglioPagina").html("<h3>Precedenti Altri Dati Familiari Figlio</h3>");
+
                 $('#ModalDettaglioPaginaFiglio').modal('show');
             },
             success: function (result) {
@@ -95,8 +92,54 @@
         });
     }
 
+    function VisualizzaDocumentiPrecedentiFiglio(idFamiliare, idParentela, idMaggiorazioniFamiliari) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoDocumentiPrecedenti";
+        var idMaggiorazioniFamiliari = parseInt('@idMaggiorazioniFamiliari');
+        var idFamiliare = parseInt('@idFigliOld');
+        var idParentela = parseInt('@idParentela');
 
-  
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFamiliare: idFamiliare,
+                idParentela: idParentela,
+                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+                $("#TitoloDettaglioPagina").empty();
+                $("#TitoloDettaglioPagina").html("<h3>Documenti Precedenti Figlio</h3>");
+
+                $('#ModalDettaglioPaginaFiglio').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divDettaglioPaginaFiglio").empty();
+                $("#divDettaglioPaginaFiglio").html(result);
+
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+
 
 </script>
 

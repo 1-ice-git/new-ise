@@ -3514,6 +3514,7 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheFiglioLink.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheFiglioTitolo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfFiglio.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumentiPrecedenti.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

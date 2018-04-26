@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.VariazioneFigliModel
+﻿@model NewISE.Models.DBModel.VariazioneAdfFigliModel
 
 @{
     //decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
@@ -13,29 +13,44 @@
             <tr>
                 <td>
                     <table>
-                        
                         <tr>
                             <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.nome)
+                                @Html.DisplayNameFor(model => model.dataNascita )
                             </td>
-                            <td style="padding-left:10px @Model.ev_nome">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.nome)</span>
+                            <td style="padding-left:10px @Model.ev_datanascita">
+                                <span class="text-uppercase">@Html.DisplayFor(model => model.dataNascita )</span>
                             </td>
                         </tr>
                         <tr>
                             <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.cognome )
+                                @Html.DisplayNameFor(model => model.capNascita )
                             </td>
-                            <td style="padding-left:10px @Model.ev_cognome ">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.cognome )</span>
+                            <td style="padding-left:10px @Model.ev_capnascita ">
+                                <span class="text-uppercase">@Html.DisplayFor(model => model.capNascita    ) </span>
+                            </td>
+                        </tr>                        
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.comuneNascita )
+                            </td>
+                            <td style="padding-left:10px @Model.ev_comunenascita ">
+                                <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita )</span>
                             </td>
                         </tr>
                         <tr>
                             <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.codiceFiscale)
+                                @Html.DisplayNameFor(model => model.provinciaNascita )
                             </td>
-                            <td style="padding-left:10px @Model.ev_codiceFiscale ">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.codiceFiscale)</span>
+                            <td style="padding-left:10px @Model.ev_provincianascita ">
+                                @Html.DisplayFor(model => model.provinciaNascita )
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.nazionalita )
+                            </td>
+                            <td style="padding-left:10px @Model.ev_nazionalita ">
+                                @Html.DisplayFor(model => model.nazionalita)
                             </td>
                         </tr>
                     </table>
@@ -44,32 +59,39 @@
                     <table>
                         <tr>
                             <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.tipologiaFiglio )
+                                @Html.DisplayNameFor(model => model.indirizzoResidenza)
                             </td>
-                            <td style="padding-left:10px @Model.ev_Tipologia">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.tipologiaFiglio) </span>
-                            </td>
-                        </tr>                        
-                        <tr>
-                            <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.dataInizio)
-                            </td>
-                            <td style="padding-left:10px @Model.ev_dataInizio ">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.dataInizio)</span>
+                            <td style="padding-left:10px @Model.ev_indirizzoresidenza ">
+                                @Html.DisplayFor(model => model.indirizzoResidenza)
                             </td>
                         </tr>
                         <tr>
                             <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.dataFine)
+                                @Html.DisplayNameFor(model => model.capResidenza )
                             </td>
-                            <td style="padding-left:10px @Model.ev_dataFine ">
-                                @Html.DisplayFor(model => model.dataFine)
+                            <td style="padding-left:10px @Model.ev_capresidenza ">
+                                @Html.DisplayFor(model => model.capResidenza)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.comuneResidenza )
+                            </td>
+                            <td style="padding-left:10px @Model.ev_comuneresidenza ">
+                                @Html.DisplayFor(model => model.comuneResidenza)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">
+                                @Html.DisplayNameFor(model => model.provinciaResidenza )
+                            </td>
+                            <td style="padding-left:10px @Model.ev_provinciaresidenza ">
+                                @Html.DisplayFor(model => model.provinciaResidenza)
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
-
         </table>
 
     </div>
