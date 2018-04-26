@@ -323,4 +323,7 @@
   <data name="OggettoAnnullaRichiestaProvvidenzeScolastiche" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta di Provvidenze Scolastiche.</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>
