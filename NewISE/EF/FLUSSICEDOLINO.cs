@@ -14,16 +14,12 @@ namespace NewISE.EF
     
     public partial class FLUSSICEDOLINO
     {
-        public decimal IDELABORAZIONEMENSILE { get; set; }
-        public decimal IDNETTO { get; set; }
+        public decimal IDTEORICI { get; set; }
         public int MATRICOLA { get; set; }
         public string LIVELLO { get; set; }
         public string CODICESEDE { get; set; }
-        public decimal IMPORTO { get; set; }
-        public System.DateTime DATAINVIOFLUSSI { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
-        public bool ANNULLATO { get; set; }
+        public Nullable<System.DateTime> DATAINVIOFLUSSI { get; set; }
     
-        public virtual NETTO NETTO { get; set; }
+        public virtual TEORICI TEORICI { get; set; }
     }
 }

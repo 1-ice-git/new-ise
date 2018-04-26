@@ -18,7 +18,6 @@ namespace NewISE.EF
         public ELABMAB()
         {
             this.ELABMAB1 = new HashSet<ELABMAB>();
-            this.TEORICI = new HashSet<TEORICI>();
         }
     
         public decimal IDELABMAB { get; set; }
@@ -44,8 +43,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABMAB> ELABMAB1 { get; set; }
         public virtual ELABMAB ELABMAB2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
     }

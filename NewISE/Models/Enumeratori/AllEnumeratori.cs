@@ -30,5 +30,28 @@ namespace NewISE.Models.Enumeratori
         Prima_sistemazione = 1
     }
 
+    public enum EnumTipoMovimento
+    {
+        MeseCorrente_M = 1,
+        Conguaglio_C = 2
+    }
 
+    public enum EnumVociCedolino
+    {
+        Sistemazione_Richiamo_Netto_086_383 = 1,
+        Sistemazione_Lorda_086_380 = 2,
+        Detrazione_086_384 = 3
+
+    }
+
+    public enum EnumVociContabili
+    {
+        Ind_Prima_Sist_IPS = 4
+    }
+
+    public enum EnumTipoAliquoteContributive
+    {
+        Detrazioni_DET = 1,
+        Previdenziali_PREV = 2
+    }
 }

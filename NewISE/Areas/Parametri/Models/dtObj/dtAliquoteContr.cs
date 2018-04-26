@@ -35,7 +35,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idTipoContributo = e.IDTIPOCONTRIBUTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                aliquota = e.VALORE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
@@ -72,7 +72,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idTipoContributo = e.IDTIPOCONTRIBUTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                aliquota = e.VALORE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
@@ -110,7 +110,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idTipoContributo = e.IDTIPOCONTRIBUTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                aliquota = e.VALORE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
@@ -152,7 +152,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idTipoContributo = e.IDTIPOCONTRIBUTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA,//!= Convert.ToDateTime(Utility.DataFineStop()) ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                aliquota = e.VALORE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
@@ -203,7 +203,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                 DATAINIZIOVALIDITA = dataInizioFirst,
                                 DATAFINEVALIDITA = dataFineFirst,
-                                ALIQUOTA = ibm.aliquota,
+                                VALORE = ibm.aliquota,
                                 DATAAGGIORNAMENTO = DateTime.Now,
                             };
 
@@ -214,7 +214,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                     DATAINIZIOVALIDITA = dataInizioFirst,
                                     DATAFINEVALIDITA = Utility.DataFineStop(),
-                                    ALIQUOTA = ibm.aliquota,
+                                    VALORE = ibm.aliquota,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 //qui annullo tutti i record rimanenti dalla data inizio inserita
@@ -249,7 +249,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                     DATAINIZIOVALIDITA = dataInizioLast,
                                     DATAFINEVALIDITA = dataFineLast.AddDays(-1),
-                                    ALIQUOTA = aliquotaLast,
+                                    VALORE = aliquotaLast,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 ibNew2 = new ALIQUOTECONTRIBUTIVE()
@@ -257,7 +257,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
-                                    ALIQUOTA = ibm.aliquota,
+                                    VALORE = ibm.aliquota,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
                                 if (aggiornaTutto)
@@ -267,7 +267,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                        ALIQUOTA = ibm.aliquota,
+                                        VALORE = ibm.aliquota,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == ibm.idTipoContributo
@@ -308,7 +308,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                     DATAINIZIOVALIDITA = dataInizio,
                                     DATAFINEVALIDITA = NewdataFine1,
-                                    ALIQUOTA = aliquota,
+                                    VALORE = aliquota,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 ibNew2 = new ALIQUOTECONTRIBUTIVE()
@@ -316,7 +316,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = dataFine,
-                                    ALIQUOTA = ibm.aliquota,
+                                    VALORE = ibm.aliquota,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
 
@@ -327,7 +327,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                        ALIQUOTA = ibm.aliquota,
+                                        VALORE = ibm.aliquota,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == ibm.idTipoContributo
@@ -360,7 +360,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
-                                    ALIQUOTA = ibm.aliquota,
+                                    VALORE = ibm.aliquota,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                 };
@@ -388,7 +388,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = dataFineUltimo,
-                                        ALIQUOTA = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
+                                        VALORE = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1);
@@ -406,7 +406,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
-                                        ALIQUOTA = aliquotaUltimo,
+                                        VALORE = aliquotaUltimo,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     ibNew2 = new ALIQUOTECONTRIBUTIVE()
@@ -414,7 +414,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                        ALIQUOTA = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
+                                        VALORE = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1); libNew.Add(ibNew2);
@@ -509,7 +509,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             IDTIPOCONTRIBUTO = precedenteIB.IDTIPOCONTRIBUTO,
                             DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                             DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                            ALIQUOTA = precedenteIB.ALIQUOTA,
+                            VALORE = precedenteIB.VALORE,
                             DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
                             ANNULLATO = false
                         };
@@ -612,7 +612,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].IDALIQCONTR.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].ALIQUOTA.ToString());
+                    tmp.Add(libm[0].VALORE.ToString());
                 }
             }
             return tmp;
@@ -631,7 +631,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].IDALIQCONTR.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].ALIQUOTA.ToString());
+                    tmp.Add(libm[0].VALORE.ToString());
                 }
             }
             return tmp;
@@ -652,7 +652,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].IDALIQCONTR.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].ALIQUOTA.ToString());
+                    tmp.Add(libm[0].VALORE.ToString());
                 }
             }
             return tmp;
@@ -671,7 +671,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].IDALIQCONTR.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].ALIQUOTA.ToString());
+                    tmp.Add(libm[0].VALORE.ToString());
                 }
             }
             return tmp;

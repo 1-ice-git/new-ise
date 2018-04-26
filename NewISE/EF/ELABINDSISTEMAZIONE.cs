@@ -20,6 +20,7 @@ namespace NewISE.EF
             this.ELABINDSISTEMAZIONE1 = new HashSet<ELABINDSISTEMAZIONE>();
             this.ELABTRASPEFFETTI = new HashSet<ELABTRASPEFFETTI>();
             this.TEORICI = new HashSet<TEORICI>();
+            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
         }
     
         public decimal IDINDSISTLORDA { get; set; }
@@ -36,11 +37,11 @@ namespace NewISE.EF
         public bool ANTICIPO { get; set; }
         public bool SALDO { get; set; }
         public bool UNICASOLUZIONE { get; set; }
+        public decimal PERCANTSALDOUNISOL { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ELABORATO { get; set; }
         public bool ANNULLATO { get; set; }
         public Nullable<decimal> FK_IDINDSISTLORDA { get; set; }
-        public decimal PERCANTSALDOUNISOL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE1 { get; set; }
@@ -50,5 +51,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
     }
 }

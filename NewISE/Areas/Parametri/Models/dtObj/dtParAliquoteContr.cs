@@ -34,12 +34,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                aliquota = e.VALORE,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
                                 {
                                     idTipoAliqContr = e.IDTIPOCONTRIBUTO,
-                                    descrizione = e.ALIQUOTA.ToString()
+                                    descrizione = e.VALORE.ToString()
 
                                 }
                             }).ToList();
@@ -69,13 +69,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
+                                aliquota = e.VALORE,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
                                 {
                                     idTipoAliqContr = e.IDTIPOCONTRIBUTO,
-                                    descrizione = e.ALIQUOTA.ToString()
+                                    descrizione = e.VALORE.ToString()
 
                                 }
                             }).ToList();
@@ -106,12 +106,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                aliquota = e.VALORE,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
                                 {
                                     idTipoAliqContr = e.IDTIPOCONTRIBUTO,
-                                    descrizione = e.ALIQUOTA.ToString()
+                                    descrizione = e.VALORE.ToString()
 
                                 }
                             }).ToList();
@@ -142,12 +142,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                aliquota = e.VALORE,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
                                 {
                                     idTipoAliqContr = e.IDTIPOCONTRIBUTO,
-                                    descrizione = e.ALIQUOTA.ToString()
+                                    descrizione = e.VALORE.ToString()
 
                                 }
                             }).ToList();
@@ -189,7 +189,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDALIQCONTR = ibm.idAliqContr,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ALIQUOTA = ibm.aliquota,
+                                VALORE = ibm.aliquota,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -202,7 +202,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 //DATAFINEVALIDITA = Utility.DataFineStop(),
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ALIQUOTA = ibm.aliquota,
+                                VALORE = ibm.aliquota,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -216,7 +216,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             //DATAFINEVALIDITA = Utility.DataFineStop(),
                             DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                            ALIQUOTA = ibm.aliquota,
+                            VALORE = ibm.aliquota,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -246,7 +246,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        VALORE = item.VALORE,
                                         ANNULLATO = false
                                     };
 
@@ -261,7 +261,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        VALORE = item.VALORE,
                                         ANNULLATO = false
                                     };
 
@@ -271,7 +271,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        VALORE = item.VALORE,
                                         ANNULLATO = false
                                     };
 
@@ -295,7 +295,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        VALORE = item.VALORE,
                                         ANNULLATO = false
                                     };
 
@@ -316,7 +316,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        VALORE = item.VALORE,
                                         ANNULLATO = false
                                     };
 
@@ -389,7 +389,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-        
+
         public bool EsistonoMovimentiPrimaUguale(AliquoteContributiveModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -404,7 +404,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             ALIQUOTECONTRIBUTIVE precedenteIB = new ALIQUOTECONTRIBUTIVE();
             ALIQUOTECONTRIBUTIVE delIB = new ALIQUOTECONTRIBUTIVE();
-            
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
@@ -428,11 +428,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             var ibOld1 = new ALIQUOTECONTRIBUTIVE()
                             {
 
-                              //  IDALIQCONTR = precedenteIB.IDALIQCONTR,
+                                //  IDALIQCONTR = precedenteIB.IDALIQCONTR,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                ALIQUOTA = precedenteIB.ALIQUOTA,
-                                IDTIPOCONTRIBUTO= precedenteIB.IDTIPOCONTRIBUTO,
+                                VALORE = precedenteIB.VALORE,
+                                IDTIPOCONTRIBUTO = precedenteIB.IDTIPOCONTRIBUTO,
                                 ANNULLATO = false
                             };
 

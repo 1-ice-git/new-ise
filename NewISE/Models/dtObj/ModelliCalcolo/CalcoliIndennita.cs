@@ -49,6 +49,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private RUOLODIPENDENTE _ruoloDipendente = new RUOLODIPENDENTE();
         private RUOLOUFFICIO _ruoloUfficio = new RUOLOUFFICIO();
 
+        private LIVELLI _livello = new LIVELLI();
         #endregion
 
 
@@ -98,6 +99,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal PercentualeSaldoTEPartenza => _percentualeSaldoTEPartenza;
         [ReadOnly(true)]
         public decimal SaldoContributoOmnicomprensivoPartenza => _saldoContributoOmnicomprensivoPartenza;
+        [ReadOnly(true)]
+        public LIVELLI Livello => _livello;
+
+
 
 
         public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita = null)
@@ -206,68 +211,82 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private void PrelevaIndennitaDiBase()
         {
             RIDUZIONI riduzioniIB = new RIDUZIONI();
+            LIVELLIDIPENDENTI livDip = new LIVELLIDIPENDENTI();
 
-            var lib =
+            var lLivDip =
+                _indennita.LIVELLIDIPENDENTI.Where(
+                    a =>
+                        a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                        _dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+            if (lLivDip?.Any() ?? false)
+            {
+                livDip = lLivDip.First();
+                _livello = livDip.LIVELLI;
+
+                var lib =
                 _indennita.INDENNITABASE.Where(
                     a =>
                         a.ANNULLATO == false &&
+                        a.IDLIVELLO == livDip.IDLIVELLO &&
                         _dtDatiParametri >= a.DATAINIZIOVALIDITA && _dtDatiParametri <= a.DATAFINEVALIDITA)
                     .OrderByDescending(a => a.DATAINIZIOVALIDITA);
 
-            if (lib?.Any() ?? false)
-            {
-                var indennitaBase = lib.First();
-
-                var lr =
-                    indennitaBase.RIDUZIONI.Where(
-                        a =>
-                            a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                            _dtDatiParametri <= a.DATAFINEVALIDITA)
-                        .OrderByDescending(a => a.DATAINIZIOVALIDITA);
-
-                if (lr?.Any() ?? false)
+                if (lib?.Any() ?? false)
                 {
-                    riduzioniIB = lr.First();
-                }
+                    var indennitaBase = lib.First();
 
-                if (_ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Dirigente || _ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Responsabile)
-                {
-                    decimal valRespIB = indennitaBase.VALORERESP;
-                    //decimal valRidIB = 0;
+                    var lr =
+                        indennitaBase.RIDUZIONI.Where(
+                            a =>
+                                a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                _dtDatiParametri <= a.DATAFINEVALIDITA)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA);
 
-                    if (riduzioniIB?.IDRIDUZIONI > 0)
+                    if (lr?.Any() ?? false)
                     {
-                        _riduzioneIndennitaDiBase = riduzioniIB.PERCENTUALE;
+                        riduzioniIB = lr.First();
                     }
-                    if (_riduzioneIndennitaDiBase > 0)
+
+                    if (_ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Dirigente || _ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Responsabile)
                     {
-                        _indennitaDiBase = valRespIB * _riduzioneIndennitaDiBase / 100;
+                        decimal valRespIB = indennitaBase.VALORERESP;
+                        //decimal valRidIB = 0;
+
+                        if (riduzioniIB?.IDRIDUZIONI > 0)
+                        {
+                            _riduzioneIndennitaDiBase = riduzioniIB.PERCENTUALE;
+                        }
+                        if (_riduzioneIndennitaDiBase > 0)
+                        {
+                            _indennitaDiBase = valRespIB * _riduzioneIndennitaDiBase / 100;
+                        }
+                        else
+                        {
+                            _indennitaDiBase = valRespIB;
+                        }
                     }
                     else
                     {
-                        _indennitaDiBase = valRespIB;
-                    }
-                }
-                else
-                {
-                    decimal valIB = indennitaBase.VALORE;
-                    //decimal valRidIB = 0;
+                        decimal valIB = indennitaBase.VALORE;
+                        //decimal valRidIB = 0;
 
-                    if (riduzioniIB?.IDRIDUZIONI > 0)
-                    {
-                        _riduzioneIndennitaDiBase = riduzioniIB.PERCENTUALE;
-                    }
-                    if (_riduzioneIndennitaDiBase > 0)
-                    {
-                        _indennitaDiBase = valIB * _riduzioneIndennitaDiBase / 100;
-                    }
-                    else
-                    {
-                        _indennitaDiBase = valIB;
-                    }
+                        if (riduzioniIB?.IDRIDUZIONI > 0)
+                        {
+                            _riduzioneIndennitaDiBase = riduzioniIB.PERCENTUALE;
+                        }
+                        if (_riduzioneIndennitaDiBase > 0)
+                        {
+                            _indennitaDiBase = valIB * _riduzioneIndennitaDiBase / 100;
+                        }
+                        else
+                        {
+                            _indennitaDiBase = valIB;
+                        }
 
+                    }
                 }
             }
+
 
 
         }
