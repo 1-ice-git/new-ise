@@ -17,6 +17,7 @@ namespace NewISE.Models.IseArio
         public OracleConnection OpenConnDBArio()
         {
             string strConn = System.Configuration.ConfigurationManager.ConnectionStrings["DBISEARIO"].ConnectionString;
+
             try
             {
                 OracleConnection conn = new OracleConnection();

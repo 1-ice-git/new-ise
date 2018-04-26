@@ -25,7 +25,7 @@ namespace NewISE.Models.IseArio.dtObj
 
             string sqlStr = "SELECT T.Q_0401 COGNOME,\n" +
                             "       T.Q_0402 NOME,\n" +
-                            "       ALIQUOTA_ISE(:matricola, :importo) AS ALIQUOTA\n" +
+                            "       NVL(ALIQUOTA_ISE(:matricola, :importo), 0) AS ALIQUOTA\n" +
                             "  FROM P_ANAGR T\n" +
                             " WHERE 1 = 1\n" +
                             "   AND T.NUM_IND = :matricola2";

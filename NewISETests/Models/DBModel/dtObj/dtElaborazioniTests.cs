@@ -19,14 +19,14 @@ namespace NewISE.Models.DBModel.dtObj.Tests
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    //db.Database.BeginTransaction();
+                    db.Database.BeginTransaction();
 
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
-                        dte.InviaAnticipoPrimaSistemazioneContabilita(241, db);
+                        dte.InviaAnticipoPrimaSistemazioneContabilita(261, db);
                     }
 
-                    //db.Database.CurrentTransaction.Rollback();
+                    db.Database.CurrentTransaction.Rollback();
                 }
 
             }

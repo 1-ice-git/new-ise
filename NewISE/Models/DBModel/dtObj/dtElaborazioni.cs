@@ -7,6 +7,8 @@ using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.Enumeratori;
 using System.Data.Entity;
 using NewISE.Models.IseArio.dtObj;
+using NewISE.Interfacce.Modelli;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -54,8 +56,7 @@ namespace NewISE.Models.DBModel.dtObj
                         aa.ANTICIPI.Where(
                             a =>
                                 a.ANNULLATO == false &&
-                                a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipoAnticipi.Prima_sistemazione)
-                            .ToList();
+                                a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipoAnticipi.Prima_sistemazione).ToList();
 
                     if (lanticipi?.Any() ?? false)
                     {
@@ -91,10 +92,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         a.ANNULLATO == false &&
                                         a.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE &&
                                         a.ANTICIPO == true)
-                                    .OrderByDescending(a => a.IDINDSISTLORDA)
-                                    .ToList();
+                                    .OrderByDescending(a => a.IDINDSISTLORDA).ToList();
 
-                            if (leis?.Any() == false)
+                            if (leis?.Any() ?? false)
                             {
                                 var eisOld = leis.First();
                                 eis.FK_IDINDSISTLORDA = eisOld.IDINDSISTLORDA;
@@ -156,12 +156,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                             this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, aliqPrev.IDALIQCONTR, db);
 
-                            var importoAnticipoLordo = CalcoliIndennita.ElaboraAnticipoPrimaSistemazione(eis.INDENNITABASE,
+                            var importoPrimaSistemazioneLorda = CalcoliIndennita.ElaboraPrimaSistemazione(eis.INDENNITABASE,
                                 eis.COEFFICENTESEDE, eis.PERCENTUALEDISAGIO, eis.PERCENTUALERIDUZIONE,
-                                eis.COEFFICENTEINDSIST, eis.PERCANTSALDOUNISOL);
+                                eis.COEFFICENTEINDSIST);
 
 
-                            var ImponibilePrevidenziale = importoAnticipoLordo - detrazioni.VALORE;
+                            var ImponibilePrevidenziale = importoPrimaSistemazioneLorda - detrazioni.VALORE;
                             var RitenutePrevidenziali = ImponibilePrevidenziale * aliqPrev.VALORE / 100;
 
                             var dip = t.DIPENDENTI;
@@ -172,7 +172,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * aliqIse.Aliquota / 100;
 
-                                var Netto = importoAnticipoLordo - RitenutePrevidenziali - RitenutaIperf;
+                                var Netto = importoPrimaSistemazioneLorda - RitenutePrevidenziali - RitenutaIperf;
+
+                                var anticipoNetto = Netto * (eis.PERCANTSALDOUNISOL / 100);
 
 
                                 TEORICI teorici = new TEORICI()
@@ -184,11 +186,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                     ALIQUOTAFISCALE = aliqIse.Aliquota,
                                     GIORNI = 0,
-                                    IMPORTO = Netto,
+                                    IMPORTO = anticipoNetto,
                                     STORICIZZATO = false,
                                     DATAOPERAZIONE = DateTime.Now,
                                     ANNULLATO = false
                                 };
+
+                                db.TEORICI.Add(teorici);
 
                                 int j = db.SaveChanges();
 
@@ -204,6 +208,15 @@ namespace NewISE.Models.DBModel.dtObj
                                     LIVELLO = ci.Livello.LIVELLO,
                                     CODICESEDE = t.UFFICI.CODICEUFFICIO,
                                 };
+
+                                db.CONT_OA.Add(contabilita);
+
+                                int y = db.SaveChanges();
+
+                                if (y <= 0)
+                                {
+                                    throw new Exception("Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità OA.");
+                                }
 
 
                             }
@@ -224,13 +237,37 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        private void InserisciTeoriciPrimaSistemazione(ELABINDSISTEMAZIONE eis, ModelDBISE db)
+
+        public void InvioEmailOAAnticipoPrimaSistemazione(decimal idPrimaSistemazione, ModelDBISE db)
         {
+            AccountModel am = new AccountModel();
+            Mittente mittente = new Mittente();
+            Destinatario to = new Destinatario();
+            Destinatario cc = new Destinatario();
+
+            try
+            {
+                am = Utility.UtenteAutorizzato();
+                if (am.RuoloAccesso.idRuoloAccesso != (decimal)EnumRuoloAccesso.SuperAmministratore)
+                {
+                    mittente.Nominativo = am.nominativo;
+                    mittente.EmailMittente = am.eMail;
+                }
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
 
         }
-
-
-
 
 
     }

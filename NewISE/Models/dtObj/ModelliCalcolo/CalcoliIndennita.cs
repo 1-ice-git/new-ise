@@ -604,7 +604,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         /// <param name="percentualeRiduzione"></param>
         /// <param name="coefficenteIndSistemazione"></param>
         /// <returns></returns>
-        public static decimal ElaboraAnticipoPrimaSistemazione(decimal indennitaDiBase, decimal coefficenteDiSede, decimal percentualeDiDisagio, decimal percentualeRiduzione, decimal coefficenteIndSistemazione, decimal percentualeAnticipo)
+        public static decimal ElaboraPrimaSistemazione(decimal indennitaDiBase, decimal coefficenteDiSede, decimal percentualeDiDisagio, decimal percentualeRiduzione, decimal coefficenteIndSistemazione)
         {
             decimal ret = 0;
 
@@ -622,7 +622,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 ret = coefficenteIndSistemazione * indServ;
             }
 
-            return ret * (percentualeAnticipo / 100);
+            return ret;
         }
 
 
