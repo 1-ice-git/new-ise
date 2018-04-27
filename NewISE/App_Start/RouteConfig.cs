@@ -20,7 +20,7 @@ namespace NewISE
             );
             routes.MapRoute(
                 name: "Home",
-                url: "Home/Index"                
+                url: "Home/Index"
             );
 
             routes.MapRoute(
@@ -56,6 +56,11 @@ namespace NewISE
                name: "LeggiViaggiCongedoPDF",
                url: "ViaggiCongedo/LeggiViaggiCongedoPDF/{id}"
            );
+            routes.MapRoute(
+                name: "Elaborazioni",
+                url: "Elaborazioni/Index"
+            );
+
         }
     }
 }

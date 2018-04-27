@@ -1826,13 +1826,6 @@
     <Content Include="bower_components\bootstrap-fileinput\package.json" />
     <Content Include="bower_components\bootstrap-fileinput\README.md" />
     <Content Include="bower_components\bootstrap-fileinput\sass\fileinput.scss" />
-    <EntityDeploy Include="EF\ModelDBISE.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModelDBISE.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="EF\ModelDBISE.edmx.diagram">
-      <DependentUpon>ModelDBISE.edmx</DependentUpon>
-    </Content>
     <Content Include="DBComuniItalia\json-schemaComuniItalia.json" />
     <Content Include="DBComuniItalia\jsonComuniItalia.json" />
     <Content Include="Content\bootstrap-fileinput\sass\fileinput.scss" />
@@ -2243,6 +2236,13 @@
     <Content Include="FormulariMaster\FormularioMA\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioMA\modulo 4.pdf" />
     <Content Include="FormulariMaster\FormularioMA\modulo 5.pdf" />
+    <EntityDeploy Include="EF\ModelDBISE.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelDBISE.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="EF\ModelDBISE.edmx.diagram">
+      <DependentUpon>ModelDBISE.edmx</DependentUpon>
+    </Content>
     <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
     <Content Include="DataSet20.xsc">
@@ -2462,7 +2462,85 @@
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
+    <Compile Include="EF\ACCESSI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ALIQUOTECONTRIBUTIVE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ALTRIDATIFAM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ANTICIPI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ANTICIPOSALDOTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVAZIONEMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVAZIONETITOLIVIAGGIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVAZIONIMAGFAM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVAZIONIPASSAPORTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\ATTIVAZIONIPROVSCOLASTICHE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVAZIONIVIAGGICONGEDO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVITAANTICIPI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVITACRUD.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVITATEPARTENZA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVITATERIENTRO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\CALENDARIOEVENTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\CANONEMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\CDCGEPE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\COEFFICIENTEINDRICHIAMO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\COEFFICIENTESEDE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\CONIUGE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\CONIUGEPASSAPORTO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\CONIUGETITOLIVIAGGIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\CONT_OA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\DESTINATARI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\DIPENDENTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\DOCUMENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\DOC_ATER.cs">
@@ -2480,28 +2558,142 @@
     <Compile Include="EF\ELABTRASPEFFETTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\EMAILSECONDARIEDIP.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FASCIA_KM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\FASEPASSAPORTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\FASEVIAGGICONGEDO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\FIGLI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FIGLIPASSAPORTO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FIGLITITOLIVIAGGIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\FLUSSICEDOLINO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FUNZIONERIDUZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FUNZIONIEVENTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\GRUPPO_FKM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\INDENNITA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\INDENNITABASE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\INDENNITAPRIMOSEGRETARIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\INDENNITASISTEMAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\LIVELLI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\LIVELLIDIPENDENTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\LOGATTIVITA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\MAGGIORAZIONEABITAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\MAGGIORAZIONIANNUALI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\MAGGIORAZIONIFAMILIARI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ModelDBISE.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelDBISE.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ModelDBISE.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ModelDBISE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\MODIFICHEMAGFAM.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\NETTO.cs">
+    <Compile Include="EF\NORMACALCOLO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\NOTIFICHE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\OA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\PAGATOCONDIVISOMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PASSAPORTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PASSAPORTORICHIEDENTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PENSIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PERCENTUALEANTICIPOTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\PERCENTUALECONDIVISIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\PERCENTUALEDISAGIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PERCENTUALEFKM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PERCENTUALEMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PERCENTUALEMAGCONIUGE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PERCENTUALEMAGFIGLI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PRIMASITEMAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\PROVVIDENZESCOLASTICHE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\REGOLECALCOLO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RICHIAMO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RIDUZIONI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RINUNCIAANTICIPI.cs">
@@ -2510,22 +2702,70 @@
     <Compile Include="EF\RINUNCIAMAB.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\RINUNCIA_TE_P.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RINUNCIA_TE_R.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\RUOLOACCESSO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RUOLODIPENDENTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RUOLOUFFICIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\SELECTDOCVC.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\SOSPENSIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\STATORECORD.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\STATOTRASFERIMENTO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\TEORICI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TEPARTENZA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TERIENTRO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TFR.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOALIQUOTECONTRIBUTIVE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOANTICIPOTRASPORTOEFFETTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPODOCUMENTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\TIPOLIQUIDAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOLOGIAANTICIPI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOLOGIACOAN.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOLOGIACONIUGE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOLOGIAFIGLIO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPOLOGIAMODIFICHE.cs">
@@ -2534,10 +2774,43 @@
     <Compile Include="EF\TIPOMOVIMENTO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TIPOREGOLACALCOLO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOSOSPENSIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOTRASFERIMENTO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\TIPOVOCE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TITOLIVIAGGIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TITOLIVIAGGIORICHIEDENTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TRASFERIMENTO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\UFFICI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\UTENTIAUTORIZZATI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\VALUTAUFFICIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\VALUTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\VARIAZIONIMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\VIAGGICONGEDO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\VOCI.cs">
@@ -2836,279 +3109,6 @@
     <Compile Include="DBComuniItalia\Regione.cs" />
     <Compile Include="DBComuniItalia\SingleValueArrayConverter.cs" />
     <Compile Include="DBComuniItalia\Zona.cs" />
-    <Compile Include="EF\ACCESSI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ALIQUOTECONTRIBUTIVE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ALTRIDATIFAM.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ANTICIPI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ANTICIPOSALDOTE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVAZIONEMAB.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVAZIONETITOLIVIAGGIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVAZIONIMAGFAM.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVAZIONIPASSAPORTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVAZIONIVIAGGICONGEDO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVITAANTICIPI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVITACRUD.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVITATEPARTENZA.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ATTIVITATERIENTRO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\CALENDARIOEVENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\CANONEMAB.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\CDCGEPE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\COEFFICIENTEINDRICHIAMO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\COEFFICIENTESEDE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\CONIUGE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\CONIUGEPASSAPORTO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\CONIUGETITOLIVIAGGIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\DESTINATARI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\DIPENDENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\DOCUMENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\EMAILSECONDARIEDIP.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\FASCIA_KM.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\FIGLI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\FIGLIPASSAPORTO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\FIGLITITOLIVIAGGIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\FUNZIONERIDUZIONE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\FUNZIONIEVENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\GRUPPO_FKM.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\INDENNITA.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\INDENNITABASE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\INDENNITAPRIMOSEGRETARIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\INDENNITASISTEMAZIONE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\LIVELLI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\LIVELLIDIPENDENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\LOGATTIVITA.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\MAGGIORAZIONEABITAZIONE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\MAGGIORAZIONIANNUALI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\MAGGIORAZIONIFAMILIARI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ModelDBISE.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelDBISE.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ModelDBISE.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ModelDBISE.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelDBISE.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="EF\NORMACALCOLO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\NOTIFICHE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PAGATOCONDIVISOMAB.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PASSAPORTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PASSAPORTORICHIEDENTE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PENSIONE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PERCENTUALEANTICIPOTE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PERCENTUALEDISAGIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PERCENTUALEFKM.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PERCENTUALEMAB.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PERCENTUALEMAGCONIUGE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PERCENTUALEMAGFIGLI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\PRIMASITEMAZIONE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\REGOLECALCOLO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RICHIAMO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RIDUZIONI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RUOLOACCESSO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RUOLODIPENDENTE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RUOLOUFFICIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\SOSPENSIONE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\STATOTRASFERIMENTO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TEPARTENZA.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TERIENTRO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TFR.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOALIQUOTECONTRIBUTIVE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOANTICIPOTRASPORTOEFFETTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPODOCUMENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOLOGIAANTICIPI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOLOGIACOAN.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOLOGIACONIUGE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOLOGIAFIGLIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOREGOLACALCOLO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOSOSPENSIONE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOTRASFERIMENTO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TITOLIVIAGGIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TITOLIVIAGGIORICHIEDENTE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TRASFERIMENTO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\UFFICI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\UTENTIAUTORIZZATI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\VALUTAUFFICIO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\VALUTE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\VIAGGICONGEDO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Config\s_admin\sUtenteNormale.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
     <Compile Include="Models\DBModel\AnticipoSaldoTEModel.cs" />
@@ -3280,6 +3280,9 @@
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\Enumeratori\AllEnumeratori.cs" />
+    <Compile Include="Models\IseArio\Connessione.cs" />
+    <Compile Include="Models\IseArio\dtObj\dtAliquotaISE.cs" />
+    <Compile Include="Models\IseArio\Model\AliquotaIseModel.cs" />
     <Compile Include="Models\Ricalcoli\RicalcoloPrimaSistemazione.cs" />
     <Compile Include="Models\Tools\EmailTrasferimento.cs" />
     <Compile Include="Models\Tools\EmailCredenziali.cs" />
@@ -3501,6 +3504,8 @@
     <Content Include="Views\ProvvidenzeScolastiche\TabFormulariInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\NuovoDocumentoPS.cshtml" />
+    <Content Include="Views\Elaborazioni\Index.cshtml" />
+    <Content Include="Views\Elaborazioni\SelezionaAnno.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3522,7 +3527,6 @@
     <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Scripts\themes\" />
-    <Folder Include="Views\Elaborazioni\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
