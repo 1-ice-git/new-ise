@@ -3494,6 +3494,8 @@
     <Content Include="Views\ProvvidenzeScolastiche\TabFormulariInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\NuovoDocumentoPS.cshtml" />
+    <Content Include="Views\Elaborazioni\Index.cshtml" />
+    <Content Include="Views\Elaborazioni\SelezionaAnno.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3515,7 +3517,6 @@
     <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Scripts\themes\" />
-    <Folder Include="Views\Elaborazioni\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
