@@ -78,6 +78,7 @@ namespace NewISE.EF
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
+        public virtual DbSet<MESEANNOELABORAZIONE> MESEANNOELABORAZIONE { get; set; }
         public virtual DbSet<MODIFICHEMAGFAM> MODIFICHEMAGFAM { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }

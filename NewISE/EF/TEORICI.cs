@@ -26,13 +26,14 @@ namespace NewISE.EF
         public decimal ALIQUOTAFISCALE { get; set; }
         public decimal GIORNI { get; set; }
         public decimal IMPORTO { get; set; }
-        public bool STORICIZZATO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
+        public decimal IDMESEANNOELAB { get; set; }
     
         public virtual CONT_OA CONT_OA { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
         public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
+        public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
         public virtual VOCI VOCI { get; set; }
     }

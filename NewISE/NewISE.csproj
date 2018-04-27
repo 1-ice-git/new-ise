@@ -2621,6 +2621,9 @@
     <Compile Include="EF\MAGGIORAZIONIFAMILIARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\MESEANNOELABORAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\ModelDBISE.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -3277,6 +3280,7 @@
     <Compile Include="Models\dtObj\Interfacce\IricalcoloParametri.cs" />
     <Compile Include="Models\dtObj\ModelliCalcolo\CalcoliIndennita.cs" />
     <Compile Include="Models\dtObj\ModelliCalcolo\GiorniRateo.cs" />
+    <Compile Include="Models\dtObj\ModelliCalcolo\CalcoloMeseAnnoElaborazione.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\Enumeratori\AllEnumeratori.cs" />

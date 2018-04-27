@@ -32,6 +32,7 @@ namespace NewISE.Controllers
 
         public ActionResult SelezionaAnno(int anno = 0)
         {
+            var rAnno = new List<SelectListItem>();
 
 
             return PartialView();

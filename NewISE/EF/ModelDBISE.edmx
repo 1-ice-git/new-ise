@@ -907,6 +907,15 @@
           </Key>
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="MESEANNOELABORAZIONE">
+          <Key>
+            <PropertyRef Name="IDMESEANNOELAB" />
+          </Key>
+          <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MESE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ANNO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="MODIFICHEMAGFAM">
           <Key>
             <PropertyRef Name="IDMODMAGFAM" />
@@ -1330,9 +1339,9 @@
           <Property Name="ALIQUOTAFISCALE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="STORICIZZATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -3309,6 +3318,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAE_T">
+          <End Role="MESEANNOELABORAZIONE" Type="Self.MESEANNOELABORAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MESEANNOELABORAZIONE">
+              <PropertyRef Name="IDMESEANNOELAB" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDMESEANNOELAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MF_AMF">
           <End Role="MAGGIORAZIONIFAMILIARI" Type="Self.MAGGIORAZIONIFAMILIARI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5043,6 +5066,7 @@
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="Self.MAGGIORAZIONEABITAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="Self.MAGGIORAZIONIFAMILIARI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MESEANNOELABORAZIONE" EntityType="Self.MESEANNOELABORAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MODIFICHEMAGFAM" EntityType="Self.MODIFICHEMAGFAM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="NOTIFICHE" EntityType="Self.NOTIFICHE" Schema="ISESIM" store:Type="Tables" />
@@ -5605,6 +5629,10 @@
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_MAE_T" Association="Self.R_MAE_T">
+            <End Role="MESEANNOELABORAZIONE" EntitySet="MESEANNOELABORAZIONE" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
           <AssociationSet Name="R_MF_AMF" Association="Self.R_MF_AMF">
             <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
             <End Role="ATTIVAZIONIMAGFAM" EntitySet="ATTIVAZIONIMAGFAM" />
@@ -6136,6 +6164,7 @@
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="DBISE.MAGGIORAZIONEABITAZIONE" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="DBISE.MAGGIORAZIONIANNUALI" />
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="DBISE.MAGGIORAZIONIFAMILIARI" />
+          <EntitySet Name="MESEANNOELABORAZIONE" EntityType="DBISE.MESEANNOELABORAZIONE" />
           <EntitySet Name="MODIFICHEMAGFAM" EntityType="DBISE.MODIFICHEMAGFAM" />
           <EntitySet Name="NORMACALCOLO" EntityType="DBISE.NORMACALCOLO" />
           <EntitySet Name="NOTIFICHE" EntityType="DBISE.NOTIFICHE" />
@@ -6619,6 +6648,10 @@
           <AssociationSet Name="R_T_MF" Association="DBISE.R_T_MF">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAE_T" Association="DBISE.R_MAE_T">
+            <End Role="MESEANNOELABORAZIONE" EntitySet="MESEANNOELABORAZIONE" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_TM_MMF" Association="DBISE.R_TM_MMF">
             <End Role="TIPOLOGIAMODIFICHE" EntitySet="TIPOLOGIAMODIFICHE" />
@@ -7828,6 +7861,16 @@
           <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_MF_RMF" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_MF" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="TRASFERIMENTO" />
         </EntityType>
+        <EntityType Name="MESEANNOELABORAZIONE">
+          <Key>
+            <PropertyRef Name="IDMESEANNOELAB" />
+          </Key>
+          <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MESE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ANNO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_MAE_T" FromRole="MESEANNOELABORAZIONE" ToRole="TEORICI" />
+        </EntityType>
         <EntityType Name="MODIFICHEMAGFAM">
           <Key>
             <PropertyRef Name="IDMODMAGFAM" />
@@ -8269,12 +8312,13 @@
           <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="STORICIZZATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="CONT_OA" Relationship="DBISE.R_T_COA" FromRole="TEORICI" ToRole="CONT_OA" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="FLUSSICEDOLINO" Relationship="DBISE.R_T_FC" FromRole="TEORICI" ToRole="FLUSSICEDOLINO" />
+          <NavigationProperty Name="MESEANNOELABORAZIONE" Relationship="DBISE.R_MAE_T" FromRole="TEORICI" ToRole="MESEANNOELABORAZIONE" />
           <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISE.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
           <NavigationProperty Name="VOCI" Relationship="DBISE.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
         </EntityType>
@@ -10071,6 +10115,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAE_T">
+          <End Type="DBISE.MESEANNOELABORAZIONE" Role="MESEANNOELABORAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MESEANNOELABORAZIONE">
+              <PropertyRef Name="IDMESEANNOELAB" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDMESEANNOELAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TM_MMF">
           <End Type="DBISE.TIPOLOGIAMODIFICHE" Role="TIPOLOGIAMODIFICHE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -11545,6 +11603,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="MESEANNOELABORAZIONE">
+            <EntityTypeMapping TypeName="DBISE.MESEANNOELABORAZIONE">
+              <MappingFragment StoreEntitySet="MESEANNOELABORAZIONE">
+                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
+                <ScalarProperty Name="ANNO" ColumnName="ANNO" />
+                <ScalarProperty Name="MESE" ColumnName="MESE" />
+                <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MODIFICHEMAGFAM">
             <EntityTypeMapping TypeName="DBISE.MODIFICHEMAGFAM">
               <MappingFragment StoreEntitySet="MODIFICHEMAGFAM">
@@ -11914,9 +11982,9 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-                <ScalarProperty Name="STORICIZZATO" ColumnName="STORICIZZATO" />
                 <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="ALIQUOTAFISCALE" ColumnName="ALIQUOTAFISCALE" />

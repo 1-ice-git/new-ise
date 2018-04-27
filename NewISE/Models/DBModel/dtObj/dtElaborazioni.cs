@@ -176,49 +176,69 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 var anticipoNetto = Netto * (eis.PERCANTSALDOUNISOL / 100);
 
-
-                                TEORICI teorici = new TEORICI()
+                                using (CalcoloMeseAnnoElaborazione cmae = new CalcoloMeseAnnoElaborazione(db))
                                 {
-                                    IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                    IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
-                                    IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
-                                    MESERIFERIMENTO = t.DATAPARTENZA.Month,
-                                    ANNORIFERIMENTO = t.DATAPARTENZA.Year,
-                                    ALIQUOTAFISCALE = aliqIse.Aliquota,
-                                    GIORNI = 0,
-                                    IMPORTO = anticipoNetto,
-                                    STORICIZZATO = false,
-                                    DATAOPERAZIONE = DateTime.Now,
-                                    ANNULLATO = false
-                                };
 
-                                db.TEORICI.Add(teorici);
+                                    var lmae = cmae.Mae;
 
-                                int j = db.SaveChanges();
+                                    if (lmae?.Any() ?? false)
+                                    {
+                                        var mae = lmae.First();
+                                        if (mae.Elaborato == true)
+                                        {
+                                            cmae.NewMeseDaElaborare();
+                                        }
 
-                                if (j <= 0)
-                                {
-                                    throw new Exception("Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità.");
+
+
+                                        TEORICI teorici = new TEORICI()
+                                        {
+                                            IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                            IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
+                                            IDMESEANNOELAB = mae.IdMeseAnnoElab,
+                                            MESERIFERIMENTO = t.DATAPARTENZA.Month,
+                                            ANNORIFERIMENTO = t.DATAPARTENZA.Year,
+                                            ALIQUOTAFISCALE = aliqIse.Aliquota,
+                                            GIORNI = 0,
+                                            IMPORTO = anticipoNetto,
+                                            DATAOPERAZIONE = DateTime.Now,
+                                            ANNULLATO = false
+                                        };
+
+                                        db.TEORICI.Add(teorici);
+
+                                        int j = db.SaveChanges();
+
+                                        if (j <= 0)
+                                        {
+                                            throw new Exception("Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità.");
+                                        }
+
+                                        CONT_OA contabilita = new CONT_OA()
+                                        {
+                                            IDTEORICI = teorici.IDTEORICI,
+                                            MATRICOLA = dip.MATRICOLA,
+                                            LIVELLO = ci.Livello.LIVELLO,
+                                            CODICESEDE = t.UFFICI.CODICEUFFICIO,
+                                        };
+
+                                        db.CONT_OA.Add(contabilita);
+
+                                        int y = db.SaveChanges();
+
+                                        if (y <= 0)
+                                        {
+                                            throw new Exception("Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità OA.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Errore nella fase di lettura del mese di elaborazione.");
+                                    }
+
+
                                 }
-
-                                CONT_OA contabilita = new CONT_OA()
-                                {
-                                    IDTEORICI = teorici.IDTEORICI,
-                                    MATRICOLA = dip.MATRICOLA,
-                                    LIVELLO = ci.Livello.LIVELLO,
-                                    CODICESEDE = t.UFFICI.CODICEUFFICIO,
-                                };
-
-                                db.CONT_OA.Add(contabilita);
-
-                                int y = db.SaveChanges();
-
-                                if (y <= 0)
-                                {
-                                    throw new Exception("Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità OA.");
-                                }
-
-
                             }
 
 
