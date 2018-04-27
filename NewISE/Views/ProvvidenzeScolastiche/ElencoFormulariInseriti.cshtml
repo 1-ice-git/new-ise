@@ -20,7 +20,7 @@
 <hr />
 
 <div class="row">
-    <div class="col-xs-2">
+    <div class="col-xs-3">
 
         <div style="margin-top: 10px; margin-bottom: 10px;">
             <button class="btn btn-default btn-sm" onclick="DownloadFormulario();">
@@ -41,7 +41,7 @@
         </div>
 
     </div>*@
-    <div class="col-xs-2">
+    <div class="col-xs-3">
         <div style="margin-top: 10px; margin-bottom: 10px;">
 
             
@@ -54,6 +54,8 @@
         </div>
 
     </div>
+
+    
 </div>
 
 <div class="row">
@@ -394,11 +396,51 @@
         });
     }
 
+    function FiltraElencoFormulario() {
+        //debugger;
+        var idAttivazione = $("#idAttivazione").val();
+
+        if (idAttivazione != "" && idAttivazione != undefined) {
+
+            //var rotta = "/VariazioneMaggiorazioniFamiliari/FiltraTabFormulariInseriti";
+            var idTrasfProvScolastiche = @idTrasfProvScolastiche;
+
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: { idTrasfProvScolastiche: idTrasfProvScolastiche, idAttivazione: idAttivazione},
+                dataType: 'html',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    //Blocca();
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#divTabElencoFormulari_Var").empty();
+                    $("#divTabElencoFormulari_Var").html(result);
+
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        }
+        else
+        {
+            TabElencoFormulari();
+        }
+    }
+
 
     $("#ModalNuovoDocumentoPS").on("hidden.bs.modal", function () {
         //debugger;
-        //AttivitaProvvidenze();
-        ElencoFormulariInseriti();
+        AttivitaProvvidenze();
+        //ElencoFormulariInseriti();
     });
 
 
