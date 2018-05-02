@@ -313,6 +313,7 @@
     <Content Include="Content\css\CheckBoxRadio.css" />
     <Content Include="Content\css\CssCheckBox.css" />
     <Content Include="Content\css\cssHome.css" />
+    <Content Include="Content\css\Elaborazioni.css" />
     <Content Include="Content\css\GestioneTrasferimento.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\NuovaMAB.css" />
@@ -3294,6 +3295,7 @@
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
     <Compile Include="Models\ViewModel\AnticipiViewModel.cs" />
+    <Compile Include="Models\ViewModel\ElencoDipendentiDaCalcolareModel.cs" />
     <Compile Include="Models\ViewModel\ElencoFamiliariPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
@@ -3509,7 +3511,8 @@
     <Content Include="Views\ProvvidenzeScolastiche\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\NuovoDocumentoPS.cshtml" />
     <Content Include="Views\Elaborazioni\Index.cshtml" />
-    <Content Include="Views\Elaborazioni\SelezionaAnno.cshtml" />
+    <Content Include="Views\Elaborazioni\SelezionaMeseAnno.cshtml" />
+    <Content Include="Views\Elaborazioni\DipendentiDaElaborare.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

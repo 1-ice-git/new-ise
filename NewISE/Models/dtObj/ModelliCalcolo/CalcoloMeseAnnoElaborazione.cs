@@ -16,8 +16,75 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
     }
 
+    public enum EnumDescrizioneMesi
+    {
+        Gennaio = 1,
+        Febbraio = 2,
+        Marzo = 3,
+        Aprile = 4,
+        Maggio = 5,
+        Giugno = 6,
+        Luglio = 7,
+        Agosto = 8,
+        Settembre = 9,
+        Ottobre = 10,
+        Novembre = 11,
+        Dicembre = 12
+    }
+
     public class CalcoloMeseAnnoElaborazione : IDisposable
     {
+
+
+        public static string NomeMese(EnumDescrizioneMesi mesi)
+        {
+            return mesi.ToString();
+
+            //switch (mesi)
+            //{
+            //    case DescrizioneMesi.Gennaio:
+            //        return "Gennaio";
+            //        break;
+            //    case DescrizioneMesi.Febbraio:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Marzo:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Aprile:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Maggio:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Giugno:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Luglio:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Agosto:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Settembre:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Ottobre:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Novembre:
+            //        return "Febbraio";
+            //        break;
+            //    case DescrizioneMesi.Dicembre:
+            //        return "Febbraio";
+            //        break;
+            //    default:
+            //        throw new ArgumentOutOfRangeException("mesi");
+            //}
+        }
+
+
+
 
         private List<MeseAnnoElaborazioneModel> _mae = new List<MeseAnnoElaborazioneModel>();
 
@@ -75,7 +142,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             //Se sono presenti nel DB già delle righe
             if (AllMae?.Any() ?? false)
             {
-
                 foreach (var mae in AllMae)
                 {
                     MeseAnnoElaborazioneModel maem = new MeseAnnoElaborazioneModel()

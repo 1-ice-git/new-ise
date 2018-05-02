@@ -67,7 +67,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La data d'inizio ricalcoli è richiesta.")]
         [DataType(DataType.Date)]
-        [Display(Name = "Data assunzione")]
+        [Display(Name = "Data Ini. ricalcolo")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
         public DateTime? dataInizioRicalcoli { get; set; }
 

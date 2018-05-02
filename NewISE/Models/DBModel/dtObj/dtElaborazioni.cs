@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
@@ -9,6 +10,7 @@ using System.Data.Entity;
 using NewISE.Models.IseArio.dtObj;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.Tools;
+using NewISE.Models.ViewModel;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -286,6 +288,96 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
 
+
+        }
+
+        /// <summary>
+        /// Preleva tutti gli anni elaborati.
+        /// </summary>
+        /// <returns></returns>
+        public IList<MeseAnnoElaborazioneModel> PrelevaAnniMesiElaborati()
+        {
+            List<MeseAnnoElaborazioneModel> lmaem = new List<MeseAnnoElaborazioneModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (CalcoloMeseAnnoElaborazione cmem = new CalcoloMeseAnnoElaborazione(db))
+                    {
+                        lmaem = cmem.Mae.ToList();
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+
+                return lmaem;
+            }
+
+        }
+
+
+        public IList<ElencoDipendentiDaCalcolareModel> PrelevaDipendentiDaElaborare()
+        {
+            List<ElencoDipendentiDaCalcolareModel> ledem = new List<ElencoDipendentiDaCalcolareModel>();
+            int anno = DateTime.Now.Year;
+            int mese = DateTime.Now.Month;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ldip =
+                    db.DIPENDENTI.Where(
+                        a =>
+                            a.DATAINIZIORICALCOLI.Year <= anno && a.DATAINIZIORICALCOLI.Month <= mese &&
+                            a.TRASFERIMENTO.Any(
+                                b =>
+                                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato))
+                        .OrderBy(a => a.NOME)
+                        .ThenBy(a => a.COGNOME)
+                        .ThenBy(a => a.MATRICOLA)
+                        .ThenBy(a => a.DATAINIZIORICALCOLI)
+                        .ToList();
+
+                if (ldip?.Any() ?? false)
+                {
+                    foreach (var d in ldip)
+                    {
+                        ElencoDipendentiDaCalcolareModel edem = new ElencoDipendentiDaCalcolareModel()
+                        {
+                            idDipendente = d.IDDIPENDENTE,
+                            matricola = d.MATRICOLA,
+                            nome = d.NOME,
+                            cognome = d.COGNOME,
+                            dataAssunzione = d.DATAASSUNZIONE,
+                            dataCessazione = d.DATACESSAZIONE,
+                            indirizzo = d.INDIRIZZO,
+                            cap = d.CAP,
+                            citta = d.CITTA,
+                            provincia = d.PROVINCIA,
+                            email = d.EMAIL,
+                            telefono = d.TELEFONO,
+                            fax = d.FAX,
+                            abilitato = d.ABILITATO,
+                            dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                            SelezionaDipendenteDaElaborare = false
+                        };
+
+                        ledem.Add(edem);
+                    }
+                }
+
+            }
+
+
+            return ledem;
 
         }
 

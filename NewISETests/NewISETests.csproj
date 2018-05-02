@@ -69,6 +69,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Controllers\ElaborazioniControllerTests.cs" />
     <Compile Include="Controllers\MaggiorazioneAbitazioneControllerTests.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioniTests.cs" />
     <Compile Include="Models\dtObj\dtRicalcoloParametriTests.cs" />

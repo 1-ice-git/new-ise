@@ -1,0 +1,19 @@
+﻿#ContSelezioneMeseAnno {
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-right-color: green;
+    max-height: 685px;
+    width: 100%;
+    margin-top: 5px;
+    min-height: 685px;
+    border-bottom: black solid medium;
+}
+
+#divMesiAnniElaborati {
+    border: green solid thin;
+    margin-right: 5px;
+}
+
+#divMesiAnniElaborati > div {
+    margin-top: 15px;
+}
