@@ -89,7 +89,7 @@
 
                 }
 
-                <li class="disabled" id="mnIndennità"><a id="lkIndennità" disabled href="#tabIndennita" data-toggle="tab">Indennità</a></li>
+                <li class="disabled" id="mnIndennita"><a id="lkIndennita" disabled href="#tabIndennita" data-toggle="tab" onclick="GestioneIndennita();">Indennità</a></li>
                 <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#RiepilogoVoci" data-toggle="tab">Riepilogo Voci</a></li>
                 <li class="disabled" id="mnProvvidenzeScolastiche"><a id="lkProvvidenzeScolastiche" disabled href="#tabProvvidenzeScolastiche" data-toggle="tab" onclick="ProvvidenzeScolastiche();">Provv.</a></li>
             </ul>
@@ -188,6 +188,43 @@
             },
             complete: function () {
                 $("#hMenuInLavorazione").val("mnGestioneTrasferimento");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function GestioneIndennita() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/Indennita/GestioneIndennita";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabIndennita").empty();
+                $("#tabIndennita").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnIndennita");
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -481,7 +518,7 @@
     }
 
     function GestioneMenu() {
-        //   debugger;
+        //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         var admin = '@admin';
 
@@ -521,8 +558,8 @@
             $("#lkRichiamo").attr("disabled", "disabled");
             $("#mnRichiamo").addClass("disabled");
 
-            $("#lkIndennità").attr("disabled", "disabled");
-            $("#mnIndennità").addClass("disabled");
+            $("#lkIndennita").attr("disabled", "disabled");
+            $("#mnIndennita").addClass("disabled");
 
             $("#lkRiepilogoVoci").attr("disabled", "disabled");
             $("#mnRiepilogoVoci").addClass("disabled");
@@ -530,12 +567,13 @@
             $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
             $("#mnProvvidenzeScolastiche").addClass("disabled");
 
+
         }
 
     }
 
     function GestioneAbilitazioneMenu(idTrasferimento) {
-        // debugger;
+        //debugger;
 
         if (MenuGestioneTrasferimento(idTrasferimento) == 1) {
             $("#lkGestioneTrasferimento").removeAttr("disabled");
@@ -621,6 +659,21 @@
             $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
             $("#mnProvvidenzeScolastiche").addClass("disabled");
             $("#lkProvvidenzeScolastiche").removeAttr("onClick");
+        }
+
+
+
+        if (MenuIndennita(idTrasferimento) == 1) {
+            //debugger;
+            $("#lkIndennita").removeAttr("disabled");
+            $("#mnIndennita").removeClass("disabled");
+            $('#lkIndennita').attr('onClick', 'GestioneIndennita();');
+        }
+        else {
+            //debugger;
+            $("#lkIndennita").attr("disabled", "disabled");
+            $("#mnIndennita").addClass("disabled");
+            $("#lkIndennita").removeAttr("onClick");
         }
 
     }
@@ -995,6 +1048,54 @@
 
                     if (result.err == "" || result.err == undefined) {
                         if (result.VerificaProvvidenze != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuIndennita(idTrasferimento) {
+        //debugger;
+        var rotta = "/Indennita/VerificaIndennita";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaIndennita != 0) {
                             valoreRitorno = 1;
                         }
                         else {
