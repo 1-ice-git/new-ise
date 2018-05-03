@@ -12,26 +12,20 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class NETTO
+    public partial class MESEANNOELABORAZIONE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public NETTO()
+        public MESEANNOELABORAZIONE()
         {
-            this.FLUSSICEDOLINO = new HashSet<FLUSSICEDOLINO>();
-            this.OA = new HashSet<OA>();
+            this.TEORICI = new HashSet<TEORICI>();
         }
     
-        public decimal IDNETTO { get; set; }
-        public decimal IDTEORICI { get; set; }
-        public decimal IDALIQCONTR { get; set; }
-        public decimal IDVOCI { get; set; }
-        public decimal ALIQUOTAFISCALEGEPE { get; set; }
-        public decimal IMPORTONETTO { get; set; }
+        public decimal IDMESEANNOELAB { get; set; }
+        public decimal MESE { get; set; }
+        public decimal ANNO { get; set; }
+        public bool ELABORATO { get; set; }
     
-        public virtual ALIQUOTECONTRIBUTIVE ALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FLUSSICEDOLINO> FLUSSICEDOLINO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OA> OA { get; set; }
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
     }
 }

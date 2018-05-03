@@ -1,0 +1,44 @@
+﻿<div class="row">
+    <div class="col-xs-12">
+        <div id="divMesiAnniElaborati">
+            <div class="form-group">
+                @Html.Label("lblAnniMesiElaborati", "Seleziona Mese-Anno", new { @class = "control-label col-xs-5" })
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati", @class = "form-control select2 select2-select" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a data-toggle="tab" href="#avvioCalcolo">Avvia calcolo</a></li>
+            <li><a data-toggle="tab" href="#inputManualeVoci">Input manuale voci</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="avvioCalcolo" class="tab-pane fade in active">
+                <div id="divViewDipDaElab">
+                    @Html.Action("DipendentiDaElaborare", "Elaborazioni")
+                </div>
+            </div>
+            <div id="inputManualeVoci" class="tab-pane fade">
+                <h3>Input manuale voci</h3>
+                <p>Contenuto menu input manuale voci.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $("#mesiAnniElaborati").select2({
+        placeholder: "Seleziona il mese-anno",
+        allowClear: true,
+        language: "it",
+        width: '150'
+    });
+</script>
+

@@ -1,0 +1,25 @@
+﻿
+
+@{
+    ViewBag.Title = "Elaborazioni";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+}
+
+<link href="~/Content/css/Elaborazioni.css" rel="stylesheet" />
+
+
+<div class="row">
+    <div class="col-xs-4">
+        <div id="ContSelezioneMeseAnno">
+            @Html.Action("SelezionaMeseAnno", "Elaborazioni")
+        </div>
+    </div>
+    <div class="col-xs-80">
+        <div id="ContElencoElaborazioni">
+
+        </div>
+    </div>
+</div>
+

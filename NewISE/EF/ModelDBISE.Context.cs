@@ -48,6 +48,7 @@ namespace NewISE.EF
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         public virtual DbSet<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
+        public virtual DbSet<CONT_OA> CONT_OA { get; set; }
         public virtual DbSet<DESTINATARI> DESTINATARI { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<DOC_ATER> DOC_ATER { get; set; }
@@ -77,8 +78,8 @@ namespace NewISE.EF
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
+        public virtual DbSet<MESEANNOELABORAZIONE> MESEANNOELABORAZIONE { get; set; }
         public virtual DbSet<MODIFICHEMAGFAM> MODIFICHEMAGFAM { get; set; }
-        public virtual DbSet<NETTO> NETTO { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
         public virtual DbSet<OA> OA { get; set; }

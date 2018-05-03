@@ -1,0 +1,143 @@
+﻿@using NewISE.Models.DBModel
+@{
+    decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idParentela = Convert.ToDecimal(EnumParentela.Coniuge);
+}
+
+<div style="padding-left: 25px;padding-right:35px;padding-top:20px">
+    <div class="row">
+        <div class="col-xs-12 fa-border" style="background-color:white; border:solid;border-width:thin;margin-bottom:15px;border-radius:15px">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="divVisualizzaModificheConiugeTitolo">
+                        @Html.Action("VisualizzaModificheConiugeTitolo", "VariazioneMaggiorazioniFamiliari", new {  idConiuge = idConiuge, idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="divVisualizzaModificheConiugeDettaglio">
+                        @Html.Action("VisualizzaModificheConiugeDettaglio", "VariazioneMaggiorazioniFamiliari", new {  idConiuge = idConiuge })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="divVisualizzaModificheConiugeLink">
+                        @Html.Action("VisualizzaModificheConiugeLink", "VariazioneMaggiorazioniFamiliari", new {  idConiuge = idConiuge, idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="padding-left: 50px">
+    @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</div>
+
+<div class="modal fade" id="ModalDettaglioPaginaConiuge" tabindex="-1" role="dialog" aria-labelledby="ModalDettaglioPaginaConiugeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal-title alert alert-info text-info" id="TitoloDettaglioPagina"></div>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="divDettaglioPaginaConiuge">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function VisualizzaDettaglioAdfConiuge( idConiuge) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/VisualizzaModificheAdfConiuge";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idConiuge: idConiuge
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+                $("#TitoloDettaglioPagina").empty();
+                $("#TitoloDettaglioPagina").html("<h3>Precedenti Altri Dati Familiari Coniuge</h3>");
+
+                $('#ModalDettaglioPaginaConiuge').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divDettaglioPaginaConiuge").empty();
+                $("#divDettaglioPaginaConiuge").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function VisualizzaDocumentiPrecedentiConiuge(idFamiliare, idParentela, idMaggiorazioniFamiliari) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoDocumentiPrecedenti";
+        var idMaggiorazioniFamiliari = parseInt('@idMaggiorazioniFamiliari');
+        var idFamiliare = idFamiliare;
+        var idParentela = idParentela;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFamiliare: idFamiliare,
+                idParentela: idParentela,
+                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+                $("#TitoloDettaglioPagina").empty();
+                $("#TitoloDettaglioPagina").html("<h3>Precedenti Documenti Coniuge</h3>");
+
+                $('#ModalDettaglioPaginaConiuge').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divDettaglioPaginaConiuge").empty();
+                $("#divDettaglioPaginaConiuge").html(result);
+
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+</script>
+

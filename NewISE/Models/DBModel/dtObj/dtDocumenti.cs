@@ -45,6 +45,30 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void AssociaDocumentoFiglio(decimal idFiglio, decimal idDocumento, ModelDBISE db)
+        {
+            try
+            {
+                var f = db.FIGLI.Find(idFiglio);
+                var item = db.Entry<FIGLI>(f);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.DOCUMENTI).Load();
+                var d = db.DOCUMENTI.Find(idDocumento);
+                f.DOCUMENTI.Add(d);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il documento per il figlio. {0}", f.COGNOME + " " + f.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public DocumentiModel GetFormularioTitoliViaggio(decimal idTitoloViaggio)
         {
             DocumentiModel dm = new DocumentiModel();
@@ -714,6 +738,7 @@ namespace NewISE.Models.DBModel.dtObj
             d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
             d.DATAINSERIMENTO = dm.dataInserimento;
             d.FILEDOCUMENTO = ms.ToArray();
+            d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
             db.DOCUMENTI.Add(d);
 
@@ -950,7 +975,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.FK_IDDOCUMENTO = dm.fk_iddocumento;
-                d.IDSTATORECORD = dm.idStatoRecord;
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione; 
 
                 f.DOCUMENTI.Add(d);
 
@@ -984,7 +1009,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.FK_IDDOCUMENTO = dm.fk_iddocumento;
-                d.IDSTATORECORD = dm.idStatoRecord;
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione; 
 
                 c.DOCUMENTI.Add(d);
 
@@ -1019,7 +1044,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.FK_IDDOCUMENTO = dm.fk_iddocumento;
-                d.IDSTATORECORD = dm.idStatoRecord;
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione; 
 
                 pr.DOCUMENTI.Add(d);
 

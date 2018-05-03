@@ -14,12 +14,6 @@ namespace NewISE.EF
     
     public partial class ELABINDENNITA
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ELABINDENNITA()
-        {
-            this.TEORICI = new HashSet<TEORICI>();
-        }
-    
         public decimal IDELABIND { get; set; }
         public decimal IDTRASFINDENNITA { get; set; }
         public decimal IDREGOLA { get; set; }
@@ -35,8 +29,6 @@ namespace NewISE.EF
         public bool ELABORATO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
         public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
     }

@@ -14,13 +14,8 @@ namespace NewISE.EF
     
     public partial class OA
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public OA()
-        {
-            this.NETTO = new HashSet<NETTO>();
-        }
-    
         public decimal CTB_ID_RECORD { get; set; }
+        public decimal IDTEORICI { get; set; }
         public short CTB_MATRICOLA { get; set; }
         public string CTB_QUALIFICA { get; set; }
         public string CTB_COD_SEDE { get; set; }
@@ -36,7 +31,6 @@ namespace NewISE.EF
         public Nullable<short> CTB_GIORNI_MAB { get; set; }
         public Nullable<System.DateTime> CTB_DT_CONTABILE { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NETTO> NETTO { get; set; }
+        public virtual CONT_OA CONT_OA { get; set; }
     }
 }

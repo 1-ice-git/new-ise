@@ -1,0 +1,149 @@
+﻿@using NewISE.Models.DBModel
+@{
+    decimal idFigli = Convert.ToDecimal(ViewData["idFigli"]);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idParentela = Convert.ToDecimal(EnumParentela.Figlio);
+}
+
+<div style="padding-left: 25px;padding-right:35px;padding-top:20px">
+    <div class="row">
+        <div class="col-xs-12 fa-border" style="background-color:white; border:solid;border-width:thin;margin-bottom:15px;border-radius:15px">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="divVisualizzaModificheFiglioTitolo">
+                        @Html.Action("VisualizzaModificheFiglioTitolo", "VariazioneMaggiorazioniFamiliari", new {  idFigli = idFigli, idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="divVisualizzaModificheFigliDettaglio">
+                        @Html.Action("VisualizzaModificheFiglioDettaglio", "VariazioneMaggiorazioniFamiliari", new { idFigli = idFigli })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="divVisualizzaModificheFigliLink">
+                        @Html.Action("VisualizzaModificheFiglioLink", "VariazioneMaggiorazioniFamiliari", new {  idFigli = idFigli, idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="padding-left: 50px">
+    @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</div>
+
+    <div class="modal fade" id="ModalDettaglioPaginaFiglio" tabindex="-1" role="dialog" aria-labelledby="ModalDettaglioPaginaFiglioLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="modal-title alert alert-info text-info" id="TitoloDettaglioPagina"></div>
+                </div>
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <div id="divDettaglioPaginaFiglio">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+    function VisualizzaDettaglioAdfFiglio(idFigli) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/VisualizzaModificheAdfFiglio";
+        //var idMaggiorazioniFamiliari = idMaggiorazioniFamiliari;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFigli: idFigli
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+                $("#TitoloDettaglioPagina").empty();
+                $("#TitoloDettaglioPagina").html("<h3>Precedenti Altri Dati Familiari Figlio</h3>");
+
+                $('#ModalDettaglioPaginaFiglio').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divDettaglioPaginaFiglio").empty();
+                $("#divDettaglioPaginaFiglio").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function VisualizzaDocumentiPrecedentiFiglio(idFamiliare, idParentela, idMaggiorazioniFamiliari) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoDocumentiPrecedenti";
+        var idMaggiorazioniFamiliari = parseInt('@idMaggiorazioniFamiliari');
+        var idFamiliare = idFamiliare;
+        var idParentela = idParentela;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFamiliare: idFamiliare,
+                idParentela: idParentela,
+                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+                $("#TitoloDettaglioPagina").empty();
+                $("#TitoloDettaglioPagina").html("<h3>Precedenti Documenti Figlio</h3>");
+
+                $('#ModalDettaglioPaginaFiglio').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divDettaglioPaginaFiglio").empty();
+                $("#divDettaglioPaginaFiglio").html(result);
+
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+
+
+    </script>
+

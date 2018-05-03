@@ -1915,149 +1915,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-
-        //public void SituazioneMagFamVariazione_old(decimal idMaggiorazioniFamiliari, out bool rinunciaMagFam,
-        //                       out bool richiestaAttivazione, out bool Attivazione,
-        //                       out bool datiConiuge, out bool datiParzialiConiuge,
-        //                       out bool datiFigli, out bool datiParzialiFigli,
-        //                       out bool siDocConiuge, out bool siDocFigli,
-        //                       out bool docFormulario)
-        //{
-        //    rinunciaMagFam = false;
-        //    richiestaAttivazione = false;
-        //    Attivazione = false;
-        //    datiConiuge = false;
-        //    datiParzialiConiuge = false;
-        //    datiFigli = false;
-        //    datiParzialiFigli = false;
-        //    siDocConiuge = false;
-        //    siDocFigli = false;
-        //    docFormulario = false;
-
-
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-
-        //        var lamf =
-        //            mf.ATTIVAZIONIMAGFAM.Where(
-        //                e => (e.RICHIESTAATTIVAZIONE == false && e.ATTIVAZIONEMAGFAM == false && e.ANNULLATO == false))
-        //                .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
-
-        //        //var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false);
-
-        //        if (lamf?.Any() ?? false)
-        //        {
-        //            var amf = lamf.First();
-
-
-        //            if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
-        //            {
-
-        //                var rmf =
-        //                    mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
-        //                        .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
-        //                        .First();
-
-        //                rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
-        //                richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
-        //                Attivazione = amf.ATTIVAZIONEMAGFAM;
-
-        //                var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
-        //                if (ld?.Any() ?? false)
-        //                {
-        //                    docFormulario = true;
-        //                }
-
-
-        //                if (mf.CONIUGE != null)
-        //                {
-        //                    var lc = mf.CONIUGE.ToList();
-        //                    if (lc?.Any() ?? false)
-        //                    {
-        //                        datiConiuge = true;
-        //                        foreach (var c in lc)
-        //                        {
-        //                            var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
-
-        //                            if (nadc > 0)
-        //                            {
-        //                                datiParzialiConiuge = false;
-        //                            }
-        //                            else
-        //                            {
-        //                                datiParzialiConiuge = true;
-        //                                break;
-        //                            }
-        //                        }
-
-        //                        foreach (var c in lc)
-        //                        {
-        //                            var ndocc = c.DOCUMENTI.Count;
-
-        //                            if (ndocc > 0)
-        //                            {
-        //                                siDocConiuge = true;
-        //                            }
-        //                            else
-        //                            {
-        //                                siDocConiuge = false;
-        //                                break;
-        //                            }
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        datiConiuge = false;
-        //                    }
-
-        //                }
-
-        //                if (mf.FIGLI != null)
-        //                {
-        //                    var lf = mf.FIGLI.ToList();
-
-        //                    if (lf?.Any() ?? false)
-        //                    {
-        //                        datiFigli = true;
-        //                        foreach (var f in lf)
-        //                        {
-        //                            var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
-
-        //                            if (nadf > 0)
-        //                            {
-        //                                datiParzialiFigli = false;
-        //                            }
-        //                            else
-        //                            {
-        //                                datiParzialiFigli = true;
-        //                                break;
-        //                            }
-        //                        }
-
-        //                        foreach (var f in lf)
-        //                        {
-        //                            var ndocf = f.DOCUMENTI.Count;
-        //                            if (ndocf > 0)
-        //                            {
-        //                                siDocFigli = true;
-        //                            }
-        //                            else
-        //                            {
-        //                                siDocFigli = false;
-        //                                break;
-        //                            }
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        datiFigli = false;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        
 
         public void NotificaRichiestaVariazione(decimal idAttivazioneMagFam)
         {
@@ -2081,6 +1939,54 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
+                            //cerca coniuge in lavorazione e lo mette da attivare
+                            var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach(var c in lc)
+                            {
+                                c.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                if(db.SaveChanges()<=0)
+                                {
+                                    throw new Exception("Errore in fase di richiesta attivazione per le maggiorazioni familiari (coniuge).");
+                                }
+
+                            }
+                            //cerca figlio in lavorazione e lo mette da attivare
+                            var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var f in lf)
+                            {
+                                f.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di richiesta attivazione per le maggiorazioni familiari (figli).");
+                                }
+
+                            }
+                            //cerca documenti in lavorazione e lo mette da attivare
+                            var ld = amf.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var d in ld)
+                            {
+                                d.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di richiesta attivazione per le maggiorazioni familiari (documenti).");
+                                }
+
+                            }
+                            //cerca altri dati in lavorazione e lo mette da attivare
+                            var ladf = amf.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var adf in ladf)
+                            {
+                                adf.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di richiesta attivazione per le maggiorazioni familiari (altri dati familiari).");
+                                }
+
+                            }
+                            // manca pensione coniuge
+
+
+
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 using (dtTrasferimento dtt = new dtTrasferimento())

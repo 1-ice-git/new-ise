@@ -80,6 +80,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di viaggio congedo è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullamentoViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullamentoViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli..
         ///   Cerca una stringa localizzata simile a Si notifica che la richiesta di anticipo per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaAnticipi {
@@ -244,6 +254,16 @@ namespace Resources {
         
         /// <summary>
         ///   Cerca una stringa localizzata simile a Notifica dell&apos;invio dei passaporti/visti per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
+        ///   Looks up a localized string similar to Notifica che la richiesta di viaggio congedo è stata confermata..
+        /// </summary>
+        internal static string MessaggioAttivazioneViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;invio dei passaporti/visti per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
         /// </summary>
         internal static string MessaggioInvioPratichePassaporto {
             get {
@@ -343,6 +363,16 @@ namespace Resources {
         
         /// <summary>
         ///   Cerca una stringa localizzata simile a Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
+        ///   Looks up a localized string similar to Si informa che il dipendente ha effettuato la richiesta di viaggio congedo..
+        /// </summary>
+        internal static string MessaggioNotificaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaporto {
             get {
@@ -469,6 +499,16 @@ namespace Resources {
         
         /// <summary>
         ///   Cerca una stringa localizzata simile a Attivazione richiesta anticipo..
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta del viaggio congedo.
+        /// </summary>
+        internal static string OggettoAnnullaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione richiesta anticipo..
         /// </summary>
         internal static string OggettoAttivaRichiestaAnticipi {
             get {
@@ -505,6 +545,16 @@ namespace Resources {
         
         /// <summary>
         ///   Cerca una stringa localizzata simile a Attivazione della maggiorazione abitazione..
+        ///   Looks up a localized string similar to Attivazione Viaggio Congedo.
+        /// </summary>
+        internal static string OggettoAttivaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoAttivaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione della maggiorazione abitazione..
         /// </summary>
         internal static string OggettoAttivazioneMaggiorazioneAbitazione {
             get {
@@ -649,6 +699,16 @@ namespace Resources {
         
         /// <summary>
         ///   Cerca una stringa localizzata simile a Notifica della richiesta per le pratiche passaporto/visti..
+        ///   Looks up a localized string similar to Notifica richiesta Viaggio Congedo.
+        /// </summary>
+        internal static string OggettoNotificaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoNotificaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per le pratiche passaporto/visti..
         /// </summary>
         internal static string OggettoRichiestaPratichePassaporto {
             get {

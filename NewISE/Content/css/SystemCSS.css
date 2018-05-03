@@ -147,3 +147,12 @@ a.disabled {
 ﻿ .BordoRosso {
     border: 1px solid red;
 }
+
+
+.margineTop5px {
+    margin-top: 5px;
+}
+
+.margineTop15px {
+    margin-top: 15px;
+}

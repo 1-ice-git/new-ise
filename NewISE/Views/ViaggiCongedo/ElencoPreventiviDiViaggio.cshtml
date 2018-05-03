@@ -1,98 +1,777 @@
 ﻿@using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
-
+@using NewISE.Models.DBModel.Enum;
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="~/scripts/ckeditor/adapters/jquery.js"></script>
 @{
-   // decimal idViaggioCongedo = Convert.ToDecimal(ViewData["idViaggioCongedo"]);
+    // decimal idViaggioCongedo = Convert.ToDecimal(ViewData["idViaggioCongedo"]);
     //decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
     //bool richiestaEseguita = Convert.ToBoolean(ViewData["richiestaEseguita"]);
     //EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
     decimal id_Viaggio_Congedo= Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]) ;
-    decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);   
+    decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+    decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
+    decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
+    decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
+    bool nuovVC= Convert.ToBoolean(ViewData["NuovoViaggiCongedo"]);
+    string messaggioAnnullaRichiesta = Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo;
+    decimal idTipoDocumento = (decimal)EnumTipoDoc.Preventivo_Viaggio;
 }
+@Html.Hidden("HI_idTrasferimento", idTrasferimento)
+@Html.Hidden("HI_idDocumentoPreventivo")
 
-
-<p>   
-    <hr />
+<div id="divViaggioCongedioMain">
     <div class="row">
-        <div class="col-xs-5" style="margin-top:5px;left:10px">
+        <div class="col-xs-5" id="DivUploadPreventiviViaggio" style="margin-top:5px;left:10px">
             <table id="tabUploadPreventiviViaggio">
-                @Html.Action("ElencoUploadPreventiviViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo= id_Attiv_Viaggio_Congedo, idTrasferimento=idTrasferimento })
+                @Html.Action("ElencoUploadPreventiviViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo= id_Attiv_Viaggio_Congedo, idTrasferimento=idTrasferimento , idFaseInCorso = idFaseInCorso, nuovVC= nuovVC })
             </table>
         </div>
     </div>
-    <div  class="row">
-            <div id="tabListaPreventiviDiViaggi" class="pull-left" style="margin-top:5px;margin-left:40px;width:1110px">
-                <table >
-                    @Html.Action("ListaPreventiviDiViaggio", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento })
-                </table>
-            </div>
-     </div>
+    <div class="row">
+        <div id="tabListaPreventiviDiViaggi" class="pull-left" style="margin-top:5px;margin-left:40px;width:1110px">
+            <table>
+                @Html.Action("ListaPreventiviDiViaggio", "ViaggiCongedo", new {  idTrasferimento = idTrasferimento, nuovVC = nuovVC })
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div id="tabFase2PDFPreventiviDiViaggi" style="margin-top:5px;margin-left:300px;width:500px">
+            <table id="tabUploadDocumentiViaggiCongedo">
+                @Html.Action("ElencoUploadDocumentiViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idFaseInCorso= idFaseInCorso, idTrasferimento= idTrasferimento, nuovVC= nuovVC })
+            </table>
+        </div>
+    </div>
+    
+</div>
 
         <div class="row">
-            <div id="tabPulsantiPreventiviDiViaggi" style="margin-top:5px;margin-left:40px;width:500px">
-                @*<div class="col-md-5" style="margin-top:10px; left:150px">
-                    <table id="tabUploadDocumentiViaggiCongedo">
-                        @Html.Action("ElencoUploadDocumentiViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo })
-                    </table>
-                </div>
-                <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-                    <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
-                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                        Notifica richiesta
-                    </button>
-
-                    <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
-                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                        Attiva preventivo
-                    </button>
-
-                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
-                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                        Annulla richiesta
-                    </button>
-                </div>*@
+            <div id="tabPulsantiPreventiviDiViaggi" style="margin-top:5px;margin-left:40px;width:500px" class="pull-right">
                 <table>
-                    @Html.Action("PulsantiPreventiviDiViaggio", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento })
+                    @Html.Action("PulsantiPreventiviDiViaggio", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento, nuovVC= nuovVC })
                 </table>
             </div>
+    </div>
+
+<div class="modal fade" id="ModalEliminaPreventiviDocumenti" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaPreventiviDocumentiLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Eliminazione documento</h3>
             </div>
-        <script type="text/javascript">
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewEliminaPreventiviDocumenti">
+                    <label>Procedere con l'eliminazione dell'elemento?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaEliminaPreventiviDocumenti" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaEliminaPreventiviDocumenti();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-           
-            function TabElencoPreventivi() {
-                //debugger;
-                var rotta = "/ViaggiCongedo/ListaPreventiviDiViaggio";
-                var idTrasferimento = @idTrasferimento;
-                //   var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+<div class="modal fade" id="ModalNuovoViaggiCongedo" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoViaggiCongedoLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Nuovo Viaggio Congedo</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNuovoViaggiCongedo">
+                    <label>Procedere con una nuova creazione Viaggi Congedo?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNuovoViaggiCongedo" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNuovoViaggiCongedo();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                $.ajax({
-                    url: rotta,
-                    type: "POST", //Le info testuali saranno passate in POST
-                    data: { idTrasferimento: idTrasferimento },
-                    dataType: 'html',
-                    async: false,
-                    beforeSend: function () {
-                        //debugger;
-                        VerificaAutenticazione();
-                        //$('#inviaDocModal').modal('show');
-                      //  Blocca();
-                    },
-                    success: function (result) {
-                        //debugger;
-                        $("#tabListaPreventiviDiViaggi").empty();
-                        $("#tabListaPreventiviDiViaggi").html(result);
-                    },
-                    error: function (error) {
-                        //debugger;
-                   //     Sblocca();
-                        var msg = error.responseText;
-                        ErroreElaborazioneAjax(msg);
+<div class="modal fade" id="ModalNotificaPreventiviRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaPreventiviRichiestaLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaPreventiviRichiesta">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotificaPreventiviRichiesta" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaPreventiviRichiesta();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaPreventiviRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaPreventiviRichiestaLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaPreventiviRichiesta">
+                    <label>Procedere con l'attivazione della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazionePreventiviRichiesta" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaPreventiviRichiesta();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaPreventiviRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaPreventiviRichiestaLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>      
+                <div id="idMessaggioTitolo" class="text-danger">Messaggio</div>       
+                <div id="contenutomsg">
+                    <textarea id="corpoMessaggioVC" style="width:860px;height:100px;" name="corpoMessaggioVC">@messaggioAnnullaRichiesta</textarea>
+                    @*<script type="text/javascript">
+                        CKEDITOR.config.readOnly = false;
+                        CKEDITOR.editorConfig = function (config) {
+                        config.title = "";//levare il tooltip
                     }
-                });
+                    </script>*@
+                </div> 
+                <div id="idControllaContenutoMsgVC" class="text-danger" style="display:none">Messaggio obbligatorio</div>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaPreventiviRichiesta">
+                    <label>Procedere con l'annullamento della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnullaPreventiviRichiesta" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaPreventiviRichiesta();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="NewDocPreventiviModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="NewPreventiviModelLabel">Documenti</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="NewViewPreventiviDocumento">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dialog-confirm" title="Contenuto mail vuoto" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Corpo messaggio vuoto</p>
+</div>
+
+<script type="text/javascript">
+
+    //$(function () {
+    //    CKEDITOR.replace("corpoMessaggioVC", { customConfig: "~/Scripts/ckeditor/config.js", height: 100 });
+    //});
+
+    $("#NewDocPreventiviModal").on("hidden.bs.modal", function () {
+        //  debugger;
+        TabElencoPreventivi();
+        GestionePulsantiPVC();
+        ControllaTastoNotifica();
+        //  TabElencoPreventivi();
+    });
+
+    $("#HI_id_Fase_In_Corso").val('@idFaseInCorso');
+
+    ControllaTastoNotifica();
+    //  ElencoUploadDocumentiVersiFase2();
+    GestionePulsantiUploadPreventivi()
+
+    function ElencoUploadDocumentiVersiFase2() {
+        //debugger;
+        var rotta = "/ViaggiCongedo/ElencoUploadDocumentiViaggiCongedo";
+        var idTrasferimento =  parseInt('@idTrasferimento');
+        //   var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+        var nuovVC='@nuovVC';
+        var idViaggioCongedo = '@id_Viaggio_Congedo';
+        var idAttivViaggioCongedo = '@id_Attiv_Viaggio_Congedo';
+        var idFaseInCorso= '@idFaseInCorso';
+        // new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idFaseInCorso= idFaseInCorso, idTrasferimento= idTrasferimento, nuovVC= nuovVC })
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento ,idViaggioCongedo:idViaggioCongedo,idAttivViaggioCongedo:idAttivViaggioCongedo,idFaseInCorso:idFaseInCorso,nuovVC:nuovVC},
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //  Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabFase2PDFPreventiviDiViaggi").empty();
+                $("#tabFase2PDFPreventiviDiViaggi").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //     Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function TabElencoPreventivi() {
+        //debugger;
+        var rotta = "/ViaggiCongedo/ListaPreventiviDiViaggio";
+        var idTrasferimento =  parseInt('@idTrasferimento');
+        //   var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+        var nuovVC='@nuovVC';
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento ,nuovVC:nuovVC},
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //  Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabListaPreventiviDiViaggi").empty();
+                $("#tabListaPreventiviDiViaggi").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //     Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+
+    function ConfermaNotificaPreventiviRichiesta() {
+        // debugger;
+        var rotta = "/ViaggiCongedo/ConfermaNotificaPreventiviRichiesta";
+
+        var idAttivazioneVC = parseInt($('#HIid_Attiv_Viaggio_Congedo').val());
+        var idTrasferimento =  parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivazioneVC: idAttivazioneVC,idTrasferimento:idTrasferimento },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //  debugger;
+                if (result.err == "") {
+                    //TrasportoEffettiPartenza();
+                    //GestioneRinunciaTEPartenza();
+                    //GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+                    //InfoElaborazioneAjax(result.msg);
+                    //
+
+                    GestionePulsantiPVC();
+                    TabElencoPreventivi();
+                    GestionePulsantiUploadPreventivi();
+                    ControllaTastoNotifica();
+                    AggiornaPulsanteNuoviDocViaggiCongedo2Fase();
+                    ElencoDocumentiFase2();
+                    GestionePulsantiUploadPreventivi();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                debugger;
+                //var msg = errorThrow.err;
+                //ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function GestionePulsantiPVC() {
+        //  debugger;
+        var rotta = "/ViaggiCongedo/PulsantiPreventiviDiViaggio";
+        //  var valoreSelezionato = $('input:radio[name="attivare"]:checked').val();
+        var idAttivazioneVC = parseInt($('#HIid_Attiv_Viaggio_Congedo').val());
+        var id_Viaggio_Congedo = parseInt('@id_Viaggio_Congedo');
+        var idTrasferimento = parseInt('@idTrasferimento');
+        var nuovVC='@nuovVC';
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            // data: { idAttivazioneVC: idAttivazioneVC },
+            data: { idViaggioCongedo :id_Viaggio_Congedo,  idAttivViaggioCongedo:idAttivazioneVC ,  idTrasferimento:idTrasferimento,nuovVC:nuovVC},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //  debugger;
+                //TrasportoEffettiPartenza();
+                //GestioneRinunciaTEPartenza();
+                //GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+                //InfoElaborazioneAjax(result.msg);
+                //
+
+                $("#tabPulsantiPreventiviDiViaggi").empty();
+                $("#tabPulsantiPreventiviDiViaggi").html(result);
+
+                $("#PulsantiDiPVC").empty();
+                $("#PulsantiDiPVC").html(result);
+
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                //var msg = errorThrow.err;
+                //ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function GestionePulsantiUploadPreventivi() {
+        //  debugger;
+        var rotta = "/ViaggiCongedo/ElencoUploadPreventiviViaggiCongedo";
+        //  var valoreSelezionato = $('input:radio[name="attivare"]:checked').val();
+        var idAttivazioneVC = parseInt($('#HIid_Attiv_Viaggio_Congedo').val());
+        var id_Viaggio_Congedo = parseInt('@id_Viaggio_Congedo');
+        var idTrasferimento = parseInt('@idTrasferimento');
+        var idFaseInCorso=parseInt('@idFaseInCorso');
+        var nuovVC='@nuovVC';
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            // data: { idAttivazioneVC: idAttivazioneVC },
+            data: { idViaggioCongedo :id_Viaggio_Congedo,  idAttivViaggioCongedo:idAttivazioneVC ,  idTrasferimento:idTrasferimento,idFaseInCorso:idFaseInCorso,nuovVC:nuovVC},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                $("#DivUploadPreventiviViaggio").empty();
+                $("#DivUploadPreventiviViaggio").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                //var msg = errorThrow.err;
+                //ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaAttivaPreventiviRichiesta()
+    {
+        // debugger;
+        var rotta = "/ViaggiCongedo/ConfermaAttivaPreventiviRichiesta";
+        var idDocumento = $('input:radio[name="attivare"]:checked').val();
+        if(!idDocumento) idDocumento=0;
+        var idAttivazioneVC =  parseInt('@id_Attiv_Viaggio_Congedo');
+        var idFaseInCorso=  parseInt('@idFaseInCorso');
+        var idTrasferimento= parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivazioneVC: idAttivazioneVC, idDocumento :idDocumento,idFaseInCorso: idFaseInCorso,idTrasferimento:idTrasferimento},
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //    debugger;
+                if (result.err == "") {
+                    //TrasportoEffettiPartenza();
+                    //GestioneRinunciaTEPartenza();
+                    //GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+                    //InfoElaborazioneAjax(result.msg);
+                    //
+                    //$("#tabListaPreventiviDiViaggi").empty();
+                    //$("#tabListaPreventiviDiViaggi").html(result);
+
+                    GestionePulsantiPVC();
+                    TabElencoPreventivi();
+                    GestionePulsantiUploadPreventivi();
+                    AggiornaPulsanteNuoviDocViaggiCongedo2Fase();
+                    ElencoUploadDocumentiVersiFase2();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //    debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ElencoDocumentiViaggioCongedo() {
+        //    debugger;
+
+        $("#tabFase2PDFPreventiviDiViaggi").hide();
+
+        var rotta = "/ViaggiCongedo/ElencoDocumentiVC";
+        var idTrasferimento =parseInt('@idTrasferimento');
+        //   var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //  Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divViaggioCongedioMain").empty();
+                $("#divViaggioCongedioMain").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //     Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function   ConfermaEliminaPreventiviDocumenti()
+    {
+        //alert($('#HI_idDocumentoPreventivo').val());
+        // debugger;
+        var idPreventivoDocumento=parseInt($('#HI_idDocumentoPreventivo').val());
+        if(!idPreventivoDocumento) idPreventivoDocumento=0;
+        var rotta = "/ViaggiCongedo/ConfermaEliminaDocumentoPreventivo";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idPreventivoDocumento: idPreventivoDocumento },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                // VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    GestionePulsantiPVC();
+                    TabElencoPreventivi();
+                    GestionePulsantiUploadPreventivi();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
             }
 
+        });
+    }
+    //
+    function   ConfermaNuovoViaggiCongedo()
+    {
+        //  alert($('#HI_IdTrasferimento').val());
+        // debugger;
+        var idTrasferimento=parseInt($('#HI_idTrasferimento').val());
+        var nuovVC='@nuovVC';
+        if(!idTrasferimento) idTrasferimento=0;
+        var rotta = "/ViaggiCongedo/ConfermaNuovoViaggiCongedo";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento,nuovVC: nuovVC },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                // VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    GestionePulsantiPVC();
+                    TabElencoPreventivi();
+                    GestionePulsantiUploadPreventivi();
+                    AggiornaPulsanteNuoviDocViaggiCongedo2Fase();
+                    ElencoUploadDocumentiVersiFase2();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAnnullaPreventiviRichiesta()
+    {
+        //debugger;
+        var x=$('#corpoMessaggioVC').val();
+        if(x.trim() =='')
+        {
+            $('#idControllaContenutoMsgVC').show();
+            //  Sblocca();
+            Check();
+            return false;
+        }
+        var idPreventivoDocumento=parseInt($('#HI_idDocumentoPreventivo').val());
+        if(!idPreventivoDocumento) idPreventivoDocumento=0;
+        var idTrasferimento=parseInt('@idTrasferimento');
+        var rotta = "/ViaggiCongedo/ConfermaAnnullaPreventiviRichiesta";
+        var idAttivazioneVC = parseInt('@id_Attiv_Viaggio_Congedo');
+        var idFaseInCorso = parseInt('@idFaseInCorso');
+        var corpoMessaggioVC=$('#corpoMessaggioVC').val();
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivazioneVC: idAttivazioneVC,idFaseInCorso:idFaseInCorso ,corpoMessaggioVC: corpoMessaggioVC,idTrasferimento:idTrasferimento},
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                // VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    GestionePulsantiPVC();
+                    TabElencoPreventivi(); 
+                    GestionePulsantiUploadPreventivi();
+                    ControllaTastoNotifica();
+                    AggiornaPulsanteNuoviDocViaggiCongedo2Fase();
+                    ElencoDocumentiFase2();
+
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+    function AggiornaPulsanteNuoviDocViaggiCongedo2Fase() {
+        //debugger;
+        var rotta = "/ViaggiCongedo/PulsanteNuoviDocViaggiCongedo2Fase";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        var idViaggioCongedo = parseInt('@id_Viaggio_Congedo');
+        var idFaseInCorso = parseInt('@idFaseInCorso');
+        var idTipoDocumento = parseInt('@idTipoDocumento');
+        var idAttivViaggioCongedo = parseInt('@id_Attiv_Viaggio_Congedo');
+        //  decimal idViaggioCongedo, decimal idAttivViaggioCongedo, decimal idTrasferimento, decimal  idFaseInCorso,decimal idTipoDocumento)
+        //   var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento, idViaggioCongedo: idViaggioCongedo, idAttivViaggioCongedo: idAttivViaggioCongedo, idFaseInCorso: idFaseInCorso, idTipoDocumento: idTipoDocumento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //  Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#DivUploadDocumentiViaggioFase2").empty();
+                $("#DivUploadDocumentiViaggioFase2").html(result);
+
+
+            },
+            error: function (error) {
+                //debugger;
+                //     Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ElencoDocumentiFase2() {
+        //debugger;
+        var rotta = "/ViaggiCongedo/ListaDocViaggiCongedio2Fase";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        var idViaggioCongedo = parseInt('@id_Viaggio_Congedo');
+        var idFaseInCorso = parseInt('@idFaseInCorso');
+        var idTipoDocumento = parseInt('@idTipoDocumento');
+        var idAttivViaggioCongedo = parseInt('@id_Attiv_Viaggio_Congedo');
+
+        //   var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento, idViaggioCongedo: idViaggioCongedo, idAttivViaggioCongedo: idAttivViaggioCongedo, idFaseInCorso: idFaseInCorso, idTipoDocumento: idTipoDocumento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //  Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabListaDocFase2DiViaggi").empty();
+                $("#tabListaDocFase2DiViaggi").html(result);
+                ////  ControllaTastoNotifica();
+
+            },
+            error: function (error) {
+                //debugger;
+                //     Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function Check()
+    {
+        $('#dialog-confirm').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.ajax({
+                            type: "POST",
+                            url: '',
+                            //  data: { escludiAnnullati: chk, idRiduzioni: idRiduzioni, idCoeffIndRichiamo: id },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //$("#divPViewParametri").empty();
+                                //$("#divPViewParametri").html(result);
+                                //RicercaDocumenti();
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+                        });
+                    },
+                    "class": "ui-button-danger"
+                }
+            ]
+        });
+    }
 
 
         </script>
