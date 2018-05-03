@@ -1871,7 +1871,7 @@ namespace NewISE.Controllers
                 }
 
                 ViewBag.idTrasferimento = idTrasferimento;
-
+                
                 return PartialView(tm);
             }
             catch (Exception ex)

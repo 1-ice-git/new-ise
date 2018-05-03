@@ -314,6 +314,7 @@
     <Content Include="Content\css\CssCheckBox.css" />
     <Content Include="Content\css\cssHome.css" />
     <Content Include="Content\css\Elaborazioni.css" />
+    <Content Include="Content\css\GestioneIndennita.css" />
     <Content Include="Content\css\GestioneTrasferimento.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\NuovaMAB.css" />
@@ -2463,6 +2464,7 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="Controllers\ElaborazioniController.cs" />
+    <Compile Include="Controllers\IndennitaController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
@@ -3522,6 +3524,16 @@
     <Content Include="Views\ProvvidenzeScolastiche\DocumentiPSInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\TabDocumentiPSInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\MessaggioAnnullaProvvidenzeScolastiche.cshtml" />
+    <Content Include="Views\Indennita\AttivitaIndennita.cshtml" />
+    <Content Include="Views\Indennita\Index.cshtml" />
+    <Content Include="Views\Indennita\GestioneIndennita.cshtml" />
+    <Content Include="Views\Indennita\IndennitaBase.cshtml" />
+    <Content Include="Views\Indennita\IndennitaServizio.cshtml" />
+    <Content Include="Views\Indennita\MaggiorazioniFamiliari.cshtml" />
+    <Content Include="Views\Indennita\IndennitaPersonale.cshtml" />
+    <Content Include="Views\Indennita\MaggiorazioneAbitazione.cshtml" />
+    <Content Include="Views\Indennita\IndennitaPrimaSistemazione.cshtml" />
+    <Content Include="Views\Indennita\IndennitadiRichiamo.cshtml" />
     <Content Include="Views\Elaborazioni\Index.cshtml" />
     <Content Include="Views\Elaborazioni\SelezionaMeseAnno.cshtml" />
     <Content Include="Views\Elaborazioni\DipendentiDaElaborare.cshtml" />
