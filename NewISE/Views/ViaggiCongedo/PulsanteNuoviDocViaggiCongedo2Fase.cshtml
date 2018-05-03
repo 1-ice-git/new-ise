@@ -1,78 +1,61 @@
 ﻿@using NewISE.Models.DBModel
 @using NewISE.Models.DBModel.Enum;
 @{
-            // decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
-            decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-            // decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
-            //  decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
-            decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
-            bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
-            bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
-            decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
-            decimal idViaggioCongedo= Convert.ToDecimal(ViewData["idViaggioCongedo"])  ;
-            decimal idAttivViaggioCongedo = Convert.ToDecimal(ViewData["idAttivViaggioCongedo"])  ;
-        }
-<div id="PulsantiUploadDocumentiFase2" class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
+    // decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    // decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
+    //  decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
+    decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
+    bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
+    decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
+    decimal idViaggioCongedo= Convert.ToDecimal(ViewData["idViaggioCongedo"])  ;
+    decimal idAttivViaggioCongedo = Convert.ToDecimal(ViewData["idAttivViaggioCongedo"]);
 
-    @if (!NotificaInviata && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+    string EtichettaTipoDocumento = ViewData["EtichettaTipoDocumento"]==null?"":ViewData["EtichettaTipoDocumento"].ToString();
+    bool CaricatiElementiFASE2 = Convert.ToBoolean(ViewData["CaricatiElementiFASE2"]);
+    }
+    <div id="PulsantiUploadDocumentiFase2" class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
+    @if (NotificaInviata == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+    {
+        <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Allega @EtichettaTipoDocumento
+        </button>
+    }
+    else if (NotificaInviata == false && CaricatiElementiFASE2 == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
     {
         <button class="btn btn-default btn-sm" id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Allega Documenti di Viaggio
-        </button>            
-    }
-    else
-        if (NotificaInviata == true || idFaseInCorso != (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
-    {
-        <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Allega Documenti di Viaggio
+            Allega @EtichettaTipoDocumento
         </button>
     }
-    @*else
-        if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+    else if (NotificaInviata == false && CaricatiElementiFASE2 == false && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
     {
-        <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
+        <button class="btn btn-default btn-sm" id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Allega Preventivi di Viaggio
+            Allega @EtichettaTipoDocumento
         </button>
-    }*@
+    }
+
+   
 
 </div>
-<div class="modal fade " id="NewDocFase2Modal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="NewDocFase2ModelLabel">Documenti</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="NewViewDocumentFase2">
-                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <script type="text/javascript">
 
     function NuovoDocumentoFase2() {
         //debugger;
         var rotta = "/ViaggiCongedo/NuovoDocumentoFase2"; ///ViaggiCongedo/NuovoDocumentoPreventivi
-        var TipoDocumento = parseInt(@tipoDoc);
-        var idTrasferimento = parseInt(@idTrasferimento);
-       @*// var Parentela = parseInt(@parentela);*@
-
+        var idTipoDocumento = parseInt('@tipoDoc');
+        var idTrasferimento = parseInt('@idTrasferimento');
+        var idAttivViaggioCongedo = parseInt('@idAttivViaggioCongedo');
+      
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idTrasferimento: idTrasferimento },
+            data: { idTrasferimento: idTrasferimento, idTipoDocumento: idTipoDocumento, idAttivViaggioCongedo: idAttivViaggioCongedo },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -85,10 +68,10 @@
                 //debugger;
                 $("#NewViewDocumentFase2").empty();
                 $("#NewViewDocumentFase2").html(result);
-
-                var titoloPagina = $("#titoloPagina").val();
-                $("#NewDocFase2ModelLabel").empty();
-                $("#NewDocFase2ModelLabel").html('Allega Documenti Fase 2');
+               
+                //var titoloPagina = $("#titoloPagina").val();
+                //$("#NewDocFase2ModelLabel").empty();
+                //$("#NewDocFase2ModelLabel").html('Allega Documenti Fase 2');
             },
             complete: {
             },

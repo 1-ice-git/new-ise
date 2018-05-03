@@ -1,6 +1,6 @@
 ﻿@using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
-
+@using NewISE.Models.DBModel.Enum;
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
@@ -9,7 +9,9 @@
     bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
     bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
     decimal idFaseInCorso=(decimal)ViewData["idFaseInCorso"] ;
-            }
+    bool nuovVC = Convert.ToBoolean(ViewData["NuovoViaggiCongedo"]);
+
+ }
 <div style="padding-top: 10px;left:120px">
     <table id="tabElencoPreventiviViaggio" class="table">
         <thead>
@@ -26,7 +28,9 @@
                 <th class="text-center">
                     Operazioni
                 </th>
-
+                <th class="text-center">
+                    Elimina
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -46,30 +50,58 @@
                     </td>
                     @if (admin)
                     {
-                        if (AttivazioneInviata)
+                        if (idFaseInCorso == Convert.ToDecimal(EnumFaseViaggioCongedo.Documenti_di_Viaggio))
                         {
+                            <td class="text-center">
+                                <input disabled type="radio" name='attivare' value='@item.idDocumento'>
+                            </td>
+                        }
+                        else
+                        {
+                            if (AttivazioneInviata)
+                            {
                             <td class="text-center">
                                 <input disabled checked="@item.DocSelezionato" type="radio" onclick="AttivarePreventivo()" id="attivare" name='attivare' value='@item.idDocumento'>
                             </td>
-                        }
-                        else if (NotificaInviata)
-                        {
+                            }
+                            else if (NotificaInviata)
+                            {
                                 <td class="text-center">
-                                    <input type="radio" onclick="AttivarePreventivo()" id="attivare" name='attivare' value='@item.idDocumento'>
+                                    <input type="radio" onclick="AttivarePreventivo();" id="attivare" name='attivare' value='@item.idDocumento'>
                                 </td>
                             }
-                            else 
+                            else
                             {
                                 <td class="text-center">
                                     <input disabled type="radio" name='attivare' value='@item.idDocumento'>
                                 </td>
                             }
+                        }
                     }
                     else
                     {
                         <td class="text-center">
                             <input disabled type="radio" name='attivare' value='@item.idDocumento'>
                         </td>
+                    }
+                    @if(NotificaInviata)
+                    {
+                        <td class="text-center">
+                            <span class="disabled">
+                                <a href="#" class="disabled" onclick="EliminaDocPreventivi(@item.idDocumento)" id="linkEliminaPreventivi">
+                                    <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" title="Elimina Preventivo" /></a>
+                              </span>
+                        </td>  
+                   }
+                    else
+                    {
+                    <td class="text-center">
+                        <span>
+                            <a href="#"  onclick="EliminaDocPreventivi(@item.idDocumento)" id="linkEliminaPreventivi">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina Preventivo" />
+                            </a>
+                        </span>
+                    </td>
                     }
                 </tr>
             }
@@ -80,6 +112,16 @@
 
 
 <script type="text/javascript">
+
+
+    $("#NewDocPreventiviModal").on("hidden.bs.modal", function () {
+        //debugger;
+        TabElencoPreventivi();
+        GestionePulsantiPVC();
+        ControllaTastoNotifica();
+    });
+
+
     $("#tabElencoPreventiviViaggio").DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
@@ -107,35 +149,25 @@
         //"info": false,
         "lengthChange": false,
         "pageLength": 5,
-        //"searching": false,
-        //"paging": false,
-        //"bJQueryUI": true,
-        //"sDom": 'lfrtip',
-        //"order": [[4, "desc"]]
+        
     });
 
 
-    $("#NewDocPreventiviModal").on("hidden.bs.modal", function () {
-        //debugger;
-        TabElencoPreventivi();
-        @*ElencoUploadDocumentiTV();
-        ElencoDocumentiTV(@idTipoDocumento, @idTitoliViaggio);*@
-        });
+   
 
     function AttivarePreventivo() {
       //  debugger;
         var abilitato_ = $('input:radio[name="attivare"]:checked').val();
-        var idTrasferimento=@idTrasferimento;
-        //var chk = false;
-        //if (abilitato_ == "1") {
-        //    chk = true;
-        //}
-        //alert(abilitato_);
-        //$("#btAttivaPreventivi").removeAttr("disabled");
-      //  $("#btAttivaPreventivi").attr('disabled','disabled');
+        var idTrasferimento=@idTrasferimento;       
+      
         $("#btAttivaPreventivi").prop('disabled', false);
-        $("#btAttivaPreventivi").removeClass('disabled')
-        //var rotta = "/ViaggiCongedo/GestionePulsantiNotificaAttivaAnnulla";
+        $("#btAttivaPreventivi").removeClass('disabled');
+    }
+
+    function EliminaDocPreventivi(idDoc){
+      //  debugger;
+        $('#HI_idDocumentoPreventivo').val(idDoc);        
+        $('#ModalEliminaPreventiviDocumenti').modal().show();
     }
         
 </script>

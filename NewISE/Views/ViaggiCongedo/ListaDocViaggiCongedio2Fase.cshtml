@@ -1,1 +1,120 @@
-﻿ListaDocViaggiCongedio2Fase
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
+@using NewISE.Models.DBModel.Enum;
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    decimal id_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]);
+    //  decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+    bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
+    bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
+    decimal idFaseInCorso = (decimal)ViewData["idFaseInCorso"];
+    decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
+    decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
+
+}
+<div style="padding-top: 10px;left:120px" >
+    <table id="hhh" class="table">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.NomeFile)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Estensione)
+                </th>
+                <th class="text-center">
+                    Visualizza
+                </th>
+                <th class="text-center">
+                    Elimina
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFile)</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Estensione)</span>
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="@Url.RouteUrl("LeggiViaggiCongedoPDF", new { id = @item.idDocumento })" target="_blank">
+                            <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
+                        </a>
+                    </td>    
+                    @if (NotificaInviata==false && idFaseInCorso==(decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                    {
+                        <td class="text-center">
+                            <a href="#" onclick="EliminaDocFase2(@item.idDocumento)" id="linkEliminaDoc">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                            </a>
+                            </td>
+                    }
+                    else if (NotificaInviata == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                    {
+                          <td class="text-center">
+                                <span class="disabled">
+                                    <a href="#" disabled id="linkEliminaDoc">
+                                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" title="Elimina&nbsp;Formulario" />
+                                    </a> 
+                                </span>
+                           </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<script type="text/javascript">
+    $("#HI_id_Fase_In_Corso").val(@Convert.ToDecimal(EnumFaseViaggioCongedo.Documenti_di_Viaggio));
+    function EliminaDocFase2(idDoc){
+     //   debugger;
+        $('#HI_idDocumentoPreventivo').val(idDoc);        
+        $('#ModalEliminaDocumentiFase2').modal().show();
+    }
+    
+
+    $("#hhh").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        //"info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        //"searching": false,
+        //"paging": false,
+        //"bJQueryUI": true,
+        //"sDom": 'lfrtip',
+        //"order": [[4, "desc"]]
+    });
+
+
+</script>

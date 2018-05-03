@@ -286,4 +286,22 @@
   <data name="OggettoRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
     <value>Notifica richiesta rimborso successivo titoli di viaggio.</value>
   </data>
+  <data name="MessaggioAnnullamentoViaggiCongedo" xml:space="preserve">
+    <value>Si notifica che la richiesta di viaggio congedo è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
+  <data name="MessaggioAttivazioneViaggiCongedo" xml:space="preserve">
+    <value>Notifica che la richiesta di viaggio congedo è stata confermata.</value>
+  </data>
+  <data name="MessaggioNotificaViaggiCongedo" xml:space="preserve">
+    <value>Si informa che il dipendente ha effettuato la richiesta di viaggio congedo.</value>
+  </data>
+  <data name="OggettoAttivaViaggiCongedo" xml:space="preserve">
+    <value>Attivazione Viaggio Congedo</value>
+  </data>
+  <data name="OggettoAnnullaViaggiCongedo" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta del viaggio congedo</value>
+  </data>
+  <data name="OggettoNotificaViaggiCongedo" xml:space="preserve">
+    <value>Notifica richiesta Viaggio Congedo</value>
+  </data>
 </root>

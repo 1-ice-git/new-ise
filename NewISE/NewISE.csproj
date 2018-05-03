@@ -3480,6 +3480,7 @@
     <Content Include="Views\ViaggiCongedo\ElencoDocumentiVC.cshtml" />
     <Content Include="Views\ViaggiCongedo\PulsanteNuoviDocViaggiCongedo2Fase.cshtml" />
     <Content Include="Views\ViaggiCongedo\ListaDocViaggiCongedio2Fase.cshtml" />
+    <Content Include="Views\ViaggiCongedo\NuovoDocumentoFase2.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

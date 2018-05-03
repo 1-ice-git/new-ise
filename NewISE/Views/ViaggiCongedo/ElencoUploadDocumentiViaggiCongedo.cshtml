@@ -10,6 +10,8 @@
     bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
     decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
     decimal idAttivViaggioCongedo= Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+    bool nuovVC= Convert.ToBoolean(ViewData["NuovoViaggiCongedo"]);
+
 }
 
 
@@ -18,48 +20,85 @@
         Carta d'imbarco:
     </td>
     <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
-        @if (nDocCartaImbarco > 0)
+        @if (nuovVC == true)
         {
-            @*<a href="#" onclick="ElencoDocumentiViaggioCongedo();" id="linkElencoDocTV">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Carte d'Imbarco" />
-            </a>*@
+           
+            if (nDocCartaImbarco > 0)
+            {
+                <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idAttivViaggioCongedo);" id="linkElencoDocVC">
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Carte d'Imbarco" />
+                </a>
+            }
+            else
+            {
+                <span disabled>
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Carte d'Imbarco" />
+                </span>
+            }
+        }
+        else if (nDocCartaImbarco > 0)
+        {
             <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idAttivViaggioCongedo);" id="linkElencoDocVC">
                     <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Carte d'Imbarco" />
                 </a>
         }
         else
         {
-            @*<a href="#" onclick="ElencoDocumentiViaggioCongedo();" id="linkElencoDocVC">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
-            </a>*@
-            <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco), @idAttivViaggioCongedo);" id="linkElencoDocVC">
+            if (!AttivazioneInviata)
+            {
+                <span disabled>
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Carte d'Imbarco" />
+                </span>
+            }
+            else
+            {
+                <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idAttivViaggioCongedo);" id="linkElencoDocVC">
                     <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
                 </a>
+            }
         }
-    </td>
+</td>
 </tr>
 <tr>
     <td style="font-weight:bold; padding-bottom: 10px; padding-right: 10px;">
         Titoli di viaggio:
     </td>
     <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
-        @if (nDocTitoliViaggio > 0)
+        @if (nuovVC == true)
         {
-            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idAttivViaggioCongedo);" id="linkElencoDocTV">
+            if (nDocTitoliViaggio > 0)
+            {
+                <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idAttivViaggioCongedo);" id="linkElencoDocTV">
                     <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Titoli di Viaggio" />
                 </a>
-            @*<a href="#" onclick="ElencoDocumentiViaggioCongedo();" id="linkElencoDocVC">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Titoli di Viaggio" />
-            </a>*@
+            }
+            else
+            {
+            <span disabled>
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Carte d'Imbarco" />
+            </span>
+            }
+        }
+        else if (nDocTitoliViaggio > 0)
+        {
+            <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idAttivViaggioCongedo);" id="linkElencoDocTV">
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Titoli di Viaggio" />
+                </a>
         }
         else
         {
-            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio), @idAttivViaggioCongedo);" id="linkElencoDocTV">
-                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Titoli di Viaggio" />
+            if (!AttivazioneInviata)
+            {
+                <span disabled>
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Carte d'Imbarco" />
+                </span>
+            }
+            else
+            {
+                <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idAttivViaggioCongedo);" id="linkElencoDocVC">
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
                 </a>
-            @*<a href="#" onclick="ElencoDocumentiViaggioCongedo();" id="linkElencoDocVC">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Titoli di Viaggio" />
-            </a>*@
+            }
         }
     </td>
 </tr>
@@ -68,43 +107,43 @@
 <script type="text/javascript">
 
     function ElencoDocumentiVC(idTipoDocumento, idAttivViaggioCongedo) {
-      //  debugger;
-        var rotta = "/ViaggiCongedo/ElencoDocumentiVC";
-        var idTipoDocumento = parseInt(idTipoDocumento);
-        var idAttivViaggioCongedo = parseInt('@idAttivViaggioCongedo');
-        var idTrasferimento = parseInt('@idTrasferimento');
+            // debugger;
+            var rotta = "/ViaggiCongedo/ElencoDocumentiVC";
+            var idTipoDocumento = parseInt(idTipoDocumento);
+            var idAttivViaggioCongedo = parseInt('@idAttivViaggioCongedo');
+            var idTrasferimento = parseInt('@idTrasferimento');
         $.ajax({
-            type: "POST",
+                type: "POST",
             url: rotta,
             data: { idTrasferimento:idTrasferimento,idTipoDocumento: idTipoDocumento, idAttivViaggioCongedo: idAttivViaggioCongedo },
             dataType: 'html',
             beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
+                    //debugger;
+                    VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
             success: function (result) {
                 //debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 $("#divViaggioCongedioMain").empty();
                 $("#divViaggioCongedioMain").html(result);
 
-                //RicercaDocumenti();
+                    //RicercaDocumenti();
 
-            },
+                },
             complete: function () {
 
-            },
+                },
             error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
 
-        });
+            });
 
-    }
+        }
 
 </script>
 
