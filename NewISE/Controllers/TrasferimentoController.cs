@@ -2053,8 +2053,6 @@ namespace NewISE.Controllers
                     ViewBag.Amministratore = admin;
                     ViewBag.Notificato = notificato;
                 }
-
-
             }
             catch (Exception ex)
             {

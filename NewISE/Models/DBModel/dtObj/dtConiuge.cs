@@ -250,6 +250,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizio = c.DATAINIZIOVALIDITA,
                             dataFine = c.DATAFINEVALIDITA,
                             dataAggiornamento = c.DATAAGGIORNAMENTO,
+                            FK_idConiuge=c.FK_IDCONIUGE
                         };
                     }
 
@@ -282,6 +283,7 @@ namespace NewISE.Models.DBModel.dtObj
                     dataInizio = c.DATAINIZIOVALIDITA,
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
+                    FK_idConiuge=c.FK_IDCONIUGE
                 };
             }
 
@@ -309,7 +311,39 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = c.DATAINIZIOVALIDITA,
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
-                        idStatoRecord=c.IDSTATORECORD
+                        idStatoRecord = c.IDSTATORECORD,
+                        FK_idConiuge=c.FK_IDCONIUGE
+                    };
+                }
+            }
+
+            return cm;
+        }
+
+        public ConiugeModel GetConiugeOldbyID(decimal? idConiugeOld)
+        {
+            ConiugeModel cm = new ConiugeModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var c = db.CONIUGE.Find(idConiugeOld);
+
+                if (c != null && c.IDCONIUGE > 0)
+                {
+                    cm = new ConiugeModel()
+                    {
+                        idConiuge = c.IDCONIUGE,
+                        idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                        idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                        nome = c.NOME,
+                        cognome = c.COGNOME,
+                        codiceFiscale = c.CODICEFISCALE,
+                        dataInizio = c.DATAINIZIOVALIDITA,
+                        dataFine = c.DATAFINEVALIDITA,
+                        dataAggiornamento = c.DATAAGGIORNAMENTO,
+                        idStatoRecord = c.IDSTATORECORD,
+                        FK_idConiuge = c.FK_IDCONIUGE
+
                     };
                 }
             }
@@ -475,46 +509,51 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                    var amfl = mf.ATTIVAZIONIMAGFAM
-                            .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
-                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
-
-                    //var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
-
-
-                    bool modificabile = false;
-
-                    if (amfl?.Any() ?? false)
+                    lc = mf.CONIUGE.Where(y => 
+                                    y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato
+                                ).ToList();
+                    if (lc?.Any() ?? false)
                     {
-                        foreach (var e in amfl)
+                        foreach (var c in lc)
                         {
-                            //var e = amfl.First();
-
-                            lc = e.CONIUGE.Where(y => y.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                            if (lc?.Any() ?? false)
+                            VariazioneConiugeModel cm = new VariazioneConiugeModel()
                             {
-                                foreach (var c in lc)
-                                {
-                                    VariazioneConiugeModel cm = new VariazioneConiugeModel()
-                                    {
-                                        eliminabile = ((c.FK_IDCONIUGE > 0 || c.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione) || e.ATTIVAZIONEMAGFAM) ? false : true,
-                                        modificabile = modificabile,
-                                        idConiuge = c.IDCONIUGE,
-                                        idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                                        idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                                        nome = c.NOME,
-                                        cognome = c.COGNOME,
-                                        codiceFiscale = c.CODICEFISCALE,
-                                        dataInizio = c.DATAINIZIOVALIDITA,
-                                        dataFine = c.DATAFINEVALIDITA,
-                                        dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                        idStatoRecord = c.IDSTATORECORD,
-                                        FK_idConiuge = c.FK_IDCONIUGE
-                                    };
-                                    lcm.Add(cm);
-                                    //break;
-                                }
+                                eliminabile = (c.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && c.FK_IDCONIUGE == null) ? true : false,
+                                modificabile = (c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && c.IDSTATORECORD != (decimal)EnumStatoRecord.Da_Attivare) ? true : false,
+                                idConiuge = c.IDCONIUGE,
+                                idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                                idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                                nome = c.NOME,
+                                cognome = c.COGNOME,
+                                codiceFiscale = c.CODICEFISCALE,
+                                dataInizio = c.DATAINIZIOVALIDITA,
+                                dataFine = c.DATAFINEVALIDITA,
+                                dataAggiornamento = c.DATAAGGIORNAMENTO,
+                                idStatoRecord = c.IDSTATORECORD,
+                                FK_idConiuge = c.FK_IDCONIUGE,
+                                visualizzabile = (db.CONIUGE.Where(a => a.FK_IDCONIUGE == c.IDCONIUGE).Count() > 0) ? false : true,
+                                modificato= (c.FK_IDCONIUGE>0 && c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato) ? true : false,
+                                nuovo = (c.FK_IDCONIUGE == null && c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato) ? true : false
+                            };
+
+                            //VERIFICA SE CI SONO VARIAZIONI SUGLI ALTRI DATI
+                            var adf = dtvmf.GetAltriDatiFamiliariConiuge(c.IDCONIUGE);
+                            if(adf.FK_idAltriDatiFam>0)
+                            {
+                                cm.modificato = true;
                             }
+                            var ldc = c.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            if(ldc.Count()>0)
+                            {
+                                cm.modificato = true;
+                            }
+                            var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            if (lpc.Count() > 0)
+                            {
+                                cm.modificato = true;
+                            }
+
+                            lcm.Add(cm);
                         }
                     }
                 }

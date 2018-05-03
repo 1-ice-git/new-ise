@@ -1546,6 +1546,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.MODIFICATO = false;
                 d.FK_IDDOCUMENTO = null;
+                d.IDSTATORECORD= (decimal)EnumStatoRecord.In_Lavorazione;
 
                 atv.DOCUMENTI.Add(d);
 
@@ -2127,8 +2128,9 @@ namespace NewISE.Models.DBModel.dtObj
                                                 FILEDOCUMENTO = doc_Old.FILEDOCUMENTO,
                                                 DATAINSERIMENTO = doc_Old.DATAINSERIMENTO,
                                                 MODIFICATO = doc_Old.MODIFICATO,
-                                                FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO
-                                            };
+                                                FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO,
+                                                IDSTATORECORD= (decimal)EnumStatoRecord.In_Lavorazione
+                                        };
 
                                             //db.DOCUMENTI.Add(doc_New);
                                             atv_New.DOCUMENTI.Add(doc_New);

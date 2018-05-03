@@ -95,7 +95,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public AltriDatiFamFiglioModel GetAltriDatiFamiliariFiglio(decimal idAltriDatiFam)
+        public AltriDatiFamFiglioModel GetAltriDatiFamiliariFiglio(decimal? idAltriDatiFam)
         {
             AltriDatiFamFiglioModel adfm = new AltriDatiFamFiglioModel();
             DateTime dt = DateTime.Now;
@@ -592,7 +592,7 @@ namespace NewISE.Models.DBModel.dtObj
                         COMUNERESIDENZA = adfm.comuneResidenza,
                         PROVINCIARESIDENZA = adfm.provinciaResidenza,
                         DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                        IDSTATORECORD = adfm.idStatoRecord,
+                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
                         FK_IDALTRIDATIFAM=adfm.FK_idAltriDatiFam
                     };
 
@@ -649,8 +649,8 @@ namespace NewISE.Models.DBModel.dtObj
                         COMUNERESIDENZA = adfm.comuneResidenza,
                         PROVINCIARESIDENZA = adfm.provinciaResidenza,
                         DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                        IDSTATORECORD = adfm.idStatoRecord,
-                        FK_IDALTRIDATIFAM=adfm.FK_idAltriDatiFam
+                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                        FK_IDALTRIDATIFAM =adfm.FK_idAltriDatiFam
                     };
 
                     db.CONIUGE.Find(adfm.idConiuge).ALTRIDATIFAM.Add(adf);
