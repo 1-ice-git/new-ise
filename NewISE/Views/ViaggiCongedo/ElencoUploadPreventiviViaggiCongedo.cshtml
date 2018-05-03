@@ -1,63 +1,71 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.DBModel.Enum;
 
 @{
     // decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
     decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
-    bool notificaEseguita = Convert.ToBoolean(ViewData["notificaEseguita"]);
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    bool NotificaInviata =Convert.ToBoolean(ViewData["NotificaInviata"]);
+    bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
+    decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
+
+    bool AttivazioneInviata2= Convert.ToBoolean(ViewData["AttivazioneInviata2"]);
+    bool NotificaInviata2= Convert.ToBoolean(ViewData["NotificaInviata2"]);
+    bool nuovVC = Convert.ToBoolean(ViewData["NuovoViaggiCongedo"]);
+    bool  AttivaPulsanteNuovo= Convert.ToBoolean(ViewData["AttivaPulsanteNuovo"]);
 }
-<tr>
-    <td style="font-weight:bold; padding-bottom: 10px;padding-right: 10px;">
-       @*Allega Preventivi di Viaggio:*@
-    </td>
-    <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
-        @*@if (nDocCartaImbarco > 0)
-        {*@
-            @*<a href="#" onclick="NuovoDocumentoPreventivi();" id="linkElencoDocPreventivi">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Preventivo di Viaggio" />
-            </a>*@
-            <input type="button" value="Allega Preventivi di Viaggio" id="linkElencoDocPreventivi" class="btn-danger" onclick="NuovoDocumentoPreventivi();" />
-        <input type="button" value="Nuovo" id="linkElencoDocPreventivi" class="btn-danger" onclick="" />
-        @*}
-        else
+@*@Html.Hidden("HI_IdTrasferimento", idTrasferimento)*@
+<div id="PulsantiUploadPreventivi" class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
+
+        @if (AttivaPulsanteNuovo == true)
         {
-            <a href="#" onclick="NuovoDocumentoPreventivi();" id="linkElencoDocPreventivi">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
-            </a>
-        }*@
-    </td>
-</tr>
-<div class="modal fade " id="NewDocPreventiviModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+            <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Allega Preventivi di Viaggio
+            </button>
+
+            <button class="btn btn-default btn-sm" id="NuovoDocPreventivi" onclick="ModalNuovoViaggiCongedo()">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Nuovo
+            </button>
+        }
+        else if (NotificaInviata == true || NotificaInviata2 == true)
+        {
+            <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Allega Preventivi di Viaggio
+            </button>
+
+            <button class="btn btn-default btn-sm disabled" disabled id="NuovoDocPreventivi" onclick="">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Nuovo
+            </button>
+        }
+        else if (NotificaInviata == false)
+        {
+            <button class="btn btn-default btn-sm"  id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Allega Preventivi di Viaggio
+            </button>
+
+                <button class="btn btn-default btn-sm disabled" disabled id="NuovoDocPreventivi" onclick="">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Nuovo
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="NewPreventiviModelLabel">Documenti</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="NewViewPreventiviDocumento">
-                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
+        }
+        
+       
 </div>
 
 <script type="text/javascript">
-
+    $("#HI_id_Fase_In_Corso").val(@Convert.ToDecimal(EnumFaseViaggioCongedo.Preventivi));
     function NuovoDocumentoPreventivi() {
         //debugger;
         var rotta = "/ViaggiCongedo/NuovoDocumentoPreventivi";
         var TipoDocumento = parseInt(@tipoDoc);
         var idTrasferimento = parseInt(@idTrasferimento);
-       @*// var Parentela = parseInt(@parentela);*@
 
         $.ajax({
             url: rotta,
@@ -89,5 +97,10 @@
                 ErroreElaborazioneAjax(msg);
             }
         });
+    }
+   
+    function ModalNuovoViaggiCongedo() {
+        //  debugger;
+        $('#ModalNuovoViaggiCongedo').modal().show();
     }
 </script>

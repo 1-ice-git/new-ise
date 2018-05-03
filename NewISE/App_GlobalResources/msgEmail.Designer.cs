@@ -80,6 +80,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di viaggio congedo è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullamentoViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullamentoViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaAnticipi {
@@ -225,6 +234,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica che la richiesta di viaggio congedo è stata confermata..
+        /// </summary>
+        internal static string MessaggioAttivazioneViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica dell&apos;invio dei passaporti/visti per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
         /// </summary>
         internal static string MessaggioInvioPratichePassaporto {
@@ -311,6 +329,15 @@ namespace Resources {
         internal static string MessaggioNotificaTrasportoEffettiRientro {
             get {
                 return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente ha effettuato la richiesta di viaggio congedo..
+        /// </summary>
+        internal static string MessaggioNotificaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaViaggiCongedo", resourceCulture);
             }
         }
         
@@ -432,6 +459,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta del viaggio congedo.
+        /// </summary>
+        internal static string OggettoAnnullaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attivazione richiesta anticipo..
         /// </summary>
         internal static string OggettoAttivaRichiestaAnticipi {
@@ -464,6 +500,15 @@ namespace Resources {
         internal static string OggettoAttivaTrasferimento {
             get {
                 return ResourceManager.GetString("OggettoAttivaTrasferimento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione Viaggio Congedo.
+        /// </summary>
+        internal static string OggettoAttivaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoAttivaViaggiCongedo", resourceCulture);
             }
         }
         
@@ -590,6 +635,15 @@ namespace Resources {
         internal static string OggettoNotificaTrasportoEffettiRientro {
             get {
                 return ResourceManager.GetString("OggettoNotificaTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta Viaggio Congedo.
+        /// </summary>
+        internal static string OggettoNotificaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoNotificaViaggiCongedo", resourceCulture);
             }
         }
         

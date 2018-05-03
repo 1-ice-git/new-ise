@@ -1,0 +1,86 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.DBModel.Enum;
+@{
+    // decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    // decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
+    //  decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
+    decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
+    bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
+    decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
+    decimal idViaggioCongedo= Convert.ToDecimal(ViewData["idViaggioCongedo"])  ;
+    decimal idAttivViaggioCongedo = Convert.ToDecimal(ViewData["idAttivViaggioCongedo"]);
+
+    string EtichettaTipoDocumento = ViewData["EtichettaTipoDocumento"]==null?"":ViewData["EtichettaTipoDocumento"].ToString();
+    bool CaricatiElementiFASE2 = Convert.ToBoolean(ViewData["CaricatiElementiFASE2"]);
+    }
+    <div id="PulsantiUploadDocumentiFase2" class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
+    @if (NotificaInviata == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+    {
+        <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Allega @EtichettaTipoDocumento
+        </button>
+    }
+    else if (NotificaInviata == false && CaricatiElementiFASE2 == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+    {
+        <button class="btn btn-default btn-sm" id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Allega @EtichettaTipoDocumento
+        </button>
+    }
+    else if (NotificaInviata == false && CaricatiElementiFASE2 == false && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+    {
+        <button class="btn btn-default btn-sm" id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Allega @EtichettaTipoDocumento
+        </button>
+    }
+
+   
+
+</div>
+
+
+<script type="text/javascript">
+
+    function NuovoDocumentoFase2() {
+        //debugger;
+        var rotta = "/ViaggiCongedo/NuovoDocumentoFase2"; ///ViaggiCongedo/NuovoDocumentoPreventivi
+        var idTipoDocumento = parseInt('@tipoDoc');
+        var idTrasferimento = parseInt('@idTrasferimento');
+        var idAttivViaggioCongedo = parseInt('@idAttivViaggioCongedo');
+      
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento, idTipoDocumento: idTipoDocumento, idAttivViaggioCongedo: idAttivViaggioCongedo },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+                $("#NewDocFase2Modal").modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#NewViewDocumentFase2").empty();
+                $("#NewViewDocumentFase2").html(result);
+               
+                //var titoloPagina = $("#titoloPagina").val();
+                //$("#NewDocFase2ModelLabel").empty();
+                //$("#NewDocFase2ModelLabel").html('Allega Documenti Fase 2');
+            },
+            complete: {
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+</script>

@@ -21,6 +21,8 @@ namespace NewISE.Models.DBModel
         public bool AttivaRichiesta { get; set; }
         public decimal idDocumento { get; set; }
         public string Estensione { get; set; }
+        public bool DocSelezionato { get; set; }
+        public decimal idStatoRecord { get; set; }
         public bool HasValue()
         {
             return idTrasferimento > 0 ? true : false;

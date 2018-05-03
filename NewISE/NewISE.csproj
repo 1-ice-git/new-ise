@@ -3135,8 +3135,10 @@
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\Enum\EnumFasePassaporti.cs" />
+    <Compile Include="Models\DBModel\Enum\EnumFaseViaggioCongedo.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
+    <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
@@ -3501,6 +3503,10 @@
     <Content Include="Views\ViaggiCongedo\NuovoDocumentoPreventivi.cshtml" />
     <Content Include="Views\ViaggiCongedo\ListaPreventiviDiViaggio.cshtml" />
     <Content Include="Views\ViaggiCongedo\PulsantiPreventiviDiViaggio.cshtml" />
+    <Content Include="Views\ViaggiCongedo\ElencoDocumentiVC.cshtml" />
+    <Content Include="Views\ViaggiCongedo\PulsanteNuoviDocViaggiCongedo2Fase.cshtml" />
+    <Content Include="Views\ViaggiCongedo\ListaDocViaggiCongedio2Fase.cshtml" />
+    <Content Include="Views\ViaggiCongedo\NuovoDocumentoFase2.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\Index.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\ElencoFormulariInseriti.cshtml" />
     <Content Include="Views\ProvvidenzeScolastiche\NuovoFormularioPS.cshtml" />

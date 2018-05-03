@@ -936,6 +936,7 @@
     }
 
     function ViaggiCongedoPermesso() {
+    //    debugger;
         //   debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         //rotta = "/ViaggiCongedo/PreventiviDiViaggio";
@@ -952,12 +953,10 @@
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
             success: function (result) {
-                //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
+               // debugger;
+               
                 $("#tabCongediPermessi").empty();
                 $("#tabCongediPermessi").html(result);
-
-                //RicercaDocumenti();
 
             },
             complete: function () {
