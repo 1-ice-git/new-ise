@@ -313,6 +313,7 @@
     <Content Include="Content\css\CheckBoxRadio.css" />
     <Content Include="Content\css\CssCheckBox.css" />
     <Content Include="Content\css\cssHome.css" />
+    <Content Include="Content\css\GestioneIndennita.css" />
     <Content Include="Content\css\GestioneTrasferimento.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\NuovaMAB.css" />
@@ -3506,6 +3507,13 @@
     <Content Include="Views\Indennita\AttivitaIndennita.cshtml" />
     <Content Include="Views\Indennita\Index.cshtml" />
     <Content Include="Views\Indennita\GestioneIndennita.cshtml" />
+    <Content Include="Views\Indennita\IndennitaBase.cshtml" />
+    <Content Include="Views\Indennita\IndennitaServizio.cshtml" />
+    <Content Include="Views\Indennita\MaggiorazioniFamiliari.cshtml" />
+    <Content Include="Views\Indennita\IndennitaPersonale.cshtml" />
+    <Content Include="Views\Indennita\MaggiorazioneAbitazione.cshtml" />
+    <Content Include="Views\Indennita\IndennitaPrimaSistemazione.cshtml" />
+    <Content Include="Views\Indennita\IndennitadiRichiamo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

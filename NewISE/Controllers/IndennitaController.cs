@@ -25,14 +25,12 @@ namespace NewISE.Controllers
                 TrasferimentoModel tm = new TrasferimentoModel();
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    //var msgmail = dtt.GetMessaggioAnnullaTrasf(idTrasferimento);
-                    //var msg = msgmail.corpoMsg;
-                    //ViewBag.msgAnnulla = msg;
+                    
 
-                    //tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    //var dataPartenza = tm.dataPartenza.ToShortDateString();
-                    //ViewData.Add("dataPartenza", dataPartenza);
+                    var dataPartenza = tm.dataPartenza.ToShortDateString();
+                    ViewData.Add("dataPartenza", dataPartenza);
                     ViewData.Add("Trasferimento", tm);
                 }
 
@@ -45,22 +43,6 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-
-
-        //public ActionResult GestioneIndennita(decimal idTrasferimento)
-        //{
-        //    try
-        //    {
-        //        ViewData["idTrasferimento"] = idTrasferimento;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-        //    }
-
-        //    return PartialView("AttivitaIndennita");
-        //}
-
         public ActionResult AttivitaIndennita(decimal idTrasferimento)
         {
             try
@@ -87,12 +69,9 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
 
             }
-
-
-
+            
             return PartialView();
         }
-
         public JsonResult VerificaIndennita(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -123,6 +102,136 @@ namespace NewISE.Controllers
             {
                 return Json(new { err = ex.Message });
             }
+        }
+        public ActionResult IndennitaBase(decimal idTrasferimento)
+        {
+            try
+            {
+                TrasferimentoModel tm = new TrasferimentoModel();
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    //var dataPartenza = tm.dataPartenza.ToShortDateString();
+                    ViewData.Add("idTrasferimento", idTrasferimento);
+                    //ViewData.Add("Trasferimento", tm);
+                }
+
+                ViewBag.idTrasferimento = idTrasferimento;
+
+                return PartialView("IndennitaBase", tm);
+            }
+
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            
+
+        }
+        public ActionResult IndennitaServizio(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+
+                return PartialView();
+            }
+
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+        public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+
+                return PartialView();
+            }
+
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+        public ActionResult IndennitaPersonale(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+
+                return PartialView();
+            }
+
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+        public ActionResult MaggiorazioneAbitazione(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+
+                return PartialView();
+            }
+
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+        public ActionResult IndennitaPrimaSistemazione(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+
+                return PartialView();
+            }
+
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+
+        public ActionResult IndennitadiRichiamo(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+
+                return PartialView();
+            }
+
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
         }
 
     }
