@@ -332,14 +332,22 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
+                //var ldip =
+                //    db.DIPENDENTI.Where(
+                //        a =>
+                //            a.DATAINIZIORICALCOLI.Year <= anno && a.DATAINIZIORICALCOLI.Month <= mese &&
+                //            a.TRASFERIMENTO.Any(
+                //                b =>
+                //                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                //                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato))
+                //        .OrderBy(a => a.NOME)
+                //        .ThenBy(a => a.COGNOME)
+                //        .ThenBy(a => a.MATRICOLA)
+                //        .ThenBy(a => a.DATAINIZIORICALCOLI)
+                //        .ToList();
+
                 var ldip =
-                    db.DIPENDENTI.Where(
-                        a =>
-                            a.DATAINIZIORICALCOLI.Year <= anno && a.DATAINIZIORICALCOLI.Month <= mese &&
-                            a.TRASFERIMENTO.Any(
-                                b =>
-                                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
-                                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato))
+                    db.DIPENDENTI
                         .OrderBy(a => a.NOME)
                         .ThenBy(a => a.COGNOME)
                         .ThenBy(a => a.MATRICOLA)

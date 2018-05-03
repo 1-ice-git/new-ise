@@ -1,46 +1,60 @@
 ﻿@model IEnumerable<NewISE.Models.ViewModel.ElencoDipendentiDaCalcolareModel>
+<div class="row">
+    <div class="col-xs-12">
+        <table id="TabElencoDipDaElaborare" cellspacing="0" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.matricola)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nominativo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.dataInizioRicalcoli)
+                    </th>
+                    <th class="no-sort">
+                        @Html.CheckBox("selectTuttiDipElab", false, new { @onclick = "SelezionaTutti(this.checked);" })
 
-<table id="TabElencoDipDaElaborare" cellspacing="0" class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.matricola)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nominativo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataInizioRicalcoli)
-            </th>
-            <th>
-                @Html.CheckBox("Tutti", false)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.matricola)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nominativo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataInizioRicalcoli)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SelezionaDipendenteDaElaborare)
-                </td>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.matricola)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nominativo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.dataInizioRicalcoli)
+                        </td>
+                        <td>
+                            @Html.EditorFor(modelItem => item.SelezionaDipendenteDaElaborare)
+                        </td>
 
-            </tr>
-        }
-    </tbody>
+                    </tr>
+                }
+            </tbody>
 
 
+        </table>
 
-</table>
+
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-xs-offset-8 col-xs-3">
+        <div class="margineTop15px">
+            <input type="button" class="btn btn-default" value="Calcola" />
+        </div>
+
+    </div>
+</div>
 
 <script type="text/javascript">
     $("#TabElencoDipDaElaborare").DataTable({
@@ -71,10 +85,35 @@
         "info": false,
         "lengthChange": false,
         "pageLength": 5,
-        "searching": false,
+        "searching": true,
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
+        "scrollY": 450,
+        "scrollCollapse": true,
+        "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": false,
+
+                }
+        ],
         //"order": [[0,"desc"],[2, "desc"]]
     });
+
+    function SelezionaTutti(checked) {
+        //debugger;
+
+        var lCheck = $('#TabElencoDipDaElaborare > tbody > tr > td > :checkbox');
+
+        for (var ck in lCheck) {
+            if (is_numeric(ck)) {
+                lCheck[parseInt(ck)].checked = checked;
+            }
+        }
+    }
+
+
+
+
 </script>

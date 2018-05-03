@@ -5,8 +5,8 @@
     max-height: 685px;
     width: 100%;
     margin-top: 5px;
-    min-height: 685px;
-    border-bottom: black solid medium;
+    /*min-height: 685px;*/
+    /*border-bottom: black solid medium;*/
 }
 
 #divMesiAnniElaborati {
@@ -16,4 +16,9 @@
 
 #divMesiAnniElaborati > div {
     margin-top: 15px;
+}
+
+
+tr input[type="checkbox"] {
+    cursor: pointer;
 }
