@@ -1,41 +1,9 @@
-﻿@model NewISE.Models.DBModel.VariazioneAdfFigliModel
+﻿@model NewISE.Models.DBModel.VariazioneAdfConiugeModel
 
 <div style="padding-left: 15px;padding-right:15px">
     <div class="row">
         <div class="col-xs-12 fa-border" style="background-color:white; border:solid;border-width:thin;margin-bottom:15px;border-radius:15px">
             <div class="col-xs-6">
-                <div class="row">
-                    <div class="col-xs-4" style="font-weight:bold">
-                        @Html.DisplayNameFor(model => model.dataNascita)
-                    </div>
-                    <div class="col-xs-8" style="padding-left:10px">
-                        <span style="@Model.ev_datanascita" class="text-uppercase">@Html.DisplayFor(model => model.dataNascita)</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4" style="font-weight:bold">
-                        @Html.DisplayNameFor(model => model.capNascita)
-                    </div>
-                    <div class="col-xs-8" style="padding-left:10px">
-                        <span style="@Model.ev_capnascita" class="text-uppercase">@Html.DisplayFor(model => model.capNascita) </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4" style="font-weight:bold">
-                        @Html.DisplayNameFor(model => model.comuneNascita)
-                    </div>
-                    <div class="col-xs-8" style="padding-left:10px">
-                        <span style="@Model.ev_comunenascita" class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4" style="font-weight:bold">
-                        @Html.DisplayNameFor(model => model.provinciaNascita)
-                    </div>
-                    <div class="col-xs-8" style="padding-left:10px">
-                        <span style="@Model.ev_provincianascita" class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-xs-4" style="font-weight:bold">
                         @Html.DisplayNameFor(model => model.nazionalita)
@@ -44,8 +12,6 @@
                         <span style="@Model.ev_nazionalita" class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-6">
                 <div class="row">
                     <div class="col-xs-4" style="font-weight:bold">
                         @Html.DisplayNameFor(model => model.indirizzoResidenza)
@@ -62,6 +28,8 @@
                         <span style="@Model.ev_capresidenza" class="text-uppercase">@Html.DisplayFor(model => model.capResidenza)</span>
                     </div>
                 </div>
+            </div>
+            <div class="col-xs-6">
                 <div class="row">
                     <div class="col-xs-4" style="font-weight:bold">
                         @Html.DisplayNameFor(model => model.comuneResidenza)

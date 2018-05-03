@@ -653,7 +653,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIO = pcm.dataInizioValidita,
                     DATAFINE = pcm.dataFineValidita.Value,
                     DATAAGGIORNAMENTO = pcm.dataAggiornamento,
-                    IDSTATORECORD = pcm.idStatoRecord
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                 };
 
                 c.PENSIONE.Add(pc);

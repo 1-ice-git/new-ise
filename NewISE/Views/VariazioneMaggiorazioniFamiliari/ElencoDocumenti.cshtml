@@ -110,7 +110,7 @@
     }
 </p>
 
-<div class="modal fade " id="NewDocModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
+<div class="modal fade " id="NewDocModal_VMF" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -120,7 +120,7 @@
                 <h3 class="modal-title alert alert-info text-info" id="NewnotificaModelLabel">Documenti</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="NewViewDocumento">
+                <p id="NewViewDocumento_VMF">
                     <img src="~/Immagini/Loading/ajax-loader (1).gif" />
                 </p>
             </div>
@@ -179,12 +179,12 @@
     var guid = jQuery.guid++;
     var nuovoIDTable = "tabElencoDoc" + guid;
     var nuovoIdModalDelete = "DelDocModal" + guid;
-    var nuovoModalIns = "NewDocModal" + guid;
+    var nuovoModalIns = "NewDocModal_VMF" + guid;
     var nuovoModalReplace = "ReplaceDocModal" + guid;
 
     $("#tabElencoDoc").prop("id", nuovoIDTable);
     $("#DelDocModal").prop("id", nuovoIdModalDelete);
-    $("#NewDocModal").prop("id", nuovoModalIns);
+    $("#NewDocModal_VMF").prop("id", nuovoModalIns);
     $("#ReplaceDocModal").prop("id", nuovoModalReplace);
 
     $("#" + nuovoIDTable).DataTable({
@@ -349,8 +349,8 @@
             },
             success: function (result) {
                 debugger;
-                $("#NewViewDocumento").empty();
-                $("#NewViewDocumento").html(result);
+                $("#NewViewDocumento_VMF").empty();
+                $("#NewViewDocumento_VMF").html(result);
 
                 var titoloPagina = $("#titoloPagina").val();
                 $("#NewnotificaModelLabel").empty();

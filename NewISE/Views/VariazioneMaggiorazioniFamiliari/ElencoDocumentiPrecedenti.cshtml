@@ -8,9 +8,6 @@
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
     decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
     decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
-    EnumChiamante enChiamante = (EnumChiamante)ViewData["chiamante"];
-    EnumTipoDoc enTipoDoc = (EnumTipoDoc)ViewData["tipoDoc"];
-    EnumParentela enParentela = (EnumParentela)ViewData["parentela"];
     int nDoc = 0;
 
     if (Model != null && Model.Any())
@@ -46,19 +43,27 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    <td style="padding-right:0">
+                        <div style="@item.ev_nomedocumento">
+                            @Html.DisplayFor(modelItem => item.nomeDocumento)
+                        </div>
                     </td>
-                    <td class="text-center" style="width: 10%;">
-                        @Html.DisplayFor(modelItem => item.estensione)
+                    <td class="text-center" style="width: 10%;padding-left:0;padding-right:0">
+                        <div style="@item.ev_nomedocumento ">
+                            @Html.DisplayFor(modelItem => item.estensione)
+                        </div>
                     </td>
-                    <td class="text-center" style="width: 20%;">
-                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    <td class="text-center" style="width: 20%;padding-left:0;padding-right:0">
+                        <div style="@item.ev_nomedocumento ">
+                            @Html.DisplayFor(modelItem => item.dataInserimento)
+                        </div>
                     </td>
-                    <td style="text-align: center; width: 10%;">
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
-                            <img width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
-                        </a>
+                    <td style="text-align: center; width: 10%;padding-left:0">
+                        <div style="@item.ev_nomedocumento ">
+                            <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
+                                <img width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                            </a>
+                        </div>
                     </td>
                 </tr>
             }
@@ -98,7 +103,7 @@
         },
         "info": false,
         "lengthChange": false,
-        "pageLength": 3,
+        "pageLength": 6,
         "searching": false,
         "paging": true,
         "bJQueryUI": true,

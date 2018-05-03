@@ -3324,6 +3324,7 @@
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
     <Compile Include="Models\ViewModel\ElencoTitoliViaggioModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneAdfConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfFigliModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneFigliModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneElencoFamiliariModel.cs" />
@@ -3515,6 +3516,7 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheFiglioTitolo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfFiglio.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumentiPrecedenti.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfConiuge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

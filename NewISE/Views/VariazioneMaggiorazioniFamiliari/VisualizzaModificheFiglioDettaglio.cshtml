@@ -1,86 +1,68 @@
-﻿@model NewISE.Models.DBModel.VariazioneFigliModel
+﻿@using NewISE.Models.Tools
 
-@{
-    //decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
-    //string tipologiaFiglio = Convert.ToString(ViewData["tipologiaFiglio"]);
-    //bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-
-}
+@model NewISE.Models.DBModel.VariazioneFigliModel
 
 <div style="padding-left: 15px;padding-right:50px">
     <div class="form-horizontal">
-        <table style="width:100%">
-            <tr>
-                <td>
-                    <table>
-                        
-                        <tr>
-                            <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.nome)
-                            </td>
-                            <td style="padding-left:10px @Model.ev_nome">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.nome)</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.cognome )
-                            </td>
-                            <td style="padding-left:10px @Model.ev_cognome ">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.cognome )</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.codiceFiscale)
-                            </td>
-                            <td style="padding-left:10px @Model.ev_codiceFiscale ">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.codiceFiscale)</span>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.tipologiaFiglio )
-                            </td>
-                            <td style="padding-left:10px @Model.ev_Tipologia">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.tipologiaFiglio) </span>
-                            </td>
-                        </tr>                        
-                        <tr>
-                            <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.dataInizio)
-                            </td>
-                            <td style="padding-left:10px @Model.ev_dataInizio ">
-                                <span class="text-uppercase">@Html.DisplayFor(model => model.dataInizio)</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight:bold">
-                                @Html.DisplayNameFor(model => model.dataFine)
-                            </td>
-                            <td style="padding-left:10px @Model.ev_dataFine ">
-                                @Html.DisplayFor(model => model.dataFine)
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.nome)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px ">
+                        <span style="@Model.ev_nome" class="text-uppercase">@Html.DisplayFor(model => model.nome)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.cognome)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        <span style="@Model.ev_cognome" class="text-uppercase">@Html.DisplayFor(model => model.cognome)</span>
+                    </div>
 
-        </table>
-
+                    </div>
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.codiceFiscale)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        <span style="@Model.ev_codiceFiscale" class="text-uppercase">@Html.DisplayFor(model => model.codiceFiscale)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.tipologiaFiglio)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        <span style="@Model.ev_Tipologia" class="text-uppercase">@Html.DisplayFor(model => model.tipologiaFiglio) </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.dataInizio)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        <span style="@Model.ev_dataInizio" class="text-uppercase">@Html.DisplayFor(model => model.dataInizio)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.dataFine)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                    @if (Model.dataFine != Utility.DataFineStop())
+                    {
+                        <span style="@Model.ev_dataFine">@Html.DisplayFor(model => model.dataFine)</span>
+                    }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <hr />
-
-
-<script type="text/javascript">
- 
-
-
-
-</script>
 

@@ -19,7 +19,7 @@ namespace NewISE.Models.DBModel
         public bool nuovo;
 
         [Display(Name = "Tipologia Figlio")]
-        public string tipologiaFiglio;
+        public string tipologiaFiglio { get; set; }
 
         public string ev_anagrafica;
         public string ev_documenti;

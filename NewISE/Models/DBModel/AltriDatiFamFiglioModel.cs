@@ -88,6 +88,9 @@ namespace NewISE.Models.DBModel
             return idAltriDatiFam > 0 ? true : false;
         }
 
+        public bool modificato { get; set; }
+
+
         public decimal idStatoRecord { get; set; }
         public decimal? FK_idAltriDatiFam { get; set; }
     }
