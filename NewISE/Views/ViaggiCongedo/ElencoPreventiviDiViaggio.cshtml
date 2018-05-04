@@ -260,7 +260,7 @@
     }
 
     function TabElencoPreventivi() {
-        //debugger;
+       // debugger;
         var rotta = "/ViaggiCongedo/ListaPreventiviDiViaggio";
         var idTrasferimento =  parseInt('@idTrasferimento');
         //   var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
@@ -427,7 +427,7 @@
 
     function ConfermaAttivaPreventiviRichiesta()
     {
-        // debugger;
+       //  debugger;
         var rotta = "/ViaggiCongedo/ConfermaAttivaPreventiviRichiesta";
         var idDocumento = $('input:radio[name="attivare"]:checked').val();
         if(!idDocumento) idDocumento=0;
@@ -574,7 +574,7 @@
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
             success: function (result) {
-                //debugger;
+               // debugger;
                 if (result.err == "") {
                     GestionePulsantiPVC();
                     TabElencoPreventivi();

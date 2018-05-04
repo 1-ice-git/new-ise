@@ -19,6 +19,8 @@
     bool nuovVC = Convert.ToBoolean(ViewData["NuovoViaggiCongedo"]);
     bool CaricatiElementiFASE2 = Convert.ToBoolean(ViewData["CaricatiElementiFASE2"]);
     decimal idTipoDoc = (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio;
+    bool NotificaInviata2 = Convert.ToBoolean(ViewData["NotificaInviata2"]);
+    bool AttivazioneInviata2 = Convert.ToBoolean(ViewData["AttivazioneInviata2"]);
     }
 
     @Html.Hidden("HIid_Attiv_Viaggio_Congedo", id_Attiv_Viaggio_Congedo)
@@ -27,6 +29,7 @@
 <div class="row">
    
     <div id="PulsantiDiPVC" class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
+
     @if (!admin)
     {
             if (nDocCartaImbarco > 0 && nDocTitoliViaggio > 0 && NotificaInviata == false)
@@ -63,26 +66,27 @@
     }
     @if (admin)
     {
-
-        if (AttivazioneInviata)
+        if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Preventivi)//1
         {
-                        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta">
-                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                            Notifica richiesta
-                        </button>
-                        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
-                                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                                Attiva richiesta
-                         </button>
-                        <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
-                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                            Annulla richiesta
-                        </button>
-        }
-        else
-        {
-            if (NotificaInviata)
+            if (AttivazioneInviata)
             {
+                    <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Notifica richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Attiva richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+            }
+            else
+            {
+                if (NotificaInviata)
+                {
                             <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta">
                                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                                 Notifica richiesta
@@ -95,13 +99,13 @@
                                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                                 Annulla richiesta
                             </button>
-            }
-            else
-            {
-                if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Preventivi)//1
+                }
+                else
                 {
-                    if (ConteggioElementi != 0)
+                    if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Preventivi)//1
                     {
+                        if (ConteggioElementi != 0)
+                        {
                                 <button class="btn btn-default btn-sm" id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
                                     <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                                     Notifica richiesta
@@ -114,9 +118,9 @@
                                     <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                                     Annulla richiesta
                                 </button>
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                                 <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
                                     <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                                     Notifica richiesta
@@ -129,12 +133,12 @@
                                     <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                                     Annulla richiesta
                                 </button>
+                        }
                     }
-                }
-                else if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)//Idfase2=2
-                {
-                    if (CaricatiElementiFASE2)
+                    else if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)//Idfase2=2
                     {
+                        if (CaricatiElementiFASE2)
+                        {
                         <button class="btn btn-default btn-sm" id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
                             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                             Notifica richiesta
@@ -147,9 +151,9 @@
                             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                             Annulla richiesta
                         </button>
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                         <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
                             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                             Notifica richiesta
@@ -162,7 +166,74 @@
                                     <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                                     Annulla richiesta
                                 </button>
+                        }
                     }
+                }
+            }
+        }
+        if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)//2
+        {
+            if (AttivazioneInviata2)
+            {
+                <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Attiva richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+            }
+            else if (NotificaInviata2)
+            {
+                <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                <button class="btn btn-default btn-sm" id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Attiva richiesta
+                </button>
+                    <button class="btn btn-default btn-sm" id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+            }
+            else
+            {
+                if (CaricatiElementiFASE2)
+                {
+                     <button class="btn btn-default btn-sm" id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Attiva richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-default btn-sm disabled" disabled id="btNotificaPreventiviRichiesta" onclick="ModalNotificaPreventiviRichiesta();">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Notifica richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAttivaPreventivi" onclick="ModalAttivaPreventiviRichiesta(); ">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Attiva richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaPreventivi" onclick="ModalAnnullaPreventiviRichiesta();">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
                 }
             }
         }

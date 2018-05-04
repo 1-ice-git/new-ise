@@ -5,7 +5,7 @@
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
     //    decimal id_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Viaggio_Congedo"]);
-    //  decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+    decimal id_Attiv_Viaggio_Congedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
     bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
     bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
     decimal idFaseInCorso=(decimal)ViewData["idFaseInCorso"] ;
@@ -52,9 +52,18 @@
                     {
                         if (idFaseInCorso == Convert.ToDecimal(EnumFaseViaggioCongedo.Documenti_di_Viaggio))
                         {
+                            if (AttivazioneInviata)
+                            {
+                                <td class="text-center">
+                                    <input disabled checked="@item.DocSelezionato" type="radio" id="attivare" name='attivare' value='@item.idDocumento'>
+                                </td>
+                            }
+                            else
+                            {
                             <td class="text-center">
-                                <input disabled type="radio" name='attivare' value='@item.idDocumento'>
+                                <input  type="radio" onclick="AttivarePreventivo();" id="attivare" name='attivare' value='@item.idDocumento'>
                             </td>
+                            }
                         }
                         else
                         {
@@ -73,7 +82,7 @@
                             else
                             {
                                 <td class="text-center">
-                                    <input disabled type="radio" name='attivare' value='@item.idDocumento'>
+                                    <input disabled type="radio" id="attivare" name='attivare' value='@item.idDocumento'>
                                 </td>
                             }
                         }

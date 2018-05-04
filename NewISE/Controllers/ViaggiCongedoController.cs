@@ -107,19 +107,21 @@ namespace NewISE.Controllers
                     ViewData["id_Attiv_Viaggio_Congedo"] = id_Attiv_Viaggio_Congedo;
 
                     //lpv = dvc.GetUltimiPreventiviViaggio(id_Attiv_Viaggio_Congedo);
-                    var lpv = dvc.GetUltimiPreventiviViaggio(id_Attiv_Viaggio_Congedo,idTrasferimento);
+                    var lpv = dvc.GetUltimiPreventiviViaggio(id_Attiv_Viaggio_Congedo,idTrasferimento, id_Viaggio_Congedo);
 
-                    bool AttivazioneInviata = dvc.AttivazionePreventiviInviata(id_Attiv_Viaggio_Congedo, idFaseInCorso, idTrasferimento);
-                    ViewData["AttivazioneInviata"] = AttivazioneInviata;
+                    //bool AttivazioneInviata = dvc.AttivazionePreventiviInviata(id_Attiv_Viaggio_Congedo, idFaseInCorso, idTrasferimento);
+                    //ViewData["AttivazioneInviata"] = AttivazioneInviata;
 
-                    bool NotificaInviata = dvc.NotificaPreventiviInviata(id_Attiv_Viaggio_Congedo, idFaseInCorso);
-                    ViewData["NotificaInviata"] = NotificaInviata;
+                    //bool NotificaInviata = dvc.NotificaPreventiviInviata(id_Attiv_Viaggio_Congedo, idFaseInCorso);
+                    //ViewData["NotificaInviata"] = NotificaInviata;
+                   
 
                     ViewData["idFaseInCorso"] = idFaseInCorso;
                     var nDocCartaImbarco = dvc.GetNumDocumenti(id_Attiv_Viaggio_Congedo, EnumTipoDoc.Carta_Imbarco);
                     var nDocTitoliViaggio = dvc.GetNumDocumenti(id_Attiv_Viaggio_Congedo, EnumTipoDoc.Titolo_Viaggio);
                     ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
                     ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
+                    AggiornaTuttiViewData(idTrasferimento);
                 }
 
                 return PartialView();
@@ -141,7 +143,7 @@ namespace NewISE.Controllers
             {
                 using (dtViaggiCongedo dvc = new dtViaggiCongedo())
                 {
-                    decimal idFaseInCorso = (decimal)EnumFaseViaggioCongedo.Preventivi;
+                    decimal idFaseInCorso = dvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento)[1];// (decimal)EnumFaseViaggioCongedo.Preventivi;
                     decimal id_Viaggio_Congedo = dvc.Identifica_Id_UltimoViaggioCongedoDisponibile(idTrasferimento);                    
                     List<AttivazioniViaggiCongedoModel> lAttiv_Viaggio_Congedo = new List<AttivazioniViaggiCongedoModel>();
                     if (id_Viaggio_Congedo == 0)
@@ -167,7 +169,7 @@ namespace NewISE.Controllers
                     //    lpv = dvc.GetPrecedentiPreventiviViaggio(id_Attiv_Viaggio_Congedo);
                     //    lpvFinale.AddRange(lpv);
                     //}
-                    lpv = dvc.GetUltimiPreventiviViaggio(id_Attiv_Viaggio_Congedo,idTrasferimento);
+                    lpv = dvc.GetUltimiPreventiviViaggio(id_Attiv_Viaggio_Congedo,idTrasferimento, id_Viaggio_Congedo);
                     lpvFinale.AddRange(lpv);
                     bool admin = Utility.Amministratore();
                     ViewBag.Amministratore = admin;
@@ -216,6 +218,7 @@ namespace NewISE.Controllers
                         var nDocTitoliViaggio = dvc.GetNumDocumenti(idAttivViaggioCongedo2, EnumTipoDoc.Titolo_Viaggio);
                         ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
                         ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
+                        AggiornaTuttiViewData(idTrasferimento);
                 }
                 return PartialView();
             }
@@ -253,6 +256,9 @@ namespace NewISE.Controllers
                 //decimal[] tmp = new decimal[] { 0, 0 ,0,0};
                 //idAttivazioneVC , idFaseInCorso, NOTIFCATA, ATTIVATA
                 //       [0]             [1]           [2]       [3]
+                if (tmp[0] == 0 && tmp[1] == 0 && tmp[1] == 0 && tmp[3] == 0)
+                    tmp= dvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
+
                 decimal idFaseInCorso = tmp[1];
 
                 bool AttivaPulsanteNuovo = false;
@@ -298,6 +304,16 @@ namespace NewISE.Controllers
                     AttivazioneInviata = true;
                 }
 
+                //if (tmp[0] == 0 && tmp[1] == 0 && tmp[1] == 0 && tmp[3] == 0)
+                //{
+                //    AttivazioneInviata2 = false;
+                //    AttivaPulsanteNuovo = false;
+                //    NotificaInviata = false;
+                //    NotificaInviata2 = false;
+                //    AttivazioneInviata = false;
+                //   // idFaseInCorso = 1;
+                //}
+
                 ViewData["AttivazioneInviata"] = AttivazioneInviata;
                 ViewData["NotificaInviata"] = NotificaInviata;
                 ViewData["NotificaInviata2"] = NotificaInviata2;
@@ -313,6 +329,7 @@ namespace NewISE.Controllers
         ViewData["idTrasferimento"] = idTrasferimento;
         try
         {
+                AggiornaTuttiViewData(idTrasferimento);
                 return PartialView();
         }
         catch (Exception ex)
@@ -437,9 +454,10 @@ namespace NewISE.Controllers
             {
                 decimal id_Viaggio_Congedo = dtvc.Identifica_Id_UltimoViaggioCongedoDisponibile(idTrasferimento);
                 ViewData["id_Viaggio_Congedo"] = id_Viaggio_Congedo;
-                decimal idFaseInCorso = dtvc.Restituisci_LivelloFase_Da_ATT_Viagg_CONG(id_Viaggio_Congedo);
+                 decimal idFaseInCorso = dtvc.Restituisci_LivelloFase_Da_ATT_Viagg_CONG(id_Viaggio_Congedo);
+                decimal idFaseInCorso_1 = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento)[1];
 
-                lAttiv_Viaggio_Congedo = dtvc.Cerca_Id_AttivazioniViaggiCongedoDisponibile(id_Viaggio_Congedo,idFaseInCorso);
+                  lAttiv_Viaggio_Congedo = dtvc.Cerca_Id_AttivazioniViaggiCongedoDisponibile(id_Viaggio_Congedo,idFaseInCorso);
                 if(lAttiv_Viaggio_Congedo?.Any()??false)
                     idAttivViaggioCongedo = lAttiv_Viaggio_Congedo.First().idAttivazioneVC;
                 bool NotificaInviata = dtvc.NotificaPreventiviInviata(idAttivViaggioCongedo, idFaseInCorso);
@@ -459,26 +477,29 @@ namespace NewISE.Controllers
                 ViewData["idFaseInCorso"] = idFaseInCorso;
                 bool CaricatiElementiFASE2 = dtvc.CaricatiElementiFASE2(idAttivViaggioCongedo, id_Viaggio_Congedo);
                 ViewData["CaricatiElementiFASE2"] = CaricatiElementiFASE2;
+                AggiornaTuttiViewData(idTrasferimento);
             }
             return PartialView();
         }
         //GestionePulsantiNotificaAttivaAnnulla
         public ActionResult GestionePulsantiNotificaAttivaAnnulla(decimal idTrasferimento)
         {
+            AggiornaTuttiViewData(idTrasferimento);
             return PartialView();
         }
 
         public JsonResult ConfermaAttivaPreventiviRichiesta(decimal idAttivazioneVC,decimal idDocumento,decimal idFaseInCorso,decimal idTrasferimento)
         {
             bool admin = Utility.Amministratore();
-            ViewBag.Amministratore = admin;
-            bool NotificaInviata = false;
+            ViewBag.Amministratore = admin;           
             try
             {
                 using (dtViaggiCongedo dtvc = new dtViaggiCongedo())
                 {
-                    decimal idViaggioCongedo = dtvc.Restituisci_ID_Viagg_CONG_DA(idAttivazioneVC, idTrasferimento);
+                    decimal idViaggioCongedo = dtvc.Restituisci_ID_Viagg_CONG_DA_Trasferimento(idTrasferimento);
                     bool AttivazioneInviata = false; decimal tmp = 0;
+                    decimal[] x = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
+                    idFaseInCorso = x[1]; idAttivazioneVC = x[0];
                     if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Preventivi)
                     {
                         AttivazioneInviata = dtvc.AttivazionePreventiviInviata(idAttivazioneVC, idFaseInCorso, idTrasferimento);
@@ -489,34 +510,33 @@ namespace NewISE.Controllers
                             if (idFaseInCorso == 0)
                                 idFaseInCorso = dtvc.Restituisci_LivelloFase_Da_ATT_Viagg_CONG(dtvc.Restituisci_ID_Viagg_CONG_DA(idAttivazioneVC, idTrasferimento));
 
-                            NotificaInviata = dtvc.NotificaPreventiviInviata(idAttivazioneVC, idFaseInCorso);
-                            ViewData["id_Attiv_Viaggio_Congedo"] = tmp;// idAttivazioneVC; il nuova ma non il vecchio
-                            ViewData["NotificaInviata"] = NotificaInviata;
-                            ViewData["ConteggioElementi"] = dtvc.ConteggiaPreventiviRichiesta(idAttivazioneVC);
-                            ViewData["id_Viaggio_Congedo"] = idViaggioCongedo;                           
-                            ViewData["idFaseInCorso"] = idFaseInCorso;
+                            //NotificaInviata = dtvc.NotificaPreventiviInviata(idAttivazioneVC, idFaseInCorso);
+                            //ViewData["id_Attiv_Viaggio_Congedo"] = tmp;// idAttivazioneVC; il nuova ma non il vecchio
+                            //ViewData["NotificaInviata"] = NotificaInviata;
+                            //ViewData["ConteggioElementi"] = dtvc.ConteggiaPreventiviRichiesta(idAttivazioneVC);
+                            //ViewData["id_Viaggio_Congedo"] = idViaggioCongedo;                           
+                            //ViewData["idFaseInCorso"] = idFaseInCorso;
+                            AggiornaTuttiViewData(idTrasferimento);
+
                             string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
                             string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
                             InviaMailViaggioCongedo(idAttivazioneVC, idDocumento, corpoMessaggio, oggetto);
-                        }
-                        else
-                        {
-                            idFaseInCorso = (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio;
-                            idAttivazioneVC = dtvc.Restituisci_Id_Attivazioni_Viaggi_Congedo_DA(idViaggioCongedo, idFaseInCorso);
-                            if(idAttivazioneVC!=0)
-                            {
-                                tmp = dtvc.AttivaPreventiviRichiesta(idAttivazioneVC, idDocumento, idFaseInCorso, idTrasferimento);
-                                NotificaInviata = dtvc.NotificaPreventiviInviata(idAttivazioneVC, idFaseInCorso);
-                                ViewData["id_Attiv_Viaggio_Congedo"] = tmp;// idAttivazioneVC; il nuova ma non il vecchio
-                                ViewData["NotificaInviata"] = NotificaInviata;
-                                ViewData["ConteggioElementi"] = dtvc.ConteggiaPreventiviRichiesta(idAttivazioneVC);
-                                ViewData["id_Viaggio_Congedo"] = 0;
-                                ViewData["idFaseInCorso"] = idFaseInCorso;
-                                string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
-                                string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
-                                InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
-                            }
-                        }
+                        }                        
+                    }
+                    else
+                    {
+                        idDocumento = 0;
+                        tmp = dtvc.AttivaPreventiviRichiesta(idAttivazioneVC, idDocumento, idFaseInCorso, idTrasferimento);
+                        //NotificaInviata = dtvc.NotificaPreventiviInviata(idAttivazioneVC, idFaseInCorso);
+                        //ViewData["id_Attiv_Viaggio_Congedo"] = tmp;// idAttivazioneVC; il nuova ma non il vecchio
+                        //ViewData["NotificaInviata"] = NotificaInviata;
+                        //ViewData["ConteggioElementi"] = dtvc.ConteggiaPreventiviRichiesta(idAttivazioneVC);
+                        //ViewData["id_Viaggio_Congedo"] = 0;
+                        //ViewData["idFaseInCorso"] = idFaseInCorso;
+                        AggiornaTuttiViewData(idTrasferimento);
+                        string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
+                        string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
+                        InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
                     }
                 }
                 //Inviare la mail
@@ -637,6 +657,8 @@ namespace NewISE.Controllers
                     var nDocTitoliViaggio = dtvc.GetNumDocumenti(idAttivViaggioCongedo, EnumTipoDoc.Titolo_Viaggio);
                     ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
                     ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
+                    bool CaricatiElementiFASE2 = dtvc.CaricatiElementiFASE2(idAttivViaggioCongedo, idViaggioCongedio);
+                    ViewData["CaricatiElementiFASE2"] = CaricatiElementiFASE2;
 
                 }          
                 return PartialView();
@@ -665,7 +687,9 @@ namespace NewISE.Controllers
                     decimal idViaggioCongedio = dtvc.Restituisci_ID_Viagg_CONG_DA(idAttivViaggioCongedo, idTrasferimento);
                     bool admin = Utility.Amministratore();
                     ViewBag.Amministratore = admin;
-                    idFaseInCorso = dtvc.Restituisci_LivelloFase_Da_ATT_Viagg_CONG(idViaggioCongedio);
+                    decimal[] tmp = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
+
+                    idFaseInCorso =tmp[1];// dtvc.Restituisci_LivelloFase_Da_ATT_Viagg_CONG(idViaggioCongedio);
                     if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Preventivi)
                     {
                         idFaseInCorso = (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio;                        
@@ -677,6 +701,9 @@ namespace NewISE.Controllers
                     ViewData["idFaseInCorso"] = idFaseInCorso;
                     ViewData["idViaggioCongedo"] = idViaggioCongedo;
                     ViewData["idAttivViaggioCongedo"] = idAttivViaggioCongedo;
+                    AggiornaTuttiViewData(idTrasferimento);
+                    bool CaricatiElementiFASE2 = dtvc.CaricatiElementiFASE2(tmp[0], idViaggioCongedio);
+                    ViewData["CaricatiElementiFASE2"] = CaricatiElementiFASE2;
                 }
                 return PartialView();
             }
@@ -697,6 +724,9 @@ namespace NewISE.Controllers
                     ViewData["idFaseInCorso"] = idFaseInCorso;
                     ViewData["id_Viaggio_Congedo"] = idViaggioCongedo;
                     ViewData["id_Attiv_Viaggio_Congedo"] = idAttivViaggioCongedo;
+                    decimal[] tmp = dvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
+                    idFaseInCorso = tmp[1];
+                    idAttivViaggioCongedo = tmp[0];
 
                     if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
                     {
@@ -720,7 +750,7 @@ namespace NewISE.Controllers
                     var nDocTitoliViaggio = dvc.GetNumDocumenti(idAttivViaggioCongedo, EnumTipoDoc.Titolo_Viaggio);
                     ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
                     ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
-
+                    AggiornaTuttiViewData(idTrasferimento);
                     return PartialView(lpvFinale);
                 }
             }
@@ -734,6 +764,7 @@ namespace NewISE.Controllers
             ViewData["idTrasferimento"] = idTrasferimento;
             ViewData["idTipoDocumento"] = idTipoDocumento;
             ViewData["idAttivViaggioCongedo"] = idAttivViaggioCongedo;
+            AggiornaTuttiViewData(idTrasferimento);
             try
             {
                  return PartialView();
@@ -819,6 +850,7 @@ namespace NewISE.Controllers
                 {
                     decimal  idViaggiCongedo=dtvc.Crea_Nuovo_Id_ViaggiCongedo(idTrasferimento);
                     ViewData["idViaggiCongedo"] = idViaggiCongedo;
+                    AggiornaTuttiViewData(idTrasferimento);
                 }
                  return Json(new { err = "" });
                // return PartialView("ElencoPreventiviDiViaggio");

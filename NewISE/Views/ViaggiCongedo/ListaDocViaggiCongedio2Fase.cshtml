@@ -11,7 +11,8 @@
     decimal idFaseInCorso = (decimal)ViewData["idFaseInCorso"];
     decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
     decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
-
+    bool NotificaInviata2 = Convert.ToBoolean(ViewData["NotificaInviata2"]);
+    bool AttivazioneInviata2 = Convert.ToBoolean(ViewData["AttivazioneInviata2"]);
 }
 <div style="padding-top: 10px;left:120px" >
     <table id="hhh" class="table">
@@ -47,7 +48,7 @@
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
                     </td>    
-                    @if (NotificaInviata==false && idFaseInCorso==(decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                    @if (NotificaInviata2==false && idFaseInCorso==(decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
                     {
                         <td class="text-center">
                             <a href="#" onclick="EliminaDocFase2(@item.idDocumento)" id="linkEliminaDoc">
@@ -55,13 +56,11 @@
                             </a>
                             </td>
                     }
-                    else if (NotificaInviata == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                    else if (NotificaInviata2 == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
                     {
                           <td class="text-center">
-                                <span class="disabled">
-                                    <a href="#" disabled id="linkEliminaDoc">
+                                <span class="disabled">                                   
                                         <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" title="Elimina&nbsp;Formulario" />
-                                    </a> 
                                 </span>
                            </td>
                     }
