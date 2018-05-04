@@ -14,7 +14,7 @@
     bool NotificaInviata2 = Convert.ToBoolean(ViewData["NotificaInviata2"]);
     bool AttivazioneInviata2 = Convert.ToBoolean(ViewData["AttivazioneInviata2"]);
 }
-<div style="padding-top: 10px;left:120px" >
+<div style="padding-top: 10px;left:120px">
     <table id="hhh" class="table">
         <thead>
             <tr>
@@ -24,10 +24,10 @@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.Estensione)
                 </th>
-                <th class="text-center">
+                <th class="text-center no-sort">
                     Visualizza
                 </th>
-                <th class="text-center">
+                <th class="text-center no-sort">
                     Elimina
                 </th>
 
@@ -47,22 +47,22 @@
                         <a href="@Url.RouteUrl("LeggiViaggiCongedoPDF", new { id = @item.idDocumento })" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
-                    </td>    
-                    @if (NotificaInviata2==false && idFaseInCorso==(decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                    </td>
+                    @if (NotificaInviata2 == false && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
                     {
                         <td class="text-center">
                             <a href="#" onclick="EliminaDocFase2(@item.idDocumento)" id="linkEliminaDoc">
                                 <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
                             </a>
-                            </td>
+                        </td>
                     }
                     else if (NotificaInviata2 == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
                     {
-                          <td class="text-center">
-                                <span class="disabled">                                   
-                                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" title="Elimina&nbsp;Formulario" />
-                                </span>
-                           </td>
+                        <td class="text-center">
+                            <span class="disabled">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" title="Elimina&nbsp;Formulario" />
+                            </span>
+                        </td>
                     }
                 </tr>
             }
@@ -74,12 +74,12 @@
 
 <script type="text/javascript">
     $("#HI_id_Fase_In_Corso").val(@Convert.ToDecimal(EnumFaseViaggioCongedo.Documenti_di_Viaggio));
-    function EliminaDocFase2(idDoc){
-     //   debugger;
-        $('#HI_idDocumentoPreventivo').val(idDoc);        
+    function EliminaDocFase2(idDoc) {
+        //   debugger;
+        $('#HI_idDocumentoPreventivo').val(idDoc);
         $('#ModalEliminaDocumentiFase2').modal().show();
     }
-    
+
 
     $("#hhh").DataTable({
         "language": {
@@ -105,13 +105,22 @@
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
         },
-        //"info": false,
+        "info": false,
         "lengthChange": false,
         "pageLength": 5,
-        //"searching": false,
-        //"paging": false,
-        //"bJQueryUI": true,
-        //"sDom": 'lfrtip',
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 150,
+        "scrollCollapse": true,
+        "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": false,
+
+                }
+        ],
         //"order": [[4, "desc"]]
     });
 
