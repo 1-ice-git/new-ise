@@ -161,7 +161,7 @@
                     var attivazionePS = result.attivazionePS;
                     var DocProvvidenzeScolastiche = result.DocProvvidenzeScolastiche;
                     var trasfAnnullato = result.trasfAnnullato;
-                    
+
 
                     $("#btNotificaRichiestaPS").attr("disabled", "disabled");
                     $("#btNotificaRichiestaPS").addClass("disabled");
@@ -189,7 +189,7 @@
                     if (
                             (
                                 (
-                        
+
                                     (richiestaPS == false && attivazionePS == false && DocProvvidenzeScolastiche)
                                 ) &&
                                     trasfAnnullato == false
@@ -427,11 +427,12 @@
         var rotta = "/ProvvidenzeScolastiche/ElencoFormulariInseriti";
         var idTrasferimento = parseInt($('#idTrasferimento').val());
         var idProvScolastiche = parseInt('@idProvScolastiche');
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento, idProvScolastiche: idProvScolastiche },
+            data: { idTrasferimento: idTrasferimento, idProvScolastiche: idProvScolastiche, idTrasfProvScolastiche: idTrasfProvScolastiche },
             dataType: 'html',
             async: false,
             beforeSend: function () {

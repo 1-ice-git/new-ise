@@ -128,6 +128,36 @@ namespace NewISE.Models.DBModel.dtObj
            
         }
 
+        public IList<AttivazioniProvScolasticheModel> GetListAttivazioniProvvScolByIdProvvScol(decimal idTrasfProvScolastiche)
+        {
+            List<AttivazioniProvScolasticheModel> lamfm = new List<AttivazioniProvScolasticheModel>();
 
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ps = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
+                if (ps.IDTRASFPROVSCOLASTICHE > 0)
+                {
+                    var lamf = ps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDPROVSCOLASTICHE);
+                    if (lamf?.Any() ?? false)
+                    {
+                        lamfm = (from e in lamf
+                                 select new AttivazioniProvScolasticheModel()
+                                 {
+
+                                     idProvScolastiche = e.IDPROVSCOLASTICHE,
+                                     idTrasfProvScolastiche = e.IDTRASFPROVSCOLASTICHE,
+                                     notificaRichiesta = e.NOTIFICARICHIESTA,
+                                     dataNotifica = e.DATANOTIFICA,
+                                     attivaRichiesta = e.ATTIVARICHIESTA,
+                                     dataAttivazione = e.DATAATTIVAZIONE,
+                                     dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                     annullato = e.ANNULLATO
+
+                                 }).ToList();
+                    }
+                }
+            }
+            return lamfm;
+        }
     }
 }

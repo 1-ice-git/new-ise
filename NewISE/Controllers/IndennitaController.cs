@@ -1,4 +1,5 @@
-﻿using NewISE.Models;
+﻿using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using System;
@@ -105,30 +106,33 @@ namespace NewISE.Controllers
         }
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
+
+            List<TrasferimentoModel> tm = new List<TrasferimentoModel>();
+
+            
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            var r = new List<SelectListItem>();
+            List<LivelloModel> llm = new List<LivelloModel>();
+            List<RiduzioniModel> lrm = new List<RiduzioniModel>();
+
             try
             {
-                TrasferimentoModel tm = new TrasferimentoModel();
+                // Inserire using
 
-                using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    //var dataPartenza = tm.dataPartenza.ToShortDateString();
-                    ViewData.Add("idTrasferimento", idTrasferimento);
-                    //ViewData.Add("Trasferimento", tm);
-                }
+                //using (dtParIndennitaBase dtib = new dtParIndennitaBase())
+                //{
+                //    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndennitaBaseNonAnnullato(idLivello);
+                //    libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                //}
 
                 ViewBag.idTrasferimento = idTrasferimento;
-
-                return PartialView("IndennitaBase", tm);
+                return PartialView(tm);
             }
-
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             
-
         }
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
