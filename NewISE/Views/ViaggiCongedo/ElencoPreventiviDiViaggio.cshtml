@@ -152,15 +152,16 @@
                 </button>
                 <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>      
                 <div id="idMessaggioTitolo" class="text-danger">Messaggio</div>       
-                <div id="contenutomsg">
-                    <textarea id="corpoMessaggioVC" style="width:860px;height:100px;" name="corpoMessaggioVC">@messaggioAnnullaRichiesta</textarea>
-                    @*<script type="text/javascript">
-                        CKEDITOR.config.readOnly = false;
-                        CKEDITOR.editorConfig = function (config) {
-                        config.title = "";//levare il tooltip
-                    }
+                <p id="contenutomsg" style="width:250px">
+                    <textarea id="EditorMessaggioVC" name="EditorMessaggioVC">@messaggioAnnullaRichiesta</textarea>
+                    @*<script>
+                            //CKEDITOR.editorConfig = function (config)
+                            //{
+                            //    config.title = "";
+                        //}       
+                        CKEDITOR.replace('EditorMessaggioVC');
                     </script>*@
-                </div> 
+                </p> 
                 <div id="idControllaContenutoMsgVC" class="text-danger" style="display:none">Messaggio obbligatorio</div>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
@@ -204,8 +205,10 @@
 
 <script type="text/javascript">
 
-    //$(function () {
-    //    CKEDITOR.replace("corpoMessaggioVC", { customConfig: "~/Scripts/ckeditor/config.js", height: 100 });
+    //$(function () {       
+    //    CKEDITOR.replace('corpoMessaggioVC', {
+    //        customConfig: '~/Scripts/ckeditor/config.js'
+    //    });
     //});
 
     $("#NewDocPreventiviModal").on("hidden.bs.modal", function () {
@@ -600,7 +603,7 @@
     function ConfermaAnnullaPreventiviRichiesta()
     {
         //debugger;
-        var x=$('#corpoMessaggioVC').val();
+        var x = $('#EditorMessaggioVC').val();
         if(x.trim() =='')
         {
             $('#idControllaContenutoMsgVC').show();
@@ -614,7 +617,7 @@
         var rotta = "/ViaggiCongedo/ConfermaAnnullaPreventiviRichiesta";
         var idAttivazioneVC = parseInt('@id_Attiv_Viaggio_Congedo');
         var idFaseInCorso = parseInt('@idFaseInCorso');
-        var corpoMessaggioVC=$('#corpoMessaggioVC').val();
+        var corpoMessaggioVC = $('#EditorMessaggioVC').val();
         $.ajax({
             type: "POST",
             url: rotta,
