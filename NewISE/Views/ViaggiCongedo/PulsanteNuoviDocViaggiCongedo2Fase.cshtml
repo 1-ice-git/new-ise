@@ -11,12 +11,13 @@
     decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
     decimal idViaggioCongedo= Convert.ToDecimal(ViewData["idViaggioCongedo"])  ;
     decimal idAttivViaggioCongedo = Convert.ToDecimal(ViewData["idAttivViaggioCongedo"]);
-
+    bool NotificaInviata2 = Convert.ToBoolean(ViewData["NotificaInviata2"]);
+    bool AttivazioneInviata2 = Convert.ToBoolean(ViewData["AttivazioneInviata2"]);
     string EtichettaTipoDocumento = ViewData["EtichettaTipoDocumento"]==null?"":ViewData["EtichettaTipoDocumento"].ToString();
     bool CaricatiElementiFASE2 = Convert.ToBoolean(ViewData["CaricatiElementiFASE2"]);
     }
     <div id="PulsantiUploadDocumentiFase2" class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
-    @if (NotificaInviata == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+    @*@if (NotificaInviata == true && idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
     {
         <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
@@ -36,9 +37,32 @@
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Allega @EtichettaTipoDocumento
         </button>
+    }*@
+    @if (CaricatiElementiFASE2 == false)
+    {
+        <button class="btn btn-default btn-sm" id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Allega @EtichettaTipoDocumento
+        </button>
+    }
+    else
+    {
+        if (NotificaInviata2 == false)
+        {
+             <button class="btn btn-default btn-sm" id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Allega @EtichettaTipoDocumento
+            </button>
+        }
+        else
+        {
+            <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoFase2();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Allega @EtichettaTipoDocumento
+            </button>
+        }
     }
 
-   
 
 </div>
 
