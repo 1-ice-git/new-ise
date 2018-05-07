@@ -570,10 +570,7 @@ namespace NewISE.Controllers
 
                 //using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                 //{
-                //    using (ModelDBISE db = new ModelDBISE())
-                //    {
-                //        dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo, db);
-                //    }
+                //    dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza, db);
                 //}
 
                 string oggetto = Resources.msgEmail.OggettoAnnullaViaggiCongedo;
