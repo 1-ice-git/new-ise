@@ -491,13 +491,10 @@ namespace NewISE.Controllers
                             //ViewData["idFaseInCorso"] = idFaseInCorso;
                             AggiornaTuttiViewData(idTrasferimento);
 
-                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                            {
-                                using (ModelDBISE db = new ModelDBISE())
-                                {
-                                    dtce.ModificaInCompletatoCalendarioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo, db);
-                                }
-                            }
+                            //using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                            //{
+                            //        dtce.ModificaInCompletatoCalendarioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo);
+                            //}
                             string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
                             string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
                             InviaMailViaggioCongedo(idAttivazioneVC, idDocumento, corpoMessaggio, oggetto);
@@ -514,14 +511,6 @@ namespace NewISE.Controllers
                         //ViewData["id_Viaggio_Congedo"] = 0;
                         //ViewData["idFaseInCorso"] = idFaseInCorso;
                         AggiornaTuttiViewData(idTrasferimento);
-
-                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                        {
-                            using (ModelDBISE db = new ModelDBISE())
-                            {
-                                dtce.ModificaInCompletatoCalendarioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo, db);
-                            }
-                        }
 
                         string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
                         string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
@@ -569,11 +558,6 @@ namespace NewISE.Controllers
                     dtvc.AnnullaPreventiviRichiesta(idAttivazioneVC, idFaseInCorso, idTrasferimento);
                 }
 
-                //using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                //{
-                //    dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza, db);
-                //}
-
                 string oggetto = Resources.msgEmail.OggettoAnnullaViaggiCongedo;
                 string corpoMessaggio = Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo;
                 if (corpoMessaggioVC.Trim() != "") corpoMessaggio = corpoMessaggioVC;
@@ -602,23 +586,7 @@ namespace NewISE.Controllers
                     ViewData["ConteggioElementi"] = dtvc.ConteggiaPreventiviRichiesta(idAttivazioneVC);
                     ViewData["id_Viaggio_Congedo"] = id_Viaggio_Congedo;
                     ViewData["idFaseInCorso"] = idFaseInCorso;
-
-
-                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                    {
-                        CalendarioEventiModel cem = new CalendarioEventiModel()
-                        {
-                            idFunzioneEventi = EnumFunzioniEventi.RichiestaViaggiCongedo,
-                            idTrasferimento = idTrasferimento,
-                            DataInizioEvento = DateTime.Now.Date,
-                            DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaViaggiCongedo)).Date,
-                        };
-                        using (ModelDBISE db = new ModelDBISE())
-                        {
-                            dtce.InsertCalendarioEvento(ref cem, db);
-                        }
-
-                    }
+                    
                     //Inviare la mail
                     string oggetto = Resources.msgEmail.OggettoNotificaViaggiCongedo;
                     string corpoMessaggio = Resources.msgEmail.MessaggioNotificaViaggiCongedo;

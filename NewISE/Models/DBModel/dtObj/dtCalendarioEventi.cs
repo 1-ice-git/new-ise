@@ -75,10 +75,10 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe)
         {
-
+            decimal funzEv = (decimal)fe;
             using (ModelDBISE db = new ModelDBISE())
             {
-                decimal funzEv = (decimal)fe;
+               
                 var lce =
                     db.CALENDARIOEVENTI.Where(
                         c =>
@@ -102,7 +102,6 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                 }
             }
-
         }
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
         {
@@ -129,9 +128,7 @@ namespace NewISE.Models.DBModel.dtObj
                       "CALENDARIOEVENTI", db, idTrasferimento, y.IDCALENDARIOEVENTI);
                 }
             }
-
         }
-
         public void AnnullaMessaggioEvento(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
         {
             decimal funzEv = (decimal)fe;
@@ -158,6 +155,34 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
 
+        }
+        public void AnnullaMessaggioEvento(decimal idTrasferimento, EnumFunzioniEventi fe)
+        {
+            decimal funzEv = (decimal)fe;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lce =
+                db.CALENDARIOEVENTI.Where(
+                    a =>
+                        a.IDTRASFERIMENTO == idTrasferimento && a.IDFUNZIONIEVENTI == funzEv && a.COMPLETATO == false &&
+                        a.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI).ToList();
+
+                if (lce?.Any() ?? false)
+                {
+                    CALENDARIOEVENTI y = lce.First();
+                    y.ANNULLATO = true;
+                    int i = db.SaveChanges();
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Annullato, "Annullamento del evento.",
+                          "CALENDARIOEVENTI", db, idTrasferimento, y.IDCALENDARIOEVENTI);
+                    }
+                }
+            }
         }
 
         public List<ElencoElementiHome> GetListaElementiHome()

@@ -652,11 +652,16 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
                     db.SaveChanges();
-                    db.Database.CurrentTransaction.Commit();
 
                     var b = db.ATTIVAZIONIVIAGGICONGEDO.Where(x => x.IDVIAGGIOCONGEDO == a.VIAGGICONGEDO.IDVIAGGIOCONGEDO && x.IDFASEVC == idFaseInCorso && x.ANNULLATO==false);
                     if (b.Count() == 0)
                         tmp = Crea_Attivazioni_Viaggi_Congedo(a.VIAGGICONGEDO.IDVIAGGIOCONGEDO, idFaseInCorso, idTrasferimento);
+
+                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                    {
+                        dtce.ModificaInCompletatoCalendarioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo, db);
+                    }
+                    db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
                 {
@@ -730,6 +735,20 @@ namespace NewISE.Models.DBModel.dtObj
                         d.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
                     }
                     db.SaveChanges();
+
+
+                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                    {
+                        CalendarioEventiModel cem = new CalendarioEventiModel()
+                        {
+                            idFunzioneEventi = EnumFunzioniEventi.RichiestaViaggiCongedo,
+                            idTrasferimento = a.VIAGGICONGEDO.IDTRASFERIMENTO,
+                            DataInizioEvento = DateTime.Now.Date,
+                            DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaViaggiCongedo)).Date,
+                        };
+                        dtce.InsertCalendarioEvento(ref cem, db);
+                    }
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -810,16 +829,13 @@ namespace NewISE.Models.DBModel.dtObj
                             nuovoATT.DOCUMENTI.Add(dNew);
                             d.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
                             db.SaveChanges();
-                            //Prima fase devi inserire a manella
-                            //var idDocNew = dNew.IDDOCUMENTO;
-                            //SELECTDOCVC selNew =new  SELECTDOCVC();
-                            //selNew.IDATTIVAZIONEVC=IdAtt_VC_Prev_New;
-                            //selNew.IDDOCUMENTO = idDocNew;
-                            //selNew.DOCSELEZIONATO = false;
-                            //db.SELECTDOCVC.Add(selNew);
                         }
-                    }              
-                 //   db.SaveChanges();
+                    }
+                    //   db.SaveChanges();
+                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                    {
+                        dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo,db);
+                    }
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
