@@ -12,14 +12,14 @@
 @Html.Hidden("idAttivazionePassaporto", idAttivazionePassaporto)
 <div class="form-group">
     <div ass="col-md-10">
-        @Html.TextAreaFor(model => model.corpoMsg, new { @id = "FullDescription" })
+        @Html.TextAreaFor(model => model.corpoMsg, new { @id = "FullDescriptionAnnullaRichiesta" })
     </div>
 </div>
 
 <script type="text/javascript">
-    $("#FullDescription").cleditor();
+    $("#FullDescriptionAnnullaRichiesta").cleditor();
 
-    $('#FullDescription').each(function () {
+    $('#FullDescriptionAnnullaRichiesta').each(function () {
         this.contentEditable = true;
     });
 </script>

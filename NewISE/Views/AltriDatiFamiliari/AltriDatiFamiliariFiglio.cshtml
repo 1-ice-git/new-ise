@@ -128,3 +128,7 @@
     | @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 
 </p>
+
+<script type="text/javascript">
+    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
+</script>

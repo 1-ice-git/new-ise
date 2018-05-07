@@ -166,7 +166,7 @@ else
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewAttivaRichiestaPassaporti">
-                    <label>Procedere con l'attivazione della richiesta?</label>
+                    @*<label>Procedere con l'attivazione della richiesta?</label>*@
                 </p>
             </div>
             <div class="modal-footer">
@@ -224,7 +224,6 @@ else
         });
 
     }
-
 
     function AltriDatiFamiliariConiuge(idAltriDati) {
         //debugger;
@@ -795,10 +794,12 @@ else
                 //debugger;
                 if (result.err == "") {
                     //InfoElaborazioneAjax(result.msg);
-                    ElencoFamiliariPassaporto_Invio();
-                    GestionePulsantiNotificaAndConcludiPassaporto_Invio();
-                    GestioneAttivitaTrasferimento();
-                    $('#linkPratichePassaporto').stop().fadeIn();
+
+                    //ElencoFamiliariPassaporto_Invio();
+                    //GestionePulsantiNotificaAndConcludiPassaporto_Invio();
+                    //GestioneAttivitaTrasferimento();
+                    //$('#linkPratichePassaporto').stop().fadeIn();
+                    Passaporti();
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }

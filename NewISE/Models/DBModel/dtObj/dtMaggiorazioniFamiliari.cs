@@ -1507,8 +1507,8 @@ namespace NewISE.Models.DBModel.dtObj
             datiParzialiConiuge = false;
             datiFigli = false;
             datiParzialiFigli = false;
-            siDocConiuge = false;
-            siDocFigli = false;
+            siDocConiuge = true;
+            siDocFigli = true;
             docFormulario = false;
             trasfSolaLettura = false;
 
@@ -1532,7 +1532,10 @@ namespace NewISE.Models.DBModel.dtObj
                     if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
                     {
                         var lrmf =
-                            amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD !=(decimal)EnumStatoRecord.Annullato)
+                            amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => 
+                                    a.IDSTATORECORD !=(decimal)EnumStatoRecord.Annullato &&
+                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.In_Lavorazione
+                                    )
                                 .OrderByDescending(a => a.IDRINUNCIAMAGFAM);
 
                         if (lrmf?.Any() ?? false)
@@ -1568,30 +1571,30 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     var nadc = c.ALTRIDATIFAM.Count(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato);
 
-                                    if (nadc > 0)
-                                    {
-                                        datiParzialiConiuge = false;
-                                    }
-                                    else
+                                    if (nadc == 0)
                                     {
                                         datiParzialiConiuge = true;
-                                        break;
                                     }
+                                    //else
+                                    //{
+                                    //    datiParzialiConiuge = true;
+                                    //    break;
+                                    //}
                                 }
 
                                 foreach (var c in lc)
                                 {
                                     var ndocc = c.DOCUMENTI.Count(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
 
-                                    if (ndocc > 0)
-                                    {
-                                        siDocConiuge = true;
-                                    }
-                                    else
+                                    if (ndocc == 0)
                                     {
                                         siDocConiuge = false;
-                                        break;
                                     }
+                                    //else
+                                    //{
+                                    //    siDocConiuge = false;
+                                    //    break;
+                                    //}
                                 }
                             }
                             else
@@ -1612,29 +1615,29 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     var nadf = f.ALTRIDATIFAM.Count(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato);
 
-                                    if (nadf > 0)
-                                    {
-                                        datiParzialiFigli = false;
-                                    }
-                                    else
+                                    if (nadf == 0)
                                     {
                                         datiParzialiFigli = true;
-                                        break;
                                     }
+                                    //else
+                                    //{
+                                    //    datiParzialiFigli = true;
+                                    //    break;
+                                    //}
                                 }
 
                                 foreach (var f in lf)
                                 {
                                     var ndocf = f.DOCUMENTI.Count(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
-                                    if (ndocf > 0)
-                                    {
-                                        siDocFigli = true;
-                                    }
-                                    else
+                                    if (ndocf == 0)
                                     {
                                         siDocFigli = false;
-                                        break;
                                     }
+                                    //else
+                                    //{
+                                    //    siDocFigli = false;
+                                    //    break;
+                                    //}
                                 }
                             }
                             else

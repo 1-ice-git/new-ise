@@ -4,6 +4,7 @@
 @{
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
     EnumChiamante enChiamante = EnumChiamante.Maggiorazioni_Familiari;
+    decimal idAttivazioneMagFam= Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
 }
 
 <table class="table table-striped"" id="tabElencoFormulariInseriti" >
@@ -168,7 +169,7 @@
                     //InfoElaborazioneAjax(result.msg);
                     //CloseTimeModalFormulario();
                     //TabElencoFormulari();
-                    PulsantiNotificaAttivaMagFam();
+                    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
                 }
             },
             complete: function () {
@@ -186,6 +187,6 @@
     $("#ModalEliminaFormularioMF").on("hidden.bs.modal", function () {
         //debugger;
         TabElencoFormulari();
-        PulsantiNotificaAttivaMagFam();
+        PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
     });
 </script>

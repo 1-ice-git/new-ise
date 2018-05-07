@@ -37,6 +37,7 @@
             Model.idTipoCoan > 0 &&
             Model.dataPartenza > DateTime.MinValue &&
             Model.idRuoloUfficio > 0 &&
+            Model.idFKM > 0 &&
             Model.protocolloLettera != string.Empty &&
             Model.dataLettera > DateTime.MinValue &&
             Model.Documento != null &&
@@ -56,9 +57,6 @@
         abilitaNotifica = false;
         abilitaNuovoTrasferimento = false;
     }
-
-
-
 
 }
 
@@ -139,7 +137,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9">
+                <div class="col-xs-9 form-inline">
                     @Html.EditorFor(model => model.coan, new { htmlAttributes = new { @class = "form-control", @style = "max-width:200px;" } })
                     @Html.ValidationMessageFor(model => model.coan, "", new { @class = "text-danger" })
                 </div>
@@ -288,7 +286,7 @@
 
 
     LetturaParametriGestioneTrasferimento();
-    AbilitaDisabilitaCoan();
+    //AbilitaDisabilitaCoan();
 
 
     function LetturaParametriGestioneTrasferimento() {
@@ -386,6 +384,7 @@
             $("#idRuoloUfficio").attr("disabled", "disabled");
             $("#idTipoCoan").attr("disabled", "disabled");
             $("#coan").attr("disabled", "disabled");
+            $("#idFKM").attr("disabled", "disabled");
             $("#btLetteraTrsf").attr("disabled", "disabled");
         }
         else if (abilitaSalva == true && abilitaNotifica == false && abilitaNuovoTrasferimento == false) {
@@ -400,6 +399,8 @@
             $("#idRuoloUfficio").removeAttr("disabled");
             $("#idTipoCoan").removeAttr("disabled");
             $("#coan").removeAttr("disabled");
+            $("#idFKM").removeAttr("disabled");
+
             $("#btLetteraTrsf").removeAttr("disabled");
         }
         else if (abilitaSalva == true && abilitaNotifica == true && abilitaNuovoTrasferimento == false) {
@@ -414,6 +415,7 @@
             $("#idRuoloUfficio").removeAttr("disabled");
             $("#idTipoCoan").removeAttr("disabled");
             $("#coan").removeAttr("disabled");
+            $("#idFKM").removeAttr("disabled");
             $("#btLetteraTrsf").removeAttr("disabled");
         } else {
             $('#divBtNuovoTrasferimento').hide();
@@ -426,6 +428,7 @@
             $("#dataPartenza").attr("disabled", "disabled");
             $("#idRuoloUfficio").attr("disabled", "disabled");
             $("#idTipoCoan").attr("disabled", "disabled");
+            $("#idFKM").attr("disabled", "disabled");
             $("#coan").attr("disabled", "disabled");
             $("#btLetteraTrsf").attr("disabled", "disabled");
         }

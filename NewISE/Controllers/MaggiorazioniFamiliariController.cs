@@ -46,8 +46,7 @@ namespace NewISE.Controllers
                 bool siDocFigli = false;
                 bool docFormulario = false;
                 bool TrasfSolaLettura = false;
-
-
+            
                 dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                     out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out TrasfSolaLettura);
@@ -113,6 +112,7 @@ namespace NewISE.Controllers
                 bool solaLettura = false;
                 solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
                 ViewData.Add("solaLettura", solaLettura);
+                ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
