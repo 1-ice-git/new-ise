@@ -490,6 +490,13 @@ namespace NewISE.Controllers
                             //ViewData["idFaseInCorso"] = idFaseInCorso;
                             AggiornaTuttiViewData(idTrasferimento);
 
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                            {
+                                using (ModelDBISE db = new ModelDBISE())
+                                {
+                                    dtce.ModificaInCompletatoCalendarioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo, db);
+                                }
+                            }
                             string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
                             string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
                             InviaMailViaggioCongedo(idAttivazioneVC, idDocumento, corpoMessaggio, oggetto);
@@ -506,6 +513,15 @@ namespace NewISE.Controllers
                         //ViewData["id_Viaggio_Congedo"] = 0;
                         //ViewData["idFaseInCorso"] = idFaseInCorso;
                         AggiornaTuttiViewData(idTrasferimento);
+
+                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        {
+                            using (ModelDBISE db = new ModelDBISE())
+                            {
+                                dtce.ModificaInCompletatoCalendarioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo, db);
+                            }
+                        }
+
                         string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
                         string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
                         InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
@@ -551,6 +567,15 @@ namespace NewISE.Controllers
                 {
                     dtvc.AnnullaPreventiviRichiesta(idAttivazioneVC, idFaseInCorso, idTrasferimento);
                 }
+
+                //using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                //{
+                //    using (ModelDBISE db = new ModelDBISE())
+                //    {
+                //        dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo, db);
+                //    }
+                //}
+
                 string oggetto = Resources.msgEmail.OggettoAnnullaViaggiCongedo;
                 string corpoMessaggio = Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo;
                 if(corpoMessaggioVC.Trim()!="")corpoMessaggio = corpoMessaggioVC;
@@ -596,18 +621,11 @@ namespace NewISE.Controllers
                         }
 
                     }
-
-
                     //Inviare la mail
-
                     string oggetto = Resources.msgEmail.OggettoNotificaViaggiCongedo;
                     string corpoMessaggio = Resources.msgEmail.MessaggioNotificaViaggiCongedo;
-
-
-
                     
                     InviaMailViaggioCongedo(idAttivazioneVC,0,corpoMessaggio,oggetto);
-
                    
                 }
                 //return PartialView("PulsantiPreventiviDiViaggio");
