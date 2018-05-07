@@ -1,6 +1,8 @@
 ﻿@using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
 @using NewISE.Models.DBModel.Enum;
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="~/scripts/ckeditor/adapters/jquery.js"></script>
 @{
     // decimal idViaggioCongedo = Convert.ToDecimal(ViewData["idViaggioCongedo"]);
     //decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
@@ -254,8 +256,29 @@
 
     function ModalAnnullaPreventiviRichiesta() {
         //debugger;
-        //MessaggioAnnullaPreventiviRichiesta();
+        //MessaggioAnnullaPreventiviRichiesta(); 
+       
+        // CKEDITOR.replace('EditorMessaggioVC');   
+
+        for(var name in CKEDITOR.instances)
+        {
+            CKEDITOR.instances[name].destroy();
+        }
+        var editor = CKEDITOR.instances['EditorMessaggioVC'];
+        if (!editor) {
+            CKEDITOR.replace('EditorMessaggioVC');
+        }
+        else {
+            try
+            {
+               CKEDITOR.remove(editor);
+               editor.destroy(true);
+            }
+            catch(eerr){}
+        }
+
         $('#ModalAnnullaPreventiviRichiesta').modal().show();
+        
     }
 
     function ModalAttivaPreventiviRichiesta() {
