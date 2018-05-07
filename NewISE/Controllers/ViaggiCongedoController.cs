@@ -154,33 +154,14 @@ namespace NewISE.Controllers
                     //lAttiv_Viaggio_Congedo = dvc.Cerca_Id_AttivazioniViaggiCongedoDisponibile(id_Viaggio_Congedo, idFaseInCorso);
                     if(id_Attiv_Viaggio_Congedo==0)
                         id_Attiv_Viaggio_Congedo = dvc.Crea_Attivazioni_Viaggi_Congedo(id_Viaggio_Congedo, idFaseInCorso, idTrasferimento);
-                    //if (lAttiv_Viaggio_Congedo.Count() == 0)
-                    //{
-                    //    id_Attiv_Viaggio_Congedo = dvc.Crea_Attivazioni_Viaggi_Congedo(id_Viaggio_Congedo, idFaseInCorso, idTrasferimento);
-                    //}
-                    //else
-                    //    id_Attiv_Viaggio_Congedo = lAttiv_Viaggio_Congedo.First().idAttivazioneVC;
 
                     ViewData["id_Viaggio_Congedo"] = id_Viaggio_Congedo;
                     ViewData["id_Attiv_Viaggio_Congedo"] = id_Attiv_Viaggio_Congedo;
-
-                    //if (idFaseInCorso == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
-                    //{
-                    //    lpv = dvc.GetPrecedentiPreventiviViaggio(id_Attiv_Viaggio_Congedo);
-                    //    lpvFinale.AddRange(lpv);
-                    //}
+                    
                     lpv = dvc.GetUltimiPreventiviViaggio(id_Attiv_Viaggio_Congedo,idTrasferimento, id_Viaggio_Congedo);
                     lpvFinale.AddRange(lpv);
                     bool admin = Utility.Amministratore();
                     ViewBag.Amministratore = admin;
-
-                    //bool AttivazioneInviata = dvc.AttivazionePreventiviInviata(id_Attiv_Viaggio_Congedo, idFaseInCorso, idTrasferimento);
-                    //ViewData["AttivazioneInviata"] = AttivazioneInviata;
-
-                    //bool NotificaInviata = dvc.NotificaPreventiviInviata(id_Attiv_Viaggio_Congedo, idFaseInCorso);
-                    //ViewData["NotificaInviata"] = NotificaInviata;
-                    
-                    //ViewData["idFaseInCorso"] = idFaseInCorso;
 
                     AggiornaTuttiViewData(idTrasferimento);
 
@@ -256,8 +237,8 @@ namespace NewISE.Controllers
                 //decimal[] tmp = new decimal[] { 0, 0 ,0,0};
                 //idAttivazioneVC , idFaseInCorso, NOTIFCATA, ATTIVATA
                 //       [0]             [1]           [2]       [3]
-                if (tmp[0] == 0 && tmp[1] == 0 && tmp[1] == 0 && tmp[3] == 0)
-                    tmp= dvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
+                //if (tmp[0] == 0 && tmp[1] == 0 && tmp[2] == 0 && tmp[3] == 0)
+                //    tmp= dvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
 
                 decimal idFaseInCorso = tmp[1];
 
@@ -303,16 +284,7 @@ namespace NewISE.Controllers
                     NotificaInviata2 = true;
                     AttivazioneInviata = true;
                 }
-
-                //if (tmp[0] == 0 && tmp[1] == 0 && tmp[1] == 0 && tmp[3] == 0)
-                //{
-                //    AttivazioneInviata2 = false;
-                //    AttivaPulsanteNuovo = false;
-                //    NotificaInviata = false;
-                //    NotificaInviata2 = false;
-                //    AttivazioneInviata = false;
-                //   // idFaseInCorso = 1;
-                //}
+                              
 
                 ViewData["AttivazioneInviata"] = AttivazioneInviata;
                 ViewData["NotificaInviata"] = NotificaInviata;
@@ -569,6 +541,8 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
+        [HttpPost]
+        [ValidateInput(false)]
         public JsonResult ConfermaAnnullaPreventiviRichiesta(decimal idAttivazioneVC,decimal idFaseInCorso,string corpoMessaggioVC,decimal idTrasferimento)
         {
             try
@@ -606,11 +580,35 @@ namespace NewISE.Controllers
                     ViewData["id_Viaggio_Congedo"] = id_Viaggio_Congedo;
                     ViewData["idFaseInCorso"] = idFaseInCorso;
 
+
+                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                    {
+                        CalendarioEventiModel cem = new CalendarioEventiModel()
+                        {
+                            idFunzioneEventi = EnumFunzioniEventi.RichiestaViaggiCongedo,
+                            idTrasferimento = idTrasferimento,
+                            DataInizioEvento = DateTime.Now.Date,
+                            DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaViaggiCongedo)).Date,
+                        };
+                        using (ModelDBISE db = new ModelDBISE())
+                        {
+                            dtce.InsertCalendarioEvento(ref cem, db);
+                        }
+
+                    }
+
+
                     //Inviare la mail
 
                     string oggetto = Resources.msgEmail.OggettoNotificaViaggiCongedo;
                     string corpoMessaggio = Resources.msgEmail.MessaggioNotificaViaggiCongedo;
+
+
+
+                    
                     InviaMailViaggioCongedo(idAttivazioneVC,0,corpoMessaggio,oggetto);
+
+                   
                 }
                 //return PartialView("PulsantiPreventiviDiViaggio");
                 return Json(new { err = "" });

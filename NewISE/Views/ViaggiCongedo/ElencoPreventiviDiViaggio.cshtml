@@ -1,8 +1,8 @@
 ﻿@using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.DBModel.ViaggioCongedoModel>
 @using NewISE.Models.DBModel.Enum;
-<script src="~/Scripts/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="~/scripts/ckeditor/adapters/jquery.js"></script>
+@*<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="~/scripts/ckeditor/adapters/jquery.js"></script>*@
 @{
     // decimal idViaggioCongedo = Convert.ToDecimal(ViewData["idViaggioCongedo"]);
     //decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
@@ -152,16 +152,9 @@
                 </button>
                 <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>      
                 <div id="idMessaggioTitolo" class="text-danger">Messaggio</div>       
-                <p id="contenutomsg" style="width:250px">
-                    <textarea id="EditorMessaggioVC" name="EditorMessaggioVC">@messaggioAnnullaRichiesta</textarea>
-                    @*<script>
-                            //CKEDITOR.editorConfig = function (config)
-                            //{
-                            //    config.title = "";
-                        //}       
-                        CKEDITOR.replace('EditorMessaggioVC');
-                    </script>*@
-                </p> 
+                <div id="contenutomsg" style="width:860px">
+                    <textarea id="EditorMessaggioVC" name="EditorMessaggioVC">@messaggioAnnullaRichiesta</textarea>                   
+                </div> 
                 <div id="idControllaContenutoMsgVC" class="text-danger" style="display:none">Messaggio obbligatorio</div>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
@@ -199,8 +192,8 @@
 </div>
 
 
-<div id="dialog-confirm" title="Contenuto mail vuoto" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Corpo messaggio vuoto</p>
+<div id="dialog-confirm" title="Corpo Messaggio vuoto" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Messaggio vuoto</p>
 </div>
 
 <script type="text/javascript">
@@ -602,15 +595,16 @@
 
     function ConfermaAnnullaPreventiviRichiesta()
     {
-        //debugger;
-        var x = $('#EditorMessaggioVC').val();
-        if(x.trim() =='')
-        {
-            $('#idControllaContenutoMsgVC').show();
-            //  Sblocca();
-            Check();
-            return false;
+        debugger;
+        CKEDITOR.instances["EditorMessaggioVC"].updateElement();
+        if (CKEDITOR.instances["EditorMessaggioVC"]) {           
+            if (CKEDITOR.instances.EditorMessaggioVC.getData().toString().trim() == '') {
+                $('#idControllaContenutoMsgVC').show();
+                Check();
+                return false;
+            }
         }
+
         var idPreventivoDocumento=parseInt($('#HI_idDocumentoPreventivo').val());
         if(!idPreventivoDocumento) idPreventivoDocumento=0;
         var idTrasferimento=parseInt('@idTrasferimento');
@@ -640,6 +634,7 @@
                     ElencoDocumentiFase2();
 
                 } else {
+                 //   debugger;
                     ErroreElaborazioneAjax(result.err);
                 }
             },
@@ -647,7 +642,7 @@
 
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
+              //  debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
             }

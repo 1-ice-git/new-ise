@@ -1215,12 +1215,15 @@ namespace NewISE.Models.DBModel.dtObj
                     decimal idFase = (decimal)EnumFaseViaggioCongedo.Preventivi;
                     var vc = db.VIAGGICONGEDO.Find(idViaggiCongedo);
                     var t2 = vc.ATTIVAZIONIVIAGGICONGEDO.Where(a => a.IDFASEVC == idFase && a.ANNULLATO==false).ToList();
-                    decimal x = t2.First().IDATTIVAZIONEVC;
-                    t = db.ATTIVAZIONIVIAGGICONGEDO.Find(x);
+                    if (t2?.Any() ?? false)
+                    {
+                        decimal x = t2.First().IDATTIVAZIONEVC;
+                        t = db.ATTIVAZIONIVIAGGICONGEDO.Find(x);
+                    }
                 }
                 var lavc = t.SELECTDOCVC.ToList();
 
-                if(lavc.Count()==0)
+                if(lavc?.Any()??false)
                 {
                     if(t.IDFASEVC==(decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
                     {
@@ -1228,7 +1231,7 @@ namespace NewISE.Models.DBModel.dtObj
                         decimal idVC = Restituisci_ID_Viagg_CONG_DA(id_Attiv_Viaggio_Congedo, idTrasferimento);
                         var VC = db.VIAGGICONGEDO.Find(idVC);
                         var lAttVC = VC.ATTIVAZIONIVIAGGICONGEDO.Where(a=>a.IDFASEVC== idFase);
-                        if(lAttVC.Count()!=0)
+                        if(lAttVC?.Any()??false)
                         {
                             id_Attiv_Viaggio_Congedo=lAttVC.First().IDATTIVAZIONEVC;
                             t = db.ATTIVAZIONIVIAGGICONGEDO.Find(id_Attiv_Viaggio_Congedo);
