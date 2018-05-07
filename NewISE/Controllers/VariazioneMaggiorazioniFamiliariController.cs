@@ -1697,7 +1697,6 @@ namespace NewISE.Controllers
                                     }
 
                                 }
-
                                 break;
                         }
 

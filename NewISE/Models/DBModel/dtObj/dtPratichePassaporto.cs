@@ -262,7 +262,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     foreach (var pr in lpr)
                                     {
-                                        var ldpr = pr.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                        var ldpr = pr.DOCUMENTI.Where(a => a.MODIFICATO == false &&
+                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && 
+                                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
+                                                    .ToList();
                                         foreach (var dpr in ldpr)
                                         {
                                             dpr.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
@@ -393,7 +396,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 #endregion
                                 #region ciclo attivazione passaporto figli
                                 var lfp = ap.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false).ToList();
-                                if (lcp?.Any() ?? false)
+                                if (lfp?.Any() ?? false)
                                 {
                                     foreach (var fp in lfp)
                                     {
@@ -554,6 +557,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 "PASSAPORTORICHIEDENTE", db,
                                                 prNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                 prNew.IDPASSAPORTORICHIEDENTE);
+
 
                                             var ldocOld =
                                             prOld.DOCUMENTI.Where(
@@ -1158,13 +1162,16 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
-                                #region ciclo attivazione doc richiedente
+
+                                #region ciclo attivazione documenti richiedente
                                 var lpr = ap.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO == false).ToList();
                                 if (lpr?.Any()??false)
                                 {
                                     foreach(var pr in lpr )
                                     {
-                                        var ldpr = pr.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        var ldpr = pr.DOCUMENTI.Where(a => a.MODIFICATO == false &&
+                                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
                                         foreach(var dpr in ldpr)
                                         {
                                             dpr.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
@@ -1176,7 +1183,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                 }
                                 #endregion
-
 
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Notifica della richiesta per i passaporti.", "ATTIVAZIONIPASSAPORTI", db,
@@ -1276,7 +1282,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     foreach (var pr in lpr)
                                     {
-                                        var ldpr = pr.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Passaporto && a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Passaporto && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        var ldpr = pr.DOCUMENTI.Where(a => a.MODIFICATO == false && 
+                                            a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Passaporto &&
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
                                         foreach (var dpr in ldpr)
                                         {
                                             dpr.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
@@ -1294,7 +1302,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     foreach (var cp in lcp)
                                     {
-                                        var ldcp = cp.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Passaporto && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Passaporto && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        var ldcp = cp.DOCUMENTI.Where(a => a.MODIFICATO == false && 
+                                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Passaporto && 
+                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
                                         foreach (var dcp in ldcp)
                                         {
                                             dcp.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
@@ -1308,11 +1318,13 @@ namespace NewISE.Models.DBModel.dtObj
                                 #endregion
                                 #region ciclo attivazione passaporto figli
                                 var lfp = ap.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false).ToList();
-                                if (lcp?.Any() ?? false)
+                                if (lfp?.Any() ?? false)
                                 {
                                     foreach (var fp in lfp)
                                     {
-                                        var ldfp = fp.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Passaporto && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Passaporto && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                        var ldfp = fp.DOCUMENTI.Where(a => a.MODIFICATO == false && 
+                                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Passaporto &&                                            
+                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
                                         foreach (var dfp in ldfp)
                                         {
                                             dfp.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
@@ -3181,11 +3193,13 @@ namespace NewISE.Models.DBModel.dtObj
                         switch ((EnumParentela)idParentela)
                         {
                             case EnumParentela.Coniuge:
-                                var cpl = ap.CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false).ToList();//. && ..DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)TipoDocumento).ToList();
+                                //var cpl = ap.CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false && a.IDCONIUGE == idFamiliare).ToList();//. && ..DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)TipoDocumento).ToList();
+                                var cp = db.CONIUGEPASSAPORTO.Find(idFamiliare);
 
-                                if (cpl?.Any() ?? false)
+                                //if (cpl?.Any() ?? false)
+                                if (cp.IDCONIUGEPASSAPORTO>0)
                                 {
-                                    var cp = cpl.First();
+                                    //var cp = cpl.First();
                                     var dcpl = cp.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == idTipoDocumento).ToList();
                                     if (dcpl?.Any() ?? false)
                                     {
@@ -3204,11 +3218,13 @@ namespace NewISE.Models.DBModel.dtObj
                             break;
 
                             case EnumParentela.Figlio:
-                                var fpl = ap.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false).ToList();
+                                //var fpl = ap.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false && a.IDFIGLI == idFamiliare).ToList();
+                                var fp = db.FIGLIPASSAPORTO.Find(idFamiliare);
 
-                                if (fpl?.Any() ?? false)
+                                //if (fpl?.Any() ?? false)
+                                if (fp.IDFIGLIPASSAPORTO>0)
                                 {
-                                    var fp = fpl.First();
+                                    //var fp = fpl.First();
                                     var dfpl = fp.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == idTipoDocumento).ToList();
                                     if (dfpl?.Any() ?? false)
                                     {

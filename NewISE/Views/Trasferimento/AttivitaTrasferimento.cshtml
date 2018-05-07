@@ -266,10 +266,18 @@
                     }
                     if (faseRichiestaPPattivata && faseInvioPPattivata == false)
                     {
-                        blink('#linkPratichePassaporto');
-                    } else {
-                        $('#linkPratichePassaporto').stop().fadeIn();
+                        //blink('#linkPratichePassaporto');
+                        $("#linkPratichePassaporto").animate({color:"#ff0000"});
+                        
                     }
+                    if (faseRichiestaPPattivata && faseInvioPPattivata) {
+                        //blink('#linkPratichePassaporto');
+                        $("#linkPratichePassaporto").animate({ color: $("#linkTrasportoEffetti").css('color') });
+                    }
+                    //else {
+                    //    //$('#linkPratichePassaporto').stop().fadeIn();
+                    //    $("#linkPratichePassaporto").animate({ color: "#000000" });
+                    //}
 
                     //chkTitoliViaggioR
                     if (richiesteTV == true) {
@@ -447,5 +455,46 @@
     }
 
 
+
+
+
+
+
+
+
+
+    function Passaporti() {
+        var rotta = "/PratichePassaporto/Passaporti";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                $("#divOperazioniAttivitaTrasf").empty();
+                $("#divOperazioniAttivitaTrasf").html(result);
+                GestioneAttivitaTrasferimento();
+            },
+            complete: function () {
+                
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
 
 </script>

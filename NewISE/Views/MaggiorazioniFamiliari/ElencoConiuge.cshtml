@@ -179,8 +179,7 @@
         "sDom": 'lfrtip'
     });
 
-    PulsantiNotificaAttivaMagFam();
-
+    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
 
     function Pensione(idConiuge, idAttivazioneMagFam) {
         //debugger;
@@ -243,7 +242,8 @@
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
             },
             error: function (error) {
                 //debugger;
@@ -282,7 +282,8 @@
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
             },
             error: function (error) {
                 //debugger;
@@ -320,7 +321,8 @@
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
             },
             error: function (error) {
                 //debugger;

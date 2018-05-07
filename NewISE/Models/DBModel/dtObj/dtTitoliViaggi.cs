@@ -1427,7 +1427,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                         }else
                         {
-                            if(DocCartaImbarco||DocTitoliViaggio)
+                            if(DocCartaImbarco && DocTitoliViaggio)
                             {
                                 richiediNotifica = true;
                             }
