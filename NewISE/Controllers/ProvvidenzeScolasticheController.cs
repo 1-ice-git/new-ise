@@ -13,6 +13,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Controllers
 {
@@ -23,7 +24,7 @@ namespace NewISE.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
         public ActionResult ProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
         {
@@ -69,7 +70,6 @@ namespace NewISE.Controllers
             }
 
         }
-
         public JsonResult VerificaProvvidenze(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -152,34 +152,71 @@ namespace NewISE.Controllers
         }
         public ActionResult ElencoFormulariInseriti(decimal idTrasferimento, decimal idProvScolastiche, decimal idTrasfProvScolastiche)
         {
-            List<SelectListItem> lDataAttivazione = new List<SelectListItem>();
-            List<AttivazioniProvScolasticheModel> laps = new List<AttivazioniProvScolasticheModel>();
+
+            bool richiestaPS = false;
+            bool attivazionePS = false;
+            bool DocProvvidenzeScolastiche = false;
+            //decimal NumAttivazioni = 0;
+            bool trasfAnnullato = false;
+
+            using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
+            {
+
+                dtps.SituazioneProvvScolVariazione(idTrasfProvScolastiche, out richiestaPS,
+                out attivazionePS, out DocProvvidenzeScolastiche, out trasfAnnullato);
+
+
+            }
             
+            List<SelectListItem> lDataAttivazione = new List<SelectListItem>();
+            List<ATTIVAZIONIPROVSCOLASTICHE> laps = new List<ATTIVAZIONIPROVSCOLASTICHE>();
+            
+
             try
             {
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
                     using (dtAttivazioniProvScol dtaps = new dtAttivazioniProvScol())
                     {
-                       laps = dtaps.GetListAttivazioniProvvScolByIdProvvScol(idTrasfProvScolastiche).ToList();
+                       laps = dtaps.GetListAttivazioniProvvScolByIdProvvScol(idTrasfProvScolastiche);
 
                         var i = 1;
 
                         foreach (var e in laps)
-                        {
-                            if (!e.annullato)
+                        {   
+                           var ld = e.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche).ToList();
+                            if (ld.Count > 0)
                             {
 
-
-                                i++;
-
+                                dtps.SituazioneAttivazioneProvvScolById(e.IDPROVSCOLASTICHE, out richiestaPS,
+                                       out attivazionePS, out DocProvvidenzeScolastiche);
+                                
+                                    if (richiestaPS == false && DocProvvidenzeScolastiche)
+                                    {
+                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString() + " (In Lavorazione)", Value = e.IDPROVSCOLASTICHE.ToString() });
+                                        //solaLettura = false;
+                                    }
+                                    if (richiestaPS)
+                                    {
+                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });
+                                    }
+                                }
+                            else
+                            {
+                                lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });
                             }
+                            i++;
 
-                                //solaLettura = this.SolaLetturaPartenza(idTrasfProvScolastiche);
-                                //ViewData.Add("solaLettura", solaLettura);
                             
-                            
+
+                            //solaLettura = this.SolaLetturaPartenza(idTrasfProvScolastiche);
+                            //ViewData.Add("solaLettura", solaLettura);
+                          
+                            //bool trasfAnnullato = false;
+
                         }
+
+
                         ViewData["idTipoDocumento"] = EnumTipoDoc.Formulario_Provvidenze_Scolastiche;
                         ViewData["idTrasferimento"] = idTrasferimento;
                         ViewData["idProvScolastiche"] = idProvScolastiche;
@@ -207,11 +244,6 @@ namespace NewISE.Controllers
             try
             {
 
-                //bool solaLettura = false;
-                //ViewData.Add("solaLettura", solaLettura);
-
-
-
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
                     ldm = dtps.GetDocumentiPS(idTrasfProvScolastiche, idTipoDocumento);
@@ -235,6 +267,11 @@ namespace NewISE.Controllers
                     }
 
                     ViewData["richiestaPS"] = richiestaPS;
+                }
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    ldm = dtd.GetFormulariProvvidenzeScolasticheVariazione(idTrasfProvScolastiche).ToList();
                 }
 
 
@@ -590,7 +627,6 @@ namespace NewISE.Controllers
 
             return PartialView("TabFormulariInseriti", ldm);
         }
-
         public JsonResult GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
         {
 
@@ -695,7 +731,6 @@ namespace NewISE.Controllers
                         err = errore
                     });
         }
-
         [HttpPost]
         [ValidateInput(false)]
         public JsonResult ConfermaAnnullaRichiestaPS(decimal idTrasfProvScolastiche, string msg)

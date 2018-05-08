@@ -6,6 +6,7 @@ using System.Web;
 using NewISE.EF;
 using NewISE.Models.Tools;
 using Newtonsoft.Json.Schema;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -128,36 +129,37 @@ namespace NewISE.Models.DBModel.dtObj
            
         }
 
-        public IList<AttivazioniProvScolasticheModel> GetListAttivazioniProvvScolByIdProvvScol(decimal idTrasfProvScolastiche)
+        public List<ATTIVAZIONIPROVSCOLASTICHE> GetListAttivazioniProvvScolByIdProvvScol(decimal idTrasfProvScolastiche)
         {
-            List<AttivazioniProvScolasticheModel> lamfm = new List<AttivazioniProvScolasticheModel>();
+            List<ATTIVAZIONIPROVSCOLASTICHE> lamf = new List<ATTIVAZIONIPROVSCOLASTICHE>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var ps = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
                 if (ps.IDTRASFPROVSCOLASTICHE > 0)
                 {
-                    var lamf = ps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDPROVSCOLASTICHE);
-                    if (lamf?.Any() ?? false)
-                    {
-                        lamfm = (from e in lamf
-                                 select new AttivazioniProvScolasticheModel()
-                                 {
+                    lamf = ps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false && a.DOCUMENTI.Any(b => b.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)).OrderBy(a => a.IDPROVSCOLASTICHE).ToList();
+                    //if (lamf?.Any() ?? false)
+                    //{
+                    //    lamfm = (from e in lamf
+                    //             select new AttivazioniProvScolasticheModel()
+                    //             {
 
-                                     idProvScolastiche = e.IDPROVSCOLASTICHE,
-                                     idTrasfProvScolastiche = e.IDTRASFPROVSCOLASTICHE,
-                                     notificaRichiesta = e.NOTIFICARICHIESTA,
-                                     dataNotifica = e.DATANOTIFICA,
-                                     attivaRichiesta = e.ATTIVARICHIESTA,
-                                     dataAttivazione = e.DATAATTIVAZIONE,
-                                     dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                     annullato = e.ANNULLATO
+                    //                 idProvScolastiche = e.IDPROVSCOLASTICHE,
+                    //                 idTrasfProvScolastiche = e.IDTRASFPROVSCOLASTICHE,
+                    //                 notificaRichiesta = e.NOTIFICARICHIESTA,
+                    //                 dataNotifica = e.DATANOTIFICA,
+                    //                 attivaRichiesta = e.ATTIVARICHIESTA,
+                    //                 dataAttivazione = e.DATAATTIVAZIONE,
+                    //                 dataAggiornamento = e.DATAAGGIORNAMENTO,
+                    //                 annullato = e.ANNULLATO
 
-                                 }).ToList();
-                    }
+                    //             }).ToList();
+                    //}
+                    
                 }
             }
-            return lamfm;
+            return lamf;
         }
     }
 }

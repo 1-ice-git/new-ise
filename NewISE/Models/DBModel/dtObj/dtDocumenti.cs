@@ -1437,7 +1437,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 idDocumenti = doc.IDDOCUMENTO,
                                 nomeDocumento = doc.NOMEDOCUMENTO,
                                 Modificabile = modificabile,
-                                //IdAttivazione = e.IDATTIVAZIONEMAGFAM,
+                                IdAttivazione = e.IDPROVSCOLASTICHE,
                                 DataAggiornamento = e.DATAAGGIORNAMENTO,
                                 ColoreSfondo = coloresfondo,
                                 ColoreTesto = coloretesto,
@@ -1590,7 +1590,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var ld =
                             e.DOCUMENTI.Where(
-                                a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
+                                a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche)
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                             bool modificabile = false;
