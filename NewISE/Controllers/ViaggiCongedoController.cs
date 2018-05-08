@@ -486,13 +486,13 @@ namespace NewISE.Controllers
                             AggiornaTuttiViewData(idTrasferimento);
 
                            
-                            decimal[] y = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
+                            //decimal[] y = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
                             string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
-                            if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
-                                oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo2;
+                            //if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                            //    oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo2;
                             string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
-                            if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
-                                corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo2;
+                            //if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                            //    corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo2;
 
                             InviaMailViaggioCongedo(idAttivazioneVC, idDocumento, corpoMessaggio, oggetto);
                         }
