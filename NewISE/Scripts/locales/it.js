@@ -27,8 +27,8 @@
         msgNoFilesSelected: '',
         msgCancelled: 'Annullato',
         msgZoomModalHeading: 'Anteprima dettagliata',
-        msgFileRequired: 'You must select a file to upload.',
-        msgSizeTooSmall: 'File "{name}" (<b>{size} KB</b>) is too small and must be larger than <b>{minSize} KB</b>.',
+        msgFileRequired: 'Devi selezionare un file da caricare.',
+        msgSizeTooSmall: 'File "{name}" (<b>{size} KB</b>) è troppo piccolo e deve essere più grande di <b>{minSize} KB</b>.',
         msgSizeTooLarge: 'Il file "{name}" (<b>{size} KB</b>) eccede la dimensione massima di caricamento di <b>{maxSize} KB</b>.',
         msgFilesTooLess: 'Devi selezionare almeno <b>{n}</b> {files} da caricare.',
         msgFilesTooMany: 'Il numero di file selezionati per il caricamento <b>({n})</b> eccede il numero massimo di file accettati <b>{m}</b>.',
@@ -37,7 +37,7 @@
         msgFileNotReadable: 'Il file "{name}" non \xE8 leggibile.',
         msgFilePreviewAborted: 'Generazione anteprima per "{name}" annullata.',
         msgFilePreviewError: 'Errore durante la lettura del file "{name}".',
-        msgInvalidFileName: 'Invalid or unsupported characters in file name "{name}".',
+        msgInvalidFileName: 'Caratteri non validi o non supportati nel nome del file "{name}".',
         msgInvalidFileType: 'Tipo non valido per il file "{name}". Sono ammessi solo file di tipo "{types}".',
         msgInvalidFileExtension: 'Estensione non valida per il file "{name}". Sono ammessi solo file con estensione "{extensions}".',
         msgFileTypes: {
@@ -51,10 +51,10 @@
             'object': 'object'
         },
         msgUploadAborted: 'Il caricamento del file è stata interrotta',
-        msgUploadThreshold: 'Processing...',
-        msgUploadBegin: 'Initializing...',
-        msgUploadEnd: 'Done',
-        msgUploadEmpty: 'No valid data available for upload.',
+        msgUploadThreshold: 'In lavorazione...',
+        msgUploadBegin: 'Inizializzazione...',
+        msgUploadEnd: 'Fatto',
+        msgUploadEmpty: 'Nessun dato valido disponibile per il caricamento.',
         msgValidationError: 'Errore di convalida',
         msgLoading: 'Caricamento file {index} di {files}&hellip;',
         msgProgress: 'Caricamento file {index} di {files} - {name} - {percent}% completato.',
@@ -66,8 +66,8 @@
         msgImageHeightLarge: 'Altezza di file immagine "{name}" non può superare {size} px.',
         msgImageResizeError: "Impossibile ottenere le dimensioni dell'immagine per ridimensionare.",
         msgImageResizeException: "Errore durante il ridimensionamento dell'immagine.<pre>{errors}</pre>",
-        msgAjaxError: 'Something went wrong with the {operation} operation. Please try again later!',
-        msgAjaxProgressError: '{operation} failed',
+        msgAjaxError: "Qualcosa è andato storto con l'operazione {operation}. Per favore riprova più tardi!",
+        msgAjaxProgressError: '{operation} fallita',
         ajaxOperations: {
             deleteThumb: 'file delete',
             uploadThumb: 'file upload',
@@ -75,24 +75,24 @@
             uploadExtra: 'form data upload'
         },
         dropZoneTitle: 'Trascina i file qui&hellip;',
-        dropZoneClickTitle: '<br>(or click to select {files})',
+        dropZoneClickTitle: '<br>(oppure click per selezionare {files})',
         fileActionSettings: {
             removeTitle: 'Rimuovere il file',
             uploadTitle: 'Caricare un file',
             zoomTitle: 'Guarda i dettagli',
-            dragTitle: 'Move / Rearrange',
+            dragTitle: 'Muovi / Riordina',
             indicatorNewTitle: 'Non ancora caricato',
             indicatorSuccessTitle: 'Caricati',
             indicatorErrorTitle: 'Carica Errore',
             indicatorLoadingTitle: 'Caricamento ...'
         },
         previewZoomButtonTitles: {
-            prev: 'View previous file',
-            next: 'View next file',
-            toggleheader: 'Toggle header',
-            fullscreen: 'Toggle full screen',
-            borderless: 'Toggle borderless mode',
-            close: 'Close detailed preview'
+            prev: 'Visualizza il file precedente',
+            next: 'Visualizza il file successivo',
+            toggleheader: "Attiva o disattiva l'intestazione",
+            fullscreen: 'Attiva o disattiva schermo intero',
+            borderless: 'Attiva o disattiva la modalità senza bordi',
+            close: 'Chiudi anteprima dettagli'
         }
     };
 })(window.jQuery);
