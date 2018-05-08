@@ -260,25 +260,26 @@
        
         // CKEDITOR.replace('EditorMessaggioVC');   
 
-        for(var name in CKEDITOR.instances)
-        {
-            CKEDITOR.instances[name].destroy();
-        }
-        var editor = CKEDITOR.instances['EditorMessaggioVC'];
-        if (!editor) {
-            CKEDITOR.replace('EditorMessaggioVC');
-        }
-        else {
-            try
-            {
-               CKEDITOR.remove(editor);
-               editor.destroy(true);
-            }
-            catch(eerr){}
-        }
+        //for(var name in CKEDITOR.instances)
+        //{
+        //    CKEDITOR.instances[name].destroy();
+        //}
+        //var editor = CKEDITOR.instances['EditorMessaggioVC'];
+        //if (!editor) {
+        //    CKEDITOR.replace('EditorMessaggioVC');
+        //}
+        //else {
+        //    try
+        //    {
+        //       CKEDITOR.remove(editor);
+        //       editor.destroy(true);
+        //    }
+        //    catch(eerr){}
+        //}
 
+
+        MessaggioAnnullaPreventiviRichiesta(parseInt('@idTrasferimento'),parseInt('@id_Attiv_Viaggio_Congedo'));
         $('#ModalAnnullaPreventiviRichiesta').modal().show();
-        
     }
 
     function ModalAttivaPreventiviRichiesta() {
@@ -286,14 +287,14 @@
         $('#ModalAttivaPreventiviRichiesta').modal().show();
     }
 
-    function MessaggioAnnullaPreventiviRichiesta() {
+    function MessaggioAnnullaPreventiviRichiesta(idTrasferimento,id_Attiv_Viaggio_Congedo) {
         //debugger;
-        var rotta = "/ViaggiCongedo/MessaggioAnnullaTEPartenza";
-        var idTrasportoEffettiPartenza = 0;@*// parseInt('@idTrasportoEffettiPartenza');*@
+        var rotta = "/ViaggiCongedo/MessaggioAnnullaViaggiCongedo";
+        //var idTrasportoEffettiPartenza = 0;@*// parseInt('@idTrasportoEffettiPartenza');*@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
+            data: { idTrasferimento: idTrasferimento, id_Attiv_Viaggio_Congedo: id_Attiv_Viaggio_Congedo },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

@@ -151,15 +151,16 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
-                <div id="idMessaggioTitolo" class="text-danger">Messaggio</div>
+                @*<div id="idMessaggioTitolo" class="text-danger">Messaggio</div>*@
                 <div id="contenutomsg" style="width:860px">
-                    <textarea id="EditorMessaggioVC" name="EditorMessaggioVC">@messaggioAnnullaRichiesta</textarea>
+                    <p id="viewMessaggioAnnullaVC"></p>
+                    @*<textarea id="EditorMessaggioVC" name="EditorMessaggioVC">@messaggioAnnullaRichiesta</textarea>*@
                 </div>
                 <div id="idControllaContenutoMsgVC" class="text-danger" style="display:none">Messaggio obbligatorio</div>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewAnnullaPreventiviRichiesta">
-                    <label>Procedere con l'annullamento della richiesta?</label>
+                   
                 </p>
             </div>
             <div class="modal-footer">
@@ -595,14 +596,14 @@
 
     function ConfermaAnnullaPreventiviRichiesta() {
       //  debugger;
-        CKEDITOR.instances["EditorMessaggioVC"].updateElement();
-        if (CKEDITOR.instances["EditorMessaggioVC"]) {
-            if (CKEDITOR.instances.EditorMessaggioVC.getData().toString().trim() == '') {
-                $('#idControllaContenutoMsgVC').show();
-                Check();
-                return false;
-            }
-        }
+        //CKEDITOR.instances["EditorMessaggioVC"].updateElement();
+        //if (CKEDITOR.instances["EditorMessaggioVC"]) {
+        //    if (CKEDITOR.instances.EditorMessaggioVC.getData().toString().trim() == '') {
+        //        $('#idControllaContenutoMsgVC').show();
+        //        Check();
+        //        return false;
+        //    }
+        //}
 
         var idPreventivoDocumento = parseInt($('#HI_idDocumentoPreventivo').val());
         if (!idPreventivoDocumento) idPreventivoDocumento = 0;
@@ -610,7 +611,12 @@
         var rotta = "/ViaggiCongedo/ConfermaAnnullaPreventiviRichiesta";
         var idAttivazioneVC = parseInt('@id_Attiv_Viaggio_Congedo');
         var idFaseInCorso = parseInt('@idFaseInCorso');
-        var corpoMessaggioVC = $('#EditorMessaggioVC').val();
+        //var corpoMessaggioVC = $('#EditorMessaggioVC').val();
+
+
+      //  idAttivazioneVC = parseInt($("#id_Attiv_Viaggio_Congedo").val());
+        var corpoMessaggioVC = $('#FullDescriptionAnnullaViaggiCongedo').val();
+
         $.ajax({
             type: "POST",
             url: rotta,

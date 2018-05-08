@@ -3548,6 +3548,7 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfFiglio.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumentiPrecedenti.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfConiuge.cshtml" />
+    <Content Include="Views\ViaggiCongedo\MessaggioAnnullaViaggiCongedo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

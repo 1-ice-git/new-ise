@@ -482,21 +482,18 @@ namespace NewISE.Controllers
 
                             if (idFaseInCorso == 0)
                                 idFaseInCorso = dtvc.Restituisci_LivelloFase_Da_ATT_Viagg_CONG(dtvc.Restituisci_ID_Viagg_CONG_DA(idAttivazioneVC, idTrasferimento));
-
-                            //NotificaInviata = dtvc.NotificaPreventiviInviata(idAttivazioneVC, idFaseInCorso);
-                            //ViewData["id_Attiv_Viaggio_Congedo"] = tmp;// idAttivazioneVC; il nuova ma non il vecchio
-                            //ViewData["NotificaInviata"] = NotificaInviata;
-                            //ViewData["ConteggioElementi"] = dtvc.ConteggiaPreventiviRichiesta(idAttivazioneVC);
-                            //ViewData["id_Viaggio_Congedo"] = idViaggioCongedo;                           
-                            //ViewData["idFaseInCorso"] = idFaseInCorso;
+                                                        
                             AggiornaTuttiViewData(idTrasferimento);
 
-                            //using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                            //{
-                            //        dtce.ModificaInCompletatoCalendarioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaViaggiCongedo);
-                            //}
+                           
+                            decimal[] y = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
                             string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
+                            if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                                oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo2;
                             string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
+                            if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                                corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo2;
+
                             InviaMailViaggioCongedo(idAttivazioneVC, idDocumento, corpoMessaggio, oggetto);
                         }
                     }
@@ -556,12 +553,19 @@ namespace NewISE.Controllers
                 using (dtViaggiCongedo dtvc = new dtViaggiCongedo())
                 {
                     dtvc.AnnullaPreventiviRichiesta(idAttivazioneVC, idFaseInCorso, idTrasferimento);
-                }
+                    decimal[] tmp = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
+                    string oggetto = Resources.msgEmail.OggettoAnnullaViaggiCongedo;
+                    if(tmp[1]==(decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                        oggetto = Resources.msgEmail.OggettoAnnullaViaggiCongedo2;
+                    string corpoMessaggio = Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo;
+                    if (tmp[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                        corpoMessaggio = Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo2;
 
-                string oggetto = Resources.msgEmail.OggettoAnnullaViaggiCongedo;
-                string corpoMessaggio = Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo;
-                if (corpoMessaggioVC.Trim() != "") corpoMessaggio = corpoMessaggioVC;
-                InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
+                    if (corpoMessaggioVC.Trim() != "")
+                        corpoMessaggio = corpoMessaggioVC;
+
+                    InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
+                }
                 return Json(new { err = "" });
             }
             catch (Exception ex)
@@ -587,9 +591,14 @@ namespace NewISE.Controllers
                     ViewData["id_Viaggio_Congedo"] = id_Viaggio_Congedo;
                     ViewData["idFaseInCorso"] = idFaseInCorso;
                     
-                    //Inviare la mail
+                    decimal[] y = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
                     string oggetto = Resources.msgEmail.OggettoNotificaViaggiCongedo;
+                    if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                        oggetto = Resources.msgEmail.OggettoNotificaViaggiCongedo2;
+
                     string corpoMessaggio = Resources.msgEmail.MessaggioNotificaViaggiCongedo;
+                    if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                        corpoMessaggio = Resources.msgEmail.MessaggioNotificaViaggiCongedo2;
 
                     InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
 
@@ -916,6 +925,49 @@ namespace NewISE.Controllers
                     gmail.sendMail(modMSGmail);
                 }
             }
+        }
+        public ActionResult MessaggioAnnullaViaggiCongedo(decimal idTrasferimento,decimal id_Attiv_Viaggio_Congedo)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+           
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtDipendenti dtd = new dtDipendenti())
+                    {
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            using (dtUffici dtu = new dtUffici())
+                            {
+                                // var t = dtt.GetTrasferimentoByIdAttPassaporto(idAttivazionePassaporto);
+
+                                //if (t?.idTrasferimento > 0)
+                                //{
+                                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                                var dip = dtd.GetDipendenteByID(t.IDDIPENDENTE);
+                                var uff = dtu.GetUffici(t.IDUFFICIO);
+                                using (dtViaggiCongedo dtvc = new dtViaggiCongedo())
+                                {
+                                    decimal[] tmp = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
+                                    if(tmp[1]==(decimal)EnumFaseViaggioCongedo.Preventivi)
+                                        msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString());
+                                    if (tmp[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                                        msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo2, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString());
+
+                                    ViewBag.idTrasferimento = idTrasferimento;
+                                    ViewBag.id_Attiv_Viaggio_Congedo = id_Attiv_Viaggio_Congedo;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
         }
     }
 
