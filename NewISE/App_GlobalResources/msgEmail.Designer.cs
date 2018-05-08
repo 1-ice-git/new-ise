@@ -261,7 +261,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica che la richiesta di viaggio congedo è stata confermata..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di viaggio congedo è stata confermata..
         /// </summary>
         internal static string MessaggioAttivazioneViaggiCongedo {
             get {
@@ -270,7 +270,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica che la richiesta di viaggio congedo FASE 2 è stata confermata..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di viaggio congedo FASE 2 è stata confermata..
         /// </summary>
         internal static string MessaggioAttivazioneViaggiCongedo2 {
             get {

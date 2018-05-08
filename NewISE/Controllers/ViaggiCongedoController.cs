@@ -509,8 +509,8 @@ namespace NewISE.Controllers
                         //ViewData["idFaseInCorso"] = idFaseInCorso;
                         AggiornaTuttiViewData(idTrasferimento);
 
-                        string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
-                        string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo;
+                        string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo2;
+                        string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo2;
                         InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
                     }
                 }

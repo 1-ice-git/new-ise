@@ -4,12 +4,22 @@
     ViewBag.Title = "Lista Calendario Evento";
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
     var errori = ViewData.ModelState;
+    //decimal idStatoHome = (decimal)ViewData["idStatoHome"];
 }
 <input type="hidden" id="Amministratore" value="@admin.ToString()" />
+@*<div class="form-group">
+    @Html.Label("lblFiltroHome", "Seleziona stato ", new { @class = "control-label" })
+    <div id="divCombo">
+        <div class="select2-container select2-container--classic">
+            @Html.DropDownList("idStatoHome", ViewBag.StatoHome as IEnumerable<SelectListItem>,
+               new { @class = "form-control select2 select2-select", @onchange = "PrelevaStatoHome();", @onClick = "PrelevaStatoHome();" })
+        </div>
+    </div>
+</div>*@
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
     <h3 style="text-align:center; color:red">EVENTI IN CORSO</h3>
     <table id="tbelencocal" class="table">
-        <thead>
+        <thead>t
             <tr>
                <th>
                     @Html.DisplayNameFor(model => model.Nominativo)
@@ -276,6 +286,58 @@
             $('#myModalInfo').modal('toggle');
         }
 
+        function PrelevaStaoHome() {
+            //debugger;
+            rotta = "/Parametri/ParamPercDisagio/PercentualeDisagioLivello";
+
+            var idUfficio = parseInt($("#idUfficio").select2('val'));
+
+            $("#hiTipoContributo").val(idUfficio);
+
+            var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
+
+            if (isNaN(idUfficio)) {
+                $("#divPViewParametri").empty();
+                return false;
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idUfficio: idUfficio, escludiAnnullati: chk },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
 
     </script>
 
