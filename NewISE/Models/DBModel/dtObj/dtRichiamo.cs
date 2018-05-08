@@ -37,7 +37,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         IdRichiamo = r.IDRICHIAMO,
                         idTrasferimento = r.IDTRASFERIMENTO,
-                        DataRientro = r.DATARIENTRO,
+                        DataRichiamo = r.DATARICHIAMO,
                         DataAggiornamento = r.DATAAGGIORNAMENTO,
                         annullato = r.ANNULLATO
                     };
@@ -62,7 +62,7 @@ namespace NewISE.Models.DBModel.dtObj
                            {
                                IdRichiamo = e.IDRICHIAMO,
                                idTrasferimento = e.IDTRASFERIMENTO,
-                               DataRientro = e.DATARIENTRO,
+                               DataRichiamo = e.DATARICHIAMO,
                                DataAggiornamento = e.DATAAGGIORNAMENTO,
                                annullato = e.ANNULLATO
                            }).ToList();
@@ -96,7 +96,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IDRICHIAMO = ric.IdRichiamo,
                 IDTRASFERIMENTO = ric.idTrasferimento,
-                DATARIENTRO = ric.DataRientro,
+                DATARICHIAMO = ric.DataRichiamo,
                 DATAAGGIORNAMENTO = DateTime.Now,
                 ANNULLATO = ric.annullato
             };

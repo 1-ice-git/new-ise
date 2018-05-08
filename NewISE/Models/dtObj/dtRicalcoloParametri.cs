@@ -1053,7 +1053,7 @@ namespace NewISE.Models.dtObj
                     a =>
                         a.ANNULLATO == false &&
                         a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato &&
-                        a.DATARIENTRO >= cr.DATAINIZIOVALIDITA).OrderBy(a => a.DATARIENTRO).ToList();
+                        a.DATARICHIAMO >= cr.DATAINIZIOVALIDITA).OrderBy(a => a.DATARICHIAMO).ToList();
 
             if (lr?.Any() ?? false)
             {
@@ -1100,7 +1100,7 @@ namespace NewISE.Models.dtObj
                         a.ANNULLATO == false &&
                         a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato &&
                         a.TRASFERIMENTO.PRIMASITEMAZIONE.PERCENTUALEFKM.Any(b => b.IDFKM == pfkm.IDFKM) &&
-                        a.DATARIENTRO >= pfkm.DATAINIZIOVALIDITA).OrderBy(a => a.DATARIENTRO).ToList();
+                        a.DATARICHIAMO >= pfkm.DATAINIZIOVALIDITA).OrderBy(a => a.DATARICHIAMO).ToList();
 
             if (lr?.Any() ?? false)
             {

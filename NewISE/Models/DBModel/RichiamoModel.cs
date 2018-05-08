@@ -12,7 +12,7 @@ namespace NewISE.Models.DBModel
         [Key]
         public decimal IdRichiamo { get; set; }
         public decimal idTrasferimento { get; set; }
-        public DateTime DataRientro { get; set; }
+        public DateTime DataRichiamo { get; set; }
         public DateTime DataAggiornamento { get; set; }
         public bool annullato { get; set; }
 

@@ -1167,7 +1167,7 @@
           </Key>
           <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATARIENTRO" Type="date" Nullable="false" />
+          <Property Name="DATARICHIAMO" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -8136,7 +8136,7 @@
           </Key>
           <Property Name="IDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATARIENTRO" Type="DateTime" Nullable="false" />
+          <Property Name="DATARICHIAMO" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_R" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
@@ -11841,7 +11841,7 @@
               <MappingFragment StoreEntitySet="RICHIAMO">
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="DATARIENTRO" ColumnName="DATARIENTRO" />
+                <ScalarProperty Name="DATARICHIAMO" ColumnName="DATARICHIAMO" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
               </MappingFragment>
