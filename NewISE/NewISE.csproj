@@ -3141,6 +3141,7 @@
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\Enum\EnumFasePassaporti.cs" />
     <Compile Include="Models\DBModel\Enum\EnumFaseViaggioCongedo.cs" />
+    <Compile Include="Models\DBModel\Enum\EnumStatoHome.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
