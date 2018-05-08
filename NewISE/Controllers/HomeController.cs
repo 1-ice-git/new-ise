@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.Models.DBModel.Enum;
 
 namespace NewISE.Controllers
 {
@@ -33,15 +34,55 @@ namespace NewISE.Controllers
         }
 
         
-        public ActionResult GetListaHome()
+        public ActionResult GetListaHome(decimal idStatoHome)
         {            
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             try
             {
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
-                    tmp = dtcal.GetListaElementiHome().ToList();                    
-                }               
+                    tmp = dtcal.GetListaElementiHome(idStatoHome).ToList();     
+                               
+                }
+                var r = new List<SelectListItem>();
+                var elem = new SelectListItem()
+                {
+                    Text = "ATTIVI",
+                    Value = ((decimal)EnumStatoHome.Attivi).ToString(),
+                };r.Add(elem);
+                elem = new SelectListItem()
+                {
+                    Text = "COMPLETATI",
+                    Value = ((decimal)EnumStatoHome.Completati).ToString(),
+                }; r.Add(elem);
+                elem = new SelectListItem()
+                {
+                    Text = "SCADUTI",
+                    Value = ((decimal)EnumStatoHome.Scaduti).ToString(),
+                }; r.Add(elem);
+                elem = new SelectListItem()
+                {
+                    Text = "TUTTI",
+                    Value = ((decimal)EnumStatoHome.Tutti).ToString(),
+                }; r.Add(elem);
+
+                if (idStatoHome == 0)
+                {
+                    r.First().Selected = true;                   
+                }
+                else
+                {
+                    var temp = r.Where(a => a.Value == idStatoHome.ToString()).ToList();
+                    if (temp.Count == 0)
+                    {
+                        r.First().Selected = true;
+                        idStatoHome = Convert.ToDecimal(r.First().Value);
+                    }
+                    else
+                        r.Where(a => a.Value == idStatoHome.ToString()).First().Selected = true;
+                }
+                ViewBag.idStatoHome = idStatoHome;
+                ViewBag.StatoHome =r;
             }
             catch (Exception ex)
             {
