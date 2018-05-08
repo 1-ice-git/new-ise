@@ -49,14 +49,14 @@ namespace NewISE.Controllers
                                                     out DocProvvidenzeScolastiche,
                                                     out NumAttivazioni,
                                                     out trasfAnnullato);
-                        
-                        
+
+
                         ViewData.Add("richiestaPS", richiestaPS);
                         ViewData.Add("attivazionePS", attivazionePS);
                         ViewData.Add("DocProvvidenzeScolastiche", DocProvvidenzeScolastiche);
                         ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
 
-                        return PartialView("AttivitaProvvidenze",tpsm);
+                        return PartialView("AttivitaProvvidenze", tpsm);
                     }
                 }
             }
@@ -99,7 +99,7 @@ namespace NewISE.Controllers
             }
         }
         public ActionResult AttivitaProvvidenze(decimal idTrasferimento)
-        {  
+        {
             ProvvidenzeScolasticheModel psm = new ProvvidenzeScolasticheModel();
 
             try
@@ -184,7 +184,7 @@ namespace NewISE.Controllers
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
                     ldm = dtps.GetDocumentiPS(idTrasfProvScolastiche, idTipoDocumento);
-                    
+
                 }
 
                 using (dtDocumenti dtd = new dtDocumenti())
@@ -199,8 +199,8 @@ namespace NewISE.Controllers
 
                     if (aps.notificaRichiesta == false)
                     {
-                       richiestaPS = true;
-                      
+                        richiestaPS = true;
+
                     }
 
                     ViewData["richiestaPS"] = richiestaPS;
@@ -217,7 +217,7 @@ namespace NewISE.Controllers
             }
 
             return PartialView(ldm);
-            
+
         }
         public ActionResult TabFormulariInseriti1(decimal idTrasfProvScolastiche)
         {
@@ -447,13 +447,13 @@ namespace NewISE.Controllers
         }
         public ActionResult TabDocumentiPSInseriti(decimal idTrasfProvScolastiche, decimal idTipoDocumento)
         {
-            
+
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
             string DescrizionePS = "";
 
             try
             {
-                
+
 
 
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
@@ -477,9 +477,9 @@ namespace NewISE.Controllers
             ViewData.Add("idTipoDocumento", idTipoDocumento);
             ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
 
-            
+
             return PartialView(ldm);
-            
+
         }
         public ActionResult ElencoDocumentiPS(decimal idTipoDocumento, decimal idTrasfProvScolastiche)
         {
@@ -498,13 +498,13 @@ namespace NewISE.Controllers
                 {
                     DescrizionePS = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
                 }
-                
+
 
                 ViewData.Add("DescrizionePS", DescrizionePS);
                 ViewData.Add("idTipoDocumento", idTipoDocumento);
                 ViewData.Add("idTrasfProvScolastiche", idTrasfProvScolastiche);
                 ViewData.Add("idStatoTrasferimento", idStatoTrasferimento);
-                
+
                 return PartialView("ElencoFormulariInseriti");
             }
             catch (Exception ex)
@@ -545,7 +545,7 @@ namespace NewISE.Controllers
             bool DocProvvidenzeScolastiche = false;
             decimal NumAttivazioni = 0;
             bool trasfAnnullato = false;
-           
+
 
             try
             {
@@ -588,7 +588,7 @@ namespace NewISE.Controllers
             string errore = "";
 
             try
-            {  
+            {
 
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
@@ -648,7 +648,7 @@ namespace NewISE.Controllers
 
             try
             {
-                
+
 
                 using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
                 {
