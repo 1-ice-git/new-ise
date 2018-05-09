@@ -47,41 +47,37 @@
                 else
                 {
                     <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
                     </td>
                 }
                 
                 @if (item.Modificabile)
-                        {
-                                        <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                                            @Html.DisplayFor(modelItem => item.estensione)
-                                        </td>
-                        }
-                        else
-                        {
-                            <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                                @Html.DisplayFor(modelItem => item.estensione)
-                            </td>
-                        }
-                        @if (item.Modificabile)
-                        {
-                                        <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                                            @Html.DisplayFor(modelItem => item.dataInserimento)
-                                        </td>
-                        }
-                        else
-                        {
-                            <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                                @Html.DisplayFor(modelItem => item.dataInserimento)
-                            </td>
-
-                        }
+                {
+                   <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    @Html.DisplayFor(modelItem => item.estensione)
+                   </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
                 <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
                     <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
                 </td>
-
-
-
 
                 @*<td class="text-center">
                     

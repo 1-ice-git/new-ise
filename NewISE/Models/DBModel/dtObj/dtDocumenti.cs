@@ -1636,6 +1636,79 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return ldm;
         }
+
+
+        public IList<VariazioneDocumentiModel> GetFormulariProvvidenzeScolasticheByIdAttivazioneVariazione(decimal idTrasfProvScolastiche, decimal idProvScolastiche)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mf = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
+                var t = mf.TRASFERIMENTO;
+                var statoTrasf = t.IDSTATOTRASFERIMENTO;
+
+                ////var lamf =
+                ////    mf.ATTIVAZIONIMAGFAM.Where(
+                ////        a => ((a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false) && a.IDATTIVAZIONEMAGFAM == idAttivazione)
+                ////        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                //var lamf =
+                //    mf.ATTIVAZIONIPROVSCOLASTICHE.Where(
+                //        a => ((a.NOTIFICARICHIESTA == true && a.ATTIVARICHIESTA == true) || a.ANNULLATO == false))
+                //        .OrderBy(a => a.IDPROVSCOLASTICHE);
+
+                var ps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idProvScolastiche);
+                var i = 1;
+                var coloretesto = "";
+                var coloresfondo = "";
+   
+                 var ld = ps.DOCUMENTI.Where(
+                                a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche && a.IDSTATORECORD != (decimal) EnumStatoRecord.Annullato) 
+                                .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                            bool modificabile = false;
+                            if (ps.NOTIFICARICHIESTA == false &&
+                                ps.ATTIVARICHIESTA == false &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                            {
+                                modificabile = true;
+                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                            }
+                            else
+                            {
+                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
+                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
+                            }
+
+                            foreach (var doc in ld)
+                            {
+                                var amf = new VariazioneDocumentiModel()
+                                {
+                                    dataInserimento = doc.DATAINSERIMENTO,
+                                    estensione = doc.ESTENSIONE,
+                                    idDocumenti = doc.IDDOCUMENTO,
+                                    nomeDocumento = doc.NOMEDOCUMENTO,
+                                    Modificabile = modificabile,
+                                    IdAttivazione = ps.IDPROVSCOLASTICHE,
+                                    DataAggiornamento = ps.DATAAGGIORNAMENTO,
+                                    ColoreTesto = coloretesto,
+                                    ColoreSfondo = coloresfondo,
+                                    progressivo = i
+                                };
+
+                                ldm.Add(amf);
+                            }
+                        
+
+                        i++;
+                   
+
+                
+            }
+            return ldm;
+        }
         public string GetDescrizioneTipoDocumentoByIdTipoDocumento(decimal idTipoDocumento)
         {
             string DescTipoDoc = "";

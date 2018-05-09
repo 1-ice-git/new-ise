@@ -207,22 +207,16 @@ namespace NewISE.Controllers
                             }
                             i++;
 
-                            
-
-                            //solaLettura = this.SolaLetturaPartenza(idTrasfProvScolastiche);
-                            //ViewData.Add("solaLettura", solaLettura);
-                          
-                            //bool trasfAnnullato = false;
+                           
 
                         }
 
+                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(TUTTE)", Value = "" });
+                        ViewData.Add("lDataAttivazione", lDataAttivazione);
 
                         ViewData["idTipoDocumento"] = EnumTipoDoc.Formulario_Provvidenze_Scolastiche;
                         ViewData["idTrasferimento"] = idTrasferimento;
                         ViewData["idProvScolastiche"] = idProvScolastiche;
-
-                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(TUTTE)", Value = "" });
-                        ViewData.Add("lDataAttivazione", lDataAttivazione);
                     }
 
                 }
@@ -605,19 +599,16 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult FiltraTabFormulariInseriti(decimal idTrasfProvScolastiche, decimal idAttivazione)
+        public ActionResult FiltraTabFormulariInseriti(decimal idTrasfProvScolastiche, decimal idProvScolastiche)
         {
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
 
             try
             {
-                //bool solaLettura = false;
-                //solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
-                //ViewData.Add("solaLettura", solaLettura);
-
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazione(idTrasfProvScolastiche, idAttivazione).ToList();
+                    //ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazione(idTrasfProvScolastiche, idAttivazione).ToList();
+                    ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazioneVariazione(idTrasfProvScolastiche, idProvScolastiche).ToList();
                 }
             }
             catch (Exception ex)

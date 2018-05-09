@@ -12,6 +12,7 @@ namespace NewISE.Models.DBModel
     {
         public bool Modificabile { get; set; }
         public decimal IdAttivazione { get; set; }
+
         public DateTime DataAggiornamento { get; set; }
         public string ColoreSfondo { get; set; }
         public string ColoreTesto { get; set; }

@@ -60,6 +60,7 @@
             @Html.Label("Data Attivazione", htmlAttributes: new { @class = "control-label" })
             <div class="select2-container select2-container--classic">
                 @Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazione", @class = "form-control select2 select2-select", @onchange = "FiltraElencoFormulario();" })
+                @*@Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazione", @class = "form-control select2 select2-select", @onchange = "FiltraElencoFormulario();" })*@
             </div>
         </div>
     </div>
@@ -272,8 +273,8 @@
             success: function (result) {
                 //debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divTrasportoEffettiPartenza").empty();
-                $("#divTrasportoEffettiPartenza").html(result);
+                $("#divTabElencoFormulari").empty();
+                $("#divTabElencoFormulari").html(result);
 
                 //RicercaDocumenti();
 
@@ -404,7 +405,7 @@
     }
 
     function FiltraElencoFormulario() {
-        debugger;
+        //debugger;
         var idAttivazione = $("#idAttivazione").val();
 
         if (idAttivazione != "" && idAttivazione != undefined) {
@@ -415,7 +416,7 @@
             $.ajax({
                 url: rotta,
                 type: "POST", //Le info testuali saranno passate in POST
-                data: { idTrasfProvScolastiche: idTrasfProvScolastiche, idAttivazione: idAttivazione},
+                data: { idTrasfProvScolastiche: idTrasfProvScolastiche, idProvScolastiche: idAttivazione},
                 dataType: 'html',
                 async: false,
                 beforeSend: function () {
@@ -425,8 +426,8 @@
                 },
                 success: function (result) {
                     //debugger;
-                    $("#divTabElencoFormulari_Var").empty();
-                    $("#divTabElencoFormulari_Var").html(result);
+                    $("#divTabElencoFormulari").empty();
+                    $("#divTabElencoFormulari").html(result);
 
                 },
                 error: function (error) {
