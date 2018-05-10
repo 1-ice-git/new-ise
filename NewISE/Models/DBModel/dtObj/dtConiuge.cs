@@ -532,25 +532,40 @@ namespace NewISE.Models.DBModel.dtObj
                                 idStatoRecord = c.IDSTATORECORD,
                                 FK_idConiuge = c.FK_IDCONIUGE,
                                 visualizzabile = (db.CONIUGE.Where(a => a.FK_IDCONIUGE == c.IDCONIUGE).Count() > 0) ? false : true,
-                                modificato= (c.FK_IDCONIUGE>0 && c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato) ? true : false,
-                                nuovo = (c.FK_IDCONIUGE == null && c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato) ? true : false
+                                modificato= (c.FK_IDCONIUGE>0 && c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && c.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false,
+                                nuovo = (c.FK_IDCONIUGE == null && c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && c.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false
                             };
 
                             //VERIFICA SE CI SONO VARIAZIONI SUGLI ALTRI DATI
                             var adf = dtvmf.GetAltriDatiFamiliariConiuge(c.IDCONIUGE);
-                            if(adf.FK_idAltriDatiFam>0)
+                            if(adf.FK_idAltriDatiFam> 0 && adf.idStatoRecord!=(decimal)EnumStatoRecord.Annullato && adf.idStatoRecord!=(decimal)EnumStatoRecord.Attivato && cm.nuovo == false)
                             {
                                 cm.modificato = true;
                             }
-                            var ldc = c.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                            if(ldc.Count()>0)
+
+                            //elenca eventuali documenti inseriti
+                            var ldc = db.CONIUGE.Find(cm.idConiuge).DOCUMENTI.Where(a =>
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato)
+                                    .OrderByDescending(a => a.IDDOCUMENTO).ToList();
+
+                            //var ldc = c.DOCUMENTI.Where(a => 
+                            //    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                            //    a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato).ToList();
+                            if(ldc.Count()>0 && cm.nuovo==false)
                             {
                                 cm.modificato = true;
                             }
-                            var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                            if (lpc.Count() > 0)
+                            var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato).ToList();
+                            if (lpc.Count() > 0 && cm.nuovo == false)
                             {
                                 cm.modificato = true;
+                            }
+                            //se è nuovo non è modificato
+                            if(cm.nuovo)
+                            {
+                                cm.modificato = false;
                             }
 
                             lcm.Add(cm);

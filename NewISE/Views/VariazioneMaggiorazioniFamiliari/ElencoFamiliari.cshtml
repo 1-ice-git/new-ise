@@ -22,27 +22,27 @@
 <p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
     @if (solaLettura || trasfSolaLettura)
     {
-        <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo Coniuge</button>
+        <button href="#" class="btn btn-default disabled" disabled="disabled">Inserisci Coniuge</button>
     }
     else
     {
         if (check_nuovo_coniuge)
         {
-            @Ajax.ActionLink("Nuovo Coniuge", "NuovoConiuge", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo coniuge", @id = "linkEditConiuge" })
+            @Ajax.ActionLink("Inserisci Coniuge", "NuovoConiuge", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo coniuge", @id = "linkEditConiuge" })
         }
         else
         {
-            <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo Coniuge</button>
+            <button href="#" class="btn btn-default disabled" disabled="disabled">Inserisci Coniuge</button>
         }
     }
 
     @if (solaLettura || trasfSolaLettura)
     {
-        <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo Figlio</button>
+        <button href="#" class="btn btn-default disabled" disabled="disabled">Inserisci Figlio</button>
     }
     else
     {
-        @Ajax.ActionLink("Nuovo Figlio", "NuovoFiglio", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo figlio", @id = "linkEditFiglio" })
+        @Ajax.ActionLink("Inserisci Figlio", "NuovoFiglio", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo figlio", @id = "linkEditFiglio" })
     }
 
 </p>
@@ -290,7 +290,7 @@
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="DelViewConiuge">
-                    Procedere con l'eliminazione del coniuge?
+                    <label>Procedere con l'eliminazione del coniuge?</label>
                 </p>
             </div>
             <div class="modal-footer">
@@ -312,7 +312,7 @@
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="AnnullaModViewConiuge">
-                    Sei sicuro di voler annullare tutte le modifiche del coniuge?
+                    <label>Sei sicuro di voler annullare tutte le modifiche del coniuge?</label>
                 </p>
             </div>
             <div class="modal-footer">
@@ -333,7 +333,7 @@
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="AnnullaModViewFiglio">
-                    Sei sicuro di voler annullare tutte le modifiche del figlio?
+                    <label>Sei sicuro di voler annullare tutte le modifiche del figlio?</label>
                 </p>
             </div>
             <div class="modal-footer">
@@ -355,7 +355,7 @@
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="DelViewFiglio">
-                    Procedere con l'eliminazione del figlio?
+                    <label>Procedere con l'eliminazione del figlio?</label>
                 </p>
             </div>
             <div class="modal-footer">

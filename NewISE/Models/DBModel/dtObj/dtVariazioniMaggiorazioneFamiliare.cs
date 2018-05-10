@@ -28,286 +28,181 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void SituazioneMagFamVariazione(decimal idMaggiorazioniFamiliari, out bool rinunciaMagFam,
                                        out bool richiestaAttivazione, out bool Attivazione,
-                                       out bool datiConiuge, out bool datiParzialiConiuge,
-                                       out bool datiFigli, out bool datiParzialiFigli,
-                                       out bool siDocConiuge, out bool siDocFigli,
+                                       out bool datiConiuge, out bool datiParzialiNuovoConiuge,
+                                       out bool datiFigli, out bool datiParzialiNuoviFigli,
+                                       out bool siDocNuovoConiuge, out bool siDocNuoviFigli,
                                        out bool docFormulario, out bool inLavorazione,
-                                       out bool trasfSolaLettura)
+                                       out bool trasfSolaLettura, out bool datiParziali,
+                                       out bool siDocIdentita, out bool datiNuovoConiuge, out bool datiNuoviFigli,
+                                       out bool siDocFormulari)
         {
             rinunciaMagFam = false;
             richiestaAttivazione = false;
             Attivazione = false;
             datiConiuge = false;
-            datiParzialiConiuge = false;
+            datiNuovoConiuge = false;
+            datiParzialiNuovoConiuge = false;
+            datiParziali = true;
             datiFigli = false;
-            datiParzialiFigli = false;
-            siDocConiuge = false;
-            siDocFigli = false;
+            datiNuoviFigli = false;
+            datiParzialiNuoviFigli = false;
+            siDocNuovoConiuge = true;
+            siDocIdentita = false;
+            siDocNuoviFigli = true;
             docFormulario = false;
             inLavorazione = false;
             trasfSolaLettura = false;
+            siDocFormulari = false;
+
+            List<ATTIVAZIONIMAGFAM> lamf = new List<ATTIVAZIONIMAGFAM>();
+            ATTIVAZIONIMAGFAM amf = new ATTIVAZIONIMAGFAM();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                    var lrmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a=>a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
-                    if(lrmf?.Any()??false)
-                    {
-                        var rmf = lrmf.First();
-                        if(rmf.RINUNCIAMAGGIORAZIONI)
-                        {
-                            rinunciaMagFam = true;
-                        }
-                    }
 
+                    #region stato trasferimento
                     decimal IDstatoTrasf = mf.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
                     if (IDstatoTrasf == (decimal)EnumStatoTraferimento.Annullato)
                     {
                         trasfSolaLettura = true;
                     }
+                    #endregion
 
-                    var conta_attivazioni = mf.ATTIVAZIONIMAGFAM.Where(a => (a.ANNULLATO == false || (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true))).Count();
-
-                    if (conta_attivazioni > 1)
+                    #region attivazione
+                    //cerco l'ultima attivazione
+                    //lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == false && a.RICHIESTAATTIVAZIONE == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+                    lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+                    if (lamf?.Any() ?? false)
                     {
-                        //legge l'ultima attivazione valida
-                        var last_amf = mf.ATTIVAZIONIMAGFAM.Where(a => (a.ANNULLATO == false || (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true))).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First();
-
-                        if (last_amf != null || last_amf.IDATTIVAZIONEMAGFAM > 0)
-                        {
-                            //elenca le attivazioni aperte
-                            var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == false && a.RICHIESTAATTIVAZIONE == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
-
-                            //se ci sono esegue i controlli
-                            if (lamf?.Any() ?? false)
-                            {
-                                foreach (var amf in lamf)
-                                {
-                                    if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
-                                    {
-                                        var rmf =
-                                            mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
-                                                .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
-                                                .First();
-
-                                        rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
-                                        richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
-                                        Attivazione = amf.ATTIVAZIONEMAGFAM;
-
-                                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari).ToList();
-                                        if (ld?.Any() ?? false)
-                                        {
-                                            docFormulario = true;
-                                        }
-
-                                        if (mf.CONIUGE != null)
-                                        {
-                                            var lc = mf.CONIUGE.ToList();
-                                            if (lc?.Any() ?? false)
-                                            {
-                                                datiConiuge = true;
-
-                                                foreach (var c in lc)
-                                                {
-                                                    var nadc = c.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
-
-                                                    if (nadc > 0)
-                                                    {
-                                                        datiParzialiConiuge = false;
-                                                    }
-                                                    else
-                                                    {
-                                                        datiParzialiConiuge = true;
-                                                        break;
-                                                    }
-                                                }
-                                                foreach (var c in lc)
-                                                {
-                                                    var ndocc = c.DOCUMENTI.Count;
-
-                                                    if (ndocc > 0)
-                                                    {
-                                                        siDocConiuge = true;
-                                                    }
-                                                    else
-                                                    {
-                                                        siDocConiuge = false;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                datiConiuge = false;
-                                            }
-                                        }
-
-                                        if (mf.FIGLI != null)
-                                        {
-                                            var lf = mf.FIGLI.ToList();
-
-                                            if (lf?.Any() ?? false)
-                                            {
-                                                datiFigli = true;
-
-                                                foreach (var f in lf)
-                                                {
-                                                    var nadf = f.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
-
-                                                    if (nadf > 0)
-                                                    {
-                                                        datiParzialiFigli = false;
-                                                    }
-                                                    else
-                                                    {
-                                                        datiParzialiFigli = true;
-                                                        break;
-                                                    }
-                                                }
-
-                                                foreach (var f in lf)
-                                                {
-                                                    var ndocf = f.DOCUMENTI.Count;
-                                                    if (ndocf > 0)
-                                                    {
-                                                        siDocFigli = true;
-                                                    }
-                                                    else
-                                                    {
-                                                        siDocFigli = false;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                datiFigli = false;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // se non ci sono in lavorazione imposta i controlli di notifica
-                                var rmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
-                                               .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
-                                               .First();
-                                rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
-                                richiestaAttivazione = last_amf.RICHIESTAATTIVAZIONE;
-                                Attivazione = last_amf.ATTIVAZIONEMAGFAM;
-
-                                //comunque esegue i controlli sui dati dell'attivazione
-                                var ld = last_amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari).ToList();
-                                if (ld?.Any() ?? false)
-                                {
-                                    docFormulario = true;
-                                }
-
-                                if (mf.CONIUGE != null)
-                                {
-                                    var lc = mf.CONIUGE.ToList();
-                                    if (lc?.Any() ?? false)
-                                    {
-                                        datiConiuge = true;
-
-                                        foreach (var c in lc)
-                                        {
-                                            var nadc = c.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
-
-                                            if (nadc > 0)
-                                            {
-                                                datiParzialiConiuge = false;
-                                            }
-                                            else
-                                            {
-                                                datiParzialiConiuge = true;
-                                                break;
-                                            }
-                                        }
-                                        foreach (var c in lc)
-                                        {
-                                            var ndocc = c.DOCUMENTI.Count;
-
-                                            if (ndocc > 0)
-                                            {
-                                                siDocConiuge = true;
-                                            }
-                                            else
-                                            {
-                                                siDocConiuge = false;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        datiConiuge = false;
-                                    }
-                                }
-
-                                if (mf.FIGLI != null)
-                                {
-                                    var lf = mf.FIGLI.ToList();
-
-                                    if (lf?.Any() ?? false)
-                                    {
-                                        datiFigli = true;
-
-                                        foreach (var f in lf)
-                                        {
-                                            var nadf = f.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
-
-                                            if (nadf > 0)
-                                            {
-                                                datiParzialiFigli = false;
-                                            }
-                                            else
-                                            {
-                                                datiParzialiFigli = true;
-                                                break;
-                                            }
-                                        }
-
-                                        foreach (var f in lf)
-                                        {
-                                            var ndocf = f.DOCUMENTI.Count;
-                                            if (ndocf > 0)
-                                            {
-                                                siDocFigli = true;
-                                            }
-                                            else
-                                            {
-                                                siDocFigli = false;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        datiFigli = false;
-                                    }
-                                }
-                            }
-                        }
-                        if (richiestaAttivazione == false)
-                        {
-                            if (
-                                (
-                                    (datiConiuge && siDocConiuge && datiParzialiConiuge == false) || (datiFigli && siDocFigli && datiParzialiFigli == false)
-                                ) ||
-                                (
-                                    (!datiConiuge && !siDocConiuge && datiParzialiConiuge) || (!datiFigli && !siDocFigli && datiParzialiFigli) && docFormulario
-                                )
-                               )
-                            {
-                                inLavorazione = true;
-                            }
-                        }
-
+                        amf = lamf.First();
                     }
+                    //else
+                    //{
+                    //    //cerco l'ultima attivazione valida
+                    //    lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+
+                    //    if (lamf?.Any() ?? false)
+                    //    {
+                    //        amf = lamf.First();
+                    //    }
+                    //}
+                    richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
+                    Attivazione = amf.ATTIVAZIONEMAGFAM;
+                    #endregion
+
+                    #region coniuge
+                    //controlla se esiste coniuge associato
+                    if (amf.CONIUGE != null)
+                    {
+                        var lc = amf.CONIUGE.ToList();
+                        if (lc?.Any() ?? false)
+                        {
+                            datiConiuge = true;
+                            inLavorazione = true;
+                            //controlla se eventuali nuovi coniugi sono completi
+                            foreach (var c in lc)
+                            {
+                                if (c.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione && !(c.FK_IDCONIUGE>0))
+                                {
+                                    datiNuovoConiuge = true;
+                                    var nadfc = c.ALTRIDATIFAM.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione);
+                                    if (nadfc == 0)
+                                    {
+                                        datiParzialiNuovoConiuge = true;
+                                    }
+                                    var ndoc = c.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Documento_Identita).Count();
+                                    if (ndoc == 0)
+                                    {
+                                        //siDocConiuge = true;
+                                        siDocNuovoConiuge = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region altri dati
+                    var nadc = amf.ALTRIDATIFAM.Count(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
+                    if (nadc > 0)
+                    {
+                        //datiParzialiConiuge = false;
+                        datiParziali = false;
+                        inLavorazione = true;
+                    }
+                    #endregion altri dati
+
+                    #region documenti
+                    // controlla documenti identita associati 
+                    var ndocIdentita = amf.DOCUMENTI.Where(a => 
+                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                        a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Documento_Identita).Count();
+                    if (ndocIdentita > 0)
+                    {
+                        //siDocConiuge = true;
+                        siDocIdentita = true;
+                        inLavorazione = true;
+                    }
+
+                    // controlla esistenza assoluta di almeno un formulario 
+                    foreach (var att in lamf)
+                    {
+                        var ndocFormulari = att.DOCUMENTI.Where(a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari).Count();
+                        if (ndocFormulari > 0)
+                        {
+                            siDocFormulari = true;
+                        }
+                    }
+                    #endregion
+
+                    #region figli
+                    //controlla figli associati
+                    if (amf.FIGLI != null)
+                    {
+                        var lf = amf.FIGLI.ToList();
+
+                        if (lf?.Any() ?? false)
+                        {
+                            datiFigli = true;
+                            inLavorazione = true;
+                            //controlla se eventuali nuovi coniugi sono completi
+                            foreach (var f in lf)
+                            {
+                                if (f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && !(f.FK_IDFIGLI > 0))
+                                {
+                                    datiNuoviFigli = true;
+                                    var nadff = f.ALTRIDATIFAM.Count(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione);
+                                    if (nadff == 0)
+                                    {
+                                        datiParzialiNuoviFigli = true;
+                                    }
+                                    var ndoc = f.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).Count();
+                                    if (ndoc == 0)
+                                    {
+                                        siDocNuoviFigli = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    #endregion figli
+
+
+                    #region controllo in lavorazione
+                    if (richiestaAttivazione == false && (
+                        datiConiuge || 
+                        siDocIdentita || 
+                        datiParziali == false || 
+                        datiFigli))
+                    {
+                        inLavorazione = true;
+                    }
+                    #endregion
                 }
             }
             catch (Exception ex)
@@ -354,7 +249,7 @@ namespace NewISE.Models.DBModel.dtObj
                         richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
                         Attivazione = amf.ATTIVAZIONEMAGFAM;
 
-                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari).ToList();
+                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari && a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).ToList();
                         if (ld?.Any() ?? false)
                         {
                             docFormulario = true;
@@ -378,7 +273,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         datiParzialiConiuge = true;
                                     }
 
-                                    var ndocc = c.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).Count();
+                                    var ndocc = c.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).Count();
                                     if (ndocc > 0)
                                     {
                                         siDocConiuge = true;
@@ -412,7 +307,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         datiParzialiFigli = true;
                                     }
 
-                                    var ndocf = f.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).Count();
+                                    var ndocf = f.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).Count();
                                     if (ndocf > 0)
                                     {
                                         siDocFigli = true;
@@ -425,7 +320,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                         }
                         //controlla se c'e' solo un documento variato
-                        var ldf = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
+                        var ldf = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
                         if (ldf?.Any() ?? false)
                         {
                             siDocIdentita = true;
@@ -489,6 +384,12 @@ namespace NewISE.Models.DBModel.dtObj
                 bool docFormulario = false;
                 bool inLavorazione = false;
                 bool trasfSolaLettura = false;
+                bool siDoc = false;
+                bool datiParziali = true;
+                bool datiNuovoConiuge = false;
+                bool datiNuovoFigli = false;
+                bool siDocFormulario = false;
+
 
 
                 DateTime dtIni = cm.dataInizio.Value;
@@ -504,7 +405,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         this.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura, out datiParziali, out siDoc, out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario);
 
                         //leggo l'ultima attivazione valida
                         var last_attivazione_coniuge = this.GetAttivazioneById(cm.idConiuge, EnumTipoTabella.Coniuge);
@@ -842,7 +743,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                             {
-                                dtamf.AssociaAltriDatiFamiliari(attivazione_aperta.IDATTIVAZIONEMAGFAM, idAdf, db);
+                                dtamf.AssociaAltriDatiFamiliari(newmf.IDATTIVAZIONEMAGFAM, idAdf, db);
                             }
                             #endregion
 
@@ -852,7 +753,7 @@ namespace NewISE.Models.DBModel.dtObj
                             foreach (var dc in ldc)
                             {
                                 this.Associa_Doc_Coniuge_ById(dc.IDDOCUMENTO, new_idconiuge, db);
-                                this.AssociaDocumentoAttivazione(attivazione_aperta.IDATTIVAZIONEMAGFAM, dc.IDDOCUMENTO, db);
+                                this.AssociaDocumentoAttivazione(newmf.IDATTIVAZIONEMAGFAM, dc.IDDOCUMENTO, db);
                             }
                             ////rimuovo precedenti associazioni di documenti in lavorazione al coniuge attivo
                             //this.RimuoviAssociazione_Coniuge_DocumentiInLavorazione(cm.idConiuge, db);
@@ -1297,6 +1198,12 @@ namespace NewISE.Models.DBModel.dtObj
                 bool docFormulario = false;
                 bool inLavorazione = false;
                 bool trasfSolaLettura = false;
+                bool siDoc = false;
+                bool datiParziali = true;
+                bool datiNuovoConiuge = false;
+                bool datiNuovoFigli = false;
+                bool siDocFormulario = false;
+
 
                 DateTime dtIni = fm.dataInizio.Value;
                 DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
@@ -1311,7 +1218,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         this.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura, out datiParziali, out siDoc, out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario);
 
                         //leggo l'ultima attivazione valida
                         var last_attivazione_figlio = this.GetAttivazioneById(fm.idFigli, EnumTipoTabella.Figli);
@@ -1654,7 +1561,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                             {
-                                dtamf.AssociaAltriDatiFamiliari(attivazione_aperta.IDATTIVAZIONEMAGFAM, idAdf, db);
+                                dtamf.AssociaAltriDatiFamiliari(newamf.IDATTIVAZIONEMAGFAM, idAdf, db);
                             }
                             #endregion
 
@@ -1664,7 +1571,7 @@ namespace NewISE.Models.DBModel.dtObj
                             foreach (var df in ldf)
                             {
                                 this.Associa_Doc_Figlio_ById(df.IDDOCUMENTO, new_idfiglio, db);
-                                this.AssociaDocumentoAttivazione(attivazione_aperta.IDATTIVAZIONEMAGFAM, df.IDDOCUMENTO, db);
+                                this.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, df.IDDOCUMENTO, db);
                             }
                             #endregion
 
@@ -3105,7 +3012,7 @@ namespace NewISE.Models.DBModel.dtObj
                 string evidenzia = ";border-bottom:solid; border-bottom-color:yellow";
 
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                var lamf = mf.ATTIVAZIONIMAGFAM.Where(e => e.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+                var lamf = mf.ATTIVAZIONIMAGFAM.Where(e => e.ANNULLATO == false && e.ATTIVAZIONEMAGFAM).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
                 switch (parentela)
                 {
                     case EnumParentela.Coniuge:
@@ -3133,7 +3040,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var d in ld)
                     {
-                        if (db.DOCUMENTI.Where(a => a.FK_IDDOCUMENTO == d.IDDOCUMENTO && a.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato).Count() == 0)
+                        if(db.DOCUMENTI.Where(a =>a.FK_IDDOCUMENTO == d.IDDOCUMENTO && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).Count() == 0)
                         {
 
                             var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
@@ -3439,14 +3346,27 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void EliminaConiuge(decimal idConiuge)
         {
-            try
+            using (ModelDBISE db = new ModelDBISE())
             {
-                using (ModelDBISE db = new ModelDBISE())
+                db.Database.BeginTransaction();
+
+                try
                 {
 
                     var c = db.CONIUGE.Find(idConiuge);
                     if (c != null && c.IDCONIUGE > 0)
                     {
+                        //elimino eventuali documenti
+                        var ldc = c.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                        foreach (var dc in ldc)
+                        {
+                            db.DOCUMENTI.Remove(dc);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception(string.Format("Impossibile eliminare i documenti del coniuge."));
+                            }
+                        }
+
                         db.CONIUGE.Remove(c);
 
                         int i = db.SaveChanges();
@@ -3456,11 +3376,14 @@ namespace NewISE.Models.DBModel.dtObj
                             throw new Exception(string.Format("Impossibile eliminare il coniuge."));
                         }
                     }
+                    db.Database.CurrentTransaction.Commit();
+
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
             }
         }
         public void AnnullaModConiuge(decimal idConiuge)
@@ -3473,13 +3396,46 @@ namespace NewISE.Models.DBModel.dtObj
 
                     try
                     {
-
-
-
                         var c = db.CONIUGE.Find(idConiuge);
                         if (c != null && c.IDCONIUGE > 0)
                         {
-                            if(c.FK_IDCONIUGE>0)
+                            //elimino eventuali modifiche adf
+                            var ladfc = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach(var adfc in ladfc)
+                            {
+                                db.ALTRIDATIFAM.Remove(adfc);
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception(string.Format("Impossibile annullare le modifiche Altri Dati Familiari del coniuge."));
+                                }
+                            }
+
+                            //cerco eventuali documenti sostituiti e rimetto il flag modificato a FALSE
+                            var ldc_sost = c.DOCUMENTI.Where(a => a.FK_IDDOCUMENTO>0 && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            //var ldc_sost = c.DOCUMENTI.Where(a => a.MODIFICATO == true && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                            foreach (var dc_sost in ldc_sost)
+                            {
+                                var d = db.DOCUMENTI.Find(dc_sost.FK_IDDOCUMENTO);
+                                d.MODIFICATO = false;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception(string.Format("Impossibile annullare le modifiche relative ai documenti del coniuge."));
+                                }
+                            }
+
+                            //elimino eventuali documenti in lavorazione
+                            var ldc = c.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var dc in ldc)
+                            {
+                                db.DOCUMENTI.Remove(dc);
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception(string.Format("Impossibile annullare i documenti del coniuge."));
+                                }
+                            }
+
+                            //se il coniuge è stato modificato elimino il record
+                            if (c.FK_IDCONIUGE > 0)
                             {
                                 //se è collegato a un altro record lo elimino direttamente 
                                 //eliminando anche tutti gli eventuali dati collegati
@@ -3488,48 +3444,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     throw new Exception(string.Format("Impossibile annullare le modifiche del coniuge."));
                                 }
-                            }
-                            else
-                            {
-                                //se non è collegato a un altro record cerco tutte le modifiche effettuate di quel coniuge
-                                //e le elimino
-
-                                //elimino eventuali modifiche adf
-                                var ladfc = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                                foreach(var adfc in ladfc)
-                                {
-                                    db.ALTRIDATIFAM.Remove(adfc);
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception(string.Format("Impossibile annullare le modifiche Altri Dati Familiari del coniuge."));
-                                    }
-                                }
-
-                                //cerco eventuali documenti sostituiti e rimetto il flag modificato a FALSE
-                                var ldc_sost = c.DOCUMENTI.Where(a => a.MODIFICATO == true && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                                foreach (var dc_sost in ldc_sost)
-                                {
-                                    var d = db.DOCUMENTI.Find(dc_sost.IDDOCUMENTO);
-                                    d.MODIFICATO = false;
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception(string.Format("Impossibile annullare le modifiche relative ai documenti del coniuge."));
-                                    }
-                                }
-
-                                //elimino eventuali documenti in lavorazione
-                                var ldc = c.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                                foreach (var dc in ldc)
-                                {
-                                    db.DOCUMENTI.Remove(dc);
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception(string.Format("Impossibile annullare i documenti del coniuge."));
-                                    }
-                                }
+                              
+                                //e eliminare i doc collegati all'attivazione aperta
 
                             }
-
                        
                         }
                         db.Database.CurrentTransaction.Commit();
@@ -3550,33 +3468,45 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void EliminaFiglio(decimal idFiglio)
         {
-            try
+            using (ModelDBISE db = new ModelDBISE())
             {
-                using (ModelDBISE db = new ModelDBISE())
+                db.Database.BeginTransaction();
+
+                try
                 {
 
                     var f = db.FIGLI.Find(idFiglio);
                     if (f != null && f.IDFIGLI > 0)
                     {
+                        //elimino eventuali documenti
+                        var ldf = f.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                        foreach (var df in ldf)
+                        {
+                            db.DOCUMENTI.Remove(df);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception(string.Format("Impossibile eliminare i documenti del figlio."));
+                            }
+                        }
+
                         db.FIGLI.Remove(f);
-
-                        int i = db.SaveChanges();
-
-                        if (i <= 0)
+                        if (db.SaveChanges() <= 0)
                         {
                             throw new Exception(string.Format("Impossibile eliminare il figlio."));
                         }
                     }
+                    db.Database.CurrentTransaction.Commit();
+
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
             }
         }
         public void AnnullaModFiglio(decimal idFiglio)
         {
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -3589,6 +3519,43 @@ namespace NewISE.Models.DBModel.dtObj
                         var f = db.FIGLI.Find(idFiglio);
                         if (f != null && f.IDFIGLI > 0)
                         {
+                            //elimino eventuali modifiche adf
+                            var ladff = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var adff in ladff)
+                            {
+                                db.ALTRIDATIFAM.Remove(adff);
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception(string.Format("Impossibile annullare le modifiche Altri Dati Familiari del figlio."));
+                                }
+                            }
+
+                            //cerco eventuali documenti sostituiti e rimetto il flag modificato a FALSE
+                            var ldf_sost = f.DOCUMENTI.Where(a => a.FK_IDDOCUMENTO > 0 && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            //var ldf_sost = f.DOCUMENTI.Where(a => a.MODIFICATO==true && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                            foreach (var df_sost in ldf_sost)
+                            {
+                                var d= db.DOCUMENTI.Find(df_sost.FK_IDDOCUMENTO);
+                                d.MODIFICATO = false;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception(string.Format("Impossibile annullare le modifiche relative ai documenti del figlio."));
+                                }
+                            }
+
+
+                            //elimino eventuali documenti
+                            var ldf = f.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var df in ldf)
+                            {
+                                db.DOCUMENTI.Remove(df);
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception(string.Format("Impossibile annullare i documenti del figlio."));
+                                }
+                            }
+
+                            //se il figlio è stato modificato elimino il record
                             if (f.FK_IDFIGLI > 0)
                             {
                                 //se è collegato a un altro record lo elimino direttamente 
@@ -3599,48 +3566,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     throw new Exception(string.Format("Impossibile annullare le modifiche del figlio."));
                                 }
                             }
-                            else
-                            {
-                                //se non è collegato a un altro record cerco tutte le modifiche effettuate di quel figlio
-                                //e le elimino
-
-                                //elimino eventuali modifiche adf
-                                var ladff = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                                foreach (var adff in ladff)
-                                {
-                                    db.ALTRIDATIFAM.Remove(adff);
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception(string.Format("Impossibile annullare le modifiche Altri Dati Familiari del figlio."));
-                                    }
-                                }
-
-                                //cerco eventuali documenti sostituiti e rimetto il flag modificato a FALSE
-                                var ldf_sost = f.DOCUMENTI.Where(a => a.MODIFICATO==true && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                                foreach (var df_sost in ldf_sost)
-                                {
-                                    var d= db.DOCUMENTI.Find(df_sost.IDDOCUMENTO);
-                                    d.MODIFICATO = false;
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception(string.Format("Impossibile annullare le modifiche relative ai documenti del figlio."));
-                                    }
-                                }
-
-
-                                //elimino eventuali documenti
-                                var ldf = f.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                                foreach (var df in ldf)
-                                {
-                                    db.DOCUMENTI.Remove(df);
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception(string.Format("Impossibile annullare i documenti del figlio."));
-                                    }
-                                }
-
-                            }
-
                         }
                         db.Database.CurrentTransaction.Commit();
 
@@ -3662,24 +3587,32 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void AttivaRichiestaVariazione(decimal idAttivazioneMagFam, decimal idMaggiorazioneFamiliare)
         {
-            bool rinunciaMagFam = false;
-            bool richiestaAttivazione = false;
-            bool attivazione = false;
-            bool datiConiuge = false;
-            bool datiParzialiConiuge = false;
-            bool datiFigli = false;
-            bool datiParzialiFigli = false;
-            bool siDocConiuge = false;
-            bool siDocFigli = false;
-            bool docFormulario = false;
-            bool inLavorazione = false;
-            bool trasfSolaLettura = false;
+            //bool rinunciaMagFam = false;
+            //bool richiestaAttivazione = false;
+            //bool attivazione = false;
+            //bool datiConiuge = false;
+            //bool datiParzialiConiuge = false;
+            //bool datiFigli = false;
+            //bool datiParzialiFigli = false;
+            //bool siDocConiuge = false;
+            //bool siDocFigli = false;
+            //bool docFormulario = false;
+            //bool inLavorazione = false;
+            //bool trasfSolaLettura = false;
+            //bool siDoc = false;
+            //bool datiParziali = true;
+            //bool datiNuovoConiuge = false;
+            //bool datiNuovoFigli = false;
+            //bool siDocFormulario = false;
 
             int i = 0;
 
-            this.SituazioneMagFamVariazione(idMaggiorazioneFamiliare, out rinunciaMagFam,
-                out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura);
+            //this.SituazioneMagFamVariazione(idMaggiorazioneFamiliare, out rinunciaMagFam,
+            //    out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+            //    out datiFigli, out datiParzialiFigli, 
+            //    out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, 
+            //    out trasfSolaLettura, out datiParziali, out siDoc, 
+            //    out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario);
 
             try
             {
@@ -3689,195 +3622,199 @@ namespace NewISE.Models.DBModel.dtObj
 
                     try
                     {
-                        if (rinunciaMagFam == true && richiestaAttivazione == true && attivazione == false)
+                        #region commento
+                        //if (rinunciaMagFam == true && richiestaAttivazione == true && attivazione == false)
+                        //{
+                        //    var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
+                        //    amf.ATTIVAZIONEMAGFAM = true;
+                        //    amf.DATAATTIVAZIONEMAGFAM = DateTime.Now;
+
+                        //    i = db.SaveChanges();
+
+                        //    if (i <= 0)
+                        //    {
+                        //        throw new Exception("Errore nella fase di attivazione delle maggiorazioni familiari.");
+                        //    }
+                        //    else
+                        //    {
+                        //        //cerca coniuge da attivare e lo mette attivato
+                        //        var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                        //        foreach (var c in lc)
+                        //        {
+                        //            c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                        //            if (db.SaveChanges() <= 0)
+                        //            {
+                        //                throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (coniuge).");
+                        //            }
+
+                        //        }
+                        //        //cerca figlio da attivare e lo mette attivato
+                        //        var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                        //        foreach (var f in lf)
+                        //        {
+                        //            f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                        //            if (db.SaveChanges() <= 0)
+                        //            {
+                        //                throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (figli).");
+                        //            }
+
+                        //        }
+                        //        //cerca documenti da attivare e lo mette attivato
+                        //        var ld = amf.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                        //        foreach (var d in ld)
+                        //        {
+                        //            d.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                        //            if (db.SaveChanges() <= 0)
+                        //            {
+                        //                throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (documenti).");
+                        //            }
+
+                        //        }
+                        //        //cerca altri dati da attivare e lo mette attivato
+                        //        var ladf = amf.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                        //        foreach (var adf in ladf)
+                        //        {
+                        //            adf.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                        //            if (db.SaveChanges() <= 0)
+                        //            {
+                        //                throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (altri dati familiari).");
+                        //            }
+
+                        //        }
+                        //        // manca pensione coniuge
+
+
+
+                        //        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        //        {
+                        //            dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
+                        //        }
+                        //        using (dtDipendenti dtd = new dtDipendenti())
+                        //        {
+                        //            using (dtTrasferimento dtt = new dtTrasferimento())
+                        //            {
+                        //                using (dtUffici dtu = new dtUffici())
+                        //                {
+                        //                    var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
+
+                        //                    if (t?.idTrasferimento > 0)
+                        //                    {
+                        //                        var dip = dtd.GetDipendenteByID(t.idDipendente);
+                        //                        var uff = dtu.GetUffici(t.idUfficio);
+
+                        //                        EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                        //                                            Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
+                        //                                            string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                        //                                            db);
+                        //                    }
+                        //                }
+                        //            }
+                        //        }
+                        //    }
+                        //}
+                        //else if (rinunciaMagFam == false && richiestaAttivazione == true && attivazione == false)
+                        //if (richiestaAttivazione == true && attivazione == false)
+                        //{
+                        //    if (datiConiuge == true || datiFigli == true)
+                        //    {
+                        //        if (datiParzialiConiuge == false && datiParzialiFigli == false)
+                        //        {
+                        //            if (datiConiuge == true && siDocConiuge == true || datiFigli == true && siDocFigli == true)
+                        //            {
+                        #endregion
+
+                        var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
+                        amf.ATTIVAZIONEMAGFAM = true;
+                        amf.DATAATTIVAZIONEMAGFAM = DateTime.Now;
+
+                        i = db.SaveChanges();
+
+                        if (i <= 0)
                         {
-                            var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
-
-                            amf.ATTIVAZIONEMAGFAM = true;
-                            amf.DATAATTIVAZIONEMAGFAM = DateTime.Now;
-
-                            i = db.SaveChanges();
-
-                            if (i <= 0)
+                            throw new Exception("Errore nella fase di attivazione delle maggiorazioni familiari.");
+                        }
+                        else
+                        {
+                            //cerca coniuge da attivare e lo mette attivato
+                            var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                            foreach (var c in lc)
                             {
-                                throw new Exception("Errore nella fase di attivazione delle maggiorazioni familiari.");
+                                c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (coniuge).");
+                                }
+
                             }
-                            else
+                            //cerca figlio da attivare e lo mette attivato
+                            var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                            foreach (var f in lf)
                             {
-                                //cerca coniuge da attivare e lo mette attivato
-                                var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                foreach (var c in lc)
+                                f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                if (db.SaveChanges() <= 0)
                                 {
-                                    c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (coniuge).");
-                                    }
-
+                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (figli).");
                                 }
-                                //cerca figlio da attivare e lo mette attivato
-                                var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                foreach (var f in lf)
-                                {
-                                    f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (figli).");
-                                    }
 
+                            }
+                            //cerca documenti da attivare e lo mette attivato
+                            var ld = amf.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                            foreach (var d in ld)
+                            {
+                                d.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (documenti).");
                                 }
-                                //cerca documenti da attivare e lo mette attivato
-                                var ld = amf.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                foreach (var d in ld)
-                                {
-                                    d.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (documenti).");
-                                    }
 
+                            }
+                            //cerca altri dati da attivare e lo mette attivato
+                            var ladf = amf.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                            foreach (var adf in ladf)
+                            {
+                                adf.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (altri dati familiari).");
                                 }
-                                //cerca altri dati da attivare e lo mette attivato
-                                var ladf = amf.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                foreach (var adf in ladf)
+
+                            }
+                            // manca pensione coniuge
+
+
+
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                            {
+                                dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
+                            }
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                using (dtTrasferimento dtt = new dtTrasferimento())
                                 {
-                                    adf.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                    if (db.SaveChanges() <= 0)
+                                    using (dtUffici dtu = new dtUffici())
                                     {
-                                        throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (altri dati familiari).");
-                                    }
+                                        var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
 
-                                }
-                                // manca pensione coniuge
-
-
-
-                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                                {
-                                    dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
-                                }
-                                using (dtDipendenti dtd = new dtDipendenti())
-                                {
-                                    using (dtTrasferimento dtt = new dtTrasferimento())
-                                    {
-                                        using (dtUffici dtu = new dtUffici())
+                                        if (t?.idTrasferimento > 0)
                                         {
-                                            var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
+                                            var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                            var uff = dtu.GetUffici(t.idUfficio);
 
-                                            if (t?.idTrasferimento > 0)
-                                            {
-                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
-                                                var uff = dtu.GetUffici(t.idUfficio);
-
-                                                EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                                    Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
-                                                                    string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
-                                                                    db);
-                                            }
+                                            EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
+                                                                string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                db);
                                         }
                                     }
                                 }
                             }
                         }
-                        else if (rinunciaMagFam == false && richiestaAttivazione == true && attivazione == false)
-                        {
-                            if (datiConiuge == true || datiFigli == true)
-                            {
-                                if (datiParzialiConiuge == false && datiParzialiFigli == false)
-                                {
-                                    if (datiConiuge == true && siDocConiuge == true || datiFigli == true && siDocFigli == true)
-                                    {
-                                        var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
-
-                                        amf.ATTIVAZIONEMAGFAM = true;
-                                        amf.DATAATTIVAZIONEMAGFAM = DateTime.Now;
-
-                                        i = db.SaveChanges();
-
-                                        if (i <= 0)
-                                        {
-                                            throw new Exception("Errore nella fase di attivazione delle maggiorazioni familiari.");
-                                        }
-                                        else
-                                        {
-                                            //cerca coniuge da attivare e lo mette attivato
-                                            var lc = amf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                            foreach (var c in lc)
-                                            {
-                                                c.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                                if (db.SaveChanges() <= 0)
-                                                {
-                                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (coniuge).");
-                                                }
-
-                                            }
-                                            //cerca figlio da attivare e lo mette attivato
-                                            var lf = amf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                            foreach (var f in lf)
-                                            {
-                                                f.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                                if (db.SaveChanges() <= 0)
-                                                {
-                                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (figli).");
-                                                }
-
-                                            }
-                                            //cerca documenti da attivare e lo mette attivato
-                                            var ld = amf.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                            foreach (var d in ld)
-                                            {
-                                                d.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                                if (db.SaveChanges() <= 0)
-                                                {
-                                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (documenti).");
-                                                }
-
-                                            }
-                                            //cerca altri dati da attivare e lo mette attivato
-                                            var ladf = amf.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                                            foreach (var adf in ladf)
-                                            {
-                                                adf.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                                                if (db.SaveChanges() <= 0)
-                                                {
-                                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (altri dati familiari).");
-                                                }
-
-                                            }
-                                            // manca pensione coniuge
-
-
-
-                                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                                            {
-                                                dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
-                                            }
-                                            using (dtDipendenti dtd = new dtDipendenti())
-                                            {
-                                                using (dtTrasferimento dtt = new dtTrasferimento())
-                                                {
-                                                    using (dtUffici dtu = new dtUffici())
-                                                    {
-                                                        var t = dtt.GetTrasferimentoById(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO);
-
-                                                        if (t?.idTrasferimento > 0)
-                                                        {
-                                                            var dip = dtd.GetDipendenteByID(t.idDipendente);
-                                                            var uff = dtu.GetUffici(t.idUfficio);
-
-                                                            EmailTrasferimento.EmailAttiva(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                                                Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari,
-                                                                                string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
-                                                                                db);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                            //        }
+                            //    }
+                            //}
+                        //}
 
                         db.Database.CurrentTransaction.Commit();
                     }
@@ -4362,7 +4299,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 #region Altri dati familiari coniuge
                                                 ///Prelevo la vecchia riga di altri dati familiari collegati alla vecchia riga del coniuge.
                                                 var ladfOld =
-                                                    cOld.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                                    cOld.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
                                                         .OrderByDescending(a => a.IDALTRIDATIFAM);
 
                                                 if (ladfOld?.Any() ?? false)///Esiste questo controllo ma è impossibile che si verifichi il contrario perché gli altri dati familiari sono obbligatori per attivare il ciclo di autorizzazione.
@@ -4598,6 +4535,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     fOld.DOCUMENTI.Where(
                                                         a =>
                                                             a.MODIFICATO == false &&
+                                                            a.IDSTATORECORD==(decimal)EnumStatoRecord.Da_Attivare &&
                                                             a.IDTIPODOCUMENTO ==
                                                             (decimal)EnumTipoDoc.Documento_Identita);
 
@@ -4699,8 +4637,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         var ldFormulariOld =
                                             amfOld.DOCUMENTI.Where(
                                                 a =>
-                                                    a.IDTIPODOCUMENTO ==
-                                                    (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari &&
+                                                    a.IDSTATORECORD==(decimal)EnumStatoRecord.Da_Attivare);
 
                                         foreach (var d in ldFormulariOld)
                                         {

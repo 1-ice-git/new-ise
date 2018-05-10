@@ -449,15 +449,28 @@ namespace NewISE.Models.DBModel.dtObj
 
                             //VERIFICA SE CI SONO VARIAZIONI SUGLI ALTRI DATI
                             var adf = dtvmf.GetAltriDatiFamiliariFiglio(f.IDFIGLI,mf.IDMAGGIORAZIONIFAMILIARI);
-                            if (adf.FK_idAltriDatiFam > 0)
+                            if (adf.FK_idAltriDatiFam > 0 && adf.idStatoRecord != (decimal)EnumStatoRecord.Annullato && adf.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
                             {
                                 fm.modificato = true;
                             }
-                            var ldf = f.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato).ToList();
-                            if (ldf.Count() > 0)
+
+                            //elenca eventuali documenti inseriti
+                            var ldf = db.FIGLI.Find(fm.idFigli).DOCUMENTI.Where(a =>
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato)
+                                    .OrderByDescending(a => a.IDDOCUMENTO).ToList();
+                            //var ldf = f.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato).ToList();
+                            if (ldf.Count() > 0 && fm.nuovo == false)
                             {
                                 fm.modificato = true;
                             }
+                            //se è nuovo non è modificato
+                            if (fm.nuovo)
+                            {
+                                fm.modificato = false;
+                            }
+
 
                             lfm.Add(fm);
                         }
