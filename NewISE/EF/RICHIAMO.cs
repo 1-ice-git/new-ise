@@ -24,7 +24,7 @@ namespace NewISE.EF
     
         public decimal IDRICHIAMO { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
-        public System.DateTime DATARIENTRO { get; set; }
+        public System.DateTime DATARICHIAMO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     

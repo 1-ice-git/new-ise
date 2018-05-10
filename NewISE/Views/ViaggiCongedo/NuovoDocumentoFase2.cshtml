@@ -56,7 +56,7 @@
                 return true;
             } else {
 
-                MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il pdf");
+                //MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il pdf");
 
                 return false;
             }
@@ -81,7 +81,7 @@
             return {
                 @*tipoDoc: parseInt('@tipoDoc'),
                 id: parseInt('@id'),
-                parentela: parseInt(@parentela),*@             
+                parentela: parseInt(@parentela),*@
                 idTrasferimento: parseInt('@idTrasferimento.ToString()'),
                 idAttivViaggioCongedo: parseInt('@idAttivViaggioCongedo'),
                 idTipoDocumento: parseInt('@idTipoDocumento')

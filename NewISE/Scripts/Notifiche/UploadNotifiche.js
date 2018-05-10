@@ -210,7 +210,7 @@ function ValidazioneMAB(idTrasferimento) {
 
 function SalvaDocumentoMAB(idTrasferimento, idTipoDocumento) {
 
-    debugger;
+    //debugger;
     var datiForm = new FormData();
     var rotta = "/MaggiorazioneAbitazione/InserisciDocumentoMAB";
 
@@ -333,7 +333,7 @@ function ConfermaAnnullaRichiestaMAB() {
     $.ajax({
         type: "POST",
         url: rotta,
-        data: { idAttivazioneMAB: idAttivazioneMAB, msg:testoAnnullaMAB },
+        data: { idAttivazioneMAB: idAttivazioneMAB, msg: testoAnnullaMAB },
         dataType: 'json',
         beforeSend: function () {
             //debugger;

@@ -3141,6 +3141,7 @@
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\Enum\EnumFasePassaporti.cs" />
     <Compile Include="Models\DBModel\Enum\EnumFaseViaggioCongedo.cs" />
+    <Compile Include="Models\DBModel\Enum\EnumStatoHome.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
@@ -3548,6 +3549,7 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfFiglio.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumentiPrecedenti.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfConiuge.cshtml" />
+    <Content Include="Views\ViaggiCongedo\MessaggioAnnullaViaggiCongedo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

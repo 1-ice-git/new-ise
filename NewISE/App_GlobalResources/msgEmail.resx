@@ -290,7 +290,7 @@
     <value>Si notifica che la richiesta di viaggio congedo è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAttivazioneViaggiCongedo" xml:space="preserve">
-    <value>Notifica che la richiesta di viaggio congedo è stata confermata.</value>
+    <value>Si notifica che la richiesta di viaggio congedo è stata confermata.</value>
   </data>
   <data name="MessaggioNotificaViaggiCongedo" xml:space="preserve">
     <value>Si informa che il dipendente ha effettuato la richiesta di viaggio congedo.</value>
@@ -341,7 +341,22 @@
   <data name="OggettoAnnullaRichiestaProvvidenzeScolastiche" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta di Provvidenze Scolastiche.</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+  <data name="MessaggioAnnullamentoViaggiCongedo2" xml:space="preserve">
+    <value>Si notifica che la richiesta di viaggio congedo in FASE 2 è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
+  <data name="MessaggioAttivazioneViaggiCongedo2" xml:space="preserve">
+    <value>Si notifica che la richiesta di viaggio congedo FASE 2 è stata confermata.</value>
+  </data>
+  <data name="MessaggioNotificaViaggiCongedo2" xml:space="preserve">
+    <value>Si informa che il dipendente ha effettuato la richiesta di viaggio congedo FASE 2.</value>
+  </data>
+  <data name="OggettoAnnullaViaggiCongedo2" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta del viaggio congedo FASE 2</value>
+  </data>
+  <data name="OggettoAttivaViaggiCongedo2" xml:space="preserve">
+    <value>Attivazione Viaggio Congedo FASE 2</value>
+  </data>
+  <data name="OggettoNotificaViaggiCongedo2" xml:space="preserve">
+    <value>Notifica richiesta Viaggio Congedo FASE 2</value>
   </data>
 </root>
