@@ -2456,6 +2456,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VariazioneMagFamColori.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\VariazioneProvvScolColori.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VariazioneProvvScolColori.resx</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamPercAnticipoTeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamPercCondivisioneMAB.cs" />
@@ -3599,6 +3604,10 @@
     <Content Include="App_GlobalResources\TitoliViaggioColori.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>TitoliViaggioColori.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\VariazioneProvvScolColori.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>VariazioneProvvScolColori.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report12.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

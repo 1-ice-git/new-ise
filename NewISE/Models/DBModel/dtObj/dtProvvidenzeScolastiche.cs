@@ -79,7 +79,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 idDocumenti = doc.IDDOCUMENTO,
                                 nomeDocumento = doc.NOMEDOCUMENTO,
                                 Modificabile = modificabile,
-                                //IdAttivazione = atep.IDATEPARTENZA,
+                                IdAttivazione = atep.IDPROVSCOLASTICHE,
                                 DataAggiornamento = atep.DATAAGGIORNAMENTO,
                                 fk_iddocumento = doc.FK_IDDOCUMENTO,
                                 idStatoRecord = doc.IDSTATORECORD
@@ -289,7 +289,7 @@ namespace NewISE.Models.DBModel.dtObj
                         foreach (var atps in latps)
                         {
                             //documenti provvidenze scolastiche
-                            var ldc = atps.DOCUMENTI.Where(a => (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche)).ToList();
+                            var ldc = atps.DOCUMENTI.Where(a => (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)).ToList();
                             if (ldc?.Any() ?? false)
                             {
                                 DocProvvidenzeScolastiche = true;
@@ -317,6 +317,135 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
+
+
+        public void SituazioneProvvScolVariazione(decimal idTrasfProvScolastiche,
+                                       out bool richiestaPS,
+                                       out bool attivazionePS,
+                                       out bool DocProvvidenzeScolastiche,                                       
+                                       out bool trasfAnnullato)
+        {
+            richiestaPS = false;
+            attivazionePS = false;
+            DocProvvidenzeScolastiche = false;
+            trasfAnnullato = false;
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var mf = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
+                 
+
+                    decimal IDstatoTrasf = mf.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+                    if (IDstatoTrasf == (decimal)EnumStatoTraferimento.Annullato)
+                    {
+                        trasfAnnullato = true;
+                    }
+
+                    var conta_attivazioni = mf.ATTIVAZIONIPROVSCOLASTICHE.Where(a => (a.ANNULLATO == false || (a.ATTIVARICHIESTA == true && a.NOTIFICARICHIESTA == true))).Count();
+
+                    if (conta_attivazioni > 1)
+                    {
+                        //legge l'ultima attivazione valida
+                        var last_amf = mf.ATTIVAZIONIPROVSCOLASTICHE.Where(a => (a.ANNULLATO == false || (a.ATTIVARICHIESTA == true && a.NOTIFICARICHIESTA == true))).OrderByDescending(a => a.IDPROVSCOLASTICHE).First();
+
+                        if (last_amf != null || last_amf.IDPROVSCOLASTICHE > 0)
+                        {
+                            //elenca le attivazioni aperte
+                            var lamf = mf.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false && a.ATTIVARICHIESTA == false && a.NOTIFICARICHIESTA == false).OrderByDescending(a => a.IDPROVSCOLASTICHE).ToList();
+
+                            //se ci sono esegue i controlli
+                            if (lamf?.Any() ?? false)
+                            {
+                                foreach (var amf in lamf)
+                                {
+                                    if (amf != null && amf.IDPROVSCOLASTICHE > 0)
+                                    {
+                                       
+
+                                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche).ToList();
+                                        if (ld?.Any() ?? false)
+                                        {
+                                            DocProvvidenzeScolastiche = true;
+                                        }
+
+                                        
+
+                                        
+                                    }
+                                }
+                            }
+                            else
+                            {
+                               
+                                //comunque esegue i controlli sui dati dell'attivazione
+                                var ld = last_amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche).ToList();
+                                if (ld?.Any() ?? false)
+                                {
+                                    DocProvvidenzeScolastiche = true;
+                                }
+
+                                
+
+                               
+                            }
+                        }
+                       
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public void SituazioneAttivazioneProvvScolById(decimal idProvScolastiche,
+                                       out bool richiestaPS,
+                                       out bool attivazionePS,
+                                       out bool DocProvvidenzeScolastiche)
+        {
+            richiestaPS = false;
+            attivazionePS = false;
+            DocProvvidenzeScolastiche = false;
+            
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var aps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idProvScolastiche);
+
+                    
+                    if (aps != null && aps.IDPROVSCOLASTICHE > 0)
+                    {
+                        richiestaPS = aps.NOTIFICARICHIESTA;
+                        attivazionePS = aps.ATTIVARICHIESTA;
+
+                        var ld = aps.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                            if (ld?.Any() ?? false)
+                            {
+                                DocProvvidenzeScolastiche = true;
+                            }
+
+
+                    }
+                       
+                       
+
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         public decimal GetNumAttivazioniProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
         {
@@ -443,22 +572,6 @@ namespace NewISE.Models.DBModel.dtObj
                         if (db.SaveChanges() <= 0)
                         {
                             throw new Exception("Errore nella fase di creazione dell'attivita provvidenze scolastiche.");
-                        }
-                        else
-                        {
-                            //creo la riga relativa alla rinuncia
-                            //var rtep = this.CreaRinunciaTEPartenza(new_atep.IDATEPARTENZA, db);
-
-                            ////leggo la percentuale e la associo
-                            //var PercentualeAnticipoTE = this.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
-                            //if (PercentualeAnticipoTE.IDPERCANTICIPOTM > 0)
-                            //{
-                            //    this.Associa_TEpartenza_perceAnticipoTE(idTEPartenza, PercentualeAnticipoTE.IDPERCANTICIPOTM, db);
-
-                            //    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                            //    "Inserimento attivita trasporto effetti partenza.", "ATTIVITATEPARTENZA", db, idTEPartenza,
-                            //    new_atep.IDATEPARTENZA);
-                            //}
                         }
 
                         atps = new_atps;
@@ -706,6 +819,33 @@ namespace NewISE.Models.DBModel.dtObj
                     throw ex;
                 }
             }
+        }
+
+        public IList<AttivazioniProvScolasticheModel> GetListAttivazioniProvvScolByIdProvvScol(decimal idTrasfProvScolastiche)
+        {
+            List<AttivazioniProvScolasticheModel> lamfm = new List<AttivazioniProvScolasticheModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lamf = db.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.IDTRASFPROVSCOLASTICHE == idTrasfProvScolastiche).OrderBy(a => a.IDPROVSCOLASTICHE);
+                if (lamf?.Any() ?? false)
+                {
+                    lamfm = (from e in lamf
+                             select new AttivazioniProvScolasticheModel()
+                             {
+                                 idProvScolastiche = e.IDPROVSCOLASTICHE,
+                                 idTrasfProvScolastiche = e.IDTRASFPROVSCOLASTICHE,
+                                 notificaRichiesta = e.NOTIFICARICHIESTA,
+                                 dataNotifica = e.DATANOTIFICA,
+                                 attivaRichiesta = e.ATTIVARICHIESTA,
+                                 dataAttivazione = e.DATAATTIVAZIONE,
+                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                 annullato = e.ANNULLATO
+                             }).ToList();
+                }
+            }
+
+            return lamfm;
         }
 
     }

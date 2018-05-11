@@ -1,5 +1,7 @@
 ﻿@using NewISE.Models.DBModel
-@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
+@*@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>*@
+@model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
+
 
 @{
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
@@ -13,11 +15,10 @@
     bool DocProvvidenzeScolastiche = Convert.ToBoolean(ViewData["DocProvvidenzeScolastiche"]);
 }
 
-
-
 <table class="table table-striped" id="tabElencoFormulariInseriti">
     <thead>
         <tr>
+            
             <th>
                 @Html.DisplayNameFor(model => model.nomeDocumento)
             </th>
@@ -35,19 +36,48 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nomeDocumento)
-                </td>
-                <td class="text-center">
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                
+                @if (item.Modificabile)
+                {
+                   <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
                     @Html.DisplayFor(modelItem => item.estensione)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.dataInserimento)
-                </td>
-                <td class="text-center">
+                   </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
                     <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
                 </td>
-                <td class="text-center">
+
+                @*<td class="text-center">
                     
 
                         @if (richiestaPS == false)
@@ -62,6 +92,19 @@
                             </a>
                         }
 
+                </td>*@
+
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    @if (item.Modificabile)
+                    {
+                        <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                        </a>
+                    }
+                    else
+                    {
+                        <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                    }
                 </td>
             </tr>
         }
@@ -89,7 +132,6 @@
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript">
     $("#tabElencoFormulariInseriti").DataTable({
@@ -175,7 +217,7 @@
                     ErroreElaborazioneAjax(result.err);
                 }
                 else {
-
+                
                     //InfoElaborazioneAjax(result.msg);
                     //CloseTimeModalFormulario();
                     //AttivitaProvvidenze();

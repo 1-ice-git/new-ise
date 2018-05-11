@@ -15,9 +15,12 @@
 
 <div class="row">
     <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
-        <div class="tab-content" id="tabContenuti_Var" style="border:1px;border-color:red">
+        @*<div class="tab-content" id="tabContenuti_Var" style="border:1px;border-color:red">
             <div class="active tab-pane" id="tabElencoProvvidenze"></div>
             <div class="tab-pane" id="tabFormulari_Var"></div>
+        </div>*@
+        <div class="tab-content" id="tabElencoProvvidenze" style="border:1px;border-color:red">
+            
         </div>
     </div>
 </div>
@@ -161,7 +164,7 @@
                     var attivazionePS = result.attivazionePS;
                     var DocProvvidenzeScolastiche = result.DocProvvidenzeScolastiche;
                     var trasfAnnullato = result.trasfAnnullato;
-                    
+
 
                     $("#btNotificaRichiestaPS").attr("disabled", "disabled");
                     $("#btNotificaRichiestaPS").addClass("disabled");
@@ -189,14 +192,11 @@
                     if (
                             (
                                 (
-                        
+
                                     (richiestaPS == false && attivazionePS == false && DocProvvidenzeScolastiche)
                                 ) &&
                                     trasfAnnullato == false
-                               ) ||
-                            (
-                                richiestaPS == false && attivazionePS == false && trasfAnnullato == false
-                            )
+                               ) 
                         ) {
                         $("#btNotificaRichiestaPS").removeAttr("disabled");
                         $("#btNotificaRichiestaPS").removeClass("disabled");
@@ -207,6 +207,7 @@
                                 $("#btAttivaRichiestaPS").removeClass("disabled");
                                 $("#btAnnullaRichiestaPS").removeAttr("disabled");
                                 $("#btAnnullaRichiestaPS").removeClass("disabled");
+                       
                             }
                         }
                     }
@@ -264,9 +265,7 @@
                 //debugger;
                 if (result.err == "") {
                     AttivitaProvvidenze();
-                    //GestioneRinunciaTEPartenza();
                     GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
-                    //InfoElaborazioneAjax(result.msg);
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -282,42 +281,6 @@
 
         });
     }
-
-    function ConfermaAnnullaRichiestaTE() {
-        //debugger;
-        var rotta = "/TrasportoEffetti/ConfermaAnnullaRichiestaTEPartenza";
-        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
-        var testoAnnullaPS = $('#FullDescription').val();
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idTrasfProvScolastiche: idTrasfProvScolastiche, msg: testoAnnullaPS },
-            dataType: 'json',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    ProvvidenzeScolastiche();
-                    GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
-                    //InfoElaborazioneAjax(result.msg);
-                } else {
-                    ErroreElaborazioneAjax(result.err);
-                }
-            },
-            complete: function () {
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-    }
-
 
     function ConfermaAttivazioneRichiestaPS() {
         //debugger;
@@ -427,11 +390,12 @@
         var rotta = "/ProvvidenzeScolastiche/ElencoFormulariInseriti";
         var idTrasferimento = parseInt($('#idTrasferimento').val());
         var idProvScolastiche = parseInt('@idProvScolastiche');
+        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento, idProvScolastiche: idProvScolastiche },
+            data: { idTrasferimento: idTrasferimento, idProvScolastiche: idProvScolastiche, idTrasfProvScolastiche: idTrasfProvScolastiche },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -450,7 +414,7 @@
 
             },
             complete: function () {
-                //PulsantiNotificaAttivaMagFam();
+                GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
