@@ -20,7 +20,7 @@ namespace NewISE.Controllers
     public class ProvvidenzeScolasticheController : Controller
     {
         // GET: ProvvidenzeScolastiche
-        public ActionResult Index()
+        public ActionResult Index() 
         {
             return View();
         }
