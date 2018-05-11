@@ -428,7 +428,6 @@
                     //debugger;
                     $("#divTabElencoFormulari").empty();
                     $("#divTabElencoFormulari").html(result);
-
                 },
                 error: function (error) {
                     //debugger;
@@ -439,9 +438,41 @@
             });
         }
         else
-        {
-            TabElencoFormulari();
+        {   
+            TabFormulariProvvScolInseriti();
         }
+    }
+
+    function TabFormulariProvvScolInseriti() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/TabFormulariProvvScolInseriti";
+        var idTrasfProvScolastiche = @idTrasfProvScolastiche;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasfProvScolastiche: idTrasfProvScolastiche },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divTabElencoFormulari").empty();
+                $("#divTabElencoFormulari").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
     }
 
 

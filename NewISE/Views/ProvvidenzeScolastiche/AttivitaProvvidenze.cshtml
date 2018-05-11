@@ -196,10 +196,7 @@
                                     (richiestaPS == false && attivazionePS == false && DocProvvidenzeScolastiche)
                                 ) &&
                                     trasfAnnullato == false
-                               ) ||
-                            (
-                                richiestaPS == false && attivazionePS == false && trasfAnnullato == false
-                            )
+                               ) 
                         ) {
                         $("#btNotificaRichiestaPS").removeAttr("disabled");
                         $("#btNotificaRichiestaPS").removeClass("disabled");
@@ -210,6 +207,7 @@
                                 $("#btAttivaRichiestaPS").removeClass("disabled");
                                 $("#btAnnullaRichiestaPS").removeAttr("disabled");
                                 $("#btAnnullaRichiestaPS").removeClass("disabled");
+                       
                             }
                         }
                     }
@@ -267,9 +265,7 @@
                 //debugger;
                 if (result.err == "") {
                     AttivitaProvvidenze();
-                    //GestioneRinunciaTEPartenza();
                     GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
-                    //InfoElaborazioneAjax(result.msg);
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -285,42 +281,6 @@
 
         });
     }
-
-    function ConfermaAnnullaRichiestaTE() {
-        //debugger;
-        var rotta = "/TrasportoEffetti/ConfermaAnnullaRichiestaTEPartenza";
-        var idTrasfProvScolastiche = parseInt('@idTrasfProvScolastiche');
-        var testoAnnullaPS = $('#FullDescription').val();
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idTrasfProvScolastiche: idTrasfProvScolastiche, msg: testoAnnullaPS },
-            dataType: 'json',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    ProvvidenzeScolastiche();
-                    GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
-                    //InfoElaborazioneAjax(result.msg);
-                } else {
-                    ErroreElaborazioneAjax(result.err);
-                }
-            },
-            complete: function () {
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-    }
-
 
     function ConfermaAttivazioneRichiestaPS() {
         //debugger;
@@ -454,7 +414,7 @@
 
             },
             complete: function () {
-                //PulsantiNotificaAttivaMagFam();
+                GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche();
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;

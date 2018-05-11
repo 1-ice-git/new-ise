@@ -161,16 +161,13 @@ namespace NewISE.Controllers
 
             using (dtProvvidenzeScolastiche dtps = new dtProvvidenzeScolastiche())
             {
-
                 dtps.SituazioneProvvScolVariazione(idTrasfProvScolastiche, out richiestaPS,
                 out attivazionePS, out DocProvvidenzeScolastiche, out trasfAnnullato);
-
 
             }
             
             List<SelectListItem> lDataAttivazione = new List<SelectListItem>();
             List<ATTIVAZIONIPROVSCOLASTICHE> laps = new List<ATTIVAZIONIPROVSCOLASTICHE>();
-            
 
             try
             {
@@ -206,8 +203,6 @@ namespace NewISE.Controllers
                                 lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });
                             }
                             i++;
-
-                           
 
                         }
 
@@ -785,6 +780,27 @@ namespace NewISE.Controllers
             return PartialView(msg);
         }
 
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+
+        public ActionResult TabFormulariProvvScolInseriti(decimal idTrasfProvScolastiche)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+
+            try
+            {
+               
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                   ldm = dtd.GetFormulariProvvidenzeScolasticheVariazione(idTrasfProvScolastiche).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("TabFormulariInseriti", ldm);
+        }
 
     }
 }

@@ -15,8 +15,6 @@
     bool DocProvvidenzeScolastiche = Convert.ToBoolean(ViewData["DocProvvidenzeScolastiche"]);
 }
 
-
-
 <table class="table table-striped" id="tabElencoFormulariInseriti">
     <thead>
         <tr>
@@ -135,7 +133,6 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
     $("#tabElencoFormulariInseriti").DataTable({
         "language": {
@@ -220,7 +217,7 @@
                     ErroreElaborazioneAjax(result.err);
                 }
                 else {
-
+                
                     //InfoElaborazioneAjax(result.msg);
                     //CloseTimeModalFormulario();
                     //AttivitaProvvidenze();

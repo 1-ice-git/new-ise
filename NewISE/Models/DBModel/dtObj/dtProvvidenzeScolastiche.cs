@@ -289,7 +289,7 @@ namespace NewISE.Models.DBModel.dtObj
                         foreach (var atps in latps)
                         {
                             //documenti provvidenze scolastiche
-                            var ldc = atps.DOCUMENTI.Where(a => (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche)).ToList();
+                            var ldc = atps.DOCUMENTI.Where(a => (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)).ToList();
                             if (ldc?.Any() ?? false)
                             {
                                 DocProvvidenzeScolastiche = true;
@@ -572,22 +572,6 @@ namespace NewISE.Models.DBModel.dtObj
                         if (db.SaveChanges() <= 0)
                         {
                             throw new Exception("Errore nella fase di creazione dell'attivita provvidenze scolastiche.");
-                        }
-                        else
-                        {
-                            //creo la riga relativa alla rinuncia
-                            //var rtep = this.CreaRinunciaTEPartenza(new_atep.IDATEPARTENZA, db);
-
-                            ////leggo la percentuale e la associo
-                            //var PercentualeAnticipoTE = this.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
-                            //if (PercentualeAnticipoTE.IDPERCANTICIPOTM > 0)
-                            //{
-                            //    this.Associa_TEpartenza_perceAnticipoTE(idTEPartenza, PercentualeAnticipoTE.IDPERCANTICIPOTM, db);
-
-                            //    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                            //    "Inserimento attivita trasporto effetti partenza.", "ATTIVITATEPARTENZA", db, idTEPartenza,
-                            //    new_atep.IDATEPARTENZA);
-                            //}
                         }
 
                         atps = new_atps;
