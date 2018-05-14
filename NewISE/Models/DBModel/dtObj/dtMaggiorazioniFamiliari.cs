@@ -1987,6 +1987,17 @@ namespace NewISE.Models.DBModel.dtObj
 
                             }
                             // manca pensione coniuge
+                            //cerca pensione in lavorazione e lo mette da attivare
+                            var lp = amf.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var p in lp)
+                            {
+                                p.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di richiesta attivazione per le maggiorazioni familiari (pensione).");
+                                }
+
+                            }
 
 
 
@@ -2146,9 +2157,6 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
-
-
-
 
     }
 }

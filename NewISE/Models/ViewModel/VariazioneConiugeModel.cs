@@ -24,6 +24,7 @@ namespace NewISE.Models.DBModel
         public string ev_anagrafica;
         public string ev_documenti;
         public string ev_altridati;
+        public string ev_pensione;
 
         public string ev_nome { get; set; }
         public string ev_cognome { get; set; }
