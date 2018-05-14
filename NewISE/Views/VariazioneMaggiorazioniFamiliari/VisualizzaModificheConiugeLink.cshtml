@@ -9,10 +9,13 @@
 <div style="padding-left: 15px;padding-right:50px;padding-bottom:20px">
     <div class="form-horizontal">
         <div class="row">
+            <div class="col-xs-1">
+                <button id="btModificheConiugePensione" type="button" class="btn btn-success" data-dismiss="modal" onclick="VisualizzaDettaglioPensioneConiuge(@idConiuge );">Pensione</button>
+            </div>
             <div class="col-xs-2">
                 <button id="btModificheConiugeAdf" type="button" class="btn btn-success" data-dismiss="modal" onclick="VisualizzaDettaglioAdfConiuge(@idConiuge );">Altri Dati Familiari</button>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-1">
                 <button id="btModificheConiugeDocumenti" type="button" class="btn btn-success" data-dismiss="modal" onclick="VisualizzaDocumentiPrecedentiConiuge(@idConiuge, @idParentela, @idMaggiorazioniFamiliari);">Documenti</button>
             </div>
         </div>

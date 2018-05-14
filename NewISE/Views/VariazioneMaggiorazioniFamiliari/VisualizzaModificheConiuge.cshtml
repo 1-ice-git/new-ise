@@ -59,7 +59,7 @@
 
 <script type="text/javascript">
 
-    function VisualizzaDettaglioAdfConiuge( idConiuge) {
+    function VisualizzaDettaglioAdfConiuge(idConiuge) {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/VisualizzaModificheAdfConiuge";
 
@@ -78,6 +78,42 @@
                 //Blocca();
                 $("#TitoloDettaglioPagina").empty();
                 $("#TitoloDettaglioPagina").html("<h3>Precedenti Altri Dati Familiari Coniuge</h3>");
+
+                $('#ModalDettaglioPaginaConiuge').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divDettaglioPaginaConiuge").empty();
+                $("#divDettaglioPaginaConiuge").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function VisualizzaDettaglioPensioneConiuge(idConiuge) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoPensioniPrecedenti";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idConiuge: idConiuge
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+                $("#TitoloDettaglioPagina").empty();
+                $("#TitoloDettaglioPagina").html("<h3>Precedente Situazione Pensione Coniuge</h3>");
 
                 $('#ModalDettaglioPaginaConiuge').modal('show');
             },
