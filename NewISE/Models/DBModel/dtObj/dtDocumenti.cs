@@ -1385,10 +1385,14 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
+                
+                //var lamf =
+                //    mf.ATTIVAZIONIPROVSCOLASTICHE.Where(
+                //        a => (a.NOTIFICARICHIESTA == true && a.ATTIVARICHIESTA == true) || a.ANNULLATO == false).OrderBy(a => a.IDPROVSCOLASTICHE);
 
                 var lamf =
                     mf.ATTIVAZIONIPROVSCOLASTICHE.Where(
-                        a => (a.NOTIFICARICHIESTA == true && a.ATTIVARICHIESTA == true) || a.ANNULLATO == false).OrderBy(a => a.IDPROVSCOLASTICHE);
+                        a => (a.NOTIFICARICHIESTA == true && a.ATTIVARICHIESTA == true) || a.ANNULLATO == false).OrderByDescending(a => a.IDPROVSCOLASTICHE);
 
                 var t = mf.TRASFERIMENTO;
                 var statoTrasf = t.IDSTATOTRASFERIMENTO;
@@ -1407,14 +1411,83 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                         bool modificabile = false;
-                        if (e.NOTIFICARICHIESTA == false &&
-                            e.ATTIVARICHIESTA == false &&
+
+
+                        //if (e.NOTIFICARICHIESTA == false &&
+                        //    e.ATTIVARICHIESTA == false &&
+                        //    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                        //    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                        //{
+                        //    modificabile = true;
+                        //    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                        //    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                        //}
+                        //else
+                        //{
+                        //    if (i % 2 == 0)
+                        //    {
+                        //        coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoDispari;
+                        //    }
+                        //    else
+                        //    {
+                        //        coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
+                        //    }
+                        //    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
+                        //}
+
+
+
+                        //if (Condition1)
+                        //{
+                        //    // Condition1 is true.
+                        //}
+                        //else if (Condition2)
+                        //{
+                        //    // Condition1 is false and Condition2 is true.
+                        //}
+                        //else if (Condition3)
+                        //{
+                        //    if (Condition4)
+                        //    {
+                        //        // Condition1 and Condition2 are false. Condition3 and Condition4 are true.
+                        //    }
+                        //    else
+                        //    {
+                        //        // Condition1, Condition2, and Condition4 are false. Condition3 is true.
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    // Condition1, Condition2, and Condition3 are false.
+                        //}
+
+
+                        // Condition1 is true.
+                        if (e.NOTIFICARICHIESTA == false && e.ATTIVARICHIESTA == false &&
                             statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
                             statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
                         {
                             modificabile = true;
                             coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
                             coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                        }
+                        // Condition1 is false and Condition2 is true.
+                        else if (e.NOTIFICARICHIESTA == true && e.ATTIVARICHIESTA == false &&
+                            statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                            statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                        {
+                            modificabile = false;
+                            coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                            coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                        }
+                        
+                        else if (e.NOTIFICARICHIESTA == true && e.ATTIVARICHIESTA == true &&
+                            statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                            statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                        {
+                            modificabile = false;
+                            coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoDispari;
+                            coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
                         }
                         else
                         {
@@ -1428,7 +1501,9 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
                         }
-                        foreach (var doc in ld)
+                    
+
+                    foreach (var doc in ld)
                         {
                             var amf = new VariazioneDocumentiModel()
                             {
@@ -1576,7 +1651,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var lamf =
                     mf.ATTIVAZIONIPROVSCOLASTICHE.Where(
                         a => ((a.NOTIFICARICHIESTA == true && a.ATTIVARICHIESTA == true) || a.ANNULLATO == false))
-                        .OrderBy(a => a.IDPROVSCOLASTICHE);
+                        .OrderByDescending(a => a.IDPROVSCOLASTICHE);
                 var i = 1;
                 var coloretesto = "";
                 var coloresfondo = "";
@@ -1594,20 +1669,62 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                             bool modificabile = false;
-                            if (e.NOTIFICARICHIESTA == false &&
-                                e.ATTIVARICHIESTA == false &&
+
+                            //if (e.NOTIFICARICHIESTA == false &&
+                            //    e.ATTIVARICHIESTA == false &&
+                            //    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                            //    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                            //{
+                            //    modificabile = true;
+                            //    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                            //    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                            //}
+                            //else
+                            //{
+                            //    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
+                            //    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
+                            //}
+
+                            // Condition1 is true.
+                            if (e.NOTIFICARICHIESTA == false && e.ATTIVARICHIESTA == false &&
                                 statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
                                 statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
                             {
                                 modificabile = true;
-                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
                                 coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                            }
+                            // Condition1 is false and Condition2 is true.
+                            else if (e.NOTIFICARICHIESTA == true && e.ATTIVARICHIESTA == false &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                            {
+                                modificabile = false;
+                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                            }
+
+                            else if (e.NOTIFICARICHIESTA == true && e.ATTIVARICHIESTA == true &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                            {
+                                modificabile = false;
+                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoDispari;
+                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
                             }
                             else
                             {
+                                if (i % 2 == 0)
+                                {
+                                    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoDispari;
+                                }
+                                else
+                                {
+                                    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
+                                }
                                 coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
-                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
                             }
+
 
                             foreach (var doc in ld)
                             {
@@ -1667,22 +1784,63 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                             bool modificabile = false;
-                            if (ps.NOTIFICARICHIESTA == false &&
-                                ps.ATTIVARICHIESTA == false &&
-                                statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
-                                statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
-                            {
-                                modificabile = true;
-                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
-                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
-                            }
-                            else
-                            {
-                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
-                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
-                            }
+                //if (ps.NOTIFICARICHIESTA == false &&
+                //    ps.ATTIVARICHIESTA == false &&
+                //    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                //    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                //{
+                //    modificabile = true;
+                //    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                //    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                //}
+                //else
+                //{
+                //    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
+                //    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
+                //}
 
-                            foreach (var doc in ld)
+                // Condition1 is true.
+                if (ps.NOTIFICARICHIESTA == false && ps.ATTIVARICHIESTA == false &&
+                    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                {
+                    modificabile = true;
+                    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                }
+                // Condition1 is false and Condition2 is true.
+                else if (ps.NOTIFICARICHIESTA == true && ps.ATTIVARICHIESTA == false &&
+                    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                {
+                    modificabile = false;
+                    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                }
+
+                else if (ps.NOTIFICARICHIESTA == true && ps.ATTIVARICHIESTA == true &&
+                    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                {
+                    modificabile = false;
+                    coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoDispari;
+                    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
+                }
+                else
+                {
+                    if (i % 2 == 0)
+                    {
+                        coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoDispari;
+                    }
+                    else
+                    {
+                        coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
+                    }
+                    coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
+                }
+
+
+                foreach (var doc in ld)
                             {
                                 var amf = new VariazioneDocumentiModel()
                                 {

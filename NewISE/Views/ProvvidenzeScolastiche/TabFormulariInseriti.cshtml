@@ -19,17 +19,17 @@
     <thead>
         <tr>
             
-            <th>
+            <th >
                 @Html.DisplayNameFor(model => model.nomeDocumento)
             </th>
-            <th class="text-center">
+            <th class="text-center no-sort">
                 @Html.DisplayNameFor(model => model.estensione)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInserimento)
             </th>
-            <th></th>
-            <th></th>
+            <th class="no-sort"></th>
+            <th class="no-sort"></th>
         </tr>
     </thead>
     <tbody>
@@ -160,11 +160,19 @@
         },
         "info": false,
         "lengthChange": false,
-        "pageLength": 4,
+        "pageLength": 5,
         "searching": false,
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
+        "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": false,
+
+                }
+        ],
+        "order": [[2,"desc"]]
         //dom: 'Bfrtip',
         //buttons: [
         //    {
