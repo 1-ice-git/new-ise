@@ -271,7 +271,7 @@
     }
 
     function PulsantiNotificaAttivaMagFam() {
-        debugger;
+        //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/PulsantiNotificaAttivaMagFam";
         var idMagFam = parseInt('@idMagFam');
 
@@ -281,7 +281,7 @@
             data: { idMaggiorazioniFamiliari: idMagFam },
             dataType: 'json',
             beforeSend: function () {
-                debugger;
+                //debugger;
                 VerificaAutenticazione();
             },
             success: function (result) {

@@ -45,8 +45,6 @@ namespace NewISE.Controllers
                         bool richiestaTE = false;
                         bool attivazioneTE = false;
                         bool DocContributo = false;
-                        bool DocAttestazione = false;
-                        decimal NumAttivazioni = 0;
                         bool trasfAnnullato = false;
                         bool rinunciaTEPartenza = false;
 
@@ -56,8 +54,8 @@ namespace NewISE.Controllers
 
                         dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
                                                     out richiestaTE, out attivazioneTE,
-                                                    out DocContributo, out DocAttestazione,
-                                                    out NumAttivazioni, out trasfAnnullato, out rinunciaTEPartenza);
+                                                    out DocContributo, 
+                                                    out trasfAnnullato, out rinunciaTEPartenza);
 
                         var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
 
@@ -74,7 +72,6 @@ namespace NewISE.Controllers
                         ViewData.Add("richiestaTE", richiestaTE);
                         ViewData.Add("attivazioneTE", attivazioneTE);
                         ViewData.Add("DocContributo", DocContributo);
-                        ViewData.Add("DocAttestazione", DocAttestazione);
                         ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
 
                         return PartialView(tepm);
@@ -220,8 +217,6 @@ namespace NewISE.Controllers
             bool richiestaTE = false;
             bool attivazioneTE = false;
             bool DocContributo = false;
-            bool DocAttestazione = false;
-            decimal NumAttivazioni = 0;
             bool trasfAnnullato = false;
             bool rinunciaTE = false;
 
@@ -236,8 +231,6 @@ namespace NewISE.Controllers
                                             out richiestaTE,
                                             out attivazioneTE,
                                             out DocContributo,
-                                            out DocAttestazione,
-                                            out NumAttivazioni,
                                             out trasfAnnullato,
                                             out rinunciaTE);
                 }
@@ -256,8 +249,6 @@ namespace NewISE.Controllers
                         richiestaTE = richiestaTE,
                         attivazioneTE = attivazioneTE,
                         DocContributo = DocContributo,
-                        DocAttestazione = DocAttestazione,
-                        NumAttivazioni = NumAttivazioni,
                         trasfAnnullato = trasfAnnullato,
                         rinunciaTE = rinunciaTE,
                         err = errore

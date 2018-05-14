@@ -144,8 +144,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         out bool richiestaTE,
                                         out bool attivazioneTE,
                                         out bool DocContributo,
-                                        out bool DocAttestazione,
-                                        out decimal NumAttivazioni,
                                         out bool trasfAnnullato,
                                         out bool rinunciaTE)
         {
@@ -156,7 +154,6 @@ namespace NewISE.Models.DBModel.dtObj
                     richiestaTE = false;
                     attivazioneTE = false;
                     DocContributo = false;
-                    DocAttestazione = false;
                     trasfAnnullato = false;
                     rinunciaTE = false;
 
@@ -217,13 +214,6 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 DocContributo = true;
                             }
-
-                            //documenti attestazione
-                            var lda = atep.DOCUMENTI.Where(a => (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Trasloco)).ToList();
-                            if (lda?.Any() ?? false)
-                            {
-                                DocAttestazione = true;
-                            }
                         }
 
                     }
@@ -241,8 +231,6 @@ namespace NewISE.Models.DBModel.dtObj
                             rinunciaTE = true;
                         }
                     }
-
-                    NumAttivazioni = GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
 
                 }
             }
