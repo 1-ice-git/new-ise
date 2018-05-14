@@ -29,6 +29,7 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public decimal IDSTATORECORD { get; set; }
         public Nullable<decimal> FK_IDPENSIONE { get; set; }
+        public bool NASCONDI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PENSIONE> PENSIONE1 { get; set; }

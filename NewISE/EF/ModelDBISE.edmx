@@ -1026,6 +1026,7 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FK_IDPENSIONE" Type="number" Precision="38" Scale="0" />
+          <Property Name="NASCONDI" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="PERCENTUALEANTICIPOTE">
           <Key>
@@ -1170,14 +1171,6 @@
           <Property Name="DATARICHIAMO" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RICHIAMO_ALIQCONTR">
-          <Key>
-            <PropertyRef Name="IDALIQCONTR" />
-            <PropertyRef Name="IDRICHIAMO" />
-          </Key>
-          <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="RICHIAMO_COEFFRICH">
           <Key>
@@ -1651,20 +1644,6 @@
             </Principal>
             <Dependent Role="LOGATTIVITA">
               <PropertyRef Name="IDATTIVITACRUD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_AC_RAC">
-          <End Role="ALIQUOTECONTRIBUTIVE" Type="Self.ALIQUOTECONTRIBUTIVE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="RICHIAMO_ALIQCONTR" Type="Self.RICHIAMO_ALIQCONTR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALIQUOTECONTRIBUTIVE">
-              <PropertyRef Name="IDALIQCONTR" />
-            </Principal>
-            <Dependent Role="RICHIAMO_ALIQCONTR">
-              <PropertyRef Name="IDALIQCONTR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3806,20 +3785,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_R_RAC">
-          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="RICHIAMO_ALIQCONTR" Type="Self.RICHIAMO_ALIQCONTR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RICHIAMO">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Principal>
-            <Dependent Role="RICHIAMO_ALIQCONTR">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_R_RCR">
           <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5091,7 +5056,6 @@
           <EntitySet Name="REGOLECALCOLO" EntityType="Self.REGOLECALCOLO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RIC_PFKM" EntityType="Self.RIC_PFKM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RICHIAMO" EntityType="Self.RICHIAMO" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="RICHIAMO_ALIQCONTR" EntityType="Self.RICHIAMO_ALIQCONTR" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RICHIAMO_COEFFRICH" EntityType="Self.RICHIAMO_COEFFRICH" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RINUNCIA_TE_P" EntityType="Self.RINUNCIA_TE_P" Schema="ISESIM" store:Type="Tables" />
@@ -5152,10 +5116,6 @@
           <AssociationSet Name="R_AC_LA" Association="Self.R_AC_LA">
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_AC_RAC" Association="Self.R_AC_RAC">
-            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
-            <End Role="RICHIAMO_ALIQCONTR" EntitySet="RICHIAMO_ALIQCONTR" />
           </AssociationSet>
           <AssociationSet Name="R_AC_SA" Association="Self.R_AC_SA">
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
@@ -5768,10 +5728,6 @@
           <AssociationSet Name="R_R_ISR" Association="Self.R_R_ISR">
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
             <End Role="IS_R" EntitySet="IS_R" />
-          </AssociationSet>
-          <AssociationSet Name="R_R_RAC" Association="Self.R_R_RAC">
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-            <End Role="RICHIAMO_ALIQCONTR" EntitySet="RICHIAMO_ALIQCONTR" />
           </AssociationSet>
           <AssociationSet Name="R_R_RCR" Association="Self.R_R_RCR">
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
@@ -6969,10 +6925,6 @@
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
           </AssociationSet>
-          <AssociationSet Name="RICHIAMO_ALIQCONTR" Association="DBISE.RICHIAMO_ALIQCONTR">
-            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-          </AssociationSet>
           <AssociationSet Name="RICHIAMO_COEFFRICH" Association="DBISE.RICHIAMO_COEFFRICH">
             <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
@@ -7028,7 +6980,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TIPOALIQUOTECONTRIBUTIVE" Relationship="DBISE.R_TC_AC" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="TIPOALIQUOTECONTRIBUTIVE" />
-          <NavigationProperty Name="RICHIAMO" Relationship="DBISE.RICHIAMO_ALIQCONTR" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="RICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.SIST_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABINDSISTEMAZIONE" />
         </EntityType>
         <EntityType Name="ALTRIDATIFAM">
@@ -7986,6 +7937,7 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FK_IDPENSIONE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PENSIONE1" Relationship="DBISE.R_P_P" FromRole="PENSIONE" ToRole="PENSIONE1" />
           <NavigationProperty Name="PENSIONE2" Relationship="DBISE.R_P_P" FromRole="PENSIONE1" ToRole="PENSIONE" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_P" FromRole="PENSIONE" ToRole="STATORECORD" />
@@ -8141,7 +8093,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_R" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="PERCENTUALEFKM" Relationship="DBISE.RIC_PFKM" FromRole="RICHIAMO" ToRole="PERCENTUALEFKM" />
-          <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.RICHIAMO_ALIQCONTR" FromRole="RICHIAMO" ToRole="ALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISE.RICHIAMO_COEFFRICH" FromRole="RICHIAMO" ToRole="COEFFICIENTEINDRICHIAMO" />
         </EntityType>
         <EntityType Name="RIDUZIONI">
@@ -10865,10 +10816,6 @@
           <End Type="DBISE.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
           <End Type="DBISE.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
         </Association>
-        <Association Name="RICHIAMO_ALIQCONTR">
-          <End Type="DBISE.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
-          <End Type="DBISE.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
-        </Association>
         <Association Name="RICHIAMO_COEFFRICH">
           <End Type="DBISE.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
           <End Type="DBISE.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
@@ -11706,6 +11653,7 @@
           <EntitySetMapping Name="PENSIONE">
             <EntityTypeMapping TypeName="DBISE.PENSIONE">
               <MappingFragment StoreEntitySet="PENSIONE">
+                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="FK_IDPENSIONE" ColumnName="FK_IDPENSIONE" />
                 <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
@@ -12550,14 +12498,6 @@
             </EndProperty>
             <EndProperty Name="PERCENTUALEFKM">
               <ScalarProperty Name="IDPFKM" ColumnName="IDPFKM" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="RICHIAMO_ALIQCONTR" TypeName="DBISE.RICHIAMO_ALIQCONTR" StoreEntitySet="RICHIAMO_ALIQCONTR">
-            <EndProperty Name="RICHIAMO">
-              <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
-            </EndProperty>
-            <EndProperty Name="ALIQUOTECONTRIBUTIVE">
-              <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="RICHIAMO_COEFFRICH" TypeName="DBISE.RICHIAMO_COEFFRICH" StoreEntitySet="RICHIAMO_COEFFRICH">

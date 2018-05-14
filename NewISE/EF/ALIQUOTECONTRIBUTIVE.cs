@@ -17,7 +17,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ALIQUOTECONTRIBUTIVE()
         {
-            this.RICHIAMO = new HashSet<RICHIAMO>();
             this.ELABINDSISTEMAZIONE = new HashSet<ELABINDSISTEMAZIONE>();
         }
     
@@ -30,8 +29,6 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual TIPOALIQUOTECONTRIBUTIVE TIPOALIQUOTECONTRIBUTIVE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
     }
