@@ -5,7 +5,6 @@
     bool richiestaTE = Convert.ToBoolean(ViewData["richiestaTE"]);
     bool attivazioneTE = Convert.ToBoolean(ViewData["attivazioneTE"]);
     bool DocContributo = Convert.ToBoolean(ViewData["DocContributo"]);
-    bool DocAttestazione = Convert.ToBoolean(ViewData["DocAttestazione"]);
     bool rinunciaTEPartenza = Convert.ToBoolean(ViewData["rinunciaTEPartenza"]);
     decimal idTrasportoEffettiPartenza = Convert.ToDecimal(ViewData["idTrasportoEffettiPartenza"]);
     decimal indennita = Convert.ToDecimal(ViewData["indennita"]);
@@ -87,34 +86,6 @@
                         {
                             <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
                                 <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
-                            </a>
-                        }
-                    }
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-8" style="text-align:right">
-                    <b>Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)</b>
-                </div>
-                <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
-                    @if (rinunciaTEPartenza)
-                    {
-                        <a id="linkElencoDocTE" disabled class="disabled">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" />
-                        </a>
-                    }
-                    else
-                    {
-                        if (DocAttestazione)
-                        {
-                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
-                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documenti attestazione trasloco" />
-                            </a>
-                        }
-                        else
-                        {
-                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
-                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
                             </a>
                         }
                     }
@@ -219,7 +190,6 @@
             }
 
         });
-
     }
 
 </script>

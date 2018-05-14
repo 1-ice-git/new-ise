@@ -133,8 +133,6 @@
                     var richiestaTE = result.richiestaTE;
                     var attivazioneTE = result.attivazioneTE;
                     var DocContributo = result.DocContributo;
-                    var DocAttestazione = result.DocAttestazione;
-                    var NumAttivazioni=result.NumAttivazioni;
                     var trasfAnnullato = result.trasfAnnullato;
                     var rinunciaTE = result.rinunciaTE;
 
@@ -163,14 +161,11 @@
                     //Se risulta in lavorazione con almeno un documento abilito la il pulsante notifica
                     if (
                             (
-                                (
-                                    (NumAttivazioni==0 && richiestaTE==false && attivazioneTE==false && DocContributo) ||
-                                    (NumAttivazioni>0 && richiestaTE==false && attivazioneTE==false && DocAttestazione)
-                                ) &&
-                                    trasfAnnullato==false 
-                                && 
-                                    rinunciaTE == false
-                                
+                                richiestaTE==false && 
+                                attivazioneTE==false && 
+                                DocContributo &&
+                                trasfAnnullato==false && 
+                                rinunciaTE == false
                             ) || 
                             (
                                 richiestaTE==false && attivazioneTE==false && trasfAnnullato==false && rinunciaTE == true
