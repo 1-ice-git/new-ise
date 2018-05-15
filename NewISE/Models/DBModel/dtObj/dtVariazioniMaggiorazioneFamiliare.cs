@@ -505,11 +505,10 @@ namespace NewISE.Models.DBModel.dtObj
                                     db.ALTRIDATIFAM.Add(adf_new);
                                     db.SaveChanges();
                                     idAdf=adf_new.IDALTRIDATIFAM;
-                                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                                    {
-                                        dtamf.AssociaAltriDatiFamiliari(attivazione_aperta.IDATTIVAZIONEMAGFAM, idAdf, db);
-                                    }
-
+                                    //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                                    //{
+                                    //    dtamf.AssociaAltriDatiFamiliari(attivazione_aperta.IDATTIVAZIONEMAGFAM, idAdf, db);
+                                    //}
                                 }
                                 else
                                 {
@@ -519,15 +518,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     db.SaveChanges();
                                     idAdf = adfcm.idAltriDatiFam;
                                 }
-                                //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                                //{
-                                //  //  dtamf.AssociaAltriDatiFamiliari(attivazione_aperta.IDATTIVAZIONEMAGFAM, idAdf, db);
-                                //}
                                 #endregion
 
                                 #region documenti
                                 //riassocia documenti
-                                var ldc = db.CONIUGE.Find(cm.idConiuge).DOCUMENTI.Where(x => x.MODIFICATO == false && x.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).ToList();
+                                var ldc = db.CONIUGE.Find(cm.idConiuge).DOCUMENTI.Where(x => x.MODIFICATO == false && x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
                                 foreach (var dc in ldc)
                                 {
                                     this.Associa_Doc_Coniuge_ById(dc.IDDOCUMENTO, new_idconiuge, db);
@@ -781,10 +776,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 db.SaveChanges();
                                 idAdf = adfc.idAltriDatiFam;
                             }
-                            using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                            {
-                                dtamf.AssociaAltriDatiFamiliari(newmf.IDATTIVAZIONEMAGFAM, idAdf, db);
-                            }
+                            //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                            //{
+                            //    dtamf.AssociaAltriDatiFamiliari(newmf.IDATTIVAZIONEMAGFAM, idAdf, db);
+                            //}
                             #endregion
 
                             #region documenti
@@ -793,7 +788,7 @@ namespace NewISE.Models.DBModel.dtObj
                             foreach (var dc in ldc)
                             {
                                 this.Associa_Doc_Coniuge_ById(dc.IDDOCUMENTO, new_idconiuge, db);
-                                this.AssociaDocumentoAttivazione(newmf.IDATTIVAZIONEMAGFAM, dc.IDDOCUMENTO, db);
+                                //this.AssociaDocumentoAttivazione(newmf.IDATTIVAZIONEMAGFAM, dc.IDDOCUMENTO, db);
                             }
                             ////rimuovo precedenti associazioni di documenti in lavorazione al coniuge attivo
                             //this.RimuoviAssociazione_Coniuge_DocumentiInLavorazione(cm.idConiuge, db);
@@ -922,11 +917,6 @@ namespace NewISE.Models.DBModel.dtObj
                             #endregion
 
                             #region commento
-
-
-
-
-
                             ////replico eventuali altri dati familiari e li associo
                             //var adfc = this.GetAdfValidiByIDConiuge(cm.idConiuge, cm.idStatoRecord);
                             ////var adfc = c.ALTRIDATIFAM.OrderByDescending(a=>a.IDALTRIDATIFAM).First();
@@ -1321,10 +1311,10 @@ namespace NewISE.Models.DBModel.dtObj
                                     db.ALTRIDATIFAM.Add(adf_new);
                                     db.SaveChanges();
                                     idAdf = adf_new.IDALTRIDATIFAM;
-                                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                                    {
-                                        dtamf.AssociaAltriDatiFamiliari(attivazione_aperta.IDATTIVAZIONEMAGFAM, idAdf, db);
-                                    }
+                                    //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                                    //{
+                                    //    dtamf.AssociaAltriDatiFamiliari(attivazione_aperta.IDATTIVAZIONEMAGFAM, idAdf, db);
+                                    //}
 
                                 }
 
@@ -1600,10 +1590,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 db.SaveChanges();
                                 idAdf = adff.idAltriDatiFam;
                             }
-                            using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                            {
-                                dtamf.AssociaAltriDatiFamiliari(newamf.IDATTIVAZIONEMAGFAM, idAdf, db);
-                            }
+                            //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                            //{
+                            //    dtamf.AssociaAltriDatiFamiliari(newamf.IDATTIVAZIONEMAGFAM, idAdf, db);
+                            //}
                             #endregion
 
                             #region documenti
@@ -1612,7 +1602,7 @@ namespace NewISE.Models.DBModel.dtObj
                             foreach (var df in ldf)
                             {
                                 this.Associa_Doc_Figlio_ById(df.IDDOCUMENTO, new_idfiglio, db);
-                                this.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, df.IDDOCUMENTO, db);
+                                //this.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, df.IDDOCUMENTO, db);
                             }
                             #endregion
 
@@ -3318,8 +3308,6 @@ namespace NewISE.Models.DBModel.dtObj
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
                         var tm = dtt.GetTrasferimentoByIdAttMagFam(cm.idAttivazioneMagFam);
-
-
                     }
 
                     if (cm.idMaggiorazioniFamiliari == 0 && cm.idAttivazioneMagFam > 0)
@@ -3805,21 +3793,21 @@ namespace NewISE.Models.DBModel.dtObj
 
                         }
 
-                        //PENSIONI: le pensioni vengono gestite tutte insieme
-                        //          quindi le pensioni attive vengono annullate 
-                        //          e le pensioni da attivare vengono attivate
-                        //
-                        //cerca pensioni coniuge attivate e le annulla
-                        var lp_att = amf.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                        foreach (var p in lp_att)
-                        {
-                            p.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
-                            if (db.SaveChanges() <= 0)
-                            {
-                                throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (pensione coniuge).");
-                            }
+                        ////PENSIONI: le pensioni vengono gestite tutte insieme
+                        ////          quindi le pensioni attive vengono annullate 
+                        ////          e le pensioni da attivare vengono attivate
+                        ////
+                        ////cerca pensioni coniuge attivate e le annulla
+                        //var lp_att = amf.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                        //foreach (var p in lp_att)
+                        //{
+                        //    p.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                        //    if (db.SaveChanges() <= 0)
+                        //    {
+                        //        throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (pensione coniuge).");
+                        //    }
 
-                        }
+                        //}
                         //cerca pensioni coniuge da attivare e le mette attivate
                         var lp = amf.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
                         
