@@ -14,6 +14,22 @@
           <Property Name="DATAACCESSO" Type="date" Nullable="false" />
           <Property Name="GUID" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="ADF_C">
+          <Key>
+            <PropertyRef Name="IDALTRIDATIFAM" />
+            <PropertyRef Name="IDCONIUGE" />
+          </Key>
+          <Property Name="IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ADF_F">
+          <Key>
+            <PropertyRef Name="IDALTRIDATIFAM" />
+            <PropertyRef Name="IDFIGLI" />
+          </Key>
+          <Property Name="IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="ALIQUOTECONTRIBUTIVE">
           <Key>
             <PropertyRef Name="IDALIQCONTR" />
@@ -31,8 +47,7 @@
             <PropertyRef Name="IDALTRIDATIFAM" />
           </Key>
           <Property Name="IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDCONIUGE" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATANASCITA" Type="date" Nullable="false" />
           <Property Name="CAPNASCITA" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="COMUNENASCITA" Type="varchar2" MaxLength="60" Nullable="false" />
@@ -43,7 +58,6 @@
           <Property Name="COMUNERESIDENZA" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="PROVINCIARESIDENZA" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FK_IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="AMAB_DOC">
@@ -518,18 +532,19 @@
           </Key>
           <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTRASFINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDREGOLA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEDISAGIO" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="COEFFICENTERIDUZIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="MAGGIORAZIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="MAGGIORAZIONEFIGLI" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALERIDUZIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALEMAGCONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALEMAGFIGLI" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="INDENNITAPRIMOSEGRETARIO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DAL" Type="date" Nullable="false" />
           <Property Name="AL" Type="date" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="FK_IDELABIND" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="ELABINDSISTEMAZIONE">
           <Key>
@@ -561,13 +576,13 @@
           </Key>
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDREGOLA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEDISAGIO" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="COEFFICENTERIDUZIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="MAGGIORAZIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="MAGGIORAZIONEFIGLI" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALERIDUZIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALEMAGCONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALEMAGFIGLI" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="INDENNITAPRIMOSEGRETARIO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="CANONELOCAZIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="TASSOFISSORAGGUAGLIO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCMAB" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -593,6 +608,14 @@
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMAB_ALIQ">
+          <Key>
+            <PropertyRef Name="IDALIQCONTR" />
+            <PropertyRef Name="IDELABMAB" />
+          </Key>
+          <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="EMAILSECONDARIEDIP">
           <Key>
@@ -740,6 +763,14 @@
           </Key>
           <Property Name="IDINDENNITABASE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRIDUZIONI" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IND_ALIQ">
+          <Key>
+            <PropertyRef Name="IDALIQCONTR" />
+            <PropertyRef Name="IDELABIND" />
+          </Key>
+          <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="IND_COEFFICENTESEDE">
           <Key>
@@ -1633,6 +1664,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_AC_IA">
+          <End Role="ALIQUOTECONTRIBUTIVE" Type="Self.ALIQUOTECONTRIBUTIVE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IND_ALIQ" Type="Self.IND_ALIQ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALIQUOTECONTRIBUTIVE">
+              <PropertyRef Name="IDALIQCONTR" />
+            </Principal>
+            <Dependent Role="IND_ALIQ">
+              <PropertyRef Name="IDALIQCONTR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_AC_LA">
           <End Role="ATTIVITACRUD" Type="Self.ATTIVITACRUD" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1673,17 +1718,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_ADF_ADF">
-          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="0..1">
+        <Association Name="R_ADF_ADFC">
+          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ALTRIDATIFAM1" Type="Self.ALTRIDATIFAM" Multiplicity="*" />
+          <End Role="ADF_C" Type="Self.ADF_C" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ALTRIDATIFAM">
               <PropertyRef Name="IDALTRIDATIFAM" />
             </Principal>
-            <Dependent Role="ALTRIDATIFAM1">
-              <PropertyRef Name="FK_IDALTRIDATIFAM" />
+            <Dependent Role="ADF_C">
+              <PropertyRef Name="IDALTRIDATIFAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ADF_ADFF">
+          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ADF_F" Type="Self.ADF_F" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALTRIDATIFAM">
+              <PropertyRef Name="IDALTRIDATIFAM" />
+            </Principal>
+            <Dependent Role="ADF_F">
+              <PropertyRef Name="IDALTRIDATIFAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ALIQ_EMABALIQ">
+          <End Role="ALIQUOTECONTRIBUTIVE" Type="Self.ALIQUOTECONTRIBUTIVE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EMAB_ALIQ" Type="Self.EMAB_ALIQ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALIQUOTECONTRIBUTIVE">
+              <PropertyRef Name="IDALIQCONTR" />
+            </Principal>
+            <Dependent Role="EMAB_ALIQ">
+              <PropertyRef Name="IDALIQCONTR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2107,16 +2180,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_C_ADF">
-          <End Role="CONIUGE" Type="Self.CONIUGE" Multiplicity="0..1">
+        <Association Name="R_C_ADFC">
+          <End Role="CONIUGE" Type="Self.CONIUGE" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="*" />
+          <End Role="ADF_C" Type="Self.ADF_C" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CONIUGE">
               <PropertyRef Name="IDCONIUGE" />
             </Principal>
-            <Dependent Role="ALTRIDATIFAM">
+            <Dependent Role="ADF_C">
               <PropertyRef Name="IDCONIUGE" />
             </Dependent>
           </ReferentialConstraint>
@@ -2709,6 +2782,48 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_EI_EI">
+          <End Role="ELABINDENNITA" Type="Self.ELABINDENNITA" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABINDENNITA1" Type="Self.ELABINDENNITA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABINDENNITA">
+              <PropertyRef Name="IDELABIND" />
+            </Principal>
+            <Dependent Role="ELABINDENNITA1">
+              <PropertyRef Name="FK_IDELABIND" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_EI_IA">
+          <End Role="ELABINDENNITA" Type="Self.ELABINDENNITA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IND_ALIQ" Type="Self.IND_ALIQ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABINDENNITA">
+              <PropertyRef Name="IDELABIND" />
+            </Principal>
+            <Dependent Role="IND_ALIQ">
+              <PropertyRef Name="IDELABIND" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_EI_T">
+          <End Role="ELABINDENNITA" Type="Self.ELABINDENNITA" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABINDENNITA">
+              <PropertyRef Name="IDELABIND" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDELABIND" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_EIS_EIS">
           <End Role="ELABINDSISTEMAZIONE" Type="Self.ELABINDSISTEMAZIONE" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2779,16 +2894,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_F_ADF">
-          <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="0..1">
+        <Association Name="R_EMAB_EMABALIQ">
+          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="*" />
+          <End Role="EMAB_ALIQ" Type="Self.EMAB_ALIQ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABMAB">
+              <PropertyRef Name="IDELABMAB" />
+            </Principal>
+            <Dependent Role="EMAB_ALIQ">
+              <PropertyRef Name="IDELABMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_EMAB_T">
+          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABMAB">
+              <PropertyRef Name="IDELABMAB" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDELABMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_F_ADFF">
+          <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ADF_F" Type="Self.ADF_F" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FIGLI">
               <PropertyRef Name="IDFIGLI" />
             </Principal>
-            <Dependent Role="ALTRIDATIFAM">
+            <Dependent Role="ADF_F">
               <PropertyRef Name="IDFIGLI" />
             </Dependent>
           </ReferentialConstraint>
@@ -3813,34 +3956,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_RC_EI">
-          <End Role="REGOLECALCOLO" Type="Self.REGOLECALCOLO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELABINDENNITA" Type="Self.ELABINDENNITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="REGOLECALCOLO">
-              <PropertyRef Name="IDREGOLA" />
-            </Principal>
-            <Dependent Role="ELABINDENNITA">
-              <PropertyRef Name="IDREGOLA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_RC_EMAB">
-          <End Role="REGOLECALCOLO" Type="Self.REGOLECALCOLO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="REGOLECALCOLO">
-              <PropertyRef Name="IDREGOLA" />
-            </Principal>
-            <Dependent Role="ELABMAB">
-              <PropertyRef Name="IDREGOLA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_RC_TRC">
           <End Role="REGOLECALCOLO" Type="Self.REGOLECALCOLO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3908,20 +4023,6 @@
             </Principal>
             <Dependent Role="UTENTIAUTORIZZATI">
               <PropertyRef Name="IDRUOLOUTENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_SR_ADF">
-          <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="STATORECORD">
-              <PropertyRef Name="IDSTATORECORD" />
-            </Principal>
-            <Dependent Role="ALTRIDATIFAM">
-              <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4947,6 +5048,8 @@
         </Association>
         <EntityContainer Name="DBISEStoreContainer">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ADF_C" EntityType="Self.ADF_C" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ADF_F" EntityType="Self.ADF_F" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="Self.ALTRIDATIFAM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="AMAB_DOC" EntityType="Self.AMAB_DOC" Schema="ISESIM" store:Type="Tables" />
@@ -4997,6 +5100,7 @@
           <EntitySet Name="ELABINDSISTEMAZIONE" EntityType="Self.ELABINDSISTEMAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABMAB" EntityType="Self.ELABMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABTRASPEFFETTI" EntityType="Self.ELABTRASPEFFETTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="EMAB_ALIQ" EntityType="Self.EMAB_ALIQ" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="EMAILSECONDARIEDIP" EntityType="Self.EMAILSECONDARIEDIP" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="FASCIA_KM" EntityType="Self.FASCIA_KM" Schema="ISESIM" store:Type="Tables" />
@@ -5013,6 +5117,7 @@
           <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="GRUPPO_FKM" EntityType="Self.GRUPPO_FKM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="IB_R" EntityType="Self.IB_R" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="IND_ALIQ" EntityType="Self.IND_ALIQ" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="IND_COEFFICENTESEDE" EntityType="Self.IND_COEFFICENTESEDE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="INDENNITA_INDENNITABASE" EntityType="Self.INDENNITA_INDENNITABASE" Schema="ISESIM" store:Type="Tables" />
@@ -5113,6 +5218,10 @@
             <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
             <End Role="RINUNCIAANTICIPI" EntitySet="RINUNCIAANTICIPI" />
           </AssociationSet>
+          <AssociationSet Name="R_AC_IA" Association="Self.R_AC_IA">
+            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+            <End Role="IND_ALIQ" EntitySet="IND_ALIQ" />
+          </AssociationSet>
           <AssociationSet Name="R_AC_LA" Association="Self.R_AC_LA">
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
@@ -5125,9 +5234,17 @@
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
             <End Role="ATT_ADF" EntitySet="ATT_ADF" />
           </AssociationSet>
-          <AssociationSet Name="R_ADF_ADF" Association="Self.R_ADF_ADF">
+          <AssociationSet Name="R_ADF_ADFC" Association="Self.R_ADF_ADFC">
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
-            <End Role="ALTRIDATIFAM1" EntitySet="ALTRIDATIFAM" />
+            <End Role="ADF_C" EntitySet="ADF_C" />
+          </AssociationSet>
+          <AssociationSet Name="R_ADF_ADFF" Association="Self.R_ADF_ADFF">
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="ADF_F" EntitySet="ADF_F" />
+          </AssociationSet>
+          <AssociationSet Name="R_ALIQ_EMABALIQ" Association="Self.R_ALIQ_EMABALIQ">
+            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+            <End Role="EMAB_ALIQ" EntitySet="EMAB_ALIQ" />
           </AssociationSet>
           <AssociationSet Name="R_AMAB_AMADOC" Association="Self.R_AMAB_AMADOC">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
@@ -5249,9 +5366,9 @@
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
             <End Role="DOCVC" EntitySet="DOCVC" />
           </AssociationSet>
-          <AssociationSet Name="R_C_ADF" Association="Self.R_C_ADF">
+          <AssociationSet Name="R_C_ADFC" Association="Self.R_C_ADFC">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
-            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="ADF_C" EntitySet="ADF_C" />
           </AssociationSet>
           <AssociationSet Name="R_C_AMFC" Association="Self.R_C_AMFC">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -5421,6 +5538,18 @@
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
+          <AssociationSet Name="R_EI_EI" Association="Self.R_EI_EI">
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
+            <End Role="ELABINDENNITA1" EntitySet="ELABINDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="R_EI_IA" Association="Self.R_EI_IA">
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
+            <End Role="IND_ALIQ" EntitySet="IND_ALIQ" />
+          </AssociationSet>
+          <AssociationSet Name="R_EI_T" Association="Self.R_EI_T">
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
           <AssociationSet Name="R_EIS_EIS" Association="Self.R_EIS_EIS">
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
             <End Role="ELABINDSISTEMAZIONE1" EntitySet="ELABINDSISTEMAZIONE" />
@@ -5441,9 +5570,17 @@
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="ELABMAB1" EntitySet="ELABMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_F_ADF" Association="Self.R_F_ADF">
+          <AssociationSet Name="R_EMAB_EMABALIQ" Association="Self.R_EMAB_EMABALIQ">
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+            <End Role="EMAB_ALIQ" EntitySet="EMAB_ALIQ" />
+          </AssociationSet>
+          <AssociationSet Name="R_EMAB_T" Association="Self.R_EMAB_T">
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_F_ADFF" Association="Self.R_F_ADFF">
             <End Role="FIGLI" EntitySet="FIGLI" />
-            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="ADF_F" EntitySet="ADF_F" />
           </AssociationSet>
           <AssociationSet Name="R_F_AMFF" Association="Self.R_F_AMFF">
             <End Role="FIGLI" EntitySet="FIGLI" />
@@ -5737,14 +5874,6 @@
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
             <End Role="RIC_PFKM" EntitySet="RIC_PFKM" />
           </AssociationSet>
-          <AssociationSet Name="R_RC_EI" Association="Self.R_RC_EI">
-            <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
-            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_RC_EMAB" Association="Self.R_RC_EMAB">
-            <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
-            <End Role="ELABMAB" EntitySet="ELABMAB" />
-          </AssociationSet>
           <AssociationSet Name="R_RC_TRC" Association="Self.R_RC_TRC">
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="T_RC" EntitySet="T_RC" />
@@ -5764,10 +5893,6 @@
           <AssociationSet Name="R_RU_UA" Association="Self.R_RU_UA">
             <End Role="RUOLOACCESSO" EntitySet="RUOLOACCESSO" />
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
-          </AssociationSet>
-          <AssociationSet Name="R_SR_ADF" Association="Self.R_SR_ADF">
-            <End Role="STATORECORD" EntitySet="STATORECORD" />
-            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
           </AssociationSet>
           <AssociationSet Name="R_SR_C" Association="Self.R_SR_C">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
@@ -6189,22 +6314,6 @@
             <End Role="TIPOALIQUOTECONTRIBUTIVE" EntitySet="TIPOALIQUOTECONTRIBUTIVE" />
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
           </AssociationSet>
-          <AssociationSet Name="R_ADF_ADF" Association="DBISE.R_ADF_ADF">
-            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
-            <End Role="ALTRIDATIFAM1" EntitySet="ALTRIDATIFAM" />
-          </AssociationSet>
-          <AssociationSet Name="R_C_ADF" Association="DBISE.R_C_ADF">
-            <End Role="CONIUGE" EntitySet="CONIUGE" />
-            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
-          </AssociationSet>
-          <AssociationSet Name="R_F_ADF" Association="DBISE.R_F_ADF">
-            <End Role="FIGLI" EntitySet="FIGLI" />
-            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
-          </AssociationSet>
-          <AssociationSet Name="R_SR_ADF" Association="DBISE.R_SR_ADF">
-            <End Role="STATORECORD" EntitySet="STATORECORD" />
-            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
-          </AssociationSet>
           <AssociationSet Name="R_AA_A" Association="DBISE.R_AA_A">
             <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
             <End Role="ANTICIPI" EntitySet="ANTICIPI" />
@@ -6457,12 +6566,16 @@
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
+          <AssociationSet Name="R_EI_EI" Association="DBISE.R_EI_EI">
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
+            <End Role="ELABINDENNITA1" EntitySet="ELABINDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="R_EI_T" Association="DBISE.R_EI_T">
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
           <AssociationSet Name="R_I_EI" Association="DBISE.R_I_EI">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_RC_EI" Association="DBISE.R_RC_EI">
-            <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
           </AssociationSet>
           <AssociationSet Name="R_EIS_EIS" Association="DBISE.R_EIS_EIS">
@@ -6485,12 +6598,12 @@
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="ELABMAB1" EntitySet="ELABMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_EMAB_T" Association="DBISE.R_EMAB_T">
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
           <AssociationSet Name="R_MAB_EMAB" Association="DBISE.R_MAB_EMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="ELABMAB" EntitySet="ELABMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_RC_EMAB" Association="DBISE.R_RC_EMAB">
-            <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
           </AssociationSet>
           <AssociationSet Name="R_TEP_ETE" Association="DBISE.R_TEP_ETE">
@@ -6777,6 +6890,14 @@
             <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
             <End Role="VARIAZIONIMAB1" EntitySet="VARIAZIONIMAB" />
           </AssociationSet>
+          <AssociationSet Name="ADF_C" Association="DBISE.ADF_C">
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="CONIUGE" EntitySet="CONIUGE" />
+          </AssociationSet>
+          <AssociationSet Name="ADF_F" Association="DBISE.ADF_F">
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="FIGLI" EntitySet="FIGLI" />
+          </AssociationSet>
           <AssociationSet Name="AMAB_DOC" Association="DBISE.AMAB_DOC">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -6853,6 +6974,10 @@
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
+          <AssociationSet Name="EMAB_ALIQ" Association="DBISE.EMAB_ALIQ">
+            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+          </AssociationSet>
           <AssociationSet Name="F_IPS" Association="DBISE.F_IPS">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
@@ -6872,6 +6997,10 @@
           <AssociationSet Name="IB_R" Association="DBISE.IB_R">
             <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
+          </AssociationSet>
+          <AssociationSet Name="IND_ALIQ" Association="DBISE.IND_ALIQ">
+            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
           </AssociationSet>
           <AssociationSet Name="IND_COEFFICENTESEDE" Association="DBISE.IND_COEFFICENTESEDE">
             <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
@@ -6980,6 +7109,8 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TIPOALIQUOTECONTRIBUTIVE" Relationship="DBISE.R_TC_AC" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="TIPOALIQUOTECONTRIBUTIVE" />
+          <NavigationProperty Name="ELABMAB" Relationship="DBISE.EMAB_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABMAB" />
+          <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.IND_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.SIST_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABINDSISTEMAZIONE" />
         </EntityType>
         <EntityType Name="ALTRIDATIFAM">
@@ -6987,8 +7118,7 @@
             <PropertyRef Name="IDALTRIDATIFAM" />
           </Key>
           <Property Name="IDALTRIDATIFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDCONIUGE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDFIGLI" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATANASCITA" Type="DateTime" Nullable="false" />
           <Property Name="CAPNASCITA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="COMUNENASCITA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
@@ -6999,13 +7129,9 @@
           <Property Name="COMUNERESIDENZA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="PROVINCIARESIDENZA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FK_IDALTRIDATIFAM" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="ALTRIDATIFAM1" Relationship="DBISE.R_ADF_ADF" FromRole="ALTRIDATIFAM" ToRole="ALTRIDATIFAM1" />
-          <NavigationProperty Name="ALTRIDATIFAM2" Relationship="DBISE.R_ADF_ADF" FromRole="ALTRIDATIFAM1" ToRole="ALTRIDATIFAM" />
-          <NavigationProperty Name="CONIUGE" Relationship="DBISE.R_C_ADF" FromRole="ALTRIDATIFAM" ToRole="CONIUGE" />
-          <NavigationProperty Name="FIGLI" Relationship="DBISE.R_F_ADF" FromRole="ALTRIDATIFAM" ToRole="FIGLI" />
-          <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_ADF" FromRole="ALTRIDATIFAM" ToRole="STATORECORD" />
+          <NavigationProperty Name="CONIUGE" Relationship="DBISE.ADF_C" FromRole="ALTRIDATIFAM" ToRole="CONIUGE" />
+          <NavigationProperty Name="FIGLI" Relationship="DBISE.ADF_F" FromRole="ALTRIDATIFAM" ToRole="FIGLI" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISE.ATT_ADF" FromRole="ALTRIDATIFAM" ToRole="ATTIVAZIONIMAGFAM" />
         </EntityType>
         <EntityType Name="ANTICIPI">
@@ -7300,7 +7426,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDCONIUGE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISE.R_C_ADF" FromRole="CONIUGE" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="CONIUGE1" Relationship="DBISE.R_C_C" FromRole="CONIUGE" ToRole="CONIUGE1" />
           <NavigationProperty Name="CONIUGE2" Relationship="DBISE.R_C_C" FromRole="CONIUGE1" ToRole="CONIUGE" />
           <NavigationProperty Name="CONIUGEPASSAPORTO" Relationship="DBISE.R_C_CP" FromRole="CONIUGE" ToRole="CONIUGEPASSAPORTO" />
@@ -7308,6 +7433,7 @@
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_MF_C" FromRole="CONIUGE" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_C" FromRole="CONIUGE" ToRole="STATORECORD" />
           <NavigationProperty Name="TIPOLOGIACONIUGE" Relationship="DBISE.R_TC_C" FromRole="CONIUGE" ToRole="TIPOLOGIACONIUGE" />
+          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISE.ADF_C" FromRole="CONIUGE" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISE.AMF_C" FromRole="CONIUGE" ToRole="ATTIVAZIONIMAGFAM" />
           <NavigationProperty Name="PENSIONE" Relationship="DBISE.C_P" FromRole="CONIUGE" ToRole="PENSIONE" />
           <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="DBISE.C_PC" FromRole="CONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
@@ -7446,20 +7572,24 @@
           </Key>
           <Property Name="IDELABIND" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDREGOLA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="COEFFICENTERIDUZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="MAGGIORAZIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="MAGGIORAZIONEFIGLI" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALERIDUZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALEMAGCONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALEMAGFIGLI" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="INDENNITAPRIMOSEGRETARIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DAL" Type="DateTime" Nullable="false" />
           <Property Name="AL" Type="DateTime" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="FK_IDELABIND" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ELABINDENNITA1" Relationship="DBISE.R_EI_EI" FromRole="ELABINDENNITA" ToRole="ELABINDENNITA1" />
+          <NavigationProperty Name="ELABINDENNITA2" Relationship="DBISE.R_EI_EI" FromRole="ELABINDENNITA1" ToRole="ELABINDENNITA" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EI_T" FromRole="ELABINDENNITA" ToRole="TEORICI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_EI" FromRole="ELABINDENNITA" ToRole="INDENNITA" />
-          <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISE.R_RC_EI" FromRole="ELABINDENNITA" ToRole="REGOLECALCOLO" />
+          <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.IND_ALIQ" FromRole="ELABINDENNITA" ToRole="ALIQUOTECONTRIBUTIVE" />
         </EntityType>
         <EntityType Name="ELABINDSISTEMAZIONE">
           <Key>
@@ -7497,13 +7627,13 @@
           </Key>
           <Property Name="IDELABMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDREGOLA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="COEFFICENTERIDUZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="MAGGIORAZIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="MAGGIORAZIONEFIGLI" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALERIDUZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALEMAGCONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALEMAGFIGLI" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="INDENNITAPRIMOSEGRETARIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="CANONELOCAZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="TASSOFISSORAGGUAGLIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCMAB" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
@@ -7516,8 +7646,9 @@
           <Property Name="FK_IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABMAB1" Relationship="DBISE.R_EMAB_EMAB" FromRole="ELABMAB" ToRole="ELABMAB1" />
           <NavigationProperty Name="ELABMAB2" Relationship="DBISE.R_EMAB_EMAB" FromRole="ELABMAB1" ToRole="ELABMAB" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EMAB_T" FromRole="ELABMAB" ToRole="TEORICI" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAB_EMAB" FromRole="ELABMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISE.R_RC_EMAB" FromRole="ELABMAB" ToRole="REGOLECALCOLO" />
+          <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.EMAB_ALIQ" FromRole="ELABMAB" ToRole="ALIQUOTECONTRIBUTIVE" />
         </EntityType>
         <EntityType Name="ELABTRASPEFFETTI">
           <Key>
@@ -7588,7 +7719,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDFIGLI" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISE.R_F_ADF" FromRole="FIGLI" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="FIGLI1" Relationship="DBISE.R_F_F" FromRole="FIGLI" ToRole="FIGLI1" />
           <NavigationProperty Name="FIGLI2" Relationship="DBISE.R_F_F" FromRole="FIGLI1" ToRole="FIGLI" />
           <NavigationProperty Name="FIGLIPASSAPORTO" Relationship="DBISE.R_F_FP" FromRole="FIGLI" ToRole="FIGLIPASSAPORTO" />
@@ -7596,6 +7726,7 @@
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_MF_F" FromRole="FIGLI" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_F" FromRole="FIGLI" ToRole="STATORECORD" />
           <NavigationProperty Name="TIPOLOGIAFIGLIO" Relationship="DBISE.R_TF_F" FromRole="FIGLI" ToRole="TIPOLOGIAFIGLIO" />
+          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISE.ADF_F" FromRole="FIGLI" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISE.AMF_F" FromRole="FIGLI" ToRole="ATTIVAZIONIMAGFAM" />
           <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="DBISE.F_IPS" FromRole="FIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.FIGLI_DOC" FromRole="FIGLI" ToRole="DOCUMENTI" />
@@ -8076,8 +8207,6 @@
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_RC_EI" FromRole="REGOLECALCOLO" ToRole="ELABINDENNITA" />
-          <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_RC_EMAB" FromRole="REGOLECALCOLO" ToRole="ELABMAB" />
           <NavigationProperty Name="NORMACALCOLO" Relationship="DBISE.R_NC_RC" FromRole="REGOLECALCOLO" ToRole="NORMACALCOLO" />
           <NavigationProperty Name="TIPOREGOLACALCOLO" Relationship="DBISE.R_TRC_RC" FromRole="REGOLECALCOLO" ToRole="TIPOREGOLACALCOLO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.T_RC" FromRole="REGOLECALCOLO" ToRole="TRASFERIMENTO" />
@@ -8229,7 +8358,6 @@
           </Key>
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="STATO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISE.R_SR_ADF" FromRole="STATORECORD" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISE.RELATIONSHIP10" FromRole="STATORECORD" ToRole="CANONEMAB" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISE.R_SR_C" FromRole="STATORECORD" ToRole="CONIUGE" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.R_SR_D" FromRole="STATORECORD" ToRole="DOCUMENTI" />
@@ -8267,7 +8395,9 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="CONT_OA" Relationship="DBISE.R_T_COA" FromRole="TEORICI" ToRole="CONT_OA" />
+          <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_EI_T" FromRole="TEORICI" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
+          <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_EMAB_T" FromRole="TEORICI" ToRole="ELABMAB" />
           <NavigationProperty Name="FLUSSICEDOLINO" Relationship="DBISE.R_T_FC" FromRole="TEORICI" ToRole="FLUSSICEDOLINO" />
           <NavigationProperty Name="MESEANNOELABORAZIONE" Relationship="DBISE.R_MAE_T" FromRole="TEORICI" ToRole="MESEANNOELABORAZIONE" />
           <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISE.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
@@ -8611,62 +8741,6 @@
             </Principal>
             <Dependent Role="ALIQUOTECONTRIBUTIVE">
               <PropertyRef Name="IDTIPOCONTRIBUTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_ADF_ADF">
-          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALTRIDATIFAM">
-              <PropertyRef Name="IDALTRIDATIFAM" />
-            </Principal>
-            <Dependent Role="ALTRIDATIFAM1">
-              <PropertyRef Name="FK_IDALTRIDATIFAM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_C_ADF">
-          <End Type="DBISE.CONIUGE" Role="CONIUGE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CONIUGE">
-              <PropertyRef Name="IDCONIUGE" />
-            </Principal>
-            <Dependent Role="ALTRIDATIFAM">
-              <PropertyRef Name="IDCONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_F_ADF">
-          <End Type="DBISE.FIGLI" Role="FIGLI" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FIGLI">
-              <PropertyRef Name="IDFIGLI" />
-            </Principal>
-            <Dependent Role="ALTRIDATIFAM">
-              <PropertyRef Name="IDFIGLI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_SR_ADF">
-          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="STATORECORD">
-              <PropertyRef Name="IDSTATORECORD" />
-            </Principal>
-            <Dependent Role="ALTRIDATIFAM">
-              <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9548,6 +9622,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_EI_EI">
+          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABINDENNITA">
+              <PropertyRef Name="IDELABIND" />
+            </Principal>
+            <Dependent Role="ELABINDENNITA1">
+              <PropertyRef Name="FK_IDELABIND" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_EI_T">
+          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABINDENNITA">
+              <PropertyRef Name="IDELABIND" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDELABIND" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_I_EI">
           <End Type="DBISE.INDENNITA" Role="INDENNITA" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -9559,20 +9661,6 @@
             </Principal>
             <Dependent Role="ELABINDENNITA">
               <PropertyRef Name="IDTRASFINDENNITA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_RC_EI">
-          <End Type="DBISE.REGOLECALCOLO" Role="REGOLECALCOLO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="REGOLECALCOLO">
-              <PropertyRef Name="IDREGOLA" />
-            </Principal>
-            <Dependent Role="ELABINDENNITA">
-              <PropertyRef Name="IDREGOLA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9646,6 +9734,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_EMAB_T">
+          <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABMAB">
+              <PropertyRef Name="IDELABMAB" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDELABMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MAB_EMAB">
           <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -9657,20 +9759,6 @@
             </Principal>
             <Dependent Role="ELABMAB">
               <PropertyRef Name="IDMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_RC_EMAB">
-          <End Type="DBISE.REGOLECALCOLO" Role="REGOLECALCOLO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="REGOLECALCOLO">
-              <PropertyRef Name="IDREGOLA" />
-            </Principal>
-            <Dependent Role="ELABMAB">
-              <PropertyRef Name="IDREGOLA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10668,6 +10756,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="ADF_C">
+          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="*" />
+          <End Type="DBISE.CONIUGE" Role="CONIUGE" Multiplicity="*" />
+        </Association>
+        <Association Name="ADF_F">
+          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="*" />
+          <End Type="DBISE.FIGLI" Role="FIGLI" Multiplicity="*" />
+        </Association>
         <Association Name="AMAB_DOC">
           <End Type="DBISE.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="*" />
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
@@ -10744,6 +10840,10 @@
           <End Type="DBISE.ATTIVAZIONIVIAGGICONGEDO" Role="ATTIVAZIONIVIAGGICONGEDO" Multiplicity="*" />
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
         </Association>
+        <Association Name="EMAB_ALIQ">
+          <End Type="DBISE.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
+          <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="*" />
+        </Association>
         <Association Name="F_IPS">
           <End Type="DBISE.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISE.INDENNITAPRIMOSEGRETARIO" Role="INDENNITAPRIMOSEGRETARIO" Multiplicity="*" />
@@ -10763,6 +10863,10 @@
         <Association Name="IB_R">
           <End Type="DBISE.INDENNITABASE" Role="INDENNITABASE" Multiplicity="*" />
           <End Type="DBISE.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
+        </Association>
+        <Association Name="IND_ALIQ">
+          <End Type="DBISE.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
+          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA" Multiplicity="*" />
         </Association>
         <Association Name="IND_COEFFICENTESEDE">
           <End Type="DBISE.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
@@ -10881,7 +10985,6 @@
             <EntityTypeMapping TypeName="DBISE.ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="ALTRIDATIFAM">
                 <ScalarProperty Name="FK_IDALTRIDATIFAM" ColumnName="FK_IDALTRIDATIFAM" />
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="PROVINCIARESIDENZA" ColumnName="PROVINCIARESIDENZA" />
                 <ScalarProperty Name="COMUNERESIDENZA" ColumnName="COMUNERESIDENZA" />
@@ -10892,8 +10995,7 @@
                 <ScalarProperty Name="COMUNENASCITA" ColumnName="COMUNENASCITA" />
                 <ScalarProperty Name="CAPNASCITA" ColumnName="CAPNASCITA" />
                 <ScalarProperty Name="DATANASCITA" ColumnName="DATANASCITA" />
-                <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
-                <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDALTRIDATIFAM" ColumnName="IDALTRIDATIFAM" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -11237,18 +11339,19 @@
           <EntitySetMapping Name="ELABINDENNITA">
             <EntityTypeMapping TypeName="DBISE.ELABINDENNITA">
               <MappingFragment StoreEntitySet="ELABINDENNITA">
+                <ScalarProperty Name="FK_IDELABIND" ColumnName="FK_IDELABIND" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="AL" ColumnName="AL" />
                 <ScalarProperty Name="DAL" ColumnName="DAL" />
-                <ScalarProperty Name="MAGGIORAZIONEFIGLI" ColumnName="MAGGIORAZIONEFIGLI" />
-                <ScalarProperty Name="MAGGIORAZIONECONIUGE" ColumnName="MAGGIORAZIONECONIUGE" />
-                <ScalarProperty Name="COEFFICENTERIDUZIONE" ColumnName="COEFFICENTERIDUZIONE" />
+                <ScalarProperty Name="INDENNITAPRIMOSEGRETARIO" ColumnName="INDENNITAPRIMOSEGRETARIO" />
+                <ScalarProperty Name="PERCENTUALEMAGFIGLI" ColumnName="PERCENTUALEMAGFIGLI" />
+                <ScalarProperty Name="PERCENTUALEMAGCONIUGE" ColumnName="PERCENTUALEMAGCONIUGE" />
+                <ScalarProperty Name="PERCENTUALERIDUZIONE" ColumnName="PERCENTUALERIDUZIONE" />
                 <ScalarProperty Name="PERCENTUALEDISAGIO" ColumnName="PERCENTUALEDISAGIO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />
-                <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
                 <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
                 <ScalarProperty Name="IDELABIND" ColumnName="IDELABIND" />
               </MappingFragment>
@@ -11292,13 +11395,13 @@
                 <ScalarProperty Name="PERCMAB" ColumnName="PERCMAB" />
                 <ScalarProperty Name="TASSOFISSORAGGUAGLIO" ColumnName="TASSOFISSORAGGUAGLIO" />
                 <ScalarProperty Name="CANONELOCAZIONE" ColumnName="CANONELOCAZIONE" />
-                <ScalarProperty Name="MAGGIORAZIONEFIGLI" ColumnName="MAGGIORAZIONEFIGLI" />
-                <ScalarProperty Name="MAGGIORAZIONECONIUGE" ColumnName="MAGGIORAZIONECONIUGE" />
-                <ScalarProperty Name="COEFFICENTERIDUZIONE" ColumnName="COEFFICENTERIDUZIONE" />
+                <ScalarProperty Name="INDENNITAPRIMOSEGRETARIO" ColumnName="INDENNITAPRIMOSEGRETARIO" />
+                <ScalarProperty Name="PERCENTUALEMAGFIGLI" ColumnName="PERCENTUALEMAGFIGLI" />
+                <ScalarProperty Name="PERCENTUALEMAGCONIUGE" ColumnName="PERCENTUALEMAGCONIUGE" />
+                <ScalarProperty Name="PERCENTUALERIDUZIONE" ColumnName="PERCENTUALERIDUZIONE" />
                 <ScalarProperty Name="PERCENTUALEDISAGIO" ColumnName="PERCENTUALEDISAGIO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />
-                <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
               </MappingFragment>
@@ -12204,6 +12307,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="ADF_C" TypeName="DBISE.ADF_C" StoreEntitySet="ADF_C">
+            <EndProperty Name="CONIUGE">
+              <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
+            </EndProperty>
+            <EndProperty Name="ALTRIDATIFAM">
+              <ScalarProperty Name="IDALTRIDATIFAM" ColumnName="IDALTRIDATIFAM" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ADF_F" TypeName="DBISE.ADF_F" StoreEntitySet="ADF_F">
+            <EndProperty Name="FIGLI">
+              <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
+            </EndProperty>
+            <EndProperty Name="ALTRIDATIFAM">
+              <ScalarProperty Name="IDALTRIDATIFAM" ColumnName="IDALTRIDATIFAM" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="AMAB_DOC" TypeName="DBISE.AMAB_DOC" StoreEntitySet="AMAB_DOC">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -12356,6 +12475,14 @@
               <ScalarProperty Name="IDATTIVAZIONEVC" ColumnName="IDATTIVAZIONEVC" />
             </EndProperty>
           </AssociationSetMapping>
+          <AssociationSetMapping Name="EMAB_ALIQ" TypeName="DBISE.EMAB_ALIQ" StoreEntitySet="EMAB_ALIQ">
+            <EndProperty Name="ELABMAB">
+              <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
+            </EndProperty>
+            <EndProperty Name="ALIQUOTECONTRIBUTIVE">
+              <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="F_IPS" TypeName="DBISE.F_IPS" StoreEntitySet="F_IPS">
             <EndProperty Name="INDENNITAPRIMOSEGRETARIO">
               <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
@@ -12394,6 +12521,14 @@
             </EndProperty>
             <EndProperty Name="INDENNITABASE">
               <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="IND_ALIQ" TypeName="DBISE.IND_ALIQ" StoreEntitySet="IND_ALIQ">
+            <EndProperty Name="ELABINDENNITA">
+              <ScalarProperty Name="IDELABIND" ColumnName="IDELABIND" />
+            </EndProperty>
+            <EndProperty Name="ALIQUOTECONTRIBUTIVE">
+              <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="IND_COEFFICENTESEDE" TypeName="DBISE.IND_COEFFICENTESEDE" StoreEntitySet="IND_COEFFICENTESEDE">

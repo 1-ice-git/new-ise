@@ -19,8 +19,6 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-
-
         public void AssociaDocumentoConiuge(decimal idConiuge, decimal idDocumento, ModelDBISE db)
         {
             try
@@ -975,7 +973,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.FK_IDDOCUMENTO = dm.fk_iddocumento;
-                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione; 
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 f.DOCUMENTI.Add(d);
 
@@ -1009,7 +1007,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.FK_IDDOCUMENTO = dm.fk_iddocumento;
-                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione; 
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 c.DOCUMENTI.Add(d);
 
@@ -1044,7 +1042,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 d.FK_IDDOCUMENTO = dm.fk_iddocumento;
-                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione; 
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 pr.DOCUMENTI.Add(d);
 
@@ -1327,10 +1325,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                         bool modificabile = false;
-                        if (e.RICHIESTAATTIVAZIONE == false && 
-                            e.ATTIVAZIONEMAGFAM == false && 
-                            statoTrasf!=(decimal)EnumStatoTraferimento.Annullato && 
-                            statoTrasf!=(decimal)EnumStatoTraferimento.Terminato)
+                        if (e.RICHIESTAATTIVAZIONE == false &&
+                            e.ATTIVAZIONEMAGFAM == false &&
+                            statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                            statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
                         {
                             modificabile = true;
                             coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
@@ -1385,7 +1383,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
-                
+
                 //var lamf =
                 //    mf.ATTIVAZIONIPROVSCOLASTICHE.Where(
                 //        a => (a.NOTIFICARICHIESTA == true && a.ATTIVARICHIESTA == true) || a.ANNULLATO == false).OrderBy(a => a.IDPROVSCOLASTICHE);
@@ -1480,7 +1478,7 @@ namespace NewISE.Models.DBModel.dtObj
                             coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
                             coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
                         }
-                        
+
                         else if (e.NOTIFICARICHIESTA == true && e.ATTIVARICHIESTA == true &&
                             statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
                             statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
@@ -1501,9 +1499,9 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
                         }
-                    
 
-                    foreach (var doc in ld)
+
+                        foreach (var doc in ld)
                         {
                             var amf = new VariazioneDocumentiModel()
                             {
@@ -1591,10 +1589,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                             bool modificabile = false;
-                            if (e.RICHIESTAATTIVAZIONE == false && 
+                            if (e.RICHIESTAATTIVAZIONE == false &&
                                 e.ATTIVAZIONEMAGFAM == false &&
-                                statoTrasf!=(decimal)EnumStatoTraferimento.Annullato &&
-                                statoTrasf!=(decimal)EnumStatoTraferimento.Terminato)
+                                statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
                             {
                                 modificabile = true;
                                 coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
@@ -1778,12 +1776,12 @@ namespace NewISE.Models.DBModel.dtObj
                 var i = 1;
                 var coloretesto = "";
                 var coloresfondo = "";
-   
-                 var ld = ps.DOCUMENTI.Where(
-                                a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche && a.IDSTATORECORD != (decimal) EnumStatoRecord.Annullato) 
-                                .OrderByDescending(a => a.DATAINSERIMENTO);
 
-                            bool modificabile = false;
+                var ld = ps.DOCUMENTI.Where(
+                               a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                               .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                bool modificabile = false;
                 //if (ps.NOTIFICARICHIESTA == false &&
                 //    ps.ATTIVARICHIESTA == false &&
                 //    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
@@ -1841,29 +1839,29 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                 foreach (var doc in ld)
-                            {
-                                var amf = new VariazioneDocumentiModel()
-                                {
-                                    dataInserimento = doc.DATAINSERIMENTO,
-                                    estensione = doc.ESTENSIONE,
-                                    idDocumenti = doc.IDDOCUMENTO,
-                                    nomeDocumento = doc.NOMEDOCUMENTO,
-                                    Modificabile = modificabile,
-                                    IdAttivazione = ps.IDPROVSCOLASTICHE,
-                                    DataAggiornamento = ps.DATAAGGIORNAMENTO,
-                                    ColoreTesto = coloretesto,
-                                    ColoreSfondo = coloresfondo,
-                                    progressivo = i
-                                };
+                {
+                    var amf = new VariazioneDocumentiModel()
+                    {
+                        dataInserimento = doc.DATAINSERIMENTO,
+                        estensione = doc.ESTENSIONE,
+                        idDocumenti = doc.IDDOCUMENTO,
+                        nomeDocumento = doc.NOMEDOCUMENTO,
+                        Modificabile = modificabile,
+                        IdAttivazione = ps.IDPROVSCOLASTICHE,
+                        DataAggiornamento = ps.DATAAGGIORNAMENTO,
+                        ColoreTesto = coloretesto,
+                        ColoreSfondo = coloresfondo,
+                        progressivo = i
+                    };
 
-                                ldm.Add(amf);
-                            }
-                        
+                    ldm.Add(amf);
+                }
 
-                        i++;
-                   
 
-                
+                i++;
+
+
+
             }
             return ldm;
         }

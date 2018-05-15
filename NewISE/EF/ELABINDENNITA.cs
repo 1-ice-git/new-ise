@@ -14,22 +14,37 @@ namespace NewISE.EF
     
     public partial class ELABINDENNITA
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ELABINDENNITA()
+        {
+            this.ELABINDENNITA1 = new HashSet<ELABINDENNITA>();
+            this.TEORICI = new HashSet<TEORICI>();
+            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
+        }
+    
         public decimal IDELABIND { get; set; }
         public decimal IDTRASFINDENNITA { get; set; }
-        public decimal IDREGOLA { get; set; }
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal PERCENTUALEDISAGIO { get; set; }
-        public decimal COEFFICENTERIDUZIONE { get; set; }
-        public decimal MAGGIORAZIONECONIUGE { get; set; }
-        public decimal MAGGIORAZIONEFIGLI { get; set; }
+        public decimal PERCENTUALERIDUZIONE { get; set; }
+        public decimal PERCENTUALEMAGCONIUGE { get; set; }
+        public decimal PERCENTUALEMAGFIGLI { get; set; }
+        public decimal INDENNITAPRIMOSEGRETARIO { get; set; }
         public System.DateTime DAL { get; set; }
         public System.DateTime AL { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ELABORATO { get; set; }
         public bool ANNULLATO { get; set; }
+        public Nullable<decimal> FK_IDELABIND { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDENNITA> ELABINDENNITA1 { get; set; }
+        public virtual ELABINDENNITA ELABINDENNITA2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
-        public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
     }
 }

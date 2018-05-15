@@ -31,7 +31,9 @@ namespace NewISE.EF
         public decimal IDMESEANNOELAB { get; set; }
     
         public virtual CONT_OA CONT_OA { get; set; }
+        public virtual ELABINDENNITA ELABINDENNITA { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
+        public virtual ELABMAB ELABMAB { get; set; }
         public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
         public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }

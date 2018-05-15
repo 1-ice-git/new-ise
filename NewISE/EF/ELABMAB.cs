@@ -18,17 +18,19 @@ namespace NewISE.EF
         public ELABMAB()
         {
             this.ELABMAB1 = new HashSet<ELABMAB>();
+            this.TEORICI = new HashSet<TEORICI>();
+            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
         }
     
         public decimal IDELABMAB { get; set; }
         public decimal IDMAB { get; set; }
-        public decimal IDREGOLA { get; set; }
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal PERCENTUALEDISAGIO { get; set; }
-        public decimal COEFFICENTERIDUZIONE { get; set; }
-        public decimal MAGGIORAZIONECONIUGE { get; set; }
-        public decimal MAGGIORAZIONEFIGLI { get; set; }
+        public decimal PERCENTUALERIDUZIONE { get; set; }
+        public decimal PERCENTUALEMAGCONIUGE { get; set; }
+        public decimal PERCENTUALEMAGFIGLI { get; set; }
+        public decimal INDENNITAPRIMOSEGRETARIO { get; set; }
         public decimal CANONELOCAZIONE { get; set; }
         public decimal TASSOFISSORAGGUAGLIO { get; set; }
         public decimal PERCMAB { get; set; }
@@ -43,7 +45,10 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABMAB> ELABMAB1 { get; set; }
         public virtual ELABMAB ELABMAB2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
-        public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
     }
 }
