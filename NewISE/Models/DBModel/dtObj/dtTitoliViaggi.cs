@@ -305,7 +305,6 @@ namespace NewISE.Models.DBModel.dtObj
                     {
 
                         idAltriDatiFam = adfc.IDALTRIDATIFAM,
-                        idConiuge = adfc.IDCONIUGE.Value,
                         nazionalita = adfc.NAZIONALITA,
                         indirizzoResidenza = adfc.INDIRIZZORESIDENZA,
                         capResidenza = adfc.CAPRESIDENZA,
@@ -341,7 +340,6 @@ namespace NewISE.Models.DBModel.dtObj
                         capResidenza = adff.CAPRESIDENZA,
                         comuneResidenza = adff.COMUNERESIDENZA,
                         idAltriDatiFam = adff.IDALTRIDATIFAM,
-                        idFigli = (decimal)adff.IDFIGLI,
                         indirizzoResidenza = adff.INDIRIZZORESIDENZA,
                         nazionalita = adff.NAZIONALITA,
                         provinciaResidenza = adff.PROVINCIARESIDENZA,

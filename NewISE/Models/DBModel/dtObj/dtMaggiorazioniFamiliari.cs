@@ -916,7 +916,6 @@ namespace NewISE.Models.DBModel.dtObj
                                                     ///Creo una nuova riga di altri dati familiari identica alla vechia riga.
                                                     ALTRIDATIFAM adfNew = new ALTRIDATIFAM()
                                                     {
-                                                        IDCONIUGE = adfOld.IDCONIUGE,
                                                         DATANASCITA = adfOld.DATANASCITA,
                                                         CAPNASCITA = adfOld.CAPNASCITA,
                                                         COMUNENASCITA = adfOld.COMUNENASCITA,
@@ -1101,7 +1100,6 @@ namespace NewISE.Models.DBModel.dtObj
                                                     ///Creo una nuova riga di altri dati familiari identica alla vechia riga.
                                                     ALTRIDATIFAM adfNew = new ALTRIDATIFAM()
                                                     {
-                                                        IDCONIUGE = adfOld.IDCONIUGE,
                                                         DATANASCITA = adfOld.DATANASCITA,
                                                         CAPNASCITA = adfOld.CAPNASCITA,
                                                         COMUNENASCITA = adfOld.COMUNENASCITA,

@@ -200,12 +200,11 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var c = adf.CONIUGE;
 
-                        if (c?.IDCONIUGE > 0)
+                        if (c?.Any()??false)
                         {
                             adfm = new AltriDatiFamConiugeModel()
                             {
                                 idAltriDatiFam = adf.IDALTRIDATIFAM,
-                                idConiuge = adf.IDCONIUGE.Value,
                                 nazionalita = adf.NAZIONALITA,
                                 indirizzoResidenza = adf.INDIRIZZORESIDENZA,
                                 capResidenza = adf.CAPRESIDENZA,
@@ -214,20 +213,20 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataAggiornamento = adf.DATAAGGIORNAMENTO,
                                 idStatoRecord = adf.IDSTATORECORD,
                                 FK_idAltriDatiFam = adf.FK_IDALTRIDATIFAM,
-                                Coniuge = new ConiugeModel()
-                                {
-                                    idConiuge = c.IDCONIUGE,
-                                    idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                                    idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                                    nome = c.NOME,
-                                    cognome = c.COGNOME,
-                                    codiceFiscale = c.CODICEFISCALE,
-                                    dataInizio = c.DATAINIZIOVALIDITA,
-                                    dataFine = c.DATAFINEVALIDITA,
-                                    dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                    idStatoRecord = c.IDSTATORECORD,
-                                    FK_idConiuge = c.FK_IDCONIUGE
-                                }
+                                //Coniuge = new ConiugeModel()
+                                //{
+                                //    //idConiuge = c.IDCONIUGE,
+                                //    idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                                //    idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                                //    nome = c.NOME,
+                                //    cognome = c.COGNOME,
+                                //    codiceFiscale = c.CODICEFISCALE,
+                                //    dataInizio = c.DATAINIZIOVALIDITA,
+                                //    dataFine = c.DATAFINEVALIDITA,
+                                //    dataAggiornamento = c.DATAAGGIORNAMENTO,
+                                //    idStatoRecord = c.IDSTATORECORD,
+                                //    FK_idConiuge = c.FK_IDCONIUGE
+                                //}
                             };
 
 
@@ -304,7 +303,6 @@ namespace NewISE.Models.DBModel.dtObj
                             adfm = new AltriDatiFamFiglioModel()
                             {
                                 idAltriDatiFam = adf.IDALTRIDATIFAM,
-                                idFigli = adf.IDFIGLI.Value,
                                 dataNascita = adf.DATANASCITA,
                                 capNascita = adf.CAPNASCITA,
                                 comuneNascita = adf.COMUNENASCITA,
@@ -362,7 +360,6 @@ namespace NewISE.Models.DBModel.dtObj
                             adfm = new AltriDatiFamConiugeModel()
                             {
                                 idAltriDatiFam = adf.IDALTRIDATIFAM,
-                                idConiuge = adf.IDCONIUGE.Value,
                                 nazionalita = adf.NAZIONALITA,
                                 indirizzoResidenza = adf.INDIRIZZORESIDENZA,
                                 capResidenza = adf.CAPRESIDENZA,
@@ -407,10 +404,13 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             decimal idTrasf = 0;
 
-                            if (adf.IDCONIUGE != null && adf.IDCONIUGE > 0)
-                            {
-                                idTrasf = adf.CONIUGE.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
-                            }
+                            //if (adf.IDCONIUGE != null && adf.IDCONIUGE > 0)
+                            //{
+                            var c = adf.CONIUGE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                        .OrderByDescending(a => a.IDCONIUGE).First();
+
+                                idTrasf = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                            //}
 
 
                             Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica altri dati familiari.", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
@@ -418,7 +418,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                             var adfNew = new ALTRIDATIFAM
                             {
-                                IDCONIUGE = adfm.idConiuge,
                                 DATANASCITA = DateTime.MinValue,
                                 CAPNASCITA = "VUOTO",
                                 COMUNENASCITA = "VUOTO",
@@ -433,7 +432,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 FK_IDALTRIDATIFAM = adfm.FK_idAltriDatiFam
                             };
 
-                            db.ALTRIDATIFAM.Add(adfNew);
+                            c.ALTRIDATIFAM.Add(adfNew);
 
                             if (db.SaveChanges() > 0)
                             {
@@ -499,11 +498,14 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             decimal idTrasf = 0;
 
-                            if (adf.IDFIGLI != null && adf.IDFIGLI > 0)
-                            {
-                                idTrasf = adf.FIGLI.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                            //if (adf.IDFIGLI != null && adf.IDFIGLI > 0)
+                            //{
+                            var f = adf.FIGLI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                .OrderByDescending(a => a.IDFIGLI).First();
 
-                            }
+                                idTrasf = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                            //}
 
                             Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica altri dati familiari per il figlio.", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
 
@@ -511,7 +513,6 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 var adfNew = new ALTRIDATIFAM
                                 {
-                                    IDFIGLI = adfm.idFigli,
                                     DATANASCITA = adfm.dataNascita.Value,
                                     CAPNASCITA = adfm.capNascita,
                                     COMUNENASCITA = adfm.comuneNascita,
@@ -582,7 +583,6 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var adf = new ALTRIDATIFAM
                     {
-                        IDFIGLI = adfm.idFigli,
                         DATANASCITA = adfm.dataNascita.Value,
                         CAPNASCITA = adfm.capNascita,
                         COMUNENASCITA = adfm.comuneNascita,
@@ -639,7 +639,6 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var adf = new ALTRIDATIFAM
                     {
-                        IDCONIUGE = adfm.idConiuge,
                         DATANASCITA = DateTime.MinValue,
                         CAPNASCITA = "00000",
                         COMUNENASCITA = "VUOTO",
@@ -693,7 +692,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             var adf = new ALTRIDATIFAM
             {
-                IDCONIUGE = adfm.idConiuge,
                 DATANASCITA = DateTime.MinValue,
                 CAPNASCITA = "00000",
                 COMUNENASCITA = "VUOTO",
