@@ -3,9 +3,9 @@
 
 @{
     //bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-    
+
     EnumChiamante enChiamante = EnumChiamante.ProvvidenzeScolastiche;
-    string DescrizionePS= Convert.ToString(ViewData["DescrizionePS"]);
+    string DescrizionePS = Convert.ToString(ViewData["DescrizionePS"]);
     decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
     decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasfProvScolastiche"]);
 
@@ -46,16 +46,16 @@
                 </td>
                 <td class="text-center">
                     @*@if (solaLettura)
-                    {
-                        //<button class="btn btn-link disabled" disabled="disabled">Elimina</button>
-                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" />
-                    }
-                    else
-                    {
-                        <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
-                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
-                        </a>
-                    }*@
+                        {
+                            //<button class="btn btn-link disabled" disabled="disabled">Elimina</button>
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" />
+                        }
+                        else
+                        {
+                            <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                            </a>
+                        }*@
 
                     <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
                         <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
@@ -194,7 +194,7 @@
     }
 
     $("#ModalEliminaFormularioPS").on("hidden.bs.modal", function () {
-        debugger;
+        //debugger;
         AttivitaProvvidenze();
     });
 </script>

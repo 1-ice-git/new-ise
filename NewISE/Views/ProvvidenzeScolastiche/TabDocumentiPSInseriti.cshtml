@@ -30,31 +30,31 @@
         @foreach (var item in Model)
         {
             <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.nomeDocumento)
-                    </td>
-               
-               
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.estensione)
-                    </td>
-               
-               
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.dataInserimento)
-                    </td>
-               
+                <td>
+                    @Html.DisplayFor(modelItem => item.nomeDocumento)
+                </td>
+
+
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.estensione)
+                </td>
+
+
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.dataInserimento)
+                </td>
+
 
                 <td class="text-center">
                     <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare @DescrizionePS." /></a>
                 </td>
 
                 <td class="text-center">
-                    
-                        <a href="#" onclick="EliminaDocumentoPS(@item.idDocumenti)" id="linkEliminaDocumentoPS">
-                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina @DescrizionePS" />
-                        </a>
-                    
+
+                    <a href="#" onclick="EliminaDocumentoPS(@item.idDocumenti)" id="linkEliminaDocumentoPS">
+                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina @DescrizionePS" />
+                    </a>
+
                 </td>
             </tr>
         }
@@ -168,7 +168,7 @@
 
 
     $("#ModalEliminaDocumentoPS").on("hidden.bs.modal", function () {
-        debugger;
+        //debugger;
         AttivitaProvvidenze();
     });
 </script>
