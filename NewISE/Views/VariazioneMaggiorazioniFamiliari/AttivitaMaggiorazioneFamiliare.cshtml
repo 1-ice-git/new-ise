@@ -32,7 +32,7 @@
         <div style="padding-right: 10px;padding-left:15px">
             <hr />
             <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
-                <button class="btn btn-default btn-sm  disabled"  disabled id="btNotificaRichiestaMagFam_Var" onclick="ModelNotificaRichiesta();">
+                <button class="btn btn-default btn-sm  disabled" disabled id="btNotificaRichiestaMagFam_Var" onclick="ModelNotificaRichiesta();">
                     <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                     Notifica richiesta
                 </button>
@@ -326,13 +326,11 @@
 
 
                     //Se risulta in lavorazione abilito la il pulsante notifica
-                    if (inLavorazione&&checkNotifica)
-                    {
+                    if (inLavorazione && checkNotifica) {
                         $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
                         $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
                     }
-                    else
-                    {
+                    else {
                         /////Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione
                         //if (rinuncia && richiesta)
                         //{
@@ -347,52 +345,45 @@
                         //}
                         //else
                         //{
-                            if (richiesta)
-                            {
-                                $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                                $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
+                        if (richiesta) {
+                            $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                                if (attivazione)
-                                {
-                                    $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                                    $("#btAttivaMagFam_Var").addClass("disabled");
-                                }
-                                else
-                                {
-                                    if (admin)
-                                    {
-                                        $("#btAttivaMagFam_Var").removeAttr("disabled");
-                                        $("#btAttivaMagFam_Var").removeClass("disabled");
-
-                                        $("#btAnnullaMagFam_Var").removeAttr("disabled");
-                                        $("#btAnnullaMagFam_Var").removeClass("disabled");
-                                    }
-                                    else
-                                    {
-                                        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                                        $("#btAttivaMagFam_Var").addClass("disabled");
-
-                                        $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
-                                        $("#btAnnullaMagFam_Var").addClass("disabled");
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                                $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
-
+                            if (attivazione) {
                                 $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                 $("#btAttivaMagFam_Var").addClass("disabled");
-
-                                $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
-                                $("#btAnnullaMagFam_Var").addClass("disabled");
                             }
+                            else {
+                                if (admin) {
+                                    $("#btAttivaMagFam_Var").removeAttr("disabled");
+                                    $("#btAttivaMagFam_Var").removeClass("disabled");
+
+                                    $("#btAnnullaMagFam_Var").removeAttr("disabled");
+                                    $("#btAnnullaMagFam_Var").removeClass("disabled");
+                                }
+                                else {
+                                    $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                                    $("#btAttivaMagFam_Var").addClass("disabled");
+
+                                    $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                                    $("#btAnnullaMagFam_Var").addClass("disabled");
+                                }
+                            }
+                        }
+                        else {
+                            $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
+
+                            $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                            $("#btAttivaMagFam_Var").addClass("disabled");
+
+                            $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                            $("#btAnnullaMagFam_Var").addClass("disabled");
+                        }
                         //}
                     }
                     //se il trasferimento è terminato o annullato disabilito i pulsanti
-                    if(trasfSolaLettura)
-                    {
+                    if (trasfSolaLettura) {
                         $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                         $("#btAttivaMagFam_Var").addClass("disabled");
 
