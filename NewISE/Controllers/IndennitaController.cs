@@ -114,7 +114,7 @@ namespace NewISE.Controllers
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
             List<RiduzioniModel> lrm = new List<RiduzioniModel>();
-
+             
             try
             {
                 // Inserire using
