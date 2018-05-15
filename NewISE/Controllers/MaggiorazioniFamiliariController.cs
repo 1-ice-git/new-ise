@@ -27,7 +27,6 @@ namespace NewISE.Controllers
 
     public class MaggiorazioniFamiliariController : Controller
     {
-
         [NonAction]
         private bool SolaLetturaPartenza(decimal idAttivazioneMagFam)
         {
@@ -72,7 +71,6 @@ namespace NewISE.Controllers
 
             return solaLettura;
         }
-
 
         public ActionResult ElencoDocumentiFormulario()
         {
@@ -126,9 +124,7 @@ namespace NewISE.Controllers
 
             return PartialView(ldm);
         }
-
-
-
+        
         [HttpPost]
         public ActionResult NuovoFormularioMF(decimal idAttivazioneMagFam)
         {
@@ -167,8 +163,7 @@ namespace NewISE.Controllers
 
             return PartialView(ldm);
         }
-
-
+        
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
         public JsonResult AttivaRichiesta(decimal idAttivazioneMagFam)
@@ -253,11 +248,7 @@ namespace NewISE.Controllers
                         err = errore
                     });
         }
-
-
-
-
-
+        
         [HttpPost]
         public JsonResult PulsantiNotificaAttivaMagFam(decimal idAttivazioneMagFam)
         {
@@ -413,7 +404,6 @@ namespace NewISE.Controllers
             }
         }
 
-
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult ElencoConiuge(decimal idAttivazioneMagFam)
         {
@@ -568,7 +558,6 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult InserisciFiglio(FigliModel fm)
@@ -677,8 +666,6 @@ namespace NewISE.Controllers
             }
 
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -935,7 +922,6 @@ namespace NewISE.Controllers
             }
             return PartialView(msg);
         }
-
 
     }
 }

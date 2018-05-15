@@ -1323,7 +1323,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var ld =
                             e.DOCUMENTI.Where(
-                                a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
+                                a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari && a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                         bool modificabile = false;

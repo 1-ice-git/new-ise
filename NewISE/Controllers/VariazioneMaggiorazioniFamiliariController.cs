@@ -1246,53 +1246,62 @@ namespace NewISE.Controllers
                 {
                     using (ModelDBISE db = new ModelDBISE())
                     {
-                        using (dtPensione dtp = new dtPensione())
-                        {   
-                            using (dtVariazioniMaggiorazioneFamiliare dtamf = new dtVariazioniMaggiorazioneFamiliare())
-                            {
-                                PensioneConiugeModel pm = new PensioneConiugeModel();
-
-                                dtamf.VerificaPensioniAttiveInLavorazione(out pm, pcm, idConiuge, db);
-
-                                try
+                        db.Database.BeginTransaction();
+                        try
+                        { 
+                            using (dtPensione dtp = new dtPensione())
+                            {   
+                                using (dtVariazioniMaggiorazioneFamiliare dtamf = new dtVariazioniMaggiorazioneFamiliare())
                                 {
-                                    dtp.VerificaDataInizioPensione(idConiuge, pcm.dataInizioValidita);
+                                    PensioneConiugeModel pm = new PensioneConiugeModel();
+
+                                    //dtamf.VerificaPensioniAttiveInLavorazione(out pm, pcm, idConiuge, db);
+
+                                    try
+                                    {
+                                        dtp.VerificaDataInizioPensione(idConiuge, pcm.dataInizioValidita);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        ModelState.AddModelError("", ex.Message);
+                                        return PartialView("NuovoImportoPensione", pcm);
+                                    }
+                                    pcm.dataAggiornamento = DateTime.Now;
+                                    pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;                             if (!pcm.dataFineValidita.HasValue)
+                                    {
+                                        pcm.dataFineValidita = Utility.DataFineStop();
+                                    }
+
+                                    ATTIVAZIONIMAGFAM attmf_aperta = new ATTIVAZIONIMAGFAM();
+
+                                    var attmf_rif = dtamf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
+
+                                    var attmf = dtamf.GetAttivazioneAperta(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
+
+                                    // se non esiste attivazione aperta la creo altrimenti la uso
+                                    if (attmf.IDATTIVAZIONEMAGFAM == 0)
+                                    {
+                                        ATTIVAZIONIMAGFAM new_amf = dtamf.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI, db);
+                                        attmf_aperta = new_amf;
+                                    }
+                                    else
+                                    {
+                                        attmf_aperta = attmf;
+                                    }
+
+                                    decimal idTrasf = attmf_aperta.IDMAGGIORAZIONIFAMILIARI;
+
+                                    dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, db);
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo pensione coniuge (" + idConiuge + ")", "PENSIONI", db, idTrasf, pcm.idPensioneConiuge);
                                 }
-                                catch (Exception ex)
-                                {
-                                    ModelState.AddModelError("", ex.Message);
-                                    return PartialView("NuovoImportoPensione", pcm);
-                                }
-                                pcm.dataAggiornamento = DateTime.Now;
-                                pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;                             if (!pcm.dataFineValidita.HasValue)
-                                {
-                                    pcm.dataFineValidita = Utility.DataFineStop();
-                                }
-
-                                ATTIVAZIONIMAGFAM attmf_aperta = new ATTIVAZIONIMAGFAM();
-
-                                var attmf_rif = dtamf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
-
-                                var attmf = dtamf.GetAttivazioneAperta(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
-
-                                // se non esiste attivazione aperta la creo altrimenti la uso
-                                if (attmf.IDATTIVAZIONEMAGFAM == 0)
-                                {
-                                    ATTIVAZIONIMAGFAM new_amf = dtamf.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI, db);
-                                    attmf_aperta = new_amf;
-                                }
-                                else
-                                {
-                                    attmf_aperta = attmf;
-                                }
-
-                                decimal idTrasf = attmf_aperta.IDMAGGIORAZIONIFAMILIARI;
-
-                                dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, db);
-                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo pensione coniuge (" + idConiuge + ")", "PENSIONI", db, idTrasf, pcm.idPensioneConiuge);
                             }
+                            db.Database.CurrentTransaction.Commit();
                         }
-
+                        catch (Exception ex)
+                        {
+                            db.Database.CurrentTransaction.Rollback();
+                            throw ex;
+                        }
                     }
                 }
                 else
