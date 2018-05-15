@@ -77,7 +77,7 @@
             else
             {
             <span disabled>
-                <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Carte d'Imbarco" />
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Titoli di viaggio" />
             </span>
             }
         }
@@ -92,13 +92,13 @@
             if (!AttivazioneInviata)
             {
                 <span disabled>
-                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Carte d'Imbarco" />
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Titoli di viaggio" />
                 </span>
             }
             else
             {
                 <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idAttivViaggioCongedo);" id="linkElencoDocVC">
-                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Titoli di viaggio" />
                 </a>
             }
         }

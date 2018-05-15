@@ -15,7 +15,11 @@ namespace NewISE.Models.DBModel
         public DateTime DataRichiamo { get; set; }
         public DateTime DataAggiornamento { get; set; }
         public bool annullato { get; set; }
-
+        public DateTime DataPartenza { get; set; }
+        public DateTime DataRientro { get; set; }
+        public decimal CoeffKm { get; set; }
+        public decimal IDPFKM { get; set; }        
+        
         public bool HasValue()
         {
             return idTrasferimento > 0 ? true : false;
