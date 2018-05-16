@@ -116,6 +116,13 @@ namespace NewISE.Controllers
             return PartialView(ledcm);
 
         }
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public ActionResult ElaborazioneMensile(List<decimal> Dipendenti)
+        {
+
+            return null;
+        }
 
 
 

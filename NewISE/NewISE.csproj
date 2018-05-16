@@ -3151,6 +3151,7 @@
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
+    <Compile Include="Models\DBModel\TipoLiquidazioneModel.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
     <Compile Include="Models\DBModel\PagatoCondivisoMABModel.cs" />
@@ -3308,6 +3309,7 @@
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
     <Compile Include="Models\ViewModel\AnticipiViewModel.cs" />
+    <Compile Include="Models\ViewModel\ElaborazioniViewModel.cs" />
     <Compile Include="Models\ViewModel\ElencoDipendentiDaCalcolareModel.cs" />
     <Compile Include="Models\ViewModel\ElencoFamiliariPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />

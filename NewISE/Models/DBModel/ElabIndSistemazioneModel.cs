@@ -9,7 +9,6 @@ namespace NewISE.Models.DBModel
     {
         public decimal idIndSistLorda { get; set; }
         public decimal idPrimaSitemazione { get; set; }
-        public decimal idRegola { get; set; }
         public decimal indennitaBase { get; set; }
         public decimal coefficenteSede { get; set; }
         public decimal percentualeDisagio { get; set; }
