@@ -6,13 +6,19 @@
      decimal idFKm = (decimal)ViewData["idFKm"];
      DateTime dataPartenza=Convert.ToDateTime(ViewData["dataPartenza"]);
      string dataRichiamo = ViewData["dataRichiamo"]==null?"?":(Convert.ToDateTime(ViewData["dataRichiamo"])).ToString("dd/MM/yyyy");
-     string dataRientro = ViewData["dataRientro"] == null ? "?" : (Convert.ToDateTime(ViewData["dataRientro"])).ToString("dd/MM/yyyy"); 
+     string dataRientro = ViewData["dataRientro"] == null ? "?" : (Convert.ToDateTime(ViewData["dataRientro"])).ToString("dd/MM/yyyy");
      string errore = ViewData["errore"] == null ? "" : ViewData["errore"].ToString();
-
+     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+     List<SelectListItem> FKMText = (List<SelectListItem>)ViewBag.FasciaKM;
+     var coef = FKMText.Where(a => a.Selected == true).First();
+     string txtFKM = coef.Text.Trim()==""?"?": coef.Text.Trim();
+     string ValFkm= coef.Value == "" ? "0" : coef.Value;
  }
 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 @Html.Hidden("hiddenCoefficenteFasciaKM_Nuovo")
 @Html.Hidden("hiddenidDataRichiamo_Nuovo")
+@Html.Hidden("idGruppoFKmRichiamo")
+
 @Html.Hidden("hiddenErroreInserimento",errore.ToString().Trim())
 <div class="form-horizontal" id="DivRichiamoMain">    
     <br />   
@@ -27,40 +33,37 @@
             <input id="idDataRientroRichiamo" name="idDataRientroRichiamo" type="text" value="@dataRientro" class="form-control" readonly />
         </div>
     </div>
-    <div class="form-group disabled">
-        @Html.Label("lblCoeffFasciakM", "Coefficente Fascia KM", new { @class = "control-label col-xs-4" })
-        <div class="select2-container select2-container--classic col-xs-5 disabled" >    
-                @Html.DropDownList("idGruppoFKmRichiamo", ViewBag.FasciaKM as IEnumerable<SelectListItem>, new { @class = "form-control col-xs-5", @onchange = "", @onClick = "" , @disabled=true })
-            </div>        
-    </div>
+   
     <div class="form-group">
-        @Html.Label("lblDataRichiamo", "Data Richiamo", new { @class = "control-label col-xs-4" })
+        @Html.Label("lblCoeffFasciakM", "Coefficente Fascia KM", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-2">
+            <input id="idCoeffKm" name="idCoeffKm" type="text" value="@txtFKM" class="form-control" readonly />
+        </div>
+        @Html.Label("lblDataRichiamo", "Data Richiamo", new { @class = "control-label col-xs-2" })
         <div class="col-xs-2">
             <input id="idDataRichiamo" name="idDataRichiamo" type="text" value="@dataRichiamo" class="form-control" readonly />
-            @*@Html.EditorFor(model => model.DataRichiamo, new { htmlAttributes = new { @class = "form-control",@readonly="readonly"} })*@
         </div>
     </div>
+
     <div class="form-group"> 
          @Html.Label("lblDataRich_iamo", "     ", new { @class = "control-label col-xs-4" })
-        <div class="col-xs-2">
-            @if(idRichiamo!=0)
+        <div class="col-xs-2 text-right">
+            @if (admin)
             {
-                <input id="btnInsertRichiamo" disabled name="btnInsertRichiamo" type="button" value="Inserisci" onclick="Mostra_Modal_InserisciRichiamo();" class="form-control" />
+                if (idRichiamo == 0)                
+                {
+                    <input id="btnInsertRichiamo" name="btnInsertRichiamo" type="button" value="Inserisci" onclick="Mostra_Modal_InserisciRichiamo();" class="form-control" />
+                }
             }
-            else
-            {
-                <input id="btnInsertRichiamo" name="btnInsertRichiamo" type="button" value="Inserisci" onclick="Mostra_Modal_InserisciRichiamo();" class="form-control" />
-           }
         </div> 
         @Html.Label("lblDa_taRichiamo", "", new { @class = "control-label col-xs-4" })      
         <div class="col-xs-2">
-            @if(idRichiamo!=0)
-             {
-                <input id="btnModificaRichiamo" name="btnModificaRichiamo" type="button" value="Modifica" onclick="Mostra_Modal_ModificaRichiamo();"  class="form-control" />
-            }
-            else
+            @if (admin)
             {
-                <input id="btnModificaRichiamo" disabled name="btnModificaRichiamo" type="button" value="Modifica"  class="form-control" />
+                if (idRichiamo != 0)
+                {
+                <input id="btnModificaRichiamo" name="btnModificaRichiamo" type="button" value="Modifica" onclick="Mostra_Modal_ModificaRichiamo();"  class="form-control" />
+                }               
             }
         </div>
     </div>
@@ -122,19 +125,16 @@
 
 
 <script type="text/javascript">
-    $("#idGruppoFKmRichiamo").attr("disabled", true);
-   // $("#hiddenErroreInserimento").val(@errore);
-   // VisualizzaErrore();
-    $("#idGruppoFKmRichiamo").select2({
-        placeholder: "Seleziona Percentua Km",
-        allowClear: true,
-        language: "it",
-        width: '150'
-    });
+    // $("#idGruppoFKmRichiamo").attr("disabled", true);
 
- //   VerificaSeAbilitaoNon(@idFKm);
+    //$("#idGruppoFKmRichiamo").select2({
+    //    placeholder: "Seleziona Percentua Km",
+    //    allowClear: true,
+    //    language: "it",
+    //    width: '150'
+    //});
 
-    $("#idGruppoFKmRichiamo").attr("disabled", true);
+    //   $("#idGruppoFKmRichiamo").attr("disabled", true);
 
 
     function VerificaSeAbilitaoNon(abilita) {
@@ -159,7 +159,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataRichiamo: dataRichiamo ,nuovo:nuovo},
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataRichiamo: dataRichiamo, nuovo: nuovo },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -168,7 +168,7 @@
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
             success: function (result) {
-               // debugger;
+                // debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 //$("#tabElencoRichiamo").empty();
                 //$("#tabElencoRichiamo").html(result);
@@ -176,7 +176,7 @@
                 $("#DivRichiamoMain").html(result);
                 //
                 //RicercaDocumenti();
-            //    VerificaSeAbilitaoNonSelect2(idFKm);
+                //    VerificaSeAbilitaoNonSelect2(idFKm);
             },
             complete: function () {
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
@@ -191,7 +191,7 @@
     }
 
     function Mostra_Modal_InserisciRichiamo() {
-      //  debugger;
+        //  debugger;
 
         var xx = $("#hiddenidDataRichiamo_Nuovo").val();
         $("#idDataRichiamo_Nuovo").val(xx);
@@ -200,8 +200,8 @@
         $('#ModalInserisciRichiamo').modal({ backdrop: 'static', keyboard: false }).show();
     }
     function Mostra_Modal_ModificaRichiamo() {
-       // debugger;
-
+      //  debugger;
+        $("#hiddenidDataRichiamo_Nuovo").val($("#idDataRichiamo").val());
         var xx = $("#hiddenidDataRichiamo_Nuovo").val();
         $("#idDataRichiamo_Modifica").val(xx);
         MessaggioModificaRichiamo(parseInt('@idTrasferimento'), xx);
@@ -213,13 +213,14 @@
 
     function ConfermaInserisciRichiamo() {
 
-       // debugger;
+      //  debugger;
         //  VisualizzaErrore();
 
         rotta = "/Richiamo/ConfermaInserisciRichiamo";
-      //  var errori = $("#hiddenErroreInserimento").val();
+        //  var errori = $("#hiddenErroreInserimento").val();
         //
-        var idFasciaFKM = parseInt($("#idGruppoFKmRichiamo").select2('val'));
+        // var idFasciaFKM = parseInt('@ValFkm');
+        var idFasciaFKM = $("#idGruppoFKmRichiamo").val();
         $("#hiddenCoefficenteFasciaKM_Nuovo").val(idFasciaFKM);
         $("#hiddenCoefficenteFasciaKM").val(idFasciaFKM);
         var dataRichiamo = $("#idDataRichiamo_Nuovo").val();
@@ -237,8 +238,8 @@
 
                 },
                 success: function (result) {
-                //  debugger;
-                    if (result.err=="") {
+                    //  debugger;
+                    if (result.err == "") {
                         callRichiamo();
                         var list = result.list;
                         $("#ElencolistaTrasferimento").select2();
@@ -247,8 +248,7 @@
                             $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
                         })
                     }
-                    else
-                    {
+                    else {
                         ErroreElaborazioneAjax(result.err);
                     }
                 },
@@ -263,14 +263,13 @@
                 }
             });
         }
-        else
-        {
+        else {
             Check();
         }
     }
 
     function ConfermaModificaRichiamo() {
-         //  debugger;
+        // debugger;
         //  VisualizzaErrore();
         rotta = "/Richiamo/ConfermaModificaRichiamo";
         //  var errori = $("#hiddenErroreInserimento").val();
@@ -287,21 +286,20 @@
             $.ajax({
                 type: "POST",
                 url: rotta,
-                data: { idTrasferimento: idTrasferimento, idFasciaFKM: idFasciaFKM, dataRichiamo: dataRichiamo,idRichiamo:idRichiamo},
+                data: { idTrasferimento: idTrasferimento, idFasciaFKM: idFasciaFKM, dataRichiamo: dataRichiamo, idRichiamo: idRichiamo },
                 dataType: 'json',
                 beforeSend: function () {
 
                 },
                 success: function (result) {
                     if (result.err == "") {
-                       // debugger;
+                        // debugger;
                         // ElencoTrasferimento();
                         callRichiamo();
                         var list = result.list;
                         $("#ElencolistaTrasferimento").select2();
                         $('#ElencolistaTrasferimento').html('');
-                        
-                        $.each(list, function(key, val){
+                        $.each(list, function (key, val) {
                             $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
                         })
                     }
@@ -325,10 +323,12 @@
         }
     }
 
-    function MessaggioInserisciRichiamo(idTrasferimento,xx) {
+    function MessaggioInserisciRichiamo(idTrasferimento, xx) {
     //    debugger;
         var rotta = "/Richiamo/MessaggioInserisciRichiamo";
-        var idFKm=$("#idGruppoFKmRichiamo").val();
+        //  var idFKm = $("#idGruppoFKmRichiamo").val();
+        var idFKm = parseInt('@ValFkm');
+
         //var idTrasportoEffettiPartenza = 0;@*// parseInt('@idTrasportoEffettiPartenza');*@
         var idRichiamo = parseInt('@idRichiamo');
         $.ajax({
@@ -341,7 +341,7 @@
                 VerificaAutenticazione();
             },
             success: function (result) {
-              //  debugger;
+                //  debugger;
                 $("#viewMessaggioInserisciRichiamo").empty();
                 $("#viewMessaggioInserisciRichiamo").html(result);
             },
@@ -355,14 +355,14 @@
         });
     }
     function MessaggioModificaRichiamo(idTrasferimento, xx) {
-      //  debugger;
+    //    debugger;
         var rotta = "/Richiamo/MessaggioModificaRichiamo";
-        var idFKm = $("#idGruppoFKmRichiamo").val();
+        var idFKm = parseInt('@ValFkm');
         var idRichiamo = parseInt('@idRichiamo');
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataInserita: xx ,idRichiamo:idRichiamo},
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataInserita: xx, idRichiamo: idRichiamo },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -383,7 +383,7 @@
         });
     }
     function ValidazioneRichiamo() {
-       // debugger;
+      //  debugger;
         var ret = false;
         var c1 = false;
         var c2 = false;
@@ -391,7 +391,7 @@
         var idTrasferimento = parseInt($("#idTrasferimento").val());
         var DataRichiamo = $("#idDataRichiamo_Nuovo").val();
         var DataPartenza = $("#idDataPartenzaRichiamo_Nuovo").val();
-        var idFasciaFKM = parseInt($("#idGruppoFKmRichiamo").select2('val'));
+        var idFasciaFKM = parseInt($("#idGruppoFKmRichiamo").val());// parseInt($("#idGruppoFKmRichiamo").select2('val'));
         //  var file = $("#file").val();
 
         if (idTrasferimento > 0) {
@@ -414,14 +414,14 @@
                 ret = false;
             }
             ret = isValidDate(DataRichiamo, "dd/MM/yyyy")
-            if(idFasciaFKM=='0' ||idFasciaFKM==''||idFasciaFKM==undefined)
-                ret=false;
+            if (idFasciaFKM == '0' || idFasciaFKM == '' || idFasciaFKM == undefined)
+                ret = false;
         }
         return ret;
     }
     //
     function ValidazioneRichiamoModifica() {
-         //  debugger;
+        //  debugger;
         var ret = false;
         var c1 = false;
         var c2 = false;
@@ -430,7 +430,7 @@
         var DataRichiamo = $("#idDataRichiamo_Modifica").val();
         var DataPartenza = $("#idDataPartenzaRichiamo_Modifica").val();
         var idFasciaFKM = parseInt($("#idGruppoFKmRichiamo_Modifica").select2('val'));
-        
+
         //  var file = $("#file").val();
 
         if (idTrasferimento > 0) {
@@ -455,8 +455,8 @@
             ret = isValidDate(DataRichiamo, "dd/MM/yyyy")
 
             ret = isValidDate(DataRichiamo, "dd/MM/yyyy")
-            if(idFasciaFKM=='0' ||idFasciaFKM==''||idFasciaFKM==undefined)
-                ret=false;
+            if (idFasciaFKM == '0' || idFasciaFKM == '' || idFasciaFKM == undefined)
+                ret = false;
         }
         return ret;
     }
@@ -474,7 +474,7 @@
                         $.ajax({
                             type: "POST",
                             url: '',
-                           // data: { dataDaControllare:dataDaControllare },
+                            // data: { dataDaControllare:dataDaControllare },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;
@@ -484,7 +484,7 @@
 
                             },
                             success: function (result) {
-                               // debugger;
+                                // debugger;
                                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                                 //$("#divPViewParametri").empty();
                                 //$("#divPViewParametri").html(result);
@@ -495,7 +495,7 @@
                             complete: function () {
                                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                                 //                $("#Centro").getNiceScroll().resize();
-                             //   Mostra_Modal_InserisciRichiamo();
+                                //   Mostra_Modal_InserisciRichiamo();
                             },
                             error: function (jqXHR, textStatus, errorThrow) {
                                 //debugger;
@@ -534,7 +534,7 @@
 
                             },
                             success: function (result) {
-                               // debugger;
+                                // debugger;
                                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                                 //$("#divPViewParametri").empty();
                                 //$("#divPViewParametri").html(result);
@@ -562,19 +562,18 @@
 
 
     function isValidDate(s) {
-       // debugger;
+        // debugger;
         var separators = ['\\.', '\\-', '\\/'];
         var bits = s.split(new RegExp(separators.join('|'), 'g'));
         var d = new Date(bits[2], bits[1] - 1, bits[0]);
         return d.getFullYear() == bits[2] && d.getMonth() + 1 == bits[1];
     }
 
-    function callRichiamo()
-    {
-      //  debugger;
+    function callRichiamo() {
+       //   debugger;
         rotta = "/Richiamo/Richiamo";
 
-      //  var idFKm = parseInt($("#idGruppoFKmRichiamo").select2('val'));
+        //  var idFKm = parseInt($("#idGruppoFKmRichiamo").select2('val'));
         var idFKm = $("#hiddenCoefficenteFasciaKM_Nuovo").val();
         var dataRichiamo = $("#hiddenidDataRichiamo_Nuovo").val();
         var nuovo = idFKm;
@@ -583,7 +582,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataRichiamo: dataRichiamo,nuovo:nuovo },
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataRichiamo: dataRichiamo, nuovo: nuovo },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -592,7 +591,7 @@
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
             success: function (result) {
-             //  debugger;
+                //  debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 //$("#tabElencoRichiamo").empty();
                 //$("#tabElencoRichiamo").html(result);
@@ -600,7 +599,7 @@
                 $("#DivRichiamoMain").html(result);
 
                 //$('#listaTrasferimento').select2('destroy').empty().select2({ data: [{ id: 1, text: 'new text' }] });
-               // $('#listaTrasferimento').select2().trigger('change');
+                // $('#listaTrasferimento').select2().trigger('change');
                 //
                 //RicercaDocumenti();
                 //    VerificaSeAbilitaoNonSelect2(idFKm);

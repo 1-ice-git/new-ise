@@ -2462,6 +2462,7 @@
       <DependentUpon>VariazioneProvvScolColori.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamFasciaKmController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamPercAnticipoTeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamPercCondivisioneMAB.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />

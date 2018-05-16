@@ -58,6 +58,19 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
+        public DateTime Restituisci_DataRientro(decimal idTrasferimento)
+        {
+            DateTime tmp = new DateTime();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
+                if (CIR != null) //CIR.IDTRASFERIMENTO
+                {
+                    tmp = CIR.DATARIENTRO.Value;
+                }
+            }
+            return tmp;
+        }
         public RichiamoModel Restituisci_Ultimo_Richiamo(decimal idTrasferimento)
         {
             RichiamoModel tmp = new RichiamoModel();
