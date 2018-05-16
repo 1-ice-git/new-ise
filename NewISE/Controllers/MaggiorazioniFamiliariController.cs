@@ -434,7 +434,7 @@ namespace NewISE.Controllers
                                         dataInizio = e.dataInizio,
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge, idAttivazioneMagFam).idAltriDatiFam,
+                                        idAltriDati = dtadf.GetAltriDatiFamiliariConiuge(e.idConiuge, idAttivazioneMagFam).idAltriDatiFam,
                                         Documenti = dtd.GetDocumentiIdentitaConiuge(e.idConiuge, idAttivazioneMagFam),
                                         HasPensione = dtp.HasPensione(e.idConiuge, idAttivazioneMagFam)
                                     }));

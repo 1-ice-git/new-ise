@@ -970,7 +970,8 @@ namespace NewISE.Controllers
             try
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                {
+                {   //questa funzione va replicata per la variazione
+
                     adfm = dtadf.GetAltriDatiFamiliariConiuge(idAltriDatiFam);
                     //if (adfm != null && adfm.HasValue())
                     //{
@@ -1038,7 +1039,7 @@ namespace NewISE.Controllers
             try
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                {
+                {  // questa funzione va replicata in variazione
                     adfm = dtadf.GetAltriDatiFamiliariFiglio(idAltriDatiFam);
                     //if (adfm != null && adfm.HasValue())
                     //{
