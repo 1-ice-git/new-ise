@@ -60,6 +60,8 @@ namespace NewISE.Controllers
         public ActionResult Richiamo(decimal idTrasferimento,decimal idFKm,string dataRichiamo,decimal nuovo=0)
         {
             DateTime dataPartenza = new DateTime();
+            bool admin = Utility.Amministratore();
+            ViewBag.Amministratore = admin;
             try
             {
                 ViewData["idFKm"] = idFKm;
@@ -223,7 +225,9 @@ namespace NewISE.Controllers
             using (dtRichiamo dtr = new dtRichiamo())
             {
                 DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento);
+                DateTime dataRientro = dtr.Restituisci_DataRientro(idTrasferimento);
                 ViewData["dataPartenza"] = dataPartenza;
+                ViewData["dataRientro"] = dataRientro;
             }
             return PartialView();
         }
@@ -281,13 +285,6 @@ namespace NewISE.Controllers
                             ViewData["idRichiamo"] = idRichiamo;
                             errore = "";
                         }
-                    //}
-                    //else
-                    //{
-                    //    ViewData["errore"] = "Errore riscontrato nell'inserimento del Richiamo";
-                    //    errore="Non esistono coefficenti corrispondenti ai criteri del Richiamo";
-                    //}
-
                 }
                 lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento);
             }
