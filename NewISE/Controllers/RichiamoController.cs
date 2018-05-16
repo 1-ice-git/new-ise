@@ -373,7 +373,7 @@ namespace NewISE.Controllers
                         if (DataRientro < dataPartenza)
                             errore = "Data Rientro (" + DataRientro.ToShortDateString()+ ") non può essere inferiore alla data Partenza (" +dataPartenza.ToShortDateString()+" )";
                         else
-                        { 
+                        {
                             idRichiamo = dtric.EditRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro, idRichiamo);
                             errore = "";
                         }             
