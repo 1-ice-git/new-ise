@@ -261,8 +261,9 @@ namespace NewISE.Models.DBModel.dtObj
                     //DataRientro = ric.DataRichiamo.AddDays(-1);
                     using (dtRichiamo dtr = new dtRichiamo())
                     {
-                        //dtr.Associa_Richiamo_CoeffIndRichiamo(ric.IDRICHIAMO, idCoeffIndRichiamo, db);
-                        //dtr.Associa_Richiamo_PercentualeFKM(ri.IDRICHIAMO, idPercentualeFKM, db);
+                        RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(idRichiamo, db);
+                        RimuoviAsscoiazioni_Richiamo_PercentualeFKM(idRichiamo, db);
+
                         dtr.Associa_Richiamo_CoeffIndRichiamo(tmp, idCoeffIndRichiamo, db);
                         dtr.Associa_Richiamo_PercentualeFKM(tmp, idPercentualeFKM, db);
                     }
@@ -295,6 +296,20 @@ namespace NewISE.Models.DBModel.dtObj
                 throw new Exception("Non è stato possibile associare la percentuale fascia KM al Richiamo.");
             }
         }
+        public void RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(decimal idRichiamo,ModelDBISE db)
+        {
+            var i = db.RICHIAMO.Find(idRichiamo);
+            var lCoefIndRick =i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList();
+            if (lCoefIndRick?.Any() ?? false)
+            {
+                foreach (var z in lCoefIndRick)
+                {
+                    i.COEFFICIENTEINDRICHIAMO.Remove(z);
+                }
+                db.SaveChanges();
+            }
+        }
+
         public void Associa_Richiamo_PercentualeFKM(decimal idRichiamo, decimal idPercentualeFKM, ModelDBISE db)
         {
             var tep = db.RICHIAMO.Find(idRichiamo);
@@ -307,6 +322,19 @@ namespace NewISE.Models.DBModel.dtObj
             if (i <= 0)
             {
                 throw new Exception("Non è stato possibile associare la percentuale fascia KM al Richiamo.");
+            }
+        }
+        public void RimuoviAsscoiazioni_Richiamo_PercentualeFKM(decimal idRichiamo, ModelDBISE db)
+        {
+            var i = db.RICHIAMO.Find(idRichiamo);
+            var lperc = i.PERCENTUALEFKM.Where(a => a.ANNULLATO == false).ToList();
+            if (lperc?.Any() ?? false)
+            {
+                foreach (var z in lperc)
+                {
+                    i.PERCENTUALEFKM.Remove(z);
+                }
+                db.SaveChanges();
             }
         }
         public decimal GetMatricolaDaIdTrasferimento(decimal idTrasferimento)
