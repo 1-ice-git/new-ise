@@ -229,8 +229,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDFKM, db);
-                                dtrp.AssociaRichiamo_PKM(ibNew1.IDFKM, db);
+                                dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db);
+                                dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db);
                             }
 
 
@@ -295,8 +295,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var cfkm in libNew)
                                     {
-                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDFKM, db);
-                                        dtrp.AssociaRichiamo_PKM(cfkm.IDFKM, db);
+                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db);
+                                        dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db);
                                     }
 
                                 }
@@ -365,8 +365,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var cfkm in libNew)
                                     {
-                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDFKM, db);
-                                        dtrp.AssociaRichiamo_PKM(cfkm.IDFKM, db);
+                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db);
+                                        dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db);
                                     }
 
                                 }
@@ -393,15 +393,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 libNew.Add(ibNew1);
                                 db.Database.BeginTransaction();
                                 db.PERCENTUALEFKM.Add(ibNew1);
-                                db.SaveChanges();
+                                int i = db.SaveChanges();
 
-                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                if (i > 0)
                                 {
-                                    dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDFKM, db);
-                                    dtrp.AssociaRichiamo_PKM(ibNew1.IDFKM, db);
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db);
+                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db);
+                                    }
+
+                                    db.Database.CurrentTransaction.Commit();
+                                }
+                                else
+                                {
+                                    throw new Exception("Errore nella fase di inserimento della percentuale di fascia chilometrica.");
                                 }
 
-                                db.Database.CurrentTransaction.Commit();
                             }
 
                             if (lista.Count != 0)
@@ -432,8 +440,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDFKM, db);
-                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDFKM, db);
+                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db);
+                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -468,8 +476,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var cfkm in libNew)
                                         {
-                                            dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDFKM, db);
-                                            dtrp.AssociaRichiamo_PKM(cfkm.IDFKM, db);
+                                            dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db);
+                                            dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db);
                                         }
                                     }
 
@@ -528,8 +536,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaPrimaSistemazione_PKM(NuovoPrecedente.IDFKM, db);
-                            dtrp.AssociaRichiamo_PKM(NuovoPrecedente.IDFKM, db);
+                            dtrp.AssociaPrimaSistemazione_PKM(NuovoPrecedente.IDPFKM, db);
+                            dtrp.AssociaRichiamo_PKM(NuovoPrecedente.IDPFKM, db);
                         }
                     }
 
