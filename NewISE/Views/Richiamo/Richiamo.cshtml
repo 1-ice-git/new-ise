@@ -1,154 +1,624 @@
-﻿
-@model IEnumerable<NewISE.Models.DBModel.RichiamoModel>
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.DBModel.RichiamoModel
+ @{
+     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+     decimal idRichiamo = ViewData["idRichiamo"]==null?0:(decimal)ViewData["idRichiamo"];
+     decimal idFKm = (decimal)ViewData["idFKm"];
+     DateTime dataPartenza=Convert.ToDateTime(ViewData["dataPartenza"]);
+     string dataRichiamo = ViewData["dataRichiamo"]==null?"?":(Convert.ToDateTime(ViewData["dataRichiamo"])).ToString("dd/MM/yyyy");
+     string dataRientro = ViewData["dataRientro"] == null ? "?" : (Convert.ToDateTime(ViewData["dataRientro"])).ToString("dd/MM/yyyy"); 
+     string errore = ViewData["errore"] == null ? "" : ViewData["errore"].ToString();
 
-@{
+ }
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+@Html.Hidden("hiddenCoefficenteFasciaKM_Nuovo")
+@Html.Hidden("hiddenidDataRichiamo_Nuovo")
+@Html.Hidden("hiddenErroreInserimento",errore.ToString().Trim())
+<div class="form-horizontal" id="DivRichiamoMain">    
+    <br />   
+    @Html.Hidden("hiddenCoefficenteFasciaKM")
+    <div class="form-group">
+        @Html.Label("lblDataPartenzaRichiamo", "Data Partenza", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-2">
+            <input id="idDataPartenzaRichiamo" name="idDataPartenzaRichiamo" type="text" value="@dataPartenza.ToString("dd/MM/yyyy")" class="form-control" readonly />
+        </div>
+        @Html.Label("lblDataRientroRichiamo", "Data Rientro", new { @class = "control-label col-xs-2" })
+        <div class="col-xs-2">
+            <input id="idDataRientroRichiamo" name="idDataRientroRichiamo" type="text" value="@dataRientro" class="form-control" readonly />
+        </div>
+    </div>
+    <div class="form-group disabled">
+        @Html.Label("lblCoeffFasciakM", "Coefficente Fascia KM", new { @class = "control-label col-xs-4" })
+        <div class="select2-container select2-container--classic col-xs-5 disabled" >    
+                @Html.DropDownList("idGruppoFKmRichiamo", ViewBag.FasciaKM as IEnumerable<SelectListItem>, new { @class = "form-control col-xs-5", @onchange = "", @onClick = "" , @disabled=true })
+            </div>        
+    </div>
+    <div class="form-group">
+        @Html.Label("lblDataRichiamo", "Data Richiamo", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-2">
+            <input id="idDataRichiamo" name="idDataRichiamo" type="text" value="@dataRichiamo" class="form-control" readonly />
+            @*@Html.EditorFor(model => model.DataRichiamo, new { htmlAttributes = new { @class = "form-control",@readonly="readonly"} })*@
+        </div>
+    </div>
+    <div class="form-group"> 
+         @Html.Label("lblDataRich_iamo", "     ", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-2">
+            @if(idRichiamo!=0)
+            {
+                <input id="btnInsertRichiamo" disabled name="btnInsertRichiamo" type="button" value="Inserisci" onclick="Mostra_Modal_InserisciRichiamo();" class="form-control" />
+            }
+            else
+            {
+                <input id="btnInsertRichiamo" name="btnInsertRichiamo" type="button" value="Inserisci" onclick="Mostra_Modal_InserisciRichiamo();" class="form-control" />
+           }
+        </div> 
+        @Html.Label("lblDa_taRichiamo", "", new { @class = "control-label col-xs-4" })      
+        <div class="col-xs-2">
+            @if(idRichiamo!=0)
+             {
+                <input id="btnModificaRichiamo" name="btnModificaRichiamo" type="button" value="Modifica" onclick="Mostra_Modal_ModificaRichiamo();"  class="form-control" />
+            }
+            else
+            {
+                <input id="btnModificaRichiamo" disabled name="btnModificaRichiamo" type="button" value="Modifica"  class="form-control" />
+            }
+        </div>
+    </div>
 
-    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
-    bool solaLettura = false;
-}
-
-aaaaaaaaaaaaaaaaaaaaaaaaaa
-
-<p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
-    @if (solaLettura)
-    {
-        <button href="#" class="btn btn-default disabled" distabSospensioniabled="disabled">Richiamo</button>
-    }
-    else
-    {
-        @Ajax.ActionLink("Nuova Sospensione", "NuovaSospensione", "Sospensione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuova Sospensione", @id = "linkNuovaSospensione" })
-    }
-</p>
-
-<div id="divElencoSosp">
-    @Html.Action("DatiTabElencoSospensione", "Sospensione", new { idTrasferimento = idTrasferimento })
 </div>
 
-<div class="modal fade" id="inviaDocModalsosp" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+
+<div class="modal fade" id="ModalInserisciRichiamo" tabindex="-1" role="dialog" aria-labelledby="ModalInserisciRichiamoLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="text-align:center">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Conferma Eliminazione Richiamo</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <div id="viewDocumentoDettaglisosp">
-                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Nuovo Richiamo</h3>
+                <div id="contenutomsg" style="width:860px">
+                    <p id="viewMessaggioInserisciRichiamo"></p>
                 </div>
-            </div>
-            <div class="modal-footer" style="background-color:white;text-align:center">
-                <div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                </div>
+                <div id="idControllaContenutoMsgVC____" class="text-danger" style="display:none">Messaggio obbligatorio</div>
+            </div>            
+            <div class="modal-footer">
+                <button id="btConfermaInserisciRichiamo" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaInserisciRichiamo();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
 </div>
 
+
+<div class="modal fade" id="ModalModificaRichiamo" tabindex="-1" role="dialog" aria-labelledby="ModalModificaRichiamoLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annulla_ModelLabel">Modifica Richiamo</h3>
+                <div id="contenutomsg" style="width:860px">
+                    <p id="viewMessaggioModificaRichiamo"></p>
+                </div>
+                <div id="idControlla__ContenutoMsgVC____" class="text-danger" style="display:none">Messaggio obbligatorio</div>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaModificaRichiamo" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaModificaRichiamo();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog-confirm-Richiamo" title="Dati non inseriti correttamente" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Dati non inseriti correttamente</p>
+</div>
+
+<div id="dialog-confirm-Richiamo-Modifica" title="Dati non inseriti correttamente" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Dati non inseriti correttamente</p>
+</div>
+
+
+
 <script type="text/javascript">
-    //function DocumentoModal2(matr) {
-        $(".anchorDetailDelete").click(function () {
-          //  debugger;
-            var rotta = "/Sospensione/DeleteSospensione";
-            var $buttonClicked = $(this);
-            var idSospensione = $buttonClicked.attr('id_Sosp');
-            var idTrasferimento = parseInt('@idTrasferimento');
-            $.ajax({
-                url: rotta,
-                type: "post", //Le info testuali saranno passate in POST
-                data: { idSospensione: idSospensione, idTrasferimento: idTrasferimento },
-                dataType: 'html',
-                async: false,
-                beforeSend: function () {
-                    // debugger;
-                   // $('#inviaDocModalsosp').modal('show');
-                    //Blocca();
-                },
-                success: function (result) {
-                   //  debugger;
-                    //$("#viewDocumentoDettaglisosp").empty();
-                    //$("#viewDocumentoDettaglisosp").html(result);
-                    $("#tabElencoSospensioni").empty();
-                    $("#tabElencoSospensioni").html(result);
-                },
-                error: function (error) {
-                 //   debugger;
-                    //Sblocca();
-                    var msg = error.responseText;
-                    ErroreElaborazioneAjax(msg);
-                    $('#inviaDocModalsosp').modal('hide');
-                }
-            });
-        });
-   // }
-
-        $(".anchorDetailEdit").click(function () {
-            // debugger;
-              var rotta = "/Sospensione/EditSospensione";
-            var $buttonClicked = $(this);
-            var idSospensione = $buttonClicked.attr('idSosp');
-            var idTrasferimento = parseInt('@idTrasferimento');
-
-            $.ajax({
-                url: rotta,
-                type: "post", //Le info testuali saranno passate in POST
-                data: { idSospensione: idSospensione, idTrasferimento: idTrasferimento },
-                dataType: 'html',
-                async: false,
-                beforeSend: function () {
-                   //  debugger;
-                    //Blocca();
-                },
-                success: function (result) {
-                    // debugger;
-                    $("#tabElencoSospensioni").empty();
-                    $("#tabElencoSospensioni").html(result);
-                },
-                error: function (error) {
-                //    debugger;
-                    //Sblocca();
-                    var msg = error.responseText;
-                    ErroreElaborazioneAjax(msg);
-                }
-            });
-        });
-
-    $("#tabListaSospensioni").DataTable({
-        "ordering": false,
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-        },
-        "info": false,
-        "lengthChange": false,
-        "pageLength": 6,
-        "searching": false,
-        "paging": true,
-        "bJQueryUI": true,
-        "sDom": 'lfrtip',
+    $("#idGruppoFKmRichiamo").attr("disabled", true);
+   // $("#hiddenErroreInserimento").val(@errore);
+   // VisualizzaErrore();
+    $("#idGruppoFKmRichiamo").select2({
+        placeholder: "Seleziona Percentua Km",
+        allowClear: true,
+        language: "it",
+        width: '150'
     });
 
+ //   VerificaSeAbilitaoNon(@idFKm);
 
+    $("#idGruppoFKmRichiamo").attr("disabled", true);
+
+
+    function VerificaSeAbilitaoNon(abilita) {
+        if (parseInt(abilita) == 0) {
+            $("#btnModificaRichiamo").prop("disabled", true);
+        }
+        else
+            $("#btnModificaRichiamo").prop("disabled", false);
+    }
+
+    function PrelevaPVCoeffFasciaKm() {
+        //  debugger;
+        rotta = "/Richiamo/Richiamo";
+        var idRichiamo = parseInt('@idRichiamo');
+        var idFKm = parseInt($("#idGruppoFKmRichiamo").select2('val'));
+        $("#idGruppoFKmRichiamo_Nuovo").val(idFKm);
+        var dataRichiamo = $("#hiddenidDataRichiamo_Nuovo").val();
+        var nuovo = 0;
+
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataRichiamo: dataRichiamo ,nuovo:nuovo},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+               // debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$("#tabElencoRichiamo").empty();
+                //$("#tabElencoRichiamo").html(result);
+                $("#DivRichiamoMain").empty();
+                $("#DivRichiamoMain").html(result);
+                //
+                //RicercaDocumenti();
+            //    VerificaSeAbilitaoNonSelect2(idFKm);
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    function Mostra_Modal_InserisciRichiamo() {
+      //  debugger;
+
+        var xx = $("#hiddenidDataRichiamo_Nuovo").val();
+        $("#idDataRichiamo_Nuovo").val(xx);
+        MessaggioInserisciRichiamo(parseInt('@idTrasferimento'), xx);
+
+        $('#ModalInserisciRichiamo').modal({ backdrop: 'static', keyboard: false }).show();
+    }
+    function Mostra_Modal_ModificaRichiamo() {
+       // debugger;
+
+        var xx = $("#hiddenidDataRichiamo_Nuovo").val();
+        $("#idDataRichiamo_Modifica").val(xx);
+        MessaggioModificaRichiamo(parseInt('@idTrasferimento'), xx);
+
+        $('#ModalModificaRichiamo').modal({ backdrop: 'static', keyboard: false }).show();
+    }
+
+
+
+    function ConfermaInserisciRichiamo() {
+
+       // debugger;
+        //  VisualizzaErrore();
+
+        rotta = "/Richiamo/ConfermaInserisciRichiamo";
+      //  var errori = $("#hiddenErroreInserimento").val();
+        //
+        var idFasciaFKM = parseInt($("#idGruppoFKmRichiamo").select2('val'));
+        $("#hiddenCoefficenteFasciaKM_Nuovo").val(idFasciaFKM);
+        $("#hiddenCoefficenteFasciaKM").val(idFasciaFKM);
+        var dataRichiamo = $("#idDataRichiamo_Nuovo").val();
+
+        $("#hiddenidDataRichiamo_Nuovo").val(dataRichiamo);
+
+        var idTrasferimento = parseInt('@idTrasferimento');
+        if (ValidazioneRichiamo()) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento, idFasciaFKM: idFasciaFKM, dataRichiamo: dataRichiamo },
+                dataType: 'json',
+                beforeSend: function () {
+
+                },
+                success: function (result) {
+                //  debugger;
+                    if (result.err=="") {
+                        callRichiamo();
+                        var list = result.list;
+                        $("#ElencolistaTrasferimento").select2();
+                        $('#ElencolistaTrasferimento').html('');
+                        $.each(list, function (key, val) {
+                            $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
+                        })
+                    }
+                    else
+                    {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+            });
+        }
+        else
+        {
+            Check();
+        }
+    }
+
+    function ConfermaModificaRichiamo() {
+         //  debugger;
+        //  VisualizzaErrore();
+        rotta = "/Richiamo/ConfermaModificaRichiamo";
+        //  var errori = $("#hiddenErroreInserimento").val();
+        var idRichiamo = parseInt('@idRichiamo');
+        var idFasciaFKM = parseInt($("#idGruppoFKmRichiamo_Modifica").select2('val'));
+        $("#hiddenCoefficenteFasciaKM_Nuovo").val(idFasciaFKM);
+        $("#hiddenCoefficenteFasciaKM").val(idFasciaFKM);
+        var dataRichiamo = $("#idDataRichiamo_Modifica").val();
+
+        $("#hiddenidDataRichiamo_Nuovo").val(dataRichiamo);
+
+        var idTrasferimento = parseInt('@idTrasferimento');
+        if (ValidazioneRichiamoModifica()) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento, idFasciaFKM: idFasciaFKM, dataRichiamo: dataRichiamo,idRichiamo:idRichiamo},
+                dataType: 'json',
+                beforeSend: function () {
+
+                },
+                success: function (result) {
+                    if (result.err == "") {
+                       // debugger;
+                        // ElencoTrasferimento();
+                        callRichiamo();
+                        var list = result.list;
+                        $("#ElencolistaTrasferimento").select2();
+                        $('#ElencolistaTrasferimento').html('');
+                        
+                        $.each(list, function(key, val){
+                            $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
+                        })
+                    }
+                    else {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+            });
+        }
+        else {
+            CheckModifica();
+        }
+    }
+
+    function MessaggioInserisciRichiamo(idTrasferimento,xx) {
+    //    debugger;
+        var rotta = "/Richiamo/MessaggioInserisciRichiamo";
+        var idFKm=$("#idGruppoFKmRichiamo").val();
+        //var idTrasportoEffettiPartenza = 0;@*// parseInt('@idTrasportoEffettiPartenza');*@
+        var idRichiamo = parseInt('@idRichiamo');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataInserita: xx },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+              //  debugger;
+                $("#viewMessaggioInserisciRichiamo").empty();
+                $("#viewMessaggioInserisciRichiamo").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+    function MessaggioModificaRichiamo(idTrasferimento, xx) {
+      //  debugger;
+        var rotta = "/Richiamo/MessaggioModificaRichiamo";
+        var idFKm = $("#idGruppoFKmRichiamo").val();
+        var idRichiamo = parseInt('@idRichiamo');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataInserita: xx ,idRichiamo:idRichiamo},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //  debugger;
+                $("#viewMessaggioModificaRichiamo").empty();
+                $("#viewMessaggioModificaRichiamo").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+    function ValidazioneRichiamo() {
+       // debugger;
+        var ret = false;
+        var c1 = false;
+        var c2 = false;
+
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        var DataRichiamo = $("#idDataRichiamo_Nuovo").val();
+        var DataPartenza = $("#idDataPartenzaRichiamo_Nuovo").val();
+        var idFasciaFKM = parseInt($("#idGruppoFKmRichiamo").select2('val'));
+        //  var file = $("#file").val();
+
+        if (idTrasferimento > 0) {
+            if (DataRichiamo != "" && DataRichiamo != undefined) {
+                c1 = true;
+            }
+            else {
+                c1 = false;
+            }
+            if (DataPartenza != "" && DataPartenza != undefined) {
+                c2 = true;
+            }
+            else {
+                c2 = false;
+            }
+            if (c1 && c2) {
+                ret = true;
+            }
+            else {
+                ret = false;
+            }
+            ret = isValidDate(DataRichiamo, "dd/MM/yyyy")
+            if(idFasciaFKM=='0' ||idFasciaFKM==''||idFasciaFKM==undefined)
+                ret=false;
+        }
+        return ret;
+    }
+    //
+    function ValidazioneRichiamoModifica() {
+         //  debugger;
+        var ret = false;
+        var c1 = false;
+        var c2 = false;
+
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        var DataRichiamo = $("#idDataRichiamo_Modifica").val();
+        var DataPartenza = $("#idDataPartenzaRichiamo_Modifica").val();
+        var idFasciaFKM = parseInt($("#idGruppoFKmRichiamo_Modifica").select2('val'));
+        
+        //  var file = $("#file").val();
+
+        if (idTrasferimento > 0) {
+            if (DataRichiamo != "" && DataRichiamo != undefined) {
+                c1 = true;
+            }
+            else {
+                c1 = false;
+            }
+            if (DataPartenza != "" && DataPartenza != undefined) {
+                c2 = true;
+            }
+            else {
+                c2 = false;
+            }
+            if (c1 && c2) {
+                ret = true;
+            }
+            else {
+                ret = false;
+            }
+            ret = isValidDate(DataRichiamo, "dd/MM/yyyy")
+
+            ret = isValidDate(DataRichiamo, "dd/MM/yyyy")
+            if(idFasciaFKM=='0' ||idFasciaFKM==''||idFasciaFKM==undefined)
+                ret=false;
+        }
+        return ret;
+    }
+    function Check() {
+        $('#dialog-confirm-Richiamo').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        //var rotta = "/Richiamo/ControllaDataValida";
+                        //var dataDaControllare = $("#hiddenidDataRichiamo_Nuovo").val();
+                        $.ajax({
+                            type: "POST",
+                            url: '',
+                           // data: { dataDaControllare:dataDaControllare },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                               // debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //$("#divPViewParametri").empty();
+                                //$("#divPViewParametri").html(result);
+                                //RicercaDocumenti();
+                                $("#idDataRichiamo_Nuovo").val($("#hiddenidDataRichiamo_Nuovo").val());
+                                Mostra_Modal_InserisciRichiamo();
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                             //   Mostra_Modal_InserisciRichiamo();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+                        });
+                    },
+                    "class": "ui-button-danger"
+                }
+            ]
+        });
+    }
+
+    function CheckModifica() {
+        $('#dialog-confirm-Richiamo-Modifica').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        //var rotta = "/Richiamo/ControllaDataValida";
+                        //var dataDaControllare = $("#hiddenidDataRichiamo_Nuovo").val();
+                        $.ajax({
+                            type: "POST",
+                            url: '',
+                            // data: { dataDaControllare:dataDaControllare },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                               // debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //$("#divPViewParametri").empty();
+                                //$("#divPViewParametri").html(result);
+                                //RicercaDocumenti();
+                                $("#idDataRichiamo_Modifica").val($("#hiddenidDataRichiamo_Nuovo").val());
+                                Mostra_Modal_ModificaRichiamo();
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                                //   Mostra_Modal_InserisciRichiamo();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+                        });
+                    },
+                    "class": "ui-button-danger"
+                }
+            ]
+        });
+    }
+
+
+    function isValidDate(s) {
+       // debugger;
+        var separators = ['\\.', '\\-', '\\/'];
+        var bits = s.split(new RegExp(separators.join('|'), 'g'));
+        var d = new Date(bits[2], bits[1] - 1, bits[0]);
+        return d.getFullYear() == bits[2] && d.getMonth() + 1 == bits[1];
+    }
+
+    function callRichiamo()
+    {
+      //  debugger;
+        rotta = "/Richiamo/Richiamo";
+
+      //  var idFKm = parseInt($("#idGruppoFKmRichiamo").select2('val'));
+        var idFKm = $("#hiddenCoefficenteFasciaKM_Nuovo").val();
+        var dataRichiamo = $("#hiddenidDataRichiamo_Nuovo").val();
+        var nuovo = idFKm;
+        var idTrasferimento = parseInt('@idTrasferimento');
+        var idRichiamo = parseInt('@idRichiamo');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, dataRichiamo: dataRichiamo,nuovo:nuovo },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+             //  debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$("#tabElencoRichiamo").empty();
+                //$("#tabElencoRichiamo").html(result);
+                $("#DivRichiamoMain").empty();
+                $("#DivRichiamoMain").html(result);
+
+                //$('#listaTrasferimento').select2('destroy').empty().select2({ data: [{ id: 1, text: 'new text' }] });
+               // $('#listaTrasferimento').select2().trigger('change');
+                //
+                //RicercaDocumenti();
+                //    VerificaSeAbilitaoNonSelect2(idFKm);
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
 </script>
+
+
+
+
 

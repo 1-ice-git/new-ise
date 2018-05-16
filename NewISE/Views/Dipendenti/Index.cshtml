@@ -347,12 +347,14 @@
         //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         //var dataPartenza = $("#hiddataPartenza").val();
-        rotta = "/Richiamo/AttivitaRichiamo";
-
+        var dataRichiamo;
+        rotta = "/Richiamo/Richiamo";
+        var nuovo = 0;
+        var idFKm = 0;
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, nuovo: nuovo, dataRichiamo: dataRichiamo },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -888,7 +890,6 @@
 
     function MenuRichiamo(idTrasferimento) {
         //debugger;
-        //var rotta = "/Richiamo/Richiamo";
         var rotta = "/Sospensione/VerificaRichiamo";
 
         var valoreRitorno = 0;
