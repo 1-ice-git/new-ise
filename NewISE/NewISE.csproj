@@ -3555,6 +3555,8 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumentiPrecedenti.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfConiuge.cshtml" />
     <Content Include="Views\ViaggiCongedo\MessaggioAnnullaViaggiCongedo.cshtml" />
+    <Content Include="Views\Richiamo\MessaggioInserisciRichiamo.cshtml" />
+    <Content Include="Views\Richiamo\MessaggioModificaRichiamo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
