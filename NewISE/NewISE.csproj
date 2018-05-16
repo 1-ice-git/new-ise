@@ -3153,6 +3153,7 @@
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
     <Compile Include="Models\DBModel\TipoLiquidazioneModel.cs" />
+    <Compile Include="Models\DBModel\TipoVoceModel.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
     <Compile Include="Models\DBModel\PagatoCondivisoMABModel.cs" />
@@ -3283,6 +3284,7 @@
     <Compile Include="Models\DBModel\ValutaUfficioModel.cs" />
     <Compile Include="Models\DBModel\CanoneMABModel.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
+    <Compile Include="Models\DBModel\VociModel.cs" />
     <Compile Include="Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Models\dtObj\dtAccesso.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCDCGepe.cs" />
