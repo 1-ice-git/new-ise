@@ -54,10 +54,18 @@
                         @Html.DisplayNameFor(model => model.dataFine)
                     </div>
                     <div class="col-xs-4" style="padding-left:10px">
-                    @if (Model.dataFine != Utility.DataFineStop())
-                    {
-                        <span style="@Model.ev_dataFine">@Html.DisplayFor(model => model.dataFine)</span>
-                    }
+                        @if (Model.dataFine != Utility.DataFineStop())
+                        {
+                            <span style="@Model.ev_dataFine">
+                                @Html.DisplayFor(model => model.dataFine)
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="@Model.ev_dataFine">
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            </span>
+                        }
                     </div>
                 </div>
             </div>
