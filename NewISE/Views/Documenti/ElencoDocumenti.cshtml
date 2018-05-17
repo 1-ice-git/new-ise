@@ -196,11 +196,16 @@
     var nuovoIDTable = "tabElencoDoc" + guid;
     var nuovoIdModalDelete = "DelDocModal" + guid;
     var nuovoModalIns = "NewDocModal" + guid;
+    var nuovoNewViewDocumento = "NewViewDocumento" + guid;
+    var nuovotitoloPagina =  "titoloPagina" + guid;
+    var nuovoNewnotificaModelLabel = "NewnotificaModelLabel" + guid;
 
     $("#tabElencoDoc").prop("id", nuovoIDTable);
     $("#DelDocModal").prop("id", nuovoIdModalDelete);
     $("#NewDocModal").prop("id", nuovoModalIns);
-
+    $("#NewViewDocumento").prop("id", nuovoNewViewDocumento);
+    $("#titoloPagina").prop("id", nuovotitoloPagina);
+    $("#NewnotificaModelLabel").prop("id", nuovoNewnotificaModelLabel);
 
     $("#" + nuovoIDTable).DataTable({
         "language": {
@@ -378,12 +383,12 @@
             },
             success: function (result) {
                 //debugger;
-                $("#NewViewDocumento").empty();
-                $("#NewViewDocumento").html(result);
+                $('#' + nuovoNewViewDocumento).empty();
+                $('#' + nuovoNewViewDocumento).html(result);
 
-                var titoloPagina = $("#titoloPagina").val();
-                $("#NewnotificaModelLabel").empty();
-                $("#NewnotificaModelLabel").html('Documenti ' + titoloPagina);
+                var titoloPagina = $('#' + nuovotitoloPagina).val();
+                $('#' + nuovoNewnotificaModelLabel).empty();
+                $('#' + nuovoNewnotificaModelLabel).html('Documenti ' + titoloPagina);
 
 
             },
@@ -392,7 +397,7 @@
 
             },
             error: function (error) {
-                //debugger;
+                debugger;
                 //Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);
