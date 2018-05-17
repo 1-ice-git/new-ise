@@ -51,13 +51,17 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (amf.RICHIESTAATTIVAZIONE == false)
                 {
-                    var p_inlav = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.DATAINIZIO);
+                    var p_inlav = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
+                                                    a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))
+                                                    .OrderBy(a => a.DATAINIZIO);
                     var min_data_inlav = c.DATAINIZIOVALIDITA;
                     if (p_inlav?.Any() ?? false)
                     {
                         min_data_inlav = p_inlav.First().DATAINIZIO;
                     }
-                    p_inlav = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a => a.DATAFINE);
+                    p_inlav = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
+                                            a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))
+                                            .OrderByDescending(a => a.DATAFINE);
                     var max_data_inlav = c.DATAFINEVALIDITA;
                     if (p_inlav?.Any() ?? false)
                     {
@@ -65,8 +69,9 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     //aggiunge i record attivi antecedenti a quelli in lavorazione
-                    var lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
-                                                && a.DATAINIZIO < min_data_inlav)
+                    var lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                    a.DATAINIZIO < min_data_inlav &&
+                                    a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))
                                 .OrderBy(a => a.DATAINIZIO)
                                 .ToList();
                     if (lp?.Any() ?? false)
@@ -85,9 +90,10 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                     //aggiunge i record in lavorazione
-                    lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
-                        .OrderBy(a => a.DATAINIZIO)
-                        .ToList();
+                    lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
+                                                a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))
+                                            .OrderBy(a => a.DATAINIZIO)
+                                            .ToList();
                     if (lp?.Any() ?? false)
                     {
                         lpc.AddRange(from e in lp
@@ -103,9 +109,10 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     //aggiunge i record attivi successivi a quelli in lavorazione
-                    lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
-                                                && a.DATAINIZIO > max_data_inlav)
-                                .OrderBy(a => a.DATAINIZIO)
+                    lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                        a.DATAINIZIO > max_data_inlav &&
+                                        a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))                             
+                                        .OrderBy(a => a.DATAINIZIO)
                                 .ToList();
                     if (lp?.Any() ?? false)
                     {
@@ -124,8 +131,10 @@ namespace NewISE.Models.DBModel.dtObj
                 else
                 {
                     //aggiunge i record non annullati
-                    var lp = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
-                        .OrderBy(a => a.DATAINIZIO)
+                    var lp = c.PENSIONE.Where(a => 
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                            a.ATTIVAZIONIMAGFAM.Any(d=>d.IDATTIVAZIONEMAGFAM==idAttivazioneMagFam && d.ANNULLATO==false))
+                            .OrderBy(a => a.DATAINIZIO)
                         .ToList();
                     if (lp?.Any() ?? false)
                     {

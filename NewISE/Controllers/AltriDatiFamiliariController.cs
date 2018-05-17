@@ -92,13 +92,13 @@ namespace NewISE.Controllers
 
             if (adf != null && adf.HasValue())
             {
-                using (dtFigli dtf = new dtFigli())
-                {
+                //using (dtFigli dtf = new dtFigli())
+                //{
 
-                    var fm = dtf.GetFigliobyID(adf.idFigli);
-                    adf.Figli = fm;
+                //    var fm = dtf.GetFigliobyID(adf.idFigli);
+                //    adf.Figli = fm;
 
-                }
+                //}
 
                 return PartialView(adf);
             }
@@ -244,7 +244,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge, idAttivazioneMagFam);
+                    adf = dtadf.GetAltriDatiFamiliariConiuge(idConiuge,idAttivazioneMagFam);
                 }
 
 
@@ -338,14 +338,6 @@ namespace NewISE.Controllers
 
             if (adf != null && adf.HasValue())
             {
-                using (dtConiuge dtc = new dtConiuge())
-                {
-
-                    var cm = dtc.GetConiugebyID(adf.idConiuge);
-                    adf.Coniuge = cm;
-
-                }
-
                 return PartialView(adf);
             }
             else
