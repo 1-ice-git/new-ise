@@ -480,10 +480,6 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
-
-
-
         /// <exception cref="Exception"></exception>
         public void EditAltriDatiFamiliariFiglio(AltriDatiFamFiglioModel adfm, decimal idAttivazioneMagFam)
         {

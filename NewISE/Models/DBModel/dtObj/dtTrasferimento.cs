@@ -22,6 +22,7 @@ using NewISE.Models.DBModel.Enum;
 using NewISE.Models.Config.s_admin;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.dtObj;
+using System.Web.Mvc;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -2818,6 +2819,143 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public List<SelectListItem> LeggiElencoTrasferimenti(decimal idTrasferimento)
+        {
+            var r = new List<SelectListItem>();
+            decimal matricola = GetMatricolaByIdTrasferimento(idTrasferimento);
+            if (matricola > 0)
+            {
+                var lt = GetListaTrasferimentoByMatricola(matricola);
+                if (lt?.Any() ?? false)
+                {
+                    r = (from e in lt
+                            select new SelectListItem()
+                            {
+                                Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + ((e.dataRientro.HasValue == true && e.dataRientro < Utility.DataFineStop()) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                                Value = e.idTrasferimento.ToString()
+                            }).ToList();
+
+                    if (idTrasferimento == 0)
+                    {
+                        r.First().Selected = true;
+                    }
+                    else
+                    {
+                        r.First(a => a.Value == idTrasferimento.ToString()).Selected = true;
+                    }
+                }
+            }
+            return r;
+        }
+
+        public decimal GetMatricolaByIdTrasferimento(decimal idTrasferimento)
+        {
+            decimal tmp = 0;
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var tr = db.TRASFERIMENTO.Find(idTrasferimento);
+                    tmp = Convert.ToDecimal(tr.DIPENDENTI.MATRICOLA);
+                }
+            }
+            catch (Exception ee)
+            {
+                throw ee;
+            }
+            return tmp;
+        }
+
+        public IList<TrasferimentoModel> GetListaTrasferimentoByMatricola(decimal matricola)
+        {
+            List<TrasferimentoModel> ltm = new List<TrasferimentoModel>();
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var d = db.DIPENDENTI.First(a => a.MATRICOLA == matricola);
+
+                    if (d?.IDDIPENDENTE > 0)
+                    {
+                        var lt = d.TRASFERIMENTO.OrderByDescending(a => a.DATAPARTENZA);
+
+                        if (lt?.Any() ?? false)
+                        {
+                            ltm = (from t in lt
+                                   select new TrasferimentoModel()
+                                   {
+                                       idTrasferimento = t.IDTRASFERIMENTO,
+                                       idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                                       idUfficio = t.IDUFFICIO,
+                                       idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
+                                       idDipendente = t.IDDIPENDENTE,
+                                       idTipoCoan = t.IDTIPOCOAN,
+                                       dataPartenza = t.DATAPARTENZA,
+                                       dataRientro = t.DATARIENTRO,
+                                       coan = t.COAN,
+                                       protocolloLettera = t.PROTOCOLLOLETTERA,
+                                       dataLettera = t.DATALETTERA,
+                                       notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                                       dataAggiornamento = t.DATAAGGIORNAMENTO,
+                                       StatoTrasferimento = new StatoTrasferimentoModel()
+                                       {
+                                           idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                                           descrizioneStatoTrasferimento = t.STATOTRASFERIMENTO.DESCRIZIONE
+                                       },
+                                       TipoTrasferimento = new TipoTrasferimentoModel()
+                                       {
+                                           idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                                           descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                                       },
+                                       Ufficio = new UfficiModel()
+                                       {
+                                           idUfficio = t.UFFICI.IDUFFICIO,
+                                           codiceUfficio = t.UFFICI.CODICEUFFICIO,
+                                           descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
+                                       },
+                                       Dipendente = new DipendentiModel()
+                                       {
+                                           idDipendente = t.DIPENDENTI.IDDIPENDENTE,
+                                           matricola = t.DIPENDENTI.MATRICOLA,
+                                           nome = t.DIPENDENTI.NOME,
+                                           cognome = t.DIPENDENTI.COGNOME,
+                                           dataAssunzione = t.DIPENDENTI.DATAASSUNZIONE,
+                                           dataCessazione = t.DIPENDENTI.DATACESSAZIONE,
+                                           indirizzo = t.DIPENDENTI.INDIRIZZO,
+                                           cap = t.DIPENDENTI.CAP,
+                                           citta = t.DIPENDENTI.CITTA,
+                                           provincia = t.DIPENDENTI.PROVINCIA,
+                                           email = t.DIPENDENTI.EMAIL,
+                                           telefono = t.DIPENDENTI.TELEFONO,
+                                           fax = t.DIPENDENTI.FAX,
+                                           abilitato = t.DIPENDENTI.ABILITATO,
+                                           dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
+                                       },
+                                       TipoCoan = new TipologiaCoanModel()
+                                       {
+                                           idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
+                                           descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
+                                       },
+                                   }).ToList();
+                        }
+
+
+                    }
+                    else
+                    {
+                        throw new Exception("Nessun dipendente presente sul database per la matricola selezionata.");
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return ltm;
+        }
 
     }
 }
