@@ -8,7 +8,7 @@ namespace NewISE.Models.DBModel.dtObj
 {
     public enum EnumTipoTrasferimento
     {
-        SedeEstero = 1,
+        ItaliaEstero = 1,
         EsteroEstero = 2,
         EsteroEsteroStessaRegiona = 3
     }
