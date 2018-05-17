@@ -149,28 +149,36 @@ namespace NewISE.Controllers
         {
             ViewData["idTrasferimento"] = idTrasferimento;
             ViewData["dataPartenza"] = "Inserire qui la Data come idTrasferimento";
-
+            decimal tmp = 0;
             try
             {
                 if (idTrasferimento <= 0)
                 {
-                    throw new Exception(" non valorizzato");
+                    throw new Exception("Trasferimento non valorizzato");
                 }
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     dipInfoTrasferimentoModel trm = dtt.GetInfoTrasferimento(idTrasferimento);
-                    if (trm != null && (trm.statoTrasferimento == EnumStatoTraferimento.Attivo ||
-                        trm.statoTrasferimento == EnumStatoTraferimento.Terminato))
+                    if (trm != null)
                     {
-                        ViewData["idTrasferimento"] = idTrasferimento;
-
-                        return Json(new { VerificaRichiamo = 1 });
-                    }
-                    else
-                    {
-                        return Json(new { VerificaRichiamo = 0 });
+                        if (trm.statoTrasferimento == EnumStatoTraferimento.Attivo)
+                        {
+                            tmp = 1;
+                        }
+                        else
+                        {
+                            if (trm.statoTrasferimento == EnumStatoTraferimento.Terminato)
+                            {
+                               TrasferimentoModel trmod= dtt.GetTrasferimentoById(idTrasferimento);
+                                if(trmod.TipoTrasferimento.idTipoTrasferimento==(decimal)EnumTipoTrasferimento.ItaliaEstero)
+                                {
+                                    tmp = 1;
+                                }
+                            }
+                        }
                     }
                 }
+                return Json(new { VerificaRichiamo = tmp });
             }
             catch (Exception ex)
             {

@@ -631,22 +631,23 @@
             $("#lkCongediPermessi").removeAttr("onClick");
         }
 
-        //if (MenuRichiamo(idTrasferimento) == 1) {
-        //    $("#lkRichiamo").removeAttr("disabled");
-        //    $("#mnRichiamo").removeClass("disabled");
-        //    $('#lkRichiamo').attr('onClick', 'Richiamo();');
-        //}
-        //else {
-        //    $("#lkRichiamo").attr("disabled", "disabled");
-        //    $("#mnRichiamo").addClass("disabled");
-        //    $("#lkRichiamo").removeAttr("onClick");
-        //}
+        if (MenuRichiamo(idTrasferimento) == 1) {
+            $("#lkRichiamo").removeAttr("disabled");
+            $("#mnRichiamo").removeClass("disabled");
+            $('#lkRichiamo').attr('onClick', 'Richiamo();');
+        }
+        else {
+
+            $("#lkRichiamo").attr("disabled", "disabled");
+            $("#mnRichiamo").addClass("disabled");
+            $("#lkRichiamo").removeAttr("onClick");
+        }
 
 
 
-        $("#lkRichiamo").removeAttr("disabled");
-        $("#mnRichiamo").removeClass("disabled");
-        $('#lkRichiamo').attr('onClick', 'Richiamo();');
+        //$("#lkRichiamo").removeAttr("disabled");
+        //$("#mnRichiamo").removeClass("disabled");
+        //$('#lkRichiamo').attr('onClick', 'Richiamo();');
 
 
         if (MenuProvvidenzeScolastiche(idTrasferimento) == 1) {
@@ -890,7 +891,7 @@
 
     function MenuRichiamo(idTrasferimento) {
         //debugger;
-        var rotta = "/Sospensione/VerificaRichiamo";
+        var rotta = "/Richiamo/VerificaRichiamo";
 
         var valoreRitorno = 0;
 
@@ -910,7 +911,7 @@
                     // debugger;
 
                     if (result.err == "" || result.err == undefined) {
-                        if (result.VerificaSospensione != 0) {
+                        if (result.VerificaRichiamo != 0) {
                             valoreRitorno = 1;
                         }
                         else {

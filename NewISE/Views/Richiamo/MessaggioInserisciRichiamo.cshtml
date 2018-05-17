@@ -55,7 +55,10 @@
     function PrelevaPVCoeffFasciaKm_Nuovo() {
         //debugger;
         var idFKm = parseInt($("#idGruppoFKmRichiamo_Nuovo").select2('val'));
-        $("#idGruppoFKmRichiamo").val(idFKm);        
+       // $("#idGruppoFKmRichiamo").val(idFKm);
+        if (!isNaN(idFKm)) {
+            $("#idGruppoFKmRichiamo").val(idFKm);
+        }
     }
     
 </script>
