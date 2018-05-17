@@ -359,4 +359,16 @@
   <data name="OggettoNotificaViaggiCongedo2" xml:space="preserve">
     <value>Notifica richiesta Viaggio Congedo FASE 2</value>
   </data>
+  <data name="MessaggioRichiamoInserisci" xml:space="preserve">
+    <value>Si notifica che il suo trasferimento attuale nella sede di {0} terminerà il giorno {1}.</value>
+  </data>
+  <data name="MessaggioRichiamoModifica" xml:space="preserve">
+    <value>E’ stata effettuata una variazione sulla data di rientro per la sede di {0} dal {1} al {2}.</value>
+  </data>
+  <data name="OggettoRichiamoInserisci" xml:space="preserve">
+    <value>Notifica nuovo Trasferimento </value>
+  </data>
+  <data name="OggettoRichiamoModifica" xml:space="preserve">
+    <value>Notifica modificaTrasferimento</value>
+  </data>
 </root>
