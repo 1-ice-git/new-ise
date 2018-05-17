@@ -444,5 +444,69 @@ namespace NewISE.Models.DBModel.dtObj
 
             return ltm;
         }
+        public string GetEmailByIdDipendente(decimal idDipendente)
+        {
+            string email = "";
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
+                email = d.EMAIL;
+            }
+            return email;
+        }
+        public decimal Restituisci_ID_Destinatario(decimal idTrasferimento)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var atvc = db.TRASFERIMENTO.Find(idTrasferimento);
+                tmp = atvc.DIPENDENTI.IDDIPENDENTE;
+            }
+            return tmp;
+        }
+        public decimal RestituisciIDdestinatarioDaEmail(string email)
+        {
+            decimal idDipendente = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    idDipendente = (from e in db.DIPENDENTI
+                                    where e.EMAIL.ToUpper() == email.ToUpper() && e.ABILITATO == true
+                                    select new DipendentiModel()
+                                    {
+                                        idDipendente = e.IDDIPENDENTE,
+                                    }).ToList().First().idDipendente;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return idDipendente;
+        }
+        public DipendentiModel RestituisciDipendenteByID(decimal idDipendente)
+        {
+            DipendentiModel dm = new DipendentiModel();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
+                dm.idDipendente = d.IDDIPENDENTE;
+                dm.nome = d.NOME; dm.cognome = d.COGNOME;
+                dm.email = d.EMAIL; d.INDIRIZZO = d.INDIRIZZO;
+            }
+            return dm;
+        }      
+        public string DeterminaSede(decimal idTrasferimento)
+        {
+            string tmp = "";
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var atvc = db.TRASFERIMENTO.Find(idTrasferimento);
+                tmp = atvc.UFFICI.DESCRIZIONEUFFICIO + " (" + atvc.UFFICI.CODICEUFFICIO+")";
+            }
+            return tmp;
+        }
+        //GetDataRientroPrecedente
     }
 }

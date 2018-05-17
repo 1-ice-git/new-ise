@@ -12,11 +12,16 @@ using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.Tools;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Interfacce;
+using NewISE.Interfacce.Modelli;
+using System.IO;
 
 namespace NewISE.Controllers
 {
     public class RichiamoController : Controller
     {
+        private object dtric;
+
         // GET: Richiamo
         public ActionResult Index()
         {
@@ -270,7 +275,7 @@ namespace NewISE.Controllers
                         ViewData["errore"] = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
                         //  return PartialView("Richiamo");
                         // return PartialView("ErrorPartial", new MsgErr() { msg = "Non esistono coefficenti corrispondenti ai criteri del Richiamo" });
-                       errore= "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
+                        errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
                     }
                     ri.IDPFKM = IDPFKM;
                     DateTime DataRientro = Convert.ToDateTime(dataRichiamo).AddDays(-1);
@@ -281,20 +286,26 @@ namespace NewISE.Controllers
 
                     //if (idRichiamo != 0)
                     //{
-                        ViewData["dataRichiamo"] = ri.DataRichiamo.ToShortDateString();
-                        ViewData["dataRientro"] = ri.DataRientro.ToShortDateString();                       
-                        ViewData["idRichiamo"] = idRichiamo;
+                    ViewData["dataRichiamo"] = ri.DataRichiamo.ToShortDateString();
+                    ViewData["dataRientro"] = ri.DataRientro.ToShortDateString();
+                    ViewData["idRichiamo"] = idRichiamo;
 
-                        if(DataRientro<dataPartenza)
-                            errore = "Data Rientro "+DataRientro.ToShortDateString()+" non può essere inferiore alla data Partenza " +dataPartenza.ToShortDateString();
-                        else
-                        {
-                            idRichiamo = dtric.SetRichiamo(ri, idCoeffIndRichiamo, IDPFKM,  DataRientro);
-                            ViewData["idRichiamo"] = idRichiamo;
-                            errore = "";
-                        }
+                    if (DataRientro < dataPartenza)
+                        errore = "Data Rientro " + DataRientro.ToShortDateString() + " non può essere inferiore alla data Partenza " + dataPartenza.ToShortDateString();
+                    else
+                    {
+                        idRichiamo = dtric.SetRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro);
+                        ViewData["idRichiamo"] = idRichiamo;
+                        errore = "";
+                    }
+
+                    lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento);
+                    string sede = dtric.DeterminaSede(idTrasferimento);
+                    string oggetto = Resources.msgEmail.OggettoRichiamoInserisci;
+                    string corpoMessaggio = string.Format(Resources.msgEmail.MessaggioRichiamoInserisci, sede, ri.DataRientro.ToShortDateString());
+
+                    InviaMailRichiamo(idTrasferimento, corpoMessaggio, oggetto);
                 }
-                lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento);
             }
             catch (Exception ex)
             {
@@ -342,6 +353,7 @@ namespace NewISE.Controllers
             ViewData["idTrasferimento"] = idTrasferimento;
             ViewData["idFKm"] = idFasciaFKM;
             DateTime dataPartenza = new DateTime();
+            
             CaricaComboFKM(idFasciaFKM, idFasciaFKM);
             string errore = "";var lstr=new List<SelectListItem>();
             using (dtRichiamo dtric = new dtRichiamo())
@@ -366,10 +378,10 @@ namespace NewISE.Controllers
                         ViewData["errore"] = errore;
                     }
                     ri.IDPFKM = IDPFKM;
+
+                    DateTime dataRientroPrecedente = dtric.Restituisci_Data_Rientro(idTrasferimento);
                     DateTime DataRientro = Convert.ToDateTime(dataRichiamo).AddDays(-1); 
-                    ////
-                    //idRichiamo= dtric.EditRichiamo(ri, idCoeffIndRichiamo, IDPFKM, out DataRientro, idRichiamo);
-                    ///
+                    
                     ri.DataRientro = DataRientro;
 
                     if (idRichiamo != 0)
@@ -384,6 +396,12 @@ namespace NewISE.Controllers
                         {
                             idRichiamo = dtric.EditRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro, idRichiamo);
                             errore = "";
+                            lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento);
+                            string sede = dtric.DeterminaSede(idTrasferimento);
+                            string oggetto = Resources.msgEmail.OggettoRichiamoModifica;
+                            string corpoMessaggio = string.Format(Resources.msgEmail.MessaggioRichiamoModifica, sede,dataRientroPrecedente.ToShortDateString(), ri.DataRientro.ToShortDateString());
+
+                            InviaMailRichiamo(idTrasferimento, corpoMessaggio, oggetto);
                         }             
                     }
                     else
@@ -394,7 +412,6 @@ namespace NewISE.Controllers
                         // return PartialView("ErrorPartial", new MsgErr() { msg = "Errore riscontrato nell'inserimento del Richiamo" });
                     }
                 }
-                lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento);
             }
             catch (Exception ex)
             {
@@ -418,6 +435,81 @@ namespace NewISE.Controllers
             catch (Exception ex)
             {
                 return Json(new { errore = ex.Message, msg = ex.Message });
+            }
+        }
+        public void InviaMailRichiamo(decimal idTrasferimento,string corpoMessaggio="", string oggetto="")
+        {
+           // UtentiAutorizzatiModel uta = null;
+            decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
+            ViewBag.idMittenteLogato = idMittenteLogato;
+         //   NotificheModel nmod = new NotificheModel();
+            using (dtRichiamo dtn = new dtRichiamo())
+            {
+                using (GestioneEmail gmail = new GestioneEmail())
+                {
+                   // ModelloAllegatoMail allegato = new ModelloAllegatoMail();
+                    Destinatario dest = new Destinatario();
+                    Destinatario destToCc = new Destinatario();
+                    ModelloMsgMail modMSGmail = new ModelloMsgMail();
+
+                    //if (idDocumento != 0)
+                    //{
+                    //    var docByte = dtn.GetAllegatoVC(idAttivazioneVC, idDocumento);
+                    //    Stream streamDoc = new MemoryStream(docByte);
+                    //    DocumentiModel dm = dtn.GetDatiDocumentoById(idDocumento);
+                    //    allegato.nomeFile = dm.nomeDocumento + "." + dm.estensione;
+                    //    allegato.allegato = streamDoc;
+                    //    modMSGmail.allegato.Add(allegato);
+                    //}
+                    modMSGmail.oggetto = oggetto;
+                    modMSGmail.corpoMsg = corpoMessaggio;
+                    Mittente mitt = new Mittente();
+                    //mitt.EmailMittente = dtn.GetEmailByIdDipendente(idMittenteLogato);
+                    //decimal id_dip = dtn.RestituisciIDdestinatarioDaEmail(mitt.EmailMittente);
+                    DipendentiModel dmod = dtn.RestituisciDipendenteByID(idMittenteLogato);
+                    mitt.Nominativo = dmod.nome + " " + dmod.cognome;
+
+                    decimal idDestinatario = dtn.Restituisci_ID_Destinatario(idTrasferimento);
+                    string nome_ = dtn.RestituisciDipendenteByID(idDestinatario).nome;
+                    string cognome_ = dtn.RestituisciDipendenteByID(idDestinatario).cognome;
+                    string nominativo_ = nome_ + " " + cognome_;
+                    dest = new Destinatario();
+                    dest.EmailDestinatario = dtn.GetEmailByIdDipendente(idDestinatario);
+                    dest.Nominativo = nominativo_;
+                    modMSGmail.destinatario.Add(dest);
+
+                    //il mittente deve anche ricevere in coppia la mail
+                    destToCc = new Destinatario();
+                    destToCc.EmailDestinatario = mitt.EmailMittente;
+                    string nominativo_c = mitt.Nominativo;
+                    destToCc.Nominativo = nominativo_c;
+                    modMSGmail.cc.Add(destToCc);
+
+                    //Qui mi assicuro che tutti gli amminsitratori siano inclusi in ToCc
+                    //var lls = dtn.GetListaDipendentiAutorizzati((decimal)EnumRuoloAccesso.Amministratore);
+                    //foreach (var x in lls)
+                    //{
+                    //    bool found = false;
+                    //    if (modMSGmail.cc.Count != 0)
+                    //    {
+                    //        var tmp = modMSGmail.cc.Where(a => a.EmailDestinatario.ToUpper().Trim() == x.email.ToUpper().Trim()).ToList();
+                    //        if (tmp.Count() != 0) found = true;
+                    //    }
+                    //    if (found == false)
+                    //    {
+                    //        destToCc = new Destinatario();
+                    //        string nome_cc = x.nome;
+                    //        string cognome_cc = x.cognome;
+                    //        destToCc.EmailDestinatario = x.email;
+                    //        string nominativo_cc = nome_cc + " " + cognome_cc;
+                    //        destToCc.Nominativo = nominativo_cc;
+                    //        modMSGmail.cc.Add(destToCc);
+                    //    }
+                    //}
+                    ///////////////////////////////////////////////////////
+                    modMSGmail.mittente = mitt;
+                    gmail.sendMail(modMSGmail);
+                }
             }
         }
     }
