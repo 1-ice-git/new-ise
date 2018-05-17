@@ -467,6 +467,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     codiceFiscale = cm.codiceFiscale,
                                     dataInizio = cm.dataInizio.Value,
                                     dataFine = dtFin,
+                                    dataAggiornamento = DateTime.Now,
                                     escludiPassaporto = cm.escludiPassaporto,
                                     dataNotificaPP = cm.dataNotificaPP,
                                     escludiTitoloViaggio = cm.escludiTitoloViaggio,
@@ -552,7 +553,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         foreach (var pmcm in lpmcm)
                                         {
-                                            dtpc.AssociaPercentualeMaggiorazioneConiuge(newcm.idConiuge, pmcm.idPercentualeConiuge, db);
+                                            dtpc.AssociaPercentualeMaggiorazioneConiuge(new_idconiuge, pmcm.idPercentualeConiuge, db);
                                         }
                                     }
                                     else
@@ -662,6 +663,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 c.NOME = cm.nome;
                                 c.COGNOME = cm.cognome;
                                 c.CODICEFISCALE = cm.codiceFiscale;
+                                c.DATAAGGIORNAMENTO = DateTime.Now;
 
                                 if (db.SaveChanges() <= 0)
                                 {
@@ -729,6 +731,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 codiceFiscale = cm.codiceFiscale,
                                 dataInizio = cm.dataInizio.Value,
                                 dataFine = dtFin,
+                                dataAggiornamento=DateTime.Now,
                                 escludiPassaporto = cm.escludiPassaporto,
                                 dataNotificaPP = cm.dataNotificaPP,
                                 escludiTitoloViaggio = cm.escludiTitoloViaggio,
@@ -762,7 +765,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     CAPRESIDENZA = adfc.capResidenza,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_IDALTRIDATIFAM=adfc.idAltriDatiFam
+                                    FK_IDALTRIDATIFAM=adfc.idAltriDatiFam,
                                 };
                                 newc.ALTRIDATIFAM.Add(adf_new);
                                 db.SaveChanges();
@@ -1275,7 +1278,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     escludiTitoloViaggio = fm.escludiTitoloViaggio,
                                     dataNotificaTV = fm.dataNotificaTV,
                                     FK_IdFigli = fm.idFigli,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    dataAggiornamento=DateTime.Now
                                 };
 
                                 decimal new_idfiglio = this.SetFiglio(ref newfm, db, attivazione_aperta.IDATTIVAZIONEMAGFAM);
@@ -1486,6 +1490,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 f.NOME = fm.nome;
                                 f.COGNOME = fm.cognome;
                                 f.CODICEFISCALE = fm.codiceFiscale;
+                                f.DATAAGGIORNAMENTO = DateTime.Now;
                                 int i = db.SaveChanges();
 
                                 if (i <= 0)
@@ -1536,7 +1541,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 escludiTitoloViaggio = fm.escludiTitoloViaggio,
                                 dataNotificaTV = fm.dataNotificaTV,
                                 FK_IdFigli = fm.idFigli,
-                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                dataAggiornamento=DateTime.Now
                             };
 
                             decimal new_idfiglio = this.SetFiglio(ref newfm, db, newamf.IDATTIVAZIONEMAGFAM);
