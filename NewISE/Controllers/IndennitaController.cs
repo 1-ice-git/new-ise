@@ -26,8 +26,6 @@ namespace NewISE.Controllers
                 TrasferimentoModel tm = new TrasferimentoModel();
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    
-
                     tm = dtt.GetTrasferimentoById(idTrasferimento);
 
                     var dataPartenza = tm.dataPartenza.ToShortDateString();
@@ -108,7 +106,6 @@ namespace NewISE.Controllers
         {
 
             List<TrasferimentoModel> tm = new List<TrasferimentoModel>();
-
             
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             var r = new List<SelectListItem>();
@@ -117,13 +114,9 @@ namespace NewISE.Controllers
              
             try
             {
-                // Inserire using
 
-                //using (dtParIndennitaBase dtib = new dtParIndennitaBase())
-                //{
-                //    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndennitaBaseNonAnnullato(idLivello);
-                //    libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                //}
+
+                
 
                 ViewBag.idTrasferimento = idTrasferimento;
                 return PartialView(tm);
