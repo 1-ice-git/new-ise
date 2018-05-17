@@ -2077,14 +2077,15 @@ namespace NewISE.Controllers
         {
             string errore = "";
             DateTime dataPartenzaEffettiva = Convert.ToDateTime(strDataPartenzaEffettiva);
+            var ltrasf = new List<SelectListItem>();
 
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-
-
                     dtt.AttivaTrasf(idTrasferimento, dataPartenzaEffettiva);
+
+                    ltrasf = dtt.LeggiElencoTrasferimenti(idTrasferimento);
                 }
             }
             catch (Exception ex)
@@ -2097,7 +2098,8 @@ namespace NewISE.Controllers
                 Json(
                     new
                     {
-                        err = errore
+                        err = errore,
+                        listaTrasferimenti = ltrasf
                     });
         }
         [HttpPost]
