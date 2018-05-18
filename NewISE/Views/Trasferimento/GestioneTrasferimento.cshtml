@@ -160,6 +160,10 @@
                     $("#divOperazioniAttivitaTrasf").empty();
                     ////InfoElaborazioneAjax(result.msg);
                     GestioneAttivitaTrasferimento();
+                    InfoTrasferimento(idTrasferimento);
+                    //GestioneMenu();
+                    GestioneAbilitazioneMenu(idTrasferimento);
+                    //MenuDaVisualizzare();
                     //ElencoTrasferimento();
                     var list = result.listaTrasferimenti;
                     $("#ElencolistaTrasferimento").select2();

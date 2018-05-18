@@ -396,6 +396,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che il suo trasferimento attuale nella sede di {0} terminerà il giorno {1}..
+        /// </summary>
+        internal static string MessaggioRichiamoInserisci {
+            get {
+                return ResourceManager.GetString("MessaggioRichiamoInserisci", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E’ stata effettuata una variazione sulla data di rientro per la sede di {0} dal {1} al {2}..
+        /// </summary>
+        internal static string MessaggioRichiamoModifica {
+            get {
+                return ResourceManager.GetString("MessaggioRichiamoModifica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaporto {
@@ -752,6 +770,24 @@ namespace Resources {
         internal static string OggettoNotificaViaggiCongedo2 {
             get {
                 return ResourceManager.GetString("OggettoNotificaViaggiCongedo2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica nuovo Trasferimento .
+        /// </summary>
+        internal static string OggettoRichiamoInserisci {
+            get {
+                return ResourceManager.GetString("OggettoRichiamoInserisci", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica modificaTrasferimento.
+        /// </summary>
+        internal static string OggettoRichiamoModifica {
+            get {
+                return ResourceManager.GetString("OggettoRichiamoModifica", resourceCulture);
             }
         }
         
