@@ -440,8 +440,11 @@ namespace NewISE.Controllers
         public void InviaMailRichiamo(decimal idTrasferimento,string corpoMessaggio="", string oggetto="")
         {
            // UtentiAutorizzatiModel uta = null;
-            decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
-            ViewBag.idMittenteLogato = idMittenteLogato;
+            //decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
+            var uam = Utility.UtenteAutorizzato();
+
+
+            //ViewBag.idMittenteLogato = idMittenteLogato;
          //   NotificheModel nmod = new NotificheModel();
             using (dtRichiamo dtn = new dtRichiamo())
             {
@@ -466,8 +469,17 @@ namespace NewISE.Controllers
                     Mittente mitt = new Mittente();
                     //mitt.EmailMittente = dtn.GetEmailByIdDipendente(idMittenteLogato);
                     //decimal id_dip = dtn.RestituisciIDdestinatarioDaEmail(mitt.EmailMittente);
-                    DipendentiModel dmod = dtn.RestituisciDipendenteByID(idMittenteLogato);
-                    mitt.Nominativo = dmod.nome + " " + dmod.cognome;
+                    if (uam?.idDipendente > 0)
+                    {
+                        DipendentiModel dmod = dtn.RestituisciDipendenteByID(uam.idDipendente);
+                        mitt.Nominativo = dmod.nome + " " + dmod.cognome;
+                        mitt.EmailMittente = dmod.email;
+                    }
+                    else
+                    {
+                        mitt.Nominativo = uam.nominativo;
+                        mitt.EmailMittente = uam.eMail;
+                    }                    
 
                     decimal idDestinatario = dtn.Restituisci_ID_Destinatario(idTrasferimento);
                     string nome_ = dtn.RestituisciDipendenteByID(idDestinatario).nome;

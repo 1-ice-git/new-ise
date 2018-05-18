@@ -774,7 +774,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica nuovo Trasferimento .
+        ///   Looks up a localized string similar to Notifica del Richiamo.
         /// </summary>
         internal static string OggettoRichiamoInserisci {
             get {
@@ -783,7 +783,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica modificaTrasferimento.
+        ///   Looks up a localized string similar to Notifica della modifica del Richiamo.
         /// </summary>
         internal static string OggettoRichiamoModifica {
             get {
