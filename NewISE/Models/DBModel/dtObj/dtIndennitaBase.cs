@@ -93,6 +93,42 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
+        public IList<IndennitaBaseModel> GetIndennitaBaseComune(decimal idTrasferimento)
+        {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var ll = db.INDENNITABASE.ToList();
+
+                    libm = (from e in ll
+                           select new IndennitaBaseModel()
+                           {
+                               idIndennitaBase = e.IDINDENNITABASE,
+                               idLivello = e.IDLIVELLO,
+                               dataInizioValidita = e.DATAINIZIOVALIDITA,
+                               dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                               valore = e.VALORE,
+                               valoreResponsabile = e.VALORERESP,
+                               dataAggiornamento = e.DATAAGGIORNAMENTO,
+                               Livello = new LivelloModel()
+                               {
+                                   idLivello = e.LIVELLI.IDLIVELLO,
+                                   DescLivello = e.LIVELLI.LIVELLO
+                               },
+                           }).ToList();
+                }
+
+                return libm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         public IndennitaBaseModel GetIndennitaBaseByIdTrasf(decimal idTrasferimento, DateTime dt)
         {

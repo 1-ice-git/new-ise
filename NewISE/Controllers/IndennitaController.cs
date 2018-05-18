@@ -1,7 +1,9 @@
-﻿using NewISE.Areas.Parametri.Models.dtObj;
+﻿
+using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,28 +105,113 @@ namespace NewISE.Controllers
             }
         }
         public ActionResult IndennitaBase(decimal idTrasferimento)
-        {
-
-            List<TrasferimentoModel> tm = new List<TrasferimentoModel>();
-            
+        {   
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            var r = new List<SelectListItem>();
-            List<LivelloModel> llm = new List<LivelloModel>();
-            List<RiduzioniModel> lrm = new List<RiduzioniModel>();
              
             try
             {
-
-
+                using (dtIndennitaBase dtd = new dtIndennitaBase())
+                {
+                    
+                    libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
+                }
                 
-
-                ViewBag.idTrasferimento = idTrasferimento;
-                return PartialView(tm);
+                //ViewBag.idTrasferimento = idTrasferimento;
+                return PartialView(libm);
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
+            
+        }
+        // Report Indennita Base
+        public ActionResult RptIndennitaBase(decimal idTrasferimento)
+        {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+
+            try
+            {
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var ll = db.INDENNITABASE.ToList();
+
+                    libm = (from e in ll
+                            select new IndennitaBaseModel()
+                            {
+                                idIndennitaBase = e.IDINDENNITABASE,
+                                idLivello = e.IDLIVELLO,
+                                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                valore = e.VALORE,
+                                valoreResponsabile = e.VALORERESP,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                Livello = new LivelloModel()
+                                {
+                                    idLivello = e.LIVELLI.IDLIVELLO,
+                                    DescLivello = e.LIVELLI.LIVELLO
+                                },
+                            }).ToList();
+                }
+
+                // ***************************************************************************
+                // I COMMENTO
+
+                //DataClassDataContext db = new DataClassDataContext();
+                //var datasource = from c in db.sp_LinqTest(v_strCountry)
+                //                 orderby c.CustomerID
+                //                 select c;
+
+                //ReportParameter rpCountry = new ReportParameter("p_Country", v_strCountry);
+                //this.rdlcreport1.LocalReport.SetParameters(new ReportParameter[] { rpCountry });
+                //this.rdlcreport1.LocalReport.DataSources.Add(new ReportDataSource("sp_LinqTestResult", datasource.ToList()));
+                //this.rdlcreport1.LocalReport.Refresh();
+
+                // ***************************************************************************
+
+
+                // ***************************************************************************
+                // II COMMENTO
+
+                //ReportViewer reportViewer = new ReportViewer();
+                //reportViewer.ProcessingMode = ProcessingMode.Local;
+                //reportViewer.SizeToReportContent = true;
+                //reportViewer.Width = Unit.Percentage(100);
+                //reportViewer.Height = Unit.Percentage(100);
+
+                //var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
+                //OracleConnection conx = new OracleConnection(connectionString);
+                //String Sql = "Select * From table_name";
+
+                //OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
+
+                ////adp.Fill(ds13, ds13.V_PRESENZE_LIVELLI.TableName);
+                //adp.Fill(ds13, ds13.DataTable13.TableName);
+
+                //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc";
+                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet13", ds13.Tables[0]));
+
+                //ReportParameter[] parameterValues = new ReportParameter[]
+                //   {
+                //        new ReportParameter ("fromDate",V_DATA),
+                //        new ReportParameter ("toDate",V_DATA1)
+                //   };
+
+                //reportViewer.LocalReport.SetParameters(parameterValues);
+                //reportViewer.LocalReport.Refresh();
+
+                //ViewBag.ReportViewer = reportViewer;
+
+
+                return PartialView();
+            }
+            
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
             
         }
         public ActionResult IndennitaServizio(decimal idTrasferimento)
@@ -212,7 +299,6 @@ namespace NewISE.Controllers
 
 
         }
-
         public ActionResult IndennitadiRichiamo(decimal idTrasferimento)
         {
 

@@ -1,10 +1,13 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.TrasferimentoModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
 
 
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
-    //decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    
 }
+
+@Html.Hidden("hidTrasferimento")
+
 
 <div class="row">
     <div class="col-md-12">
@@ -16,15 +19,35 @@
         </div>
     </div>
 </div>
-
+<br />
 
 <table id="tbIndennitaBase" class="display" cellspacing="0">
     <thead>
         <tr>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.idTrasferimento)
+                @Html.DisplayNameFor(model => model.Livello.DescLivello)
             </th>
-            
+            @*<th class="text-center">
+                @Html.DisplayNameFor(model => model.idIndennitaBase)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.idLivello)
+            </th>*@
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.valore)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.valoreResponsabile)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -32,13 +55,43 @@
         {
             <tr>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.idTrasferimento)
+                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
                 </td>
-               
+                @*<td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.idIndennitaBase)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.idLivello)
+                </td>*@
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.valore)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.valoreResponsabile)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<div class="row">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+        <button class="btn btn-default btn-sm" onclick="RptIndennitaBase()">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Print
+        </button>
+
+    </div>
+</div>
 
 
 <script type="text/javascript">
@@ -65,7 +118,68 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": false,
+
+                }
+        ],
+        "order": [[0, "desc"]]
     });
-  
+
+
+    function myFunction() {
+        window.print();
+    }
+
+
+    function RptIndennitaBase() {
+        //debugger;
+        var rotta = "/Indennita/RptIndennitaBase";
+
+        var idTrasferimento = 0;
+
+        if (!isNaN(idTrasf)) {
+            idTrasferimento = idTrasf;
+        } else {
+            idTrasferimento = $("#hidTrasferimento").val();
+        }
+        @*var idTrasferimento = parseInt('@idTrasferimento');*@
+        
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
 </script>

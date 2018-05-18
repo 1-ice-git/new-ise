@@ -3577,6 +3577,7 @@
     <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Scripts\themes\" />
+    <Folder Include="Views\Indennita\RPT\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
