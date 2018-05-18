@@ -366,9 +366,9 @@
     <value>E’ stata effettuata una variazione sulla data di rientro per la sede di {0} dal {1} al {2}.</value>
   </data>
   <data name="OggettoRichiamoInserisci" xml:space="preserve">
-    <value>Notifica nuovo Trasferimento </value>
+    <value>Notifica del Richiamo</value>
   </data>
   <data name="OggettoRichiamoModifica" xml:space="preserve">
-    <value>Notifica modificaTrasferimento</value>
+    <value>Notifica della modifica del Richiamo</value>
   </data>
 </root>
