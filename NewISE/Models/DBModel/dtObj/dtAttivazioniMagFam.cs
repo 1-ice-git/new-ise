@@ -461,6 +461,31 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void AssociaAltriDatiFamiliari_Coniuge(decimal idConiuge, decimal idAltriDatiFamiliari, ModelDBISE db)
+        {
+            try
+            {
+                var c = db.CONIUGE.Find(idConiuge);
+                var item = db.Entry<CONIUGE>(c);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.ALTRIDATIFAM).Load();
+                var adf = db.ALTRIDATIFAM.Find(idAltriDatiFamiliari);
+                c.ALTRIDATIFAM.Add(adf);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare il coniuge a altri dati familiari");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public void AssociaDocumentoAttivazione(decimal idAttivazioneMagFam, decimal idDocumento, ModelDBISE db)
         {
             try
