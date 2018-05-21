@@ -736,10 +736,8 @@ namespace NewISE.Controllers
 
                     adf = dtvmf.GetAltriDatiFamiliariConiuge(idConiuge);
 
-                    amf = dtvmf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
 
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-                    ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
 
                     bool rinunciaMagFam = false;
                     bool richiestaAttivazione = false;
@@ -820,6 +818,14 @@ namespace NewISE.Controllers
                     adf.Coniuge = cm;
 
                 }
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
+                    amf = dtvmf.GetAttivazioneById(adf.idAltriDatiFam, EnumTipoTabella.AltriDatiFamiliari);
+
+                    ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
+                }
+
+
                 return PartialView(adf);
             }
             else
@@ -836,6 +842,12 @@ namespace NewISE.Controllers
 
                 adf.idConiuge = idConiuge;
                 ViewData.Add("Comuni", comuni);
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
+                    amf = dtvmf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
+
+                    ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
+                }
 
                 return PartialView("InserisciAltriDatiFamiliariConiuge", adf);
             }
@@ -861,11 +873,9 @@ namespace NewISE.Controllers
 
                         adf = dtvmf.GetAltriDatiFamiliariFiglio(idFiglio, idMaggiorazioniFamiliari);
 
-                        amf = dtvmf.GetAttivazioneById(idFiglio, EnumTipoTabella.Figli);
 
                         ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-                        ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
-
+                        
                         bool rinunciaMagFam = false;
                         bool richiestaAttivazione = false;
                         bool attivazione = false;
@@ -942,6 +952,13 @@ namespace NewISE.Controllers
                     adf.Figli = fm;
 
                 }
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
+
+                    amf = dtvmf.GetAttivazioneById(adf.idAltriDatiFam, EnumTipoTabella.AltriDatiFamiliari);
+                    ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
+                }
+
                 return PartialView(adf);
             }
             else
@@ -959,6 +976,13 @@ namespace NewISE.Controllers
                 adf.idFigli = idFiglio;
                 ViewData.Add("Comuni", comuni);
 
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
+                    amf = dtvmf.GetAttivazioneById(idFiglio, EnumTipoTabella.Figli);
+
+                    ViewData.Add("idAttivazione", amf.IDATTIVAZIONEMAGFAM);
+                }
+
                 return PartialView("InserisciAltriDatiFamiliariFiglio", adf);
             }
         }
@@ -969,38 +993,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                {   //questa funzione va replicata per la variazione
-
-                    adfm = dtadf.GetAltriDatiFamiliariConiuge(idAltriDatiFam);
-                    //if (adfm != null && adfm.HasValue())
-                    //{
-                    //    using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                    //    {
-                    //        PercentualeMagConiugeModel pc = new PercentualeMagConiugeModel();
-
-                    //        pc = dtpc.GetPercMagConiugeNow(adfm.idConiuge, DateTime.Now.Date);
-
-                    //        if (pc != null && pc.HasValue())
-                    //        {
-                    //            switch (pc.idTipologiaConiuge)
-                    //            {
-                    //                case EnumTipologiaConiuge.Residente:
-                    //                    adfm.residente = true;
-                    //                    adfm.ulterioreMagConiuge = false;
-                    //                    break;
-
-                    //                case EnumTipologiaConiuge.NonResidente_A_Carico:
-                    //                    adfm.residente = false;
-                    //                    adfm.ulterioreMagConiuge = true;
-                    //                    break;
-
-                    //                default:
-                    //                    break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {   
+                    adfm = dtvmf.GetAltriDatiFamiliariConiugeByID(idAltriDatiFam);
                 }
             }
             catch (Exception ex)
@@ -1038,41 +1033,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                {  // questa funzione va replicata in variazione
-                    adfm = dtadf.GetAltriDatiFamiliariFiglio(idAltriDatiFam);
-                    //if (adfm != null && adfm.HasValue())
-                    //{
-                    //    using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
-                    //    {
-                    //        PercentualeMagFigliModel pf = new PercentualeMagFigliModel();
-
-                    //        pf = dtpf.GetPercentualeMaggiorazioneFigli(adfm.idFigli, DateTime.Now.Date);
-
-                    //        if (pf != null && pf.HasValue())
-                    //        {
-                    //            switch (pf.idTipologiaFiglio)
-                    //            {
-                    //                case EnumTipologiaFiglio.Residente:
-                    //                    adfm.residente = true;
-                    //                    adfm.studente = false;
-                    //                    break;
-
-                    //                case EnumTipologiaFiglio.StudenteResidente:
-                    //                    adfm.studente = true;
-                    //                    adfm.residente = true;
-                    //                    break;
-                    //                case EnumTipologiaFiglio.StudenteNonResidente:
-                    //                    adfm.studente = true;
-                    //                    adfm.residente = false;
-                    //                    break;
-
-                    //                default:
-                    //                    break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
+                    adfm = dtvmf.GetAltriDatiFamiliariFiglioByID(idAltriDatiFam);
                 }
             }
             catch (Exception ex)
@@ -1484,12 +1447,9 @@ namespace NewISE.Controllers
             {
                 using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                 {
-                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                    {
-                        var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari);
+                    var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari);
 
-                        dtmf.NotificaRichiestaVariazione(amf.IDATTIVAZIONEMAGFAM);
-                    }
+                    dtvmf.NotificaRichiestaVariazione(amf.IDATTIVAZIONEMAGFAM);
                 }
             }
             catch (Exception ex)
