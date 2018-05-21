@@ -2768,28 +2768,29 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 c = db.CONIUGE.Find(idConiuge);
 
-                amf = GetAttivazioneAperta(c.IDMAGGIORAZIONIFAMILIARI);
-                if(amf.IDATTIVAZIONEMAGFAM>0==false)
-                {
-                    amf = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList().First();
-                }
+                //amf = GetAttivazioneAperta(c.IDMAGGIORAZIONIFAMILIARI);
+                //if(amf.IDATTIVAZIONEMAGFAM>0==false)
+                //{
+                //    amf = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList().First();
+                //}
 
-                if (amf.RICHIESTAATTIVAZIONE == false)
-                {
-                    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                    if (lp.Count() > 0 == false)
-                    {
-                        lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                    }
-                }
-                else if (amf.ATTIVAZIONEMAGFAM == false)
-                {
-                    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                }
-                else
-                {
-                    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                }
+                //if (amf.RICHIESTAATTIVAZIONE == false)
+                //{
+                lp = c.PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            x.NASCONDI==false).OrderByDescending(a=>a.IDPENSIONE).ToList();
+                //    if (lp.Count() > 0 == false)
+                //    {
+                //        lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                //    }
+                //}
+                //else if (amf.ATTIVAZIONEMAGFAM == false)
+                //{
+                //    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                //}
+                //else
+                //{
+                //    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                //}
 
 
                 //                lp = c.PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();

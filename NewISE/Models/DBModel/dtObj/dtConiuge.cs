@@ -53,7 +53,8 @@ namespace NewISE.Models.DBModel.dtObj
                             lc_prec = t.MAGGIORAZIONIFAMILIARI.CONIUGE
                                     .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                             a.DATAINIZIOVALIDITA != null &&
-                                            a.DATAFINEVALIDITA != Utility.DataFineStop()
+                                            a.DATAFINEVALIDITA != Utility.DataFineStop() &&
+                                            a.DATAFINEVALIDITA<cm.dataInizio
                                             ).OrderByDescending(a => a.IDCONIUGE).ToList();
                         }
                         if (lc_prec?.Any() ?? false)
