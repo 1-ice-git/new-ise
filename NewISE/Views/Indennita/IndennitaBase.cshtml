@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
 
-
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
     
@@ -27,12 +26,9 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.Livello.DescLivello)
             </th>
-            @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.idIndennitaBase)
-            </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.idLivello)
-            </th>*@
+                @Html.DisplayNameFor(model => model.RuoloUfficio.DescrizioneRuolo)
+            </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -45,9 +41,7 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.valoreResponsabile)
             </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataAggiornamento)
-            </th>
+            
         </tr>
     </thead>
     <tbody>
@@ -57,12 +51,9 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.Livello.DescLivello)
                 </td>
-                @*<td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.idIndennitaBase)
-                </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.idLivello)
-                </td>*@
+                    @Html.DisplayFor(modelItem => item.RuoloUfficio.DescrizioneRuolo)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
@@ -75,9 +66,7 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.valoreResponsabile)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
-                </td>
+                
             </tr>
         }
     </tbody>

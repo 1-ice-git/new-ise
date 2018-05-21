@@ -116,7 +116,7 @@ namespace NewISE.Controllers
                     libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
                 }
                 
-                //ViewBag.idTrasferimento = idTrasferimento;
+                ViewBag.idTrasferimento = idTrasferimento;
                 return PartialView(libm);
             }
             catch (Exception ex)
