@@ -36,7 +36,28 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        vr = ValidationResult.Success;
+                        //verifica se esiste un coniuge precedente
+                        var lc_prec = t.MAGGIORAZIONIFAMILIARI.CONIUGE
+                                    .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                            a.DATAINIZIOVALIDITA != null &&
+                                            a.DATAFINEVALIDITA != Utility.DataFineStop() &&
+                                            a.IDCONIUGE<cm.FK_idConiuge).OrderByDescending(a => a.IDCONIUGE).ToList();
+                        if (lc_prec?.Any() ?? false)
+                        {
+                            //se esiste controlla validita data inizio
+                            var c_prec = lc_prec.First();
+                            if (cm.dataInizio > c_prec.DATAFINEVALIDITA)
+                            {
+                                vr = ValidationResult.Success;
+                            }
+                            else
+                            {
+                                vr = new ValidationResult(string.Format("La data di inizio validità deve essere superiore alla data di fine validità del coniuge precedente ({0}).", c_prec.DATAFINEVALIDITA.ToShortDateString()));
+                            }
+                        } else
+                        {
+                            vr = ValidationResult.Success;
+                        }
                     }
                 }
 
@@ -48,6 +69,36 @@ namespace NewISE.Models.DBModel.dtObj
 
             return vr;
         }
+
+        public static ValidationResult VerificaDataFine(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var cm = context.ObjectInstance as ConiugeModel;
+
+            if (cm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                    if (cm.dataInizio != null && cm.dataFine < Utility.DataFineStop())
+                    {
+                        if (cm.dataInizio >= cm.dataFine)
+                        {
+                            vr = new ValidationResult(string.Format("La data fine deve essere superiore alla data inizio ({0}).", cm.dataInizio.Value.ToShortDateString()));
+                        }
+                        else
+                        {
+                            vr = ValidationResult.Success;
+                        }
+                    }
+                }
+            }
+
+            return vr;
+        }
+
 
         public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
         {
@@ -80,6 +131,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             return vr;
         }
+
         #endregion
 
 
@@ -571,6 +623,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     cm.modificato = false;
                                 }
+                                //nel caso che sia stata inserita la datafine ed esiste un coniuge successivo
+                                //non è modificabile
+                                if(dtvmf.ConiugeModificabile(c.IDCONIUGE,idMaggiorazioniFamiliari)==false)
+                                //var last_coniuge = lc.First();
+                                //if(c.DATAFINEVALIDITA!=null && c.DATAFINEVALIDITA!=Utility.DataFineStop() && c.IDCONIUGE!=last_coniuge.IDCONIUGE)
+                                {
+                                    cm.modificabile = false;
+                                }
 
                                 lcm.Add(cm);
                             }
@@ -581,34 +641,6 @@ namespace NewISE.Models.DBModel.dtObj
             return lcm;
         }
 
-        public static ValidationResult VerificaDataFine(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
-
-            var cm = context.ObjectInstance as ConiugeModel;
-
-            if (cm != null)
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var t = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
-
-                    if (cm.dataInizio != null && cm.dataFine < Utility.DataFineStop())
-                    {
-                        if (cm.dataInizio >= cm.dataFine)
-                        {
-                            vr = new ValidationResult(string.Format("La data fine deve essere superiore alla data inizio ({0}).", cm.dataInizio.Value.ToShortDateString()));
-                        }
-                        else
-                        {
-                            vr = ValidationResult.Success;
-                        }
-                    }
-                }
-            }
-
-            return vr;
-        }
 
 
     }

@@ -736,8 +736,8 @@ namespace NewISE.Controllers
 
                     adf = dtvmf.GetAltriDatiFamiliariConiuge(idConiuge);
 
-
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+
 
                     bool rinunciaMagFam = false;
                     bool richiestaAttivazione = false;
@@ -762,17 +762,18 @@ namespace NewISE.Controllers
 
                     dtvmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, 
+                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
                         out docFormulario, out inLavorazione, out trasfSolaLettura, out datiParziali, out siDoc,
-                        out datiNuovoConiuge, out datiNuovoFigli,out siDocFormulario, out siPensioniConiuge);
+                        out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario, out siPensioniConiuge);
 
                     if (richiestaAttivazione == true && attivazione == false)
                     {
                         solaLettura = true;
                     }
-                    else
+
+                    if (dtvmf.ConiugeModificabile(idConiuge, idMaggiorazioniFamiliari)==false)
                     {
-                        solaLettura = false;
+                        solaLettura = true;
                     }
 
                     using (dtConiuge dtc = new dtConiuge())
@@ -797,7 +798,7 @@ namespace NewISE.Controllers
                                     break;
                             }
                         }
-                       
+
                     }
                     ViewData.Add("solaLettura", solaLettura);
                     ViewData.Add("trasfSolaLettura", trasfSolaLettura);
@@ -1173,9 +1174,10 @@ namespace NewISE.Controllers
                         {
                             solaLettura = true;
                         }
-                        else
+
+                        if (dtmf.ConiugeModificabile(idConiuge, idMaggiorazioniFamiliari) == false)
                         {
-                            solaLettura = false;
+                            solaLettura = true;
                         }
 
                         ViewData.Add("solaLettura", solaLettura);
@@ -1683,16 +1685,16 @@ namespace NewISE.Controllers
                                 {
                                     solaLettura = true;
                                 }
-                                else
+
+
+                                if (parentela == EnumParentela.Coniuge)
                                 {
-                                    solaLettura = false;
+                                    if (dtvmf.ConiugeModificabile(idFamiliare, idMaggiorazioniFamiliari) == false)
+                                    {
+                                        solaLettura = true;
+                                    }
                                 }
                             }
-                            else
-                            {
-                                solaLettura = false;
-                            }
-
                             break;
                     }
 

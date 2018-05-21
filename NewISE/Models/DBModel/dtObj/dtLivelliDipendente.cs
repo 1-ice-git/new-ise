@@ -53,7 +53,7 @@ namespace NewISE.Models.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ld = db.LIVELLIDIPENDENTI.Where(a => a.IDDIPENDENTE == idDipendente && data >= a.DATAINIZIOVALIDITA && data.Date <= a.DATAFINEVALIDITA).ToList();
+                var ld = db.LIVELLIDIPENDENTI.Where(a => a.IDDIPENDENTE == idDipendente && data >= a.DATAINIZIOVALIDITA && data <= a.DATAFINEVALIDITA && a.ANNULLATO==false).ToList();
 
                 ldm = (from e in ld
                        select new LivelloDipendenteModel()
