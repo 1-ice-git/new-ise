@@ -440,7 +440,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataAggiornamento = f.DATAAGGIORNAMENTO,
                                 idStatoRecord = f.IDSTATORECORD,
                                 FK_IdFigli = f.FK_IDFIGLI,
-                                visualizzabile = (db.FIGLI.Where(a => a.FK_IDFIGLI == f.IDFIGLI).Count() > 0) ? false : true,
+                                visualizzabile = (db.FIGLI.Where(a => a.FK_IDFIGLI == f.IDFIGLI && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).Count() > 0) ? false : true,
                                 //visualizzabile = (db.FIGLI.Where(a => a.IDFIGLI == f.FK_IDFIGLI).Count() > 0) ? false : true,
                                 modificato = (f.FK_IDFIGLI>0 && f.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ?true:false,
                                 nuovo= (f.FK_IDFIGLI==null && f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false

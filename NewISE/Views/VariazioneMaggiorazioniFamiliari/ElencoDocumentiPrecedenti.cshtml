@@ -43,23 +43,23 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td style="padding-right:0">
-                        <div style="@item.ev_nomedocumento">
+                    <td style="padding-right:0 @item.ev_nomedocumento">
+                        <div >
                             @Html.DisplayFor(modelItem => item.nomeDocumento)
                         </div>
                     </td>
-                    <td class="text-center" style="width: 10%;padding-left:0;padding-right:0">
-                        <div style="@item.ev_nomedocumento ">
+                    <td class="text-center" style="width: 10%;padding-left:0;padding-right:0 @item.ev_nomedocumento ">
+                        <div>
                             @Html.DisplayFor(modelItem => item.estensione)
                         </div>
                     </td>
-                    <td class="text-center" style="width: 20%;padding-left:0;padding-right:0">
-                        <div style="@item.ev_nomedocumento ">
+                    <td class="text-center" style="width: 20%;padding-left:0;padding-right:0 @item.ev_nomedocumento">
+                        <div>
                             @Html.DisplayFor(modelItem => item.dataInserimento)
                         </div>
                     </td>
-                    <td style="text-align: center; width: 10%;padding-left:0">
-                        <div style="@item.ev_nomedocumento ">
+                    <td style="text-align: center; width: 10%;padding-left:0 @item.ev_nomedocumento">
+                        <div>
                             <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
                                 <img width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
