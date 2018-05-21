@@ -55,7 +55,6 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return rdm;
         }
-
         public IList<RuoloDipendenteModel> GetRuoliDipendenteIndennitaByRangeDate(decimal idRuolo, DateTime dtIni, DateTime dtFin, ModelDBISE db)
         {
             List<RuoloDipendenteModel> lrdm = new List<RuoloDipendenteModel>();
@@ -94,7 +93,6 @@ namespace NewISE.Models.DBModel.dtObj
             return lrdm;
 
         }
-
         public RuoloDipendenteModel GetRuoloDipendenteById(decimal idRuoloDipendente)
         {
 
@@ -123,7 +121,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             return rdm;
         }
-
         public IList<RuoloUfficioModel> GetIndennitaBaseComuneRuoloDipendente(decimal idTrasferimento)
         {
             List<RuoloUfficioModel> libm = new List<RuoloUfficioModel>();
@@ -151,9 +148,6 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
-
-       
-
         public RuoloDipendenteModel GetRuoloDipendenteByIdIndennita(decimal idTrasferimento)
         {
 
@@ -225,7 +219,6 @@ namespace NewISE.Models.DBModel.dtObj
             return rdm;
 
         }
-
         public RuoloDipendenteModel GetRuoloDipendenteByIdTrasferimento(decimal idTrasferimento, DateTime dt)
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
@@ -280,9 +273,6 @@ namespace NewISE.Models.DBModel.dtObj
             return rdm;
 
         }
-
-
-
         public void SetNuovoRuoloDipendente(ref RuoloDipendenteModel rdm, ModelDBISE db)
         {
             decimal idTrasferimento = rdm.idTrasferimento;
@@ -308,8 +298,6 @@ namespace NewISE.Models.DBModel.dtObj
                 this.SetRuoloDipendente(ref rdm, db);
             }
         }
-
-
 
         public void SetRuoloDipendente(ref RuoloDipendenteModel rdm, ModelDBISE db)
         {
