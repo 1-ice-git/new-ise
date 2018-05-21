@@ -123,7 +123,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         idLivello = e.LIVELLI.IDLIVELLO,
                                         DescLivello = e.LIVELLI.LIVELLO
-                                    },
+                                    }, 
                                     RuoloUfficio = new RuoloUfficioModel()
                                     {
                                         idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
