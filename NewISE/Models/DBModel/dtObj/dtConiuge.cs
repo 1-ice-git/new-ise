@@ -36,12 +36,26 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        //verifica se esiste un coniuge precedente
-                        var lc_prec = t.MAGGIORAZIONIFAMILIARI.CONIUGE
+                        List<CONIUGE> lc_prec = new List<CONIUGE>();
+                        //verifica se esiste un coniuge precedente verificando se è nuovo o modificato
+                        if (cm.FK_idConiuge > 0)
+                        {
+                            //modificato
+                            lc_prec = t.MAGGIORAZIONIFAMILIARI.CONIUGE
                                     .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                             a.DATAINIZIOVALIDITA != null &&
                                             a.DATAFINEVALIDITA != Utility.DataFineStop() &&
-                                            a.IDCONIUGE<cm.FK_idConiuge).OrderByDescending(a => a.IDCONIUGE).ToList();
+                                            a.IDCONIUGE < cm.FK_idConiuge).OrderByDescending(a => a.IDCONIUGE).ToList();
+                        }
+                        else
+                        {
+                            //nuovo
+                            lc_prec = t.MAGGIORAZIONIFAMILIARI.CONIUGE
+                                    .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                            a.DATAINIZIOVALIDITA != null &&
+                                            a.DATAFINEVALIDITA != Utility.DataFineStop()
+                                            ).OrderByDescending(a => a.IDCONIUGE).ToList();
+                        }
                         if (lc_prec?.Any() ?? false)
                         {
                             //se esiste controlla validita data inizio

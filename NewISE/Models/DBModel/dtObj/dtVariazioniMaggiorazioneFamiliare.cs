@@ -3258,7 +3258,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             //elimino eventuali modifiche adf
                             var ladfc = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                            foreach(var adfc in ladfc)
+                            foreach (var adfc in ladfc)
                             {
                                 db.ALTRIDATIFAM.Remove(adfc);
                                 if (db.SaveChanges() <= 0)
@@ -3268,7 +3268,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                             //cerco eventuali documenti sostituiti e rimetto il flag modificato a FALSE
-                            var ldc_sost = c.DOCUMENTI.Where(a => a.FK_IDDOCUMENTO>0 && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            var ldc_sost = c.DOCUMENTI.Where(a => a.FK_IDDOCUMENTO > 0 && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
                             //var ldc_sost = c.DOCUMENTI.Where(a => a.MODIFICATO == true && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                             foreach (var dc_sost in ldc_sost)
                             {
@@ -3301,17 +3301,18 @@ namespace NewISE.Models.DBModel.dtObj
                                     throw new Exception(string.Format("Impossibile annullare le pensioni del coniuge."));
                                 }
                             }
+                        }
 
-                            //se il coniuge è stato modificato elimino il record
-                            if (c.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione)
+                        var idMaggiorazioneFamiliare = GetMaggiorazioneFamiliareConiuge(c.IDCONIUGE);
+                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioneFamiliare);
+
+                        //elimino tutti i record dei coniugi in lavorazione
+                        foreach (var coniuge in mf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList())
+                        {
+                            db.CONIUGE.Remove(coniuge);
+                            if (db.SaveChanges() <= 0)
                             {
-                                //se è collegato a un altro record lo elimino direttamente 
-                                //eliminando anche tutti gli eventuali dati collegati
-                                db.CONIUGE.Remove(c);
-                                if (db.SaveChanges() <= 0)
-                                {
-                                    throw new Exception(string.Format("Impossibile annullare le modifiche del coniuge."));
-                                }
+                                throw new Exception(string.Format("Impossibile annullare tutte le modifiche del coniuge."));
                             }
                        
                         }

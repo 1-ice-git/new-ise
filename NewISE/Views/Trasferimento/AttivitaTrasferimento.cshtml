@@ -158,7 +158,6 @@
     function AggiornaInfoTrasferimento() {
         var rotta = "/Trasferimento/InfoTrasferimento";
         var idTrasf = parseInt('@idTrasferimento');
-
         $.ajax({
             type: "POST",
             url: rotta,
@@ -192,8 +191,8 @@
         });
     }
 
-
     GestioneAttivitaTrasferimento();
+
     ///Tale funzione gestisce l'abilitazione delle checkbox per la gestione delle attività di trasferimento e la sequenza di abilitazione dei link.
     function GestioneAttivitaTrasferimento() {
         //debugger;
