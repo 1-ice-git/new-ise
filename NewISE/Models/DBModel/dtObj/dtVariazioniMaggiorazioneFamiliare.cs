@@ -5648,5 +5648,32 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public bool ConiugeModificabile(decimal idConiuge, decimal idMaggiorazioniFamiliari)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    bool modificabile = true;
+
+
+                    var lc = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari)
+                                   .CONIUGE.Where(y =>
+                                           y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato
+                                   ).OrderByDescending(a=>a.IDCONIUGE).ToList();
+                    var last_coniuge = lc.First();
+                    if (db.CONIUGE.Find(idConiuge).DATAFINEVALIDITA != Utility.DataFineStop() && idConiuge != last_coniuge.IDCONIUGE)
+                    {
+                        modificabile = false;
+                    }
+                    return modificabile;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }
