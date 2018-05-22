@@ -107,7 +107,8 @@ namespace NewISE.Controllers
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {   
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-             
+            List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
+
             try
             {
                 using (dtIndennitaBase dtd = new dtIndennitaBase())
@@ -115,8 +116,27 @@ namespace NewISE.Controllers
                     
                     libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
                 }
-                
+
+                //using (dtRuoloDipendente drd = new dtRuoloDipendente())
+                //{
+
+                //    lru = drd.GetIndennitaBaseComuneRuoloDipendente(idTrasferimento).ToList();
+                //}
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                    {
+                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+
+                    }
+                }
                 ViewBag.idTrasferimento = idTrasferimento;
+                
+
                 return PartialView(libm);
             }
             catch (Exception ex)
@@ -202,6 +222,25 @@ namespace NewISE.Controllers
                 //reportViewer.LocalReport.Refresh();
 
                 //ViewBag.ReportViewer = reportViewer;
+
+
+                // **********************************************************
+                // 3 Commento da testare
+
+                //LinqNewDataContext db = new LinqNewDataContext();
+                //var query = from c in db.tbl_Temperatures
+                //            where c.Device_Id == "Tlog1"
+                //            select c;
+                //var datasource = new ReportDataSource("DataSet1", query.ToList());
+                //ReportViewer1.Visible = true;
+                //ReportViewer1.ProcessingMode = ProcessingMode.Local;
+                //ReportViewer1.LocalReport.ReportPath = @"Report6.rdlc";
+                //ReportViewer1.LocalReport.DataSources.Clear();
+                //ReportViewer1.LocalReport.DataSources.Add(datasource);
+                //ReportViewer1.LocalReport.Refresh();
+
+                // **********************************************************
+
 
 
                 return PartialView();

@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
+@using NewISE.Models.DBModel.Enum;
 
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
-    
+    decimal idRuoloUfficio = Convert.ToDecimal(ViewBag.idRuoloUfficio);
 }
 
 @Html.Hidden("hidTrasferimento")
@@ -60,13 +61,31 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.valore)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.valoreResponsabile)
-                </td>
                 
+                        @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+                        {
+                            <td style="text-align:center;">
+                                @Html.DisplayFor(modelItem => item.valore)
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+               
+
+                    @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Dirigente || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Responsabile)
+                    {
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(modelItem => item.valoreResponsabile)
+                        </td>
+                        
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
             </tr>
         }
     </tbody>
@@ -84,7 +103,7 @@
 
 
 <script type="text/javascript">
-    $('.display').DataTable({
+    $('#tbIndennitaBase').DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
