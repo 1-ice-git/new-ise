@@ -365,7 +365,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (d?.IDDIPENDENTE > 0)
                     {
-                        var lt = d.TRASFERIMENTO.OrderByDescending(a => a.DATAPARTENZA);
+                        var lt = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO);
 
                         if (lt?.Any() ?? false)
                         {

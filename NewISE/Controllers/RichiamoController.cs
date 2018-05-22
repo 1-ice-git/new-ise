@@ -150,6 +150,7 @@ namespace NewISE.Controllers
             }
             ViewBag.FasciaKM = r_fkm;
         }
+
         public JsonResult VerificaRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -190,6 +191,7 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
+
         public ActionResult DatiTabElencoRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -216,6 +218,7 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
+
         public ActionResult MessaggioInserisciRichiamo(decimal idTrasferimento,decimal idFKm,string dataInserita,decimal idRichiamo=0)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -229,6 +232,7 @@ namespace NewISE.Controllers
             }
             return PartialView();
         }
+
         public ActionResult MessaggioModificaRichiamo(decimal idTrasferimento, decimal idFKm, string dataInserita, decimal idRichiamo = 0)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -244,6 +248,7 @@ namespace NewISE.Controllers
             }
             return PartialView();
         }
+
         public JsonResult ConfermaInserisciRichiamo(decimal idTrasferimento, decimal idFasciaFKM,string dataRichiamo)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
