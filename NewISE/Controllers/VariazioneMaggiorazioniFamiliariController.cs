@@ -1259,7 +1259,7 @@ namespace NewISE.Controllers
                                     }
 
                                     decimal idTrasf = attmf_aperta.IDMAGGIORAZIONIFAMILIARI;
-                                    DateTime dataRientro = attmf_aperta.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.DATARIENTRO.Value;
+                                    DateTime dataRientro = attmf_aperta.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.DATARIENTRO;
 
                                     dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
                                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo pensione coniuge (" + idConiuge + ")", "PENSIONI", db, idTrasf, pcm.idPensioneConiuge);
