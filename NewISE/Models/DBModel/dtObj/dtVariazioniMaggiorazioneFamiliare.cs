@@ -2762,43 +2762,13 @@ namespace NewISE.Models.DBModel.dtObj
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
             List<PENSIONE> lp = new List<PENSIONE>();
             CONIUGE c = new CONIUGE();
-            ATTIVAZIONIMAGFAM amf = new ATTIVAZIONIMAGFAM();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 c = db.CONIUGE.Find(idConiuge);
 
-                //amf = GetAttivazioneAperta(c.IDMAGGIORAZIONIFAMILIARI);
-                //if(amf.IDATTIVAZIONEMAGFAM>0==false)
-                //{
-                //    amf = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList().First();
-                //}
-
-                //if (amf.RICHIESTAATTIVAZIONE == false)
-                //{
                 lp = c.PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                             x.NASCONDI==false).OrderByDescending(a=>a.IDPENSIONE).ToList();
-                //    if (lp.Count() > 0 == false)
-                //    {
-                //        lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                //    }
-                //}
-                //else if (amf.ATTIVAZIONEMAGFAM == false)
-                //{
-                //    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                //}
-                //else
-                //{
-                //    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                //}
-
-
-                //                lp = c.PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
-
-                //if (lp.Count == 0)
-                //{
-                //    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                //}
 
                 if (lp?.Any() ?? false)
                 {
@@ -2812,7 +2782,9 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizioValidita = p.DATAINIZIO,
                             dataFineValidita = p.DATAFINE,
                             idStatoRecord = p.IDSTATORECORD,
-                            dataAggiornamento = p.DATAAGGIORNAMENTO
+                            dataAggiornamento = p.DATAAGGIORNAMENTO,
+                            FK_idPensione=p.FK_IDPENSIONE,
+                            nascondi=p.NASCONDI
                             #endregion
                         };
                         lpcm.Add(pcm);
@@ -2847,7 +2819,9 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizioValidita = p.DATAINIZIO,
                             dataFineValidita = p.DATAFINE,
                             idStatoRecord = p.IDSTATORECORD,
-                            dataAggiornamento = p.DATAAGGIORNAMENTO
+                            dataAggiornamento = p.DATAAGGIORNAMENTO,
+                            FK_idPensione=p.FK_IDPENSIONE,
+                            nascondi=p.NASCONDI
                             #endregion
                         };
                         lpcm.Add(pcm);
