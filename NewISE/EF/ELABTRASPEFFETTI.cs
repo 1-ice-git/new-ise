@@ -14,12 +14,6 @@ namespace NewISE.EF
     
     public partial class ELABTRASPEFFETTI
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ELABTRASPEFFETTI()
-        {
-            this.TEORICI = new HashSet<TEORICI>();
-        }
-    
         public decimal IDELABTRASPEFFETTI { get; set; }
         public Nullable<decimal> IDTEPARTENZA { get; set; }
         public Nullable<decimal> IDTERIENTRO { get; set; }
@@ -32,8 +26,6 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual TEPARTENZA TEPARTENZA { get; set; }
         public virtual TERIENTRO TERIENTRO { get; set; }
     }

@@ -17,15 +17,12 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TIPOLOGIAMODIFICHE()
         {
-            this.MODIFICHE_MAB = new HashSet<MODIFICHE_MAB>();
             this.MODIFICHEMAGFAM = new HashSet<MODIFICHEMAGFAM>();
         }
     
         public decimal IDMSGVAR { get; set; }
         public string MSG { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MODIFICHE_MAB> MODIFICHE_MAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MODIFICHEMAGFAM> MODIFICHEMAGFAM { get; set; }
     }
