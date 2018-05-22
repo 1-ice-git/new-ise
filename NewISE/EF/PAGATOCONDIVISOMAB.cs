@@ -24,12 +24,12 @@ namespace NewISE.EF
         public decimal IDPAGATOCONDIVISO { get; set; }
         public decimal IDMAB { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public bool CONDIVISO { get; set; }
         public bool PAGATO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public decimal IDSTATORECORD { get; set; }
         public Nullable<decimal> FK_IDPAGATOCONDIVISO { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }

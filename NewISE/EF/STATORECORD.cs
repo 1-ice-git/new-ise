@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public STATORECORD()
         {
+            this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
             this.CANONEMAB = new HashSet<CANONEMAB>();
             this.CONIUGE = new HashSet<CONIUGE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
@@ -30,6 +31,8 @@ namespace NewISE.EF
         public decimal IDSTATORECORD { get; set; }
         public string STATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANONEMAB> CANONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

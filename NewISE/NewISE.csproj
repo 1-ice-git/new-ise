@@ -2555,9 +2555,6 @@
     <Compile Include="EF\DOCUMENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\DOC_ATER.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\ELABINDENNITA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2652,6 +2649,9 @@
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\MODIFICHEMAGFAM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\MODIFICHE_MAB.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\NORMACALCOLO.cs">

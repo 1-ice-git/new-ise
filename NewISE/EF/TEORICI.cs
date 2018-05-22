@@ -21,6 +21,7 @@ namespace NewISE.EF
         public Nullable<decimal> IDELABIND { get; set; }
         public Nullable<decimal> IDELABMAB { get; set; }
         public Nullable<decimal> IDELABTRASPEFFETTI { get; set; }
+        public decimal IDMESEANNOELAB { get; set; }
         public decimal MESERIFERIMENTO { get; set; }
         public decimal ANNORIFERIMENTO { get; set; }
         public decimal ALIQUOTAFISCALE { get; set; }
@@ -28,12 +29,12 @@ namespace NewISE.EF
         public decimal IMPORTO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal IDMESEANNOELAB { get; set; }
     
         public virtual CONT_OA CONT_OA { get; set; }
         public virtual ELABINDENNITA ELABINDENNITA { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
         public virtual ELABMAB ELABMAB { get; set; }
+        public virtual ELABTRASPEFFETTI ELABTRASPEFFETTI { get; set; }
         public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
         public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
