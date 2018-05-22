@@ -145,7 +145,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     (c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
                                      c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
                                     dtNow >= c.DATAPARTENZA &&
-                                    dtNow <= (c.DATARIENTRO.HasValue == true ? c.DATARIENTRO.Value : new DateTime(9999, 12, 31))).Any()).ToList();
+                                    dtNow <= c.DATARIENTRO).Any()).ToList();
 
                     if (ld?.Any() ?? false)
                     {
@@ -593,7 +593,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     (c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
                                      c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
                                     dtNow >= c.DATAPARTENZA &&
-                                    dtNow <= (c.DATARIENTRO.HasValue == true ? c.DATARIENTRO.Value : new DateTime(9999, 12, 31))).Any()).ToList();
+                                    dtNow <= c.DATARIENTRO).Any()).ToList();
 
                     if (ld?.Any() ?? false)
                     {

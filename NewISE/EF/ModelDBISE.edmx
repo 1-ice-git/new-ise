@@ -320,7 +320,7 @@
           <Property Name="IDCANONE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
@@ -4078,6 +4078,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_RU_UA">
+          <End Role="RUOLOACCESSO" Type="Self.RUOLOACCESSO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UTENTIAUTORIZZATI" Type="Self.UTENTIAUTORIZZATI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUOLOACCESSO">
+              <PropertyRef Name="IDRUOLOACCESSO" />
+            </Principal>
+            <Dependent Role="UTENTIAUTORIZZATI">
+              <PropertyRef Name="IDRUOLOUTENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_SR_ADF">
           <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5129,7 +5143,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="RELATIONSHIP10">
-          <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="0..1" />
+          <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1" />
           <End Role="CANONEMAB" Type="Self.CANONEMAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="STATORECORD">
@@ -6000,6 +6014,10 @@
           <AssociationSet Name="R_RU_RD" Association="Self.R_RU_RD">
             <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
             <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+          </AssociationSet>
+          <AssociationSet Name="R_RU_UA" Association="Self.R_RU_UA">
+            <End Role="RUOLOACCESSO" EntitySet="RUOLOACCESSO" />
+            <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
           </AssociationSet>
           <AssociationSet Name="R_SR_ADF" Association="Self.R_SR_ADF">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
@@ -6937,6 +6955,10 @@
             <End Role="STATORECORD" EntitySet="STATORECORD" />
             <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
           </AssociationSet>
+          <AssociationSet Name="R_RU_UA" Association="DBISE.R_RU_UA">
+            <End Role="RUOLOACCESSO" EntitySet="RUOLOACCESSO" />
+            <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
+          </AssociationSet>
           <AssociationSet Name="R_RU_RD" Association="DBISE.R_RU_RD">
             <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
             <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
@@ -7503,7 +7525,7 @@
           <Property Name="IDCANONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
@@ -8452,6 +8474,7 @@
           </Key>
           <Property Name="IDRUOLOACCESSO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRUOLO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_RU_UA" FromRole="RUOLOACCESSO" ToRole="UTENTIAUTORIZZATI" />
         </EntityType>
         <EntityType Name="RUOLODIPENDENTE">
           <Key>
@@ -8798,6 +8821,7 @@
           <NavigationProperty Name="ACCESSI" Relationship="DBISE.R_UL_C" FromRole="UTENTIAUTORIZZATI" ToRole="ACCESSI" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_D_UA" FromRole="UTENTIAUTORIZZATI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISE.R_UL_LA" FromRole="UTENTIAUTORIZZATI" ToRole="LOGATTIVITA" />
+          <NavigationProperty Name="RUOLOACCESSO" Relationship="DBISE.R_RU_UA" FromRole="UTENTIAUTORIZZATI" ToRole="RUOLOACCESSO" />
         </EntityType>
         <EntityType Name="VALUTAUFFICIO">
           <Key>
@@ -9484,7 +9508,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="RELATIONSHIP10">
-          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="0..1" />
+          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1" />
           <End Type="DBISE.CANONEMAB" Role="CANONEMAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="STATORECORD">
@@ -10652,6 +10676,20 @@
             </Principal>
             <Dependent Role="RINUNCIAMAGGIORAZIONIFAMILIARI">
               <PropertyRef Name="IDSTATORECORD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_RU_UA">
+          <End Type="DBISE.RUOLOACCESSO" Role="RUOLOACCESSO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.UTENTIAUTORIZZATI" Role="UTENTIAUTORIZZATI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUOLOACCESSO">
+              <PropertyRef Name="IDRUOLOACCESSO" />
+            </Principal>
+            <Dependent Role="UTENTIAUTORIZZATI">
+              <PropertyRef Name="IDRUOLOUTENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

@@ -24,7 +24,7 @@ namespace NewISE.EF
         public decimal IDCANONE { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
         public decimal IDMAB { get; set; }
-        public Nullable<decimal> IDSTATORECORD { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public decimal IDVALUTA { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }

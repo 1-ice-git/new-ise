@@ -297,7 +297,7 @@ namespace NewISE.Models.DBModel.dtObj
         public void GestioneAttivitaTrasferimento(decimal idTrasferimento,
                                                       out bool richiestaMF, out bool attivazioneMF,
                                                       out bool richiestaPP, out bool conclusePP,
-                                                      out bool faseRichiestaPPattivata, out bool faseInvioPPattivata, 
+                                                      out bool faseRichiestaPPattivata, out bool faseInvioPPattivata,
                                                       out bool richiesteTV, out bool concluseTV,
                                                       out bool richiestaTE, out bool attivazioneTE,
                                                       out bool richiestaAnticipi, out bool attivazioneAnticipi,
@@ -372,7 +372,7 @@ namespace NewISE.Models.DBModel.dtObj
                     if (lap_richiesta?.Any() ?? false)
                     {
                         var ap_richiesta = lap_richiesta.First();
-                        if(ap_richiesta.PRATICACONCLUSA)
+                        if (ap_richiesta.PRATICACONCLUSA)
                         {
                             faseRichiestaPPattivata = true;
                         }
@@ -388,7 +388,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var lap_invio = p.ATTIVAZIONIPASSAPORTI
                             .Where(a => a.ANNULLATO == false &&
-                                        a.IDFASEPASSAPORTI==(decimal)EnumFasePassaporti.Invio_Passaporti).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
+                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Invio_Passaporti).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
 
                     if (lap_invio?.Any() ?? false)
                     {
@@ -397,7 +397,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             faseInvioPPattivata = true;
                         }
-                        if(faseRichiestaPPattivata)
+                        if (faseRichiestaPPattivata)
                         {
                             richiestaPP = ap_invio.NOTIFICARICHIESTA;
                             conclusePP = ap_invio.PRATICACONCLUSA;
@@ -491,7 +491,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var lps = t.PROVVIDENZESCOLASTICHE;
                 if (lps != null && lps.IDTRASFPROVSCOLASTICHE > 0)
                 {
-                    
+
                     var laps = lps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDPROVSCOLASTICHE).ToList();
 
                     if (laps?.Any() ?? false)
@@ -501,7 +501,7 @@ namespace NewISE.Models.DBModel.dtObj
                         richiestaPS = atps.NOTIFICARICHIESTA;
                         attivazionePS = atps.ATTIVARICHIESTA;
                     }
-                   
+
                 }
                 #endregion
 
@@ -533,7 +533,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (t != null && t.IDTRASFERIMENTO > 0)
                 {
-                    return t.DATARIENTRO?.Date;
+                    return t.DATARIENTRO.Date;
                 }
                 else
                 {
@@ -1225,7 +1225,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (t.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
                 {
-                    if (!t.DATARIENTRO.HasValue)
+                    if (t.DATARIENTRO == Utility.DataFineStop())
                     {
                         t.DATARIENTRO = dataPartenzaNewTrasf.AddDays(-1);
 
@@ -1301,7 +1301,7 @@ namespace NewISE.Models.DBModel.dtObj
                 IDDIPENDENTE = trm.idDipendente,
                 IDTIPOCOAN = trm.idTipoCoan,
                 DATAPARTENZA = trm.dataPartenza,
-                DATARIENTRO = trm.dataRientro,
+                DATARIENTRO = trm.dataRientro.HasValue ? trm.dataRientro.Value : Utility.DataFineStop(),
                 COAN = trm.coan?.ToUpper(),
                 PROTOCOLLOLETTERA = trm.protocolloLettera?.ToUpper(),
                 DATALETTERA = trm.dataLettera,
@@ -1338,7 +1338,10 @@ namespace NewISE.Models.DBModel.dtObj
                     tr.IDDIPENDENTE = trm.idDipendente;
                     tr.IDTIPOCOAN = trm.idTipoCoan;
                     tr.DATAPARTENZA = trm.dataPartenza;
-                    tr.DATARIENTRO = trm.dataRientro;
+                    if (trm.dataRientro.HasValue)
+                    {
+                        tr.DATARIENTRO = trm.dataRientro.Value;
+                    }
                     tr.COAN = trm.coan.ToUpper();
                     tr.PROTOCOLLOLETTERA = trm.protocolloLettera.ToUpper();
                     tr.DATALETTERA = trm.dataLettera;
@@ -1925,7 +1928,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #region modello parziale del trasferimento
                     TrasferimentoModel tm = new TrasferimentoModel()
                     {
-                        idTrasferimento=t.IDTRASFERIMENTO
+                        idTrasferimento = t.IDTRASFERIMENTO
                     };
                     #endregion
 
@@ -1950,9 +1953,9 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             i.LIVELLIDIPENDENTI.Remove(ld);
                         }
-                        var lldm = 
+                        var lldm =
                             dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA,
-                                t.DATARIENTRO.Value, db).ToList();
+                                t.DATARIENTRO, db).ToList();
                         if (lldm?.Any() ?? false)
                         {
                             foreach (var ldm in lldm)
@@ -1976,25 +1979,18 @@ namespace NewISE.Models.DBModel.dtObj
                                         dataInizio = t.DATAPARTENZA;
                                     }
 
-                                    if (t.DATARIENTRO.HasValue)
+                                    if (ldm.dataFineValidita.HasValue)
                                     {
-                                        if (t.DATARIENTRO > ldm.dataFineValidita)
+                                        if (t.DATARIENTRO > ldm.dataFineValidita.Value)
                                         {
-                                            dataFine = ldm.dataFineValidita.HasValue == true
-                                                ? ldm.dataFineValidita.Value
-                                                : Utility.DataFineStop();
+                                            dataFine = ldm.dataFineValidita.Value;
                                         }
                                         else
                                         {
-                                            dataFine = t.DATARIENTRO.Value;
+                                            dataFine = t.DATARIENTRO;
                                         }
                                     }
-                                    else
-                                    {
-                                        dataFine = ldm.dataFineValidita.HasValue == true
-                                            ? ldm.dataFineValidita.Value
-                                            : Utility.DataFineStop();
-                                    }
+
 
                                     libm =
                                         dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
@@ -2027,7 +2023,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #region riassocia TFR
                     using (dtTFR dttfr = new dtTFR())
                     {
-                        var ltfr = i.TFR.Where(a=>a.ANNULLATO==false).ToList();
+                        var ltfr = i.TFR.Where(a => a.ANNULLATO == false).ToList();
                         foreach (var tfr in ltfr)
                         {
                             i.TFR.Remove(tfr);
@@ -2035,7 +2031,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         List<TFRModel> ltfrm =
                             dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA,
-                                t.DATARIENTRO.Value, db).ToList();
+                                t.DATARIENTRO, db).ToList();
 
                         if (ltfrm?.Any() ?? false)
                         {
@@ -2062,7 +2058,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         List<PercentualeDisagioModel> lpdm =
                             dtpd.GetPercentualeDisagioIndennitaByRange(t.IDUFFICIO,
-                                t.DATAPARTENZA, t.DATARIENTRO.Value, db).ToList();
+                                t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
 
 
                         if (lpdm?.Any() ?? false)
@@ -2092,7 +2088,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         List<CoefficientiSedeModel> lcsm =
                             dtcs.GetCoefficenteSedeIndennitaByRangeDate(t.IDUFFICIO,
-                                t.DATAPARTENZA, t.DATARIENTRO.Value, db).ToList();
+                                t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
 
                         if (lcsm?.Any() ?? false)
                         {
@@ -2139,28 +2135,28 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region allinea date Maggiorazioni Familiari Coniuge e riassocia perc magg coniuge
-                    var lc = mf.CONIUGE.Where(a => 
+                    var lc = mf.CONIUGE.Where(a =>
                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
                         //&& a.DATAINIZIOVALIDITA<t.DATAPARTENZA
                         ).ToList();
-                    if(lc?.Any()??false)
+                    if (lc?.Any() ?? false)
                     {
-                        foreach(var c in lc)
+                        foreach (var c in lc)
                         {
                             if (c.DATAINIZIOVALIDITA == dataPartenzaOriginale ||
-                                c.DATAINIZIOVALIDITA <t.DATAPARTENZA)
+                                c.DATAINIZIOVALIDITA < t.DATAPARTENZA)
                             {
                                 c.DATAINIZIOVALIDITA = t.DATAPARTENZA;
                                 if (db.SaveChanges() <= 0)
                                 {
                                     throw new Exception("Errore di correzione data inizio validita coniuge " + c.COGNOME + " " + c.NOME + " da " + c.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
                                 }
-                            
+
                                 using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                                 {
                                     //elimina le associazioni perc magg coniuge
                                     var lpmc = c.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false).ToList();
-                                    foreach(var pmc in lpmc)
+                                    foreach (var pmc in lpmc)
                                     {
                                         c.PERCENTUALEMAGCONIUGE.Remove(pmc);
                                     }
@@ -2198,11 +2194,11 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var c in lc)
                         {
-                            var lpc = c.PENSIONE.Where(a => 
+                            var lpc = c.PENSIONE.Where(a =>
                                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
                                             //&& a.DATAINIZIO<t.DATAPARTENZA
                                             ).ToList();
-                            foreach(var pc in lpc)
+                            foreach (var pc in lpc)
                             {
                                 if (pc.DATAINIZIO == dataPartenzaOriginale ||
                                     pc.DATAINIZIO < t.DATAPARTENZA)
@@ -2217,7 +2213,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
                     #endregion
-    
+
                     #region allinea date Maggiorazioni Familiari Figli e riassocia perc magg figli e perc primo segretario
                     var lf = mf.FIGLI.Where(a =>
                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
@@ -2244,15 +2240,15 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         f.PERCENTUALEMAGFIGLI.Remove(pmf);
                                     }
-    
+
                                     //ricalcola perc magg figli
                                     DateTime dtIni = f.DATAINIZIOVALIDITA;
                                     DateTime dtFin = f.DATAFINEVALIDITA;
-    
+
                                     List<PercentualeMagFigliModel> lpmfm =
                                         dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db)
                                             .ToList();
-    
+
                                     if (lpmfm?.Any() ?? false)
                                     {
                                         foreach (var pmfm in lpmfm)
@@ -2299,7 +2295,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region legge Maggiorazioni Abitazione
-                    var lma = t.MAGGIORAZIONEABITAZIONE.Where(a => a.VARIAZIONE == false).OrderBy(a=>a.IDMAB).ToList();
+                    var lma = t.MAGGIORAZIONEABITAZIONE.Where(a => a.VARIAZIONE == false).OrderBy(a => a.IDMAB).ToList();
                     if (!lma?.Any() ?? false)
                     {
                         throw new Exception("Maggiorazione Abitazione non trovata.");
@@ -2337,7 +2333,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             vmabm = new VariazioniMABModel()
                             {
-                                idVariazioniMAB =vma.IDVARIAZIONIMAB
+                                idVariazioniMAB = vma.IDVARIAZIONIMAB
                             };
 
                             var lpmab = dtma.GetListaPercentualeMAB(vmabm, tm, db);
@@ -2414,7 +2410,7 @@ namespace NewISE.Models.DBModel.dtObj
                             using (dtTFR dtTfr = new dtTFR())
                             {
                                 var ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(tm, cma.IDVALUTA, cma.DATAINIZIOVALIDITA, cma.DATAFINEVALIDITA, db);
-                           
+
 
                                 foreach (var tfrm in ltfrm)
                                 {
@@ -2829,11 +2825,11 @@ namespace NewISE.Models.DBModel.dtObj
                 if (lt?.Any() ?? false)
                 {
                     r = (from e in lt
-                            select new SelectListItem()
-                            {
-                                Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + ((e.dataRientro.HasValue == true && e.dataRientro < Utility.DataFineStop()) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
-                                Value = e.idTrasferimento.ToString()
-                            }).ToList();
+                         select new SelectListItem()
+                         {
+                             Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + ((e.dataRientro.HasValue == true && e.dataRientro < Utility.DataFineStop()) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                             Value = e.idTrasferimento.ToString()
+                         }).ToList();
 
                     if (idTrasferimento == 0)
                     {

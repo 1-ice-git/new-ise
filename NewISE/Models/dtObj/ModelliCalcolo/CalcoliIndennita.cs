@@ -8,6 +8,7 @@ using System.Web;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.Enum;
 using NewISE.Models.Enumeratori;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.dtObj.ModelliCalcolo
 {
@@ -127,11 +128,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                     _trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                    if (_trasferimento.DATARIENTRO.HasValue)
+                    if (_trasferimento.DATARIENTRO != Utility.DataFineStop())
                     {
-                        if (_trasferimento.DATARIENTRO.Value < dt)
+                        if (_trasferimento.DATARIENTRO < dt)
                         {
-                            _dtDatiParametri = _trasferimento.DATARIENTRO.Value;
+                            _dtDatiParametri = _trasferimento.DATARIENTRO;
                         }
                         else
                         {

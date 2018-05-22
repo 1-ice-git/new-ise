@@ -31,5 +31,6 @@ namespace NewISE.EF
         public virtual DIPENDENTI DIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LOGATTIVITA> LOGATTIVITA { get; set; }
+        public virtual RUOLOACCESSO RUOLOACCESSO { get; set; }
     }
 }
