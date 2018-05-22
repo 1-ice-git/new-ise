@@ -179,7 +179,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (dt.Date > t.DATARIENTRO)
                 {
-                    dt = t.DATARIENTRO.Value;
+                    dt = t.DATARIENTRO;
                 }
 
                 if (t != null && t.IDTRASFERIMENTO > 0)

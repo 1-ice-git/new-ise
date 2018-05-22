@@ -36,7 +36,7 @@ namespace NewISE.EF
         public decimal IDDIPENDENTE { get; set; }
         public decimal IDTIPOCOAN { get; set; }
         public System.DateTime DATAPARTENZA { get; set; }
-        public Nullable<System.DateTime> DATARIENTRO { get; set; }
+        public System.DateTime DATARIENTRO { get; set; }
         public string COAN { get; set; }
         public string PROTOCOLLOLETTERA { get; set; }
         public Nullable<System.DateTime> DATALETTERA { get; set; }

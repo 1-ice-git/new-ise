@@ -23,8 +23,8 @@ namespace NewISE.Models.DBModel.dtObj
             decimal tmp = 0;
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lCIR = db.COEFFICIENTEINDRICHIAMO.ToList().Where(a=>a.ANNULLATO==false && ri.DataRichiamo>=a.DATAINIZIOVALIDITA && ri.DataRichiamo<=a.DATAFINEVALIDITA).ToList();
-                if(lCIR?.Any()??false)
+                var lCIR = db.COEFFICIENTEINDRICHIAMO.ToList().Where(a => a.ANNULLATO == false && ri.DataRichiamo >= a.DATAINIZIOVALIDITA && ri.DataRichiamo <= a.DATAFINEVALIDITA).ToList();
+                if (lCIR?.Any() ?? false)
                 {
                     tmp = lCIR.First().IDCOEFINDRICHIAMO;
                 }
@@ -36,8 +36,8 @@ namespace NewISE.Models.DBModel.dtObj
             decimal tmp = 0;
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lCIR = db.PERCENTUALEFKM.Where(x=>x.IDFKM==ri.CoeffKm && x.ANNULLATO == false).ToList().Where(a=>ri.DataRichiamo >= a.DATAINIZIOVALIDITA && 
-                ri.DataRichiamo <= a.DATAFINEVALIDITA).ToList();
+                var lCIR = db.PERCENTUALEFKM.Where(x => x.IDFKM == ri.CoeffKm && x.ANNULLATO == false).ToList().Where(a => ri.DataRichiamo >= a.DATAINIZIOVALIDITA &&
+                    ri.DataRichiamo <= a.DATAFINEVALIDITA).ToList();
                 if (lCIR?.Any() ?? false)
                 {
                     tmp = lCIR.First().IDPFKM;
@@ -47,11 +47,11 @@ namespace NewISE.Models.DBModel.dtObj
         }
         public DateTime Restituisci_DataPartenza(decimal idTrasferimento)
         {
-            DateTime tmp=new DateTime();
+            DateTime tmp = new DateTime();
             using (ModelDBISE db = new ModelDBISE())
             {
                 var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
-                if (CIR!=null) //CIR.IDTRASFERIMENTO
+                if (CIR != null) //CIR.IDTRASFERIMENTO
                 {
                     tmp = CIR.DATAPARTENZA;
                 }
@@ -66,7 +66,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
                 if (CIR != null) //CIR.IDTRASFERIMENTO
                 {
-                    tmp = CIR.DATARIENTRO.Value;
+                    tmp = CIR.DATARIENTRO;
                 }
             }
             return tmp;
@@ -74,11 +74,11 @@ namespace NewISE.Models.DBModel.dtObj
         public RichiamoModel Restituisci_Ultimo_Richiamo(decimal idTrasferimento)
         {
             RichiamoModel tmp = new RichiamoModel();
-            using (ModelDBISE db = new ModelDBISE())    
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
-                var rich = CIR.RICHIAMO.Where(a=>a.ANNULLATO == false).OrderByDescending(x=>x.IDRICHIAMO);                
-                if (rich?.Any()??false) 
+                var rich = CIR.RICHIAMO.Where(a => a.ANNULLATO == false).OrderByDescending(x => x.IDRICHIAMO);
+                if (rich?.Any() ?? false)
                 {
                     var r = rich.First();
                     var p = r.PERCENTUALEFKM.ToList();
@@ -88,13 +88,13 @@ namespace NewISE.Models.DBModel.dtObj
                         decimal idRichiamo = r.IDRICHIAMO;
                         tmp.IdRichiamo = r.IDRICHIAMO;
                         tmp.idTrasferimento = r.IDTRASFERIMENTO;
-                        tmp.DataRientro = r.TRASFERIMENTO.DATARIENTRO.Value;
+                        tmp.DataRientro = r.TRASFERIMENTO.DATARIENTRO;
                         tmp.DataPartenza = r.TRASFERIMENTO.DATAPARTENZA;
                         tmp.DataRichiamo = r.DATARICHIAMO;
                         tmp.DataAggiornamento = r.DATAAGGIORNAMENTO;
                         tmp.CoeffKm = idFKM;
                         tmp.IDPFKM = p.First().IDPFKM;
-                    }                
+                    }
                 }
             }
             return tmp;
@@ -106,7 +106,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
                 if (CIR != null)
-                    tmp = CIR.DATARIENTRO.Value;
+                    tmp = CIR.DATARIENTRO;
             }
             return tmp;
         }
@@ -152,8 +152,8 @@ namespace NewISE.Models.DBModel.dtObj
                                DataRichiamo = e.DATARICHIAMO,
                                DataAggiornamento = e.DATAAGGIORNAMENTO,
                                annullato = e.ANNULLATO,
-                               DataPartenza=e.TRASFERIMENTO.DATARIENTRO.Value,
-                               
+                               DataPartenza = e.TRASFERIMENTO.DATARIENTRO,
+
                            }).ToList();
                 return tmp;
             }
@@ -172,18 +172,18 @@ namespace NewISE.Models.DBModel.dtObj
                     tmp.DataAggiornamento = r.DATAAGGIORNAMENTO;
                     tmp.DataPartenza = r.TRASFERIMENTO.DATAPARTENZA;
                     tmp.DataRichiamo = r.DATARICHIAMO;
-                    tmp.DataRientro = r.TRASFERIMENTO.DATARIENTRO.Value;                    
+                    tmp.DataRientro = r.TRASFERIMENTO.DATARIENTRO;
                 }
             }
             return tmp;
         }
-        public decimal SetRichiamo(RichiamoModel ric,decimal idCoeffIndRichiamo,decimal idPercentualeFKM, DateTime DataRientro)
+        public decimal SetRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, DateTime DataRientro)
         {
-           
+
             decimal tmp = 0;
             if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0)
                 return 0;
-           
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
@@ -195,7 +195,7 @@ namespace NewISE.Models.DBModel.dtObj
                         DATARICHIAMO = ric.DataRichiamo,
                         DATAAGGIORNAMENTO = DateTime.Now,
                         ANNULLATO = ric.annullato
-                    };                   
+                    };
                     db.RICHIAMO.Add(ri);
                     int i = db.SaveChanges();
                     tmp = ri.IDRICHIAMO;
@@ -204,7 +204,7 @@ namespace NewISE.Models.DBModel.dtObj
                     t.DATAAGGIORNAMENTO = DateTime.Now;
                     db.SaveChanges();
                     //DataRientro = ;// ric.DataRichiamo.AddDays(-1);
-                    using (dtRichiamo dtr=new dtRichiamo())
+                    using (dtRichiamo dtr = new dtRichiamo())
                     {
                         dtr.Associa_Richiamo_CoeffIndRichiamo(ri.IDRICHIAMO, idCoeffIndRichiamo, db);
                         dtr.Associa_Richiamo_PercentualeFKM(ri.IDRICHIAMO, idPercentualeFKM, db);
@@ -213,7 +213,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         ric.idTrasferimento = ri.IDTRASFERIMENTO;
                         Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo richiamo.", "Richiamo", db, ric.idTrasferimento, ri.IDTRASFERIMENTO);
-                     }
+                    }
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception eexx)
@@ -224,9 +224,9 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
-        public decimal EditRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM,  DateTime DataRientro,decimal idRichiamo)
+        public decimal EditRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, DateTime DataRientro, decimal idRichiamo)
         {
-          
+
             decimal tmp = 0;
             if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0)
                 return 0;
@@ -236,7 +236,7 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     db.Database.BeginTransaction();
-                   
+
                     var rich = db.RICHIAMO.Find(idRichiamo);
                     rich.ANNULLATO = true;
                     rich.DATAAGGIORNAMENTO = DateTime.Now;
@@ -296,10 +296,10 @@ namespace NewISE.Models.DBModel.dtObj
                 throw new Exception("Non è stato possibile associare la percentuale fascia KM al Richiamo.");
             }
         }
-        public void RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(decimal idRichiamo,ModelDBISE db)
+        public void RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(decimal idRichiamo, ModelDBISE db)
         {
             var i = db.RICHIAMO.Find(idRichiamo);
-            var lCoefIndRick =i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList();
+            var lCoefIndRick = i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList();
             if (lCoefIndRick?.Any() ?? false)
             {
                 foreach (var z in lCoefIndRick)
@@ -345,10 +345,10 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var tr = db.TRASFERIMENTO.Find(idTrasferimento);
-                    tmp =Convert.ToDecimal(tr.DIPENDENTI.MATRICOLA);
+                    tmp = Convert.ToDecimal(tr.DIPENDENTI.MATRICOLA);
                 }
             }
-            catch(Exception ee)
+            catch (Exception ee)
             {
                 throw ee;
             }
@@ -496,14 +496,14 @@ namespace NewISE.Models.DBModel.dtObj
                 dm.email = d.EMAIL; d.INDIRIZZO = d.INDIRIZZO;
             }
             return dm;
-        }      
+        }
         public string DeterminaSede(decimal idTrasferimento)
         {
             string tmp = "";
             using (ModelDBISE db = new ModelDBISE())
             {
                 var atvc = db.TRASFERIMENTO.Find(idTrasferimento);
-                tmp = atvc.UFFICI.DESCRIZIONEUFFICIO + " (" + atvc.UFFICI.CODICEUFFICIO+")";
+                tmp = atvc.UFFICI.DESCRIZIONEUFFICIO + " (" + atvc.UFFICI.CODICEUFFICIO + ")";
             }
             return tmp;
         }

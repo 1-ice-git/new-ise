@@ -1543,7 +1543,7 @@
           <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPOCOAN" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAPARTENZA" Type="date" Nullable="false" />
-          <Property Name="DATARIENTRO" Type="date" />
+          <Property Name="DATARIENTRO" Type="date" Nullable="false" />
           <Property Name="COAN" Type="varchar2" MaxLength="10" />
           <Property Name="PROTOCOLLOLETTERA" Type="varchar2" MaxLength="100" />
           <Property Name="DATALETTERA" Type="date" />
@@ -8590,7 +8590,7 @@
           <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDTIPOCOAN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAPARTENZA" Type="DateTime" Nullable="false" />
-          <Property Name="DATARIENTRO" Type="DateTime" />
+          <Property Name="DATARIENTRO" Type="DateTime" Nullable="false" />
           <Property Name="COAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="PROTOCOLLOLETTERA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DATALETTERA" Type="DateTime" />
