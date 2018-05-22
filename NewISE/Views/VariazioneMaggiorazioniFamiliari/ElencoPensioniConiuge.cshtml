@@ -77,6 +77,23 @@
 </div>
 
 <p style="padding-left: 15px;">
+    @if (solaLettura || trasfSolaLettura)
+    {
+        <button class="btn btn-default disabled">Annulla Modifiche</button>
+    }
+    else
+    {
+        @Ajax.ActionLink("Annulla Modifiche", "NuovoImportoPensione", "VariazioneMaggiorazioniFamiliari", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+    }
+    @if (solaLettura || trasfSolaLettura)
+    {
+        <button class="btn btn-default disabled">Inserisci Cessazione</button>
+    }
+    else
+    {
+        @Ajax.ActionLink("Inserisci Cessazione", "NuovoImportoPensione", "VariazioneMaggiorazioniFamiliari", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+    }
+    |
     @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
