@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -54,7 +55,6 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return rdm;
         }
-
         public IList<RuoloDipendenteModel> GetRuoliDipendenteIndennitaByRangeDate(decimal idRuolo, DateTime dtIni, DateTime dtFin, ModelDBISE db)
         {
             List<RuoloDipendenteModel> lrdm = new List<RuoloDipendenteModel>();
@@ -93,7 +93,6 @@ namespace NewISE.Models.DBModel.dtObj
             return lrdm;
 
         }
-
         public RuoloDipendenteModel GetRuoloDipendenteById(decimal idRuoloDipendente)
         {
 
@@ -122,7 +121,64 @@ namespace NewISE.Models.DBModel.dtObj
 
             return rdm;
         }
+        public IList<RuoloUfficioModel> GetIndennitaBaseComuneRuoloDipendente(decimal idTrasferimento)
+        {
+            List<RuoloUfficioModel> libm = new List<RuoloUfficioModel>();
 
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                       var ll = db.TRASFERIMENTO.Find(idTrasferimento).RUOLODIPENDENTE.Where(a => a.ANNULLATO == false).ToList();
+                    
+                        libm = (from e in ll
+                                select new RuoloUfficioModel()
+                                {
+                                    idRuoloUfficio = e.RUOLOUFFICIO.IDRUOLO,
+                                    DescrizioneRuolo = e.RUOLOUFFICIO.DESCRUOLO,
+                                    
+                                }).ToList();
+                    }
+
+                    return libm;
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public RuoloDipendenteModel GetRuoloDipendenteByIdIndennita(decimal idTrasferimento)
+        {
+
+            RuoloDipendenteModel rdm = new RuoloDipendenteModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lrd = db.TRASFERIMENTO.Find(idTrasferimento).RUOLODIPENDENTE.Where(a => a.ANNULLATO == false);
+
+                var rd = lrd.First();
+                if (lrd?.Any() ?? false)
+                {
+                    rdm = new RuoloDipendenteModel()
+                    {
+                        idRuoloDipendente = rd.IDRUOLODIPENDENTE,
+                        idTrasferimento = rd.IDTRASFERIMENTO,
+                        idRuolo = rd.IDRUOLO,
+                        dataInizioValidita = rd.DATAINZIOVALIDITA,
+                        dataFineValidita = rd.DATAFINEVALIDITA,
+                        dataAggiornamento = rd.DATAAGGIORNAMENTO,
+                        annullato = rd.ANNULLATO,
+                        RuoloUfficio = new RuoloUfficioModel()
+                        {
+                            idRuoloUfficio = rd.RUOLOUFFICIO.IDRUOLO,
+                            DescrizioneRuolo = rd.RUOLOUFFICIO.DESCRUOLO
+                        }
+                    };
+                }
+            }
+            return rdm;
+        }
         public RuoloDipendenteModel GetRuoloDipendenteByIdTrasferimento(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
@@ -163,7 +219,6 @@ namespace NewISE.Models.DBModel.dtObj
             return rdm;
 
         }
-
         public RuoloDipendenteModel GetRuoloDipendenteByIdTrasferimento(decimal idTrasferimento, DateTime dt)
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
@@ -218,9 +273,6 @@ namespace NewISE.Models.DBModel.dtObj
             return rdm;
 
         }
-
-
-
         public void SetNuovoRuoloDipendente(ref RuoloDipendenteModel rdm, ModelDBISE db)
         {
             decimal idTrasferimento = rdm.idTrasferimento;
@@ -246,8 +298,6 @@ namespace NewISE.Models.DBModel.dtObj
                 this.SetRuoloDipendente(ref rdm, db);
             }
         }
-
-
 
         public void SetRuoloDipendente(ref RuoloDipendenteModel rdm, ModelDBISE db)
         {

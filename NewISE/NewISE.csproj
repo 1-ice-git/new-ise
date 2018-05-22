@@ -3146,6 +3146,7 @@
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\Enum\EnumFasePassaporti.cs" />
+    <Compile Include="Models\DBModel\Enum\EnumFaseRuoloDipendente.cs" />
     <Compile Include="Models\DBModel\Enum\EnumFaseViaggioCongedo.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoHome.cs" />
     <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
@@ -3561,6 +3562,7 @@
     <Content Include="Views\Richiamo\MessaggioInserisciRichiamo.cshtml" />
     <Content Include="Views\Richiamo\MessaggioModificaRichiamo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitaBase.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3675,6 +3677,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Report\RptIndennitaBase.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

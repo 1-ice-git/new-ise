@@ -54,17 +54,17 @@
 
 <div class="row">
         <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPS" onclick="ModalNotificaRichiestaPS();">
+            <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaPS" onclick="ModalNotificaRichiestaPS();">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                 Notifica richiesta
             </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAttivaRichiestaPS" onclick="ModalAttivaRichiestaPS(); ">
+            <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAttivaRichiestaPS" onclick="ModalAttivaRichiestaPS(); ">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                 Attiva provvidenze
             </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPS" onclick="ModalAnnullaRichiestaPS();">
+            <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaRichiestaPS" onclick="ModalAnnullaRichiestaPS();">
                 <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                 Annulla richiesta
             </button>
@@ -220,7 +220,7 @@
 
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
+                debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
             }
