@@ -102,6 +102,8 @@
 </div>
 
 
+
+
 <script type="text/javascript">
     $('#tbIndennitaBase').DataTable({
         "language": {
@@ -149,6 +151,14 @@
         window.print();
     }
 
+     function invia() {
+        //debugger
+        var DATA = $("#datepicker").datepicker().val()
+        var DATA1 = $("#datepicker1").datepicker().val()
+
+        window.location.href = "/Statistiche/OpSpeseDiverse/RptOpSpeseDiverse?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
+
+    };
 
     function RptIndennitaBase() {
         //debugger;

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Reporting.WebForms;
 using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace NewISE.Controllers
 {
@@ -107,7 +109,7 @@ namespace NewISE.Controllers
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {   
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
+            //List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
 
             try
             {
@@ -145,7 +147,6 @@ namespace NewISE.Controllers
             }
             
         }
-        // Report Indennita Base
         public ActionResult RptIndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
@@ -173,7 +174,7 @@ namespace NewISE.Controllers
                                     DescLivello = e.LIVELLI.LIVELLO
                                 },
                             }).ToList();
-                }
+               
 
                 // ***************************************************************************
                 // I COMMENTO
@@ -231,19 +232,30 @@ namespace NewISE.Controllers
                 //var query = from c in db.tbl_Temperatures
                 //            where c.Device_Id == "Tlog1"
                 //            select c;
-                //var datasource = new ReportDataSource("DataSet1", query.ToList());
-                //ReportViewer1.Visible = true;
-                //ReportViewer1.ProcessingMode = ProcessingMode.Local;
-                //ReportViewer1.LocalReport.ReportPath = @"Report6.rdlc";
-                //ReportViewer1.LocalReport.DataSources.Clear();
-                //ReportViewer1.LocalReport.DataSources.Add(datasource);
-                //ReportViewer1.LocalReport.Refresh();
+
+                ReportViewer reportViewer = new ReportViewer();
+
+                //reportViewer.ProcessingMode = ProcessingMode.Local;
+                //reportViewer.SizeToReportContent = true;
+                //reportViewer.Width = Unit.Percentage(100);
+                //reportViewer.Height = Unit.Percentage(100);
+
+                var datasource = new ReportDataSource("DSIndennitaBase", libm.ToList());
+                reportViewer.Visible = true;
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                
+                reportViewer.LocalReport.ReportPath = @"\Areas\Views\Report\RptIndennitaBase.rdlc";
+                reportViewer.LocalReport.DataSources.Clear();
+                reportViewer.LocalReport.DataSources.Add(datasource);
+                reportViewer.LocalReport.Refresh();
+
+                ViewBag.ReportViewer = reportViewer;
 
                 // **********************************************************
+                
+                return View();
 
-
-
-                return PartialView();
+                }
             }
             
             catch (Exception ex)

@@ -3557,6 +3557,7 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\VisualizzaModificheAdfConiuge.cshtml" />
     <Content Include="Views\ViaggiCongedo\MessaggioAnnullaViaggiCongedo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitaBase.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3578,7 +3579,6 @@
     <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Scripts\themes\" />
-    <Folder Include="Views\Indennita\RPT\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
@@ -3672,6 +3672,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Report\RptIndennitaBase.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
