@@ -2829,9 +2829,24 @@ namespace NewISE.Models.DBModel.dtObj
                 if (lt?.Any() ?? false)
                 {
                     r = (from e in lt
-                            select new SelectListItem()
-                            {
-                                Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + ((e.dataRientro.HasValue == true && e.dataRientro < Utility.DataFineStop()) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                         select new SelectListItem()
+                         {
+                             //Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + ((e.dataRientro.HasValue == true && e.dataRientro < Utility.DataFineStop()) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                             Text = e.Ufficio.descUfficio +
+                                    " (" + e.Ufficio.codiceUfficio + ")" + " - " +
+                                        (
+                                            (
+                                                e.idStatoTrasferimento != EnumStatoTraferimento.Annullato ?
+                                                    (e.dataPartenza.ToShortDateString() + " ÷ " +
+                                                         (
+                                                            (e.dataRientro.HasValue == true &&
+                                                                 e.dataRientro < Utility.DataFineStop()
+                                                            ) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"
+                                                        )
+                                                    )
+                                                : "ANNULLATO"
+                                            )
+                                        ),
                                 Value = e.idTrasferimento.ToString()
                             }).ToList();
 
