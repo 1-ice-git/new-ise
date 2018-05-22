@@ -2768,28 +2768,29 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 c = db.CONIUGE.Find(idConiuge);
 
-                amf = GetAttivazioneAperta(c.IDMAGGIORAZIONIFAMILIARI);
-                if(amf.IDATTIVAZIONEMAGFAM>0==false)
-                {
-                    amf = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList().First();
-                }
+                //amf = GetAttivazioneAperta(c.IDMAGGIORAZIONIFAMILIARI);
+                //if(amf.IDATTIVAZIONEMAGFAM>0==false)
+                //{
+                //    amf = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList().First();
+                //}
 
-                if (amf.RICHIESTAATTIVAZIONE == false)
-                {
-                    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                    if (lp.Count() > 0 == false)
-                    {
-                        lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                    }
-                }
-                else if (amf.ATTIVAZIONEMAGFAM == false)
-                {
-                    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                }
-                else
-                {
-                    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                }
+                //if (amf.RICHIESTAATTIVAZIONE == false)
+                //{
+                lp = c.PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            x.NASCONDI==false).OrderByDescending(a=>a.IDPENSIONE).ToList();
+                //    if (lp.Count() > 0 == false)
+                //    {
+                //        lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                //    }
+                //}
+                //else if (amf.ATTIVAZIONEMAGFAM == false)
+                //{
+                //    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                //}
+                //else
+                //{
+                //    lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                //}
 
 
                 //                lp = c.PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
@@ -3258,7 +3259,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             //elimino eventuali modifiche adf
                             var ladfc = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                            foreach(var adfc in ladfc)
+                            foreach (var adfc in ladfc)
                             {
                                 db.ALTRIDATIFAM.Remove(adfc);
                                 if (db.SaveChanges() <= 0)
@@ -3268,7 +3269,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                             //cerco eventuali documenti sostituiti e rimetto il flag modificato a FALSE
-                            var ldc_sost = c.DOCUMENTI.Where(a => a.FK_IDDOCUMENTO>0 && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            var ldc_sost = c.DOCUMENTI.Where(a => a.FK_IDDOCUMENTO > 0 && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
                             //var ldc_sost = c.DOCUMENTI.Where(a => a.MODIFICATO == true && a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                             foreach (var dc_sost in ldc_sost)
                             {
@@ -3301,17 +3302,18 @@ namespace NewISE.Models.DBModel.dtObj
                                     throw new Exception(string.Format("Impossibile annullare le pensioni del coniuge."));
                                 }
                             }
+                        }
 
-                            //se il coniuge è stato modificato elimino il record
-                            if (c.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione)
+                        var idMaggiorazioneFamiliare = GetMaggiorazioneFamiliareConiuge(c.IDCONIUGE);
+                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioneFamiliare);
+
+                        //elimino tutti i record dei coniugi in lavorazione
+                        foreach (var coniuge in mf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList())
+                        {
+                            db.CONIUGE.Remove(coniuge);
+                            if (db.SaveChanges() <= 0)
                             {
-                                //se è collegato a un altro record lo elimino direttamente 
-                                //eliminando anche tutti gli eventuali dati collegati
-                                db.CONIUGE.Remove(c);
-                                if (db.SaveChanges() <= 0)
-                                {
-                                    throw new Exception(string.Format("Impossibile annullare le modifiche del coniuge."));
-                                }
+                                throw new Exception(string.Format("Impossibile annullare tutte le modifiche del coniuge."));
                             }
                        
                         }

@@ -327,8 +327,8 @@ namespace NewISE.Controllers
                 ViewData.Add("trasfSolaLettura", trasfSolaLettura);
 
                 ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-
-                return PartialView(lefm);
+                var lefm_ordinata = lefm.OrderBy(a => a.parentela).ThenByDescending(a => a.dataInizio).ToList();
+                return PartialView(lefm_ordinata);
 
             }
             catch (Exception ex)

@@ -2107,6 +2107,7 @@ namespace NewISE.Controllers
         public JsonResult ConfermaAnnullaTrasf(FormCollection fc)
         {
             FormCollection collection = new FormCollection(Request.Unvalidated().Form);
+            var ltrasf = new List<SelectListItem>();
 
             string errore = "";
             decimal idTrasferimento = Convert.ToDecimal(collection["idTrasferimento"]);
@@ -2116,6 +2117,7 @@ namespace NewISE.Controllers
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     dtt.AnnullaTrasf(idTrasferimento, testoAnnullaTrasf);
+                    ltrasf = dtt.LeggiElencoTrasferimenti(idTrasferimento);
                 }
             }
             catch (Exception ex)
@@ -2128,7 +2130,8 @@ namespace NewISE.Controllers
                 Json(
                     new
                     {
-                        err = errore
+                        err = errore,
+                        listaTrasferimenti = ltrasf
                     });
         }
 

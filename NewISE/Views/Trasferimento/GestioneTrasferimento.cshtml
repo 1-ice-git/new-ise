@@ -121,8 +121,16 @@
                     $("#divOperazioniAttivitaTrasf").empty();
                     //InfoElaborazioneAjax(result.msg);
                     GestioneAttivitaTrasferimento();
-                    //GestioneAbilitazioneMenu(idTrasferimento);
-                    GestioneMenu();
+                    InfoTrasferimento(idTrasferimento);
+                    GestioneAbilitazioneMenu(idTrasferimento);
+                    //GestioneMenu();
+                   
+                    var list = result.listaTrasferimenti;
+                    $("#ElencolistaTrasferimento").select2();
+                    $('#ElencolistaTrasferimento').html('');
+                    $.each(list, function (key, val) {
+                        $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
+                    })
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
