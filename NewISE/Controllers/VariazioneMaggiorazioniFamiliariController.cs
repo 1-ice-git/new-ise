@@ -1233,16 +1233,19 @@ namespace NewISE.Controllers
                                         return PartialView("NuovoImportoPensione", pcm);
                                     }
                                     pcm.dataAggiornamento = DateTime.Now;
-                                    pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;                             if (!pcm.dataFineValidita.HasValue)
-                                    {
-                                        pcm.dataFineValidita = Utility.DataFineStop();
-                                    }
+                                    pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                                    //if (!pcm.dataFineValidita.HasValue)
+                                    //{
+                                    //    pcm.dataFineValidita = Utility.DataFineStop();
+                                    //}
 
                                     ATTIVAZIONIMAGFAM attmf_aperta = new ATTIVAZIONIMAGFAM();
 
                                     var attmf_rif = dtamf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
 
                                     var attmf = dtamf.GetAttivazioneAperta(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
+
+                                    
 
                                     // se non esiste attivazione aperta la creo altrimenti la uso
                                     if (attmf.IDATTIVAZIONEMAGFAM == 0)
@@ -1256,8 +1259,9 @@ namespace NewISE.Controllers
                                     }
 
                                     decimal idTrasf = attmf_aperta.IDMAGGIORAZIONIFAMILIARI;
+                                    DateTime dataRientro = attmf_aperta.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.DATARIENTRO;
 
-                                    dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, db);
+                                    dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
                                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo pensione coniuge (" + idConiuge + ")", "PENSIONI", db, idTrasf, pcm.idPensioneConiuge);
                                 }
                             }
@@ -2310,7 +2314,9 @@ namespace NewISE.Controllers
                                     dataInizioValidita = e.dataInizioValidita,
                                     dataFineValidita = e.dataFineValidita,
                                     dataAggiornamento = e.dataAggiornamento,
-                                    idStatoRecord = e.idStatoRecord
+                                    idStatoRecord = e.idStatoRecord,
+                                    FK_idPensione=e.FK_idPensione,
+                                    nascondi=e.nascondi
                                 }).ToList();
                     }
                 }
@@ -2339,7 +2345,9 @@ namespace NewISE.Controllers
                                     dataInizioValidita = e.dataInizioValidita,
                                     dataFineValidita = e.dataFineValidita,
                                     dataAggiornamento = e.dataAggiornamento,
-                                    idStatoRecord = e.idStatoRecord
+                                    idStatoRecord = e.idStatoRecord,
+                                    FK_idPensione=e.FK_idPensione,
+                                    nascondi=e.nascondi
                                 }).ToList();
                     }
                 }
