@@ -118,10 +118,10 @@ namespace NewISE.Controllers
         }
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
-        public ActionResult ElaborazioneMensile(List<decimal> Dipendenti)
+        public ActionResult ElaborazioneMensile(List<decimal> dipendenti)
         {
 
-            return null;
+            return PartialView();
         }
 
 

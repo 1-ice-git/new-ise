@@ -2272,7 +2272,6 @@
     <Content Include="DataSet21.xss">
       <DependentUpon>DataSet21.xsd</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <Content Include="Scripts\ckeditor\plugins\cavacnote\README" />
     <Content Include="Scripts\ckeditor\plugins\scayt\CHANGELOG.md" />
     <Content Include="Scripts\ckeditor\plugins\scayt\LICENSE.md" />
@@ -3154,6 +3153,7 @@
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
     <Compile Include="Models\DBModel\TipoLiquidazioneModel.cs" />
+    <Compile Include="Models\DBModel\TipoMovimentoModel.cs" />
     <Compile Include="Models\DBModel\TipoVoceModel.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
@@ -3348,6 +3348,8 @@
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
     <Compile Include="Models\ViewModel\ElencoTitoliViaggioModel.cs" />
+    <Compile Include="Models\ViewModel\LiquidazioneMensileViewModel.cs" />
+    <Compile Include="Models\ViewModel\LiquidazioniDiretteViewModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfFigliModel.cs" />
@@ -3564,6 +3566,7 @@
     <Content Include="Views\Richiamo\MessaggioInserisciRichiamo.cshtml" />
     <Content Include="Views\Richiamo\MessaggioModificaRichiamo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
+    <Content Include="Views\Elaborazioni\ElaborazioneMensile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

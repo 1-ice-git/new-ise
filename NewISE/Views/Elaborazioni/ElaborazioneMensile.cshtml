@@ -1,0 +1,39 @@
+﻿@model IEnumerable<NewISE.Models.ViewModel.LiquidazioneMensileViewModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idVoci)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nominativo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Importo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idVoci)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nominativo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Importo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idTeorici }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idTeorici }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idTeorici })
+        </td>
+    </tr>
+}
+
+</table>
