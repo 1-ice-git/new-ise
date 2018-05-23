@@ -1,0 +1,11 @@
+﻿@using ReportViewerForMvc;
+@using Microsoft.Reporting.WebForms;
+
+@{
+    ViewBag.Title = "RptIndennitaBase2";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>RptIndennitaBase2</h2>
+
+@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)

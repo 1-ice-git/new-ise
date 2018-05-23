@@ -5,8 +5,11 @@ using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
+using NewISE.Views.Dataset;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -147,9 +150,12 @@ namespace NewISE.Controllers
             }
             
         }
+
+        DSIndennitaBase ds = new DSIndennitaBase();
         public ActionResult RptIndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+           
 
             try
             {
@@ -174,87 +180,29 @@ namespace NewISE.Controllers
                                     DescLivello = e.LIVELLI.LIVELLO
                                 },
                             }).ToList();
-               
 
-                // ***************************************************************************
-                // I COMMENTO
+                  
+                    ReportViewer reportViewer = new ReportViewer();
 
-                //DataClassDataContext db = new DataClassDataContext();
-                //var datasource = from c in db.sp_LinqTest(v_strCountry)
-                //                 orderby c.CustomerID
-                //                 select c;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
 
-                //ReportParameter rpCountry = new ReportParameter("p_Country", v_strCountry);
-                //this.rdlcreport1.LocalReport.SetParameters(new ReportParameter[] { rpCountry });
-                //this.rdlcreport1.LocalReport.DataSources.Add(new ReportDataSource("sp_LinqTestResult", datasource.ToList()));
-                //this.rdlcreport1.LocalReport.Refresh();
+                    var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
+                    ////var datasource = new ReportDataSource("INDENNITABASE", ll.ToList());
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    //reportViewer.LocalReport.ReportPath = @"~/Report/RptIndennitaBase.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"~/Report/RptIndennitaBase.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    reportViewer.LocalReport.DataSources.Add(datasource);
+                    //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
+                    reportViewer.LocalReport.Refresh();
 
-                // ***************************************************************************
+                    ViewBag.ReportViewer = reportViewer;
 
-
-                // ***************************************************************************
-                // II COMMENTO
-
-                //ReportViewer reportViewer = new ReportViewer();
-                //reportViewer.ProcessingMode = ProcessingMode.Local;
-                //reportViewer.SizeToReportContent = true;
-                //reportViewer.Width = Unit.Percentage(100);
-                //reportViewer.Height = Unit.Percentage(100);
-
-                //var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
-                //OracleConnection conx = new OracleConnection(connectionString);
-                //String Sql = "Select * From table_name";
-
-                //OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
-
-                ////adp.Fill(ds13, ds13.V_PRESENZE_LIVELLI.TableName);
-                //adp.Fill(ds13, ds13.DataTable13.TableName);
-
-                //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc";
-                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet13", ds13.Tables[0]));
-
-                //ReportParameter[] parameterValues = new ReportParameter[]
-                //   {
-                //        new ReportParameter ("fromDate",V_DATA),
-                //        new ReportParameter ("toDate",V_DATA1)
-                //   };
-
-                //reportViewer.LocalReport.SetParameters(parameterValues);
-                //reportViewer.LocalReport.Refresh();
-
-                //ViewBag.ReportViewer = reportViewer;
-
-
-                // **********************************************************
-                // 3 Commento da testare
-
-                //LinqNewDataContext db = new LinqNewDataContext();
-                //var query = from c in db.tbl_Temperatures
-                //            where c.Device_Id == "Tlog1"
-                //            select c;
-
-                ReportViewer reportViewer = new ReportViewer();
-
-                //reportViewer.ProcessingMode = ProcessingMode.Local;
-                //reportViewer.SizeToReportContent = true;
-                //reportViewer.Width = Unit.Percentage(100);
-                //reportViewer.Height = Unit.Percentage(100);
-
-                var datasource = new ReportDataSource("DSIndennitaBase", libm.ToList());
-                reportViewer.Visible = true;
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                
-                reportViewer.LocalReport.ReportPath = @"\Areas\Views\Report\RptIndennitaBase.rdlc";
-                reportViewer.LocalReport.DataSources.Clear();
-                reportViewer.LocalReport.DataSources.Add(datasource);
-                reportViewer.LocalReport.Refresh();
-
-                ViewBag.ReportViewer = reportViewer;
-
-                // **********************************************************
-                
-                return View();
-
+                    
                 }
             }
             
@@ -263,7 +211,8 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            
+            return View("RptIndennitaBase2");
+
         }
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {

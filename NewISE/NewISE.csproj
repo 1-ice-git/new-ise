@@ -3356,6 +3356,11 @@
     <Compile Include="Models\ViewModel\MaggiorazioneAbitazioneViewModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Dataset\DSIndennitaBase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -3563,6 +3568,21 @@
     <Content Include="Views\Richiamo\MessaggioModificaRichiamo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaBase.cshtml" />
+    <Content Include="Views\Dataset\DSIndennitaBase.xsc">
+      <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DSIndennitaBase.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSIndennitaBase.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DSIndennitaBase.xss">
+      <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Indennita\ReportViewer.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitaBase1.cshtml" />
+    <Content Include="Views\Shared\_LayoutPage1.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitaBase2.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3677,7 +3697,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Report\RptIndennitaBase.rdlc" />
+    <EmbeddedResource Include="Report\RptIndennitaBase.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
