@@ -155,7 +155,7 @@ namespace NewISE.Controllers
         public ActionResult RptIndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-           
+            
 
             try
             {
