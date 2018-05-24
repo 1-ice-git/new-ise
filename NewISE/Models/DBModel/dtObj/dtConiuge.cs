@@ -628,7 +628,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     cm.modificato = true;
                                 }
-                                var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato).ToList();
+                                var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato && a.NASCONDI==false).ToList();
                                 if (lpc.Count() > 0 && cm.nuovo == false)
                                 {
                                     cm.modificato = true;

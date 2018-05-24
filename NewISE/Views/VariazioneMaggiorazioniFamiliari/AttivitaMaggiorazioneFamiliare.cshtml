@@ -6,6 +6,7 @@
 }
 
 @Html.Hidden("hi_idTrasferimento", idMagFam)
+@Html.Hidden("hi_idConiuge")
 <div class="row">
     <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
         <div class="nav nav-justified nav-tabs">
@@ -114,6 +115,68 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="AnnullaModifichePensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaModifichePensioneLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaModifichePensione">
+                    <label>
+                        Sei sicuro di voler annullare le correnti modifiche apportate alla pensione del coniuge <span id="spanAnnullaModifichePensione"></span><label>&nbsp;?</label>
+                    </label>
+                <p>
+                    <label>
+                        (Verranno ripristinati gli importi attualmente validi.)
+                    </label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btAnnullaModifichePensione" type="button" class="btn btn-info" onclick="ConfermaAnnullaModifichePensioneConiuge();">Conferma</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CessazionePensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalCessazionePensioneLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Cessazione Pensione</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div class="row">
+                    <div class="col-xs-3 text-right" style="padding-right:15px;font-weight:bold;padding-top:5px">
+                        Data cessazione :
+                    </div>
+
+                    <div class="col-xs-2">
+                        <input type="text" id="dataCessazionePensione" class="form-control" />
+                        @*@Html.TextBox("dataCessazionePensione", dataCessazione, htmlAttributes: new { @class = "form-control" })*@
+                    </div>
+                    <div class="col-xs-5" id="divValidazioneCessazione">
+                        <p class="text-danger">(*) Data Cessazione obbligatoria.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btCessazionePensione" type="button" class="btn btn-info" onclick="ConfermaCessazionePensione();">Conferma</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <script type="text/javascript">
     $('#tabsAttivitaMaggiorazioniFamiliari_Var').tab();
@@ -470,6 +533,94 @@
                 ErroreElaborazioneAjax(msg);
             }
         });
+    }
+
+    function AggiornaElencoPensioni(idConiuge) {
+        Pensione(idConiuge);
+    }
+
+    function ConfermaAnnullaModifichePensioneConiuge() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaAnnullaModifichePensioneConiuge";
+        var idConiuge = parseInt($('#hi_idConiuge').val());
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+
+            data: {
+                idConiuge: idConiuge
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    $('#AnnullaModifichePensioneModal').modal('hide');
+                    AggiornaElencoPensioni(idConiuge);
+                    
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+                //debugger;
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaCessazionePensione() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaCessazionePensione";
+        var idConiuge = parseInt($('#hi_idConiuge').val());
+        var strDataCessazionePensione = $('#dataCessazionePensione').val();
+        if (strDataCessazionePensione != "") {
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+
+                data: {
+                    idConiuge: idConiuge,
+                    strDataCessazionePensione: strDataCessazionePensione
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                },
+                success: function (result) {
+                    //debugger;
+                    if (result.err == "") {
+                        $('#CessazionePensioneModal').modal('hide');
+                        AggiornaElencoPensioni(idConiuge);
+                    
+                    } else {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+
+                    //AggiornaElencoPensioni(idConiuge);
+
+                },
+                complete: function () {
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        } else {
+            $("#divValidazioneCessazione").show();
+        }
     }
 
 

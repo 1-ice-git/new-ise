@@ -1068,7 +1068,6 @@ namespace NewISE.Controllers
             return PartialView(adfm);
         }
 
-
         public ActionResult ConfermaModificaAdfConiuge(AltriDatiFamConiugeModel adfm)
         {
             decimal idAdf;
@@ -1136,6 +1135,13 @@ namespace NewISE.Controllers
             {
                 lpcm = GetPensioniConiuge(idConiuge).ToList();
 
+                bool esistonoPensioni = false;
+                if (lpcm.Count>0)
+                {
+                    esistonoPensioni = true;
+                }
+                ViewData.Add("esistonoPensioni", esistonoPensioni);
+
                 using (dtConiuge dtc = new dtConiuge())
                 {
                     decimal idMaggiorazioniFamiliari = dtc.GetConiugebyID(idConiuge).idMaggiorazioniFamiliari;
@@ -1180,8 +1186,29 @@ namespace NewISE.Controllers
                             solaLettura = true;
                         }
 
+                        var cm = dtc.GetConiugebyID(idConiuge);
+
+                        #region controllo modifica pensioni
+                        using (ModelDBISE db = new ModelDBISE())
+                        {
+                            var lp_in_lav = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(a =>
+                                 a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
+                                 a.NASCONDI == false)
+                                     .OrderByDescending(a => a.IDPENSIONE).ToList();
+                            bool pensioniModificate = false;
+                            if (lp_in_lav.Count() > 0)
+                            {
+                                pensioniModificate=true;
+                            }
+                            ViewData.Add("pensioniModificate", pensioniModificate);
+                        }
+                        #endregion
+
+                        ViewData.Add("nominativo", cm.nominativo);
                         ViewData.Add("solaLettura", solaLettura);
                         ViewData.Add("trasfSolaLettura", trasfSolaLettura);
+                        ViewData.Add("DataOdierna", DateTime.Now);
+
                     }
                 }
             }
@@ -1191,8 +1218,8 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewData.Add("idConiuge", idConiuge);
-
-            return PartialView(lpcm);
+            var lpcm_ordinata = lpcm.OrderByDescending(a => a.dataInizioValidita).ToList();
+            return PartialView(lpcm_ordinata);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -1234,18 +1261,10 @@ namespace NewISE.Controllers
                                     }
                                     pcm.dataAggiornamento = DateTime.Now;
                                     pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
-                                    //if (!pcm.dataFineValidita.HasValue)
-                                    //{
-                                    //    pcm.dataFineValidita = Utility.DataFineStop();
-                                    //}
 
                                     ATTIVAZIONIMAGFAM attmf_aperta = new ATTIVAZIONIMAGFAM();
-
                                     var attmf_rif = dtamf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
-
                                     var attmf = dtamf.GetAttivazioneAperta(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
-
-                                    
 
                                     // se non esiste attivazione aperta la creo altrimenti la uso
                                     if (attmf.IDATTIVAZIONEMAGFAM == 0)
@@ -1259,9 +1278,22 @@ namespace NewISE.Controllers
                                     }
 
                                     decimal idTrasf = attmf_aperta.IDMAGGIORAZIONIFAMILIARI;
-                                    DateTime dataRientro = attmf_aperta.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.DATARIENTRO;
+                                    DateTime dataRientro = db.TRASFERIMENTO.Find(idTrasf).DATARIENTRO;
 
-                                    dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
+                                    //controlla data inserita superiore a dataRientro
+                                    if(pcm.dataInizioValidita>dataRientro)
+                                    {
+                                        pcm.dataInizioValidita = dataRientro;
+                                    }
+
+                                    if (pcm.checkAggiornaTutti == false)
+                                    {
+                                        dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
+                                    }else
+                                    {
+                                        //inserisce periodo e annulla i periodi successivi (fino al primo buco temporale o fino a dataRientro)
+                                        dtp.SetNuovoImportoPensioneVariazione_AggiornaTutti(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
+                                    }
                                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo pensione coniuge (" + idConiuge + ")", "PENSIONI", db, idTrasf, pcm.idPensioneConiuge);
                                 }
                             }
@@ -2720,14 +2752,12 @@ namespace NewISE.Controllers
 
         public ActionResult VisualizzaModificheFiglio(decimal idMaggiorazioniFamiliari, decimal idFigli)
         {
-
             ViewData.Add("idFigli", idFigli);
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             return PartialView();
         }
         public ActionResult VisualizzaModificheConiuge(decimal idMaggiorazioniFamiliari, decimal idConiuge)
         {
-
             ViewData.Add("idConiuge", idConiuge);
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             return PartialView();
@@ -2748,7 +2778,6 @@ namespace NewISE.Controllers
                     var db = new ModelDBISE();
 
                     var fm = dtf.GetFigliobyID(idFigli);
-
 
                     #region documenti
                     var n_doc = db.FIGLI.Find(fm.idFigli).DOCUMENTI.Where(a =>
@@ -2849,9 +2878,15 @@ namespace NewISE.Controllers
 
                     var lp_mod = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(a =>
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato)
+                            a.NASCONDI == false)
                                 .OrderByDescending(a => a.IDPENSIONE).ToList();
-                    if (lp_mod.Count() != lp_att.Count())
+
+                    var lp_in_lav = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(a =>
+                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato &&
+                             a.NASCONDI == false)
+                                 .OrderByDescending(a => a.IDPENSIONE).ToList();
+                    if (lp_mod.Count() != lp_att.Count() || lp_in_lav.Count()>0)
                     {
                         vcm.ev_pensione = evidenzia_titolo;
                     }
@@ -2992,6 +3027,103 @@ namespace NewISE.Controllers
                     return PartialView(vcm);
                 }
             }
+        }
+
+        public JsonResult ConfermaAnnullaModifichePensioneConiuge(decimal idConiuge)
+        {
+            string errore = "";
+            try
+            {
+                using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
+                    dtmf.AnnullaModifichePensioneConiuge(idConiuge);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+
+        public JsonResult ConfermaCessazionePensione(DateTime strDataCessazionePensione, decimal idConiuge)
+        {
+            string errore = "";
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+                    try
+                    {
+                        using (dtPensione dtp = new dtPensione())
+                        {
+                            using (dtVariazioniMaggiorazioneFamiliare dtamf = new dtVariazioniMaggiorazioneFamiliare())
+                            {
+                                PensioneConiugeModel pm = new PensioneConiugeModel();
+
+                                ATTIVAZIONIMAGFAM attmf_aperta = new ATTIVAZIONIMAGFAM();
+                                var attmf_rif = dtamf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
+                                var attmf = dtamf.GetAttivazioneAperta(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
+
+                                // se non esiste attivazione aperta la creo altrimenti la uso
+                                if (attmf.IDATTIVAZIONEMAGFAM == 0)
+                                {
+                                    ATTIVAZIONIMAGFAM new_amf = dtamf.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI, db);
+                                    attmf_aperta = new_amf;
+                                }
+                                else
+                                {
+                                    attmf_aperta = attmf;
+                                }
+
+                                decimal idTrasf = attmf_aperta.IDMAGGIORAZIONIFAMILIARI;
+                                DateTime dataRientro = db.TRASFERIMENTO.Find(idTrasf).DATARIENTRO;
+                                DateTime dataPartenza = db.TRASFERIMENTO.Find(idTrasf).DATAPARTENZA;
+
+                                if (strDataCessazionePensione > dataRientro)
+                                {
+                                    strDataCessazionePensione = dataRientro;
+                                }
+                                if (strDataCessazionePensione < dataPartenza)
+                                {
+                                    strDataCessazionePensione = dataPartenza;
+                                }
+
+                                dtp.SetDataCessazione(strDataCessazionePensione, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
+                                //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento data cessazione pensione coniuge (" + idConiuge + ")", "PENSIONI", db, idTrasf, pcm.idPensioneConiuge);
+                            }
+                        }
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
         }
 
     }

@@ -1048,8 +1048,12 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Immagini\2.GIF" />
     <Content Include="Immagini\39.gif" />
+    <Content Include="Immagini\euro-add-black.png" />
+    <Content Include="Immagini\euro-stop-black.png" />
     <Content Include="Immagini\new-icon.png" />
     <Content Include="Immagini\undo.png" />
+    <Content Include="Immagini\undo_black.png" />
+    <Content Include="Immagini\undo_white.png" />
     <Content Include="Immagini\user.png" />
     <Content Include="Immagini\Button-Green.png" />
     <Content Include="Immagini\Button-Red.png" />
@@ -2225,7 +2229,6 @@
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Content>
     <Content Include="FormulariMaster\FormularioMF\formulario 1.pdf" />
-    <Content Include="FormulariMaster\FormularioMF\formulario 2.pdf" />
     <Content Include="FormulariMaster\FormularioMF\formulario 3.pdf" />
     <Content Include="FormulariMaster\FormularioMF\formulario 4.pdf" />
     <Content Include="FormulariMaster\FormularioMF\formulario 5.pdf" />
@@ -2248,6 +2251,7 @@
     <Content Include="EF\ModelDBISE.edmx.diagram">
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Content>
+    <Content Include="FormulariMaster\FormularioMF\formulario 2.pdf" />
     <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
     <Content Include="DataSet20.xsc">

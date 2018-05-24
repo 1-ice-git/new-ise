@@ -207,7 +207,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #region pensioni
                     //controlla eventuale pensione
-                    var lp = amf.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                    var lp = amf.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI==false).ToList();
                     if (lp?.Any() ?? false)
                     {
                         var p = lp.First();
@@ -3276,6 +3276,18 @@ namespace NewISE.Models.DBModel.dtObj
                                     throw new Exception(string.Format("Impossibile annullare le pensioni del coniuge."));
                                 }
                             }
+
+                            //ripristino pensioni nascoste attive
+                            var lpc_attive = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                                a.NASCONDI).ToList();
+                            foreach (var pc_attive in lpc_attive)
+                            {
+                                pc_attive.NASCONDI = false;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception(string.Format("Impossibile annullare le pensioni del coniuge."));
+                                }
+                            }
                         }
 
                         var idMaggiorazioneFamiliare = GetMaggiorazioneFamiliareConiuge(c.IDCONIUGE);
@@ -3564,23 +3576,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                         }
 
-                        ////PENSIONI: le pensioni vengono gestite tutte insieme
-                        ////          quindi le pensioni attive vengono annullate 
-                        ////          e le pensioni da attivare vengono attivate
-                        ////
-                        ////cerca pensioni coniuge attivate e le annulla
-                        //var lp_att = amf.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                        //foreach (var p in lp_att)
-                        //{
-                        //    p.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
-                        //    if (db.SaveChanges() <= 0)
-                        //    {
-                        //        throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (pensione coniuge).");
-                        //    }
-
-                        //}
-                        //cerca pensioni coniuge da attivare e le mette attivate
-                        var lp = amf.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                        //cerca pensioni coniuge da attivare visibili e le mette attivate
+                        var lp = amf.PENSIONE.Where(a => 
+                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && 
+                                    a.NASCONDI==false).ToList();
                         
                         foreach (var p in lp)
                         {
@@ -4574,9 +4573,35 @@ namespace NewISE.Models.DBModel.dtObj
                             #endregion
 
                             #region annulla solo pensione (da fare)
-                            #endregion
+                            var lpcOld =
+                              amfOld.PENSIONE.Where(
+                                  a =>
+                                      a.NASCONDI == false &&
+                                      a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                            foreach (PENSIONE pcOld in lpcOld)
+                            {
+                                ///Creo la nuova riga per la pensione con le informazioni della vecchia riga
+                                PENSIONE pNew = new PENSIONE()
+                                {
+                                    IMPORTOPENSIONE = pcOld.IMPORTOPENSIONE,
+                                    DATAINIZIO = pcOld.DATAINIZIO,
+                                    DATAFINE = pcOld.DATAFINE,
+                                    DATAAGGIORNAMENTO = pcOld.DATAAGGIORNAMENTO,
+                                    NASCONDI = pcOld.NASCONDI,
+                                    FK_IDPENSIONE = pcOld.FK_IDPENSIONE,
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
+                                };
 
-                               
+                                amfNew.PENSIONE.Add(pNew);///Consolido 
+                                pcOld.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di annulla richiesta. Fase elaborazione pensio9ni coniuge");
+                                }
+                                var idConiuge = pcOld.CONIUGE.First().IDCONIUGE;
+                                Associa_Pensioni_Coniuge_ById(pNew.IDPENSIONE, idConiuge, db);
+                                #endregion
+                            }
 
                             EmailTrasferimento.EmailAnnulla(amfOld.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                             Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioniFamiliari,
@@ -5371,9 +5396,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
 
                             }
-                            // manca pensione coniuge
-                            //cerca pensione in lavorazione e lo mette da attivare
-                            var lp = amf.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+
+                            //cerca pensione in lavorazione visibili e le mette da attivare
+                            var lp = amf.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
+                                                            a.NASCONDI==false).ToList();
                             foreach (var p in lp)
                             {
                                 p.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
@@ -5643,6 +5669,55 @@ namespace NewISE.Models.DBModel.dtObj
                         modificabile = false;
                     }
                     return modificabile;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AnnullaModifichePensioneConiuge(decimal idConiuge)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+                    try
+                    {
+                        var c = db.CONIUGE.Find(idConiuge);
+                        var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato);
+                        foreach(var pc in lpc)
+                        {
+                            if(pc.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                //db.PENSIONE.Remove(pc);
+                                pc.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                                if (db.SaveChanges()<=0)
+                                {
+                                    throw new Exception("Errore in fase di ripristino delle pensioni (cancellazione record in lavorazione)");
+                                }
+                            }
+                            if (pc.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && pc.NASCONDI )
+                            {
+                                pc.NASCONDI = false;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di ripristino delle pensioni (ripristino record attivo)");
+                                }
+                            }
+
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
                 }
             }
             catch (Exception ex)
