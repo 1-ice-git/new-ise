@@ -1,12 +1,20 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
 @using NewISE.Models.DBModel.Enum;
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
 
 @{
+    
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
     decimal idRuoloUfficio = Convert.ToDecimal(ViewBag.idRuoloUfficio);
 }
 
 @Html.Hidden("hidTrasferimento")
+
+<div id="divContentpartial" class="row">
+    <div id="divPViewIndennita" class="col-xs-12">
+    </div>
+</div>
 
 
 <div class="row">
@@ -19,7 +27,6 @@
         </div>
     </div>
 </div>
-<br />
 
 <table id="tbIndennitaBase" class="display" cellspacing="0">
     <thead>
@@ -93,16 +100,35 @@
 
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-        <button class="btn btn-default btn-sm" onclick="RptIndennitaBase()">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Print
+       
+        <button class="btn btn-default btn-sm" onclick="DownloadReport();">
+            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+            Stampa
         </button>
 
     </div>
 </div>
 
-
-
+<div class="modal fade modal-fullscreen force-fullscreen" id="ModalReport" tabindex="-1" role="dialog" aria-labelledby="ModalReportLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DownloadReportLabel">Indennita Base</h3>
+            </div>
+            <div class="modal-body">
+                <div id="divPViewIndennita">
+                    @Html.Action("RptIndennitaBase", "Indennita")
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     $('#tbIndennitaBase').DataTable({
@@ -146,58 +172,60 @@
         "order": [[0, "desc"]]
     });
 
-
+    function DownloadReport() {
+        $('#ModalReport').modal().show();
+        
+    }
+    
     function myFunction() {
         window.print();
     }
 
      function invia() {
         //debugger
-        var DATA = $("#datepicker").datepicker().val()
-        var DATA1 = $("#datepicker1").datepicker().val()
+         var idTrasferimento = $("#hidTrasferimento").val();
 
-        window.location.href = "/Statistiche/OpSpeseDiverse/RptOpSpeseDiverse?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
-
+         window.location.href = "/Indennita/RptIndennitaBase?idTrasferimento=" + idTrasferimento;
+         target = "_blank";
     };
 
-    function RptIndennitaBase() {
-        //debugger;
-        var rotta = "/Indennita/RptIndennitaBase";
+     function RptIndennitaBase() {
+         //debugger;
+         var rotta = "/Indennita/RptIndennitaBase";
 
-        var idTrasferimento = 0;
+         var idTrasferimento = 0;
 
-        if (!isNaN(idTrasf)) {
-            idTrasferimento = idTrasf;
-        } else {
-            idTrasferimento = $("#hidTrasferimento").val();
-        }
-        @*var idTrasferimento = parseInt('@idTrasferimento');*@
-        
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idTrasferimento: idTrasferimento },
-            dataType: 'json',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    //InfoElaborazioneAjax(result.msg);
-                } else {
-                    ErroreElaborazioneAjax(result.err);
-                }
-            },
-            complete: function () {
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-    }
+         if (!isNaN(idTrasf)) {
+             idTrasferimento = idTrasf;
+         } else {
+             idTrasferimento = $("#hidTrasferimento").val();
+         }
+         @*var idTrasferimento = parseInt('@idTrasferimento');*@
 
+                 $.ajax({
+                     type: "POST",
+                     url: rotta,
+                     data: { idTrasferimento: idTrasferimento },
+                     dataType: 'html',
+                     beforeSend: function () {
+                         //debugger;
+                         VerificaAutenticazione();
+                     },
+                     success: function (result) {
+                         //debugger;
+
+                         $("#divPViewIndennita").empty();
+                         $("#divPViewIndennita").html(result);
+                     },
+                     complete: function () {
+                     },
+                     error: function (jqXHR, textStatus, errorThrow) {
+                         //debugger;
+                         var msg = errorThrow.err;
+                         ErroreElaborazioneAjax(msg);
+                     }
+
+                 });
+
+     }
 </script>

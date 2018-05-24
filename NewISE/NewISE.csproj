@@ -3583,6 +3583,7 @@
     <Content Include="Views\Indennita\RptIndennitaBase1.cshtml" />
     <Content Include="Views\Shared\_LayoutPage1.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaBase2.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitaBase4.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

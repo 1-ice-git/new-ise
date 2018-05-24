@@ -25,7 +25,6 @@ namespace NewISE.Controllers
             return View();
         }
 
-
         public ActionResult GestioneIndennita(decimal idTrasferimento)
         {
             try
@@ -162,7 +161,8 @@ namespace NewISE.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var ll = db.INDENNITABASE.ToList();
+                    //var ll = db.INDENNITABASE.ToList();
+                    var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
 
                     libm = (from e in ll
                             select new IndennitaBaseModel()
@@ -194,7 +194,7 @@ namespace NewISE.Controllers
                     reportViewer.Visible = true;
                     reportViewer.ProcessingMode = ProcessingMode.Local;
                     //reportViewer.LocalReport.ReportPath = @"~/Report/RptIndennitaBase.rdlc";
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"~/Report/RptIndennitaBase.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaBase.rdlc";
                     reportViewer.LocalReport.DataSources.Clear();
                     reportViewer.LocalReport.DataSources.Add(datasource);
                     //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
@@ -211,7 +211,8 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return View("RptIndennitaBase2");
+            //return PartialView("RptIndennitaBase");
+            return PartialView("RptIndennitaBase4");
 
         }
         public ActionResult IndennitaServizio(decimal idTrasferimento)
