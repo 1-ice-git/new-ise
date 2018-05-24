@@ -3567,7 +3567,6 @@
     <Content Include="Views\Richiamo\MessaggioInserisciRichiamo.cshtml" />
     <Content Include="Views\Richiamo\MessaggioModificaRichiamo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
-    <Content Include="Views\Indennita\RptIndennitaBase_old.cshtml" />
     <Content Include="Views\Dataset\DSIndennitaBase.xsc">
       <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
     </Content>
@@ -3580,9 +3579,7 @@
       <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
     </Content>
     <Content Include="Views\Indennita\ReportViewer.cshtml" />
-    <Content Include="Views\Indennita\RptIndennitaBase1.cshtml" />
     <Content Include="Views\Shared\_LayoutPage1.cshtml" />
-    <Content Include="Views\Indennita\RptIndennitaBase2.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaBase.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
