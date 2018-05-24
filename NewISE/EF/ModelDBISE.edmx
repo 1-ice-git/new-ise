@@ -1366,6 +1366,7 @@
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="INSERIMENTOMANUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -8394,6 +8395,7 @@
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="INSERIMENTOMANUALE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CONT_OA" Relationship="DBISE.R_T_COA" FromRole="TEORICI" ToRole="CONT_OA" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_EI_T" FromRole="TEORICI" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
@@ -12033,6 +12035,7 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="INSERIMENTOMANUALE" ColumnName="INSERIMENTOMANUALE" />
                 <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />

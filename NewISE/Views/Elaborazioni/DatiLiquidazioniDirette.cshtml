@@ -1,91 +1,61 @@
-﻿@using NewISE.Models.Enumeratori
-@model IEnumerable<NewISE.Models.ViewModel.LiquidazioneMensileViewModel>
+﻿@model IEnumerable<NewISE.Models.ViewModel.LiquidazioniDiretteViewModel>
+
 
 <div class="row">
     <div class="col-xs-12">
-        <table id="TabLiquidazioniMensili" cellspacing="0" class="table">
+        <div class="text-center" style="border-top-style: solid;">
+            <label class="text-info" style="font-size: 16px;">Liquidazioni dirette</label>
+        </div>
+
+        <table id="TabLiquidazioniDirette" cellspacing="0" class="table">
             <thead>
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Nominativo)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voce.descrizione)
+                        @Html.DisplayNameFor(model => model.Voci.descrizione)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voce.codiceVoce)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Movimentazione)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TipoMovimento.DescMovimento)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Voce.TipoVoce.descrizione)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Voce.TipoLiquidazione.descrizione)
+                        @Html.DisplayNameFor(model => model.Voci.codiceVoce)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Importo)
                     </th>
-
+                    <th>
+                        @Html.DisplayNameFor(model => model.Data)
+                    </th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach (var item in Model)
-                {
+            {
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Nominativo)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Voce.descrizione)
+                            @Html.DisplayFor(modelItem => item.Voci.descrizione)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Voce.codiceVoce)
-                        </td>
-                        @if (item.Movimentazione == EnumMovimentazione.Software)
-                        {
-                            <td>
-                                <label>SOFTWARE</label>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <label>MANUALE</label>
-                            </td>
-                        }
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TipoMovimento.DescMovimento)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Voce.TipoVoce.descrizione)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Voce.TipoLiquidazione.descrizione)
+                            @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Importo)
                         </td>
-
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Data)
+                        </td>
                     </tr>
                 }
-
             </tbody>
-
-
-
         </table>
     </div>
 </div>
 
-
-
 <script type="text/javascript">
-    $("#TabLiquidazioniMensili").DataTable({
+    $("#TabLiquidazioniDirette").DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -117,7 +87,7 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "scrollY": 450,
+        "scrollY": 200,
         "scrollCollapse": true,
         "columnDefs": [
                 {

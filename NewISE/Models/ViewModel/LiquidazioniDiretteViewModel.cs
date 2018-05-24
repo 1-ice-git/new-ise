@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel;
 
 namespace NewISE.Models.ViewModel
 {
@@ -11,6 +12,9 @@ namespace NewISE.Models.ViewModel
     {
         [Key]
         public decimal idTeorici { get; set; }
+        [Required(ErrorMessage = "Il campo è richiesto.")]
+        public string Nominativo { get; set; }
+
         [Display(Name = "Voci")]
         public decimal idVoci { get; set; }
 
@@ -21,5 +25,7 @@ namespace NewISE.Models.ViewModel
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime Data { get; set; }
+
+        public VociModel Voci { get; set; }
     }
 }

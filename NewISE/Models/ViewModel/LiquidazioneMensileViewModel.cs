@@ -21,6 +21,9 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Voci")]
         public decimal idVoci { get; set; }
         [Required(ErrorMessage = "Il campo è richiesto.")]
+        public EnumMovimentazione Movimentazione { get; set; }
+
+        [Required(ErrorMessage = "Il campo è richiesto.")]
         [Display(Name = "Tipo liq.")]
         public EnumTipoLiquidazione idTipoLiquidazione { get; set; }
         [Required(ErrorMessage = "Il campo è richiesto.")]

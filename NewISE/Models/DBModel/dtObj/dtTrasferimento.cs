@@ -2477,25 +2477,37 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
-                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    //using (dtTrasferimento dtt = new dtTrasferimento())
+                                    //{
+                                    using (dtUffici dtu = new dtUffici())
                                     {
-                                        using (dtUffici dtu = new dtUffici())
-                                        {
-                                            var dip = dtd.GetDipendenteByID(t.IDDIPENDENTE);
-                                            var uff = dtu.GetUffici(t.IDUFFICIO);
+                                        var dip = dtd.GetDipendenteByID(t.IDDIPENDENTE);
+                                        var uff = dtu.GetUffici(t.IDUFFICIO);
 
-                                            var messaggioAttiva = Resources.msgEmail.MessaggioAttivaTrasferimento;
-                                            var oggettoAttiva = Resources.msgEmail.OggettoAttivaTrasferimento;
+                                        var messaggioAttiva = Resources.msgEmail.MessaggioAttivaTrasferimento;
+                                        var oggettoAttiva = Resources.msgEmail.OggettoAttivaTrasferimento;
 
 
-                                            EmailTrasferimento.EmailAttiva(t.IDTRASFERIMENTO,
-                                                                            oggettoAttiva,
-                                                                            string.Format(messaggioAttiva, dip.cognome + " " + dip.nome + " (" + dip.matricola + ") ", uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString()),
-                                                                            db);
+                                        EmailTrasferimento.EmailAttiva(t.IDTRASFERIMENTO,
+                                                                        oggettoAttiva,
+                                                                        string.Format(messaggioAttiva, dip.cognome + " " + dip.nome + " (" + dip.matricola + ") ", uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString()),
+                                                                        db);
 
-                                        }
                                     }
+
+
+                                    //}
                                 }
+
+                                //TODO: implementare il saldo di prima sistemazione o invio unica soluzione se non c'è anticipo.
+                                //var ps = t.PRIMASITEMAZIONE;
+
+                                //var laa = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false);
+
+                                //using (dtElaborazioni dte = new dtElaborazioni())
+                                //{
+                                //    dte.InviaAnticipoPrimaSistemazioneContabilita(idAttivitaAnticipi, db);
+                                //}
 
                                 //this.EmailAttivaTrasf(t.IDTRASFERIMENTO, db);
 
@@ -2843,8 +2855,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                 : "ANNULLATO"
                                             )
                                         ),
-                                Value = e.idTrasferimento.ToString()
-                            }).ToList();
+                             Value = e.idTrasferimento.ToString()
+                         }).ToList();
 
                     if (idTrasferimento == 0)
                     {

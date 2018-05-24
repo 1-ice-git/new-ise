@@ -3567,6 +3567,7 @@
     <Content Include="Views\Richiamo\MessaggioModificaRichiamo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
     <Content Include="Views\Elaborazioni\ElaborazioneMensile.cshtml" />
+    <Content Include="Views\Elaborazioni\DatiLiquidazioniDirette.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

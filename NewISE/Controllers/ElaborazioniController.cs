@@ -124,6 +124,17 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+        public ActionResult DatiLiquidazioniDirette(decimal idAnnoMeseElaborato)
+        {
+            List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
+
+            using (dtElaborazioni dte = new dtElaborazioni())
+            {
+                lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).ToList();
+            }
+
+            return PartialView(lLd);
+        }
 
 
 
