@@ -3,23 +3,10 @@
 
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
-    <title>Indennità Base</title>
-</head>
-<body>
-    @{
-        ViewBag.Title = "Indennità Base";
-        
-    }
+@{
+    ViewBag.Title = "RptIndennitaBase4";
+}
 
 
-    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
 
-    
-</body>
-</html>
-
+@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)

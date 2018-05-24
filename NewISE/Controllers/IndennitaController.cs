@@ -200,6 +200,29 @@ namespace NewISE.Controllers
                     //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
                     reportViewer.LocalReport.Refresh();
 
+                    // ****************************************************************************
+                    // 1 Commento da testare
+                    //ReportParameter[] parameters = new ReportParameter[3];
+
+                    //parameters[0] = new ReportParameter("pMonth", idTrasferimento.ToString());
+                    //parameters[1] = new ReportParameter("pYear", idTrasferimento.ToString());
+                    //parameters[2] = new ReportParameter("pUserName", idTrasferimento.ToString());
+
+                    //reportViewer.LocalReport.SetParameters(parameters);
+
+                    // ****************************************************************************
+
+                    // ****************************************************************************
+                    // 2 Commento da testare
+                    //ReportParameter[] parameterValues = new ReportParameter[]
+                    //{
+                    //    new ReportParameter ("Trasferimento",idTrasferimento.ToString())
+                    //};
+
+                    //reportViewer.LocalReport.SetParameters(parameterValues);
+
+                    // ****************************************************************************
+
                     ViewBag.ReportViewer = reportViewer;
 
                     
@@ -210,9 +233,8 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-            //return PartialView("RptIndennitaBase");
-            return PartialView("RptIndennitaBase4");
+            
+            return PartialView("RptIndennitaBase");
 
         }
         public ActionResult IndennitaServizio(decimal idTrasferimento)

@@ -332,7 +332,7 @@
         <Top>0.17639cm</Top>
         <Left>0.254cm</Left>
         <Height>1.82273cm</Height>
-        <Width>22.27542cm</Width>
+        <Width>20.635cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -348,7 +348,7 @@
     <Height>2in</Height>
     <Style />
   </Body>
-  <Width>8.9886in</Width>
+  <Width>8.37402in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -362,7 +362,7 @@
           <Top>0.24094cm</Top>
           <Left>0.3175cm</Left>
           <Height>2.05811cm</Height>
-          <Width>22.27542cm</Width>
+          <Width>20.5715cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -412,7 +412,7 @@
           <rd:DefaultName>Textbox22</rd:DefaultName>
           <Top>0.97cm</Top>
           <Height>0.6cm</Height>
-          <Width>22.27542cm</Width>
+          <Width>20.889cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -427,7 +427,7 @@
           <Top>0.50271cm</Top>
           <Left>0.00065cm</Left>
           <Height>0cm</Height>
-          <Width>22.27477cm</Width>
+          <Width>20.88835cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
