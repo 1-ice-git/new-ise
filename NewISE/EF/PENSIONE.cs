@@ -23,13 +23,13 @@ namespace NewISE.EF
         }
     
         public decimal IDPENSIONE { get; set; }
-        public decimal IDSTATORECORD { get; set; }
         public decimal IMPORTOPENSIONE { get; set; }
         public System.DateTime DATAINIZIO { get; set; }
         public System.DateTime DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool NASCONDI { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public Nullable<decimal> FK_IDPENSIONE { get; set; }
+        public bool NASCONDI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PENSIONE> PENSIONE1 { get; set; }

@@ -30,7 +30,6 @@ namespace NewISE.EF
         public decimal IDFIGLI { get; set; }
         public decimal IDTIPOLOGIAFIGLIO { get; set; }
         public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
-        public decimal IDSTATORECORD { get; set; }
         public string NOME { get; set; }
         public string COGNOME { get; set; }
         public string CODICEFISCALE { get; set; }
@@ -38,6 +37,7 @@ namespace NewISE.EF
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public Nullable<decimal> FK_IDFIGLI { get; set; }
+        public decimal IDSTATORECORD { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLI> FIGLI1 { get; set; }

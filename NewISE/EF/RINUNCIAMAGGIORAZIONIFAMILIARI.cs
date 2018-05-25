@@ -23,11 +23,11 @@ namespace NewISE.EF
     
         public decimal IDRINUNCIAMAGFAM { get; set; }
         public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
-        public decimal IDSTATORECORD { get; set; }
         public bool RINUNCIAMAGGIORAZIONI { get; set; }
         public Nullable<System.DateTime> DATAINI { get; set; }
         public Nullable<System.DateTime> DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public Nullable<decimal> FK_IDRINUNCIAMAGFAM { get; set; }
     
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
