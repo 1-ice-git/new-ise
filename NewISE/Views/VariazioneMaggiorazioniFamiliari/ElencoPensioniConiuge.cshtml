@@ -9,8 +9,6 @@
     string nominativo = Convert.ToString(ViewData["nominativo"]);
     bool pensioniModificate = Convert.ToBoolean(ViewData["pensioniModificate"]);
     bool esistonoPensioni = Convert.ToBoolean(ViewData["esistonoPensioni"]);
-    DateTime DataOdierna = Convert.ToDateTime(ViewData["DataOdierna"]);
-    string dataText = Convert.ToString(DataOdierna);
 }
 
 @Html.Hidden("hdIdImportoPensione")
@@ -114,6 +112,7 @@
 
 
 <script type="text/javascript">
+    
     PulsantiNotificaAttivaMagFam();
 
     $('#TabPensioni').DataTable({
@@ -177,7 +176,6 @@
 
        $('#dataCessazionePensione').datepicker({
         //showButtonPanel: true,
-        //placeholder: dataOggi,
         showAnim: "slide",
         changeMonth: true,
         changeYear: true,

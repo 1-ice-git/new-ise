@@ -3,6 +3,7 @@
 @{
     decimal idMagFam = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal ValRinunciaMagFam = Convert.ToDecimal(ViewData["rinunciaMagFam"]);
+    string dataText = Convert.ToString(ViewData["DataOdierna"]);
 }
 
 @Html.Hidden("hi_idTrasferimento", idMagFam)
@@ -159,7 +160,7 @@
                     </div>
 
                     <div class="col-xs-2">
-                        <input type="text" id="dataCessazionePensione" class="form-control" />
+                        <input type="text" id="dataCessazionePensione" class="form-control" placeholder="@dataText" />
                         @*@Html.TextBox("dataCessazionePensione", dataCessazione, htmlAttributes: new { @class = "form-control" })*@
                     </div>
                     <div class="col-xs-5" id="divValidazioneCessazione">

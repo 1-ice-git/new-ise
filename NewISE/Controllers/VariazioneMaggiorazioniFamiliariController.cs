@@ -165,6 +165,8 @@ namespace NewISE.Controllers
                     {
                         throw new Exception("Nessun trasferimento impostato.");
                     }
+
+                    ViewData.Add("DataOdierna", DateTime.Now.ToShortDateString());
                 }
                 return PartialView();
             }
@@ -1207,8 +1209,6 @@ namespace NewISE.Controllers
                         ViewData.Add("nominativo", cm.nominativo);
                         ViewData.Add("solaLettura", solaLettura);
                         ViewData.Add("trasfSolaLettura", trasfSolaLettura);
-                        ViewData.Add("DataOdierna", DateTime.Now);
-
                     }
                 }
             }
