@@ -410,6 +410,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         }
 
                     }
+                    else
+                    {
+                        _maggiorazioneConiugeMenoPensione = MaggiorazioneConiuge;
+                    }
                 }
                 #endregion
 

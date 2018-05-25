@@ -26,7 +26,7 @@
         </div>
         <div class="row margineTop15px">
             <div class="col-xs-12">
-                <div id="ContElencoElaborazioniUnaTantum">
+                <div id="ContElencoElaborazioniDirette">
                     <img src="http://placehold.it/800x250/" alt="" />
                 </div>
             </div>
@@ -38,4 +38,38 @@
 
 <script type="text/javascript">
 
+    ValorizzazioneIniziale();
+
+    function DatiLiquidazioniDirette(idAnnoMeseElaborato) {
+        //debugger;
+        var rotta = "/Elaborazioni/DatiLiquidazioniDirette";
+
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#ContElencoElaborazioniDirette").empty();
+                $("#ContElencoElaborazioniDirette").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
 </script>

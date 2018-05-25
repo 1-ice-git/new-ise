@@ -24,5 +24,9 @@ namespace NewISE.Models.DBModel
         public string descrizione { get; set; }
         [Required(ErrorMessage = "Il campo è richiesto")]
         public bool flagDiretto { get; set; }
+
+        public TipoLiquidazioneModel TipoLiquidazione { get; set; }
+
+        public TipoVoceModel TipoVoce { get; set; }
     }
 }

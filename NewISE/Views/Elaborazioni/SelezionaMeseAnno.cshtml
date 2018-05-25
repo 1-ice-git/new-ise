@@ -34,11 +34,32 @@
 
 
 <script type="text/javascript">
+
+
+
+
     $("#mesiAnniElaborati").select2({
         placeholder: "Seleziona il mese-anno",
         allowClear: true,
         language: "it",
         width: '150'
     });
+
+    $("#mesiAnniElaborati").change(function () {
+        //debugger;
+        var valore = this.value();
+
+        DatiLiquidazioniDirette(valore);
+
+    });
+
+    function ValorizzazioneIniziale() {
+        //debugger;
+        var valore = $("#mesiAnniElaborati").val();
+        DatiLiquidazioniDirette(valore);
+    }
+
+
+
 </script>
 

@@ -30,19 +30,19 @@
             </div>
         </div>
         @*@Html.HiddenFor(model => model.idCoefIndRichiamo)*@
-        
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
-        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
+
+        <input type="hidden" id="escludiAnnullati" name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
+        <input type="hidden" id="aggiornaTutto" name="aggiornaTutto" />
         @*<div class="form-group">
-            <div class="col-xs-2 text-right">
-                <label>Km </label>
-            </div>
-            <div class="col-xs-10">
-                <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@CoeffIndRichiamo.ToString()</label>
+                <div class="col-xs-2 text-right">
+                    <label>Km </label>
                 </div>
-            </div>
-        </div>*@
+                <div class="col-xs-10">
+                    <div class="panel panel-default">
+                        <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@CoeffIndRichiamo.ToString()</label>
+                    </div>
+                </div>
+            </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -61,12 +61,12 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group ">
             @Html.LabelFor(model => model.coefficienteRichiamo, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-               
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -165,21 +165,28 @@
 	});
 
     $('form').submit(function () {
-        //debugger;
-        var form = $(this);
-        $('input.number').each(function (i) {
-            //debugger;
-            var self = $(this);
-            try {
-                var v = self.autoNumeric('get');
-                //self.autoNumeric('destroy');
-                var n = v.replace(".", ",");
-                self.val(n);
-            } catch (err) {
-                console.log("Non è un campo autonumeric: " + self.attr("name"));
-            }
-        });
-        return true;
+        debugger;
+        //var form = $(this);
+        try {
+            $('input.number').each(function (i) {
+                //debugger;
+                var self = $(this);
+                try {
+                    var v = self.autoNumeric('get');
+                    //self.autoNumeric('destroy');
+                    var n = v.replace(".", ",");
+                    self.val(n);
+                } catch (err) {
+                    console.log("Non è un campo autonumeric: " + self.attr("name"));
+                }
+            });
+            return true;
+        }
+        catch (e) {
+            debugger;
+
+        }
+
     });
 
     $.validator.methods.range = function (value, element, param) {
@@ -218,7 +225,7 @@
     }
 
     function TornaElencoIb() {
-      //  rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
+        //  rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
         rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamo";
 
         var idRiduzioni = 0;// @*parseFloat('@idRiduzioni');*@
@@ -264,4 +271,3 @@
         });
     }
 </script>
-

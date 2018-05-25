@@ -17,7 +17,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DOCUMENTI()
         {
-            this.DOC_ATER = new HashSet<DOC_ATER>();
             this.SELECTDOCVC = new HashSet<SELECTDOCVC>();
             this.DOCUMENTI1 = new HashSet<DOCUMENTI>();
             this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
@@ -28,6 +27,7 @@ namespace NewISE.EF
             this.CONIUGEPASSAPORTO = new HashSet<CONIUGEPASSAPORTO>();
             this.CONIUGETITOLIVIAGGIO = new HashSet<CONIUGETITOLIVIAGGIO>();
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
+            this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
             this.NORMACALCOLO = new HashSet<NORMACALCOLO>();
             this.ATTIVAZIONIVIAGGICONGEDO = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
             this.FIGLI = new HashSet<FIGLI>();
@@ -40,16 +40,14 @@ namespace NewISE.EF
     
         public decimal IDDOCUMENTO { get; set; }
         public decimal IDTIPODOCUMENTO { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public string NOMEDOCUMENTO { get; set; }
         public string ESTENSIONE { get; set; }
         public byte[] FILEDOCUMENTO { get; set; }
         public System.DateTime DATAINSERIMENTO { get; set; }
         public bool MODIFICATO { get; set; }
         public Nullable<decimal> FK_IDDOCUMENTO { get; set; }
-        public decimal IDSTATORECORD { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOC_ATER> DOC_ATER { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SELECTDOCVC> SELECTDOCVC { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -73,6 +71,8 @@ namespace NewISE.EF
         public virtual ICollection<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NORMACALCOLO> NORMACALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

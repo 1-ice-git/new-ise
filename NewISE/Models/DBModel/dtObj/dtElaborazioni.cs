@@ -21,6 +21,68 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Preleva tutte le informazioni pagate direttamente.
+        /// </summary>
+        /// <param name="idMeseAnnoElaborato"></param>
+        /// <returns></returns>
+        public IList<LiquidazioniDiretteViewModel> PrelevaLiquidazioniDirette(decimal idMeseAnnoElaborato)
+        {
+
+            List<LiquidazioniDiretteViewModel> lLdvm = new List<LiquidazioniDiretteViewModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                var mae = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
+
+                #region Anticipo Prima sistemazione
+
+                var lTeorici =
+                    db.TEORICI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
+                            a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                            a.ELABINDSISTEMAZIONE.ANTICIPO == true).ToList();
+
+
+
+                foreach (var t in lTeorici)
+                {
+
+                    var dip = t.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
+
+                    var ldvm = new LiquidazioniDiretteViewModel()
+                    {
+                        idTeorici = t.IDTEORICI,
+                        Nominativo = dip.NOME + " " + dip.COGNOME,
+                        idVoci = t.IDVOCI,
+                        Voci = new VociModel()
+                        {
+                            idVoci = t.VOCI.IDVOCI,
+                            idTipoLiquidazione = t.VOCI.IDTIPOLIQUIDAZIONE,
+                            idTipoVoce = t.VOCI.IDTIPOVOCE,
+                            codiceVoce = t.VOCI.CODICEVOCE,
+                            descrizione = t.VOCI.DESCRIZIONE,
+                            flagDiretto = t.VOCI.FLAGDIRETTO
+                        },
+                        Data = t.DATAOPERAZIONE,
+                        Importo = t.IMPORTO
+                    };
+
+                    lLdvm.Add(ldvm);
+                }
+
+
+                #endregion
+
+
+                return lLdvm;
+            }
+        }
+
+
         public void AssociaAliquoteIndSist(decimal idIndSist, decimal idAliquota, ModelDBISE db)
         {
             var indSist = db.ELABINDSISTEMAZIONE.Find(idIndSist);
