@@ -24,11 +24,11 @@ namespace NewISE.EF
         public decimal IDVARIAZIONIMAB { get; set; }
         public decimal IDMAB { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public System.DateTime DATAINIZIOMAB { get; set; }
         public System.DateTime DATAFINEMAB { get; set; }
         public bool ANTICIPOANNUALE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public decimal IDSTATORECORD { get; set; }
         public Nullable<decimal> FK_IDVARIAZIONIMAB { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }

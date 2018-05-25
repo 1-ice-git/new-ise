@@ -24,6 +24,7 @@ namespace NewISE.EF
     
         public decimal IDATTIVAZIONEVC { get; set; }
         public decimal IDVIAGGIOCONGEDO { get; set; }
+        public decimal IDFASEVC { get; set; }
         public bool NOTIFICARICHIESTA { get; set; }
         public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
         public bool ATTIVARICHIESTA { get; set; }
@@ -31,7 +32,6 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
         public Nullable<decimal> FK_IDATTIVAZIONEVC { get; set; }
-        public decimal IDFASEVC { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO1 { get; set; }

@@ -1,8 +1,10 @@
 ﻿@model NewISE.Models.DBModel.NotificheModel
 @using NewISE.Models.DBModel;
 @using System.IO;
-<script src="~/Scripts/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="~/scripts/ckeditor/adapters/jquery.js"></script>
+@*<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="~/scripts/ckeditor/adapters/jquery.js"></script>*@
+
+
 
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
@@ -78,16 +80,7 @@
             @*@Html.TextBoxFor(model=>model.corpoMessaggio, new { @id = "corpoMessaggio", @class = "ckeditor"})*@
             <textarea id="corpoMessaggio" name="corpoMessaggio" style="height:50px"></textarea>
             @Html.ValidationMessageFor(model => model.corpoMessaggio, "", new { @class = "text-danger" })
-            <script type="text/javascript">
-                CKEDITOR.config.readOnly = false;
-                //for (instance in CKEDITOR.instances) {
-                //    CKEDITOR.instances[instance].updateElement();
-                //}
-                CKEDITOR.editorConfig = function (config) {
-                    config.title = "";//levare il tooltip
-                }
 
-            </script>
         </div>
         <div id="vaiCorpoMess" style="display:none; " class="text-danger">
             @Html.Label("lblvai1", "Messaggio vuoto")
@@ -160,10 +153,28 @@
 <script type="text/javascript" src="~/Scripts/Notifiche/Operazione.js"></script>
 
 <script type="text/javascript">
+    CKEDITOR.config.readOnly = false;
+    ////for (instance in CKEDITOR.instances) {
+    ////    CKEDITOR.instances[instance].updateElement();
+    ////}
+    //CKEDITOR.editorConfig = function (config) {
+    //    config.title = "";//levare il tooltip
+    //}
 
-    $(function () {
-        CKEDITOR.replace("corpoMessaggio", { customConfig: "~/Scripts/ckeditor/config.js", height: 72 });
-    })
+    CKEDITOR.replace("corpoMessaggio", {
+        //customConfig: "~/Scripts/ckeditor/config.js", height: 72
+        language: 'it',
+        uiColor: '#339966;',
+    });
+
+</script>
+
+<script type="text/javascript">
+
+
+
+
+
 
     $("#idBtnAllegato").click(function () {
         ClearMessages();

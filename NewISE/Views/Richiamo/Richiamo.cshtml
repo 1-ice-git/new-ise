@@ -1,27 +1,27 @@
 ﻿@using NewISE.Models.DBModel
 @model NewISE.Models.DBModel.RichiamoModel
- @{
-     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
-     decimal idRichiamo = ViewData["idRichiamo"]==null?0:(decimal)ViewData["idRichiamo"];
-     decimal idFKm = (decimal)ViewData["idFKm"];
-     DateTime dataPartenza=Convert.ToDateTime(ViewData["dataPartenza"]);
-     string dataRichiamo = ViewData["dataRichiamo"]==null?"?":(Convert.ToDateTime(ViewData["dataRichiamo"])).ToString("dd/MM/yyyy");
-     string dataRientro = ViewData["dataRientro"] == null ? "?" : (Convert.ToDateTime(ViewData["dataRientro"])).ToString("dd/MM/yyyy");
-     string errore = ViewData["errore"] == null ? "" : ViewData["errore"].ToString();
-     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
-     List<SelectListItem> FKMText = (List<SelectListItem>)ViewBag.FasciaKM;
-     var coef = FKMText.Where(a => a.Selected == true).First();
-     string txtFKM = coef.Text.Trim()==""?"?": coef.Text.Trim();
-     string ValFkm= coef.Value == "" ? "0" : coef.Value;
- }
+@{
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+    decimal idRichiamo = ViewData["idRichiamo"] == null ? 0 : (decimal)ViewData["idRichiamo"];
+    decimal idFKm = (decimal)ViewData["idFKm"];
+    DateTime dataPartenza = Convert.ToDateTime(ViewData["dataPartenza"]);
+    string dataRichiamo = ViewData["dataRichiamo"] == null ? "?" : (Convert.ToDateTime(ViewData["dataRichiamo"])).ToString("dd/MM/yyyy");
+    string dataRientro = ViewData["dataRientro"] == null ? "?" : (Convert.ToDateTime(ViewData["dataRientro"])).ToString("dd/MM/yyyy");
+    string errore = ViewData["errore"] == null ? "" : ViewData["errore"].ToString();
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    List<SelectListItem> FKMText = (List<SelectListItem>)ViewBag.FasciaKM;
+    var coef = FKMText.Where(a => a.Selected == true).First();
+    string txtFKM = coef.Text.Trim() == "" ? "?" : coef.Text.Trim();
+    string ValFkm = coef.Value == "" ? "0" : coef.Value;
+}
 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 @Html.Hidden("hiddenCoefficenteFasciaKM_Nuovo")
 @Html.Hidden("hiddenidDataRichiamo_Nuovo")
 @Html.Hidden("idGruppoFKmRichiamo")
 
-@Html.Hidden("hiddenErroreInserimento",errore.ToString().Trim())
-<div class="form-horizontal" id="DivRichiamoMain">    
-    <br />   
+@Html.Hidden("hiddenErroreInserimento", errore.ToString().Trim())
+<div class="form-horizontal" id="DivRichiamoMain">
+    <br />
     @Html.Hidden("hiddenCoefficenteFasciaKM")
     <div class="form-group">
         @Html.Label("lblDataPartenzaRichiamo", "Data Partenza", new { @class = "control-label col-xs-4" })
@@ -33,7 +33,7 @@
             <input id="idDataRientroRichiamo" name="idDataRientroRichiamo" type="text" value="@dataRientro" class="form-control" readonly />
         </div>
     </div>
-   
+
     <div class="form-group">
         @Html.Label("lblCoeffFasciakM", "Coefficente Fascia KM", new { @class = "control-label col-xs-4" })
         <div class="col-xs-2">
@@ -45,8 +45,8 @@
         </div>
     </div>
 
-    <div class="form-group"> 
-         @Html.Label("lblDataRich_iamo", "     ", new { @class = "control-label col-xs-4" })
+    <div class="form-group">
+        @Html.Label("lblDataRich_iamo", "     ", new { @class = "control-label col-xs-4" })
         <div class="col-xs-2 text-right">
             @if (admin)
             {
@@ -59,8 +59,8 @@
                     <input id="btnInsertRichiamo" name="btnInsertRichiamo" type="button" value="Inserisci" onclick="Mostra_Modal_InserisciRichiamo();" class="form-control" />
                 }
             }
-        </div> 
-        @Html.Label("lblDa_taRichiamo", "", new { @class = "control-label col-xs-4" })      
+        </div>
+        @Html.Label("lblDa_taRichiamo", "", new { @class = "control-label col-xs-4" })
         <div class="col-xs-2">
         </div>
     </div>
@@ -80,7 +80,7 @@
                     <p id="viewMessaggioInserisciRichiamo"></p>
                 </div>
                 <div id="idControllaContenutoMsgVC____" class="text-danger" style="display:none">Messaggio obbligatorio</div>
-            </div>            
+            </div>
             <div class="modal-footer">
                 <button id="btConfermaInserisciRichiamo" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaInserisciRichiamo();">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
@@ -197,7 +197,7 @@
         $('#ModalInserisciRichiamo').modal({ backdrop: 'static', keyboard: false }).show();
     }
     function Mostra_Modal_ModificaRichiamo() {
-      //  debugger;
+        //  debugger;
         $("#hiddenidDataRichiamo_Nuovo").val($("#idDataRichiamo").val());
         var xx = $("#hiddenidDataRichiamo_Nuovo").val();
         $("#idDataRichiamo_Modifica").val(xx);
@@ -210,7 +210,7 @@
 
     function ConfermaInserisciRichiamo() {
 
-      //  debugger;
+        //  debugger;
         //  VisualizzaErrore();
 
         rotta = "/Richiamo/ConfermaInserisciRichiamo";
@@ -235,7 +235,7 @@
 
                 },
                 success: function (result) {
-                    //  debugger;
+                    //debugger;
                     if (result.err == "") {
                         callRichiamo();
                         var list = result.list;
@@ -267,7 +267,7 @@
 
     function ConfermaModificaRichiamo() {
         // debugger;
-        
+
         //if ($("#idGruppoFKmRichiamo").val() == 9999)
         //{
         //    CheckModifica();
@@ -326,7 +326,7 @@
     }
 
     function MessaggioInserisciRichiamo(idTrasferimento, xx) {
-    //    debugger;
+        //    debugger;
         var rotta = "/Richiamo/MessaggioInserisciRichiamo";
         //  var idFKm = $("#idGruppoFKmRichiamo").val();
         var idFKm = parseInt('@ValFkm');
@@ -357,7 +357,7 @@
         });
     }
     function MessaggioModificaRichiamo(idTrasferimento, xx) {
-    //    debugger;
+        //    debugger;
         var rotta = "/Richiamo/MessaggioModificaRichiamo";
         var idFKm = parseInt('@ValFkm');
         var idRichiamo = parseInt('@idRichiamo');
@@ -385,7 +385,7 @@
         });
     }
     function ValidazioneRichiamo() {
-      //  debugger;
+        //  debugger;
         var ret = false;
         var c1 = false;
         var c2 = false;
@@ -465,7 +465,7 @@
     function Check() {
         $('#dialog-confirm-Richiamo').dialog({
             autoOpen: true,
-            width: 400,            
+            width: 400,
             buttons: [
                 {
                     text: "OK",
@@ -572,7 +572,7 @@
     }
 
     function callRichiamo() {
-         // debugger;
+        // debugger;
         rotta = "/Richiamo/Richiamo";
 
         //  var idFKm = parseInt($("#idGruppoFKmRichiamo").select2('val'));
