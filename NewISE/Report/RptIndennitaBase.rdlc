@@ -6,16 +6,16 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>4.99682cm</Width>
+              <Width>6.76953cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.06646cm</Width>
+              <Width>6.33646cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.37909cm</Width>
+              <Width>5.93471cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.75871cm</Width>
+              <Width>4.82687cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -305,7 +305,7 @@
         <Top>9.52182cm</Top>
         <Left>0.32872cm</Left>
         <Height>1.2cm</Height>
-        <Width>20.20108cm</Width>
+        <Width>23.86757cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -344,7 +344,7 @@
         <Top>0.17639cm</Top>
         <Left>0.32872cm</Left>
         <Height>1.82273cm</Height>
-        <Width>20.26458cm</Width>
+        <Width>23.86757cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -403,7 +403,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
         <Top>5.63245cm</Top>
         <Left>0.3175cm</Left>
         <Height>2.71667cm</Height>
-        <Width>20.20108cm</Width>
+        <Width>23.87879cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -464,10 +464,10 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox14</rd:DefaultName>
-        <Top>4.04495cm</Top>
-        <Left>0.3175cm</Left>
+        <Top>3.81592cm</Top>
+        <Left>0.38806cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.29057cm</Width>
+        <Width>3.22001cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -497,7 +497,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>2.77495cm</Top>
-        <Left>10.39201cm</Left>
+        <Left>13.81317cm</Left>
         <Height>0.6cm</Height>
         <Width>3.29057cm</Width>
         <ZIndex>5</ZIndex>
@@ -528,8 +528,8 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox14</rd:DefaultName>
-        <Top>4.04495cm</Top>
-        <Left>10.39201cm</Left>
+        <Top>3.81592cm</Top>
+        <Left>13.81317cm</Left>
         <Height>0.6cm</Height>
         <Width>3.29057cm</Width>
         <ZIndex>6</ZIndex>
@@ -547,7 +547,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
         <Top>5.20912cm</Top>
         <Left>0.3175cm</Left>
         <Height>0cm</Height>
-        <Width>20.20108cm</Width>
+        <Width>23.87879cm</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -559,7 +559,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
         <Top>2.43416cm</Top>
         <Left>0.34925cm</Left>
         <Height>0cm</Height>
-        <Width>20.20108cm</Width>
+        <Width>23.84704cm</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
@@ -574,7 +574,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!paraStartDate.Value</Value>
+                <Value>=Parameters!Nominativo.Value</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -583,9 +583,9 @@ Indennità Teorica * Coefficiente di riduzione</Value>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>2.77495cm</Top>
-        <Left>3.78446cm</Left>
+        <Left>3.67863cm</Left>
         <Height>0.6cm</Height>
-        <Width>2.5cm</Width>
+        <Width>4.11396cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
@@ -597,25 +597,25 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox3">
+      <Textbox Name="Textbox9">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!paraEndDate.Value</Value>
+                <Value>=Parameters!Ruolo.Value</Value>
                 <Style />
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox3</rd:DefaultName>
-        <Top>4.04495cm</Top>
-        <Left>3.7139cm</Left>
+        <rd:DefaultName>Textbox9</rd:DefaultName>
+        <Top>3.81592cm</Top>
+        <Left>17.10374cm</Left>
         <Height>0.6cm</Height>
-        <Width>2.5cm</Width>
+        <Width>4.74896cm</Width>
         <ZIndex>10</ZIndex>
         <Style>
           <Border>
@@ -627,11 +627,71 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Textbox Name="Textbox10">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!Ruolo.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox10</rd:DefaultName>
+        <Top>3.81592cm</Top>
+        <Left>3.64335cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.14924cm</Width>
+        <ZIndex>11</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox11">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!Decorrenza.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox11</rd:DefaultName>
+        <Top>2.77495cm</Top>
+        <Left>17.10374cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.74896cm</Width>
+        <ZIndex>12</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>4.5625in</Height>
+    <Height>4.22119in</Height>
     <Style />
   </Body>
-  <Width>8.18651in</Width>
+  <Width>9.66151in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -645,7 +705,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <Top>0.24094cm</Top>
           <Left>0.3175cm</Left>
           <Height>2.05811cm</Height>
-          <Width>20.20108cm</Width>
+          <Width>23.87879cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -695,7 +755,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <rd:DefaultName>Textbox22</rd:DefaultName>
           <Top>0.97cm</Top>
           <Height>0.6cm</Height>
-          <Width>20.51858cm</Width>
+          <Width>24.19629cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -710,7 +770,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <Top>0.50271cm</Top>
           <Left>0.00065cm</Left>
           <Height>0cm</Height>
-          <Width>20.51793cm</Width>
+          <Width>24.19564cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -795,11 +855,19 @@ Indennità Teorica * Coefficiente di riduzione</Value>
     </DataSet>
   </DataSets>
   <ReportParameters>
-    <ReportParameter Name="paraStartDate">
+    <ReportParameter Name="Nominativo">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="paraEndDate">
+    <ReportParameter Name="Ruolo">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Decorrenza">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Livello">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>

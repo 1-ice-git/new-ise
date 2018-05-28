@@ -2425,6 +2425,7 @@
     <Content Include="Scripts\ViewScripts\VariazioneMaggiorazioneAbitazione.js" />
     <Content Include="Scripts\ViewScripts\MaggiorazioneAbitazione.js" />
     <Content Include="Template\HtmlPage1.html" />
+    <Content Include="Views\Content\NoScroller.css" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

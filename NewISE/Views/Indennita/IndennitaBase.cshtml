@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
 @using NewISE.Models.DBModel.Enum;
-<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
+<link href="~/Views/Content/NoScroller.css" rel="stylesheet" />
 
 @{
     
@@ -109,7 +109,7 @@
 </div>
 
 <div class="modal fade modal-fullscreen force-fullscreen" id="ModalReport" tabindex="-1" role="dialog" aria-labelledby="ModalReportLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -176,6 +176,7 @@
         
     }
     
+
     function myFunction() {
         window.print();
     }

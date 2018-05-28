@@ -218,19 +218,25 @@ namespace NewISE.Controllers
                         var tm = dtt.GetTrasferimentoById(idTrasferimento);
                         using (dtRuoloUfficio dtru = new dtRuoloUfficio())
                         {
+                           
                             tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
                             tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
                             ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
                             ViewBag.idTrasferimento = idTrasferimento;  
 
 
-                            string paraStartDate = tm.Dipendente.Nominativo;
-                            string paraEndDate = "cognome";
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
+                            string Livello = tm.RuoloUfficio.DescrizioneRuolo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
 
+                            //livelloDipendenteValido.Livello.DescLivello
                             ReportParameter[] parameterValues = new ReportParameter[]
                             {
-                                    new ReportParameter ("paraStartDate",paraStartDate),
-                                    new ReportParameter ("paraEndDate",paraEndDate)
+                                    new ReportParameter ("Nominativo",Nominativo),
+                                    new ReportParameter ("Ruolo",Ruolo),
+                                    new ReportParameter ("Livello",Livello),
+                                    new ReportParameter ("Decorrenza",Decorrenza)
                             };
 
                             reportViewer.LocalReport.SetParameters(parameterValues);
