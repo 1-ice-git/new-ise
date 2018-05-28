@@ -163,6 +163,7 @@ namespace NewISE.Controllers
                 {
                     //var ll = db.INDENNITABASE.ToList();
                     var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
+                    
 
                     libm = (from e in ll
                             select new IndennitaBaseModel()
@@ -201,31 +202,45 @@ namespace NewISE.Controllers
                     reportViewer.LocalReport.Refresh();
 
                     // ****************************************************************************
-                    // 1 Commento da testare
-                    //ReportParameter[] parameters = new ReportParameter[3];
+                    // Commento con parametri
 
-                    //parameters[0] = new ReportParameter("pMonth", idTrasferimento.ToString());
-                    //parameters[1] = new ReportParameter("pYear", idTrasferimento.ToString());
-                    //parameters[2] = new ReportParameter("pUserName", idTrasferimento.ToString());
+                    // set param values, not really doing anything except showing up in the report,
+                    // after the fact.
+                    //string paraStartDate = Convert.ToDateTime("1/1/2009").ToShortDateString();
+                    //string paraEndDate = Convert.ToDateTime("12/1/2009").ToShortDateString();
+                    //ReportParameter[] param = new ReportParameter[2];
+                    //param[0] = new ReportParameter("paraStartDate", paraStartDate, false);
+                    //param[1] = new ReportParameter("paraEndDate", paraEndDate, false);
+                    //this.reportViewer.LocalReport.SetParameters(param);
 
-                    //reportViewer.LocalReport.SetParameters(parameters);
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                        {
+                            tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                            tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                            ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                    // ****************************************************************************
 
-                    // ****************************************************************************
-                    // 2 Commento da testare
-                    //ReportParameter[] parameterValues = new ReportParameter[]
-                    //{
-                    //    new ReportParameter ("Trasferimento",idTrasferimento.ToString())
-                    //};
+                            string paraStartDate = tm.Dipendente.Nominativo;
+                            string paraEndDate = "cognome";
 
-                    //reportViewer.LocalReport.SetParameters(parameterValues);
+                            ReportParameter[] parameterValues = new ReportParameter[]
+                            {
+                                    new ReportParameter ("paraStartDate",paraStartDate),
+                                    new ReportParameter ("paraEndDate",paraEndDate)
+                            };
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
 
                     // ****************************************************************************
 
                     ViewBag.ReportViewer = reportViewer;
 
-                    
+                        }
+                    }
                 }
             }
             
@@ -237,6 +252,10 @@ namespace NewISE.Controllers
             return PartialView("RptIndennitaBase");
 
         }
+
+        
+
+
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
 
