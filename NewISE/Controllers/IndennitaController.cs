@@ -221,7 +221,7 @@ namespace NewISE.Controllers
                             tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
                             tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
                             ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
-                            ViewBag.idTrasferimento = idTrasferimento;
+                            ViewBag.idTrasferimento = idTrasferimento;  
 
 
                             string paraStartDate = tm.Dipendente.Nominativo;
