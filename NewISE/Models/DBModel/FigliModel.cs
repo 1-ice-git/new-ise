@@ -36,16 +36,19 @@ namespace NewISE.Models.DBModel
         [StringLength(16, ErrorMessage = "Per il codice fiscale sono richiesti 16 caratteri.", MinimumLength = 16)]
         [CustomValidation(typeof(dtFigli), "VerificaCodiceFiscale", ErrorMessage = "")]
         public string codiceFiscale { get; set; }
+
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data iniz. valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         [CustomValidation(typeof(dtFigli), "VerificaDataInizio")]
         public DateTime? dataInizio { get; set; }
+
+        [CustomValidation(typeof(dtFigli), "VerificaDataFine")]
         [Display(Name = "Data fine valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? dataFine { get; set; }
 
-        [Required(ErrorMessage = "LA data di aggiornamento è richiesta.")]
+        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [Display(Name = "Data Agg.")]
         [DataType(DataType.DateTime)]
         public DateTime dataAggiornamento { get; set; }

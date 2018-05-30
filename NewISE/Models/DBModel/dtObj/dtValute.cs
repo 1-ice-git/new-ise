@@ -33,6 +33,29 @@ namespace NewISE.Models.DBModel.dtObj
             return vm;
         }
 
+        public ValuteModel GetValuta(decimal idValuta)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                ValuteModel vm = new ValuteModel();
+
+                var v = db.VALUTE.Find(idValuta);
+
+                if (v != null && v.IDVALUTA > 0)
+                {
+                    vm = new ValuteModel()
+                    {
+                        idValuta = v.IDVALUTA,
+                        descrizioneValuta = v.DESCRIZIONEVALUTA,
+                        valutaUfficiale = v.VALUTAUFFICIALE
+                    };
+                }
+
+
+                return vm;
+            }
+        }
+
         public ValuteModel GetValutaByCanonePartenza(decimal idCanone, ModelDBISE db)
         {
             ValuteModel valm = new ValuteModel();
@@ -46,6 +69,37 @@ namespace NewISE.Models.DBModel.dtObj
                         X =>
                             X.ANNULLATO == false && X.DATAFINEVALIDITA >= cm.DATAINIZIOVALIDITA &&
                             X.DATAINIZIOVALIDITA <= cm.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (tfrl?.Any() ?? false)
+                {
+                    TFR tfr = tfrl.First();
+                    var v = tfr.VALUTE;
+                    ValuteModel vm = new ValuteModel()
+                    {
+                        idValuta = v.IDVALUTA,
+                        descrizioneValuta = v.DESCRIZIONEVALUTA,
+                        valutaUfficiale = v.VALUTAUFFICIALE
+                    };
+                    valm = vm;
+                }
+            }
+
+            return valm;
+        }
+
+        public ValuteModel GetValutaByCanone_Variazione(decimal idCanone, ModelDBISE db)
+        {
+            ValuteModel valm = new ValuteModel();
+
+            CANONEMAB cm = db.CANONEMAB.Find(idCanone);
+
+            if (cm.IDCANONE > 0)
+            {
+                var tfrl =
+                    cm.TFR.Where(
+                        X =>
+                            X.ANNULLATO == false && X.DATAFINEVALIDITA >= cm.DATAINIZIOVALIDITA &&
+                            X.DATAINIZIOVALIDITA <= cm.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                 if (tfrl?.Any() ?? false)
                 {

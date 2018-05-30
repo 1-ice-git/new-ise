@@ -38,22 +38,78 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (fm.dataInizio < t.DATAPARTENZA)
                     {
-                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                        vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
                     }
                     else
                     {
-                        vr = ValidationResult.Success;
+                        if (fm.dataInizio < t.DATAPARTENZA)
+                        {
+                            vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                        }
+                        else
+                        {
+                            if (fm.dataInizio > t.DATARIENTRO)
+                            {
+                                vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                            }
+                            else
+                            {
+                                vr = ValidationResult.Success;
+                            }
+                        }
                     }
                 }
 
             }
             else
             {
-                vr = new ValidationResult("La data di inizio validità è richiesta.");
+                vr = new ValidationResult("La Data Inizio Validità è richiesta.");
             }
 
             return vr;
         }
+
+        public static ValidationResult VerificaDataFine(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var fm = context.ObjectInstance as FigliModel;
+
+            if (fm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.ATTIVAZIONIMAGFAM.Find(fm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                    if (fm.dataFine > t.DATARIENTRO)
+                    {
+                        vr = new ValidationResult(string.Format("Impossibile inserire la Data Fine Validità superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                    }
+                    else
+                    {
+                        if (fm.dataInizio != null && fm.dataFine < t.DATARIENTRO)
+                        {
+                            if (fm.dataInizio >= fm.dataFine)
+                            {
+                                vr = new ValidationResult(string.Format("La Data Fine Validità deve essere superiore alla Data Inizio Validità ({0}).", fm.dataInizio.Value.ToShortDateString()));
+                            }
+                            else
+                            {
+                                vr = ValidationResult.Success;
+                            }
+                        }
+                        else
+                        {
+                            vr = ValidationResult.Success;
+                        }
+                    }
+                }
+
+            }
+
+            return vr;
+        }
+
 
         public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
         {

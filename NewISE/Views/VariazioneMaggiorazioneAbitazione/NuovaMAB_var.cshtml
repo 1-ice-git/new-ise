@@ -9,7 +9,7 @@
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     var errori = ViewData.ModelState;
     var dataFine = Convert.ToDateTime(Model.dataFineMAB);
-    bool anticipoAnnuale = Convert.ToBoolean(Model.AnticipoAnnuale);
+    bool anticipoAnnuale = Convert.ToBoolean(Model.anticipoAnnuale);
 }
 
 <style>
@@ -26,65 +26,21 @@
             <h4>Inserire Dati Maggiorazione Abitazione</h4>
             <hr />
             @Html.Hidden("idTrasferimento", idTrasferimento)
-            @Html.Hidden("dataPartenza", Model.dataPartenza)
+            @*@Html.Hidden("dataPartenza", Model.dataPartenza)*@
             @Html.Hidden("idMagAnnuali", Model.idMagAnnuali  )
             <div class="row">
                 <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
                     <div class="row">
                         <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AnticipoAnnuale, new { @class = "control-label col-xs-3" })
-                                @*@if (Model.AnticipoAnnuale)
-                                {
-                                    <div class="col-xs-2">
-                                        <label>@Html.RadioButton("rbAnticipo", "false", new { @checked = true }) Semestrale</label>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <label>@Html.RadioButton("rbAnticipo", "true") Annuale</label>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="col-xs-2">
-                                        <label>@Html.RadioButton("rbAnticipo", "true", new { @checked = true,  disabled = "disabled" }) Semestrale</label>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <label>@Html.RadioButton("rbAnticipo", "false", new { disabled = "disabled" }) Annuale</label>
-                                    </div>
-
-                                }*@
-                                @if (Model.idMagAnnuali > 0)
-                                {
-                                    if (Model.AnticipoAnnuale)
-                                    {
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false") Semestrale</label>
-                                        </div>
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "true", new { @checked = true }) Annuale</label>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
-                                        </div>
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "true") Annuale</label>
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div class="col-xs-2">
-                                        <label>@Html.RadioButton("chk",true,new { @checked = true, disabled = "disabled" }) Semestrale</label>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <label>@Html.RadioButton("chk",false, new { disabled = "disabled" }) Annuale</label>
-                                        @Html.Hidden("AnticipoAnnuale", Model.AnticipoAnnuale)
-@*                                        <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false", new { disabled = "disabled" }) Annuale</label>*@
-                                    </div>
-                                }
+                                @Html.LabelFor(model => model.anticipoAnnuale, new { @class = "control-label col-xs-3" })
+                                <div class="col-xs-2">
+                                    <label>@Html.RadioButton("chk",true,new { @checked = true, disabled = "disabled" }) Semestrale</label>
+                                </div>
+                                <div class="col-xs-2">
+                                    <label>@Html.RadioButton("chk",false, new { disabled = "disabled" }) Annuale</label>
+                                    @Html.Hidden("AnticipoAnnuale", Model.anticipoAnnuale)
+                                </div>
                             </div>
                         </div>
                     </div>

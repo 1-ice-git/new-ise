@@ -29,7 +29,6 @@
     });
 }
 
-
 function FormulariMAB_var(idTrasferimento) {
     //debugger;
     var rotta = "/VariazioneMaggiorazioneAbitazione/FormulariMAB_var";
@@ -62,7 +61,6 @@ function FormulariMAB_var(idTrasferimento) {
 
     });
 }
-
 
 function AttivitaMAB_var(idTrasferimento) {
     //debugger;
@@ -124,7 +122,6 @@ function GestioneMAB_var(idTrasferimento) {
     });
 }
 
-
 function UploadDocumentoMABModal_var(idTipoDocumento, idTrasferimento) {
     //debugger;
     var rotta = "/VariazioneMaggiorazioneAbitazione/DocumentoMAB_var";
@@ -174,7 +171,6 @@ function CloseModalFileMAB_var(idTrasferimento) {
     setTimeout(FormulariMAB_var(idTrasferimento), 1000);
 }
 
-
 function ValidazioneMAB_var(idTrasferimento) {
     //debugger;
     var ret = false;
@@ -218,7 +214,7 @@ function SalvaDocumentoMAB_var(idTrasferimento, idTipoDocumento) {
     //var idTipoDocumento = parseInt('@idTipoDocumento');
     var file = $("#file")[0].files[0];
 
-    if (ValidazioneMAB(idTrasferimento)) {
+    if (ValidazioneMAB_var(idTrasferimento)) {
 
         datiForm.append("idTrasferimento", idTrasferimento);
         datiForm.append("idTipoDocumento", idTipoDocumento);
@@ -400,7 +396,6 @@ function ConfermaAttivaRichiestaMAB_var() {
     });
 }
 
-
 function NuovaMAB_var(idTrasferimento) {
     //debugger;
     var rotta = "/VariazioneMaggiorazioneAbitazione/NuovaMAB_var";
@@ -418,6 +413,36 @@ function NuovaMAB_var(idTrasferimento) {
             //debugger;
             $("#divMAB").empty();
             $("#divMAB").html(result);
+        },
+        complete: function () {
+
+        },
+        error: function (jqXHR, textStatus, errorThrow) {
+            //debugger;
+            var msg = errorThrow.err;
+            ErroreElaborazioneAjax(msg);
+        }
+
+    });
+}
+
+function ModificaMAB_var(idMAB) {
+    //debugger;
+    var rotta = "/VariazioneMaggiorazioneAbitazione/ModificaMAB_var";
+
+    $.ajax({
+        type: "POST",
+        url: rotta,
+        data: { idMAB: idMAB },
+        dataType: 'html',
+        beforeSend: function () {
+            //debugger;
+            //VerificaAutenticazione();
+        },
+        success: function (result) {
+            //debugger;
+            $("#divMaggiorazioneAbitazione_var").empty();
+            $("#divMaggiorazioneAbitazione_var").html(result);
         },
         complete: function () {
 
