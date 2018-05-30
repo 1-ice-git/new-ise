@@ -166,7 +166,7 @@ namespace NewISE.Controllers
                 {
                     var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
                     libm = (from e in ll
-                            select new IndennitaBaseModel()
+                            select new IndennitaBaseModel() 
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
