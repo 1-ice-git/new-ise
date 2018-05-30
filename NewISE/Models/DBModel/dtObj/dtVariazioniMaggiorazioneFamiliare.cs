@@ -428,8 +428,11 @@ namespace NewISE.Models.DBModel.dtObj
                 bool siDocFormulario = false;
                 bool siPensioniConiuge = false;
 
+                var t = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO;
+
                 DateTime dtIni = cm.dataInizio.Value;
-                DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
+                DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : t.DATARIENTRO;
+                cm.dataFine= dtFin;
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
@@ -1025,9 +1028,12 @@ namespace NewISE.Models.DBModel.dtObj
                 bool siDocFormulario = false;
                 bool siPensioniConiuge = false;
 
+                var t = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO;
+
 
                 DateTime dtIni = fm.dataInizio.Value;
-                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : t.DATARIENTRO;
+                fm.dataFine = dtFin;
 
                 if (f != null && f.IDFIGLI > 0)
                 {
@@ -3006,40 +3012,43 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        var tm = dtt.GetTrasferimentoByIdAttMagFam(cm.idAttivazioneMagFam);
-                    }
-
-                    if (cm.idMaggiorazioniFamiliari == 0 && cm.idAttivazioneMagFam > 0)
-                    {
-                        var amf = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam);
-                        cm.idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI;
-                    }
-
-                    using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
-                    {
-                        cm.dataAggiornamento = DateTime.Now;
-
-                        decimal new_idconiuge = dtvmf.SetConiuge(ref cm, db, cm.idAttivazioneMagFam);
-
-                        using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                        using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                         {
-                            DateTime dtIni = cm.dataInizio.Value;
-                            DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
-
-                            List<PercentualeMagConiugeModel> lpmcm =
-                                dtpc.GetListaPercentualiMagConiugeByRangeDate(cm.idTipologiaConiuge, dtIni, dtFin, db)
-                                    .ToList();
-
-                            if (lpmcm?.Any() ?? false)
+                            using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                             {
-                                foreach (var pmcm in lpmcm)
+
+                                var tm = dtt.GetTrasferimentoByIdAttMagFam(cm.idAttivazioneMagFam);
+                    
+                                if (cm.idMaggiorazioniFamiliari == 0 && cm.idAttivazioneMagFam > 0)
                                 {
-                                    dtpc.AssociaPercentualeMaggiorazioneConiuge(new_idconiuge, pmcm.idPercentualeConiuge, db);
+                                    var amf = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam);
+                                    cm.idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI;
                                 }
-                            }
-                            else
-                            {
-                                throw new Exception("Non è presente nessuna percentuale del coniuge.");
+
+                                cm.dataAggiornamento = DateTime.Now;
+                                DateTime dtIni = cm.dataInizio.Value;
+                                DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : tm.dataRientro.Value;
+                                cm.dataFine = dtFin;
+
+                                decimal new_idconiuge = dtvmf.SetConiuge(ref cm, db, cm.idAttivazioneMagFam);
+
+                                
+
+                                List<PercentualeMagConiugeModel> lpmcm =
+                                    dtpc.GetListaPercentualiMagConiugeByRangeDate(cm.idTipologiaConiuge, dtIni, dtFin, db)
+                                        .ToList();
+
+                                if (lpmcm?.Any() ?? false)
+                                {
+                                    foreach (var pmcm in lpmcm)
+                                    {
+                                        dtpc.AssociaPercentualeMaggiorazioneConiuge(new_idconiuge, pmcm.idPercentualeConiuge, db);
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Non è presente nessuna percentuale del coniuge.");
+                                }
                             }
                         }
                     }
@@ -3068,29 +3077,35 @@ namespace NewISE.Models.DBModel.dtObj
                         fm.idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI;
                     }
 
-                    using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        fm.dataAggiornamento = DateTime.Now;
-
-                        decimal new_idfiglio = dtvmf.SetFiglio(ref fm, db, fm.idAttivazioneMagFam);
-
                         using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
                         {
-                            DateTime dtIni = fm.dataInizio.Value;
-                            DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
-
-                            IList<PercentualeMagFigliModel> lpmfm = dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db);
-
-                            if (lpmfm?.Any() ?? false)
+                            using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                             {
-                                foreach (var pmfm in lpmfm)
+                                var tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
+
+                                fm.dataAggiornamento = DateTime.Now;
+                                DateTime dtIni = fm.dataInizio.Value;
+                                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : tm.dataRientro.Value;
+                                fm.dataFine = dtFin;
+
+                                decimal new_idfiglio = dtvmf.SetFiglio(ref fm, db, fm.idAttivazioneMagFam);
+
+
+                                IList<PercentualeMagFigliModel> lpmfm = dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db);
+
+                                if (lpmfm?.Any() ?? false)
                                 {
-                                    dtpmf.AssociaPercentualeMaggiorazioneFigli(new_idfiglio, pmfm.idPercMagFigli, db);
+                                    foreach (var pmfm in lpmfm)
+                                    {
+                                        dtpmf.AssociaPercentualeMaggiorazioneFigli(new_idfiglio, pmfm.idPercMagFigli, db);
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                throw new Exception("Non è presente nessuna percentuale del figlio.");
+                                else
+                                {
+                                    throw new Exception("Non è presente nessuna percentuale del figlio.");
+                                }
                             }
                         }
                     }

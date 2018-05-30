@@ -13,17 +13,17 @@
 
 
 <div >
-    <div style="padding-top: 10px;padding-bottom:10px;padding-left:5px">
+    <div style="padding-top: 10px;padding-bottom:10px">
         @if (soloLettura == false)
         {
-            if (idMAB > 0)
+            @*if (idMAB > 0)
             {
                 @Ajax.ActionLink("Modifica", "ModificaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idMAB = idMAB }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica Maggiorazione Abitazione", @id = "linkEditMAB_var" })
             }
             else
-            {
+            {*@
                 @Ajax.ActionLink("Nuovo", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
-            }
+            //}
         }
     </div>
     <table id="tabMAB" class="table table-striped">
@@ -50,6 +50,7 @@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.canone_pagato)
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -59,7 +60,7 @@
                     <td>
                         @if (siDati)
                         {
-                            if (item.AnticipoAnnuale)
+                            if (item.anticipoAnnuale)
                             {
                                 <span class="text-uppercase">ANNUALE</span>
                             }
@@ -93,6 +94,11 @@
                     </td>
                     <td style="text-align: center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_pagato)</span>
+                    </td>
+                    <td style="text-align: center">
+                        <a href="#" onclick="ModificaMAB_var(@item.idMAB); ">
+                            <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Maggiorazione&nbsp;Abitazione" />
+                        </a>
                     </td>
                 </tr>
             }
@@ -134,6 +140,7 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
+        "bSort": false,
     });
 
     $('#ImportoCanone').autoNumeric('init',

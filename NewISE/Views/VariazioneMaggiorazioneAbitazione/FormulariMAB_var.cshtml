@@ -1,20 +1,20 @@
 ﻿@using NewISE.Models.DBModel
 
 @{
-    bool siDocCopiaContratto_var = Convert.ToBoolean(ViewData["siDocCopiaContratto_var"]);
-    bool siDocCopiaRicevuta_var = Convert.ToBoolean(ViewData["siDocCopiaRicevuta_var"]);
-    bool siDocModulo1_var = Convert.ToBoolean(ViewData["siDocModulo1_var"]);
-    bool siDocModulo2_var = Convert.ToBoolean(ViewData["siDocModulo2_var"]);
-    bool siDocModulo3_var = Convert.ToBoolean(ViewData["siDocModulo3_var"]);
-    bool siDocModulo4_var = Convert.ToBoolean(ViewData["siDocModulo4_var"]);
-    bool siDocModulo5_var = Convert.ToBoolean(ViewData["siDocModulo5_var"]);
-    decimal idDocCopiaContratto_var = Convert.ToDecimal(ViewData["idDocCopiaContratto_var"]);
-    decimal idDocCopiaRicevuta_var = Convert.ToDecimal(ViewData["idDocCopiaRicevuta_var"]);
-    decimal idDocModulo1_var = Convert.ToDecimal(ViewData["idDocModulo1_var"]);
-    decimal idDocModulo2_var = Convert.ToDecimal(ViewData["idDocModulo2_var"]);
-    decimal idDocModulo3_var = Convert.ToDecimal(ViewData["idDocModulo3_var"]);
-    decimal idDocModulo4_var = Convert.ToDecimal(ViewData["idDocModulo4_var"]);
-    decimal idDocModulo5_var = Convert.ToDecimal(ViewData["idDocModulo5_var"]);
+    bool siDocCopiaContratto = Convert.ToBoolean(ViewData["siDocCopiaContratto"]);
+    bool siDocCopiaRicevuta = Convert.ToBoolean(ViewData["siDocCopiaRicevuta"]);
+    bool siDocModulo1 = Convert.ToBoolean(ViewData["siDocModulo1"]);
+    bool siDocModulo2 = Convert.ToBoolean(ViewData["siDocModulo2"]);
+    bool siDocModulo3 = Convert.ToBoolean(ViewData["siDocModulo3"]);
+    bool siDocModulo4 = Convert.ToBoolean(ViewData["siDocModulo4"]);
+    bool siDocModulo5 = Convert.ToBoolean(ViewData["siDocModulo5"]);
+    decimal idDocCopiaContratto = Convert.ToDecimal(ViewData["idDocCopiaContratto"]);
+    decimal idDocCopiaRicevuta = Convert.ToDecimal(ViewData["idDocCopiaRicevuta"]);
+    decimal idDocModulo1 = Convert.ToDecimal(ViewData["idDocModulo1"]);
+    decimal idDocModulo2 = Convert.ToDecimal(ViewData["idDocModulo2"]);
+    decimal idDocModulo3 = Convert.ToDecimal(ViewData["idDocModulo3"]);
+    decimal idDocModulo4 = Convert.ToDecimal(ViewData["idDocModulo4"]);
+    decimal idDocModulo5 = Convert.ToDecimal(ViewData["idDocModulo5"]);
     bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal NumAttivazioni = Convert.ToDecimal(ViewData["NumAttivazioni"]);
@@ -24,7 +24,7 @@
 <div style="padding-right: 10px">
     <div class="col-xs-3">
         <div style="margin-top: 20px; margin-bottom: 10px">
-            <button class="btn btn-default btn-sm" onclick="DownloadFormularioMAB_var(); ">
+            <button class="btn btn-default btn-sm" onclick="DownloadFormularioMAB_var();">
                 <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
                 Download formulario
             </button>
@@ -33,15 +33,13 @@
     <div class="col-xs-9" style="margin:0;padding:0">
         <div class="table" style="background-color:transparent;margin:0;padding:0;padding-top:20px">
             <div class="row">
-                <div class="col-xs-10" style="text-align:right">
-                    <b>
-                        Modulo 1 (Richiesta Prima Rata Maggiorazione Abitazione)
-                    </b>
+                <div class="col-xs-9" style="text-align:right">
+                    <b>Modulo 1 (Richiesta Prima Rata Maggiorazione Abitazione)</b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (siDocModulo1_var)
+                    @if (siDocModulo1)
                     {
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo1_var})" target="_blank">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo1})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
                     }
@@ -54,7 +52,7 @@
                     @if (soloLettura == false)
                     {
                         <a href="#" onclick="UploadDocumentoMABModal_var(@Convert.ToDecimal(@EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione),@idTrasferimento);" id="uploadDoc1MAB_var">
-                            @if (siDocModulo1_var)
+                            @if (siDocModulo1)
                             {
                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci" />
                             }
@@ -67,15 +65,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-10" style="text-align:right">
-                    <b>
-                        Modulo 2 (Dichiarazione ai sensi del D.P.R. 445/2000 - Costo di Locazione)
-                    </b>
+                <div class="col-xs-9" style="text-align:right">
+                    <b>Modulo 2 (Dichiarazione ai sensi del D.P.R. 445/2000 - Costo di Locazione)</b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (siDocModulo2_var)
+                    @if (siDocModulo2)
                     {
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo2_var})" target="_blank">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo2})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
                     }
@@ -88,7 +84,7 @@
                     @if (soloLettura == false)
                     {
                         <a href="#" onclick="UploadDocumentoMABModal_var(@Convert.ToDecimal(@EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ),@idTrasferimento);" id="uploadDoc2MAB_var">
-                            @if (siDocModulo2_var)
+                            @if (siDocModulo2)
                             {
                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci" />
                             }
@@ -102,15 +98,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-10" style="text-align:right">
-                    <b>
-                        Modulo 3 (Attestazione Spese di Abitazione - Collaboratore)
-                    </b>
+                <div class="col-xs-9" style="text-align:right">
+                    <b>Modulo 3 (Attestazione Spese di Abitazione - Collaboratore)</b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (siDocModulo3_var)
+                    @if (siDocModulo3)
                     {
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo3_var})" target="_blank">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo3})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
                     }
@@ -123,7 +117,7 @@
                     @if (soloLettura==false)
                     {
                         <a href="#" onclick="UploadDocumentoMABModal_var(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ),@idTrasferimento);" id="uploadDoc3MAB_var">
-                            @if (siDocModulo3_var)
+                            @if (siDocModulo3)
                             {
                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci" />
                             }
@@ -136,15 +130,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-10" style="text-align:right">
-                    <b>
-                        Modulo 4 (Dichiarazione ai sensi del D.P.R. 445/2000 - Costo di Locazione)
-                    </b>
+                <div class="col-xs-9" style="text-align:right">
+                    <b>Modulo 4 (Dichiarazione ai sensi del D.P.R. 445/2000 - Costo di Locazione)</b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (siDocModulo4_var)
+                    @if (siDocModulo4)
                     {
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo4_var})" target="_blank">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo4})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
                     }
@@ -158,7 +150,7 @@
                     @if (soloLettura == false)
                     {
                         <a href="#" onclick="UploadDocumentoMABModal_var(@Convert.ToDecimal(@EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ),@idTrasferimento);" id="uploadDoc4MAB_var">
-                            @if (siDocModulo4_var)
+                            @if (siDocModulo4)
                             {
                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci" />
                             }
@@ -171,15 +163,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-10" style="text-align:right">
-                    <b>
-                        Modulo 5 (Dichiarazione Clausole Contratto di Alloggio)
-                    </b>
+                <div class="col-xs-9" style="text-align:right">
+                    <b>Modulo 5 (Dichiarazione Clausole Contratto di Alloggio)</b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (siDocModulo5_var)
+                    @if (siDocModulo5)
                     {
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo5_var})" target="_blank">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo5})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
                     }
@@ -192,7 +182,7 @@
                     @if (soloLettura == false)
                     {
                         <a href="#" onclick="UploadDocumentoMABModal_var(@Convert.ToDecimal(@EnumTipoDoc.Clausole_Contratto_Alloggio ),@idTrasferimento);" id="uploadDoc5MAB_var">
-                            @if (siDocModulo5_var)
+                            @if (siDocModulo5)
                             {
                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci" />
                             }
@@ -205,15 +195,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-10" style="text-align:right">
-                    <b>
-                        Copia Conforme del Contratto di Locazione
-                    </b>
+                <div class="col-xs-9" style="text-align:right">
+                    <b>Copia Conforme del Contratto di Locazione</b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;">
-                    @if (siDocCopiaContratto_var)
+                    @if (siDocCopiaContratto)
                     {
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocCopiaContratto_var})" target="_blank">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocCopiaContratto})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
                     }
@@ -226,7 +214,7 @@
                     @if (soloLettura == false)
                     {
                         <a href="#" onclick="UploadDocumentoMABModal_var(@Convert.ToDecimal(@EnumTipoDoc.Copia_Contratto_Locazione ),@idTrasferimento);" id="uploadDocContratto_var">
-                            @if (siDocCopiaContratto_var)
+                            @if (siDocCopiaContratto)
                             {
                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci" />
                             }
@@ -239,15 +227,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-10" style="text-align:right">
-                    <b>
-                        Copia Ricevuta/Bonifico di Pagamento
-                    </b>
+                <div class="col-xs-9" style="text-align:right">
+                    <b>Copia Ricevuta/Bonifico di Pagamento</b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (siDocCopiaRicevuta_var)
+                    @if (siDocCopiaRicevuta)
                     {
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocCopiaRicevuta_var})" target="_blank">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocCopiaRicevuta})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
                         </a>
                     }
@@ -260,7 +246,7 @@
                     @if (soloLettura == false)
                     {
                         <a href="#" onclick="UploadDocumentoMABModal_var(@Convert.ToDecimal(@EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione ),@idTrasferimento);" id="uploadDocRicevuta_var">
-                            @if (siDocCopiaRicevuta_var)
+                            @if (siDocCopiaRicevuta)
                             {
                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci" />
                             }

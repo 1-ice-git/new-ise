@@ -45,16 +45,16 @@
                 <li class="disabled" id="mnGestioneTrasferimento"><a id="lkGestioneTrasferimento" disabled href="#tabGestioneTrasferimento" data-toggle="tab">Gestione Trasferimento</a></li>
 
                 <li class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                        Variazioni trasferimento
+                    <button class="btn btn-default dropdown-toggle disabled" disabled type="button" id="ddVariazioneTrasferimento" data-toggle="dropdown">
+                        Variazioni Trasferimento
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                         <li role="presentation" class="disabled" id="mnMaggiorazioneFamiliare"><a role="menuitem" tabindex="-1" id="lkMaggiorazioneFamiliare" disabled href="#tabMaggiorazioneFamiliare" data-toggle="tab">Maggiorazione Familiare</a></li>
                         <li role="presentation" class="disabled" id="mnPassaporto"><a role="menuitem" tabindex="-1" id="lkPassaporto" disabled href="#" data-toggle="tab">Richiesta passaporto</a></li>
-                        <li role="presentation" class="disabled" id="mnTitoliViaggio"><a role="menuitem" tabindex="-1" id="lkTitoliViaggio" disabled href="#" data-toggle="tab">Richiesta titoli di viaggio</a></li>
+                        <li role="presentation" class="disabled" id="mnTitoliViaggio"><a role="menuitem" tabindex="-1" id="lkTitoliViaggio" disabled href="#" data-toggle="tab">Richiesta Titoli di Viaggio</a></li>
                         <li role="presentation" class="divider"></li>
-                        <li role="presentation" class="" id="mnSaldoTrasportoEffetti"><a role="menuitem" tabindex="-1" id="lkTitoliViaggio" href="#" data-toggle="tab">Saldo trasporto effetti</a></li>
+                        <li role="presentation" class="disabled" id="mnSaldoTrasportoEffetti"><a role="menuitem" tabindex="-1" id="lkTrasportoEffetti" disabled href="#" data-toggle="tab">Saldo Trasporto Effetti</a></li>
                         <li role="presentation" class="disabled" id="mnMaggiorazioneAbitazione"><a role="menuitem" tabindex="-1" id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
                     </ul>
                 </li>
@@ -62,11 +62,11 @@
 
                 @if (admin)
                 {
-                    <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab" onclick="ViaggiCongedoPermesso();">Viaggi di congedo</a></li>
+                    <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab" onclick="ViaggiCongedoPermesso();">Viaggi di Congedo</a></li>
                 }
                 else
                 {
-                    <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab">Viaggi di congedo</a></li>
+                    <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab">Viaggi di Congedo</a></li>
                 }
                 @if (admin)
                 {
@@ -495,10 +495,8 @@
                 },
                 success: function (result) {
                     //debugger;
-
                     $("#ContenitoreDipendentiGepe").empty();
                     $("#ContenitoreDipendentiGepe").html(result);
-
                     ElencoTrasferimento();
                 },
                 complete: function () {
@@ -540,6 +538,10 @@
             $("#mnGestioneTrasferimento").attr("disabled", "disabled");
             $("#mnGestioneTrasferimento").addClass("disabled");
 
+            
+            $("#ddVariazioneTrasferimento").attr("disabled", "disabled");
+            $("#ddVariazioneTrasferimento").addClass("disabled");
+
             $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
             $("#mnMaggiorazioneFamiliare").addClass("disabled");
 
@@ -564,7 +566,6 @@
             $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
             $("#mnProvvidenzeScolastiche").addClass("disabled");
 
-
         }
 
     }
@@ -581,6 +582,15 @@
             $("#lkGestioneTrasferimento").attr("disabled", "disabled");
             $("#mnGestioneTrasferimento").addClass("disabled");
             $("#lkGestioneTrasferimento").removeAttr("onClick");
+        }
+
+        if (MenuVariazioneTrasferimento(idTrasferimento) == 1) {
+            $("#ddVariazioneTrasferimento").removeAttr("disabled");
+            $("#ddVariazioneTrasferimento").removeClass("disabled");
+        }
+        else {
+            $("#ddVariazioneTrasferimento").attr("disabled", "disabled");
+            $("#ddVariazioneTrasferimento").addClass("disabled");
         }
 
         if (MenuMaggiorazioneFamiliare(idTrasferimento) == 1) {
@@ -641,8 +651,6 @@
             $("#lkRichiamo").removeAttr("onClick");
         }
 
-
-
         //$("#lkRichiamo").removeAttr("disabled");
         //$("#mnRichiamo").removeClass("disabled");
         //$('#lkRichiamo').attr('onClick', 'Richiamo();');
@@ -658,9 +666,7 @@
             $("#mnProvvidenzeScolastiche").addClass("disabled");
             $("#lkProvvidenzeScolastiche").removeAttr("onClick");
         }
-
-
-
+        
         if (MenuIndennita(idTrasferimento) == 1) {
             //debugger;
             $("#lkIndennita").removeAttr("disabled");
@@ -693,6 +699,54 @@
     }
 
     function MenuGestioneTrasferimento(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaNotificaTrasferimento";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.notificaTrasferimento == 1) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuVariazioneTrasferimento(idTrasferimento) {
         //debugger;
         var rotta = "/Trasferimento/VerificaNotificaTrasferimento";
         var valoreRitorno = 0;

@@ -32,7 +32,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (cm.dataInizio < t.DATAPARTENZA)
                     {
-                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                        vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
                     }
                     else
                     {
@@ -67,11 +67,19 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
-                                vr = new ValidationResult(string.Format("La data di inizio validità deve essere superiore alla data di fine validità del coniuge precedente ({0}).", c_prec.DATAFINEVALIDITA.ToShortDateString()));
+                                vr = new ValidationResult(string.Format("La Data Inizio Validità deve essere superiore alla Data Fine Validità del coniuge precedente ({0}).", c_prec.DATAFINEVALIDITA.ToShortDateString()));
                             }
-                        } else
+                        }
+                        else
                         {
-                            vr = ValidationResult.Success;
+                            if (cm.dataInizio > t.DATARIENTRO)
+                            {
+                                vr = new ValidationResult(string.Format("La Data Inizio Validità non può essere superiore alla data rientro d trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                            }
+                            else
+                            {
+                                vr = ValidationResult.Success;
+                            }
                         }
                     }
                 }
@@ -79,7 +87,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             else
             {
-                vr = new ValidationResult("La data di inizio validità è richiesta.");
+                vr = new ValidationResult("La Data Inizio Validità è richiesta.");
             }
 
             return vr;
@@ -97,15 +105,32 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var t = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                    if (cm.dataInizio != null && cm.dataFine < Utility.DataFineStop())
+                    if (cm.dataInizio != null)
                     {
-                        if (cm.dataInizio >= cm.dataFine)
+                        if (cm.dataFine != null)
                         {
-                            vr = new ValidationResult(string.Format("La data fine deve essere superiore alla data inizio ({0}).", cm.dataInizio.Value.ToShortDateString()));
-                        }
-                        else
-                        {
-                            vr = ValidationResult.Success;
+                            if (cm.dataFine <= t.DATARIENTRO)
+                            {
+                                if (cm.dataInizio >= cm.dataFine)
+                                {
+                                    vr = new ValidationResult(string.Format("La Data Fine Validità deve essere superiore alla Data Inizio Validità ({0}).", cm.dataInizio.Value.ToShortDateString()));
+                                }
+                                else
+                                {
+                                    if (cm.dataFine <= t.DATAPARTENZA)
+                                    {
+                                        vr = new ValidationResult(string.Format("La Data Fine Validità non può essere inferiore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                                    }
+                                    else
+                                    {
+                                        vr = ValidationResult.Success;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                vr = new ValidationResult(string.Format("La Data Fine Validità non può essere superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                            }
                         }
                     }
                 }
