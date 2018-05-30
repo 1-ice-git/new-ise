@@ -4,6 +4,7 @@ using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.dtObj;
 using NewISE.Models.Tools;
 using NewISE.Views.Dataset;
 using Oracle.ManagedDataAccess.Client;
@@ -117,7 +118,6 @@ namespace NewISE.Controllers
             {
                 using (dtIndennitaBase dtd = new dtIndennitaBase())
                 {
-                    
                     libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
                 }
 
@@ -137,6 +137,9 @@ namespace NewISE.Controllers
                         ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
 
                     }
+
+                    
+                    
                 }
                 ViewBag.idTrasferimento = idTrasferimento;
                 
@@ -154,17 +157,14 @@ namespace NewISE.Controllers
         public ActionResult RptIndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            
+            List<LivelloDipendenteModel> ldm = new List<LivelloDipendenteModel>();
 
             try
             {
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    //var ll = db.INDENNITABASE.ToList();
                     var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
-                    
-
                     libm = (from e in ll
                             select new IndennitaBaseModel()
                             {
@@ -182,7 +182,8 @@ namespace NewISE.Controllers
                                 },
                             }).ToList();
 
-                   
+
+                  
                     ReportViewer reportViewer = new ReportViewer();
 
                     reportViewer.ProcessingMode = ProcessingMode.Local;
@@ -190,6 +191,7 @@ namespace NewISE.Controllers
                     reportViewer.Width = Unit.Percentage(100);
                     reportViewer.Height = Unit.Percentage(100);
 
+                    
                     var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
                     ////var datasource = new ReportDataSource("INDENNITABASE", ll.ToList());
                     reportViewer.Visible = true;
@@ -212,38 +214,51 @@ namespace NewISE.Controllers
                     //param[0] = new ReportParameter("paraStartDate", paraStartDate, false);
                     //param[1] = new ReportParameter("paraEndDate", paraEndDate, false);
                     //this.reportViewer.LocalReport.SetParameters(param);
+                    
 
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
                         var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        
                         using (dtRuoloUfficio dtru = new dtRuoloUfficio())
                         {
-                           
-                            tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                            tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-                            ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
-                            ViewBag.idTrasferimento = idTrasferimento;  
 
-
-                            string Nominativo = tm.Dipendente.Nominativo;
-                            string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
-                            string Livello = tm.RuoloUfficio.DescrizioneRuolo;
-                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-
-                            //livelloDipendenteValido.Livello.DescLivello
-                            ReportParameter[] parameterValues = new ReportParameter[]
+                            using (dtLivelliDipendente dld = new dtLivelliDipendente())
                             {
+                                // Ruolo
+
+                                tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                                tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+
+                                ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+                                ViewBag.idTrasferimento = idTrasferimento;
+
+                                // Livello
+
+                                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                                var liv1 = liv.First();
+
+                                string Nominativo = tm.Dipendente.Nominativo;
+                                string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
+                                string Livello = liv1.Livello.DescLivello;
+                                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+
+
+                                ReportParameter[] parameterValues = new ReportParameter[]
+                                {
                                     new ReportParameter ("Nominativo",Nominativo),
                                     new ReportParameter ("Ruolo",Ruolo),
                                     new ReportParameter ("Livello",Livello),
                                     new ReportParameter ("Decorrenza",Decorrenza)
-                            };
+                                };
 
-                            reportViewer.LocalReport.SetParameters(parameterValues);
+                                reportViewer.LocalReport.SetParameters(parameterValues);
 
-                    // ****************************************************************************
+                                // ****************************************************************************
 
-                    ViewBag.ReportViewer = reportViewer;
+                                ViewBag.ReportViewer = reportViewer;
+
+                            }
 
                         }
                     }

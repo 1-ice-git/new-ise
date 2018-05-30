@@ -68,13 +68,13 @@
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 
-                        @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
-                        {
-                            <td style="text-align:center;">
-                                @Html.DisplayFor(modelItem => item.valore)
-                            </td>
-                        }
-                        else
+                    @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+                    {
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(modelItem => item.valore)
+                        </td>
+                    }
+                    else
                         {
                             <td></td>
                         }
@@ -109,7 +109,7 @@
 </div>
 
 <div class="modal fade modal-fullscreen force-fullscreen" id="ModalReport" tabindex="-1" role="dialog" aria-labelledby="ModalReportLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" style="width:980px; align-content:center" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

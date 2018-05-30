@@ -634,7 +634,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Ruolo.Value</Value>
+                <Value>=Parameters!Livello.Value</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -691,7 +691,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
     <Height>4.22119in</Height>
     <Style />
   </Body>
-  <Width>9.66151in</Width>
+  <Width>9.70318in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
