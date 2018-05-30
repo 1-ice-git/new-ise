@@ -9,10 +9,10 @@
               <Width>6.76953cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>6.33646cm</Width>
+              <Width>9.08813cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>10.76158cm</Width>
+              <Width>8.00991cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -28,7 +28,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>DATAINIZIOVALIDITA</Value>
+                              <Value>Data Inizio Validità</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -61,7 +61,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>DATAFINEVALIDITA</Value>
+                              <Value>Data Fine Validità</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -94,7 +94,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>VALORE</Value>
+                              <Value>Indennita Base Lorda</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>

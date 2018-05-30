@@ -193,11 +193,6 @@ namespace NewISE.Controllers
                                 ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
                                 ViewBag.idTrasferimento = idTrasferimento;
 
-
-                                //@if(idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
-
-                                //decimal idTipo = 0;
-
                                 decimal valore = 0;
                             
                                 if (ViewBag.idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || ViewBag.idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
@@ -289,10 +284,7 @@ namespace NewISE.Controllers
             return PartialView("RptIndennitaBase");
 
         }
-
         
-
-
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
 
