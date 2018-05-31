@@ -2235,6 +2235,55 @@ namespace NewISE.Controllers
 
         }
 
+        public JsonResult VerificaPassaporto(decimal idTrasferimento)
+        {
+            try
+            {
+                if (idTrasferimento.Equals(null))
+                {
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
+                }
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+                    if (trm != null && trm.HasValue())
+                    {
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                        {
+                           
+                            using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                            {
+                                PassaportoModel pm = dtpp.GetPassaportoByID(idTrasferimento);
+
+                                if (pm.idPassaporto.ToString() != null)
+                                {
+                                    return Json(new { idPassaporto = pm.idPassaporto.ToString() });
+                                }
+                                else
+                                {
+                                    return Json(new { idPassaporto = 0 });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { idPassaporto = 0 });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { idPassaporto = 0 });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+
+
+        }
+
 
 
     }

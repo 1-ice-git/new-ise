@@ -4836,6 +4836,7 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\ValidationWithBoot.js" />
+    <Content Include="Scripts\ViewScripts\VariazionePassaporto.js" />
     <Content Include="Scripts\ViewScripts\anticipo.js" />
     <Content Include="Scripts\ViewScripts\VariazioneMaggiorazioneAbitazione.js" />
     <Content Include="Scripts\ViewScripts\MaggiorazioneAbitazione.js" />
@@ -4886,6 +4887,7 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="Controllers\ElaborazioniController.cs" />
     <Compile Include="Controllers\IndennitaController.cs" />
+    <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
@@ -5249,6 +5251,7 @@
     <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
@@ -5983,6 +5986,20 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
     <Content Include="Views\Elaborazioni\ElaborazioneMensile.cshtml" />
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDirette.cshtml" />
+    <Content Include="Views\VariazionePassaporto\VariazionePassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\Passaporti_Invio.cshtml" />
+    <Content Include="Views\VariazionePassaporto\Passaporti_Richiesta.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ChkIncludiPassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ColonnaElencoDoc.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ColonnaElencoDocPassaporti.cshtml" />
+    <Content Include="Views\VariazionePassaporto\DocumentoPassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ElencoFamiliariPassaporti_Invio.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ElencoFamiliariPassaporti_Richiesta.cshtml" />
+    <Content Include="Views\VariazionePassaporto\GestPulsantiNotificaAndPraticaConclusa_Invio.cshtml" />
+    <Content Include="Views\VariazionePassaporto\GestPulsantiNotificaAndPraticaConclusa_Richiesta.cshtml" />
+    <Content Include="Views\VariazionePassaporto\MessaggioAnnullaInvioPassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\MessaggioAnnullaRichiestaPassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\MessaggioAttivaRichiestaPassaporto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

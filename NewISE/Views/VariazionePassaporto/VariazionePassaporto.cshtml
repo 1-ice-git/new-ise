@@ -1,0 +1,964 @@
+﻿@using NewISE.Models.DBModel.Enum
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idFasePassaportiCorrente = Convert.ToDecimal(ViewData["idFasePassaportiCorrente"]);
+}
+
+@Html.Hidden("hiIdTipoDocumento", 0)
+@Html.Hidden("hiIdParentela", 0)
+@Html.Hidden("hiIdFamiliarePassaporto", 0)
+
+
+@if (idFasePassaportiCorrente == (decimal)EnumFasePassaporti.Richiesta_Passaporti)
+{
+    @Html.Action("Passaporti_Richiesta", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
+}
+else
+{
+    @Html.Action("Passaporti_Invio", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
+
+}
+
+
+<div class="modal fade" id="inviaDocPassaportiModal_var" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalPassaportiLabel_var" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelPassaportiLabel_var">Documento Passaporto</h3>
+            </div>
+            <div class="modal-body text-info" style="font-size: 1em;">
+                <div id="divDocPP" class="modal-body alert alert-info text-info">
+                    <p id="viewDocumentoPassaporto_var">
+                        <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btUploadDocPassaporto_var" type="button" class="btn btn-info" onclick="SalvaDocPassaporto_var(@idTrasferimento);">Salva</button>
+                <button id="btAnnullaDocPassaporto_var" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaInvioPassaporti_var" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaInvioLabel_var" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel_var">Messaggio di annullamento invio Passaporti</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaInvioPassaporti_var">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnulla_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="AnnullaInvioPassaporto_var(); ">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalNotificaInvioPassaporti_var" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaInvioPassaportiLabel_var" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel_var">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaInvioPassaporti_var">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotificaInvioPassaporti_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaInvioPassaporti_var();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaInvioPassaporti_var" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaInvioPassaportiLabel_var" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel_var">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaInvioPassaporti_var">
+                    <label>Procedere con l'attivazione della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazioneInvioPassaporti_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaInvioPassaporti_var();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaRichiestaPassaporti_var" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaLabel_var" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel_var">Messaggio di annullamento richiesta Passaporti</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaRichiestaPassaporti_var">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnulla_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="AnnullaRichiestaPassaporto_var(); ">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalNotificaRichiestaPassaporti_var" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaPassaportiLabel_var" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel_var">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaRichiestaPassaporti_var">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotificaRichiestaPassaporti_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaPassaporti_var();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaRichiestaPassaporti_var" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaPassaportiLabel_var" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel_var">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaRichiestaPassaporti_var">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazioneRichiestaPassaporti_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaPassaporti_var();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function ElencoDocumenti_var(idFamiliarePassaporto, tipoDoc, idParentela) {
+        //debugger;
+        var rotta = "/Documenti/ElencoDocumentiPassaporto";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFamiliarePassaporto: idFamiliarePassaporto,
+                tipoDoc: tipoDoc,
+                parentela: idParentela
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+
+                $("#divPassaporto_var").empty();
+                $("#divPassaporto_var").html(result);
+                //GestionePulsantiNotificaAndConcludiPassaporto();
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariConiuge_var(idAltriDati) {
+        //debugger;
+        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariConiugePassaporti";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAltriDati: idAltriDati },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divPassaporto_var").empty();
+                $("#divPassaporto_var").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariFiglio_var(idAltriDati) {
+        //debugger;
+        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariFiglioPassaporto";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAltriDati: idAltriDati },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divPassaporto_var").empty();
+                $("#divPassaporto_var").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function GestionePulsantiNotificaAndConcludiPassaporto_Invio_var() {
+        //debugger;
+        var rotta = "/VariazionePassaporto/GestPulsantiNotificaAndPraticaConclusa_Invio";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPusantiNotificaAndConcludiPassaporto_var").empty();
+                $("#divPusantiNotificaAndConcludiPassaporto_var").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function GestionePulsantiNotificaAndConcludiPassaporto_Richiesta_var() {
+        //debugger;
+        var rotta = "/VariazionePassaporto/GestPulsantiNotificaAndPraticaConclusa_Richiesta";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPusantiNotificaAndConcludiPassaporto_var").empty();
+                $("#divPusantiNotificaAndConcludiPassaporto_var").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function ElencoFamiliariPassaporto_Invio_var() {
+        //debugger;
+        var rotta = "/VariazionePassaporto/ElencoFamiliariPassaporti_Invio";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPassaporto_var").empty();
+                $("#divPassaporto_var").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function UploadDocumentoPassaportoModal_var(idTipoDocumento, idTrasferimento, idParentela, idFamiliarePassaporto) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/DocumentoPassaporto";
+        $('#hiIdTipoDocumento').val(idTipoDocumento);
+        $('#hiIdParentela').val(idParentela);
+        $('#hiIdFamiliarePassaporto').val(idFamiliarePassaporto);
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idTrasferimento: idTrasferimento,
+                idTipoDocumento: idTipoDocumento
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                $('#inviaDocPassaportiModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewDocumentoPassaporto_var").empty();
+                $("#viewDocumentoPassaporto_var").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function ElencoFamiliariPassaporto_Richiesta_var() {
+        //debugger;
+        var rotta = "/VariazionePassaporto/ElencoFamiliariPassaporti_Richiesta";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPassaporto_var").empty();
+                $("#divPassaporto_var").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+
+    function AnnullaRichiestaPassaporto_var() {
+        //debugger;
+        var rotta = "/VariazionePassaporto/AnnullaRichiesta";
+        idAttivazionePassaporto = parseInt($("#idAttivazionePassaporto").val());
+        var testoAnnullaPassaporto = $('#FullDescription').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idAttivazionePassaporto: idAttivazionePassaporto,
+                msg: testoAnnullaPassaporto
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+
+                    //DisabilitaCheckBox();
+                    //InfoElaborazioneAjax(result.msg);
+                    ElencoFamiliariPassaporto_Richiesta_var();
+                    GestionePulsantiNotificaAndConcludiPassaporto_Richiesta_var();
+                    //GestioneAttivitaTrasferimento();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaNotificaRichiestaPassaporti_var() {
+        //debugger;
+
+        var rotta = "/VariazionePassaporto/NotificaRichiesta";
+        idAttivazionePassaporto = parseInt($("#HidAttivazionePassaporto").val());
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idAttivazionePassaporto: idAttivazionePassaporto
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    GestionePulsantiNotificaAndConcludiPassaporto_Richiesta_var();
+                    //GestioneAttivitaTrasferimento();
+                    //DisabilitaCheckBox();
+                    //InfoElaborazioneAjax(result.msg);
+
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAttivaRichiestaPassaporti_var() {
+        var rotta = "/VariazionePassaporto/ConfermaRichiesta";
+        idAttivazionePassaporto = parseInt($("#HidAttivazionePassaporto").val());
+        var testoAttivaRichiestaPassaporto = $('#FullDescription').val();
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idAttivazionePassaporto: idAttivazionePassaporto,
+                msg: testoAttivaRichiestaPassaporto
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    //InfoElaborazioneAjax(result.msg);
+                    ElencoFamiliariPassaporto_Invio_var();
+                    GestionePulsantiNotificaAndConcludiPassaporto_Invio_var();
+                    //GestioneAttivitaTrasferimento();
+
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function MessaggioAnnullaRichiestaPassaporto_var(idAttivazionePassaporto) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/MessaggioAnnullaRichiestaPassaporto";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivazionePassaporto: idAttivazionePassaporto },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaPassaporti_var").empty();
+                $("#viewAnnullaRichiestaPassaporti_var").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function MessaggioAttivaRichiestaPassaporto_var(idAttivazionePassaporto) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/MessaggioAttivaRichiestaPassaporto";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivazionePassaporto: idAttivazionePassaporto },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAttivaRichiestaPassaporti_var").empty();
+                $("#viewAttivaRichiestaPassaporti_var").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function AnnullaInvioPassaporto_var() {
+        //debugger;
+        var rotta = "/VariazionePassaporto/AnnullaInvio";
+        idAttivazionePassaporto = parseInt($("#idAttivazionePassaporto").val());
+        var testoAnnullaPassaporto = $('#FullDescription').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idAttivazionePassaporto: idAttivazionePassaporto,
+                msg: testoAnnullaPassaporto
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+
+                    //DisabilitaCheckBox();
+                    //InfoElaborazioneAjax(result.msg);
+                    ElencoFamiliariPassaporto_Invio_var();
+                    GestionePulsantiNotificaAndConcludiPassaporto_Invio_var();
+                    //GestioneAttivitaTrasferimento();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaNotificaInvioPassaporti_var() {
+        //debugger;
+
+        var rotta = "/VariazionePratichePassaporto/NotificaInvio";
+        idAttivazionePassaporto = parseInt($("#HidAttivazionePassaporto").val());
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idAttivazionePassaporto: idAttivazionePassaporto
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ElencoFamiliariPassaporto_Invio_var();
+                    GestionePulsantiNotificaAndConcludiPassaporto_Invio_var();
+                    //GestioneAttivitaTrasferimento();
+                    //DisabilitaCheckBox();
+                    //InfoElaborazioneAjax(result.msg);
+
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAttivaInvioPassaporti_var() {
+        var rotta = "/VariazionePassaporto/ConfermaInvio";
+        idAttivazionePassaporto = parseInt($("#HidAttivazionePassaporto").val());
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idAttivazionePassaporto: idAttivazionePassaporto
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    //InfoElaborazioneAjax(result.msg);
+
+                    //ElencoFamiliariPassaporto_Invio();
+                    //GestionePulsantiNotificaAndConcludiPassaporto_Invio();
+                    //GestioneAttivitaTrasferimento();
+                    //$('#linkPratichePassaporto').stop().fadeIn();
+                    Passaporto();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+                //$('#linkPratichePassaporto').stop().fadeIn();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function MessaggioAnnullaInvioPassaporto_var(idAttivazionePassaporto) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/MessaggioAnnullaInvioPassaporto";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivazionePassaporto: idAttivazionePassaporto },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaInvioPassaporti_var").empty();
+                $("#viewAnnullaInvioPassaporti_var").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ValidazionePassaporto_var(idTrasferimento) {
+        //debugger;
+        var ret = false;
+        var c1 = false;
+        var c2 = false;
+        var c3 = false;
+
+        var file = $("#file").val();
+
+        if (idTrasferimento > 0) {
+
+
+            if (file != null && file != undefined && file != "") {
+                $("#divFile").removeClass('BordoRosso');
+                c3 = true;
+            }
+            else {
+                $("#divFile").addClass('BordoRosso');
+                c3 = false;
+            }
+
+            if (c3) {
+                ret = true;
+            }
+            else {
+                ret = false;
+            }
+
+        }
+
+        return ret;
+    }
+
+    function SalvaDocumentoPassaporto_var(idTrasferimento) {
+
+        //debugger;
+        var datiForm = new FormData();
+        var rotta = "/VariazionePassaporto/InserisciDocumentoPassaporto";
+
+        var idTipoDocumento = parseInt($("#hiIdTipoDocumento").val());
+        var idFamiliarePassaporto = parseInt($("#hiIdFamiliarePassaporto").val());
+        var idParentela = parseInt($("#hiIdParentela").val());
+
+        var file = $("#file")[0].files[0];
+
+        if (ValidazionePassaporto_var(idTrasferimento)) {
+
+            datiForm.append("idTrasferimento", idTrasferimento);
+            datiForm.append("idTipoDocumento", idTipoDocumento);
+            datiForm.append("file", file);
+            datiForm.append("idFamiliarePassaporto", idFamiliarePassaporto);
+            datiForm.append("idParentela", idParentela);
+
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: datiForm, //I dati, forniti sotto forma di oggetto FormData
+                dataType: 'json',
+                cache: false,
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    //Blocca();
+                },
+                processData: false, //Serve per NON far convertire l’oggetto
+                //FormData in una stringa, preservando il file
+                contentType: false, //Serve per NON far inserire automaticamente
+                //un content type errato
+                success: function (result) {
+                    //debugger;
+                    if (result.err != "" && result.err != undefined) {
+                        MsgErroreJson(result.err);
+                    }
+                    else {
+                        MsgErroreJson(result.msg);
+
+                        //CloseTimeModalMAB(idTrasferimento);
+                        ElencoFamiliariPassaporto_Invio_var();
+                        GestionePulsantiNotificaAndConcludiPassaporto_Invio_var();
+                        //GestioneAttivitaTrasferimento();
+                        CloseTimeModalPassaporto_var(idTrasferimento);
+                    }
+
+                },
+                complete: function () {
+                    //$("#btUpload").removeAttr("disabled");
+
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    $("#btUploadDocPassaporto_var").removeAttr("disabled");
+                    $("#btUploadDocPassaporto_var ").removeClass("disabled");
+                    $("#btAnnullaDocPassaporto_var").removeAttr("disabled");
+                    $("#btAnnullaDocPassaporto_var").removeClass("disabled");
+                    var msg = error.responseText;
+                    MsgErroreJson(msg);
+                }
+            });
+        }
+        else {
+            $("#btUploadDocPassaporto_var").removeAttr("disabled");
+            $("#btUploadDocPassaporto_var").removeClass("disabled");
+            $("#btAnnullaDocPassaporto_var").removeAttr("disabled");
+            $("#btAnnullaDocPassaporto_var").removeClass("disabled");
+        }
+
+    }
+
+
+    function MsgErroreJson(msg) {
+        $("#spMsgError").html(msg);
+    }
+
+    function CloseTimeModalPassaporto_var(idTrasferimento) {
+        //debugger;
+        $("#btUploadDocPassaporto_var").attr("disabled", "disabled");
+        $("#btUploadDocPassaporto_var").addClass("disabled");
+        $("#btAnnullaDocpassaporto_var").attr("disabled", "disabled");
+        $("#btAnnullaDocPassaporto_var").addClass("disabled");
+        setTimeout(CloseModalFilePassaporto_var(idTrasferimento), 2000);
+    }
+
+    function CloseModalFilePassaporto_var(idTrasferimento) {
+        //debugger;
+        $('#inviaDocPassaportiModal_var').modal('hide');
+        setTimeout(ElencoFamiliariPassaporto_Invio_var(), 1000);
+    }
+
+    function SalvaDocPassaporto_var(idTrasferimento) {
+        //debugger;
+        var idTipoDocumento = parseInt($("#hiIdTipoDocumento").val());
+        SalvaDocumentoPassaporto_var(idTrasferimento, idTipoDocumento);
+    }
+
+
+</script>

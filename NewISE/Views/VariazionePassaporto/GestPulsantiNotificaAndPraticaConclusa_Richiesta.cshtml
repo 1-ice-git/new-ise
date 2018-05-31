@@ -1,0 +1,135 @@
+﻿@using NewISE.Models.Tools
+@using NewISE.Models.DBModel
+@using NewISE.Models.DBModel.Enum
+@model NewISE.Models.ViewModel.GestPulsantiAttConclModel
+
+@{
+    bool admin = Utility.Amministratore();
+}
+
+@Html.Hidden("HidAttivazionePassaporto", Model.idAttivazionePassaporto)
+
+<div class="row">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+
+        @if (Model.statoTrasferimento != EnumStatoTraferimento.Attivo && Model.statoTrasferimento != EnumStatoTraferimento.Annullato)
+        {
+            if (Model.praticaConclusa == false)
+            {
+                if (Model.notificaRichiesta == false)
+                {
+                    if (Model.richiedenteIncluso || Model.coniugeIncluso || Model.figliIncluso)
+                    {
+                        <button class="btn btn-default btn-sm " id="btNotificaRichiestaPassaporti_var" onclick="ModalNotificaRichiestaPassaporti_var(); ">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Notifica richiesta
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-default btn-sm disabled" disabled id = "btNotificaRichiestaPassaporti_var" >
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Notifica richiesta
+                        </button>
+                    }
+                    if (admin)
+                    {
+                        <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti_var">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Completa richiesta
+                        </button>
+                        <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPassaporto_var">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Annulla richiesta
+                        </button>
+                    }
+                }
+                else
+                {
+                    <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPassaporti_var">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Notifica richiesta
+                    </button>
+
+                    if (admin)
+                    {
+                        <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ModalAttivaRichiestaPassaporti_var();">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Completa richiesta
+                        </button>
+                        <button class="btn btn-default btn-sm " id="btAnnullaRichiestaPassaporto" onclick="ModalAnnullaRichiestaPassaporti_var(@Model.idAttivazionePassaporto);">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Annulla richiesta
+                        </button>
+                    }
+                }
+            }
+            else
+            {
+                <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPassaporti_var">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                if (admin)
+                {
+                    <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti_var">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Completa richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPassaporto_var">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+                }
+
+            }
+
+        }
+        else
+        {
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPassaporti_var">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Notifica richiesta
+            </button>
+            if (admin)
+            {
+                <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti_var">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Completa richiesta
+                </button>
+                <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPassaporto_var">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Annulla richiesta
+                </button>
+            }
+
+        }
+    </div>
+</div>
+
+
+
+<script type = "text/javascript" >
+
+    function ModalAnnullaRichiestaPassaporti_var(idAttivazionePassaporto)
+    {
+    //debugger;
+        MessaggioAnnullaRichiestaPassaporto_var(idAttivazionePassaporto);
+        $('#ModalAnnullaRichiestaPassaporti_var').modal().show();
+    }
+
+    function ModalNotificaRichiestaPassaporti_var()
+    {
+        //debugger;
+        $('#ModalNotificaRichiestaPassaporti_var').modal().show();
+    }
+
+
+    function ModalAttivaRichiestaPassaporti_var()
+    {
+        //debugger;
+        MessaggioAttivaRichiestaPassaporto_var(idAttivazionePassaporto);
+        $('#ModalAttivaRichiestaPassaporti_var').modal().show();
+    }
+
+</script>
