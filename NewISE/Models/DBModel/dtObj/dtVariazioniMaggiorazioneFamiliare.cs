@@ -556,7 +556,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         //replica titolo di viaggio e associa il nuovo coniuge
                                         CONIUGETITOLIVIAGGIO ctv_new = new CONIUGETITOLIVIAGGIO()
                                         {
-                                            IDCONIUGE = new_idconiuge,
                                             IDTITOLOVIAGGIO = ctv.IDTITOLOVIAGGIO,
                                             IDATTIVAZIONETITOLIVIAGGIO = ctv.IDATTIVAZIONETITOLIVIAGGIO,
                                             RICHIEDITITOLOVIAGGIO = ctv.RICHIEDITITOLOVIAGGIO,
@@ -602,7 +601,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         //replica passaporto associato al nuovo coniuge
                                         CONIUGEPASSAPORTO cp_new = new CONIUGEPASSAPORTO()
                                         {
-                                            IDCONIUGE = new_idconiuge,
                                             IDPASSAPORTI = cp.IDPASSAPORTI,
                                             IDATTIVAZIONIPASSAPORTI= cp.IDATTIVAZIONIPASSAPORTI,
                                             INCLUDIPASSAPORTO = cp.INCLUDIPASSAPORTO,
@@ -789,7 +787,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     //replica titolo di viaggio e associa il nuovo coniuge
                                     CONIUGETITOLIVIAGGIO ctv_new = new CONIUGETITOLIVIAGGIO()
                                     {
-                                        IDCONIUGE = new_idconiuge,
                                         IDTITOLOVIAGGIO = ctv.IDTITOLOVIAGGIO,
                                         IDATTIVAZIONETITOLIVIAGGIO = ctv.IDATTIVAZIONETITOLIVIAGGIO,
                                         RICHIEDITITOLOVIAGGIO = ctv.RICHIEDITITOLOVIAGGIO,
@@ -835,7 +832,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     //replica passaporto associato al nuovo coniuge
                                     CONIUGEPASSAPORTO cp_new = new CONIUGEPASSAPORTO()
                                     {
-                                        IDCONIUGE = new_idconiuge,
                                         IDPASSAPORTI = cp.IDPASSAPORTI,
                                         IDATTIVAZIONIPASSAPORTI = cp.IDATTIVAZIONIPASSAPORTI,
                                         INCLUDIPASSAPORTO = cp.INCLUDIPASSAPORTO,
@@ -1168,7 +1164,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         //replica titolo di viaggio e associa il nuovo figlio
                                         FIGLITITOLIVIAGGIO ftv_new = new FIGLITITOLIVIAGGIO()
                                         {
-                                            IDFIGLI = new_idfiglio,
                                             IDTITOLOVIAGGIO = ftv.IDTITOLOVIAGGIO,
                                             IDATTIVAZIONETITOLIVIAGGIO = ftv.IDATTIVAZIONETITOLIVIAGGIO,
                                             RICHIEDITITOLOVIAGGIO = ftv.RICHIEDITITOLOVIAGGIO,
@@ -1214,7 +1209,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         //replica passaporto associato al nuovo coniuge
                                         FIGLIPASSAPORTO fp_new = new FIGLIPASSAPORTO()
                                         {
-                                            IDFIGLI = new_idfiglio,
                                             IDPASSAPORTI = fp.IDPASSAPORTI,
                                             IDATTIVAZIONIPASSAPORTI = fp.IDATTIVAZIONIPASSAPORTI,
                                             INCLUDIPASSAPORTO = fp.INCLUDIPASSAPORTO,
@@ -1367,7 +1361,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     //replica titolo di viaggio e associa il nuovo figlio
                                     FIGLITITOLIVIAGGIO ftv_new = new FIGLITITOLIVIAGGIO()
                                     {
-                                        IDFIGLI = new_idfiglio,
                                         IDTITOLOVIAGGIO = ftv.IDTITOLOVIAGGIO,
                                         IDATTIVAZIONETITOLIVIAGGIO = ftv.IDATTIVAZIONETITOLIVIAGGIO,
                                         RICHIEDITITOLOVIAGGIO = ftv.RICHIEDITITOLOVIAGGIO,
@@ -1414,7 +1407,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     //replica passaporto associato al nuovo coniuge
                                     FIGLIPASSAPORTO fp_new = new FIGLIPASSAPORTO()
                                     {
-                                        IDFIGLI = new_idfiglio,
                                         IDPASSAPORTI = fp.IDPASSAPORTI,
                                         IDATTIVAZIONIPASSAPORTI = fp.IDATTIVAZIONIPASSAPORTI,
                                         INCLUDIPASSAPORTO = fp.INCLUDIPASSAPORTO,
