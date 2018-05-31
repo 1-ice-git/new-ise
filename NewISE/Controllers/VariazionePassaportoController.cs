@@ -15,15 +15,15 @@ using System.Web.Helpers;
 
 namespace NewISE.Controllers
 {
-    public class PratichePassaportoController : Controller
+    public class VariazionePassaportoController : Controller
     {
 
-        public ActionResult Passaporti(decimal idTrasferimento)
+        public ActionResult VariazionePassaporto(decimal idTrasferimento)
         {
             //leggo in che fase mi trovo
-            using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+            using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
             {
-                decimal idFasePassaportiCorrente = (decimal)dtpp.GetFasePassaporti_Corrente(idTrasferimento);
+                decimal idFasePassaportiCorrente = (decimal)dtvp.GetFasePassaporti_Corrente(idTrasferimento);
 
                 ViewData.Add("idTrasferimento", idTrasferimento);
                 ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
@@ -56,10 +56,10 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
 
-                    lefm = dtpp.GetFamiliariRichiestaPassaportoPartenza(idTrasferimento).ToList();
+                    lefm = dtvp.GetFamiliariRichiestaPassaporto(idTrasferimento).ToList();
 
                     ViewData.Add("idTrasferimento", idTrasferimento);
                     
@@ -80,10 +80,10 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
 
-                    lefm = dtpp.GetFamiliariInvioPassaportoPartenza(idTrasferimento).ToList();
+                    lefm = dtvp.GetFamiliariInvioPassaportoPartenza(idTrasferimento).ToList();
 
                     ViewData.Add("idTrasferimento", idTrasferimento);
 
@@ -104,11 +104,11 @@ namespace NewISE.Controllers
             ElencoFamiliariPassaportoModel efm = new ElencoFamiliariPassaportoModel();
             try
             { 
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    efm = dtpp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
-                    var ap = dtpp.GetAttivazioneById(idAttivazionePassaporto);
-                    EnumFasePassaporti FasePassaporti = dtpp.GetFasePassaporti_Corrente(ap.IDPASSAPORTI);
+                    efm = dtvp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
+                    var ap = dtvp.GetAttivazioneById(idAttivazionePassaporto);
+                    EnumFasePassaporti FasePassaporti = dtvp.GetFasePassaporti_Corrente(ap.IDPASSAPORTI);
 
                     ViewData.Add("idFasePassaportiCorrente", (decimal)FasePassaporti);
                 }
@@ -127,9 +127,12 @@ namespace NewISE.Controllers
             ElencoFamiliariPassaportoModel efm = new ElencoFamiliariPassaportoModel();
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    efm = dtpp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
+                    efm = dtvp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
+                    //EnumFasePassaporti FasePassaporti = dtvp.GetFasePassaporti(idTrasferimento);
+
+                    //ViewData.Add("idFasePassaporti", (decimal)FasePassaporti);
                 }
             }
             catch (Exception ex)
@@ -195,9 +198,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    gppm = dtpp.GestionePulsantiAttivazionePassaporto_Richiesta(idTrasferimento);
+                    gppm = dtvp.GestionePulsantiAttivazionePassaporto_Richiesta(idTrasferimento);
                 }
             }
             catch (Exception ex)
@@ -214,9 +217,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    gppm = dtpp.GestionePulsantiAttivazionePassaporto_Invio(idTrasferimento);
+                    gppm = dtvp.GestionePulsantiAttivazionePassaporto_Invio(idTrasferimento);
                 }
             }
             catch (Exception ex)
@@ -237,9 +240,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    //gppm = dtpp.GestionePulsantiPassaportoById(idPassaporto);
+                    //gppm = dtvp.GestionePulsantiPassaportoById(idPassaporto);
                     if (gppm != null)
                     {
                         notificaRichiesta = gppm.notificaRichiesta;
@@ -270,11 +273,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    gcip = dtap.GetGestioneInludiPassaporto(idAttivitaPassaporto, idFamiliarePassaporto, parentela, esisteDoc, includiPassaporto);
-
-                   
+                    gcip = dtvp.GetGestioneInludiPassaporto_var(idAttivitaPassaporto, idFamiliarePassaporto, parentela, esisteDoc, includiPassaporto);
                 }
             }
             catch (Exception ex)
@@ -293,9 +294,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    dtpp.NotificaRichiestaPassaporto(idAttivazionePassaporto);
+                    dtvp.NotificaRichiestaPassaporto(idAttivazionePassaporto);
                     msg = "Notifica effettuata con successo";
                 }
             }
@@ -314,9 +315,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    dtpp.NotificaInvioPassaporto(idAttivazionePassaporto);
+                    dtvp.NotificaInvioPassaporto(idAttivazionePassaporto);
                     msg = "Notifica effettuata con successo";
                 }
             }
@@ -342,9 +343,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    dtpp.AnnullaRichiestaPassaporto(idAttivazionePassaporto,testoAnnulla);
+                    dtvp.AnnullaRichiestaPassaporto(idAttivazionePassaporto,testoAnnulla);
                     msg = "Annullamento effettuato con successo";
                 }
             }
@@ -370,9 +371,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    dtpp.AnnullaInvioPassaporto(idAttivazionePassaporto, testoAnnulla);
+                    dtvp.AnnullaInvioPassaporto(idAttivazionePassaporto, testoAnnulla);
                     msg = "Annullamento effettuato con successo";
                 }
             }
@@ -401,9 +402,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    dtpp.ConfermaRichiestaPassaporto(idAttivazionePassaporto, testoAttiva);
+                    dtvp.ConfermaRichiestaPassaporto(idAttivazionePassaporto, testoAttiva);
                     msg = "Pratica passaporto conclusa con successo";
                 }
             }
@@ -422,9 +423,9 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    dtpp.ConfermaInvioPassaporto(idAttivazionePassaporto);
+                    dtvp.ConfermaInvioPassaporto(idAttivazionePassaporto);
                     msg = "Pratica passaporto conclusa con successo";
                 }
             }
@@ -579,12 +580,12 @@ namespace NewISE.Controllers
                 {
                     db.Database.BeginTransaction();
 
-                    using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                    using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                     {
                         AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
 
                         //cerco l'attivazione della seconda fase in corso
-                        apm = dtpp.GetAttivazioneInvioPassaportiInLavorazione(idTrasferimento, db);
+                        apm = dtvp.GetAttivazioneInvioPassaportiInLavorazione(idTrasferimento, db);
 
                         //se non esiste segnala errore
                         if ((apm != null && apm.idAttivazioniPassaporti > 0) == false)
@@ -616,31 +617,31 @@ namespace NewISE.Controllers
                                 if (dimensioneConsentita)
                                 {
                                     //verifica se il documento è gia presente ritornando l'eventuale id
-                                    decimal idDocumentoEsistente = dtpp.VerificaEsistenzaDocumentoPassaporto(idTrasferimento, idTipoDocumento,idParentela, idFamiliarePassaporto);
+                                    decimal idDocumentoEsistente = dtvp.VerificaEsistenzaDocumentoPassaporto(idTrasferimento, idTipoDocumento,idParentela, idFamiliarePassaporto);
 
                                     if (idDocumentoEsistente > 0)
                                     {
                                         //se già esiste lo sostituisco (imposto modificato=true su quello esistente e ne inserisco una altro)
-                                        dtpp.SostituisciDocumentoPassaporto(ref dm, idDocumentoEsistente, apm.idAttivazioniPassaporti, db);
+                                        dtvp.SostituisciDocumentoPassaporto(ref dm, idDocumentoEsistente, apm.idAttivazioniPassaporti, db);
 
                                     }
                                     else
                                     {
                                         //se non esiste lo inserisco
-                                        dtpp.SetDocumentoPassaporto(ref dm, apm.idAttivazioniPassaporti, db);
+                                        dtvp.SetDocumentoPassaporto(ref dm, apm.idAttivazioniPassaporti, db);
                                     }
 
                                     switch ((EnumParentela)idParentela)
                                     {
                                         case EnumParentela.Coniuge:
-                                            dtpp.AssociaDocumentoPassaportoConiuge(idFamiliarePassaporto, dm.idDocumenti, db);
+                                            dtvp.AssociaDocumentoPassaportoConiuge(idFamiliarePassaporto, dm.idDocumenti, db);
                                             break;
                                         case EnumParentela.Figlio:
-                                            dtpp.AssociaDocumentoPassaportoFiglio(idFamiliarePassaporto, dm.idDocumenti, db);
+                                            dtvp.AssociaDocumentoPassaportoFiglio(idFamiliarePassaporto, dm.idDocumenti, db);
                                             break;
                                         case EnumParentela.Richiedente:
-                                            dtpp.GetPassaportoRichiedente_Invio(ref pr, apm.idAttivazioniPassaporti, db);
-                                            dtpp.AssociaDocumentoPassaportoRichiedente(pr.IDPASSAPORTORICHIEDENTE, dm.idDocumenti, db);
+                                            dtvp.GetPassaportoRichiedente_Invio(ref pr, apm.idAttivazioniPassaporti, db);
+                                            dtvp.AssociaDocumentoPassaportoRichiedente(pr.IDPASSAPORTORICHIEDENTE, dm.idDocumenti, db);
                                             break;
                                     }
 

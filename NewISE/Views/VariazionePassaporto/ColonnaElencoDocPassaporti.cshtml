@@ -1,0 +1,18 @@
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel
+
+@{
+    decimal idDocumentoPassaporto = Convert.ToDecimal(ViewData["idDocumentoPassaporto"]);
+}
+
+@if (Model.HasDocPassaporto.esisteDocPassaporto)
+{
+    <a href="@Url.RouteUrl("LeggiDocumento", new {id = Model.HasDocPassaporto.idDocPassaporto})" target="_blank">
+        <img class="SfondoBordoImg" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+    </a>
+}
+else
+{
+    <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" />
+
+}
