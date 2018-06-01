@@ -37,6 +37,13 @@ namespace NewISE.Models.DBModel
         [ScaffoldColumn(false)]
         public decimal idStatoRecord { get; set; }
 
+        public decimal? FK_idPensione { get; set; }
+
+        public bool nascondi { get; set; }
+
+        [Display(Name = "Aggiorna Tutti")]
+        public bool checkAggiornaTutti { get; set; }
+
         public IList<ConiugeModel> Coniugi { get; set; }
 
 
@@ -62,6 +69,26 @@ namespace NewISE.Models.DBModel
                 }
 
 
+            }
+        }
+
+
+        public void NascondiRecord(ModelDBISE db)
+        {
+            var p = db.PENSIONE.Find(this.idPensioneConiuge);
+            if (p != null && p.IDPENSIONE > 0)
+            {
+                p.NASCONDI = true;
+                db.SaveChanges();
+            }
+        }
+        public void MostraRecord(ModelDBISE db)
+        {
+            var p = db.PENSIONE.Find(this.idPensioneConiuge);
+            if (p != null && p.IDPENSIONE > 0)
+            {
+                p.NASCONDI = false;
+                db.SaveChanges();
             }
         }
 

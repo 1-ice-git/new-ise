@@ -145,7 +145,7 @@ namespace NewISE.Controllers
                 {
                     decimal idFaseInCorso = dvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento)[1];// (decimal)EnumFaseViaggioCongedo.Preventivi;
                     decimal id_Viaggio_Congedo = dvc.Identifica_Id_UltimoViaggioCongedoDisponibile(idTrasferimento);
-                    List<AttivazioniViaggiCongedoModel> lAttiv_Viaggio_Congedo = new List<AttivazioniViaggiCongedoModel>();
+                    ///List<AttivazioniViaggiCongedoModel> lAttiv_Viaggio_Congedo = new List<AttivazioniViaggiCongedoModel>();
                     if (id_Viaggio_Congedo == 0)
                     {
                         id_Viaggio_Congedo = dvc.Crea_Viaggi_Congedo(idTrasferimento);
@@ -482,10 +482,10 @@ namespace NewISE.Controllers
 
                             if (idFaseInCorso == 0)
                                 idFaseInCorso = dtvc.Restituisci_LivelloFase_Da_ATT_Viagg_CONG(dtvc.Restituisci_ID_Viagg_CONG_DA(idAttivazioneVC, idTrasferimento));
-                                                        
+
                             AggiornaTuttiViewData(idTrasferimento);
 
-                           
+
                             //decimal[] y = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
                             string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo;
                             //if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
@@ -555,7 +555,7 @@ namespace NewISE.Controllers
                     dtvc.AnnullaPreventiviRichiesta(idAttivazioneVC, idFaseInCorso, idTrasferimento);
                     decimal[] tmp = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
                     string oggetto = Resources.msgEmail.OggettoAnnullaViaggiCongedo;
-                    if(tmp[1]==(decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
+                    if (tmp[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
                         oggetto = Resources.msgEmail.OggettoAnnullaViaggiCongedo2;
                     string corpoMessaggio = Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo;
                     if (tmp[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
@@ -590,7 +590,7 @@ namespace NewISE.Controllers
                     ViewData["ConteggioElementi"] = dtvc.ConteggiaPreventiviRichiesta(idAttivazioneVC);
                     ViewData["id_Viaggio_Congedo"] = id_Viaggio_Congedo;
                     ViewData["idFaseInCorso"] = idFaseInCorso;
-                    
+
                     decimal[] y = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
                     string oggetto = Resources.msgEmail.OggettoNotificaViaggiCongedo;
                     if (y[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
@@ -926,10 +926,10 @@ namespace NewISE.Controllers
                 }
             }
         }
-        public ActionResult MessaggioAnnullaViaggiCongedo(decimal idTrasferimento,decimal id_Attiv_Viaggio_Congedo)
+        public ActionResult MessaggioAnnullaViaggiCongedo(decimal idTrasferimento, decimal id_Attiv_Viaggio_Congedo)
         {
             ModelloMsgMail msg = new ModelloMsgMail();
-           
+
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -950,7 +950,7 @@ namespace NewISE.Controllers
                                 using (dtViaggiCongedo dtvc = new dtViaggiCongedo())
                                 {
                                     decimal[] tmp = dtvc.Restituisci_IdAttivazioniVC_IdFaseInCorso_Attuale(idTrasferimento);
-                                    if(tmp[1]==(decimal)EnumFaseViaggioCongedo.Preventivi)
+                                    if (tmp[1] == (decimal)EnumFaseViaggioCongedo.Preventivi)
                                         msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString());
                                     if (tmp[1] == (decimal)EnumFaseViaggioCongedo.Documenti_di_Viaggio)
                                         msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoViaggiCongedo2, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString());

@@ -19,7 +19,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data di nascita")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
-        [CustomValidation(typeof(dtAltriDatiFamiliari), "VerificaEtaFiglio")]
+        //[CustomValidation(typeof(dtAltriDatiFamiliari), "VerificaEtaFiglio")]
         public DateTime? dataNascita { get; set; }
         [Required(ErrorMessage = "Il cap della città di nascita è richiesto.")]
         [StringLength(10, ErrorMessage = "Per il cap sono richiesti un massimo di 10 caratteri.")]

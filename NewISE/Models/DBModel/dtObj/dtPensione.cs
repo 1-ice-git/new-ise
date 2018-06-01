@@ -600,12 +600,14 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void SetNuovoImportoPensioneVariazione(PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam, ModelDBISE db)
+        public void SetNuovoImportoPensioneVariazione(PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam, DateTime dataRientro, ModelDBISE db)
         {
 
             PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
             PensioneConiugeModel pcmSuccessivo = new PensioneConiugeModel();
-            List<PensioneConiugeModel> lpcmInteressati = new List<PensioneConiugeModel>();
+            PensioneConiugeModel pcmLav = new PensioneConiugeModel();
+            List<PensioneConiugeModel> lpcmPrecedenti = new List<PensioneConiugeModel>();
+            List<PensioneConiugeModel> lpcmSuccessivi = new List<PensioneConiugeModel>();
 
 
             //db.Database.BeginTransaction();
@@ -613,62 +615,511 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
 
-                lpcmInteressati =
-                    PrelevaMovPensioneInteressatiVariazione(idConiuge, pcm.dataInizioValidita, pcm.dataFineValidita.Value, db)
-                        .OrderBy(a => a.dataInizioValidita)
-                        .ToList();
+                lpcmPrecedenti =
+                    PrelevaMovimentiPensionePrecedentiVariazione(idConiuge, pcm.dataInizioValidita, db).ToList();
 
+                lpcmSuccessivi =
+                    PrelevaMovimentiPensioneSuccessiviVariazione(idConiuge, pcm.dataInizioValidita, db).ToList();
 
-                if (lpcmInteressati != null && lpcmInteressati.Count > 0)
+                if (lpcmPrecedenti.Count == 0)
                 {
-                    //lpcmInteressati.ForEach(a => a.Annulla(db));
-
-                    pcmPrecedente = lpcmInteressati.First();
-                    pcmSuccessivo = lpcmInteressati.Last();
-
-                    if (pcm.dataInizioValidita > pcmPrecedente.dataInizioValidita)
+                    if (lpcmSuccessivi.Count == 0)
                     {
-                        PensioneConiugeModel pcmLav = new PensioneConiugeModel()
+                        #region creo record
+                        pcmLav = new PensioneConiugeModel()
                         {
 
-                            importoPensione = pcmPrecedente.importoPensione,
-                            dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                            dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                            importoPensione = pcm.importoPensione,
+                            dataInizioValidita = pcm.dataInizioValidita,
+                            dataFineValidita = dataRientro,
                             dataAggiornamento = DateTime.Now,
                             idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            FK_idPensione = pcm.FK_idPensione,
+                            nascondi = pcm.nascondi
                         };
-
                         SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        #endregion
                     }
-
-                    SetPensioneConiuge(ref pcm, idConiuge, idAttivazioneMagFam, db);
-
-                    if (pcm.dataFineValidita < pcmSuccessivo.dataFineValidita)
+                    else
                     {
-                        PensioneConiugeModel pcmLav = new PensioneConiugeModel()
-                        {
+                        pcmSuccessivo = lpcmSuccessivi.First();
 
-                            importoPensione = pcmSuccessivo.importoPensione,
-                            dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
-                            dataFineValidita = pcmSuccessivo.dataFineValidita,
+                        #region creo record
+                        pcmLav = new PensioneConiugeModel()
+                        {
+                            importoPensione = pcm.importoPensione,
+                            dataInizioValidita = pcm.dataInizioValidita,
+                            dataFineValidita = pcmSuccessivo.dataInizioValidita.AddDays(-1),
                             dataAggiornamento = DateTime.Now,
                             idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            FK_idPensione = pcm.FK_idPensione,
+                            nascondi = pcm.nascondi
                         };
-
                         SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        #endregion
                     }
-
                 }
                 else
                 {
-                    SetPensioneConiuge(ref pcm, idConiuge, idAttivazioneMagFam, db);
-                }
+                    pcmPrecedente = lpcmPrecedenti.First();
 
-                //db.Database.CurrentTransaction.Commit();
+                    if (lpcmSuccessivi.Count == 0)
+                    {
+                        if(pcmPrecedente.dataInizioValidita==pcm.dataInizioValidita)
+                        {
+                            if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                #region edit record
+                                var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
+                                pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
+                                pcPrecedente.DATAFINE = dataRientro;
+                                pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante l'inserimento della pensione.");
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                #region replico record e lo nascondo
+                                pcmPrecedente.NascondiRecord(db);
+
+                                pcmLav = new PensioneConiugeModel()
+                                {
+
+                                    importoPensione = pcmPrecedente.importoPensione,
+                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcmPrecedente.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+
+                                #region creo record
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcm.importoPensione,
+                                    dataInizioValidita = pcm.dataInizioValidita,
+                                    dataFineValidita = dataRientro,
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcm.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }
+
+                        }
+                        else
+                        {
+                            if (pcmPrecedente.dataFineValidita == dataRientro)
+                            {
+                                #region replico record e lo nascondo
+                                pcmPrecedente.NascondiRecord(db);
+
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcmPrecedente.importoPensione,
+                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcmPrecedente.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+
+                                #region creo record
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcm.importoPensione,
+                                    dataInizioValidita = pcm.dataInizioValidita,
+                                    dataFineValidita = dataRientro,
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcm.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }else
+                            {
+                                #region creo record
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcm.importoPensione,
+                                    dataInizioValidita = pcm.dataInizioValidita,
+                                    dataFineValidita = dataRientro,
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcm.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }
+                        }
+                    }
+                
+                    else
+                    {
+                        if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita &&
+                            pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                        {
+                            #region edit record
+                            var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
+                            pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
+                            pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore durante l'inserimento della pensione.");
+                            }
+                            #endregion
+                        }else
+                        {
+                            pcmSuccessivo = lpcmSuccessivi.First();
+
+                            //controllo periodo attiguo
+                            if (pcmPrecedente.dataFineValidita == pcmSuccessivo.dataInizioValidita.AddDays(-1))
+                            {
+                                #region replico record e lo nascondo
+                                pcmPrecedente.NascondiRecord(db);
+
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcmPrecedente.importoPensione,
+                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcmPrecedente.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+
+                                #region creo record
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcm.importoPensione,
+                                    dataInizioValidita = pcm.dataInizioValidita,
+                                    dataFineValidita = pcmSuccessivo.dataInizioValidita.AddDays(-1),
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcm.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }
+                            else
+                            {
+                                pcmPrecedente.NascondiRecord(db);
+                                #region replico record
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcmPrecedente.importoPensione,
+                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcm.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+
+                                #region creo record
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcm.importoPensione,
+                                    dataInizioValidita = pcm.dataInizioValidita,
+                                    dataFineValidita = pcmPrecedente.dataFineValidita,
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcm.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }
+                        }
+                    }
+
+                }
+                
             }
             catch (Exception ex)
             {
-                //db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+
+        }
+
+
+        public void SetNuovoImportoPensioneVariazione_AggiornaTutti(PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam, DateTime dataRientro, ModelDBISE db)
+        {
+
+            PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
+            PensioneConiugeModel pcmSuccessivo = new PensioneConiugeModel();
+            PensioneConiugeModel pcmLav = new PensioneConiugeModel();
+            List<PensioneConiugeModel> lpcmPrecedenti = new List<PensioneConiugeModel>();
+            List<PensioneConiugeModel> lpcmSuccessivi = new List<PensioneConiugeModel>();
+
+            try
+            {
+
+                lpcmPrecedenti =
+                    PrelevaMovimentiPensionePrecedentiVariazione(idConiuge, pcm.dataInizioValidita, db).ToList();
+
+                lpcmSuccessivi =
+                    PrelevaMovimentiPensioneSuccessiviVariazione(idConiuge, pcm.dataInizioValidita, db).ToList();
+
+                if (lpcmPrecedenti.Count == 0)
+                {
+                    if (lpcmSuccessivi.Count == 0)
+                    {
+                        #region creo record (periodo dataIniInput - dataRientro)
+                        pcmLav = new PensioneConiugeModel()
+                        {
+
+                            importoPensione = pcm.importoPensione,
+                            dataInizioValidita = pcm.dataInizioValidita,
+                            dataFineValidita = dataRientro,
+                            dataAggiornamento = DateTime.Now,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            FK_idPensione = pcm.FK_idPensione,
+                            nascondi = pcm.nascondi
+                        };
+                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        #endregion
+                    }
+                    else
+                    {
+                        pcmSuccessivo = lpcmSuccessivi.First();
+
+                        #region annullo tutti record fino al primo buco temporale o dataRientro
+                        var cont = 1;
+                        //nascondo in ogni caso il primo successivo
+                        pcmSuccessivo.NascondiRecord(db);
+                        var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                        foreach(var pcmSucc in lpcmSuccessivi)
+                        {
+                            if(cont>1 && pcmSucc.dataInizioValidita==dataFineCorrente.Value.AddDays(1))
+                            {
+                                dataFineCorrente = pcmSucc.dataFineValidita;
+                                pcmSucc.NascondiRecord(db);
+                            }
+                            cont++;
+                        }
+                        #endregion
+
+                        #region creo record
+                        pcmLav = new PensioneConiugeModel()
+                        {
+                            importoPensione = pcm.importoPensione,
+                            dataInizioValidita = pcm.dataInizioValidita,
+                            dataFineValidita = dataFineCorrente,
+                            dataAggiornamento = DateTime.Now,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            FK_idPensione = pcm.FK_idPensione,
+                            nascondi = pcm.nascondi
+                        };
+                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        #endregion
+                    }
+                }
+                else
+                {
+                    pcmPrecedente = lpcmPrecedenti.First();
+
+                    if (lpcmSuccessivi.Count == 0)
+                    { ////
+                        if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita)
+                        {
+                            if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                #region edit record
+                                var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
+                                pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
+                                pcPrecedente.DATAFINE = dataRientro;
+                                pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante l'inserimento della pensione.");
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                pcmPrecedente.NascondiRecord(db);
+
+                                #region replico creo record con periodo dataini - dataIniInput-1
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcmPrecedente.importoPensione,
+                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                    dataFineValidita = dataRientro,
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcm.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }
+                        }
+                        else
+                        {
+                            #region replico creo record con periodo dataini - dataIniInput-1
+                            pcmLav = new PensioneConiugeModel()
+                            {
+                                importoPensione = pcmPrecedente.importoPensione,
+                                dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                dataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_idPensione = pcm.FK_idPensione,
+                                nascondi = false
+                            };
+                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            #endregion
+
+                            #region creo record 
+                            pcmLav = new PensioneConiugeModel()
+                            {
+                                importoPensione = pcm.importoPensione,
+                                dataInizioValidita = pcm.dataInizioValidita,
+                                dataFineValidita = dataRientro,
+                                dataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_idPensione = pcm.FK_idPensione,
+                                nascondi = false
+                            };
+                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            #endregion
+                        }
+                    }
+                    else
+                    {
+                        pcmSuccessivo = lpcmSuccessivi.First();
+
+                        if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita)
+                        {
+                            #region annullo i record successivi fino al primo buco temporale o dataRientro
+                            var cont = 1;
+                            //nascondo in ogni caso il primo successivo
+                            pcmSuccessivo.NascondiRecord(db);
+                            var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                            foreach (var pcmSucc in lpcmSuccessivi)
+                            {
+                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                {
+                                    dataFineCorrente = pcmSucc.dataFineValidita;
+                                    pcmSucc.NascondiRecord(db);
+                                }
+                                cont++;
+                            }
+                            #endregion
+                            if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+
+                                #region edit record
+                                var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
+                                pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
+                                pcPrecedente.DATAFINE = dataFineCorrente.Value;
+                                pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante l'inserimento della pensione.");
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                pcmPrecedente.NascondiRecord(db);
+
+                                #region replico creo record con periodo dataini - dataFineCorrente
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcmPrecedente.importoPensione,
+                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                    dataFineValidita = dataFineCorrente,
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcm.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }
+                        }
+                        else
+                        {
+
+                            pcmPrecedente.NascondiRecord(db);
+
+                            #region replico creo record con periodo dataini - dataIniInput-1
+                            pcmLav = new PensioneConiugeModel()
+                            {
+                                importoPensione = pcmPrecedente.importoPensione,
+                                dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                dataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_idPensione = pcm.FK_idPensione,
+                                nascondi = false
+                            };
+                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            #endregion
+
+                            #region annullo i record successivi fino al primo buco temporale o dataRientro
+                            var cont = 1;
+                            //nascondo in ogni caso il primo successivo
+                            pcmSuccessivo.NascondiRecord(db);
+                            var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                            foreach (var pcmSucc in lpcmSuccessivi)
+                            {
+                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                {
+                                    dataFineCorrente = pcmSucc.dataFineValidita;
+                                    pcmSucc.NascondiRecord(db);
+                                }
+                                cont++;
+                            }
+                            #endregion
+
+                            #region creo record
+                            pcmLav = new PensioneConiugeModel()
+                            {
+                                importoPensione = pcm.importoPensione,
+                                dataInizioValidita = pcm.dataInizioValidita,
+                                dataFineValidita = dataFineCorrente,
+                                dataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_idPensione = pcm.FK_idPensione,
+                                nascondi = false
+                            };
+
+                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            #endregion
+                        }
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
 
@@ -875,7 +1326,7 @@ namespace NewISE.Models.DBModel.dtObj
             return lpcm;
         }
 
-        private IList<PensioneConiugeModel> PrelevaMovPensioneInteressatiVariazione(decimal idConiuge, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        private IList<PensioneConiugeModel> PrelevaMovimentiPensionePrecedentiVariazione(decimal idConiuge, DateTime dtIni, ModelDBISE db)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
 
@@ -884,9 +1335,42 @@ namespace NewISE.Models.DBModel.dtObj
                     .PENSIONE.Where(
                         a =>
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato &&
-                            a.DATAINIZIO <= dtFin &&
-                            a.DATAFINE >= dtIni)
+                            a.NASCONDI==false &&
+                            a.DATAINIZIO <= dtIni)
+                    .OrderByDescending(a => a.DATAINIZIO)
+                    .ToList();
+
+
+            if (lpc?.Any() ?? false)
+            {
+                lpcm = (from e in lpc
+                        select new PensioneConiugeModel()
+                        {
+                            idPensioneConiuge = e.IDPENSIONE,
+                            importoPensione = e.IMPORTOPENSIONE,
+                            dataInizioValidita = e.DATAINIZIO,
+                            dataFineValidita = e.DATAFINE,
+                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                            idStatoRecord = e.IDSTATORECORD,
+                            FK_idPensione=e.FK_IDPENSIONE,
+                            nascondi=e.NASCONDI
+                        }).ToList();
+            }
+
+            return lpcm;
+        }
+
+        private IList<PensioneConiugeModel> PrelevaMovimentiPensioneSuccessiviVariazione(decimal idConiuge, DateTime dtIni, ModelDBISE db)
+        {
+            List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
+
+            var lpc =
+                db.CONIUGE.Find(idConiuge)
+                    .PENSIONE.Where(
+                        a =>
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.NASCONDI == false &&
+                            a.DATAINIZIO > dtIni)
                     .OrderBy(a => a.DATAINIZIO)
                     .ToList();
 
@@ -901,7 +1385,9 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizioValidita = e.DATAINIZIO,
                             dataFineValidita = e.DATAFINE,
                             dataAggiornamento = e.DATAAGGIORNAMENTO,
-                            idStatoRecord = e.IDSTATORECORD
+                            idStatoRecord = e.IDSTATORECORD,
+                            FK_idPensione = e.FK_IDPENSIONE,
+                            nascondi = e.NASCONDI
                         }).ToList();
             }
 
@@ -1095,7 +1581,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI==false).ToList();
                     if (lpc?.Any() ?? false)
                     {
                         ret = true;
@@ -1125,7 +1611,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam)).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam) && a.NASCONDI==false).ToList();
                     if (lpc?.Any() ?? false)
                     {
                         ret = true;
@@ -1189,10 +1675,231 @@ namespace NewISE.Models.DBModel.dtObj
 
                 }
             }
-
             return modificata;
-            
         }
+
+        public void SetDataCessazione(DateTime dataCessazione, decimal idConiuge, decimal idAttivazioneMagFam, DateTime dataRientro, ModelDBISE db)
+        {
+            PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
+            PensioneConiugeModel pcmSuccessivo = new PensioneConiugeModel();
+            PensioneConiugeModel pcmLav = new PensioneConiugeModel();
+            List<PensioneConiugeModel> lpcmPrecedenti = new List<PensioneConiugeModel>();
+            List<PensioneConiugeModel> lpcmSuccessivi = new List<PensioneConiugeModel>();
+
+            try
+            {
+
+                lpcmPrecedenti =
+                    PrelevaMovimentiPensionePrecedentiVariazione(idConiuge, dataCessazione, db).ToList();
+
+                lpcmSuccessivi =
+                    PrelevaMovimentiPensioneSuccessiviVariazione(idConiuge, dataCessazione, db).ToList();
+
+                if (lpcmPrecedenti.Count == 0)
+                {
+                    if (lpcmSuccessivi.Count == 0)
+                    {
+                        //cessazione impossibile
+                    }
+                    else
+                    {
+                        pcmSuccessivo = lpcmSuccessivi.First();
+                        if(pcmSuccessivo.dataInizioValidita>dataCessazione)
+                        {
+                            dataCessazione = pcmSuccessivo.dataInizioValidita;
+                        }
+                        #region annullo tutti record fino al primo buco temporale o dataRientro
+                        var cont = 1;
+                        //nascondo in ogni caso il primo successivo
+                        pcmSuccessivo.NascondiRecord(db);
+                        var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                        foreach (var pcmSucc in lpcmSuccessivi)
+                        {
+                            if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                            {
+                                dataFineCorrente = pcmSucc.dataFineValidita;
+                                pcmSucc.NascondiRecord(db);
+                            }
+                            cont++;
+                        }
+                        #endregion
+
+                        #region creo record
+                        pcmLav = new PensioneConiugeModel()
+                        {
+                            importoPensione = pcmSuccessivo.importoPensione,
+                            dataInizioValidita = pcmSuccessivo.dataInizioValidita,
+                            dataFineValidita = dataCessazione,
+                            dataAggiornamento = DateTime.Now,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            FK_idPensione = pcmSuccessivo.FK_idPensione,
+                            nascondi = pcmSuccessivo.nascondi
+                        };
+                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        #endregion
+                    }
+                }
+                else
+                {
+                    pcmPrecedente = lpcmPrecedenti.First();
+
+
+                    if (lpcmSuccessivi.Count == 0)
+                    { 
+                        if (pcmPrecedente.dataInizioValidita == dataCessazione)
+                        {
+                            if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                #region edit record
+                                var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
+                                pcPrecedente.DATAFINE = dataCessazione;
+                                pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante l'inserimento della pensione.");
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                pcmPrecedente.NascondiRecord(db);
+
+                                #region replico creo record con periodo dataini - dataIniInput-1
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcmPrecedente.importoPensione,
+                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                    dataFineValidita = dataCessazione,
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcmPrecedente.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }
+                        }
+                        else
+                        {
+                            pcmPrecedente.NascondiRecord(db);
+
+                            #region replico creo record con periodo dataini - dataIniInput-1
+                            pcmLav = new PensioneConiugeModel()
+                            {
+                                importoPensione = pcmPrecedente.importoPensione,
+                                dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                dataFineValidita = dataCessazione,
+                                dataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_idPensione = pcmPrecedente.FK_idPensione,
+                                nascondi = false
+                            };
+                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            #endregion
+                        }
+                    }
+                    else
+                    {
+                        pcmSuccessivo = lpcmSuccessivi.First();
+
+                        if (pcmPrecedente.dataInizioValidita == dataCessazione)
+                        {
+                            #region annullo i record successivi fino al primo buco temporale o dataRientro
+                            var cont = 1;
+                            //nascondo in ogni caso il primo successivo
+                            pcmSuccessivo.NascondiRecord(db);
+                            var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                            foreach (var pcmSucc in lpcmSuccessivi)
+                            {
+                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                {
+                                    dataFineCorrente = pcmSucc.dataFineValidita;
+                                    pcmSucc.NascondiRecord(db);
+                                }
+                                cont++;
+                            }
+                            #endregion
+                            if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                #region edit record
+                                var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
+                                pcPrecedente.DATAFINE = dataCessazione;
+                                pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante l'inserimento della pensione.");
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                pcmPrecedente.NascondiRecord(db);
+
+                                #region replico creo record con periodo dataini - dataFineCorrente
+                                pcmLav = new PensioneConiugeModel()
+                                {
+                                    importoPensione = pcmPrecedente.importoPensione,
+                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                    dataFineValidita = dataCessazione,
+                                    dataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    FK_idPensione = pcmPrecedente.FK_idPensione,
+                                    nascondi = false
+                                };
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                #endregion
+                            }
+                        }
+                        else
+                        {
+
+                            pcmPrecedente.NascondiRecord(db);
+
+                            #region replico creo record con periodo dataini - dataIniInput
+                            pcmLav = new PensioneConiugeModel()
+                            {
+                                importoPensione = pcmPrecedente.importoPensione,
+                                dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                dataFineValidita = dataCessazione,
+                                dataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_idPensione = pcmPrecedente.FK_idPensione,
+                                nascondi = false
+                            };
+                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            #endregion
+
+                            #region annullo i record successivi fino al primo buco temporale o dataRientro
+                            var cont = 1;
+                            //nascondo in ogni caso il primo successivo
+                            pcmSuccessivo.NascondiRecord(db);
+                            var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                            foreach (var pcmSucc in lpcmSuccessivi)
+                            {
+                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                {
+                                    dataFineCorrente = pcmSucc.dataFineValidita;
+                                    pcmSucc.NascondiRecord(db);
+                                }
+                                cont++;
+                            }
+                            #endregion
+                        }
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
 
     }
 }

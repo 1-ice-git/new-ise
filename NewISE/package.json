@@ -2,9 +2,11 @@
   "name": "myproject",
   "version": "1.0.0",
   "devDependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^10.0.1",
     "autonumeric": "^4.1.0-beta.9",
+    "ckeditor": "^4.9.2",
     "datatables.net": "^1.10.13",
-    "install": "^0.8.7",
-    "npm": "^4.4.1"
+    "install": "^0.8.9",
+    "npm": "^4.6.1"
   }
 }

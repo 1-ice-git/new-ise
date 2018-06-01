@@ -1055,27 +1055,27 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public static ValidationResult VerificaPercentualeRICHIAMO(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
-            var fm = context.ObjectInstance as CoefficienteRichiamoModel;
+        //public static ValidationResult VerificaPercentualeRICHIAMO(string v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
+        //    var fm = context.ObjectInstance as CoefficienteRichiamoModel;
 
-            if (fm != null)
-            {
-                if (fm.coefficienteIndBase > 100)
-                {
-                    vr = new ValidationResult(string.Format("Impossibile inserire percentuale maggiore di 100 ({0}).", fm.coefficienteIndBase.ToString()));
-                }
-                else
-                {
-                    vr = ValidationResult.Success;
-                }
-            }
-            else
-            {
-                vr = new ValidationResult("La percentuale KM è richiesta.");
-            }
-            return vr;
-        }
+        //    if (fm != null)
+        //    {
+        //        if (fm.coefficienteIndBase > 100)
+        //        {
+        //            vr = new ValidationResult(string.Format("Impossibile inserire percentuale maggiore di 100 ({0}).", fm.coefficienteIndBase.ToString()));
+        //        }
+        //        else
+        //        {
+        //            vr = ValidationResult.Success;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        vr = new ValidationResult("La percentuale KM è richiesta.");
+        //    }
+        //    return vr;
+        //}
     }
 }

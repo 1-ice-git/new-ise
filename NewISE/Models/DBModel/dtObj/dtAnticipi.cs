@@ -499,28 +499,28 @@ namespace NewISE.Models.DBModel.dtObj
                                     dtce.ModificaInCompletatoCalendarioEvento(aa.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaAnticipi, db);
                                 }
 
-                                using (dtDipendenti dtd = new dtDipendenti())
+                                //using (dtDipendenti dtd = new dtDipendenti())
+                                //{
+                                using (dtTrasferimento dtt = new dtTrasferimento())
                                 {
-                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    using (dtUffici dtu = new dtUffici())
                                     {
-                                        using (dtUffici dtu = new dtUffici())
+                                        var t = dtt.GetTrasferimentoByIdPrimaSistemazione(aa.IDPRIMASISTEMAZIONE);
+
+                                        if (t?.idTrasferimento > 0)
                                         {
-                                            var t = dtt.GetTrasferimentoByIdPrimaSistemazione(aa.IDPRIMASISTEMAZIONE);
-
-                                            if (t?.idTrasferimento > 0)
-                                            {
-                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
-                                                var uff = dtu.GetUffici(t.idUfficio);
+                                            //var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                            var uff = dtu.GetUffici(t.idUfficio);
 
 
-                                                EmailTrasferimento.EmailAttiva(aa.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                                    Resources.msgEmail.OggettoAttivaRichiestaAnticipi,
-                                                                    string.Format(Resources.msgEmail.MessaggioAttivaRichiestaAnticipi, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
-                                                                    db);
-                                            }
+                                            EmailTrasferimento.EmailAttiva(aa.PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                Resources.msgEmail.OggettoAttivaRichiestaAnticipi,
+                                                                string.Format(Resources.msgEmail.MessaggioAttivaRichiestaAnticipi, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                db);
                                         }
                                     }
                                 }
+                                //}
                                 //this.EmailAttivaRichiestaAnticipi(aa.IDATTIVITAANTICIPI, db);
                             }
                         }
