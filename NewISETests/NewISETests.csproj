@@ -72,7 +72,6 @@
     <Compile Include="Controllers\MaggiorazioneAbitazioneControllerTests.cs" />
     <Compile Include="Models\dtObj\dtRicalcoloParametriTests.cs" />
     <Compile Include="Models\dtObj\ModelliCalcolo\GiorniRateoTests.cs" />
-    <Compile Include="Models\dtObj\ModelliCalcolo\MeseAnnoElaborazioneTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
