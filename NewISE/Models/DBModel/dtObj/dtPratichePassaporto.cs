@@ -642,6 +642,14 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 "CONIUGEPASSAPORTO", db,
                                                                 apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                                 cpNew.IDCONIUGEPASSAPORTO);
+
+                                            }
+
+                                            //riassocia ConiugePassaporto a Coniuge
+                                            var lc = cpOld.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                                            foreach(var c in lc)
+                                            {
+                                                AssociaConiugePassaportoConiuge(cpNew.IDCONIUGEPASSAPORTO, c.IDCONIUGE, db);
                                             }
 
                                             //riassocia documento identita coniuge
@@ -701,6 +709,13 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 "FIGLIPASSAPORTO", db,
                                                                 apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                                 fpNew.IDFIGLIPASSAPORTO);
+                                            }
+
+                                            //riassocia FigliPassaporto a Figli
+                                            var lf = fpOld.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                                            foreach (var f in lf)
+                                            {
+                                                AssociaFigliPassaportoFigli(fpNew.IDFIGLIPASSAPORTO, f.IDFIGLI, db);
                                             }
 
                                             //riassocia documento identita coniuge
@@ -942,6 +957,12 @@ namespace NewISE.Models.DBModel.dtObj
                                                             apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                             cpNew.IDCONIUGEPASSAPORTO);
 
+                                    var lc = cpOld.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                                    foreach(var c in lc)
+                                    {
+                                        AssociaConiugePassaportoConiuge(cpNew.IDCONIUGEPASSAPORTO, c.IDCONIUGE, db);
+                                    }
+
                                     var ldocPassC_Old =
                                         cpOld.DOCUMENTI.Where(
                                                         a =>
@@ -982,8 +1003,6 @@ namespace NewISE.Models.DBModel.dtObj
                                                 docPassC_New.IDDOCUMENTO);
                                         }
                                     }
-
-                                    
 
                                     //riassocia i documenti identita coniuge
                                     var ldocIdenC_Old = cpOld.DOCUMENTI.Where(a =>
@@ -1040,6 +1059,11 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                                 fpNew.IDFIGLIPASSAPORTO);
 
+                                    var lf = fpOld.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                                    foreach (var f in lf)
+                                    {
+                                        AssociaFigliPassaportoFigli(fpNew.IDFIGLIPASSAPORTO, f.IDFIGLI, db);
+                                    }
 
                                     var ldocPassF_Old =
                                         fpOld.DOCUMENTI.Where(
@@ -1568,7 +1592,11 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 pr = new PASSAPORTORICHIEDENTE()
                                 {
-                                    IDATTIVAZIONIPASSAPORTI = ap.IDATTIVAZIONIPASSAPORTI
+                                    IDATTIVAZIONIPASSAPORTI = ap.IDATTIVAZIONIPASSAPORTI,
+                                    INCLUDIPASSAPORTO=false,
+                                    IDPASSAPORTI=p.IDPASSAPORTI,
+                                    DATAAGGIORNAMENTO=DateTime.Now,
+                                    ANNULLATO=false
                                 };
 
                                 ap.PASSAPORTORICHIEDENTE.Add(pr);
@@ -1629,7 +1657,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             IDPASSAPORTI = p.IDPASSAPORTI,
                                             IDATTIVAZIONIPASSAPORTI = ap.IDATTIVAZIONIPASSAPORTI,
-                                            INCLUDIPASSAPORTO = false
+                                            INCLUDIPASSAPORTO = false,
+                                            DATAAGGIORNAMENTO=DateTime.Now,
+                                            ANNULLATO=false
                                         };
 
                                         ap.CONIUGEPASSAPORTO.Add(cp);
@@ -1640,6 +1670,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             throw new Exception("Errore nella fase di prelievo del coniuge per la richiesta di passaporto.");
                                         }
+
+                                        AssociaConiugePassaportoConiuge(cp.IDCONIUGEPASSAPORTO, c.IDCONIUGE, db);
 
                                         var lDocIdentita = c.DOCUMENTI.Where(a =>
                                                 (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) &&
@@ -1743,7 +1775,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             IDPASSAPORTI = p.IDPASSAPORTI,
                                             IDATTIVAZIONIPASSAPORTI = ap.IDATTIVAZIONIPASSAPORTI,
-                                            INCLUDIPASSAPORTO = false
+                                            INCLUDIPASSAPORTO = false,
+                                            DATAAGGIORNAMENTO=DateTime.Now,
+                                            ANNULLATO=false
                                         };
 
                                         ap.FIGLIPASSAPORTO.Add(fp);
@@ -1754,6 +1788,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             throw new Exception("Errore nella fase di prelievo del figlio per la richiesta di passaporto.");
                                         }
+
+                                        AssociaFigliPassaportoFigli(fp.IDFIGLIPASSAPORTO, f.IDFIGLI, db);
 
                                         var lDocIdentita = f.DOCUMENTI.Where(a =>
                                                (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) &&
@@ -2046,7 +2082,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
                                         var c = cp_richiesta.CONIUGE.First();
                                         idDocIdentita = GetIdDocFamiliare((decimal)EnumTipoDoc.Documento_Identita, ap_richiesta.IDATTIVAZIONIPASSAPORTI, c.IDCONIUGE, (decimal)EnumParentela.Coniuge, db);
-                                        this.AssociaDocumentoPassaportoConiuge(cp_new.IDCONIUGEPASSAPORTO, idDocIdentita, db);
+                                        AssociaDocumentoPassaportoConiuge(cp_new.IDCONIUGEPASSAPORTO, idDocIdentita, db);
+
+                                        AssociaConiugePassaportoConiuge(cp_new.IDCONIUGEPASSAPORTO, c.IDCONIUGE, db);
 
 
                                     }
@@ -2123,7 +2161,7 @@ namespace NewISE.Models.DBModel.dtObj
                             #region Figli
 
 
-                            //verifico se esistono richieste coniuge
+                            //verifico se esistono richieste figli
                             var lfp_richiesta =
                                 ap_richiesta.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false && a.INCLUDIPASSAPORTO == true)
                                 .OrderBy(a => a.IDFIGLIPASSAPORTO);
@@ -2153,7 +2191,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
                                         var f = fp_richiesta.FIGLI.First();
                                         idDocIdentita = GetIdDocFamiliare((decimal)EnumTipoDoc.Documento_Identita, ap_richiesta.IDATTIVAZIONIPASSAPORTI, f.IDFIGLI, (decimal)EnumParentela.Figlio, db);
-                                        this.AssociaDocumentoPassaportoFiglio(fp_new.IDFIGLIPASSAPORTO, idDocIdentita, db);
+                                        AssociaDocumentoPassaportoFiglio(fp_new.IDFIGLIPASSAPORTO, idDocIdentita, db);
+
+                                        AssociaFigliPassaportoFigli(fp_new.IDFIGLIPASSAPORTO, f.IDFIGLI, db);
                                     }
                                     //rileggo i record appena creati
                                     lfp =
@@ -3366,6 +3406,52 @@ namespace NewISE.Models.DBModel.dtObj
                 if (i <= 0)
                 {
                     throw new Exception(string.Format("Impossibile associare il passaporto al coniuge"));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void AssociaConiugePassaportoConiuge(decimal idConiugePassaporto, decimal idConiuge, ModelDBISE db)
+        {
+            try
+            {
+                var cp = db.CONIUGEPASSAPORTO.Find(idConiugePassaporto);
+                var item = db.Entry<CONIUGEPASSAPORTO>(cp);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.CONIUGE).Load();
+                var c = db.CONIUGE.Find(idConiuge);
+                cp.CONIUGE.Add(c);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il ConiugePassaporto al coniuge"));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void AssociaFigliPassaportoFigli(decimal idFigliPassaporto, decimal idFigli, ModelDBISE db)
+        {
+            try
+            {
+                var fp = db.FIGLIPASSAPORTO.Find(idFigliPassaporto);
+                var item = db.Entry<FIGLIPASSAPORTO>(fp);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.FIGLI).Load();
+                var f = db.FIGLI.Find(idFigli);
+                fp.FIGLI.Add(f);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il FigliPassaporto al figlio"));
                 }
             }
             catch (Exception ex)

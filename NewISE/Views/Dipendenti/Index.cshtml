@@ -797,7 +797,7 @@
 
     function MenuVariazioneTrasferimento(idTrasferimento) {
         //debugger;
-        var rotta = "/Trasferimento/VerificaNotificaTrasferimento";
+        var rotta = "/Trasferimento/VerificaStatoStrasferimentoJsonResult";
         var valoreRitorno = 0;
 
         if (idTrasferimento != "" && idTrasferimento != undefined) {
@@ -816,7 +816,7 @@
                     //debugger;
 
                     if (result.err == "" || result.err == undefined) {
-                        if (result.notificaTrasferimento == 1) {
+                        if (result.StatoTrasferimento == 1) {
                             valoreRitorno = 1;
                         }
                         else {
