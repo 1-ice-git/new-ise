@@ -29,6 +29,7 @@ namespace NewISE.EF
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
         public decimal IDMESEANNOELAB { get; set; }
+        public bool INSERIMENTOMANUALE { get; set; }
     
         public virtual CONT_OA CONT_OA { get; set; }
         public virtual ELABINDENNITA ELABINDENNITA { get; set; }

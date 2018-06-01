@@ -5,6 +5,17 @@ using System.Web;
 
 namespace NewISE.Models.Enumeratori
 {
+    public enum EnumMovimentazione
+    {
+        Software = 1,
+        Manuale = 2
+    }
+    public enum EnumTipoLiquidazione
+    {
+        Paghe = 1,
+        Contabilità = 2
+    }
+
     public enum EnumCicloAttivazione
     {
         Notifica = 1,

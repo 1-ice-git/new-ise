@@ -130,9 +130,6 @@ namespace NewISE.Controllers
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
                     efm = dtpp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
-                    //EnumFasePassaporti FasePassaporti = dtpp.GetFasePassaporti(idTrasferimento);
-
-                    //ViewData.Add("idFasePassaporti", (decimal)FasePassaporti);
                 }
             }
             catch (Exception ex)

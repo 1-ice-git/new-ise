@@ -937,14 +937,14 @@ namespace NewISE.Models.DBModel.dtObj
                 switch (parentela)
                 {
                     case EnumParentela.Coniuge:
-                        var ctv = db.CONIUGETITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.IDCONIUGE == idFamiliare).First();
-                        var adfc = ctv.CONIUGE.ALTRIDATIFAM.First();
+                        var ctv = db.CONIUGETITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.ANNULLATO==false).First().CONIUGE.First();
+                        var adfc = ctv.ALTRIDATIFAM.First();
                         idAltridatiFamiliari = adfc.IDALTRIDATIFAM;
                         break;
 
                     case EnumParentela.Figlio:
-                        var ftv = db.FIGLITITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.IDFIGLI == idFamiliare).First();
-                        var adff = ftv.FIGLI.ALTRIDATIFAM.First();
+                        var ftv = db.FIGLITITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.ANNULLATO==false).First().FIGLI.First();
+                        var adff = ftv.ALTRIDATIFAM.First();
                         idAltridatiFamiliari = adff.IDALTRIDATIFAM;
                         break;
 
@@ -1003,11 +1003,11 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var tvc in ltvc)
                     {
-                        var c = db.CONIUGE.Find(tvc.IDCONIUGE);
+                        var c = tvc.CONIUGE.Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).First();
 
                         ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
                         {
-                            idFamiliare = tvc.IDCONIUGE,
+                            idFamiliare = c.IDCONIUGE,
                             Nominativo = c.NOME + " " + c.COGNOME,
                             CodiceFiscale = c.CODICEFISCALE,
                             dataInizio = c.DATAINIZIOVALIDITA,
@@ -1030,11 +1030,11 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var tvf in ltvf)
                     {
-                        var f = db.FIGLI.Find(tvf.IDFIGLI);
+                        var f = tvf.FIGLI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).First();
 
                         ElencoTitoliViaggioModel etvfm = new ElencoTitoliViaggioModel()
                         {
-                            idFamiliare = tvf.IDFIGLI,
+                            idFamiliare = f.IDFIGLI,
                             Nominativo = f.NOME + " " + f.COGNOME,
                             CodiceFiscale = f.CODICEFISCALE,
                             dataInizio = f.DATAINIZIOVALIDITA,
@@ -2073,7 +2073,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             CONIUGETITOLIVIAGGIO ctv_New = new CONIUGETITOLIVIAGGIO()
                                             {
-                                                IDCONIUGE = ctv_Old.IDCONIUGE,
                                                 IDTITOLOVIAGGIO = ctv_Old.IDTITOLOVIAGGIO,
                                                 IDATTIVAZIONETITOLIVIAGGIO = atv_New.IDATTIVAZIONETITOLIVIAGGIO,
                                                 RICHIEDITITOLOVIAGGIO = ctv_Old.RICHIEDITITOLOVIAGGIO,
@@ -2090,7 +2089,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             if (x <= 0)
                                             {
-                                                throw new Exception("Errore - Impossibile inserire il coniuge per il titolo di viaggio da annullamento richiesta. (" + ctv_New.CONIUGE.NOME + " " + ctv_New.CONIUGE.COGNOME + ")");
+                                                throw new Exception("Errore - Impossibile inserire il coniuge per il titolo di viaggio da annullamento richiesta.");
                                             }
                                             else
                                             {
@@ -2120,7 +2119,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             FIGLITITOLIVIAGGIO ftv_New = new FIGLITITOLIVIAGGIO()
                                             {
-                                                IDFIGLI = ftv_Old.IDFIGLI,
                                                 IDTITOLOVIAGGIO = ftv_Old.IDTITOLOVIAGGIO,
                                                 IDATTIVAZIONETITOLIVIAGGIO = atv_New.IDATTIVAZIONETITOLIVIAGGIO,
                                                 RICHIEDITITOLOVIAGGIO = ftv_Old.RICHIEDITITOLOVIAGGIO,

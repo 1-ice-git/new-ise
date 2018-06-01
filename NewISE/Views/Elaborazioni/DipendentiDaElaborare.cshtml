@@ -117,27 +117,30 @@
     function Calcola() {
         debugger;
 
-        var rotta = "";
+        var rotta = "/Elaborazioni/ElaborazioneMensile";
 
         var lCheck = $('#TabElencoDipDaElaborare > tbody > tr > td > :checkbox');
         var lidDip = $('#TabElencoDipDaElaborare > tbody > tr > td > #item_idDipendente');
-        var lDip = new Set();
+        var lDip = new Array();
 
         for (var ck in lCheck) {
             if (is_numeric(ck)) {
                 if (lCheck[parseInt(ck)].checked) {
                     var dip = lidDip[parseInt(ck)].value;
-                    lDip.add(dip);
+                    lDip.push(dip);
                 }
             }
         }
 
-        if (lDip.size > 0) {
+        debugger;
+
+        if (lDip.length > 0) {
             $.ajax({
                 type: "POST",
                 url: rotta,
                 data: { dipendenti: lDip },
                 dataType: 'html',
+                traditional: true,
                 beforeSend: function () {
                     //debugger;
                     //VerificaAutenticazione();

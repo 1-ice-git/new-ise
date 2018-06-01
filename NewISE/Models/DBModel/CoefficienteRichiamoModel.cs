@@ -26,15 +26,13 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
-
+        //[CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeRICHIAMO")]
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
         [Display(Name = "Coefficiente Indennita di Richiamo")]
-        [CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeRICHIAMO")]
         public decimal coefficienteRichiamo { get; set; }
-
+        //[CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeINDBASE")]
         [Required(ErrorMessage = "Il coefficiente Indennita Base è richiesto.")]
         [Display(Name = "Coefficiente Indennita Base")]
-        [CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeINDBASE")]
         public decimal coefficienteIndBase { get; set; }
 
         // [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

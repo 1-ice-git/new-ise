@@ -188,7 +188,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var fp = db.FIGLIPASSAPORTO.Find(idFiglioPassaporto);
-                var f = fp.FIGLI;
+                var f = fp.FIGLI.First();
                 var ld =
                     f.DOCUMENTI.Where(
                         a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
@@ -221,25 +221,29 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var cp = db.CONIUGEPASSAPORTO.Find(idConiugePassaporto);
-                var c = cp.CONIUGE;
-                var ld =
+                var lc = cp.CONIUGE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDCONIUGE).ToList();
+                if (lc?.Any() ?? false)
+                {
+                    var c = lc.First();
+                    var ld =
                     c.DOCUMENTI.Where(
                         a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
                         .OrderByDescending(a => a.DATAINSERIMENTO);
 
-                if (ld?.Any() ?? false)
-                {
-                    ldm.AddRange(from d in ld
-                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
-                                 select new DocumentiModel()
-                                 {
-                                     idDocumenti = d.IDDOCUMENTO,
-                                     nomeDocumento = d.NOMEDOCUMENTO,
-                                     estensione = d.ESTENSIONE,
-                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                                     dataInserimento = d.DATAINSERIMENTO,
-                                     file = f
-                                 });
+                    if (ld?.Any() ?? false)
+                    {
+                        ldm.AddRange(from d in ld
+                                     let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                     select new DocumentiModel()
+                                     {
+                                         idDocumenti = d.IDDOCUMENTO,
+                                         nomeDocumento = d.NOMEDOCUMENTO,
+                                         estensione = d.ESTENSIONE,
+                                         tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                         dataInserimento = d.DATAINSERIMENTO,
+                                         file = f
+                                     });
+                    }
                 }
             }
 
@@ -332,12 +336,12 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     case EnumParentela.Coniuge:
                         var cp = db.CONIUGEPASSAPORTO.Find(idFamiliarePassaporto);
-                        var c = cp.CONIUGE;
+                        var c = cp.CONIUGE.First();
                         ld = c.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == Convert.ToDecimal(tipodoc)).ToList();
                         break;
                     case EnumParentela.Figlio:
                         var fp = db.FIGLIPASSAPORTO.Find(idFamiliarePassaporto);
-                        var f = fp.FIGLI;
+                        var f = fp.FIGLI.First();
                         ld = f.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == Convert.ToDecimal(tipodoc)).ToList();
                         break;
                     case EnumParentela.Richiedente:

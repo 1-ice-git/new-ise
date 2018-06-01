@@ -118,12 +118,23 @@ namespace NewISE.Controllers
         }
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
-        public ActionResult ElaborazioneMensile(List<decimal> Dipendenti)
+        public ActionResult ElaborazioneMensile(List<decimal> dipendenti)
         {
 
-            return null;
+            return PartialView();
         }
 
+        public ActionResult DatiLiquidazioniDirette(decimal idAnnoMeseElaborato)
+        {
+            List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
+
+            using (dtElaborazioni dte = new dtElaborazioni())
+            {
+                lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).ToList();
+            }
+
+            return PartialView(lLd);
+        }
 
 
 

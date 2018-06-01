@@ -1,0 +1,131 @@
+﻿@using NewISE.Models.Enumeratori
+@model IEnumerable<NewISE.Models.ViewModel.LiquidazioneMensileViewModel>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table id="TabLiquidazioniMensili" cellspacing="0" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nominativo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Voce.descrizione)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Voce.codiceVoce)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Movimentazione)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TipoMovimento.DescMovimento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Voce.TipoVoce.descrizione)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Voce.TipoLiquidazione.descrizione)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Importo)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nominativo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Voce.descrizione)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Voce.codiceVoce)
+                        </td>
+                        @if (item.Movimentazione == EnumMovimentazione.Software)
+                        {
+                            <td>
+                                <label>SOFTWARE</label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <label>MANUALE</label>
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoMovimento.DescMovimento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Voce.TipoVoce.descrizione)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Voce.TipoLiquidazione.descrizione)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Importo)
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+
+
+        </table>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $("#TabLiquidazioniMensili").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": true,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 450,
+        "scrollCollapse": true,
+        "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": false,
+
+                }
+        ],
+        //"order": [[0,"desc"],[2, "desc"]]
+    });
+</script>

@@ -26,35 +26,26 @@
             <h4>Modifica Dati Maggiorazione Abitazione</h4>
             <hr />
             @Html.Hidden("idTrasferimento", idTrasferimento)
-            @Html.Hidden("dataPartenza", Model.dataPartenza)
-            @Html.Hidden("idMagAnnuali", Model.idMagAnnuali )
+            @*@Html.Hidden("dataPartenza", Model.dataPartenza)*@
+            @Html.Hidden("idMagAnnuali", Model.idMagAnnuali)
+            @Html.Hidden("dataFineMAB", Model.dataFineMAB)
+            @Html.Hidden("dataInizioMAB", Model.dataInizioMAB)
+            @Html.Hidden("ut_dataFineMAB", Model.ut_dataFineMAB)
             @Html.Hidden("idMAB", idMAB)
             <div class="row">
                 <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
                     <div class="row">
                         <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AnticipoAnnuale, new { @class = "control-label col-xs-3" })
-                                @if (Model.idMagAnnuali>0)
+                                @Html.LabelFor(model => model.anticipoAnnuale, new { @class = "control-label col-xs-3" })
+                                @if (Model.anticipoAnnuale)
                                 {
-                                    if (Model.AnticipoAnnuale)
-                                    {
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model=>Model.AnticipoAnnuale, "false") Semestrale</label>
-                                        </div>
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true", new { @checked = true }) Annuale</label>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
-                                        </div>
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true") Annuale</label>
-                                        </div>
-                                    }
+                                    <div class="col-xs-2">
+                                        <label>@Html.RadioButtonFor(Model=>Model.anticipoAnnuale, "false") Semestrale</label>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { @checked = true }) Annuale</label>
+                                    </div>
                                 }
                                 else
                                 {
@@ -63,7 +54,7 @@
                                     </div>
                                     <div class="col-xs-2">
                                         <label>@Html.RadioButton("chk", false, new { disabled = "disabled" }) Annuale</label>
-                                        @Html.Hidden("AnticipoAnnuale", Model.AnticipoAnnuale)
+                                        @Html.Hidden("AnticipoAnnuale", Model.anticipoAnnuale)
                                         @*<label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false", new { disabled = "disabled" }) Annuale</label>*@
                                     </div>
                                 }
@@ -87,13 +78,13 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.dataInizioMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="col-xs-2">
-                            @Html.TextBoxFor(model => model.dataInizioMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-3" })
+                            @Html.TextBoxFor(model => model.dataInizioMAB, "{0:dd/MM/yyyy}", new { disabled = "disabled", @class = "form-control col-xs-3" })
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.dataFineMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="col-xs-2">
-                            @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-2" })
+                            @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new { disabled = "disabled", @class = "form-control col-xs-2" })
                         </div>
                     </div>
                     <div class="form-group">

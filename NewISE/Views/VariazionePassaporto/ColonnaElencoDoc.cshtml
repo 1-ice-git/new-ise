@@ -1,0 +1,70 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.DBModel.Enum
+@model NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel
+
+@{ 
+    decimal idFasePassaportiCorrente = Convert.ToDecimal(ViewData["idFasePassaportiCorrente"]);
+    decimal idFaseRichiesta = Convert.ToDecimal(EnumFasePassaporti.Richiesta_Passaporti);
+}
+
+@if (Model.HasDoc.esisteDoc)
+{
+    <a href="#" onclick="ElencoDocumentiPassaporto_var(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) )">
+        <img class="SfondoBordoImg" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+    </a>
+}
+else
+{
+    <a href="#" onclick="ElencoDocumentiPassaporto_var(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) )">
+        <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" height="17" title="Documenti" />
+    </a>
+}
+
+<script type="text/javascript">
+    function ElencoDocumentiPassaporto_var(idFamiliarePassaporto, tipoDoc, idParentela) {
+        //debugger;
+        var rotta = "/Documenti/ElencoDocumentiPassaporto";
+        var idFasePassaportiCorrente = parseInt('@idFasePassaportiCorrente');
+        var idFaseRichiesta = parseInt('@idFaseRichiesta');
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFamiliarePassaporto: idFamiliarePassaporto,
+                tipoDoc: tipoDoc,
+                parentela: idParentela
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divPassaporto_var").empty();
+                $("#divPassaporto_var").html(result);
+                if (idFasePassaportiCorrente == idFaseRichiesta) {
+                    GestionePulsantiNotificaAndConcludiPassaporto_Richiesta_var();
+                } else {
+                    GestionePulsantiNotificaAndConcludiPassaporto_Invio_var();
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+</script>
