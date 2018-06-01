@@ -30,8 +30,8 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
 
-                        //CoefficientiSedeModel - GetCoefficenteSedeByIdTrasf
-                        //PercentualeDisagioModel - GetPercentualeDisagioByIdTrasf
+                        //CoefficientiSedeModel - GetCoefficenteSedeByIdTrasf (dtCoefficenteSede)
+                        //PercentualeDisagioModel - GetPercentualeDisagioByIdTrasf (dtPercentualeDisagio)
 
                         libm = (from e in ll
                                 select new IndennitaBaseModel()
