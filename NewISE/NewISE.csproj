@@ -2470,7 +2470,6 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
-    <Compile Include="Controllers\ElaborazioniController.cs" />
     <Compile Include="Controllers\IndennitaController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
@@ -2834,7 +2833,6 @@
     </Compile>
     <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
-    <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
@@ -3088,7 +3086,6 @@
     </Compile>
     <Compile Include="Areas\Statistiche\StatisticheAreaRegistration.cs" />
     <Compile Include="Controllers\AltriDatiFamiliariController.cs" />
-    <Compile Include="Controllers\AnticipiController.cs" />
     <Compile Include="Controllers\CalendariEventiController.cs" />
     <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
@@ -3142,7 +3139,6 @@
     <Compile Include="Models\DBModel\dtObj\dtFasciaKm.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFigliPassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPassaportoRichiedente.cs" />
-    <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
