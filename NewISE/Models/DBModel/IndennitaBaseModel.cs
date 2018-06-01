@@ -32,11 +32,11 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
 
         [Required(ErrorMessage = "Il valore è richiesto.")]
-        [Display(Name = "Valore")]
+        [Display(Name = "Importo")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
-        [Display(Name = "Valore resp.")]
+        [Display(Name = "Importo resp.")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal valoreResponsabile { get; set; }
 

@@ -113,7 +113,6 @@ namespace NewISE.Controllers
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {   
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            //List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
 
             try
             {
@@ -121,12 +120,7 @@ namespace NewISE.Controllers
                 {
                     libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
                 }
-
-                //using (dtRuoloDipendente drd = new dtRuoloDipendente())
-                //{
-
-                //    lru = drd.GetIndennitaBaseComuneRuoloDipendente(idTrasferimento).ToList();
-                //}
+                
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -138,8 +132,6 @@ namespace NewISE.Controllers
                         ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
 
                     }
-
-                    
                     
                 }
                 ViewBag.idTrasferimento = idTrasferimento;
@@ -205,7 +197,18 @@ namespace NewISE.Controllers
                                     valore = ll.First().VALORERESP;
                                     
                                 }
-                                
+
+                                // Livello
+
+                                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                                var liv1 = liv.First();
+
+                                string Nominativo = tm.Dipendente.Nominativo;
+                                string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
+                                string Livello = liv1.Livello.DescLivello;
+                                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+
+
                                 libm = (from e in ll
                                         select new IndennitaBaseModel()
                                         {
@@ -224,17 +227,6 @@ namespace NewISE.Controllers
                                         }).ToList();
 
 
-                                var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
-                                ////var datasource = new ReportDataSource("INDENNITABASE", ll.ToList());
-                                reportViewer.Visible = true;
-                                reportViewer.ProcessingMode = ProcessingMode.Local;
-                                //reportViewer.LocalReport.ReportPath = @"~/Report/RptIndennitaBase.rdlc";
-                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaBase.rdlc";
-                                reportViewer.LocalReport.DataSources.Clear();
-                                reportViewer.LocalReport.DataSources.Add(datasource);
-                                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
-                                reportViewer.LocalReport.Refresh();
-
                                 // ****************************************************************************
 
                                 // set param values, not really doing anything except showing up in the report,
@@ -247,17 +239,17 @@ namespace NewISE.Controllers
                                 //this.reportViewer.LocalReport.SetParameters(param);
 
 
-                                // Livello
-
-                                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                                var liv1 = liv.First();
-
-                                string Nominativo = tm.Dipendente.Nominativo;
-                                string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
-                                string Livello = liv1.Livello.DescLivello;
-                                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-
-
+                                var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
+                                ////var datasource = new ReportDataSource("INDENNITABASE", ll.ToList());
+                                reportViewer.Visible = true;
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+                                //reportViewer.LocalReport.ReportPath = @"~/Report/RptIndennitaBase.rdlc";
+                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaBase.rdlc";
+                                reportViewer.LocalReport.DataSources.Clear();
+                                reportViewer.LocalReport.DataSources.Add(datasource);
+                                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
+                                reportViewer.LocalReport.Refresh();
+                                
                                 ReportParameter[] parameterValues = new ReportParameter[]
                                 {
                                     new ReportParameter ("Nominativo",Nominativo),
@@ -284,17 +276,35 @@ namespace NewISE.Controllers
             return PartialView("RptIndennitaBase");
 
         }
-        
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
 
             try
             {
+                using (dtIndennitaServizio dtd = new dtIndennitaServizio())
+                {
+                    libm = dtd.GetIndennitaServizio(idTrasferimento).ToList();
+                }
 
 
-                return PartialView();
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                    {
+                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+
+                    }
+
+                }
+                ViewBag.idTrasferimento = idTrasferimento;
+
+
+                return PartialView(libm);
             }
-
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });

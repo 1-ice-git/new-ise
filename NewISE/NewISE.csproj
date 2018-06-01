@@ -2835,6 +2835,7 @@
     <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
