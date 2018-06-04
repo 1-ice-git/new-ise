@@ -4,9 +4,14 @@ using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.DBModel.Enum;
+using NewISE.Models.dtObj;
 using NewISE.Models.Tools;
+using NewISE.Views.Dataset;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,7 +26,6 @@ namespace NewISE.Controllers
         {
             return View();
         }
-
 
         public ActionResult GestioneIndennita(decimal idTrasferimento)
         {
@@ -109,21 +113,14 @@ namespace NewISE.Controllers
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {   
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            //List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
 
             try
             {
                 using (dtIndennitaBase dtd = new dtIndennitaBase())
                 {
-                    
                     libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
                 }
-
-                //using (dtRuoloDipendente drd = new dtRuoloDipendente())
-                //{
-
-                //    lru = drd.GetIndennitaBaseComuneRuoloDipendente(idTrasferimento).ToList();
-                //}
+                
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -135,6 +132,7 @@ namespace NewISE.Controllers
                         ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
 
                     }
+                    
                 }
                 ViewBag.idTrasferimento = idTrasferimento;
                 
@@ -147,114 +145,126 @@ namespace NewISE.Controllers
             }
             
         }
+
+        DSIndennitaBase ds = new DSIndennitaBase();
         public ActionResult RptIndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<LivelloDipendenteModel> ldm = new List<LivelloDipendenteModel>();
 
             try
             {
 
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var ll = db.INDENNITABASE.ToList();
-
-                    libm = (from e in ll
-                            select new IndennitaBaseModel()
-                            {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                Livello = new LivelloModel()
-                                {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
-                                },
-                            }).ToList();
-               
-
-                // ***************************************************************************
-                // I COMMENTO
-
-                //DataClassDataContext db = new DataClassDataContext();
-                //var datasource = from c in db.sp_LinqTest(v_strCountry)
-                //                 orderby c.CustomerID
-                //                 select c;
-
-                //ReportParameter rpCountry = new ReportParameter("p_Country", v_strCountry);
-                //this.rdlcreport1.LocalReport.SetParameters(new ReportParameter[] { rpCountry });
-                //this.rdlcreport1.LocalReport.DataSources.Add(new ReportDataSource("sp_LinqTestResult", datasource.ToList()));
-                //this.rdlcreport1.LocalReport.Refresh();
-
-                // ***************************************************************************
-
-
-                // ***************************************************************************
-                // II COMMENTO
-
-                //ReportViewer reportViewer = new ReportViewer();
-                //reportViewer.ProcessingMode = ProcessingMode.Local;
-                //reportViewer.SizeToReportContent = true;
-                //reportViewer.Width = Unit.Percentage(100);
-                //reportViewer.Height = Unit.Percentage(100);
-
-                //var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
-                //OracleConnection conx = new OracleConnection(connectionString);
-                //String Sql = "Select * From table_name";
-
-                //OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
-
-                ////adp.Fill(ds13, ds13.V_PRESENZE_LIVELLI.TableName);
-                //adp.Fill(ds13, ds13.DataTable13.TableName);
-
-                //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc";
-                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet13", ds13.Tables[0]));
-
-                //ReportParameter[] parameterValues = new ReportParameter[]
-                //   {
-                //        new ReportParameter ("fromDate",V_DATA),
-                //        new ReportParameter ("toDate",V_DATA1)
-                //   };
-
-                //reportViewer.LocalReport.SetParameters(parameterValues);
-                //reportViewer.LocalReport.Refresh();
-
-                //ViewBag.ReportViewer = reportViewer;
-
-
-                // **********************************************************
-                // 3 Commento da testare
-
-                //LinqNewDataContext db = new LinqNewDataContext();
-                //var query = from c in db.tbl_Temperatures
-                //            where c.Device_Id == "Tlog1"
-                //            select c;
-
                 ReportViewer reportViewer = new ReportViewer();
 
-                //reportViewer.ProcessingMode = ProcessingMode.Local;
-                //reportViewer.SizeToReportContent = true;
-                //reportViewer.Width = Unit.Percentage(100);
-                //reportViewer.Height = Unit.Percentage(100);
-
-                var datasource = new ReportDataSource("DSIndennitaBase", libm.ToList());
-                reportViewer.Visible = true;
                 reportViewer.ProcessingMode = ProcessingMode.Local;
-                
-                reportViewer.LocalReport.ReportPath = @"\Areas\Views\Report\RptIndennitaBase.rdlc";
-                reportViewer.LocalReport.DataSources.Clear();
-                reportViewer.LocalReport.DataSources.Add(datasource);
-                reportViewer.LocalReport.Refresh();
+                reportViewer.SizeToReportContent = true;
+                reportViewer.Width = Unit.Percentage(100);
+                reportViewer.Height = Unit.Percentage(100);
 
-                ViewBag.ReportViewer = reportViewer;
 
-                // **********************************************************
-                
-                return View();
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        
+                        using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                        {
 
+                            using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                            {
+                                // Ruolo
+
+                                var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
+
+                                tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                                tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                                
+                                ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+                                ViewBag.idTrasferimento = idTrasferimento;
+
+                                decimal valore = 0;
+                            
+                                if (ViewBag.idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || ViewBag.idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+                                {   
+                                    valore = ll.First().VALORE;
+                                    
+                                }
+                                else
+                                {
+                                    valore = ll.First().VALORERESP;
+                                    
+                                }
+
+                                // Livello
+
+                                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                                var liv1 = liv.First();
+
+                                string Nominativo = tm.Dipendente.Nominativo;
+                                string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
+                                string Livello = liv1.Livello.DescLivello;
+                                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+
+
+                                libm = (from e in ll
+                                        select new IndennitaBaseModel()
+                                        {
+                                            idIndennitaBase = e.IDINDENNITABASE,
+                                            idLivello = e.IDLIVELLO,
+                                            dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                            valore = valore,
+                                            //valoreResponsabile = e.VALORERESP,
+                                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                            Livello = new LivelloModel()
+                                            {
+                                                idLivello = e.LIVELLI.IDLIVELLO,
+                                                DescLivello = e.LIVELLI.LIVELLO
+                                            },
+                                        }).ToList();
+
+
+                                // ****************************************************************************
+
+                                // set param values, not really doing anything except showing up in the report,
+                                // after the fact.
+                                //string paraStartDate = Convert.ToDateTime("1/1/2009").ToShortDateString();
+                                //string paraEndDate = Convert.ToDateTime("12/1/2009").ToShortDateString();
+                                //ReportParameter[] param = new ReportParameter[2];
+                                //param[0] = new ReportParameter("paraStartDate", paraStartDate, false);
+                                //param[1] = new ReportParameter("paraEndDate", paraEndDate, false);
+                                //this.reportViewer.LocalReport.SetParameters(param);
+
+
+                                var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
+                                ////var datasource = new ReportDataSource("INDENNITABASE", ll.ToList());
+                                reportViewer.Visible = true;
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+                                //reportViewer.LocalReport.ReportPath = @"~/Report/RptIndennitaBase.rdlc";
+                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaBase.rdlc";
+                                reportViewer.LocalReport.DataSources.Clear();
+                                reportViewer.LocalReport.DataSources.Add(datasource);
+                                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
+                                reportViewer.LocalReport.Refresh();
+                                
+                                ReportParameter[] parameterValues = new ReportParameter[]
+                                {
+                                    new ReportParameter ("Nominativo",Nominativo),
+                                    new ReportParameter ("Ruolo",Ruolo),
+                                    new ReportParameter ("Livello",Livello),
+                                    new ReportParameter ("Decorrenza",Decorrenza)
+                                };
+
+                                reportViewer.LocalReport.SetParameters(parameterValues);
+                                ViewBag.ReportViewer = reportViewer;
+
+                            }
+
+                        }
+                    }
                 }
             }
             
@@ -262,12 +272,13 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
             
+            return PartialView("RptIndennitaBase");
+
         }
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
-
+           
             try
             {
 
@@ -279,8 +290,7 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-
+            
         }
         public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
         {

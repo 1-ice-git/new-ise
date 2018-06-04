@@ -69,12 +69,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Controllers\ElaborazioniControllerTests.cs" />
     <Compile Include="Controllers\MaggiorazioneAbitazioneControllerTests.cs" />
-    <Compile Include="Models\DBModel\dtObj\dtElaborazioniTests.cs" />
     <Compile Include="Models\dtObj\dtRicalcoloParametriTests.cs" />
     <Compile Include="Models\dtObj\ModelliCalcolo\GiorniRateoTests.cs" />
-    <Compile Include="Models\dtObj\ModelliCalcolo\MeseAnnoElaborazioneTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +83,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\DBModel\dtObj\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -92,12 +92,8 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Allega Lettera Trasferimento")]
         [DataType(DataType.Upload)]
         public HttpPostedFileBase file { get; set; }
-
-
         public RuoloUfficioModel RuoloUfficio { get; set; }
-
         public PrimaSistemazioneModel PrimaSistemazione { get; set; }
-
 
         public bool HasValue()
         {
