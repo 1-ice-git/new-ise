@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using Resources;
 using NewISE.Models.ViewModel;
 using System.Web.Helpers;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -216,7 +217,7 @@ namespace NewISE.Controllers
                         richiestaPP = richiestaPP,
                         conclusePP = conclusePP,
                         faseRichiestaPPattivata = faseRichiestaPPattivata,
-                        faseInvioPPattivata= faseInvioPPattivata,
+                        faseInvioPPattivata = faseInvioPPattivata,
                         richiesteTV = richiesteTV,
                         concluseTV = concluseTV,
                         richiestaTE = richiestaTE,
@@ -1871,7 +1872,7 @@ namespace NewISE.Controllers
                 }
 
                 ViewBag.idTrasferimento = idTrasferimento;
-                
+
                 return PartialView(tm);
             }
             catch (Exception ex)
@@ -2035,15 +2036,15 @@ namespace NewISE.Controllers
                             r = (from e in lt
                                  select new SelectListItem()
                                  {
-                                     Text = e.Ufficio.descUfficio + 
-                                                " (" + e.Ufficio.codiceUfficio + ")" + " - " + 
+                                     Text = e.Ufficio.descUfficio +
+                                                " (" + e.Ufficio.codiceUfficio + ")" + " - " +
                                                 (
                                                     (
-                                                        e.idStatoTrasferimento!=EnumStatoTraferimento.Annullato ?
-                                                        (e.dataPartenza.ToShortDateString() + " ÷ " + 
+                                                        e.idStatoTrasferimento != EnumStatoTraferimento.Annullato ?
+                                                        (e.dataPartenza.ToShortDateString() + " ÷ " +
                                                             (
-                                                                (e.dataRientro.HasValue == true && 
-                                                                    e.dataRientro<Utility.DataFineStop()
+                                                                (e.dataRientro.HasValue == true &&
+                                                                    e.dataRientro < Utility.DataFineStop()
                                                             ) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"
                                                          ))
                                                          : "ANNULLATO")
@@ -2250,7 +2251,7 @@ namespace NewISE.Controllers
                     {
                         if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                         {
-                           
+
                             using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                             {
                                 PassaportoModel pm = dtpp.GetPassaportoByID(idTrasferimento);
