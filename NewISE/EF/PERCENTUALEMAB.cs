@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PERCENTUALEMAB()
         {
-            this.ANTICIPOANNUALEMAB = new HashSet<ANTICIPOANNUALEMAB>();
+            this.MAB = new HashSet<MAB>();
         }
     
         public decimal IDPERCMAB { get; set; }
@@ -33,6 +33,6 @@ namespace NewISE.EF
         public virtual LIVELLI LIVELLI { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ANTICIPOANNUALEMAB> ANTICIPOANNUALEMAB { get; set; }
+        public virtual ICollection<MAB> MAB { get; set; }
     }
 }

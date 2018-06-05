@@ -5,14 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DBISE.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="AAMAB_PERCMAB">
-          <Key>
-            <PropertyRef Name="IDANTICIPOANNUALEMAB" />
-            <PropertyRef Name="IDPERCMAB" />
-          </Key>
-          <Property Name="IDANTICIPOANNUALEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDPERCMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -973,6 +965,14 @@
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDMAGANNUALI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="MAB_PMAB">
+          <Key>
+            <PropertyRef Name="IDMAB" />
+            <PropertyRef Name="IDPERCMAB" />
+          </Key>
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
             <PropertyRef Name="IDMAGABITAZIONE" />
@@ -1714,20 +1714,6 @@
             </Principal>
             <Dependent Role="ANTICIPOANNUALEMAB1">
               <PropertyRef Name="FK_IDANTICIPOANNUALEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_AAMAB_AAMABPMAB">
-          <End Role="ANTICIPOANNUALEMAB" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AAMAB_PERCMAB" Type="Self.AAMAB_PERCMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANTICIPOANNUALEMAB">
-              <PropertyRef Name="IDANTICIPOANNUALEMAB" />
-            </Principal>
-            <Dependent Role="AAMAB_PERCMAB">
-              <PropertyRef Name="IDANTICIPOANNUALEMAB" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3605,6 +3591,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAB_MABPMAB">
+          <End Role="MAB" Type="Self.MAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MAB_PMAB" Type="Self.MAB_PMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAB">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="MAB_PMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MAB_PCMAB">
           <End Role="MAB" Type="Self.MAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3981,16 +3981,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_PMAB_AAMABPMAB">
+        <Association Name="R_PMAB_MABPMAB">
           <End Role="PERCENTUALEMAB" Type="Self.PERCENTUALEMAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AAMAB_PERCMAB" Type="Self.AAMAB_PERCMAB" Multiplicity="*" />
+          <End Role="MAB_PMAB" Type="Self.MAB_PMAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PERCENTUALEMAB">
               <PropertyRef Name="IDPERCMAB" />
             </Principal>
-            <Dependent Role="AAMAB_PERCMAB">
+            <Dependent Role="MAB_PMAB">
               <PropertyRef Name="IDPERCMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -5270,7 +5270,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DBISEStoreContainer">
-          <EntitySet Name="AAMAB_PERCMAB" EntityType="Self.AAMAB_PERCMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ADF_C" EntityType="Self.ADF_C" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ADF_F" EntityType="Self.ADF_F" Schema="ISESIM" store:Type="Tables" />
@@ -5363,6 +5362,7 @@
           <EntitySet Name="LOGATTIVITA" EntityType="Self.LOGATTIVITA" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAB" EntityType="Self.MAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAB_MA" EntityType="Self.MAB_MA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MAB_PMAB" EntityType="Self.MAB_PMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="Self.MAGGIORAZIONEABITAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="Self.MAGGIORAZIONIFAMILIARI" Schema="ISESIM" store:Type="Tables" />
@@ -5449,10 +5449,6 @@
           <AssociationSet Name="R_AAMAB_AAMAB" Association="Self.R_AAMAB_AAMAB">
             <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
             <End Role="ANTICIPOANNUALEMAB1" EntitySet="ANTICIPOANNUALEMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_AAMAB_AAMABPMAB" Association="Self.R_AAMAB_AAMABPMAB">
-            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
-            <End Role="AAMAB_PERCMAB" EntitySet="AAMAB_PERCMAB" />
           </AssociationSet>
           <AssociationSet Name="R_AC_IA" Association="Self.R_AC_IA">
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
@@ -5990,6 +5986,10 @@
             <End Role="MAB" EntitySet="MAB" />
             <End Role="MAB_MA" EntitySet="MAB_MA" />
           </AssociationSet>
+          <AssociationSet Name="R_MAB_MABPMAB" Association="Self.R_MAB_MABPMAB">
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="MAB_PMAB" EntitySet="MAB_PMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_MAB_PCMAB" Association="Self.R_MAB_PCMAB">
             <End Role="MAB" EntitySet="MAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
@@ -6098,9 +6098,9 @@
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
             <End Role="RIC_PFKM" EntitySet="RIC_PFKM" />
           </AssociationSet>
-          <AssociationSet Name="R_PMAB_AAMABPMAB" Association="Self.R_PMAB_AAMABPMAB">
+          <AssociationSet Name="R_PMAB_MABPMAB" Association="Self.R_PMAB_MABPMAB">
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
-            <End Role="AAMAB_PERCMAB" EntitySet="AAMAB_PERCMAB" />
+            <End Role="MAB_PMAB" EntitySet="MAB_PMAB" />
           </AssociationSet>
           <AssociationSet Name="R_PMF_PMF_F" Association="Self.R_PMF_PMF_F">
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
@@ -7182,10 +7182,6 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
           </AssociationSet>
-          <AssociationSet Name="AAMAB_PERCMAB" Association="DBISE.AAMAB_PERCMAB">
-            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
-            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
-          </AssociationSet>
           <AssociationSet Name="ADF_C" Association="DBISE.ADF_C">
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -7350,6 +7346,10 @@
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
             <End Role="MAB" EntitySet="MAB" />
           </AssociationSet>
+          <AssociationSet Name="MAB_PMAB" Association="DBISE.MAB_PMAB">
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
+          </AssociationSet>
           <AssociationSet Name="PAGCOND_PERCCOND" Association="DBISE.PAGCOND_PERCCOND">
             <End Role="PERCENTUALECONDIVISIONE" EntitySet="PERCENTUALECONDIVISIONE" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
@@ -7478,7 +7478,6 @@
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_VMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="MAB" Relationship="DBISE.R_MAB_AAMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="MAB" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_VMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="STATORECORD" />
-          <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISE.AAMAB_PERCMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="PERCENTUALEMAB" />
         </EntityType>
         <EntityType Name="ANTICIPOSALDOTE">
           <Key>
@@ -8249,6 +8248,7 @@
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAGABI_MAB" FromRole="MAB" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_MAB" FromRole="MAB" ToRole="STATORECORD" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISE.MAB_MA" FromRole="MAB" ToRole="MAGGIORAZIONIANNUALI" />
+          <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISE.MAB_PMAB" FromRole="MAB" ToRole="PERCENTUALEMAB" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
@@ -8500,7 +8500,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_PMAB" FromRole="PERCENTUALEMAB" ToRole="LIVELLI" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_U_PMAB" FromRole="PERCENTUALEMAB" ToRole="UFFICI" />
-          <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.AAMAB_PERCMAB" FromRole="PERCENTUALEMAB" ToRole="ANTICIPOANNUALEMAB" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.MAB_PMAB" FromRole="PERCENTUALEMAB" ToRole="MAB" />
         </EntityType>
         <EntityType Name="PERCENTUALEMAGCONIUGE">
           <Key>
@@ -11127,10 +11127,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="AAMAB_PERCMAB">
-          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB" Multiplicity="*" />
-          <End Type="DBISE.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
-        </Association>
         <Association Name="ADF_C">
           <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="*" />
           <End Type="DBISE.CONIUGE" Role="CONIUGE" Multiplicity="*" />
@@ -11294,6 +11290,10 @@
         <Association Name="MAB_MA">
           <End Type="DBISE.MAGGIORAZIONIANNUALI" Role="MAGGIORAZIONIANNUALI" Multiplicity="*" />
           <End Type="DBISE.MAB" Role="MAB" Multiplicity="*" />
+        </Association>
+        <Association Name="MAB_PMAB">
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="*" />
+          <End Type="DBISE.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
         </Association>
         <Association Name="PAGCOND_PERCCOND">
           <End Type="DBISE.PERCENTUALECONDIVISIONE" Role="PERCENTUALECONDIVISIONE" Multiplicity="*" />
@@ -12698,14 +12698,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AAMAB_PERCMAB" TypeName="DBISE.AAMAB_PERCMAB" StoreEntitySet="AAMAB_PERCMAB">
-            <EndProperty Name="PERCENTUALEMAB">
-              <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
-            </EndProperty>
-            <EndProperty Name="ANTICIPOANNUALEMAB">
-              <ScalarProperty Name="IDANTICIPOANNUALEMAB" ColumnName="IDANTICIPOANNUALEMAB" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="ADF_C" TypeName="DBISE.ADF_C" StoreEntitySet="ADF_C">
             <EndProperty Name="CONIUGE">
               <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
@@ -13032,6 +13024,14 @@
             </EndProperty>
             <EndProperty Name="MAGGIORAZIONIANNUALI">
               <ScalarProperty Name="IDMAGANNUALI" ColumnName="IDMAGANNUALI" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MAB_PMAB" TypeName="DBISE.MAB_PMAB" StoreEntitySet="MAB_PMAB">
+            <EndProperty Name="PERCENTUALEMAB">
+              <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
+            </EndProperty>
+            <EndProperty Name="MAB">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="PAGCOND_PERCCOND" TypeName="DBISE.PAGCOND_PERCCOND" StoreEntitySet="PAGCOND_PERCCOND">

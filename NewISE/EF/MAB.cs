@@ -22,6 +22,7 @@ namespace NewISE.EF
             this.MAB1 = new HashSet<MAB>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
+            this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
         }
     
         public decimal IDMAB { get; set; }
@@ -48,5 +49,7 @@ namespace NewISE.EF
         public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
     }
 }

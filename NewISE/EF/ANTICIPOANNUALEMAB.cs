@@ -18,7 +18,6 @@ namespace NewISE.EF
         public ANTICIPOANNUALEMAB()
         {
             this.ANTICIPOANNUALEMAB1 = new HashSet<ANTICIPOANNUALEMAB>();
-            this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
         }
     
         public decimal IDANTICIPOANNUALEMAB { get; set; }
@@ -35,7 +34,5 @@ namespace NewISE.EF
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         public virtual MAB MAB { get; set; }
         public virtual STATORECORD STATORECORD { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
     }
 }
