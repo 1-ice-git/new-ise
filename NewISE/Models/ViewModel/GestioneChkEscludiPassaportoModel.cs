@@ -9,6 +9,7 @@ namespace NewISE.Models.ViewModel
     public class GestioneChkincludiPassaportoModel
     {
         public decimal idFamiliare { get; set; }
+        public decimal idAttivitaPassaporto { get; set; }
         public EnumParentela parentela { get; set; }
         public bool esisteDoc { get; set; }
         public bool includiPassaporto { get; set; }

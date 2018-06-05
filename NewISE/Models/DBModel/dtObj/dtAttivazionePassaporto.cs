@@ -38,8 +38,6 @@ namespace NewISE.Models.DBModel.dtObj
                         }
 
                         //EnumFasePassaporti FasePassaporti = dtpp.GetFasePassaporti(ap.IDPASSAPORTI);
-
-
                         var attivazioneFaseRichiesta = dtpp.FaseRichiestaPassaporti(ap.IDPASSAPORTI);
                         var attivazioneFaseInvio = dtpp.FaseInvioPassaporti(ap.IDPASSAPORTI);
 

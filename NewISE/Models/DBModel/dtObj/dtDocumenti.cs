@@ -188,7 +188,11 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var fp = db.FIGLIPASSAPORTO.Find(idFiglioPassaporto);
-                var f = fp.FIGLI.First();
+                var f = fp.FIGLI
+                        .First(a=>a.ATTIVAZIONIMAGFAM
+                                .Where(b => b.ANNULLATO == false && 
+                                            b.RICHIESTAATTIVAZIONE == true)
+                                .Any());
                 var ld =
                     f.DOCUMENTI.Where(
                         a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
@@ -221,30 +225,31 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var cp = db.CONIUGEPASSAPORTO.Find(idConiugePassaporto);
-                var lc = cp.CONIUGE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDCONIUGE).ToList();
-                if (lc?.Any() ?? false)
-                {
-                    var c = lc.First();
-                    var ld =
+                var c = cp.CONIUGE
+                             .First(a => a.ATTIVAZIONIMAGFAM
+                                .Where(b => b.ANNULLATO == false &&
+                                            b.RICHIESTAATTIVAZIONE == true)
+                                .Any());
+                var ld =
                     c.DOCUMENTI.Where(
                         a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
                         .OrderByDescending(a => a.DATAINSERIMENTO);
 
-                    if (ld?.Any() ?? false)
-                    {
-                        ldm.AddRange(from d in ld
-                                     let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
-                                     select new DocumentiModel()
-                                     {
-                                         idDocumenti = d.IDDOCUMENTO,
-                                         nomeDocumento = d.NOMEDOCUMENTO,
-                                         estensione = d.ESTENSIONE,
-                                         tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                                         dataInserimento = d.DATAINSERIMENTO,
-                                         file = f
-                                     });
-                    }
+                if (ld?.Any() ?? false)
+                {
+                    ldm.AddRange(from d in ld
+                                    let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                    select new DocumentiModel()
+                                    {
+                                        idDocumenti = d.IDDOCUMENTO,
+                                        nomeDocumento = d.NOMEDOCUMENTO,
+                                        estensione = d.ESTENSIONE,
+                                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                        dataInserimento = d.DATAINSERIMENTO,
+                                        file = f
+                                    });
                 }
+                
             }
 
             return ldm;
@@ -644,34 +649,34 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
-        public DocumentiModel GetDatiDocumentoByIdTrasferimento(decimal idTrasferimento)
-        {
-            DocumentiModel dm = new DocumentiModel();
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
+        //public DocumentiModel GetDatiDocumentoByIdTrasferimento(decimal idTrasferimento)
+        //{
+        //    DocumentiModel dm = new DocumentiModel();
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
 
-                if (ld != null && ld.Count > 0)
-                {
-                    var d = ld.First();
-                    //HttpPostedFileBase f;
+        //        if (ld != null && ld.Count > 0)
+        //        {
+        //            var d = ld.First();
+        //            //HttpPostedFileBase f;
 
-                    //f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO, d.NOMEDOCUMENTO + d.ESTENSIONE, "application/pdf");
+        //            //f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO, d.NOMEDOCUMENTO + d.ESTENSIONE, "application/pdf");
 
-                    dm = new DocumentiModel()
-                    {
-                        idDocumenti = d.IDDOCUMENTO,
-                        nomeDocumento = d.NOMEDOCUMENTO,
-                        estensione = d.ESTENSIONE,
-                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                        dataInserimento = d.DATAINSERIMENTO,
-                        //file = f
-                    };
-                }
-            }
+        //            dm = new DocumentiModel()
+        //            {
+        //                idDocumenti = d.IDDOCUMENTO,
+        //                nomeDocumento = d.NOMEDOCUMENTO,
+        //                estensione = d.ESTENSIONE,
+        //                tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+        //                dataInserimento = d.DATAINSERIMENTO,
+        //                //file = f
+        //            };
+        //        }
+        //    }
 
-            return dm;
-        }
+        //    return dm;
+        //}
 
         public DocumentiModel GetDatiDocumentoById(decimal idDocumento)
         {

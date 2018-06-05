@@ -23,5 +23,4 @@ namespace NewISE.Models.ViewModel
         MaggiorazioniFamiliari = 11,
         RinunciaMaggiorazioniFamiliari = 12
     }
-
 }

@@ -367,7 +367,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var lap_richiesta = p.ATTIVAZIONIPASSAPORTI.Where(
                                 a =>
                                         a.ANNULLATO == false &&
-                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Richiesta_Passaporti).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
+                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Richiesta_Passaporti).OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
 
                     if (lap_richiesta?.Any() ?? false)
                     {
@@ -388,7 +388,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var lap_invio = p.ATTIVAZIONIPASSAPORTI
                             .Where(a => a.ANNULLATO == false &&
-                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Invio_Passaporti).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
+                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Invio_Passaporti).OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
 
                     if (lap_invio?.Any() ?? false)
                     {
@@ -410,7 +410,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var tv = t.TITOLIVIAGGIO;
                 if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                 {
-                    var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO);
+                    var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO);
 
                     if (latv?.Any() ?? false)
                     {
@@ -431,7 +431,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var tep = t.TEPARTENZA;
                 if (tep != null && tep.IDTEPARTENZA > 0)
                 {
-                    var latep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATEPARTENZA).ToList();
+                    var latep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATEPARTENZA).ToList();
 
                     if (latep?.Any() ?? false)
                     {
@@ -452,7 +452,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var ps = t.PRIMASITEMAZIONE;
                 if (ps != null && ps.IDPRIMASISTEMAZIONE > 0)
                 {
-                    var laa = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVITAANTICIPI).ToList();
+                    var laa = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVITAANTICIPI).ToList();
 
                     if (laa?.Any() ?? false)
                     {
@@ -473,7 +473,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (ma != null && ma.IDMAB > 0)
                     {
-                        var lam = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
+                        var lam = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
 
                         if (lam?.Any() ?? false)
                         {
@@ -492,7 +492,7 @@ namespace NewISE.Models.DBModel.dtObj
                 if (lps != null && lps.IDTRASFPROVSCOLASTICHE > 0)
                 {
 
-                    var laps = lps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDPROVSCOLASTICHE).ToList();
+                    var laps = lps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDPROVSCOLASTICHE).ToList();
 
                     if (laps?.Any() ?? false)
                     {

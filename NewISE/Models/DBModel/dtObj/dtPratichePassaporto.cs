@@ -1639,7 +1639,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lc =
                                 amf.CONIUGE.Where(
                                     a =>
-                                        (a.IDSTATORECORD == (decimal)EnumStatoTraferimento.Attivo || a.FK_IDCONIUGE.HasValue == false) &&
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                         a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente)
                                     .OrderBy(a => a.DATAINIZIOVALIDITA);
 
@@ -1754,7 +1754,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lf =
                                 amf.FIGLI.Where(
                                     a =>
-                                        (a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato || a.FK_IDFIGLI.HasValue == false) &&
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                         (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||
                                          a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente))
                                     .OrderBy(a => a.DATAINIZIOVALIDITA);
