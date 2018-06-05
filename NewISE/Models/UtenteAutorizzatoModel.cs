@@ -4,15 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.DBModel;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models
 {
-    public enum EnumRuoloAccesso
-    {
-        SuperAmministratore = 1,
-        Amministratore = 2,
-        Utente = 3
-    }
 
     public class UtenteAutorizzatoModel
     {

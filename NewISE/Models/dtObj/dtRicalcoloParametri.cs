@@ -7,7 +7,6 @@ using System.Web;
 using NewISE.EF;
 using NewISE.Models.dtObj.Interfacce;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
 using NewISE.Models.Tools;
 using System.Linq.Dynamic;
 using NewISE.Models.DBModel.dtObj;

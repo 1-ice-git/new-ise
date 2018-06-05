@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.ViewModel;
-using NewISE.Models.DBModel.Enum;
+
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -248,8 +248,8 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = fm.dataInizio.Value,
                 DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = fm.dataAggiornamento,
-                IDSTATORECORD=fm.idStatoRecord,
-                FK_IDFIGLI=fm.FK_IdFigli
+                IDSTATORECORD = fm.idStatoRecord,
+                FK_IDFIGLI = fm.FK_IdFigli
             };
 
             db.FIGLI.Add(f);
@@ -304,7 +304,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataFine = f.DATAFINEVALIDITA,
                         dataAggiornamento = f.DATAAGGIORNAMENTO,
                         idStatoRecord = f.IDSTATORECORD,
-                        FK_IdFigli=f.FK_IDFIGLI
+                        FK_IdFigli = f.FK_IDFIGLI
                     };
                 }
             }
@@ -474,7 +474,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                    lf = mf.FIGLI.Where(y =>    
+                    lf = mf.FIGLI.Where(y =>
                                 y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato
                             ).ToList();
                     if (lf?.Any() ?? false)
@@ -483,7 +483,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             VariazioneFigliModel fm = new VariazioneFigliModel()
                             {
-                                eliminabile = (f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && f.FK_IDFIGLI==null) ? true : false,
+                                eliminabile = (f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && f.FK_IDFIGLI == null) ? true : false,
                                 modificabile = (f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato) ? true : false,
                                 idFigli = f.IDFIGLI,
                                 idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
@@ -498,13 +498,13 @@ namespace NewISE.Models.DBModel.dtObj
                                 FK_IdFigli = f.FK_IDFIGLI,
                                 visualizzabile = (db.FIGLI.Where(a => a.FK_IDFIGLI == f.IDFIGLI && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).Count() > 0) ? false : true,
                                 //visualizzabile = (db.FIGLI.Where(a => a.IDFIGLI == f.FK_IDFIGLI).Count() > 0) ? false : true,
-                                modificato = (f.FK_IDFIGLI>0 && f.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ?true:false,
-                                nuovo= (f.FK_IDFIGLI==null && f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false
+                                modificato = (f.FK_IDFIGLI > 0 && f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false,
+                                nuovo = (f.FK_IDFIGLI == null && f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false
                             };
 
 
                             //VERIFICA SE CI SONO VARIAZIONI SUGLI ALTRI DATI
-                            var adf = dtvmf.GetAltriDatiFamiliariFiglio(f.IDFIGLI,mf.IDMAGGIORAZIONIFAMILIARI);
+                            var adf = dtvmf.GetAltriDatiFamiliariFiglio(f.IDFIGLI, mf.IDMAGGIORAZIONIFAMILIARI);
                             if (adf.FK_idAltriDatiFam > 0 && adf.idStatoRecord != (decimal)EnumStatoRecord.Annullato && adf.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
                             {
                                 fm.modificato = true;

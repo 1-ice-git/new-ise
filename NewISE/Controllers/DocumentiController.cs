@@ -1,7 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
+
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using System;
@@ -16,6 +16,7 @@ using System.Web.Security;
 using NewISE.Models.ViewModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -650,8 +651,8 @@ namespace NewISE.Controllers
                         solaLettura = false;
                     }
 
-                    var idFasePassaportiCorrente=dtpp.GetFasePassaporti_Corrente(apm.idPassaporti);
-                    if(idFasePassaportiCorrente == EnumFasePassaporti.Invio_Passaporti)
+                    var idFasePassaportiCorrente = dtpp.GetFasePassaporti_Corrente(apm.idPassaporti);
+                    if (idFasePassaportiCorrente == EnumFasePassaporti.Invio_Passaporti)
                     {
                         solaLettura = true;
                     }
@@ -782,7 +783,7 @@ namespace NewISE.Controllers
                                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
                                     out docFormulario, out trasfSolaLettura);
 
-                                if (richiestaAttivazione == true || trasfSolaLettura==true)
+                                if (richiestaAttivazione == true || trasfSolaLettura == true)
                                 {
                                     solaLettura = true;
                                 }

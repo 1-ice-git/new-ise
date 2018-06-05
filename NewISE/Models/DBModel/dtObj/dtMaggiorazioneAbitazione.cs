@@ -16,7 +16,7 @@ using System.Diagnostics;
 using System.IO;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
-using NewISE.Models.DBModel.Enum;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -180,8 +180,8 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     plAll.AddRange(pl);
-                }                
-                
+                }
+
                 return plAll;
             }
             catch (Exception ex)
@@ -567,7 +567,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 fk_IDVariazioniMAB = vmab.FK_IDVARIAZIONIMAB
                             };
 
-                        }else
+                        }
+                        else
                         {
                             throw new Exception(string.Format("nessuna variazione MAB trovata."));
                         }
@@ -863,16 +864,16 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     //using (dtValute dtv = new dtValute())
                                     //{
-                                        //var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
-                                        var ltfr = dtt.GetListaTfrByValuta_RangeDate(tm, cm.IDVALUTA, cm.DATAINIZIOVALIDITA, cm.DATAFINEVALIDITA, db);
+                                    //var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
+                                    var ltfr = dtt.GetListaTfrByValuta_RangeDate(tm, cm.IDVALUTA, cm.DATAINIZIOVALIDITA, cm.DATAFINEVALIDITA, db);
 
-                                        if (ltfr?.Any() ?? false)
+                                    if (ltfr?.Any() ?? false)
+                                    {
+                                        foreach (var tfr in ltfr)
                                         {
-                                            foreach (var tfr in ltfr)
-                                            {
-                                                this.Associa_TFR_CanoneMAB(tfr.idTFR, cm.IDCANONE, db);
-                                            }
+                                            this.Associa_TFR_CanoneMAB(tfr.idTFR, cm.IDCANONE, db);
                                         }
+                                    }
                                     //}
 
                                 }
@@ -1293,7 +1294,7 @@ namespace NewISE.Models.DBModel.dtObj
                             DATAINSERIMENTO = d.DATAINSERIMENTO,
                             MODIFICATO = d.MODIFICATO,
                             FK_IDDOCUMENTO = d.FK_IDDOCUMENTO,
-                            IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione
+                            IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                         };
 
                         am_New.DOCUMENTI.Add(dNew);
@@ -2761,7 +2762,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             throw new Exception("Errore in fase di creazione CanoneMAB in partenza.");
                         }
-        
+
                         return cmabm;
                     }
                 }

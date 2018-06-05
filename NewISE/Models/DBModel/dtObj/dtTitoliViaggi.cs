@@ -7,7 +7,7 @@ using NewISE.EF;
 using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.Tools;
-using NewISE.Models.DBModel.Enum;
+
 using NewISE.Models.ViewModel;
 using NewISE.Models.ModelRest;
 using System.Diagnostics;
@@ -15,6 +15,7 @@ using System.IO;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
 using System.Data.Entity;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -267,14 +268,14 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     case EnumParentela.Coniuge:
                         var ctv = db.CONIUGETITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.ANNULLATO == false).OrderByDescending(a => a.IDCONIUGETITOLIVIAGGIO).First();
-                        var c=ctv.CONIUGE.First();
+                        var c = ctv.CONIUGE.First();
                         var adfc = c.ALTRIDATIFAM.First();
                         idAltridatiFamiliari = adfc.IDALTRIDATIFAM;
                         break;
 
                     case EnumParentela.Figlio:
                         var ftv = db.FIGLITITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.ANNULLATO == false).OrderByDescending(a => a.IDFIGLITITOLIVIAGGIO).First();
-                        var f=ftv.FIGLI.First();
+                        var f = ftv.FIGLI.First();
                         var adff = f.ALTRIDATIFAM.First();
                         idAltridatiFamiliari = adff.IDALTRIDATIFAM;
                         break;
@@ -344,10 +345,10 @@ namespace NewISE.Models.DBModel.dtObj
                         indirizzoResidenza = adff.INDIRIZZORESIDENZA,
                         nazionalita = adff.NAZIONALITA,
                         provinciaResidenza = adff.PROVINCIARESIDENZA,
-                        capNascita=adff.CAPNASCITA,
-                        comuneNascita=adff.COMUNENASCITA,
-                        dataNascita=adff.DATANASCITA,
-                        provinciaNascita=adff.PROVINCIANASCITA
+                        capNascita = adff.CAPNASCITA,
+                        comuneNascita = adff.COMUNENASCITA,
+                        dataNascita = adff.DATANASCITA,
+                        provinciaNascita = adff.PROVINCIANASCITA
                     };
 
                 }
@@ -405,7 +406,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var tvc in ltvc)
                     {
-                        var c=tvc.CONIUGE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDCONIUGE).First();
+                        var c = tvc.CONIUGE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDCONIUGE).First();
                         //var c = db.CONIUGE.Find(tvc.IDCONIUGE);
 
                         ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
@@ -480,7 +481,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 ATTIVAZIONETITOLIVIAGGIO atv_notificata = new ATTIVAZIONETITOLIVIAGGIO();
                 var latv_notificate = db.TITOLIVIAGGIO.Find(idTitoloViaggio).ATTIVAZIONETITOLIVIAGGIO
-                    .Where(a => a.ANNULLATO==false && a.NOTIFICARICHIESTA==true && a.ATTIVAZIONERICHIESTA==false)
+                    .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true && a.ATTIVAZIONERICHIESTA == false)
                     .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
                 if (latv_notificate?.Any() ?? false)
                 {
@@ -500,7 +501,7 @@ namespace NewISE.Models.DBModel.dtObj
                 ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO();
                 atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
 
-                if (atv.ATTIVAZIONERICHIESTA==false && atv.NOTIFICARICHIESTA==true && atv.ANNULLATO==false)
+                if (atv.ATTIVAZIONERICHIESTA == false && atv.NOTIFICARICHIESTA == true && atv.ANNULLATO == false)
                 {
                     notificata = true;
                 }
@@ -518,7 +519,7 @@ namespace NewISE.Models.DBModel.dtObj
                 decimal nDoc = 0;
 
                 var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
-                var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO==false).ToList();
+                var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
 
                 if (latv?.Any() ?? false)
                 {
@@ -537,11 +538,11 @@ namespace NewISE.Models.DBModel.dtObj
         {
             //using (ModelDBISE db = new ModelDBISE())
             //{
-                var NumAttivazioni = 0;
-                NumAttivazioni = db.TITOLIVIAGGIO.Find(idTitoliViaggio).ATTIVAZIONETITOLIVIAGGIO
-                                    .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true)
-                                    .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).Count();
-                return NumAttivazioni;
+            var NumAttivazioni = 0;
+            NumAttivazioni = db.TITOLIVIAGGIO.Find(idTitoliViaggio).ATTIVAZIONETITOLIVIAGGIO
+                                .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true)
+                                .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).Count();
+            return NumAttivazioni;
             //}
         }
 
@@ -569,7 +570,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //(se non esistono li creo)
                         var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true && a.RICHIESTAATTIVAZIONE == true).First();
                         var lctv = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
-                        if(lctv.Count()==0)
+                        if (lctv.Count() == 0)
                         {
                             //var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente && a.MODIFICATO==false).ToList();
                             var lc = amf.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
@@ -675,7 +676,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //verifico se è stata fatta almeno una attivazione
                         var richiesta = this.richiestaEseguita(idTitoliViaggio);
 
-                        if (richiesta==false)
+                        if (richiesta == false)
                         {
                             //leggo le informazioni del dipendente
                             var d = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.DIPENDENTI;
@@ -704,7 +705,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //cerco eventuali coniugi residenti e ne creo il titolo di viaggio
                             //var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
                             var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true & a.RICHIESTAATTIVAZIONE == true).First();
-                            var lc = amf.CONIUGE.Where(a=> a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
+                            var lc = amf.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
                             if (lc?.Any() ?? false)
                             {
                                 foreach (var c in lc)
@@ -802,7 +803,7 @@ namespace NewISE.Models.DBModel.dtObj
                     switch ((EnumParentela)idParentela)
                     {
                         case EnumParentela.Richiedente:
-                            var tvr = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio).TITOLIVIAGGIORICHIEDENTE.Where(a=>a.ANNULLATO==false).First();
+                            var tvr = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio).TITOLIVIAGGIORICHIEDENTE.Where(a => a.ANNULLATO == false).First();
                             var stato_r = tvr.RICHIEDITITOLOVIAGGIO;
                             if (stato_r)
                             {
@@ -827,7 +828,7 @@ namespace NewISE.Models.DBModel.dtObj
                             break;
 
                         case EnumParentela.Coniuge:
-                            var tvc = db.CONIUGE.Find(idFamiliare).CONIUGETITOLIVIAGGIO.Where(a=>a.ANNULLATO==false).First();
+                            var tvc = db.CONIUGE.Find(idFamiliare).CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).First();
                             //var tvc = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio).CONIUGETITOLIVIAGGIO
                             //    .Where(a => a.IDCONIUGE == idFamiliare).First();
                             var stato_c = tvc.RICHIEDITITOLOVIAGGIO;
@@ -907,7 +908,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var atv in latv)
                     {
-                        var ld = atv.DOCUMENTI.Where(a=>a.IDTIPODOCUMENTO==idTipoDoc).ToList();
+                        var ld = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).ToList();
                         if (ld.Count > 0)
                         {
                             var new_atv = new AttivazioneTitoliViaggioModel()
@@ -958,7 +959,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
 
-                var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList(); 
+                var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
 
                 var i = 1;
                 var coloresfondo = "";
@@ -994,7 +995,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
                             EnumStatoTraferimento statoTrasferimento = t.idStatoTrasferimento;
-                            if (statoTrasferimento==EnumStatoTraferimento.Annullato)
+                            if (statoTrasferimento == EnumStatoTraferimento.Annullato)
                             {
                                 modificabile = false;
                             }
@@ -1146,7 +1147,8 @@ namespace NewISE.Models.DBModel.dtObj
                 if (latv?.Any() ?? false)
                 {
                     atv = latv.First();
-                }else
+                }
+                else
                 {
                     atv = this.CreaAttivazioneTV(idTitoliViaggio, db);
                 }
@@ -1169,7 +1171,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                        throw new Exception("Errore nella fase di inserimento del documento (titolo di viaggio).");
+                    throw new Exception("Errore nella fase di inserimento del documento (titolo di viaggio).");
                 }
 
                 // associa il titolo di viaggio all'attivazioneTitoloViaggio
@@ -1353,14 +1355,14 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var t = tv.TRASFERIMENTO;
                     var statoTrasferimeto = t.IDSTATOTRASFERIMENTO;
-                    if (statoTrasferimeto==(decimal)EnumStatoTraferimento.Annullato)
+                    if (statoTrasferimeto == (decimal)EnumStatoTraferimento.Annullato)
                     {
                         trasfAnnullato = true;
                     }
 
                     //verifica se esiste una attivazione non notificata e non attivata 
                     var latv = tv.ATTIVAZIONETITOLIVIAGGIO
-                                .Where(a => (a.ANNULLATO == false &&  a.ATTIVAZIONERICHIESTA == false && a.NOTIFICARICHIESTA == false))
+                                .Where(a => (a.ANNULLATO == false && a.ATTIVAZIONERICHIESTA == false && a.NOTIFICARICHIESTA == false))
                                 .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
 
                     if (latv?.Any() ?? false)
@@ -1394,7 +1396,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var ltvr = last_atv.TITOLIVIAGGIORICHIEDENTE.Where(a => a.RICHIEDITITOLOVIAGGIO == true).ToList();
                         if (ltvr?.Any() ?? false)
                         {
-                            if(conta_attivazioni==1)
+                            if (conta_attivazioni == 1)
                             {
                                 richiediRichiedente = true;
                                 inLavorazione = true;
@@ -1423,20 +1425,21 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                         }
 
-                        if(conta_attivazioni==1)
+                        if (conta_attivazioni == 1)
                         {
-                            if (richiediFigli||richiediConiuge||richiediRichiedente)
-                            {
-                                richiediNotifica = true;
-                            }
-                        }else
-                        {
-                            if(DocCartaImbarco && DocTitoliViaggio)
+                            if (richiediFigli || richiediConiuge || richiediRichiedente)
                             {
                                 richiediNotifica = true;
                             }
                         }
-                        if (last_atv.NOTIFICARICHIESTA == true  && last_atv.ANNULLATO == false)
+                        else
+                        {
+                            if (DocCartaImbarco && DocTitoliViaggio)
+                            {
+                                richiediNotifica = true;
+                            }
+                        }
+                        if (last_atv.NOTIFICARICHIESTA == true && last_atv.ANNULLATO == false)
                         {
                             richiediAttivazione = true;
                             richiediNotifica = false;
@@ -1468,7 +1471,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(IdAttivazioneTitoliViaggio);
 
-                    if(atv.ANNULLATO==false && atv.ATTIVAZIONERICHIESTA==false && atv.NOTIFICARICHIESTA==false && atv.TITOLIVIAGGIO.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
+                    if (atv.ANNULLATO == false && atv.ATTIVAZIONERICHIESTA == false && atv.NOTIFICARICHIESTA == false && atv.TITOLIVIAGGIO.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
                     {
                         //verifica se ci sono elementi associati
 
@@ -1615,7 +1618,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
                                         else
                                         {
-                                                //this.AssociaRichiedenteTitoloViaggio(atv_New.IDATTIVAZIONETITOLIVIAGGIO, tvr_New.IDTITOLIVIAGGIORICHIEDENTE,db);
+                                            //this.AssociaRichiedenteTitoloViaggio(atv_New.IDATTIVAZIONETITOLIVIAGGIO, tvr_New.IDTITOLIVIAGGIORICHIEDENTE,db);
 
                                             Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                                             "Inserimento di una nuova riga per il richiedente relativo ai titoli di viaggio.",
@@ -1741,7 +1744,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAINSERIMENTO = doc_Old.DATAINSERIMENTO,
                                                 MODIFICATO = doc_Old.MODIFICATO,
                                                 FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO,
-                                                IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione
+                                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                                             };
 
                                             //db.DOCUMENTI.Add(doc_New);
@@ -1774,7 +1777,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     if (conta_attivazioni == 1)
                                     {
-                                        oggettoAnnulla= Resources.msgEmail.OggettoAnnullaRichiestaInizialeTitoliViaggio;
+                                        oggettoAnnulla = Resources.msgEmail.OggettoAnnullaRichiestaInizialeTitoliViaggio;
                                     }
                                     else
                                     {

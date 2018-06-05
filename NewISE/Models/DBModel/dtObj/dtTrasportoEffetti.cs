@@ -6,7 +6,6 @@ using NewISE.EF;
 using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.Tools;
-using NewISE.Models.DBModel.Enum;
 using NewISE.Models.ViewModel;
 using NewISE.Models.ModelRest;
 using System.Diagnostics;
@@ -14,15 +13,10 @@ using System.IO;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
 using System.Data.Entity;
-
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
-    public enum EnumTipoAnticipoTE
-    {
-        Partenza = 1,
-        Rientro = 2
-    }
 
 
     public class dtTrasportoEffetti : IDisposable
@@ -332,7 +326,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (rtep.rinunciaTE)
                             {
                                 var ld = atep.DOCUMENTI.ToList();
-                                foreach(var d in ld)
+                                foreach (var d in ld)
                                 {
                                     atep.DOCUMENTI.Remove(d);
                                     db.SaveChanges();
@@ -532,8 +526,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 Modificabile = modificabile,
                                 IdAttivazione = atep.IDATEPARTENZA,
                                 DataAggiornamento = atep.DATAAGGIORNAMENTO,
-                                fk_iddocumento=doc.FK_IDDOCUMENTO,
-                                idStatoRecord=doc.IDSTATORECORD
+                                fk_iddocumento = doc.FK_IDDOCUMENTO,
+                                idStatoRecord = doc.IDSTATORECORD
                             };
 
                             ldm.Add(amf);
@@ -740,7 +734,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         atep_New.IDATEPARTENZA);
 
                                     #region ricrea rinunciaTE
-                                    var rtep_old = this.GetRinunciaTEPartenza(atep_Old.IDATEPARTENZA,db);
+                                    var rtep_old = this.GetRinunciaTEPartenza(atep_Old.IDATEPARTENZA, db);
                                     RINUNCIA_TE_P rtep_new = new RINUNCIA_TE_P()
                                     {
                                         IDATEPARTENZA = atep_New.IDATEPARTENZA,
@@ -780,7 +774,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAINSERIMENTO = doc_Old.DATAINSERIMENTO,
                                                 MODIFICATO = doc_Old.MODIFICATO,
                                                 FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO,
-                                                IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione
+                                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                                             };
 
                                             atep_New.DOCUMENTI.Add(doc_New);

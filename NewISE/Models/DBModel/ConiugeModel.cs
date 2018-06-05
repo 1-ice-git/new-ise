@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Enumeratori;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;

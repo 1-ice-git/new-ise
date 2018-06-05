@@ -12,31 +12,29 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class VARIAZIONIMAB
+    public partial class ANTICIPOANNUALEMAB
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public VARIAZIONIMAB()
+        public ANTICIPOANNUALEMAB()
         {
-            this.VARIAZIONIMAB1 = new HashSet<VARIAZIONIMAB>();
+            this.ANTICIPOANNUALEMAB1 = new HashSet<ANTICIPOANNUALEMAB>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
         }
     
-        public decimal IDVARIAZIONIMAB { get; set; }
+        public decimal IDANTICIPOANNUALEMAB { get; set; }
         public decimal IDMAB { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
-        public System.DateTime DATAINIZIOMAB { get; set; }
-        public System.DateTime DATAFINEMAB { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public bool ANTICIPOANNUALE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public decimal IDSTATORECORD { get; set; }
-        public Nullable<decimal> FK_IDVARIAZIONIMAB { get; set; }
+        public decimal FK_IDANTICIPOANNUALEMAB { get; set; }
     
-        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
-        public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VARIAZIONIMAB> VARIAZIONIMAB1 { get; set; }
-        public virtual VARIAZIONIMAB VARIAZIONIMAB2 { get; set; }
+        public virtual ICollection<ANTICIPOANNUALEMAB> ANTICIPOANNUALEMAB1 { get; set; }
+        public virtual ANTICIPOANNUALEMAB ANTICIPOANNUALEMAB2 { get; set; }
+        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
+        public virtual MAB MAB { get; set; }
+        public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
     }

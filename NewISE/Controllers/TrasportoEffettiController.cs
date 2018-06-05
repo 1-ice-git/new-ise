@@ -14,6 +14,7 @@ using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
 using NewISE.Models.dtObj.ModelliCalcolo;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -54,7 +55,7 @@ namespace NewISE.Controllers
 
                         dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
                                                     out richiestaTE, out attivazioneTE,
-                                                    out DocContributo, 
+                                                    out DocContributo,
                                                     out trasfAnnullato, out rinunciaTEPartenza);
 
                         var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);

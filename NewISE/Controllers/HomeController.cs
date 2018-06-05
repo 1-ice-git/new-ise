@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NewISE.Models.DBModel.Enum;
+using NewISE.Models.Enumeratori;
+
 
 namespace NewISE.Controllers
 {
@@ -20,7 +21,7 @@ namespace NewISE.Controllers
         bool admin = false;
         public ActionResult Index()
         {
-            
+
             try
             {
                 admin = Utility.Amministratore();
@@ -33,23 +34,23 @@ namespace NewISE.Controllers
             return View();
         }
 
-        
+
         public ActionResult GetListaHome(decimal idStatoHome)
-        {            
+        {
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             try
             {
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
-                    tmp = dtcal.GetListaElementiHome(idStatoHome).ToList();     
-                               
+                    tmp = dtcal.GetListaElementiHome(idStatoHome).ToList();
+
                 }
                 var r = new List<SelectListItem>();
                 var elem = new SelectListItem()
                 {
                     Text = "ATTIVI",
                     Value = ((decimal)EnumStatoHome.Attivi).ToString(),
-                };r.Add(elem);
+                }; r.Add(elem);
                 elem = new SelectListItem()
                 {
                     Text = "COMPLETATI",
@@ -68,7 +69,7 @@ namespace NewISE.Controllers
 
                 if (idStatoHome == 0)
                 {
-                    r.First().Selected = true;                   
+                    r.First().Selected = true;
                 }
                 else
                 {
@@ -82,7 +83,7 @@ namespace NewISE.Controllers
                         r.Where(a => a.Value == idStatoHome.ToString()).First().Selected = true;
                 }
                 ViewBag.idStatoHome = idStatoHome;
-                ViewBag.StatoHome =r;
+                ViewBag.StatoHome = r;
             }
             catch (Exception ex)
             {
@@ -92,14 +93,14 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult DetailsFunzioneEvento(EnumFunzioniEventi idf,int idd)
+        public ActionResult DetailsFunzioneEvento(EnumFunzioniEventi idf, int idd)
         {
             DettagliMessaggio tmp = new DettagliMessaggio();
             try
             {
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
-                   tmp = dtcal.OgggettoFunzioneEvento(idf,idd);
+                    tmp = dtcal.OgggettoFunzioneEvento(idf, idd);
                 }
             }
             catch (Exception ex)

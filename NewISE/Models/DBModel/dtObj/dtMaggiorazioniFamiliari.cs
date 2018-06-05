@@ -11,7 +11,7 @@ using NewISE.Models.ModelRest;
 using NewISE.Models.Tools;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
-using NewISE.Models.DBModel.Enum;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {

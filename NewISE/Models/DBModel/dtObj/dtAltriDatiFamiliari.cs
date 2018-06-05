@@ -5,8 +5,9 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
-using NewISE.Models.DBModel.Enum;
+
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -178,7 +179,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                         }
 
-                        
+
 
 
 
@@ -222,7 +223,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 adfm = new AltriDatiFamConiugeModel()
                                 {
                                     idAltriDatiFam = adf.IDALTRIDATIFAM,
-                                    idConiuge=c.IDCONIUGE,
+                                    idConiuge = c.IDCONIUGE,
                                     nazionalita = adf.NAZIONALITA,
                                     indirizzoResidenza = adf.INDIRIZZORESIDENZA,
                                     capResidenza = adf.CAPRESIDENZA,
@@ -308,8 +309,8 @@ namespace NewISE.Models.DBModel.dtObj
                     if (f?.IDFIGLI > 0)
                     {
                         var ladf = f.ALTRIDATIFAM
-                                    .Where(a => 
-                                    //a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                    .Where(a =>
+                                              //a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                               a.ATTIVAZIONIMAGFAM
                                                   .Any(b => b.ANNULLATO == false &&
                                                       b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam)
@@ -442,8 +443,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (adf != null && adfm.idAltriDatiFam > 0)
                     {
-                        if(adfm.capResidenza!=adf.CAPRESIDENZA || adfm.comuneResidenza!=adf.COMUNERESIDENZA || adfm.indirizzoResidenza!=adf.INDIRIZZORESIDENZA ||
-                            adfm.nazionalita!=adf.NAZIONALITA || adfm.provinciaResidenza!=adf.PROVINCIARESIDENZA)
+                        if (adfm.capResidenza != adf.CAPRESIDENZA || adfm.comuneResidenza != adf.COMUNERESIDENZA || adfm.indirizzoResidenza != adf.INDIRIZZORESIDENZA ||
+                            adfm.nazionalita != adf.NAZIONALITA || adfm.provinciaResidenza != adf.PROVINCIARESIDENZA)
                         {
                             //adf.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
@@ -492,15 +493,15 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (adf != null && adfm.idAltriDatiFam > 0)
                     {
-                        if (adfm.capResidenza != adf.CAPRESIDENZA || 
-                            adfm.comuneResidenza != adf.COMUNERESIDENZA || 
+                        if (adfm.capResidenza != adf.CAPRESIDENZA ||
+                            adfm.comuneResidenza != adf.COMUNERESIDENZA ||
                             adfm.indirizzoResidenza != adf.INDIRIZZORESIDENZA ||
-                            adfm.nazionalita != adf.NAZIONALITA || 
+                            adfm.nazionalita != adf.NAZIONALITA ||
                             adfm.provinciaResidenza != adf.PROVINCIARESIDENZA ||
-                            adfm.capNascita!=adf.CAPNASCITA ||
-                            adfm.comuneNascita!=adf.COMUNENASCITA ||
-                            adfm.dataNascita!=adf.DATANASCITA ||
-                            adfm.provinciaNascita!=adf.PROVINCIANASCITA)
+                            adfm.capNascita != adf.CAPNASCITA ||
+                            adfm.comuneNascita != adf.COMUNENASCITA ||
+                            adfm.dataNascita != adf.DATANASCITA ||
+                            adfm.provinciaNascita != adf.PROVINCIANASCITA)
                         {
                             if (adfm.dataNascita != null)
                             {
@@ -522,7 +523,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica altri dati familiari.", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
 
-                               
+
                             }
                             else
                             {
@@ -531,7 +532,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                         }
-                        
+
                     }
                     else
                     {

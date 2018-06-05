@@ -5,15 +5,12 @@ using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel
 {
 
-    public enum EnumTipologiaConiuge
-    {
-        Residente = 1,
-        NonResidente_A_Carico = 2
-    }
+
     public class PercentualeMagConiugeModel
     {
         [Key]
@@ -38,7 +35,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Percentuale Coniuge")]
         //   [DisplayFormat(DataFormatString = "{0:P2}")]
         [CustomValidation(typeof(dtParMaggConiuge), "VerificaPercentualeConiuge")]
-      //  [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
+        //  [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal percentualeConiuge { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

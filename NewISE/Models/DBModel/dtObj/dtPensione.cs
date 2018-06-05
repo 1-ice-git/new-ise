@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime;
 using NewISE.Models.Tools;
-using NewISE.Models.DBModel.Enum;
+
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -69,7 +69,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     //aggiunge i record attivi antecedenti a quelli in lavorazione
-                    var lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                    var lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                     a.DATAINIZIO < min_data_inlav &&
                                     a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))
                                 .OrderBy(a => a.DATAINIZIO)
@@ -109,9 +109,9 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     //aggiunge i record attivi successivi a quelli in lavorazione
-                    lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                    lp = c.PENSIONE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                         a.DATAINIZIO > max_data_inlav &&
-                                        a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))                             
+                                        a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))
                                         .OrderBy(a => a.DATAINIZIO)
                                 .ToList();
                     if (lp?.Any() ?? false)
@@ -131,9 +131,9 @@ namespace NewISE.Models.DBModel.dtObj
                 else
                 {
                     //aggiunge i record non annullati
-                    var lp = c.PENSIONE.Where(a => 
-                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
-                            a.ATTIVAZIONIMAGFAM.Any(d=>d.IDATTIVAZIONEMAGFAM==idAttivazioneMagFam && d.ANNULLATO==false))
+                    var lp = c.PENSIONE.Where(a =>
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))
                             .OrderBy(a => a.DATAINIZIO)
                         .ToList();
                     if (lp?.Any() ?? false)
@@ -308,7 +308,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (pcmPrecedente != null && pcmPrecedente.HasValue())
                     {
-                      
+
 
                         PensioneConiugeModel pcmNew = new PensioneConiugeModel()
                         {
@@ -327,7 +327,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //pcmPrecedente.Annulla(db);
                         var pc = db.PENSIONE.Find(pcm.idPensioneConiuge);
                         db.PENSIONE.Remove(pc);
-                        if(db.SaveChanges()<=0)
+                        if (db.SaveChanges() <= 0)
                         {
                             throw new Exception("Errore durante la cancellazione della pensione");
                         }
@@ -385,7 +385,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var pc = db.PENSIONE.Find(pcm.idPensioneConiuge);
                     pc.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
                     //pcm.Annulla(db);
-                    if(db.SaveChanges()<=0)
+                    if (db.SaveChanges() <= 0)
                     {
                         throw new Exception("Errore in cancellazione pensione.");
                     }
@@ -665,7 +665,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (lpcmSuccessivi.Count == 0)
                     {
-                        if(pcmPrecedente.dataInizioValidita==pcm.dataInizioValidita)
+                        if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita)
                         {
                             if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
                             {
@@ -748,7 +748,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 };
                                 SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
                                 #endregion
-                            }else
+                            }
+                            else
                             {
                                 #region creo record
                                 pcmLav = new PensioneConiugeModel()
@@ -766,7 +767,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                         }
                     }
-                
+
                     else
                     {
                         if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita &&
@@ -781,7 +782,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 throw new Exception("Errore durante l'inserimento della pensione.");
                             }
                             #endregion
-                        }else
+                        }
+                        else
                         {
                             pcmSuccessivo = lpcmSuccessivi.First();
 
@@ -853,7 +855,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -910,9 +912,9 @@ namespace NewISE.Models.DBModel.dtObj
                         pcmSuccessivo.NascondiRecord(db);
                         var dataFineCorrente = pcmSuccessivo.dataFineValidita;
                         //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                        foreach(var pcmSucc in lpcmSuccessivi)
+                        foreach (var pcmSucc in lpcmSuccessivi)
                         {
-                            if(cont>1 && pcmSucc.dataInizioValidita==dataFineCorrente.Value.AddDays(1))
+                            if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
                             {
                                 dataFineCorrente = pcmSucc.dataFineValidita;
                                 pcmSucc.NascondiRecord(db);
@@ -1148,7 +1150,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (lpcmInteressati != null && lpcmInteressati.Count > 0)
                     {
-                        
+
 
                         //lpcmInteressati.ForEach(a => a.Annulla(db));
 
@@ -1302,7 +1304,7 @@ namespace NewISE.Models.DBModel.dtObj
                 db.CONIUGE.Find(idConiuge)
                     .PENSIONE.Where(
                         a =>
-                            a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && 
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
                             a.DATAINIZIO <= dtFin &&
                             a.DATAFINE >= dtIni)
                     .OrderBy(a => a.DATAINIZIO)
@@ -1335,7 +1337,7 @@ namespace NewISE.Models.DBModel.dtObj
                     .PENSIONE.Where(
                         a =>
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                            a.NASCONDI==false &&
+                            a.NASCONDI == false &&
                             a.DATAINIZIO <= dtIni)
                     .OrderByDescending(a => a.DATAINIZIO)
                     .ToList();
@@ -1352,8 +1354,8 @@ namespace NewISE.Models.DBModel.dtObj
                             dataFineValidita = e.DATAFINE,
                             dataAggiornamento = e.DATAAGGIORNAMENTO,
                             idStatoRecord = e.IDSTATORECORD,
-                            FK_idPensione=e.FK_IDPENSIONE,
-                            nascondi=e.NASCONDI
+                            FK_idPensione = e.FK_IDPENSIONE,
+                            nascondi = e.NASCONDI
                         }).ToList();
             }
 
@@ -1581,7 +1583,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI==false).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI == false).ToList();
                     if (lpc?.Any() ?? false)
                     {
                         ret = true;
@@ -1611,7 +1613,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam) && a.NASCONDI==false).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam) && a.NASCONDI == false).ToList();
                     if (lpc?.Any() ?? false)
                     {
                         ret = true;
@@ -1704,7 +1706,7 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         pcmSuccessivo = lpcmSuccessivi.First();
-                        if(pcmSuccessivo.dataInizioValidita>dataCessazione)
+                        if (pcmSuccessivo.dataInizioValidita > dataCessazione)
                         {
                             dataCessazione = pcmSuccessivo.dataInizioValidita;
                         }
@@ -1746,7 +1748,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                     if (lpcmSuccessivi.Count == 0)
-                    { 
+                    {
                         if (pcmPrecedente.dataInizioValidita == dataCessazione)
                         {
                             if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)

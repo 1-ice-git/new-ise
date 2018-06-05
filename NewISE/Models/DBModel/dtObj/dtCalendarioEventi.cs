@@ -7,7 +7,8 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.ViewModel;
-using NewISE.Models.DBModel.Enum;
+using NewISE.Models.Enumeratori;
+
 namespace NewISE.Models.DBModel.dtObj
 {
     public class dtCalendarioEventi : IDisposable
@@ -79,7 +80,7 @@ namespace NewISE.Models.DBModel.dtObj
             decimal funzEv = (decimal)fe;
             using (ModelDBISE db = new ModelDBISE())
             {
-               
+
                 var lce =
                     db.CALENDARIOEVENTI.Where(
                         c =>
@@ -203,125 +204,125 @@ namespace NewISE.Models.DBModel.dtObj
                     if (admin)
                     {
                         //Completati
-                        
-                            tmp = (from e in db.CALENDARIOEVENTI
-                                   where e.COMPLETATO == true &&
-                                         e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
-                                         e.DATACOMPLETATO.Value.Year == DateTime.Now.Year &&
-                                         e.ANNULLATO == false
-                                   orderby e.DATACOMPLETATO descending
-                                   select new ElencoElementiHome()
-                                   {
-                                       IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                       dataInizio = e.DATAINIZIOEVENTO,
-                                       dataScadenza = e.DATASCADENZA,
-                                       NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                       Completato = e.COMPLETATO,
-                                       Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                       IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                       dataCompletato = e.DATACOMPLETATO
-                                   }).ToList();
-                        
+
+                        tmp = (from e in db.CALENDARIOEVENTI
+                               where e.COMPLETATO == true &&
+                                     e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
+                                     e.DATACOMPLETATO.Value.Year == DateTime.Now.Year &&
+                                     e.ANNULLATO == false
+                               orderby e.DATACOMPLETATO descending
+                               select new ElencoElementiHome()
+                               {
+                                   IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                   dataInizio = e.DATAINIZIOEVENTO,
+                                   dataScadenza = e.DATASCADENZA,
+                                   NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                   Completato = e.COMPLETATO,
+                                   Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                   IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                   dataCompletato = e.DATACOMPLETATO
+                               }).ToList();
+
                         //Attivi
-                       
-                            tmp1 = (from e in db.CALENDARIOEVENTI
-                                    where e.COMPLETATO == false &&
-                                          e.ANNULLATO == false &&
-                                          e.DATASCADENZA >= DateTime.Now
-                                    orderby e.DATAINIZIOEVENTO descending
-                                    select new ElencoElementiHome()
-                                    {
-                                        IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                        dataInizio = e.DATAINIZIOEVENTO,
-                                        dataScadenza = e.DATASCADENZA,
-                                        NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                        Completato = e.COMPLETATO,
-                                        Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                        IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                        dataCompletato = e.DATACOMPLETATO
-                                    }).ToList();
-                        
+
+                        tmp1 = (from e in db.CALENDARIOEVENTI
+                                where e.COMPLETATO == false &&
+                                      e.ANNULLATO == false &&
+                                      e.DATASCADENZA >= DateTime.Now
+                                orderby e.DATAINIZIOEVENTO descending
+                                select new ElencoElementiHome()
+                                {
+                                    IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                    dataInizio = e.DATAINIZIOEVENTO,
+                                    dataScadenza = e.DATASCADENZA,
+                                    NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                    Completato = e.COMPLETATO,
+                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                    dataCompletato = e.DATACOMPLETATO
+                                }).ToList();
+
                         //Scaduti
-                        
-                            tmp2 = (from e in db.CALENDARIOEVENTI
-                                    where e.COMPLETATO == false &&
-                                          e.ANNULLATO == false &&
-                                          e.DATASCADENZA < DateTime.Now
-                                    orderby e.DATASCADENZA descending
-                                    select new ElencoElementiHome()
-                                    {
-                                        IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                        dataInizio = e.DATAINIZIOEVENTO,
-                                        dataScadenza = e.DATASCADENZA,
-                                        NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                        Completato = e.COMPLETATO,
-                                        Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                        IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                        dataCompletato = e.DATACOMPLETATO
-                                    }).ToList();
-                        
+
+                        tmp2 = (from e in db.CALENDARIOEVENTI
+                                where e.COMPLETATO == false &&
+                                      e.ANNULLATO == false &&
+                                      e.DATASCADENZA < DateTime.Now
+                                orderby e.DATASCADENZA descending
+                                select new ElencoElementiHome()
+                                {
+                                    IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                    dataInizio = e.DATAINIZIOEVENTO,
+                                    dataScadenza = e.DATASCADENZA,
+                                    NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                    Completato = e.COMPLETATO,
+                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                    dataCompletato = e.DATACOMPLETATO
+                                }).ToList();
+
                     }
                     else
                     {
-                        
-                            tmp = (from e in db.CALENDARIOEVENTI
-                                   where e.COMPLETATO == true &&
-                                         e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
-                                         e.DATACOMPLETATO.Value.Year == DateTime.Now.Year &&
-                                         e.ANNULLATO == false &&
-                                         e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
-                                   orderby e.DATACOMPLETATO descending
-                                   select new ElencoElementiHome()
-                                   {
-                                       IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                       dataInizio = e.DATAINIZIOEVENTO,
-                                       dataScadenza = e.DATASCADENZA,
-                                       NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                       Completato = e.COMPLETATO,
-                                       Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                       IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                       dataCompletato = e.DATACOMPLETATO
-                                   }).ToList();
-                        
-                        
-                            tmp1 = (from e in db.CALENDARIOEVENTI
-                                    where e.COMPLETATO == false &&
-                                          e.ANNULLATO == false &&
-                                          e.DATASCADENZA > DateTime.Now &&
-                                          e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
-                                    orderby e.DATASCADENZA descending
-                                    orderby e.DATAINIZIOEVENTO descending
-                                    select new ElencoElementiHome()
-                                    {
-                                        IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                        dataInizio = e.DATAINIZIOEVENTO,
-                                        dataScadenza = e.DATASCADENZA,
-                                        NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                        Completato = e.COMPLETATO,
-                                        Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                        IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                        dataCompletato = e.DATACOMPLETATO
-                                    }).ToList();
-                       
-                       
-                            tmp2 = (from e in db.CALENDARIOEVENTI
-                                    where e.COMPLETATO == false &&
-                                          e.ANNULLATO == false &&
-                                          e.DATASCADENZA < DateTime.Now &&
-                                           e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
-                                    orderby e.DATASCADENZA descending
-                                    select new ElencoElementiHome()
-                                    {
-                                        IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                        dataInizio = e.DATAINIZIOEVENTO,
-                                        dataScadenza = e.DATASCADENZA,
-                                        NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                        Completato = e.COMPLETATO,
-                                        Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                        IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                        dataCompletato = e.DATACOMPLETATO
-                                    }).ToList();
-                        
+
+                        tmp = (from e in db.CALENDARIOEVENTI
+                               where e.COMPLETATO == true &&
+                                     e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
+                                     e.DATACOMPLETATO.Value.Year == DateTime.Now.Year &&
+                                     e.ANNULLATO == false &&
+                                     e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
+                               orderby e.DATACOMPLETATO descending
+                               select new ElencoElementiHome()
+                               {
+                                   IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                   dataInizio = e.DATAINIZIOEVENTO,
+                                   dataScadenza = e.DATASCADENZA,
+                                   NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                   Completato = e.COMPLETATO,
+                                   Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                   IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                   dataCompletato = e.DATACOMPLETATO
+                               }).ToList();
+
+
+                        tmp1 = (from e in db.CALENDARIOEVENTI
+                                where e.COMPLETATO == false &&
+                                      e.ANNULLATO == false &&
+                                      e.DATASCADENZA > DateTime.Now &&
+                                      e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
+                                orderby e.DATASCADENZA descending
+                                orderby e.DATAINIZIOEVENTO descending
+                                select new ElencoElementiHome()
+                                {
+                                    IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                    dataInizio = e.DATAINIZIOEVENTO,
+                                    dataScadenza = e.DATASCADENZA,
+                                    NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                    Completato = e.COMPLETATO,
+                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                    dataCompletato = e.DATACOMPLETATO
+                                }).ToList();
+
+
+                        tmp2 = (from e in db.CALENDARIOEVENTI
+                                where e.COMPLETATO == false &&
+                                      e.ANNULLATO == false &&
+                                      e.DATASCADENZA < DateTime.Now &&
+                                       e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
+                                orderby e.DATASCADENZA descending
+                                select new ElencoElementiHome()
+                                {
+                                    IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                    dataInizio = e.DATAINIZIOEVENTO,
+                                    dataScadenza = e.DATASCADENZA,
+                                    NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                    Completato = e.COMPLETATO,
+                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                    dataCompletato = e.DATACOMPLETATO
+                                }).ToList();
+
                     }
                     switch ((EnumStatoHome)idStatoHome)
                     {

@@ -16,10 +16,11 @@ using System.IO;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
 using NewISE.Models.DBModel;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.Tools
 {
-    public static class EmailTrasferimento 
+    public static class EmailTrasferimento
     {
 
         public static void EmailAnnulla(decimal idTrasferimento, string oggettoMessaggio, string testoMessaggio, ModelDBISE db)
@@ -152,7 +153,7 @@ namespace NewISE.Models.Tools
 
                         }
                     }
-                   
+
                 }
 
             }
@@ -196,7 +197,7 @@ namespace NewISE.Models.Tools
 
                         msgMail.cc.Add(cc);
 
-                        if(chiamante==EnumChiamante.Titoli_Viaggio)
+                        if (chiamante == EnumChiamante.Titoli_Viaggio)
                         {
                             string emailAE = System.Configuration.ConfigurationManager.AppSettings["EmailUfficioGestioneGiuridicaEsviluppo"];
 

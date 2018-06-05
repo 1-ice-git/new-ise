@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using NewISE.Models.DBModel.Enum;
+
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -54,7 +54,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                             a.DATAINIZIOVALIDITA != null &&
                                             a.DATAFINEVALIDITA != Utility.DataFineStop() &&
-                                            a.DATAFINEVALIDITA<cm.dataInizio
+                                            a.DATAFINEVALIDITA < cm.dataInizio
                                             ).OrderByDescending(a => a.IDCONIUGE).ToList();
                         }
                         if (lc_prec?.Any() ?? false)
@@ -342,7 +342,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizio = c.DATAINIZIOVALIDITA,
                             dataFine = c.DATAFINEVALIDITA,
                             dataAggiornamento = c.DATAAGGIORNAMENTO,
-                            FK_idConiuge=c.FK_IDCONIUGE
+                            FK_idConiuge = c.FK_IDCONIUGE
                         };
                     }
 
@@ -375,7 +375,7 @@ namespace NewISE.Models.DBModel.dtObj
                     dataInizio = c.DATAINIZIOVALIDITA,
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
-                    FK_idConiuge=c.FK_IDCONIUGE
+                    FK_idConiuge = c.FK_IDCONIUGE
                 };
             }
 
@@ -404,7 +404,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
                         idStatoRecord = c.IDSTATORECORD,
-                        FK_idConiuge=c.FK_IDCONIUGE
+                        FK_idConiuge = c.FK_IDCONIUGE
                     };
                 }
             }
@@ -588,7 +588,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-       public IList<VariazioneConiugeModel> GetListaAttivazioniConiugeByIdMagFam(decimal idMaggiorazioniFamiliari)
+        public IList<VariazioneConiugeModel> GetListaAttivazioniConiugeByIdMagFam(decimal idMaggiorazioniFamiliari)
         {
             List<VariazioneConiugeModel> lcm = new List<VariazioneConiugeModel>();
             List<CONIUGE> lc = new List<CONIUGE>();
@@ -601,14 +601,14 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                    lc = mf.CONIUGE.Where(y => 
+                    lc = mf.CONIUGE.Where(y =>
                                     y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato
                                 ).ToList();
                     if (lc?.Any() ?? false)
                     {
                         foreach (var c in lc)
                         {
-                            if(db.CONIUGE.Where(a => a.FK_IDCONIUGE == c.IDCONIUGE && a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).Count() == 0)
+                            if (db.CONIUGE.Where(a => a.FK_IDCONIUGE == c.IDCONIUGE && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).Count() == 0)
                             {
 
                                 VariazioneConiugeModel cm = new VariazioneConiugeModel()
@@ -653,7 +653,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     cm.modificato = true;
                                 }
-                                var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato && a.NASCONDI==false).ToList();
+                                var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato && a.NASCONDI == false).ToList();
                                 if (lpc.Count() > 0 && cm.nuovo == false)
                                 {
                                     cm.modificato = true;
@@ -665,7 +665,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                                 //nel caso che sia stata inserita la datafine ed esiste un coniuge successivo
                                 //non è modificabile
-                                if(dtvmf.ConiugeModificabile(c.IDCONIUGE,idMaggiorazioniFamiliari)==false)
+                                if (dtvmf.ConiugeModificabile(c.IDCONIUGE, idMaggiorazioniFamiliari) == false)
                                 //var last_coniuge = lc.First();
                                 //if(c.DATAFINEVALIDITA!=null && c.DATAFINEVALIDITA!=Utility.DataFineStop() && c.IDCONIUGE!=last_coniuge.IDCONIUGE)
                                 {

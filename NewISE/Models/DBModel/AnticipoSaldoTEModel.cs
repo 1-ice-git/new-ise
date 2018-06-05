@@ -5,14 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumTipoAnticipoSaldoTE
-    {
-        Anticipo = 1,
-        Saldo = 2
-    }
+
 
     public class AnticipoSaldoTEModel
     {

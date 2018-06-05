@@ -6,7 +6,7 @@ using NewISE.EF;
 using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.Tools;
-using NewISE.Models.DBModel.Enum;
+
 using NewISE.Models.ViewModel;
 using NewISE.Models.ModelRest;
 using System.Diagnostics;
@@ -129,7 +129,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione per le provvidenze scolastiche.", "ATTIVAZIONIPROVSCOLASTICHE", db, new_atep.IDTRASFPROVSCOLASTICHE, new_atep.IDPROVSCOLASTICHE);
-                
+
             }
 
             return new_atep;
@@ -295,14 +295,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 DocProvvidenzeScolastiche = true;
                             }
 
-                            
+
                         }
 
                     }
                     else
                     {
                         last_atps = this.GetUltimaAttivazioneProvvScolastiche(idTrasfProvScolastiche);
-                        
+
                     }
 
 
@@ -322,7 +322,7 @@ namespace NewISE.Models.DBModel.dtObj
         public void SituazioneProvvScolVariazione(decimal idTrasfProvScolastiche,
                                        out bool richiestaPS,
                                        out bool attivazionePS,
-                                       out bool DocProvvidenzeScolastiche,                                       
+                                       out bool DocProvvidenzeScolastiche,
                                        out bool trasfAnnullato)
         {
             richiestaPS = false;
@@ -335,7 +335,7 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var mf = db.PROVVIDENZESCOLASTICHE.Find(idTrasfProvScolastiche);
-                 
+
 
                     decimal IDstatoTrasf = mf.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
                     if (IDstatoTrasf == (decimal)EnumStatoTraferimento.Annullato)
@@ -362,7 +362,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     if (amf != null && amf.IDPROVSCOLASTICHE > 0)
                                     {
-                                       
+
 
                                         var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche).ToList();
                                         if (ld?.Any() ?? false)
@@ -370,15 +370,15 @@ namespace NewISE.Models.DBModel.dtObj
                                             DocProvvidenzeScolastiche = true;
                                         }
 
-                                        
 
-                                        
+
+
                                     }
                                 }
                             }
                             else
                             {
-                               
+
                                 //comunque esegue i controlli sui dati dell'attivazione
                                 var ld = last_amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche).ToList();
                                 if (ld?.Any() ?? false)
@@ -386,12 +386,12 @@ namespace NewISE.Models.DBModel.dtObj
                                     DocProvvidenzeScolastiche = true;
                                 }
 
-                                
 
-                               
+
+
                             }
                         }
-                       
+
 
                     }
 
@@ -412,7 +412,7 @@ namespace NewISE.Models.DBModel.dtObj
             richiestaPS = false;
             attivazionePS = false;
             DocProvvidenzeScolastiche = false;
-            
+
 
             try
             {
@@ -420,24 +420,24 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var aps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idProvScolastiche);
 
-                    
+
                     if (aps != null && aps.IDPROVSCOLASTICHE > 0)
                     {
                         richiestaPS = aps.NOTIFICARICHIESTA;
                         attivazionePS = aps.ATTIVARICHIESTA;
 
                         var ld = aps.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
-                            if (ld?.Any() ?? false)
-                            {
-                                DocProvvidenzeScolastiche = true;
-                            }
+                        if (ld?.Any() ?? false)
+                        {
+                            DocProvvidenzeScolastiche = true;
+                        }
 
 
                     }
-                       
-                       
 
-                    
+
+
+
                 }
             }
             catch (Exception ex)
@@ -514,7 +514,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     oggettoAttiva,
                                                     messaggioAttiva,
                                                     db);
-                               
+
 
                             }
                         }
@@ -562,7 +562,7 @@ namespace NewISE.Models.DBModel.dtObj
                             DATAAGGIORNAMENTO = DateTime.Now,
                             ANNULLATO = false
 
-                            
+
 
                         };
 
@@ -595,13 +595,13 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         using (dtDipendenti dtd = new dtDipendenti())
                         {
-                            
+
 
 
                             var atps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idProvScolastiche);
-                        atps.NOTIFICARICHIESTA = true;
-                        atps.DATAATTIVAZIONE = DateTime.Now;
-                        atps.DATAAGGIORNAMENTO = DateTime.Now;
+                            atps.NOTIFICARICHIESTA = true;
+                            atps.DATAATTIVAZIONE = DateTime.Now;
+                            atps.DATAAGGIORNAMENTO = DateTime.Now;
 
                             var t = atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO;
 
@@ -611,48 +611,48 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                             var i = db.SaveChanges();
-                        if (i <= 0)
-                        {
-                            throw new Exception("Errore nella fase d'inserimento per la richiesta provvidenze scolastiche.");
-                        }
-                        
-
-                        #region ciclo attivazione documenti PS
-                        var ldps = atps.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
-                        foreach (var dps in ldps)
-                        {
-                            dps.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
-                            if (db.SaveChanges() <= 0)
+                            if (i <= 0)
                             {
-                                throw new Exception("Errore durante il ciclo di attivazione provvidenze scolastiche");
+                                throw new Exception("Errore nella fase d'inserimento per la richiesta provvidenze scolastiche.");
                             }
-                        }
-                        #endregion
 
 
-                        EmailTrasferimento.EmailNotifica(EnumChiamante.ProvvidenzeScolastiche,
-                                                        atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                        Resources.msgEmail.OggettoNotificaProvvidenzeScolastiche,
-                                                        string.Format(Resources.msgEmail.MessaggioNotificaProvvidenzeScolastiche, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")"),
-                                                        db);
-
-                            
-                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                        {
-                            CalendarioEventiModel cem = new CalendarioEventiModel()
+                            #region ciclo attivazione documenti PS
+                            var ldps = atps.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                            foreach (var dps in ldps)
                             {
-                                idFunzioneEventi = EnumFunzioniEventi.RichiestaProvvidenzeScolastiche,
-                                idTrasferimento = atps.PROVVIDENZESCOLASTICHE.IDTRASFPROVSCOLASTICHE,
-                                DataInizioEvento = DateTime.Now.Date,
-                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaProvvidenzeScolastiche)).Date,
-                            };
-
-                            dtce.InsertCalendarioEvento(ref cem, db);
-
-                        }
+                                dps.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante il ciclo di attivazione provvidenze scolastiche");
+                                }
+                            }
+                            #endregion
 
 
-                        db.Database.CurrentTransaction.Commit();
+                            EmailTrasferimento.EmailNotifica(EnumChiamante.ProvvidenzeScolastiche,
+                                                            atps.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                            Resources.msgEmail.OggettoNotificaProvvidenzeScolastiche,
+                                                            string.Format(Resources.msgEmail.MessaggioNotificaProvvidenzeScolastiche, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")"),
+                                                            db);
+
+
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                            {
+                                CalendarioEventiModel cem = new CalendarioEventiModel()
+                                {
+                                    idFunzioneEventi = EnumFunzioniEventi.RichiestaProvvidenzeScolastiche,
+                                    idTrasferimento = atps.PROVVIDENZESCOLASTICHE.IDTRASFPROVSCOLASTICHE,
+                                    DataInizioEvento = DateTime.Now.Date,
+                                    DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaProvvidenzeScolastiche)).Date,
+                                };
+
+                                dtce.InsertCalendarioEvento(ref cem, db);
+
+                            }
+
+
+                            db.Database.CurrentTransaction.Commit();
                         }
                     }
                     catch (Exception ex)
@@ -677,7 +677,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
-                    
+
                     var atep_Old = db.ATTIVAZIONIPROVSCOLASTICHE.Find(idAttivitaProvvidenzeScolastiche);
 
                     if (atep_Old?.IDPROVSCOLASTICHE > 0)
@@ -701,12 +701,12 @@ namespace NewISE.Models.DBModel.dtObj
                                     atep_Old.IDPROVSCOLASTICHE);
 
                                 var idTrasferimento = atep_Old.PROVVIDENZESCOLASTICHE.TRASFERIMENTO.IDTRASFERIMENTO;
-                                
+
                                 ATTIVAZIONIPROVSCOLASTICHE atep_New = new ATTIVAZIONIPROVSCOLASTICHE()
                                 {
                                     IDTRASFPROVSCOLASTICHE = atep_Old.IDTRASFPROVSCOLASTICHE,
                                     NOTIFICARICHIESTA = false,
-                                    
+
                                     ATTIVARICHIESTA = false,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     ANNULLATO = false
@@ -799,7 +799,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                                     Resources.msgEmail.OggettoAnnullaRichiestaProvvidenzeScolastiche,
                                                                     msg,
                                                                     db);
-                                    
+
                                     using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                     {
                                         dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaProvvidenzeScolastiche, db);

@@ -15,6 +15,7 @@ using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
 using System.Web.Helpers;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -196,7 +197,7 @@ namespace NewISE.Controllers
         public ActionResult ElencoUploadTitoliViaggio(decimal idTitoliViaggio)
         {
             try
-            { 
+            {
 
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
@@ -246,7 +247,7 @@ namespace NewISE.Controllers
         public ActionResult ElencoTitoliViaggio(decimal idTitoliViaggio)
         {
             try
-            { 
+            {
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
                     List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
@@ -266,14 +267,14 @@ namespace NewISE.Controllers
                         EnumStatoTraferimento statoTrasferimento = t.idStatoTrasferimento;
                         ViewData.Add("statoTrasferimento", statoTrasferimento);
                     }
- 
+
 
                     bool richiestaEseguita = dttv.richiestaEseguita(idTitoliViaggio);
 
                     ViewData.Add("richiestaEseguita", richiestaEseguita);
                     ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                     ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
-    
+
 
                     return PartialView(ltvm);
                 }
@@ -287,7 +288,7 @@ namespace NewISE.Controllers
         public ActionResult ElencoDocumentiTV(decimal idTipoDocumento, decimal idTitoliViaggio)
         {
             try
-            { 
+            {
                 string DescrizioneTV = "";
 
                 using (dtDocumenti dtd = new dtDocumenti())
@@ -301,14 +302,14 @@ namespace NewISE.Controllers
                 List<AttivazioneTitoliViaggioModel> latvm = new List<AttivazioneTitoliViaggioModel>();
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    latvm = dttv.GetListAttivazioniTitoliViaggioByTipoDoc(idTitoliViaggio,idTipoDocumento).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
+                    latvm = dttv.GetListAttivazioniTitoliViaggioByTipoDoc(idTitoliViaggio, idTipoDocumento).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
 
                     //var i = latvm.Count();
                     var i = 1;
 
                     foreach (var atv in latvm)
                     {
-                        if(dttv.AttivazioneNotificata(atv.idAttivazioneTitoliViaggio))
+                        if (dttv.AttivazioneNotificata(atv.idAttivazioneTitoliViaggio))
                         {
                             richiestaNotificata = true;
                         }
@@ -318,7 +319,8 @@ namespace NewISE.Controllers
                         if (inLavorazione)
                         {
                             lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + atv.dataAggiornamento.ToString() + " (In Lavorazione)", Value = atv.idAttivazioneTitoliViaggio.ToString() });
-                        }else
+                        }
+                        else
                         {
                             lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + atv.dataAggiornamento.ToString(), Value = atv.idAttivazioneTitoliViaggio.ToString() });
                         }
@@ -388,7 +390,7 @@ namespace NewISE.Controllers
         public ActionResult NuovoDocumentoTV(EnumTipoDoc idTipoDocumento, decimal idTitoliViaggio)
         {
             try
-            { 
+            {
                 string titoloPagina = string.Empty;
 
                 using (dtTitoliViaggi dtmf = new dtTitoliViaggi())
@@ -639,7 +641,7 @@ namespace NewISE.Controllers
                         admin = amministratore,
                         richiediAttivazione = richiediAttivazione,
                         richiediNotifica = richiediNotifica,
-                        richiediAnnulla=richiediAnnulla,
+                        richiediAnnulla = richiediAnnulla,
                         inLavorazione = inLavorazione,
                         trasfAnnullato = trasfAnnullato,
                         err = errore

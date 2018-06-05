@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.ViewModel
 {

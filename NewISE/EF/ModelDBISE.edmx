@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DBISE.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AAMAB_PERCMAB">
+          <Key>
+            <PropertyRef Name="IDANTICIPOANNUALEMAB" />
+            <PropertyRef Name="IDPERCMAB" />
+          </Key>
+          <Property Name="IDANTICIPOANNUALEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -95,6 +103,18 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="ANTICIPOANNUALEMAB">
+          <Key>
+            <PropertyRef Name="IDANTICIPOANNUALEMAB" />
+          </Key>
+          <Property Name="IDANTICIPOANNUALEMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ANTICIPOANNUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="FK_IDANTICIPOANNUALEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="ANTICIPOSALDOTE">
           <Key>
             <PropertyRef Name="IDANTICIPOSALDOTE" />
@@ -182,6 +202,7 @@
           </Key>
           <Property Name="IDATTIVAZIONIPASSAPORTI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDPASSAPORTI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDFASEPASSAPORTI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="date" />
           <Property Name="PRATICACONCLUSA" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -189,7 +210,6 @@
           <Property Name="DATAVARIAZIONE" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDFASEPASSAPORTI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ATTIVAZIONIPROVSCOLASTICHE">
           <Key>
@@ -211,6 +231,7 @@
           </Key>
           <Property Name="IDATTIVAZIONEVC" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDVIAGGIOCONGEDO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDFASEVC" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="date" />
           <Property Name="ATTIVARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -218,7 +239,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDATTIVAZIONEVC" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDFASEVC" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ATTIVITAANTICIPI">
           <Key>
@@ -237,7 +257,7 @@
           <Key>
             <PropertyRef Name="IDATTIVITACRUD" />
           </Key>
-          <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONEATTIVITA" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="ATTIVITATEPARTENZA">
@@ -334,15 +354,15 @@
             <PropertyRef Name="IDCANONE" />
           </Key>
           <Property Name="IDCANONE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="IMPORTOCANONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FK_IDCANONE" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
@@ -400,6 +420,7 @@
           <Property Name="IDCONIUGE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTIPOLOGIACONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="COGNOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="CODICEFISCALE" Type="varchar2" MaxLength="16" Nullable="false" />
@@ -407,7 +428,6 @@
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="FK_IDCONIUGE" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CONIUGE_DOC">
           <Key>
@@ -516,13 +536,13 @@
           </Key>
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOMEDOCUMENTO" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="ESTENSIONE" Type="varchar2" MaxLength="5" Nullable="false" />
           <Property Name="FILEDOCUMENTO" Type="blob" Nullable="false" />
           <Property Name="DATAINSERIMENTO" Type="date" Nullable="false" />
           <Property Name="MODIFICATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDDOCUMENTO" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="DOCUMENTO_NORMACALCOLO">
           <Key>
@@ -589,7 +609,7 @@
             <PropertyRef Name="IDELABMAB" />
           </Key>
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGABITAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEDISAGIO" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -693,6 +713,7 @@
           <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTIPOLOGIAFIGLIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="COGNOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="CODICEFISCALE" Type="varchar2" MaxLength="16" Nullable="false" />
@@ -700,7 +721,6 @@
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="FK_IDFIGLI" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="FIGLI_DOC">
           <Key>
@@ -769,7 +789,7 @@
           <Key>
             <PropertyRef Name="IDFUNZIONIEVENTI" />
           </Key>
-          <Property Name="IDFUNZIONIEVENTI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDFUNZIONIEVENTI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOMEFUNZIONE" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="MESSAGGIOEVENTO" Type="varchar2" MaxLength="1000" Nullable="false" />
         </EntityType>
@@ -777,7 +797,7 @@
           <Key>
             <PropertyRef Name="IDGRUPPOFK" />
           </Key>
-          <Property Name="IDGRUPPOFK" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDGRUPPOFK" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="LEGGEFASCIAKM" Type="varchar2" MaxLength="200" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
@@ -931,6 +951,20 @@
           <Property Name="TABELLACOINVOLTA" Type="varchar2" MaxLength="60" />
           <Property Name="IDTABELLACOINVOLTA" Type="number" Precision="38" Scale="0" />
         </EntityType>
+        <EntityType Name="MAB">
+          <Key>
+            <PropertyRef Name="IDMAB" />
+          </Key>
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDMAGABITAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIOMAB" Type="date" Nullable="false" />
+          <Property Name="DATAFINEMAB" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="RINUNCIAMAB" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="FK_IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="MAB_MA">
           <Key>
             <PropertyRef Name="IDMAB" />
@@ -941,12 +975,10 @@
         </EntityType>
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
-            <PropertyRef Name="IDMAB" />
+            <PropertyRef Name="IDMAGABITAZIONE" />
           </Key>
-          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGABITAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="VARIAZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONIANNUALI">
           <Key>
@@ -975,6 +1007,16 @@
           <Property Name="ANNO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="MODIFICHE_MAB">
+          <Key>
+            <PropertyRef Name="IDMODMAB" />
+          </Key>
+          <Property Name="IDMODMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMSGVAR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="VALORE" Type="varchar2" MaxLength="1500" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="MODIFICHEMAGFAM">
           <Key>
             <PropertyRef Name="IDMODMAGFAM" />
@@ -989,7 +1031,7 @@
           <Key>
             <PropertyRef Name="IDNORMACALCOLO" />
           </Key>
-          <Property Name="IDNORMACALCOLO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDNORMACALCOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="RIFERIMENTONORMATIVO" Type="varchar2" MaxLength="1000" Nullable="false" />
         </EntityType>
         <EntityType Name="NOTIFICHE">
@@ -1033,12 +1075,12 @@
           <Property Name="IDPAGATOCONDIVISO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="CONDIVISO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="PAGATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FK_IDPAGATOCONDIVISO" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="PAGCOND_PERCCOND">
@@ -1079,13 +1121,13 @@
             <PropertyRef Name="IDPENSIONE" />
           </Key>
           <Property Name="IDPENSIONE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTOPENSIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAINIZIO" Type="date" Nullable="false" />
           <Property Name="DATAFINE" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="FK_IDPENSIONE" Type="number" Precision="38" Scale="0" />
           <Property Name="NASCONDI" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="FK_IDPENSIONE" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="PERCENTUALEANTICIPOTE">
           <Key>
@@ -1275,34 +1317,24 @@
           <Property Name="RINUNCIAANT" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
         </EntityType>
-        <EntityType Name="RINUNCIAMAB">
-          <Key>
-            <PropertyRef Name="IDRINUNCIAMAB" />
-          </Key>
-          <Property Name="IDRINUNCIAMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="RINUNCIA" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-        </EntityType>
         <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
           <Key>
             <PropertyRef Name="IDRINUNCIAMAGFAM" />
           </Key>
           <Property Name="IDRINUNCIAMAGFAM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="RINUNCIAMAGGIORAZIONI" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAINI" Type="date" />
           <Property Name="DATAFINE" Type="date" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FK_IDRINUNCIAMAGFAM" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="RUOLOACCESSO">
           <Key>
             <PropertyRef Name="IDRUOLOACCESSO" />
           </Key>
-          <Property Name="IDRUOLOACCESSO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDRUOLOACCESSO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRUOLO" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="RUOLODIPENDENTE">
@@ -1321,7 +1353,7 @@
           <Key>
             <PropertyRef Name="IDRUOLO" />
           </Key>
-          <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRUOLO" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="SELECTDOCVC">
@@ -1357,14 +1389,14 @@
           <Key>
             <PropertyRef Name="IDSTATORECORD" />
           </Key>
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="STATO" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="STATOTRASFERIMENTO">
           <Key>
             <PropertyRef Name="IDSTATOTRASFERIMENTO" />
           </Key>
-          <Property Name="IDSTATOTRASFERIMENTO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDSTATOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="T_RC">
@@ -1386,15 +1418,15 @@
           <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABTRASPEFFETTI" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESERIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNORIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ALIQUOTAFISCALE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INSERIMENTOMANUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -1448,7 +1480,7 @@
           <Key>
             <PropertyRef Name="IDTIPOANTICIPOTE" />
           </Key>
-          <Property Name="IDTIPOANTICIPOTE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTIPOANTICIPOTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TIPOANTICIPO" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPODOCUMENTI">
@@ -1469,28 +1501,28 @@
           <Key>
             <PropertyRef Name="IDTIPOLOGIAANTICIPI" />
           </Key>
-          <Property Name="IDTIPOLOGIAANTICIPI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTIPOLOGIAANTICIPI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCTIPOANTICIPO" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLOGIACOAN">
           <Key>
             <PropertyRef Name="IDTIPOCOAN" />
           </Key>
-          <Property Name="IDTIPOCOAN" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTIPOCOAN" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLOGIACONIUGE">
           <Key>
             <PropertyRef Name="IDTIPOLOGIACONIUGE" />
           </Key>
-          <Property Name="IDTIPOLOGIACONIUGE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTIPOLOGIACONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TIPOLOGIACONIUGE" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLOGIAFIGLIO">
           <Key>
             <PropertyRef Name="IDTIPOLOGIAFIGLIO" />
           </Key>
-          <Property Name="IDTIPOLOGIAFIGLIO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTIPOLOGIAFIGLIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TIPOLOGIAFIGLIO" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLOGIAMODIFICHE">
@@ -1512,21 +1544,21 @@
           <Key>
             <PropertyRef Name="IDTIPOREGOLACALCOLO" />
           </Key>
-          <Property Name="IDTIPOREGOLACALCOLO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTIPOREGOLACALCOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONEREGOLA" Type="varchar2" MaxLength="250" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOSOSPENSIONE">
           <Key>
             <PropertyRef Name="IDTIPOSOSPENSIONE" />
           </Key>
-          <Property Name="IDTIPOSOSPENSIONE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTIPOSOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOTRASFERIMENTO">
           <Key>
             <PropertyRef Name="IDTIPOTRASFERIMENTO" />
           </Key>
-          <Property Name="IDTIPOTRASFERIMENTO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTIPOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TIPOTRASFERIMENTO" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOVOCE">
@@ -1625,20 +1657,6 @@
           <Property Name="DESCRIZIONEVALUTA" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="VALUTAUFFICIALE" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="VARIAZIONIMAB">
-          <Key>
-            <PropertyRef Name="IDVARIAZIONIMAB" />
-          </Key>
-          <Property Name="IDVARIAZIONIMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIOMAB" Type="date" Nullable="false" />
-          <Property Name="DATAFINEMAB" Type="date" Nullable="false" />
-          <Property Name="ANTICIPOANNUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="FK_IDVARIAZIONIMAB" Type="number" Precision="38" Scale="0" />
-        </EntityType>
         <EntityType Name="VIAGGICONGEDO">
           <Key>
             <PropertyRef Name="IDVIAGGIOCONGEDO" />
@@ -1646,19 +1664,11 @@
           <Property Name="IDVIAGGIOCONGEDO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="VMAB_PMAB">
-          <Key>
-            <PropertyRef Name="IDVARIAZIONIMAB" />
-            <PropertyRef Name="IDPERCMAB" />
-          </Key>
-          <Property Name="IDVARIAZIONIMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDPERCMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="VOCI">
           <Key>
             <PropertyRef Name="IDVOCI" />
           </Key>
-          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTIPOLIQUIDAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPOVOCE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CODICEVOCE" Type="varchar2" MaxLength="30" Nullable="false" />
@@ -1690,6 +1700,34 @@
             </Principal>
             <Dependent Role="RINUNCIAANTICIPI">
               <PropertyRef Name="IDATTIVITAANTICIPI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AAMAB_AAMAB">
+          <End Role="ANTICIPOANNUALEMAB" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANTICIPOANNUALEMAB1" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTICIPOANNUALEMAB">
+              <PropertyRef Name="IDANTICIPOANNUALEMAB" />
+            </Principal>
+            <Dependent Role="ANTICIPOANNUALEMAB1">
+              <PropertyRef Name="FK_IDANTICIPOANNUALEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AAMAB_AAMABPMAB">
+          <End Role="ANTICIPOANNUALEMAB" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AAMAB_PERCMAB" Type="Self.AAMAB_PERCMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTICIPOANNUALEMAB">
+              <PropertyRef Name="IDANTICIPOANNUALEMAB" />
+            </Principal>
+            <Dependent Role="AAMAB_PERCMAB">
+              <PropertyRef Name="IDANTICIPOANNUALEMAB" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1744,6 +1782,20 @@
             </Principal>
             <Dependent Role="ATT_ADF">
               <PropertyRef Name="IDALTRIDATIFAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ADF_ADF">
+          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ALTRIDATIFAM1" Type="Self.ALTRIDATIFAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALTRIDATIFAM">
+              <PropertyRef Name="IDALTRIDATIFAM" />
+            </Principal>
+            <Dependent Role="ALTRIDATIFAM1">
+              <PropertyRef Name="FK_IDALTRIDATIFAM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1817,6 +1869,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_AMAB_MAB">
+          <End Role="ATTIVAZIONEMAB" Type="Self.ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MAB" Type="Self.MAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="MAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AMAB_MAMAB">
+          <End Role="ATTIVAZIONEMAB" Type="Self.ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MODIFICHE_MAB" Type="Self.MODIFICHE_MAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="MODIFICHE_MAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_AMAB_PCMAB">
           <End Role="ATTIVAZIONEMAB" Type="Self.ATTIVAZIONEMAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1831,30 +1911,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_AMAB_RMAB">
-          <End Role="ATTIVAZIONEMAB" Type="Self.ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="RINUNCIAMAB" Type="Self.RINUNCIAMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="RINUNCIAMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_AMAB_VMAB">
           <End Role="ATTIVAZIONEMAB" Type="Self.ATTIVAZIONEMAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VARIAZIONIMAB" Type="Self.VARIAZIONIMAB" Multiplicity="*" />
+          <End Role="ANTICIPOANNUALEMAB" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ATTIVAZIONEMAB">
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Principal>
-            <Dependent Role="VARIAZIONIMAB">
+            <Dependent Role="ANTICIPOANNUALEMAB">
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -2080,6 +2146,20 @@
             </Principal>
             <Dependent Role="RINUNCIA_TE_P">
               <PropertyRef Name="IDATEPARTENZA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ATER_DATER">
+          <End Role="ATTIVITATERIENTRO" Type="Self.ATTIVITATERIENTRO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DOC_ATER" Type="Self.DOC_ATER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVITATERIENTRO">
+              <PropertyRef Name="IDATERIENTRO" />
+            </Principal>
+            <Dependent Role="DOC_ATER">
+              <PropertyRef Name="IDATERIENTRO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2979,6 +3059,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_ETE_T">
+          <End Role="ELABTRASPEFFETTI" Type="Self.ELABTRASPEFFETTI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABTRASPEFFETTI">
+              <PropertyRef Name="IDELABTRASPEFFETTI" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDELABTRASPEFFETTI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_F_ADFF">
           <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3301,6 +3395,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_I_MAB">
+          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="INDENNITA">
+              <PropertyRef Name="IDTRASFINDENNITA" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAGABITAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_IB_IBR">
           <End Role="INDENNITABASE" Type="Self.INDENNITABASE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3441,13 +3549,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAB_AAMAB">
+          <End Role="MAB" Type="Self.MAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ANTICIPOANNUALEMAB" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAB">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="ANTICIPOANNUALEMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MAB_CMAB">
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+          <End Role="MAB" Type="Self.MAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="CANONEMAB" Type="Self.CANONEMAB" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
+            <Principal Role="MAB">
               <PropertyRef Name="IDMAB" />
             </Principal>
             <Dependent Role="CANONEMAB">
@@ -3455,27 +3577,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_MAB_EMAB">
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+        <Association Name="R_MAB_MAB">
+          <End Role="MAB" Type="Self.MAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="*" />
+          <End Role="MAB1" Type="Self.MAB" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
+            <Principal Role="MAB">
               <PropertyRef Name="IDMAB" />
             </Principal>
-            <Dependent Role="ELABMAB">
-              <PropertyRef Name="IDMAB" />
+            <Dependent Role="MAB1">
+              <PropertyRef Name="FK_IDMAB" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="R_MAB_MABMA">
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+          <End Role="MAB" Type="Self.MAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="MAB_MA" Type="Self.MAB_MA" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
+            <Principal Role="MAB">
               <PropertyRef Name="IDMAB" />
             </Principal>
             <Dependent Role="MAB_MA">
@@ -3484,43 +3606,15 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_MAB_PCMAB">
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+          <End Role="MAB" Type="Self.MAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="PAGATOCONDIVISOMAB" Type="Self.PAGATOCONDIVISOMAB" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
+            <Principal Role="MAB">
               <PropertyRef Name="IDMAB" />
             </Principal>
             <Dependent Role="PAGATOCONDIVISOMAB">
-              <PropertyRef Name="IDMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MAB_RMAB">
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="RINUNCIAMAB" Type="Self.RINUNCIAMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDMAB" />
-            </Principal>
-            <Dependent Role="RINUNCIAMAB">
-              <PropertyRef Name="IDMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MAB_VMAB">
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="VARIAZIONIMAB" Type="Self.VARIAZIONIMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDMAB" />
-            </Principal>
-            <Dependent Role="VARIAZIONIMAB">
               <PropertyRef Name="IDMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -3536,6 +3630,34 @@
             </Principal>
             <Dependent Role="TEORICI">
               <PropertyRef Name="IDMESEANNOELAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MAGABI_EMAB">
+          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAGABITAZIONE" />
+            </Principal>
+            <Dependent Role="ELABMAB">
+              <PropertyRef Name="IDMAGABITAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MAGABI_MAB">
+          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MAB" Type="Self.MAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAGABITAZIONE" />
+            </Principal>
+            <Dependent Role="MAB">
+              <PropertyRef Name="IDMAGABITAZIONE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3859,16 +3981,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_PMAB_VMABPMAB">
+        <Association Name="R_PMAB_AAMABPMAB">
           <End Role="PERCENTUALEMAB" Type="Self.PERCENTUALEMAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VMAB_PMAB" Type="Self.VMAB_PMAB" Multiplicity="*" />
+          <End Role="AAMAB_PERCMAB" Type="Self.AAMAB_PERCMAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PERCENTUALEMAB">
               <PropertyRef Name="IDPERCMAB" />
             </Principal>
-            <Dependent Role="VMAB_PMAB">
+            <Dependent Role="AAMAB_PERCMAB">
               <PropertyRef Name="IDPERCMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -4111,6 +4233,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_SR_ADF">
+          <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ALTRIDATIFAM" Type="Self.ALTRIDATIFAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Principal>
+            <Dependent Role="ALTRIDATIFAM">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_SR_C">
           <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4121,6 +4257,20 @@
               <PropertyRef Name="IDSTATORECORD" />
             </Principal>
             <Dependent Role="CONIUGE">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_SR_CMAB">
+          <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CANONEMAB" Type="Self.CANONEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Principal>
+            <Dependent Role="CANONEMAB">
               <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
@@ -4149,6 +4299,20 @@
               <PropertyRef Name="IDSTATORECORD" />
             </Principal>
             <Dependent Role="FIGLI">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_SR_MAB">
+          <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MAB" Type="Self.MAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Principal>
+            <Dependent Role="MAB">
               <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
@@ -4199,12 +4363,12 @@
           <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="VARIAZIONIMAB" Type="Self.VARIAZIONIMAB" Multiplicity="*" />
+          <End Role="ANTICIPOANNUALEMAB" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="STATORECORD">
               <PropertyRef Name="IDSTATORECORD" />
             </Principal>
-            <Dependent Role="VARIAZIONIMAB">
+            <Dependent Role="ANTICIPOANNUALEMAB">
               <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
@@ -4317,20 +4481,6 @@
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Principal>
             <Dependent Role="LOGATTIVITA">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_MAB">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -4601,6 +4751,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_TER_ATER">
+          <End Role="TERIENTRO" Type="Self.TERIENTRO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ATTIVITATERIENTRO" Type="Self.ATTIVITATERIENTRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TERIENTRO">
+              <PropertyRef Name="IDTERIENTRO" />
+            </Principal>
+            <Dependent Role="ATTIVITATERIENTRO">
+              <PropertyRef Name="IDTERIENTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TER_ETE">
           <End Role="TERIENTRO" Type="Self.TERIENTRO" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -4710,6 +4874,20 @@
             </Principal>
             <Dependent Role="VOCI">
               <PropertyRef Name="IDTIPOLIQUIDAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TM_MMAB">
+          <End Role="TIPOLOGIAMODIFICHE" Type="Self.TIPOLOGIAMODIFICHE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MODIFICHE_MAB" Type="Self.MODIFICHE_MAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOLOGIAMODIFICHE">
+              <PropertyRef Name="IDMSGVAR" />
+            </Principal>
+            <Dependent Role="MODIFICHE_MAB">
+              <PropertyRef Name="IDMSGVAR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5091,47 +5269,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_VMAB_VMAB">
-          <End Role="VARIAZIONIMAB" Type="Self.VARIAZIONIMAB" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="VARIAZIONIMAB1" Type="Self.VARIAZIONIMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VARIAZIONIMAB">
-              <PropertyRef Name="IDVARIAZIONIMAB" />
-            </Principal>
-            <Dependent Role="VARIAZIONIMAB1">
-              <PropertyRef Name="FK_IDVARIAZIONIMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_VMAB_VMABPMAB">
-          <End Role="VARIAZIONIMAB" Type="Self.VARIAZIONIMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="VMAB_PMAB" Type="Self.VMAB_PMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VARIAZIONIMAB">
-              <PropertyRef Name="IDVARIAZIONIMAB" />
-            </Principal>
-            <Dependent Role="VMAB_PMAB">
-              <PropertyRef Name="IDVARIAZIONIMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="RELATIONSHIP10">
-          <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1" />
-          <End Role="CANONEMAB" Type="Self.CANONEMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="STATORECORD">
-              <PropertyRef Name="IDSTATORECORD" />
-            </Principal>
-            <Dependent Role="CANONEMAB">
-              <PropertyRef Name="IDSTATORECORD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="DBISEStoreContainer">
+          <EntitySet Name="AAMAB_PERCMAB" EntityType="Self.AAMAB_PERCMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ADF_C" EntityType="Self.ADF_C" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ADF_F" EntityType="Self.ADF_F" Schema="ISESIM" store:Type="Tables" />
@@ -5141,6 +5280,7 @@
           <EntitySet Name="AMF_C" EntityType="Self.AMF_C" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="AMF_F" EntityType="Self.AMF_F" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ANTICIPI" EntityType="Self.ANTICIPI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ANTICIPOANNUALEMAB" EntityType="Self.ANTICIPOANNUALEMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ANTICIPOSALDOTE" EntityType="Self.ANTICIPOSALDOTE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="APS_DOC" EntityType="Self.APS_DOC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ATT_ADF" EntityType="Self.ATT_ADF" Schema="ISESIM" store:Type="Tables" />
@@ -5221,11 +5361,13 @@
           <EntitySet Name="LIVELLI" EntityType="Self.LIVELLI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="LIVELLIDIPENDENTI" EntityType="Self.LIVELLIDIPENDENTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="LOGATTIVITA" EntityType="Self.LOGATTIVITA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MAB" EntityType="Self.MAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAB_MA" EntityType="Self.MAB_MA" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="Self.MAGGIORAZIONEABITAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="Self.MAGGIORAZIONIFAMILIARI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MESEANNOELABORAZIONE" EntityType="Self.MESEANNOELABORAZIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MODIFICHE_MAB" EntityType="Self.MODIFICHE_MAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="MODIFICHEMAGFAM" EntityType="Self.MODIFICHEMAGFAM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="NOTIFICHE" EntityType="Self.NOTIFICHE" Schema="ISESIM" store:Type="Tables" />
@@ -5255,7 +5397,6 @@
           <EntitySet Name="RINUNCIA_TE_P" EntityType="Self.RINUNCIA_TE_P" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RINUNCIA_TE_R" EntityType="Self.RINUNCIA_TE_R" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RINUNCIAANTICIPI" EntityType="Self.RINUNCIAANTICIPI" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="RINUNCIAMAB" EntityType="Self.RINUNCIAMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="Self.RINUNCIAMAGGIORAZIONIFAMILIARI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RUOLOACCESSO" EntityType="Self.RUOLOACCESSO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RUOLODIPENDENTE" EntityType="Self.RUOLODIPENDENTE" Schema="ISESIM" store:Type="Tables" />
@@ -5295,9 +5436,7 @@
           <EntitySet Name="UTENTIAUTORIZZATI" EntityType="Self.UTENTIAUTORIZZATI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="VALUTAUFFICIO" EntityType="Self.VALUTAUFFICIO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="VALUTE" EntityType="Self.VALUTE" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="VARIAZIONIMAB" EntityType="Self.VARIAZIONIMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="VIAGGICONGEDO" EntityType="Self.VIAGGICONGEDO" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="VMAB_PMAB" EntityType="Self.VMAB_PMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="VOCI" EntityType="Self.VOCI" Schema="ISESIM" store:Type="Tables" />
           <AssociationSet Name="R_AA_A" Association="Self.R_AA_A">
             <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
@@ -5306,6 +5445,14 @@
           <AssociationSet Name="R_AA_RA" Association="Self.R_AA_RA">
             <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
             <End Role="RINUNCIAANTICIPI" EntitySet="RINUNCIAANTICIPI" />
+          </AssociationSet>
+          <AssociationSet Name="R_AAMAB_AAMAB" Association="Self.R_AAMAB_AAMAB">
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
+            <End Role="ANTICIPOANNUALEMAB1" EntitySet="ANTICIPOANNUALEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_AAMAB_AAMABPMAB" Association="Self.R_AAMAB_AAMABPMAB">
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
+            <End Role="AAMAB_PERCMAB" EntitySet="AAMAB_PERCMAB" />
           </AssociationSet>
           <AssociationSet Name="R_AC_IA" Association="Self.R_AC_IA">
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
@@ -5322,6 +5469,10 @@
           <AssociationSet Name="R_ADF_AADF" Association="Self.R_ADF_AADF">
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
             <End Role="ATT_ADF" EntitySet="ATT_ADF" />
+          </AssociationSet>
+          <AssociationSet Name="R_ADF_ADF" Association="Self.R_ADF_ADF">
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="ALTRIDATIFAM1" EntitySet="ALTRIDATIFAM" />
           </AssociationSet>
           <AssociationSet Name="R_ADF_ADFC" Association="Self.R_ADF_ADFC">
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
@@ -5343,17 +5494,21 @@
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_AMAB_MAB" Association="Self.R_AMAB_MAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="MAB" EntitySet="MAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_AMAB_MAMAB" Association="Self.R_AMAB_MAMAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="MODIFICHE_MAB" EntitySet="MODIFICHE_MAB" />
+          </AssociationSet>
           <AssociationSet Name="R_AMAB_PCMAB" Association="Self.R_AMAB_PCMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_AMAB_RMAB" Association="Self.R_AMAB_RMAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="RINUNCIAMAB" EntitySet="RINUNCIAMAB" />
-          </AssociationSet>
           <AssociationSet Name="R_AMAB_VMAB" Association="Self.R_AMAB_VMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
           </AssociationSet>
           <AssociationSet Name="R_AMF_AADF" Association="Self.R_AMF_AADF">
             <End Role="ATTIVAZIONIMAGFAM" EntitySet="ATTIVAZIONIMAGFAM" />
@@ -5418,6 +5573,10 @@
           <AssociationSet Name="R_ATEP_RTEP" Association="Self.R_ATEP_RTEP">
             <End Role="ATTIVITATEPARTENZA" EntitySet="ATTIVITATEPARTENZA" />
             <End Role="RINUNCIA_TE_P" EntitySet="RINUNCIA_TE_P" />
+          </AssociationSet>
+          <AssociationSet Name="R_ATER_DATER" Association="Self.R_ATER_DATER">
+            <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
+            <End Role="DOC_ATER" EntitySet="DOC_ATER" />
           </AssociationSet>
           <AssociationSet Name="R_ATER_RTER" Association="Self.R_ATER_RTER">
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
@@ -5675,6 +5834,10 @@
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
+          <AssociationSet Name="R_ETE_T" Association="Self.R_ETE_T">
+            <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
           <AssociationSet Name="R_F_ADFF" Association="Self.R_F_ADFF">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="ADF_F" EntitySet="ADF_F" />
@@ -5767,6 +5930,10 @@
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="INDENNITA_TFR" EntitySet="INDENNITA_TFR" />
           </AssociationSet>
+          <AssociationSet Name="R_I_MAB" Association="Self.R_I_MAB">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
           <AssociationSet Name="R_IB_IBR" Association="Self.R_IB_IBR">
             <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
             <End Role="IB_R" EntitySet="IB_R" />
@@ -5807,33 +5974,37 @@
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
             <End Role="MAB_MA" EntitySet="MAB_MA" />
           </AssociationSet>
+          <AssociationSet Name="R_MAB_AAMAB" Association="Self.R_MAB_AAMAB">
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_MAB_CMAB" Association="Self.R_MAB_CMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="MAB" EntitySet="MAB" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_MAB_EMAB" Association="Self.R_MAB_EMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="ELABMAB" EntitySet="ELABMAB" />
+          <AssociationSet Name="R_MAB_MAB" Association="Self.R_MAB_MAB">
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="MAB1" EntitySet="MAB" />
           </AssociationSet>
           <AssociationSet Name="R_MAB_MABMA" Association="Self.R_MAB_MABMA">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="MAB" EntitySet="MAB" />
             <End Role="MAB_MA" EntitySet="MAB_MA" />
           </AssociationSet>
           <AssociationSet Name="R_MAB_PCMAB" Association="Self.R_MAB_PCMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="MAB" EntitySet="MAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_MAB_RMAB" Association="Self.R_MAB_RMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="RINUNCIAMAB" EntitySet="RINUNCIAMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_MAB_VMAB" Association="Self.R_MAB_VMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
           </AssociationSet>
           <AssociationSet Name="R_MAE_T" Association="Self.R_MAE_T">
             <End Role="MESEANNOELABORAZIONE" EntitySet="MESEANNOELABORAZIONE" />
             <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAGABI_EMAB" Association="Self.R_MAGABI_EMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAGABI_MAB" Association="Self.R_MAGABI_MAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="MAB" EntitySet="MAB" />
           </AssociationSet>
           <AssociationSet Name="R_MF_AMF" Association="Self.R_MF_AMF">
             <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
@@ -5927,9 +6098,9 @@
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
             <End Role="RIC_PFKM" EntitySet="RIC_PFKM" />
           </AssociationSet>
-          <AssociationSet Name="R_PMAB_VMABPMAB" Association="Self.R_PMAB_VMABPMAB">
+          <AssociationSet Name="R_PMAB_AAMABPMAB" Association="Self.R_PMAB_AAMABPMAB">
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
-            <End Role="VMAB_PMAB" EntitySet="VMAB_PMAB" />
+            <End Role="AAMAB_PERCMAB" EntitySet="AAMAB_PERCMAB" />
           </AssociationSet>
           <AssociationSet Name="R_PMF_PMF_F" Association="Self.R_PMF_PMF_F">
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
@@ -5999,9 +6170,17 @@
             <End Role="RUOLOACCESSO" EntitySet="RUOLOACCESSO" />
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
           </AssociationSet>
+          <AssociationSet Name="R_SR_ADF" Association="Self.R_SR_ADF">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+          </AssociationSet>
           <AssociationSet Name="R_SR_C" Association="Self.R_SR_C">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
             <End Role="CONIUGE" EntitySet="CONIUGE" />
+          </AssociationSet>
+          <AssociationSet Name="R_SR_CMAB" Association="Self.R_SR_CMAB">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
+            <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
           <AssociationSet Name="R_SR_D" Association="Self.R_SR_D">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
@@ -6010,6 +6189,10 @@
           <AssociationSet Name="R_SR_F" Association="Self.R_SR_F">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
             <End Role="FIGLI" EntitySet="FIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="R_SR_MAB" Association="Self.R_SR_MAB">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
+            <End Role="MAB" EntitySet="MAB" />
           </AssociationSet>
           <AssociationSet Name="R_SR_P" Association="Self.R_SR_P">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
@@ -6025,7 +6208,7 @@
           </AssociationSet>
           <AssociationSet Name="R_SR_VMAB" Association="Self.R_SR_VMAB">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
           </AssociationSet>
           <AssociationSet Name="R_ST_T" Association="Self.R_ST_T">
             <End Role="STATOTRASFERIMENTO" EntitySet="STATOTRASFERIMENTO" />
@@ -6058,10 +6241,6 @@
           <AssociationSet Name="R_T_LA" Association="Self.R_T_LA">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_MAB" Association="Self.R_T_MAB">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
           <AssociationSet Name="R_T_MF" Association="Self.R_T_MF">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -6139,6 +6318,10 @@
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
             <End Role="TEP_PATE" EntitySet="TEP_PATE" />
           </AssociationSet>
+          <AssociationSet Name="R_TER_ATER" Association="Self.R_TER_ATER">
+            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
+            <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
+          </AssociationSet>
           <AssociationSet Name="R_TER_ETE" Association="Self.R_TER_ETE">
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
             <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
@@ -6170,6 +6353,10 @@
           <AssociationSet Name="R_TL_V" Association="Self.R_TL_V">
             <End Role="TIPOLIQUIDAZIONE" EntitySet="TIPOLIQUIDAZIONE" />
             <End Role="VOCI" EntitySet="VOCI" />
+          </AssociationSet>
+          <AssociationSet Name="R_TM_MMAB" Association="Self.R_TM_MMAB">
+            <End Role="TIPOLOGIAMODIFICHE" EntitySet="TIPOLOGIAMODIFICHE" />
+            <End Role="MODIFICHE_MAB" EntitySet="MODIFICHE_MAB" />
           </AssociationSet>
           <AssociationSet Name="R_TM_MMF" Association="Self.R_TM_MMF">
             <End Role="TIPOLOGIAMODIFICHE" EntitySet="TIPOLOGIAMODIFICHE" />
@@ -6279,18 +6466,6 @@
             <End Role="VIAGGICONGEDO" EntitySet="VIAGGICONGEDO" />
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
           </AssociationSet>
-          <AssociationSet Name="R_VMAB_VMAB" Association="Self.R_VMAB_VMAB">
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
-            <End Role="VARIAZIONIMAB1" EntitySet="VARIAZIONIMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_VMAB_VMABPMAB" Association="Self.R_VMAB_VMABPMAB">
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
-            <End Role="VMAB_PMAB" EntitySet="VMAB_PMAB" />
-          </AssociationSet>
-          <AssociationSet Name="RELATIONSHIP10" Association="Self.RELATIONSHIP10">
-            <End Role="STATORECORD" EntitySet="STATORECORD" />
-            <End Role="CANONEMAB" EntitySet="CANONEMAB" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -6301,6 +6476,7 @@
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="DBISE.ALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="DBISE.ALTRIDATIFAM" />
           <EntitySet Name="ANTICIPI" EntityType="DBISE.ANTICIPI" />
+          <EntitySet Name="ANTICIPOANNUALEMAB" EntityType="DBISE.ANTICIPOANNUALEMAB" />
           <EntitySet Name="ANTICIPOSALDOTE" EntityType="DBISE.ANTICIPOSALDOTE" />
           <EntitySet Name="ATTIVAZIONEMAB" EntityType="DBISE.ATTIVAZIONEMAB" />
           <EntitySet Name="ATTIVAZIONETITOLIVIAGGIO" EntityType="DBISE.ATTIVAZIONETITOLIVIAGGIO" />
@@ -6323,7 +6499,6 @@
           <EntitySet Name="CONT_OA" EntityType="DBISE.CONT_OA" />
           <EntitySet Name="DESTINATARI" EntityType="DBISE.DESTINATARI" />
           <EntitySet Name="DIPENDENTI" EntityType="DBISE.DIPENDENTI" />
-          <EntitySet Name="DOC_ATER" EntityType="DBISE.DOC_ATER" />
           <EntitySet Name="DOCUMENTI" EntityType="DBISE.DOCUMENTI" />
           <EntitySet Name="ELABINDENNITA" EntityType="DBISE.ELABINDENNITA" />
           <EntitySet Name="ELABINDSISTEMAZIONE" EntityType="DBISE.ELABINDSISTEMAZIONE" />
@@ -6347,10 +6522,12 @@
           <EntitySet Name="LIVELLI" EntityType="DBISE.LIVELLI" />
           <EntitySet Name="LIVELLIDIPENDENTI" EntityType="DBISE.LIVELLIDIPENDENTI" />
           <EntitySet Name="LOGATTIVITA" EntityType="DBISE.LOGATTIVITA" />
+          <EntitySet Name="MAB" EntityType="DBISE.MAB" />
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="DBISE.MAGGIORAZIONEABITAZIONE" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="DBISE.MAGGIORAZIONIANNUALI" />
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="DBISE.MAGGIORAZIONIFAMILIARI" />
           <EntitySet Name="MESEANNOELABORAZIONE" EntityType="DBISE.MESEANNOELABORAZIONE" />
+          <EntitySet Name="MODIFICHE_MAB" EntityType="DBISE.MODIFICHE_MAB" />
           <EntitySet Name="MODIFICHEMAGFAM" EntityType="DBISE.MODIFICHEMAGFAM" />
           <EntitySet Name="NORMACALCOLO" EntityType="DBISE.NORMACALCOLO" />
           <EntitySet Name="NOTIFICHE" EntityType="DBISE.NOTIFICHE" />
@@ -6374,7 +6551,6 @@
           <EntitySet Name="RINUNCIA_TE_P" EntityType="DBISE.RINUNCIA_TE_P" />
           <EntitySet Name="RINUNCIA_TE_R" EntityType="DBISE.RINUNCIA_TE_R" />
           <EntitySet Name="RINUNCIAANTICIPI" EntityType="DBISE.RINUNCIAANTICIPI" />
-          <EntitySet Name="RINUNCIAMAB" EntityType="DBISE.RINUNCIAMAB" />
           <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="DBISE.RINUNCIAMAGGIORAZIONIFAMILIARI" />
           <EntitySet Name="RUOLOACCESSO" EntityType="DBISE.RUOLOACCESSO" />
           <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISE.RUOLODIPENDENTE" />
@@ -6408,7 +6584,6 @@
           <EntitySet Name="UTENTIAUTORIZZATI" EntityType="DBISE.UTENTIAUTORIZZATI" />
           <EntitySet Name="VALUTAUFFICIO" EntityType="DBISE.VALUTAUFFICIO" />
           <EntitySet Name="VALUTE" EntityType="DBISE.VALUTE" />
-          <EntitySet Name="VARIAZIONIMAB" EntityType="DBISE.VARIAZIONIMAB" />
           <EntitySet Name="VIAGGICONGEDO" EntityType="DBISE.VIAGGICONGEDO" />
           <EntitySet Name="VOCI" EntityType="DBISE.VOCI" />
           <AssociationSet Name="R_UL_C" Association="DBISE.R_UL_C">
@@ -6419,6 +6594,14 @@
             <End Role="TIPOALIQUOTECONTRIBUTIVE" EntitySet="TIPOALIQUOTECONTRIBUTIVE" />
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
           </AssociationSet>
+          <AssociationSet Name="R_ADF_ADF" Association="DBISE.R_ADF_ADF">
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+            <End Role="ALTRIDATIFAM1" EntitySet="ALTRIDATIFAM" />
+          </AssociationSet>
+          <AssociationSet Name="R_SR_ADF" Association="DBISE.R_SR_ADF">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
+            <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+          </AssociationSet>
           <AssociationSet Name="R_AA_A" Association="DBISE.R_AA_A">
             <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
             <End Role="ANTICIPI" EntitySet="ANTICIPI" />
@@ -6426,6 +6609,22 @@
           <AssociationSet Name="R_TA_A" Association="DBISE.R_TA_A">
             <End Role="TIPOLOGIAANTICIPI" EntitySet="TIPOLOGIAANTICIPI" />
             <End Role="ANTICIPI" EntitySet="ANTICIPI" />
+          </AssociationSet>
+          <AssociationSet Name="R_AAMAB_AAMAB" Association="DBISE.R_AAMAB_AAMAB">
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
+            <End Role="ANTICIPOANNUALEMAB1" EntitySet="ANTICIPOANNUALEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_AMAB_VMAB" Association="DBISE.R_AMAB_VMAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAB_AAMAB" Association="DBISE.R_MAB_AAMAB">
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_SR_VMAB" Association="DBISE.R_SR_VMAB">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
           </AssociationSet>
           <AssociationSet Name="R_ASTE_ATEP" Association="DBISE.R_ASTE_ATEP">
             <End Role="ANTICIPOSALDOTE" EntitySet="ANTICIPOSALDOTE" />
@@ -6439,17 +6638,17 @@
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_AMAB_MAB" Association="DBISE.R_AMAB_MAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="MAB" EntitySet="MAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_AMAB_MAMAB" Association="DBISE.R_AMAB_MAMAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="MODIFICHE_MAB" EntitySet="MODIFICHE_MAB" />
+          </AssociationSet>
           <AssociationSet Name="R_AMAB_PCMAB" Association="DBISE.R_AMAB_PCMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_AMAB_RMAB" Association="DBISE.R_AMAB_RMAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="RINUNCIAMAB" EntitySet="RINUNCIAMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_AMAB_VMAB" Association="DBISE.R_AMAB_VMAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
           </AssociationSet>
           <AssociationSet Name="R_T_AMAB" Association="DBISE.R_T_AMAB">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -6551,6 +6750,10 @@
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
             <End Role="RINUNCIA_TE_R" EntitySet="RINUNCIA_TE_R" />
           </AssociationSet>
+          <AssociationSet Name="R_TER_ATER" Association="DBISE.R_TER_ATER">
+            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
+            <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
+          </AssociationSet>
           <AssociationSet Name="R_FE_CE" Association="DBISE.R_FE_CE">
             <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
             <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
@@ -6564,15 +6767,15 @@
             <End Role="CANONEMAB1" EntitySet="CANONEMAB" />
           </AssociationSet>
           <AssociationSet Name="R_MAB_CMAB" Association="DBISE.R_MAB_CMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="CANONEMAB" EntitySet="CANONEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_SR_CMAB" Association="DBISE.R_SR_CMAB">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
           <AssociationSet Name="R_V_CMAB" Association="DBISE.R_V_CMAB">
             <End Role="VALUTE" EntitySet="VALUTE" />
-            <End Role="CANONEMAB" EntitySet="CANONEMAB" />
-          </AssociationSet>
-          <AssociationSet Name="RELATIONSHIP10" Association="DBISE.RELATIONSHIP10">
-            <End Role="STATORECORD" EntitySet="STATORECORD" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
           <AssociationSet Name="R_DIP_CDCG" Association="DBISE.R_DIP_CDCG">
@@ -6643,10 +6846,6 @@
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
-          <AssociationSet Name="R_D_DATER" Association="DBISE.R_D_DATER">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="DOC_ATER" EntitySet="DOC_ATER" />
-          </AssociationSet>
           <AssociationSet Name="R_D_AVCD" Association="DBISE.R_D_AVCD">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="SELECTDOCVC" EntitySet="SELECTDOCVC" />
@@ -6699,9 +6898,13 @@
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
-          <AssociationSet Name="R_MAB_EMAB" Association="DBISE.R_MAB_EMAB">
+          <AssociationSet Name="R_MAGABI_EMAB" Association="DBISE.R_MAGABI_EMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_ETE_T" Association="DBISE.R_ETE_T">
+            <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_TEP_ETE" Association="DBISE.R_TEP_ETE">
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
@@ -6751,6 +6954,10 @@
             <End Role="FUNZIONERIDUZIONE" EntitySet="FUNZIONERIDUZIONE" />
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
           </AssociationSet>
+          <AssociationSet Name="R_I_MAB" Association="DBISE.R_I_MAB">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
           <AssociationSet Name="R_T_I" Association="DBISE.R_T_I">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -6779,21 +6986,21 @@
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
           </AssociationSet>
+          <AssociationSet Name="R_MAB_MAB" Association="DBISE.R_MAB_MAB">
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="MAB1" EntitySet="MAB" />
+          </AssociationSet>
           <AssociationSet Name="R_MAB_PCMAB" Association="DBISE.R_MAB_PCMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="MAB" EntitySet="MAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_MAB_RMAB" Association="DBISE.R_MAB_RMAB">
+          <AssociationSet Name="R_MAGABI_MAB" Association="DBISE.R_MAGABI_MAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="RINUNCIAMAB" EntitySet="RINUNCIAMAB" />
+            <End Role="MAB" EntitySet="MAB" />
           </AssociationSet>
-          <AssociationSet Name="R_MAB_VMAB" Association="DBISE.R_MAB_VMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_MAB" Association="DBISE.R_T_MAB">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          <AssociationSet Name="R_SR_MAB" Association="DBISE.R_SR_MAB">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
+            <End Role="MAB" EntitySet="MAB" />
           </AssociationSet>
           <AssociationSet Name="R_UFFICI_MAGANNUALI" Association="DBISE.R_UFFICI_MAGANNUALI">
             <End Role="UFFICI" EntitySet="UFFICI" />
@@ -6810,6 +7017,10 @@
           <AssociationSet Name="R_MAE_T" Association="DBISE.R_MAE_T">
             <End Role="MESEANNOELABORAZIONE" EntitySet="MESEANNOELABORAZIONE" />
             <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_TM_MMAB" Association="DBISE.R_TM_MMAB">
+            <End Role="TIPOLOGIAMODIFICHE" EntitySet="TIPOLOGIAMODIFICHE" />
+            <End Role="MODIFICHE_MAB" EntitySet="MODIFICHE_MAB" />
           </AssociationSet>
           <AssociationSet Name="R_TM_MMF" Association="DBISE.R_TM_MMF">
             <End Role="TIPOLOGIAMODIFICHE" EntitySet="TIPOLOGIAMODIFICHE" />
@@ -6907,10 +7118,6 @@
             <End Role="TIPOSOSPENSIONE" EntitySet="TIPOSOSPENSIONE" />
             <End Role="SOSPENSIONE" EntitySet="SOSPENSIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_SR_VMAB" Association="DBISE.R_SR_VMAB">
-            <End Role="STATORECORD" EntitySet="STATORECORD" />
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
-          </AssociationSet>
           <AssociationSet Name="R_ST_T" Association="DBISE.R_ST_T">
             <End Role="STATOTRASFERIMENTO" EntitySet="STATOTRASFERIMENTO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -6975,9 +7182,9 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
           </AssociationSet>
-          <AssociationSet Name="R_VMAB_VMAB" Association="DBISE.R_VMAB_VMAB">
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
-            <End Role="VARIAZIONIMAB1" EntitySet="VARIAZIONIMAB" />
+          <AssociationSet Name="AAMAB_PERCMAB" Association="DBISE.AAMAB_PERCMAB">
+            <End Role="ANTICIPOANNUALEMAB" EntitySet="ANTICIPOANNUALEMAB" />
+            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
           </AssociationSet>
           <AssociationSet Name="ADF_C" Association="DBISE.ADF_C">
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
@@ -7063,6 +7270,10 @@
             <End Role="ATTIVITATEPARTENZA" EntitySet="ATTIVITATEPARTENZA" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
+          <AssociationSet Name="DOC_ATER" Association="DBISE.DOC_ATER">
+            <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
           <AssociationSet Name="DOCUMENTO_NORMACALCOLO" Association="DBISE.DOCUMENTO_NORMACALCOLO">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
@@ -7137,7 +7348,7 @@
           </AssociationSet>
           <AssociationSet Name="MAB_MA" Association="DBISE.MAB_MA">
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="MAB" EntitySet="MAB" />
           </AssociationSet>
           <AssociationSet Name="PAGCOND_PERCCOND" Association="DBISE.PAGCOND_PERCCOND">
             <End Role="PERCENTUALECONDIVISIONE" EntitySet="PERCENTUALECONDIVISIONE" />
@@ -7187,10 +7398,6 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
           </AssociationSet>
-          <AssociationSet Name="VMAB_PMAB" Association="DBISE.VMAB_PMAB">
-            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
-            <End Role="VARIAZIONIMAB" EntitySet="VARIAZIONIMAB" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
@@ -7235,6 +7442,9 @@
           <Property Name="PROVINCIARESIDENZA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDALTRIDATIFAM" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ALTRIDATIFAM1" Relationship="DBISE.R_ADF_ADF" FromRole="ALTRIDATIFAM" ToRole="ALTRIDATIFAM1" />
+          <NavigationProperty Name="ALTRIDATIFAM2" Relationship="DBISE.R_ADF_ADF" FromRole="ALTRIDATIFAM1" ToRole="ALTRIDATIFAM" />
+          <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_ADF" FromRole="ALTRIDATIFAM" ToRole="STATORECORD" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISE.ADF_C" FromRole="ALTRIDATIFAM" ToRole="CONIUGE" />
           <NavigationProperty Name="FIGLI" Relationship="DBISE.ADF_F" FromRole="ALTRIDATIFAM" ToRole="FIGLI" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISE.ATT_ADF" FromRole="ALTRIDATIFAM" ToRole="ATTIVAZIONIMAGFAM" />
@@ -7251,6 +7461,24 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISE.R_AA_A" FromRole="ANTICIPI" ToRole="ATTIVITAANTICIPI" />
           <NavigationProperty Name="TIPOLOGIAANTICIPI" Relationship="DBISE.R_TA_A" FromRole="ANTICIPI" ToRole="TIPOLOGIAANTICIPI" />
+        </EntityType>
+        <EntityType Name="ANTICIPOANNUALEMAB">
+          <Key>
+            <PropertyRef Name="IDANTICIPOANNUALEMAB" />
+          </Key>
+          <Property Name="IDANTICIPOANNUALEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ANTICIPOANNUALE" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="FK_IDANTICIPOANNUALEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="ANTICIPOANNUALEMAB1" Relationship="DBISE.R_AAMAB_AAMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="ANTICIPOANNUALEMAB1" />
+          <NavigationProperty Name="ANTICIPOANNUALEMAB2" Relationship="DBISE.R_AAMAB_AAMAB" FromRole="ANTICIPOANNUALEMAB1" ToRole="ANTICIPOANNUALEMAB" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_VMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="ATTIVAZIONEMAB" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.R_MAB_AAMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="MAB" />
+          <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_VMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="STATORECORD" />
+          <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISE.AAMAB_PERCMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="PERCENTUALEMAB" />
         </EntityType>
         <EntityType Name="ANTICIPOSALDOTE">
           <Key>
@@ -7274,10 +7502,11 @@
           <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.R_AMAB_VMAB" FromRole="ATTIVAZIONEMAB" ToRole="ANTICIPOANNUALEMAB" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_AMAB_CMAB" FromRole="ATTIVAZIONEMAB" ToRole="CANONEMAB" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.R_AMAB_MAB" FromRole="ATTIVAZIONEMAB" ToRole="MAB" />
+          <NavigationProperty Name="MODIFICHE_MAB" Relationship="DBISE.R_AMAB_MAMAB" FromRole="ATTIVAZIONEMAB" ToRole="MODIFICHE_MAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISE.R_AMAB_PCMAB" FromRole="ATTIVAZIONEMAB" ToRole="PAGATOCONDIVISOMAB" />
-          <NavigationProperty Name="RINUNCIAMAB" Relationship="DBISE.R_AMAB_RMAB" FromRole="ATTIVAZIONEMAB" ToRole="RINUNCIAMAB" />
-          <NavigationProperty Name="VARIAZIONIMAB" Relationship="DBISE.R_AMAB_VMAB" FromRole="ATTIVAZIONEMAB" ToRole="VARIAZIONIMAB" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_AMAB" FromRole="ATTIVAZIONEMAB" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.AMAB_DOC" FromRole="ATTIVAZIONEMAB" ToRole="DOCUMENTI" />
         </EntityType>
@@ -7330,6 +7559,7 @@
           </Key>
           <Property Name="IDATTIVAZIONIPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDFASEPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
           <Property Name="PRATICACONCLUSA" Type="Boolean" Nullable="false" />
@@ -7337,7 +7567,6 @@
           <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="IDFASEPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="CONIUGEPASSAPORTO" Relationship="DBISE.R_AP_CP" FromRole="ATTIVAZIONIPASSAPORTI" ToRole="CONIUGEPASSAPORTO" />
           <NavigationProperty Name="FIGLIPASSAPORTO" Relationship="DBISE.R_AP_FP" FromRole="ATTIVAZIONIPASSAPORTI" ToRole="FIGLIPASSAPORTO" />
           <NavigationProperty Name="PASSAPORTORICHIEDENTE" Relationship="DBISE.R_AP_PR" FromRole="ATTIVAZIONIPASSAPORTI" ToRole="PASSAPORTORICHIEDENTE" />
@@ -7368,6 +7597,7 @@
           </Key>
           <Property Name="IDATTIVAZIONEVC" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDVIAGGIOCONGEDO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDFASEVC" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
           <Property Name="ATTIVARICHIESTA" Type="Boolean" Nullable="false" />
@@ -7375,7 +7605,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDATTIVAZIONEVC" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDFASEVC" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO1" Relationship="DBISE.R_AVC_AVC" FromRole="ATTIVAZIONIVIAGGICONGEDO" ToRole="ATTIVAZIONIVIAGGICONGEDO1" />
           <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO2" Relationship="DBISE.R_AVC_AVC" FromRole="ATTIVAZIONIVIAGGICONGEDO1" ToRole="ATTIVAZIONIVIAGGICONGEDO" />
           <NavigationProperty Name="SELECTDOCVC" Relationship="DBISE.R_AVC_AVCD" FromRole="ATTIVAZIONIVIAGGICONGEDO" ToRole="SELECTDOCVC" />
@@ -7403,7 +7632,7 @@
           <Key>
             <PropertyRef Name="IDATTIVITACRUD" />
           </Key>
-          <Property Name="IDATTIVITACRUD" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDATTIVITACRUD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONEATTIVITA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISE.R_AC_LA" FromRole="ATTIVITACRUD" ToRole="LOGATTIVITA" />
         </EntityType>
@@ -7440,6 +7669,8 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ANTICIPOSALDOTE" Relationship="DBISE.R_ASTE_ATER" FromRole="ATTIVITATERIENTRO" ToRole="ANTICIPOSALDOTE" />
           <NavigationProperty Name="RINUNCIA_TE_R" Relationship="DBISE.R_ATER_RTER" FromRole="ATTIVITATERIENTRO" ToRole="RINUNCIA_TE_R" />
+          <NavigationProperty Name="TERIENTRO" Relationship="DBISE.R_TER_ATER" FromRole="ATTIVITATERIENTRO" ToRole="TERIENTRO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.DOC_ATER" FromRole="ATTIVITATERIENTRO" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="CALENDARIOEVENTI">
           <Key>
@@ -7461,21 +7692,21 @@
             <PropertyRef Name="IDCANONE" />
           </Key>
           <Property Name="IDCANONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="IMPORTOCANONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FK_IDCANONE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_CMAB" FromRole="CANONEMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANONEMAB1" Relationship="DBISE.R_CMAB_CMAB" FromRole="CANONEMAB" ToRole="CANONEMAB1" />
           <NavigationProperty Name="CANONEMAB2" Relationship="DBISE.R_CMAB_CMAB" FromRole="CANONEMAB1" ToRole="CANONEMAB" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAB_CMAB" FromRole="CANONEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.R_MAB_CMAB" FromRole="CANONEMAB" ToRole="MAB" />
+          <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_CMAB" FromRole="CANONEMAB" ToRole="STATORECORD" />
           <NavigationProperty Name="VALUTE" Relationship="DBISE.R_V_CMAB" FromRole="CANONEMAB" ToRole="VALUTE" />
-          <NavigationProperty Name="STATORECORD" Relationship="DBISE.RELATIONSHIP10" FromRole="CANONEMAB" ToRole="STATORECORD" />
           <NavigationProperty Name="TFR" Relationship="DBISE.CMAB_TFR" FromRole="CANONEMAB" ToRole="TFR" />
         </EntityType>
         <EntityType Name="CDCGEPE">
@@ -7523,6 +7754,7 @@
           <Property Name="IDCONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
@@ -7530,7 +7762,6 @@
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDCONIUGE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="CONIUGE1" Relationship="DBISE.R_C_C" FromRole="CONIUGE" ToRole="CONIUGE1" />
           <NavigationProperty Name="CONIUGE2" Relationship="DBISE.R_C_C" FromRole="CONIUGE1" ToRole="CONIUGE" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_MF_C" FromRole="CONIUGE" ToRole="MAGGIORAZIONIFAMILIARI" />
@@ -7624,29 +7855,19 @@
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISE.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_DIP_TRASF" FromRole="DIPENDENTI" ToRole="TRASFERIMENTO" />
         </EntityType>
-        <EntityType Name="DOC_ATER">
-          <Key>
-            <PropertyRef Name="IDDOCUMENTO" />
-            <PropertyRef Name="IDATERIENTRO" />
-          </Key>
-          <Property Name="IDDOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDATERIENTRO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.R_D_DATER" FromRole="DOC_ATER" ToRole="DOCUMENTI" />
-        </EntityType>
         <EntityType Name="DOCUMENTI">
           <Key>
             <PropertyRef Name="IDDOCUMENTO" />
           </Key>
           <Property Name="IDDOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOMEDOCUMENTO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ESTENSIONE" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="FILEDOCUMENTO" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" />
           <Property Name="MODIFICATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="DOC_ATER" Relationship="DBISE.R_D_DATER" FromRole="DOCUMENTI" ToRole="DOC_ATER" />
           <NavigationProperty Name="SELECTDOCVC" Relationship="DBISE.R_D_AVCD" FromRole="DOCUMENTI" ToRole="SELECTDOCVC" />
           <NavigationProperty Name="DOCUMENTI1" Relationship="DBISE.R_D_D" FromRole="DOCUMENTI" ToRole="DOCUMENTI1" />
           <NavigationProperty Name="DOCUMENTI2" Relationship="DBISE.R_D_D" FromRole="DOCUMENTI1" ToRole="DOCUMENTI" />
@@ -7660,6 +7881,7 @@
           <NavigationProperty Name="CONIUGEPASSAPORTO" Relationship="DBISE.CP_DOC" FromRole="DOCUMENTI" ToRole="CONIUGEPASSAPORTO" />
           <NavigationProperty Name="CONIUGETITOLIVIAGGIO" Relationship="DBISE.CTV_DOC" FromRole="DOCUMENTI" ToRole="CONIUGETITOLIVIAGGIO" />
           <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISE.DOC_ATEP" FromRole="DOCUMENTI" ToRole="ATTIVITATEPARTENZA" />
+          <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISE.DOC_ATER" FromRole="DOCUMENTI" ToRole="ATTIVITATERIENTRO" />
           <NavigationProperty Name="NORMACALCOLO" Relationship="DBISE.DOCUMENTO_NORMACALCOLO" FromRole="DOCUMENTI" ToRole="NORMACALCOLO" />
           <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO" Relationship="DBISE.DOCVC" FromRole="DOCUMENTI" ToRole="ATTIVAZIONIVIAGGICONGEDO" />
           <NavigationProperty Name="FIGLI" Relationship="DBISE.FIGLI_DOC" FromRole="DOCUMENTI" ToRole="FIGLI" />
@@ -7729,7 +7951,7 @@
             <PropertyRef Name="IDELABMAB" />
           </Key>
           <Property Name="IDELABMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDMAGABITAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
@@ -7750,7 +7972,7 @@
           <NavigationProperty Name="ELABMAB1" Relationship="DBISE.R_EMAB_EMAB" FromRole="ELABMAB" ToRole="ELABMAB1" />
           <NavigationProperty Name="ELABMAB2" Relationship="DBISE.R_EMAB_EMAB" FromRole="ELABMAB1" ToRole="ELABMAB" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EMAB_T" FromRole="ELABMAB" ToRole="TEORICI" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAB_EMAB" FromRole="ELABMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAGABI_EMAB" FromRole="ELABMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.EMAB_ALIQ" FromRole="ELABMAB" ToRole="ALIQUOTECONTRIBUTIVE" />
         </EntityType>
         <EntityType Name="ELABTRASPEFFETTI">
@@ -7768,6 +7990,7 @@
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_ETE" FromRole="ELABTRASPEFFETTI" ToRole="ELABINDSISTEMAZIONE" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_ETE_T" FromRole="ELABTRASPEFFETTI" ToRole="TEORICI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISE.R_TEP_ETE" FromRole="ELABTRASPEFFETTI" ToRole="TEPARTENZA" />
           <NavigationProperty Name="TERIENTRO" Relationship="DBISE.R_TER_ETE" FromRole="ELABTRASPEFFETTI" ToRole="TERIENTRO" />
         </EntityType>
@@ -7814,6 +8037,7 @@
           <Property Name="IDFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
@@ -7821,7 +8045,6 @@
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDFIGLI" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="FIGLI1" Relationship="DBISE.R_F_F" FromRole="FIGLI" ToRole="FIGLI1" />
           <NavigationProperty Name="FIGLI2" Relationship="DBISE.R_F_F" FromRole="FIGLI1" ToRole="FIGLI" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_MF_F" FromRole="FIGLI" ToRole="MAGGIORAZIONIFAMILIARI" />
@@ -7888,7 +8111,7 @@
           <Key>
             <PropertyRef Name="IDFUNZIONIEVENTI" />
           </Key>
-          <Property Name="IDFUNZIONIEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDFUNZIONIEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOMEFUNZIONE" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="MESSAGGIOEVENTO" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISE.R_FE_CE" FromRole="FUNZIONIEVENTI" ToRole="CALENDARIOEVENTI" />
@@ -7897,7 +8120,7 @@
           <Key>
             <PropertyRef Name="IDGRUPPOFK" />
           </Key>
-          <Property Name="IDGRUPPOFK" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDGRUPPOFK" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="LEGGEFASCIAKM" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
@@ -7912,6 +8135,7 @@
           <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_I_EI" FromRole="INDENNITA" ToRole="ELABINDENNITA" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_I_MAB" FromRole="INDENNITA" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_I" FromRole="INDENNITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISE.IND_COEFFICENTESEDE" FromRole="INDENNITA" ToRole="COEFFICIENTESEDE" />
           <NavigationProperty Name="INDENNITABASE" Relationship="DBISE.INDENNITA_INDENNITABASE" FromRole="INDENNITA" ToRole="INDENNITABASE" />
@@ -8003,21 +8227,38 @@
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_LA" FromRole="LOGATTIVITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_UL_LA" FromRole="LOGATTIVITA" ToRole="UTENTIAUTORIZZATI" />
         </EntityType>
-        <EntityType Name="MAGGIORAZIONEABITAZIONE">
+        <EntityType Name="MAB">
           <Key>
             <PropertyRef Name="IDMAB" />
           </Key>
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDMAGABITAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOMAB" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEMAB" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="RINUNCIAMAB" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="VARIAZIONE" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_MAB_CMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="CANONEMAB" />
-          <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_MAB_EMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="ELABMAB" />
-          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISE.R_MAB_PCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PAGATOCONDIVISOMAB" />
-          <NavigationProperty Name="RINUNCIAMAB" Relationship="DBISE.R_MAB_RMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="RINUNCIAMAB" />
-          <NavigationProperty Name="VARIAZIONIMAB" Relationship="DBISE.R_MAB_VMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="VARIAZIONIMAB" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISE.MAB_MA" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAGGIORAZIONIANNUALI" />
+          <Property Name="FK_IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.R_MAB_AAMAB" FromRole="MAB" ToRole="ANTICIPOANNUALEMAB" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_MAB" FromRole="MAB" ToRole="ATTIVAZIONEMAB" />
+          <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_MAB_CMAB" FromRole="MAB" ToRole="CANONEMAB" />
+          <NavigationProperty Name="MAB1" Relationship="DBISE.R_MAB_MAB" FromRole="MAB" ToRole="MAB1" />
+          <NavigationProperty Name="MAB2" Relationship="DBISE.R_MAB_MAB" FromRole="MAB1" ToRole="MAB" />
+          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISE.R_MAB_PCMAB" FromRole="MAB" ToRole="PAGATOCONDIVISOMAB" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAGABI_MAB" FromRole="MAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_MAB" FromRole="MAB" ToRole="STATORECORD" />
+          <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISE.MAB_MA" FromRole="MAB" ToRole="MAGGIORAZIONIANNUALI" />
+        </EntityType>
+        <EntityType Name="MAGGIORAZIONEABITAZIONE">
+          <Key>
+            <PropertyRef Name="IDMAGABITAZIONE" />
+          </Key>
+          <Property Name="IDMAGABITAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_MAGABI_EMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="ELABMAB" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="INDENNITA" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.R_MAGABI_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAB" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONIANNUALI">
           <Key>
@@ -8031,7 +8272,7 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFFICI_MAGANNUALI" FromRole="MAGGIORAZIONIANNUALI" ToRole="UFFICI" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.MAB_MA" FromRole="MAGGIORAZIONIANNUALI" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.MAB_MA" FromRole="MAGGIORAZIONIANNUALI" ToRole="MAB" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONIFAMILIARI">
           <Key>
@@ -8054,6 +8295,18 @@
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_MAE_T" FromRole="MESEANNOELABORAZIONE" ToRole="TEORICI" />
         </EntityType>
+        <EntityType Name="MODIFICHE_MAB">
+          <Key>
+            <PropertyRef Name="IDMODMAB" />
+          </Key>
+          <Property Name="IDMODMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDMSGVAR" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="VALORE" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_MAMAB" FromRole="MODIFICHE_MAB" ToRole="ATTIVAZIONEMAB" />
+          <NavigationProperty Name="TIPOLOGIAMODIFICHE" Relationship="DBISE.R_TM_MMAB" FromRole="MODIFICHE_MAB" ToRole="TIPOLOGIAMODIFICHE" />
+        </EntityType>
         <EntityType Name="MODIFICHEMAGFAM">
           <Key>
             <PropertyRef Name="IDMODMAGFAM" />
@@ -8070,7 +8323,7 @@
           <Key>
             <PropertyRef Name="IDNORMACALCOLO" />
           </Key>
-          <Property Name="IDNORMACALCOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDNORMACALCOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RIFERIMENTONORMATIVO" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISE.R_NC_RC" FromRole="NORMACALCOLO" ToRole="REGOLECALCOLO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.DOCUMENTO_NORMACALCOLO" FromRole="NORMACALCOLO" ToRole="DOCUMENTI" />
@@ -8119,15 +8372,15 @@
           <Property Name="IDPAGATOCONDIVISO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="CONDIVISO" Type="Boolean" Nullable="false" />
           <Property Name="PAGATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FK_IDPAGATOCONDIVISO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="ATTIVAZIONEMAB" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB1" Relationship="DBISE.R_PCMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="PAGATOCONDIVISOMAB1" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB2" Relationship="DBISE.R_PCMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB1" ToRole="PAGATOCONDIVISOMAB" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="STATORECORD" />
@@ -8163,13 +8416,13 @@
             <PropertyRef Name="IDPENSIONE" />
           </Key>
           <Property Name="IDPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IMPORTOPENSIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="FK_IDPENSIONE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
+          <Property Name="FK_IDPENSIONE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="PENSIONE1" Relationship="DBISE.R_P_P" FromRole="PENSIONE" ToRole="PENSIONE1" />
           <NavigationProperty Name="PENSIONE2" Relationship="DBISE.R_P_P" FromRole="PENSIONE1" ToRole="PENSIONE" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_P" FromRole="PENSIONE" ToRole="STATORECORD" />
@@ -8247,7 +8500,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_PMAB" FromRole="PERCENTUALEMAB" ToRole="LIVELLI" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_U_PMAB" FromRole="PERCENTUALEMAB" ToRole="UFFICI" />
-          <NavigationProperty Name="VARIAZIONIMAB" Relationship="DBISE.VMAB_PMAB" FromRole="PERCENTUALEMAB" ToRole="VARIAZIONIMAB" />
+          <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.AAMAB_PERCMAB" FromRole="PERCENTUALEMAB" ToRole="ANTICIPOANNUALEMAB" />
         </EntityType>
         <EntityType Name="PERCENTUALEMAGCONIUGE">
           <Key>
@@ -8368,29 +8621,17 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISE.R_AA_RA" FromRole="RINUNCIAANTICIPI" ToRole="ATTIVITAANTICIPI" />
         </EntityType>
-        <EntityType Name="RINUNCIAMAB">
-          <Key>
-            <PropertyRef Name="IDRINUNCIAMAB" />
-          </Key>
-          <Property Name="IDRINUNCIAMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="RINUNCIA" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_RMAB" FromRole="RINUNCIAMAB" ToRole="ATTIVAZIONEMAB" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAB_RMAB" FromRole="RINUNCIAMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
-        </EntityType>
         <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
           <Key>
             <PropertyRef Name="IDRINUNCIAMAGFAM" />
           </Key>
           <Property Name="IDRINUNCIAMAGFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RINUNCIAMAGGIORAZIONI" Type="Boolean" Nullable="false" />
           <Property Name="DATAINI" Type="DateTime" />
           <Property Name="DATAFINE" Type="DateTime" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FK_IDRINUNCIAMAGFAM" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_MF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI1" Relationship="DBISE.R_RMF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI1" />
@@ -8402,7 +8643,7 @@
           <Key>
             <PropertyRef Name="IDRUOLOACCESSO" />
           </Key>
-          <Property Name="IDRUOLOACCESSO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDRUOLOACCESSO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRUOLO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_RU_UA" FromRole="RUOLOACCESSO" ToRole="UTENTIAUTORIZZATI" />
         </EntityType>
@@ -8424,7 +8665,7 @@
           <Key>
             <PropertyRef Name="IDRUOLO" />
           </Key>
-          <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRUOLO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISE.R_RU_RD" FromRole="RUOLOUFFICIO" ToRole="RUOLODIPENDENTE" />
         </EntityType>
@@ -8457,22 +8698,24 @@
           <Key>
             <PropertyRef Name="IDSTATORECORD" />
           </Key>
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="STATO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CANONEMAB" Relationship="DBISE.RELATIONSHIP10" FromRole="STATORECORD" ToRole="CANONEMAB" />
+          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISE.R_SR_ADF" FromRole="STATORECORD" ToRole="ALTRIDATIFAM" />
+          <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.R_SR_VMAB" FromRole="STATORECORD" ToRole="ANTICIPOANNUALEMAB" />
+          <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_SR_CMAB" FromRole="STATORECORD" ToRole="CANONEMAB" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISE.R_SR_C" FromRole="STATORECORD" ToRole="CONIUGE" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.R_SR_D" FromRole="STATORECORD" ToRole="DOCUMENTI" />
           <NavigationProperty Name="FIGLI" Relationship="DBISE.R_SR_F" FromRole="STATORECORD" ToRole="FIGLI" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.R_SR_MAB" FromRole="STATORECORD" ToRole="MAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISE.R_SR_PCMAB" FromRole="STATORECORD" ToRole="PAGATOCONDIVISOMAB" />
           <NavigationProperty Name="PENSIONE" Relationship="DBISE.R_SR_P" FromRole="STATORECORD" ToRole="PENSIONE" />
           <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_SR_RMF" FromRole="STATORECORD" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI" />
-          <NavigationProperty Name="VARIAZIONIMAB" Relationship="DBISE.R_SR_VMAB" FromRole="STATORECORD" ToRole="VARIAZIONIMAB" />
         </EntityType>
         <EntityType Name="STATOTRASFERIMENTO">
           <Key>
             <PropertyRef Name="IDSTATOTRASFERIMENTO" />
           </Key>
-          <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_ST_T" FromRole="STATOTRASFERIMENTO" ToRole="TRASFERIMENTO" />
         </EntityType>
@@ -8487,19 +8730,20 @@
           <Property Name="IDELABIND" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABTRASPEFFETTI" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="MESERIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNORIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INSERIMENTOMANUALE" Type="Boolean" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CONT_OA" Relationship="DBISE.R_T_COA" FromRole="TEORICI" ToRole="CONT_OA" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_EI_T" FromRole="TEORICI" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_EMAB_T" FromRole="TEORICI" ToRole="ELABMAB" />
+          <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISE.R_ETE_T" FromRole="TEORICI" ToRole="ELABTRASPEFFETTI" />
           <NavigationProperty Name="FLUSSICEDOLINO" Relationship="DBISE.R_T_FC" FromRole="TEORICI" ToRole="FLUSSICEDOLINO" />
           <NavigationProperty Name="MESEANNOELABORAZIONE" Relationship="DBISE.R_MAE_T" FromRole="TEORICI" ToRole="MESEANNOELABORAZIONE" />
           <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISE.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
@@ -8520,6 +8764,7 @@
             <PropertyRef Name="IDTERIENTRO" />
           </Key>
           <Property Name="IDTERIENTRO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISE.R_TER_ATER" FromRole="TERIENTRO" ToRole="ATTIVITATERIENTRO" />
           <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISE.R_TER_ETE" FromRole="TERIENTRO" ToRole="ELABTRASPEFFETTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_TER" FromRole="TERIENTRO" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISE.TER_PATE" FromRole="TERIENTRO" ToRole="PERCENTUALEANTICIPOTE" />
@@ -8552,7 +8797,7 @@
           <Key>
             <PropertyRef Name="IDTIPOANTICIPOTE" />
           </Key>
-          <Property Name="IDTIPOANTICIPOTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOANTICIPOTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="TIPOANTICIPO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISE.R_TATE_PATE" FromRole="TIPOANTICIPOTRASPORTOEFFETTI" ToRole="PERCENTUALEANTICIPOTE" />
         </EntityType>
@@ -8576,7 +8821,7 @@
           <Key>
             <PropertyRef Name="IDTIPOLOGIAANTICIPI" />
           </Key>
-          <Property Name="IDTIPOLOGIAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOLOGIAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCTIPOANTICIPO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ANTICIPI" Relationship="DBISE.R_TA_A" FromRole="TIPOLOGIAANTICIPI" ToRole="ANTICIPI" />
         </EntityType>
@@ -8584,7 +8829,7 @@
           <Key>
             <PropertyRef Name="IDTIPOCOAN" />
           </Key>
-          <Property Name="IDTIPOCOAN" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOCOAN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_TIPCOAN_TRASF" FromRole="TIPOLOGIACOAN" ToRole="TRASFERIMENTO" />
         </EntityType>
@@ -8592,7 +8837,7 @@
           <Key>
             <PropertyRef Name="IDTIPOLOGIACONIUGE" />
           </Key>
-          <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="TIPOLOGIACONIUGE1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISE.R_TC_C" FromRole="TIPOLOGIACONIUGE" ToRole="CONIUGE" />
           <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="DBISE.R_TC_PMC" FromRole="TIPOLOGIACONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
@@ -8601,7 +8846,7 @@
           <Key>
             <PropertyRef Name="IDTIPOLOGIAFIGLIO" />
           </Key>
-          <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="TIPOLOGIAFIGLIO1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FIGLI" Relationship="DBISE.R_TF_F" FromRole="TIPOLOGIAFIGLIO" ToRole="FIGLI" />
           <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="DBISE.R_TF_MF" FromRole="TIPOLOGIAFIGLIO" ToRole="PERCENTUALEMAGFIGLI" />
@@ -8612,6 +8857,7 @@
           </Key>
           <Property Name="IDMSGVAR" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MSG" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MODIFICHE_MAB" Relationship="DBISE.R_TM_MMAB" FromRole="TIPOLOGIAMODIFICHE" ToRole="MODIFICHE_MAB" />
           <NavigationProperty Name="MODIFICHEMAGFAM" Relationship="DBISE.R_TM_MMF" FromRole="TIPOLOGIAMODIFICHE" ToRole="MODIFICHEMAGFAM" />
         </EntityType>
         <EntityType Name="TIPOMOVIMENTO">
@@ -8627,7 +8873,7 @@
           <Key>
             <PropertyRef Name="IDTIPOREGOLACALCOLO" />
           </Key>
-          <Property Name="IDTIPOREGOLACALCOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOREGOLACALCOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONEREGOLA" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISE.R_TRC_RC" FromRole="TIPOREGOLACALCOLO" ToRole="REGOLECALCOLO" />
         </EntityType>
@@ -8635,7 +8881,7 @@
           <Key>
             <PropertyRef Name="IDTIPOSOSPENSIONE" />
           </Key>
-          <Property Name="IDTIPOSOSPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOSOSPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="SOSPENSIONE" Relationship="DBISE.R_TS_S" FromRole="TIPOSOSPENSIONE" ToRole="SOSPENSIONE" />
         </EntityType>
@@ -8643,7 +8889,7 @@
           <Key>
             <PropertyRef Name="IDTIPOTRASFERIMENTO" />
           </Key>
-          <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="TIPOTRASFERIMENTO1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISE.R_TT_IS" FromRole="TIPOTRASFERIMENTO" ToRole="INDENNITASISTEMAZIONE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_TT_T" FromRole="TIPOTRASFERIMENTO" ToRole="TRASFERIMENTO" />
@@ -8703,7 +8949,6 @@
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISE.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_T_MAB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISE.R_T_P" FromRole="TRASFERIMENTO" ToRole="PASSAPORTI" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISE.R_TRASF_PRIMASIST" FromRole="TRASFERIMENTO" ToRole="PRIMASITEMAZIONE" />
@@ -8775,26 +9020,6 @@
           <NavigationProperty Name="TFR" Relationship="DBISE.R_VALUTE_TFR" FromRole="VALUTE" ToRole="TFR" />
           <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISE.R_VALUTE_VALUFF" FromRole="VALUTE" ToRole="VALUTAUFFICIO" />
         </EntityType>
-        <EntityType Name="VARIAZIONIMAB">
-          <Key>
-            <PropertyRef Name="IDVARIAZIONIMAB" />
-          </Key>
-          <Property Name="IDVARIAZIONIMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOMAB" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEMAB" Type="DateTime" Nullable="false" />
-          <Property Name="ANTICIPOANNUALE" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="FK_IDVARIAZIONIMAB" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_VMAB" FromRole="VARIAZIONIMAB" ToRole="ATTIVAZIONEMAB" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAB_VMAB" FromRole="VARIAZIONIMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_VMAB" FromRole="VARIAZIONIMAB" ToRole="STATORECORD" />
-          <NavigationProperty Name="VARIAZIONIMAB1" Relationship="DBISE.R_VMAB_VMAB" FromRole="VARIAZIONIMAB" ToRole="VARIAZIONIMAB1" />
-          <NavigationProperty Name="VARIAZIONIMAB2" Relationship="DBISE.R_VMAB_VMAB" FromRole="VARIAZIONIMAB1" ToRole="VARIAZIONIMAB" />
-          <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISE.VMAB_PMAB" FromRole="VARIAZIONIMAB" ToRole="PERCENTUALEMAB" />
-        </EntityType>
         <EntityType Name="VIAGGICONGEDO">
           <Key>
             <PropertyRef Name="IDVIAGGIOCONGEDO" />
@@ -8808,7 +9033,7 @@
           <Key>
             <PropertyRef Name="IDVOCI" />
           </Key>
-          <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLIQUIDAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDTIPOVOCE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CODICEVOCE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
@@ -8846,6 +9071,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_ADF_ADF">
+          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALTRIDATIFAM">
+              <PropertyRef Name="IDALTRIDATIFAM" />
+            </Principal>
+            <Dependent Role="ALTRIDATIFAM1">
+              <PropertyRef Name="FK_IDALTRIDATIFAM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_SR_ADF">
+          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Principal>
+            <Dependent Role="ALTRIDATIFAM">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_AA_A">
           <End Type="DBISE.ATTIVITAANTICIPI" Role="ATTIVITAANTICIPI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8871,6 +9124,62 @@
             </Principal>
             <Dependent Role="ANTICIPI">
               <PropertyRef Name="IDTIPOLOGIAANTICIPI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AAMAB_AAMAB">
+          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTICIPOANNUALEMAB">
+              <PropertyRef Name="IDANTICIPOANNUALEMAB" />
+            </Principal>
+            <Dependent Role="ANTICIPOANNUALEMAB1">
+              <PropertyRef Name="FK_IDANTICIPOANNUALEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AMAB_VMAB">
+          <End Type="DBISE.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="ANTICIPOANNUALEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MAB_AAMAB">
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAB">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="ANTICIPOANNUALEMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_SR_VMAB">
+          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Principal>
+            <Dependent Role="ANTICIPOANNUALEMAB">
+              <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8916,6 +9225,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_AMAB_MAB">
+          <End Type="DBISE.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="MAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AMAB_MAMAB">
+          <End Type="DBISE.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.MODIFICHE_MAB" Role="MODIFICHE_MAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="MODIFICHE_MAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_AMAB_PCMAB">
           <End Type="DBISE.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8926,34 +9263,6 @@
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Principal>
             <Dependent Role="PAGATOCONDIVISOMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_AMAB_RMAB">
-          <End Type="DBISE.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.RINUNCIAMAB" Role="RINUNCIAMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="RINUNCIAMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_AMAB_VMAB">
-          <End Type="DBISE.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.VARIAZIONIMAB" Role="VARIAZIONIMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="VARIAZIONIMAB">
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -9308,6 +9617,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_TER_ATER">
+          <End Type="DBISE.TERIENTRO" Role="TERIENTRO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ATTIVITATERIENTRO" Role="ATTIVITATERIENTRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TERIENTRO">
+              <PropertyRef Name="IDTERIENTRO" />
+            </Principal>
+            <Dependent Role="ATTIVITATERIENTRO">
+              <PropertyRef Name="IDTERIENTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_FE_CE">
           <End Type="DBISE.FUNZIONIEVENTI" Role="FUNZIONIEVENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -9351,16 +9674,30 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_MAB_CMAB">
-          <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.CANONEMAB" Role="CANONEMAB" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
+            <Principal Role="MAB">
               <PropertyRef Name="IDMAB" />
             </Principal>
             <Dependent Role="CANONEMAB">
               <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_SR_CMAB">
+          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.CANONEMAB" Role="CANONEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Principal>
+            <Dependent Role="CANONEMAB">
+              <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9375,18 +9712,6 @@
             </Principal>
             <Dependent Role="CANONEMAB">
               <PropertyRef Name="IDVALUTA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="RELATIONSHIP10">
-          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1" />
-          <End Type="DBISE.CANONEMAB" Role="CANONEMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="STATORECORD">
-              <PropertyRef Name="IDSTATORECORD" />
-            </Principal>
-            <Dependent Role="CANONEMAB">
-              <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9626,20 +9951,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_D_DATER">
-          <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.DOC_ATER" Role="DOC_ATER" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="DOC_ATER">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_D_AVCD">
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -9822,17 +10133,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_MAB_EMAB">
+        <Association Name="R_MAGABI_EMAB">
           <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDMAGABITAZIONE" />
             </Principal>
             <Dependent Role="ELABMAB">
-              <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDMAGABITAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ETE_T">
+          <End Type="DBISE.ELABTRASPEFFETTI" Role="ELABTRASPEFFETTI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELABTRASPEFFETTI">
+              <PropertyRef Name="IDELABTRASPEFFETTI" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDELABTRASPEFFETTI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10004,6 +10329,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_I_MAB">
+          <End Type="DBISE.INDENNITA" Role="INDENNITA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="INDENNITA">
+              <PropertyRef Name="IDTRASFINDENNITA" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAGABITAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_I">
           <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -10102,13 +10441,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAB_MAB">
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.MAB" Role="MAB1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAB">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="MAB1">
+              <PropertyRef Name="FK_IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MAB_PCMAB">
-          <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
+            <Principal Role="MAB">
               <PropertyRef Name="IDMAB" />
             </Principal>
             <Dependent Role="PAGATOCONDIVISOMAB">
@@ -10116,45 +10469,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_MAB_RMAB">
+        <Association Name="R_MAGABI_MAB">
           <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="DBISE.RINUNCIAMAB" Role="RINUNCIAMAB" Multiplicity="*" />
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDMAGABITAZIONE" />
             </Principal>
-            <Dependent Role="RINUNCIAMAB">
-              <PropertyRef Name="IDMAB" />
+            <Dependent Role="MAB">
+              <PropertyRef Name="IDMAGABITAZIONE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_MAB_VMAB">
-          <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+        <Association Name="R_SR_MAB">
+          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="DBISE.VARIAZIONIMAB" Role="VARIAZIONIMAB" Multiplicity="*" />
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDMAB" />
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
             </Principal>
-            <Dependent Role="VARIAZIONIMAB">
-              <PropertyRef Name="IDMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_MAB">
-          <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
+            <Dependent Role="MAB">
+              <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10211,6 +10550,20 @@
             </Principal>
             <Dependent Role="TEORICI">
               <PropertyRef Name="IDMESEANNOELAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TM_MMAB">
+          <End Type="DBISE.TIPOLOGIAMODIFICHE" Role="TIPOLOGIAMODIFICHE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.MODIFICHE_MAB" Role="MODIFICHE_MAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOLOGIAMODIFICHE">
+              <PropertyRef Name="IDMSGVAR" />
+            </Principal>
+            <Dependent Role="MODIFICHE_MAB">
+              <PropertyRef Name="IDMSGVAR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10550,20 +10903,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_SR_VMAB">
-          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.VARIAZIONIMAB" Role="VARIAZIONIMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="STATORECORD">
-              <PropertyRef Name="IDSTATORECORD" />
-            </Principal>
-            <Dependent Role="VARIAZIONIMAB">
-              <PropertyRef Name="IDSTATORECORD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_ST_T">
           <End Type="DBISE.STATOTRASFERIMENTO" Role="STATOTRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -10788,19 +11127,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_VMAB_VMAB">
-          <End Type="DBISE.VARIAZIONIMAB" Role="VARIAZIONIMAB" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.VARIAZIONIMAB" Role="VARIAZIONIMAB1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VARIAZIONIMAB">
-              <PropertyRef Name="IDVARIAZIONIMAB" />
-            </Principal>
-            <Dependent Role="VARIAZIONIMAB1">
-              <PropertyRef Name="FK_IDVARIAZIONIMAB" />
-            </Dependent>
-          </ReferentialConstraint>
+        <Association Name="AAMAB_PERCMAB">
+          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB" Multiplicity="*" />
+          <End Type="DBISE.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
         </Association>
         <Association Name="ADF_C">
           <End Type="DBISE.ALTRIDATIFAM" Role="ALTRIDATIFAM" Multiplicity="*" />
@@ -10886,6 +11215,10 @@
           <End Type="DBISE.ATTIVITATEPARTENZA" Role="ATTIVITATEPARTENZA" Multiplicity="*" />
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
         </Association>
+        <Association Name="DOC_ATER">
+          <End Type="DBISE.ATTIVITATERIENTRO" Role="ATTIVITATERIENTRO" Multiplicity="*" />
+          <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+        </Association>
         <Association Name="DOCUMENTO_NORMACALCOLO">
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISE.NORMACALCOLO" Role="NORMACALCOLO" Multiplicity="*" />
@@ -10960,7 +11293,7 @@
         </Association>
         <Association Name="MAB_MA">
           <End Type="DBISE.MAGGIORAZIONIANNUALI" Role="MAGGIORAZIONIANNUALI" Multiplicity="*" />
-          <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="*" />
         </Association>
         <Association Name="PAGCOND_PERCCOND">
           <End Type="DBISE.PERCENTUALECONDIVISIONE" Role="PERCENTUALECONDIVISIONE" Multiplicity="*" />
@@ -11009,10 +11342,6 @@
         <Association Name="TVR_DOC">
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISE.TITOLIVIAGGIORICHIEDENTE" Role="TITOLIVIAGGIORICHIEDENTE" Multiplicity="*" />
-        </Association>
-        <Association Name="VMAB_PMAB">
-          <End Type="DBISE.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
-          <End Type="DBISE.VARIAZIONIMAB" Role="VARIAZIONIMAB" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -11073,6 +11402,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ANTICIPOANNUALEMAB">
+            <EntityTypeMapping TypeName="DBISE.ANTICIPOANNUALEMAB">
+              <MappingFragment StoreEntitySet="ANTICIPOANNUALEMAB">
+                <ScalarProperty Name="FK_IDANTICIPOANNUALEMAB" ColumnName="FK_IDANTICIPOANNUALEMAB" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="ANTICIPOANNUALE" ColumnName="ANTICIPOANNUALE" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
+                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDANTICIPOANNUALEMAB" ColumnName="IDANTICIPOANNUALEMAB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ANTICIPOSALDOTE">
             <EntityTypeMapping TypeName="DBISE.ANTICIPOSALDOTE">
               <MappingFragment StoreEntitySet="ANTICIPOSALDOTE">
@@ -11129,7 +11471,6 @@
           <EntitySetMapping Name="ATTIVAZIONIPASSAPORTI">
             <EntityTypeMapping TypeName="DBISE.ATTIVAZIONIPASSAPORTI">
               <MappingFragment StoreEntitySet="ATTIVAZIONIPASSAPORTI">
-                <ScalarProperty Name="IDFASEPASSAPORTI" ColumnName="IDFASEPASSAPORTI" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAVARIAZIONE" ColumnName="DATAVARIAZIONE" />
@@ -11137,6 +11478,7 @@
                 <ScalarProperty Name="PRATICACONCLUSA" ColumnName="PRATICACONCLUSA" />
                 <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />
                 <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
+                <ScalarProperty Name="IDFASEPASSAPORTI" ColumnName="IDFASEPASSAPORTI" />
                 <ScalarProperty Name="IDPASSAPORTI" ColumnName="IDPASSAPORTI" />
                 <ScalarProperty Name="IDATTIVAZIONIPASSAPORTI" ColumnName="IDATTIVAZIONIPASSAPORTI" />
               </MappingFragment>
@@ -11160,7 +11502,6 @@
           <EntitySetMapping Name="ATTIVAZIONIVIAGGICONGEDO">
             <EntityTypeMapping TypeName="DBISE.ATTIVAZIONIVIAGGICONGEDO">
               <MappingFragment StoreEntitySet="ATTIVAZIONIVIAGGICONGEDO">
-                <ScalarProperty Name="IDFASEVC" ColumnName="IDFASEVC" />
                 <ScalarProperty Name="FK_IDATTIVAZIONEVC" ColumnName="FK_IDATTIVAZIONEVC" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
@@ -11168,6 +11509,7 @@
                 <ScalarProperty Name="ATTIVARICHIESTA" ColumnName="ATTIVARICHIESTA" />
                 <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />
                 <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
+                <ScalarProperty Name="IDFASEVC" ColumnName="IDFASEVC" />
                 <ScalarProperty Name="IDVIAGGIOCONGEDO" ColumnName="IDVIAGGIOCONGEDO" />
                 <ScalarProperty Name="IDATTIVAZIONEVC" ColumnName="IDATTIVAZIONEVC" />
               </MappingFragment>
@@ -11242,15 +11584,15 @@
           <EntitySetMapping Name="CANONEMAB">
             <EntityTypeMapping TypeName="DBISE.CANONEMAB">
               <MappingFragment StoreEntitySet="CANONEMAB">
-                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
                 <ScalarProperty Name="FK_IDCANONE" ColumnName="FK_IDCANONE" />
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="IMPORTOCANONE" ColumnName="IMPORTOCANONE" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDCANONE" ColumnName="IDCANONE" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -11294,7 +11636,6 @@
           <EntitySetMapping Name="CONIUGE">
             <EntityTypeMapping TypeName="DBISE.CONIUGE">
               <MappingFragment StoreEntitySet="CONIUGE">
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="FK_IDCONIUGE" ColumnName="FK_IDCONIUGE" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
@@ -11302,6 +11643,7 @@
                 <ScalarProperty Name="CODICEFISCALE" ColumnName="CODICEFISCALE" />
                 <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
                 <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDMAGGIORAZIONIFAMILIARI" ColumnName="IDMAGGIORAZIONIFAMILIARI" />
                 <ScalarProperty Name="IDTIPOLOGIACONIUGE" ColumnName="IDTIPOLOGIACONIUGE" />
                 <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
@@ -11373,24 +11715,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DOC_ATER">
-            <EntityTypeMapping TypeName="DBISE.DOC_ATER">
-              <MappingFragment StoreEntitySet="DOC_ATER">
-                <ScalarProperty Name="IDATERIENTRO" ColumnName="IDATERIENTRO" />
-                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DOCUMENTI">
             <EntityTypeMapping TypeName="DBISE.DOCUMENTI">
               <MappingFragment StoreEntitySet="DOCUMENTI">
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="FK_IDDOCUMENTO" ColumnName="FK_IDDOCUMENTO" />
                 <ScalarProperty Name="MODIFICATO" ColumnName="MODIFICATO" />
                 <ScalarProperty Name="DATAINSERIMENTO" ColumnName="DATAINSERIMENTO" />
                 <ScalarProperty Name="FILEDOCUMENTO" ColumnName="FILEDOCUMENTO" />
                 <ScalarProperty Name="ESTENSIONE" ColumnName="ESTENSIONE" />
                 <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
               </MappingFragment>
@@ -11462,7 +11796,7 @@
                 <ScalarProperty Name="PERCENTUALEDISAGIO" ColumnName="PERCENTUALEDISAGIO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDMAGABITAZIONE" ColumnName="IDMAGABITAZIONE" />
                 <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -11521,7 +11855,6 @@
           <EntitySetMapping Name="FIGLI">
             <EntityTypeMapping TypeName="DBISE.FIGLI">
               <MappingFragment StoreEntitySet="FIGLI">
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="FK_IDFIGLI" ColumnName="FK_IDFIGLI" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
@@ -11529,6 +11862,7 @@
                 <ScalarProperty Name="CODICEFISCALE" ColumnName="CODICEFISCALE" />
                 <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
                 <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDMAGGIORAZIONIFAMILIARI" ColumnName="IDMAGGIORAZIONIFAMILIARI" />
                 <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
                 <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
@@ -11681,13 +12015,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="MAB">
+            <EntityTypeMapping TypeName="DBISE.MAB">
+              <MappingFragment StoreEntitySet="MAB">
+                <ScalarProperty Name="FK_IDMAB" ColumnName="FK_IDMAB" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="RINUNCIAMAB" ColumnName="RINUNCIAMAB" />
+                <ScalarProperty Name="DATAFINEMAB" ColumnName="DATAFINEMAB" />
+                <ScalarProperty Name="DATAINIZIOMAB" ColumnName="DATAINIZIOMAB" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
+                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
+                <ScalarProperty Name="IDMAGABITAZIONE" ColumnName="IDMAGABITAZIONE" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONEABITAZIONE">
             <EntityTypeMapping TypeName="DBISE.MAGGIORAZIONEABITAZIONE">
               <MappingFragment StoreEntitySet="MAGGIORAZIONEABITAZIONE">
-                <ScalarProperty Name="VARIAZIONE" ColumnName="VARIAZIONE" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDMAGABITAZIONE" ColumnName="IDMAGABITAZIONE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -11718,6 +12065,17 @@
                 <ScalarProperty Name="ANNO" ColumnName="ANNO" />
                 <ScalarProperty Name="MESE" ColumnName="MESE" />
                 <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MODIFICHE_MAB">
+            <EntityTypeMapping TypeName="DBISE.MODIFICHE_MAB">
+              <MappingFragment StoreEntitySet="MODIFICHE_MAB">
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="VALORE" ColumnName="VALORE" />
+                <ScalarProperty Name="IDMSGVAR" ColumnName="IDMSGVAR" />
+                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
+                <ScalarProperty Name="IDMODMAB" ColumnName="IDMODMAB" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -11780,12 +12138,12 @@
             <EntityTypeMapping TypeName="DBISE.PAGATOCONDIVISOMAB">
               <MappingFragment StoreEntitySet="PAGATOCONDIVISOMAB">
                 <ScalarProperty Name="FK_IDPAGATOCONDIVISO" ColumnName="FK_IDPAGATOCONDIVISO" />
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="PAGATO" ColumnName="PAGATO" />
                 <ScalarProperty Name="CONDIVISO" ColumnName="CONDIVISO" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDPAGATOCONDIVISO" ColumnName="IDPAGATOCONDIVISO" />
@@ -11814,13 +12172,13 @@
           <EntitySetMapping Name="PENSIONE">
             <EntityTypeMapping TypeName="DBISE.PENSIONE">
               <MappingFragment StoreEntitySet="PENSIONE">
-                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="FK_IDPENSIONE" ColumnName="FK_IDPENSIONE" />
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
+                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
                 <ScalarProperty Name="DATAINIZIO" ColumnName="DATAINIZIO" />
                 <ScalarProperty Name="IMPORTOPENSIONE" ColumnName="IMPORTOPENSIONE" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDPENSIONE" ColumnName="IDPENSIONE" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -11996,26 +12354,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RINUNCIAMAB">
-            <EntityTypeMapping TypeName="DBISE.RINUNCIAMAB">
-              <MappingFragment StoreEntitySet="RINUNCIAMAB">
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="RINUNCIA" ColumnName="RINUNCIA" />
-                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-                <ScalarProperty Name="IDRINUNCIAMAB" ColumnName="IDRINUNCIAMAB" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
             <EntityTypeMapping TypeName="DBISE.RINUNCIAMAGGIORAZIONIFAMILIARI">
               <MappingFragment StoreEntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI">
                 <ScalarProperty Name="FK_IDRINUNCIAMAGFAM" ColumnName="FK_IDRINUNCIAMAGFAM" />
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
                 <ScalarProperty Name="DATAINI" ColumnName="DATAINI" />
                 <ScalarProperty Name="RINUNCIAMAGGIORAZIONI" ColumnName="RINUNCIAMAGGIORAZIONI" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDMAGGIORAZIONIFAMILIARI" ColumnName="IDMAGGIORAZIONIFAMILIARI" />
                 <ScalarProperty Name="IDRINUNCIAMAGFAM" ColumnName="IDRINUNCIAMAGFAM" />
               </MappingFragment>
@@ -12091,15 +12438,15 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
-                <ScalarProperty Name="INSERIMENTOMANUALE" ColumnName="INSERIMENTOMANUALE" />
-                <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="INSERIMENTOMANUALE" ColumnName="INSERIMENTOMANUALE" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="ALIQUOTAFISCALE" ColumnName="ALIQUOTAFISCALE" />
                 <ScalarProperty Name="ANNORIFERIMENTO" ColumnName="ANNORIFERIMENTO" />
                 <ScalarProperty Name="MESERIFERIMENTO" ColumnName="MESERIFERIMENTO" />
+                <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
                 <ScalarProperty Name="IDELABTRASPEFFETTI" ColumnName="IDELABTRASPEFFETTI" />
                 <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
                 <ScalarProperty Name="IDELABIND" ColumnName="IDELABIND" />
@@ -12331,21 +12678,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="VARIAZIONIMAB">
-            <EntityTypeMapping TypeName="DBISE.VARIAZIONIMAB">
-              <MappingFragment StoreEntitySet="VARIAZIONIMAB">
-                <ScalarProperty Name="FK_IDVARIAZIONIMAB" ColumnName="FK_IDVARIAZIONIMAB" />
-                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="ANTICIPOANNUALE" ColumnName="ANTICIPOANNUALE" />
-                <ScalarProperty Name="DATAFINEMAB" ColumnName="DATAFINEMAB" />
-                <ScalarProperty Name="DATAINIZIOMAB" ColumnName="DATAINIZIOMAB" />
-                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-                <ScalarProperty Name="IDVARIAZIONIMAB" ColumnName="IDVARIAZIONIMAB" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="VIAGGICONGEDO">
             <EntityTypeMapping TypeName="DBISE.VIAGGICONGEDO">
               <MappingFragment StoreEntitySet="VIAGGICONGEDO">
@@ -12366,6 +12698,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AAMAB_PERCMAB" TypeName="DBISE.AAMAB_PERCMAB" StoreEntitySet="AAMAB_PERCMAB">
+            <EndProperty Name="PERCENTUALEMAB">
+              <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
+            </EndProperty>
+            <EndProperty Name="ANTICIPOANNUALEMAB">
+              <ScalarProperty Name="IDANTICIPOANNUALEMAB" ColumnName="IDANTICIPOANNUALEMAB" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="ADF_C" TypeName="DBISE.ADF_C" StoreEntitySet="ADF_C">
             <EndProperty Name="CONIUGE">
               <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
@@ -12534,6 +12874,14 @@
               <ScalarProperty Name="IDATEPARTENZA" ColumnName="IDTRASPORTOEFFETTI" />
             </EndProperty>
           </AssociationSetMapping>
+          <AssociationSetMapping Name="DOC_ATER" TypeName="DBISE.DOC_ATER" StoreEntitySet="DOC_ATER">
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+            <EndProperty Name="ATTIVITATERIENTRO">
+              <ScalarProperty Name="IDATERIENTRO" ColumnName="IDATERIENTRO" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="DBISE.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
             <EndProperty Name="NORMACALCOLO">
               <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
@@ -12679,7 +13027,7 @@
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="MAB_MA" TypeName="DBISE.MAB_MA" StoreEntitySet="MAB_MA">
-            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+            <EndProperty Name="MAB">
               <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
             </EndProperty>
             <EndProperty Name="MAGGIORAZIONIANNUALI">
@@ -12780,14 +13128,6 @@
             </EndProperty>
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="VMAB_PMAB" TypeName="DBISE.VMAB_PMAB" StoreEntitySet="VMAB_PMAB">
-            <EndProperty Name="VARIAZIONIMAB">
-              <ScalarProperty Name="IDVARIAZIONIMAB" ColumnName="IDVARIAZIONIMAB" />
-            </EndProperty>
-            <EndProperty Name="PERCENTUALEMAB">
-              <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

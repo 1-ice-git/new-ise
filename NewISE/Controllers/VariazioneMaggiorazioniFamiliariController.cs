@@ -16,7 +16,8 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net.Configuration;
 using NewISE.Interfacce;
-using NewISE.Models.DBModel.Enum;
+using NewISE.Models.Enumeratori;
+
 
 namespace NewISE.Controllers
 {
@@ -56,10 +57,10 @@ namespace NewISE.Controllers
 
 
                 dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                    out richiestaAttivazione, out attivazione, out datiConiuge, 
-                    out datiParzialiConiuge, out datiFigli, out datiParzialiFigli, 
-                    out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, 
-                    out trasfSolaLettura, out datiParziali, out siDoc, out datiNuovoConiuge, out datiNuovoFigli,out siDocFormulario, out siPensioniConiuge);
+                    out richiestaAttivazione, out attivazione, out datiConiuge,
+                    out datiParzialiConiuge, out datiFigli, out datiParzialiFigli,
+                    out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione,
+                    out trasfSolaLettura, out datiParziali, out siDoc, out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario, out siPensioniConiuge);
 
                 if (richiestaAttivazione == true || attivazione == true || trasfSolaLettura)
                 {
@@ -157,7 +158,7 @@ namespace NewISE.Controllers
                                                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                                                 out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario,
                                                 out inLavorazione, out trasfSolaLettura, out datiParziali, out siDoc, out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario, out siPensioniConiuge);
-                                                
+
                         ViewData.Add("rinunciaMagFam", rinunciaMagFam);
 
                     }
@@ -229,7 +230,7 @@ namespace NewISE.Controllers
                 //Lista Coniugi
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    List<VariazioneConiugeModel> lcm = dtc.GetListaAttivazioniConiugeByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a=>a.progressivo).ThenByDescending(a=>a.idStatoRecord).ToList();
+                    List<VariazioneConiugeModel> lcm = dtc.GetListaAttivazioniConiugeByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a => a.progressivo).ThenByDescending(a => a.idStatoRecord).ToList();
 
                     var check_nuovo_coniuge = 1;
 
@@ -257,9 +258,9 @@ namespace NewISE.Controllers
                                             HasPensione = dtp.HasPensione(e.idConiuge),
                                             eliminabile = e.eliminabile,
                                             modificabile = e.modificabile,
-                                            modificato=e.modificato,
-                                            nuovo=e.nuovo,
-                                            FK_idFamiliare=e.FK_idConiuge
+                                            modificato = e.modificato,
+                                            nuovo = e.nuovo,
+                                            FK_idFamiliare = e.FK_idConiuge
                                         };
                                         lefm.Add(efm);
                                         if (efm.dataFine == Utility.DataFineStop())
@@ -306,9 +307,9 @@ namespace NewISE.Controllers
                                             eliminabile = e.eliminabile,
                                             idStatoRecord = e.idStatoRecord,
                                             modificabile = e.modificabile,
-                                            modificato=e.modificato,
-                                            nuovo=e.nuovo,
-                                            FK_idFamiliare=e.FK_IdFigli
+                                            modificato = e.modificato,
+                                            nuovo = e.nuovo,
+                                            FK_idFamiliare = e.FK_IdFigli
                                         };
                                         lefm.Add(efm);
                                         if (efm.dataFine == Utility.DataFineStop())
@@ -325,7 +326,7 @@ namespace NewISE.Controllers
 
                 ViewData.Add("solaLettura", solaLettura);
                 ViewData.Add("visualizzaGestModifiche", visualizzaGestModifiche);
-                
+
                 ViewData.Add("trasfSolaLettura", trasfSolaLettura);
 
                 ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
@@ -638,7 +639,7 @@ namespace NewISE.Controllers
             {
                 dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura, out datiParziali, out siDoc, out datiNuovoConiuge, out datiNuovoFigli,out siDocFormulario, out siPensioniConiuge);
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura, out datiParziali, out siDoc, out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario, out siPensioniConiuge);
             }
 
             List<SelectListItem> lDataAttivazione = new List<SelectListItem>();
@@ -682,7 +683,8 @@ namespace NewISE.Controllers
                                     {
                                         lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString(), Value = e.idAttivazioneMagFam.ToString() });
                                     }
-                                }else
+                                }
+                                else
                                 {
                                     lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString(), Value = e.idAttivazioneMagFam.ToString() });
                                 }
@@ -773,7 +775,7 @@ namespace NewISE.Controllers
                         solaLettura = true;
                     }
 
-                    if (dtvmf.ConiugeModificabile(idConiuge, idMaggiorazioniFamiliari)==false)
+                    if (dtvmf.ConiugeModificabile(idConiuge, idMaggiorazioniFamiliari) == false)
                     {
                         solaLettura = true;
                     }
@@ -878,7 +880,7 @@ namespace NewISE.Controllers
 
 
                         ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-                        
+
                         bool rinunciaMagFam = false;
                         bool richiestaAttivazione = false;
                         bool attivazione = false;
@@ -903,7 +905,7 @@ namespace NewISE.Controllers
                         dtvmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                             out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione, out trasfSolaLettura, out datiParziali, out siDoc,
-                            out datiNuovoConiuge, out datiNuovoFigli,out siDocFormulario, out siPensioniConiuge);
+                            out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario, out siPensioniConiuge);
 
                         if (richiestaAttivazione == true && attivazione == false)
                         {
@@ -997,7 +999,7 @@ namespace NewISE.Controllers
             try
             {
                 using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
-                {   
+                {
                     adfm = dtvmf.GetAltriDatiFamiliariConiugeByID(idAltriDatiFam);
                 }
             }
@@ -1096,7 +1098,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge, idAltriDati=idAdf });
+            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge, idAltriDati = idAdf });
 
 
         }
@@ -1138,7 +1140,7 @@ namespace NewISE.Controllers
                 lpcm = GetPensioniConiuge(idConiuge).ToList();
 
                 bool esistonoPensioni = false;
-                if (lpcm.Count>0)
+                if (lpcm.Count > 0)
                 {
                     esistonoPensioni = true;
                 }
@@ -1174,7 +1176,7 @@ namespace NewISE.Controllers
 
                         dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, 
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
                             out docFormulario, out inLavorazione, out trasfSolaLettura, out datiParziali,
                             out siDoc, out datiNuovoConiuge, out datiNuovoFigli, out siDocFormulario, out siPensioniConiuge);
 
@@ -1200,7 +1202,7 @@ namespace NewISE.Controllers
                             bool pensioniModificate = false;
                             if (lp_in_lav.Count() > 0)
                             {
-                                pensioniModificate=true;
+                                pensioniModificate = true;
                             }
                             ViewData.Add("pensioniModificate", pensioniModificate);
                         }
@@ -1241,9 +1243,9 @@ namespace NewISE.Controllers
                     {
                         db.Database.BeginTransaction();
                         try
-                        { 
+                        {
                             using (dtPensione dtp = new dtPensione())
-                            {   
+                            {
                                 using (dtVariazioniMaggiorazioneFamiliare dtamf = new dtVariazioniMaggiorazioneFamiliare())
                                 {
                                     PensioneConiugeModel pm = new PensioneConiugeModel();
@@ -1281,7 +1283,7 @@ namespace NewISE.Controllers
                                     DateTime dataRientro = db.TRASFERIMENTO.Find(idTrasf).DATARIENTRO;
 
                                     //controlla data inserita superiore a dataRientro
-                                    if(pcm.dataInizioValidita>dataRientro)
+                                    if (pcm.dataInizioValidita > dataRientro)
                                     {
                                         pcm.dataInizioValidita = dataRientro;
                                     }
@@ -1289,7 +1291,8 @@ namespace NewISE.Controllers
                                     if (pcm.checkAggiornaTutti == false)
                                     {
                                         dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
-                                    }else
+                                    }
+                                    else
                                     {
                                         //inserisce periodo e annulla i periodi successivi (fino al primo buco temporale o fino a dataRientro)
                                         dtp.SetNuovoImportoPensioneVariazione_AggiornaTutti(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
@@ -1406,18 +1409,18 @@ namespace NewISE.Controllers
                     var amf = dtmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari);
 
                     dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                                           out richiestaAttivazione, out attivazione, out datiConiuge, 
-                                           out datiParzialiNuovoConiuge, out datiFigli, out datiParzialiNuoviFigli, 
-                                           out siDocNuovoConiuge, out siDocNuoviFigli, out docFormulario, 
-                                           out inLavorazione, out trasfSolaLettura, out datiParziali, 
+                                           out richiestaAttivazione, out attivazione, out datiConiuge,
+                                           out datiParzialiNuovoConiuge, out datiFigli, out datiParzialiNuoviFigli,
+                                           out siDocNuovoConiuge, out siDocNuoviFigli, out docFormulario,
+                                           out inLavorazione, out trasfSolaLettura, out datiParziali,
                                            out siDocIdentita, out datiNuovoConiuge, out datiNuoviFigli, out siDocFormulari, out siPensioniConiuge);
 
 
-                    if (((datiFigli || datiParziali == false || siDocIdentita || datiConiuge || siPensioniConiuge) && siDocFormulari) && richiestaAttivazione==false )
+                    if (((datiFigli || datiParziali == false || siDocIdentita || datiConiuge || siPensioniConiuge) && siDocFormulari) && richiestaAttivazione == false)
                     {
                         CheckNotifica = true;
                     }
-                   
+
                     if (richiestaAttivazione || attivazione)
                     {
                         CheckNotifica = false;
@@ -1432,12 +1435,12 @@ namespace NewISE.Controllers
                     }
 
                     if (datiNuovoConiuge == false && datiNuoviFigli == false &&
-                        datiFigli == false && datiParziali == true && siDocIdentita == false && datiConiuge==false && siPensioniConiuge ==false)
+                        datiFigli == false && datiParziali == true && siDocIdentita == false && datiConiuge == false && siPensioniConiuge == false)
                     {
                         CheckNotifica = false;
                     }
 
-                    if (siDocFormulari==false)
+                    if (siDocFormulari == false)
                     {
                         CheckNotifica = false;
                     }
@@ -1713,11 +1716,11 @@ namespace NewISE.Controllers
                                 dtvmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                                     out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
-                                    out docFormulario, out inLavorazione, out trasfSolaLettura, 
+                                    out docFormulario, out inLavorazione, out trasfSolaLettura,
                                     out datiParziali, out siDoc, out datiNuovoConiuge,
                                     out datiNuovoFigli, out siDocFormulario, out siPensioniConiuge);
 
-                                if (richiestaAttivazione == true && attivazione==false)
+                                if (richiestaAttivazione == true && attivazione == false)
                                 {
                                     solaLettura = true;
                                 }
@@ -1734,7 +1737,7 @@ namespace NewISE.Controllers
                             break;
                     }
 
-                   
+
                 }
             }
             catch (Exception ex)
@@ -1763,7 +1766,7 @@ namespace NewISE.Controllers
                 {
                     using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                     {
-                        decimal? idFamiliareOld=0;
+                        decimal? idFamiliareOld = 0;
 
                         //recupero l' ID del familiare Old in base alla parentela
                         switch ((EnumParentela)idParentela)
@@ -1775,7 +1778,7 @@ namespace NewISE.Controllers
                                     var idMagFam = fm.idMaggiorazioniFamiliari;
 
                                     List<DOCUMENTI> ldf = new List<DOCUMENTI>();
-                                    if (fm.FK_IdFigli > 0 && fm.idStatoRecord!=(decimal)EnumStatoRecord.Annullato && fm.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
+                                    if (fm.FK_IdFigli > 0 && fm.idStatoRecord != (decimal)EnumStatoRecord.Annullato && fm.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
                                     {
                                         idFamiliareOld = fm.FK_IdFigli;
                                     }
@@ -1792,7 +1795,7 @@ namespace NewISE.Controllers
                                     var cm = dtc.GetConiugebyID(idFamiliare);
                                     var idMagFam = cm.idMaggiorazioniFamiliari;
 
-                                    if(cm.FK_idConiuge>0 && cm.idStatoRecord != (decimal)EnumStatoRecord.Annullato && cm.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
+                                    if (cm.FK_idConiuge > 0 && cm.idStatoRecord != (decimal)EnumStatoRecord.Annullato && cm.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
                                     {
                                         idFamiliareOld = cm.FK_idConiuge;
                                     }
@@ -1853,7 +1856,7 @@ namespace NewISE.Controllers
         public ActionResult SostituisciDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante, decimal idDocumento)
         {
             try
-            { 
+            {
                 string titoloPagina = string.Empty;
                 decimal idMaggiorazioniFamiliari = 0;
 
@@ -1911,7 +1914,7 @@ namespace NewISE.Controllers
         public ActionResult NuovoDocumentoMagFam(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante)
         {
             try
-            { 
+            {
                 string titoloPagina = string.Empty;
                 decimal idMaggiorazioniFamiliari = 0;
 
@@ -2034,7 +2037,7 @@ namespace NewISE.Controllers
                                                         if (last_att.RICHIESTAATTIVAZIONE)
                                                         {
                                                             var idMaggiorazioniFamiliari = dtvmf.GetMaggiorazioneFamiliareDocumento(idDoc);
-                                                            var newamf = dtvmf.CreaAttivazione(idMaggiorazioniFamiliari,db);
+                                                            var newamf = dtvmf.CreaAttivazione(idMaggiorazioniFamiliari, db);
 
                                                             dtvmf.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
                                                         }
@@ -2063,7 +2066,7 @@ namespace NewISE.Controllers
                                                         if (last_att.RICHIESTAATTIVAZIONE)
                                                         {
                                                             var idMaggiorazioniFamiliari = dtvmf.GetMaggiorazioneFamiliareDocumento(idDoc);
-                                                            var newamf = dtvmf.CreaAttivazione(idMaggiorazioniFamiliari,db);
+                                                            var newamf = dtvmf.CreaAttivazione(idMaggiorazioniFamiliari, db);
 
                                                             dtvmf.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
                                                         }
@@ -2167,7 +2170,7 @@ namespace NewISE.Controllers
                                                             if (last_att.RICHIESTAATTIVAZIONE)
                                                             {
                                                                 //att.ANNULLATO = true;
-                                                                var newamf = dtvmf.CreaAttivazione(idMF,db);
+                                                                var newamf = dtvmf.CreaAttivazione(idMF, db);
 
                                                                 if (newamf.IDATTIVAZIONEMAGFAM > 0)
                                                                 {
@@ -2200,7 +2203,7 @@ namespace NewISE.Controllers
                                                             if (last_att.RICHIESTAATTIVAZIONE)
                                                             {
                                                                 //att.ANNULLATO = true;
-                                                                var newamf = dtvmf.CreaAttivazione(idMF,db);
+                                                                var newamf = dtvmf.CreaAttivazione(idMF, db);
 
                                                                 if (newamf.IDATTIVAZIONEMAGFAM > 0)
                                                                 {
@@ -2347,8 +2350,8 @@ namespace NewISE.Controllers
                                     dataFineValidita = e.dataFineValidita,
                                     dataAggiornamento = e.dataAggiornamento,
                                     idStatoRecord = e.idStatoRecord,
-                                    FK_idPensione=e.FK_idPensione,
-                                    nascondi=e.nascondi
+                                    FK_idPensione = e.FK_idPensione,
+                                    nascondi = e.nascondi
                                 }).ToList();
                     }
                 }
@@ -2378,8 +2381,8 @@ namespace NewISE.Controllers
                                     dataFineValidita = e.dataFineValidita,
                                     dataAggiornamento = e.dataAggiornamento,
                                     idStatoRecord = e.idStatoRecord,
-                                    FK_idPensione=e.FK_idPensione,
-                                    nascondi=e.nascondi
+                                    FK_idPensione = e.FK_idPensione,
+                                    nascondi = e.nascondi
                                 }).ToList();
                     }
                 }
@@ -2807,7 +2810,7 @@ namespace NewISE.Controllers
 
                     #region altri dati
                     var adf = dtvmf.GetAltriDatiFamiliariFiglio(idFigli, fm.idMaggiorazioniFamiliari);
-                    if (adf.FK_idAltriDatiFam>0 && adf.idStatoRecord != (decimal)EnumStatoRecord.Annullato && adf.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
+                    if (adf.FK_idAltriDatiFam > 0 && adf.idStatoRecord != (decimal)EnumStatoRecord.Annullato && adf.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
                     {
                         var vadffm = dtvmf.CheckVariazioniAdfFiglio(adf.FK_idAltriDatiFam, adf.idAltriDatiFam);
                         vfm.ev_altridati = vadffm.ev_altridati;
@@ -2854,7 +2857,7 @@ namespace NewISE.Controllers
 
                     #region altri dati
                     var adf = dtvmf.GetAltriDatiFamiliariConiuge(idConiuge);
-                    if (adf.FK_idAltriDatiFam > 0 && adf.idStatoRecord!=(decimal)EnumStatoRecord.Attivato && adf.idStatoRecord != (decimal)EnumStatoRecord.Annullato)
+                    if (adf.FK_idAltriDatiFam > 0 && adf.idStatoRecord != (decimal)EnumStatoRecord.Attivato && adf.idStatoRecord != (decimal)EnumStatoRecord.Annullato)
                     {
                         var vadfcm = dtvmf.CheckVariazioniAdfConiuge(adf.FK_idAltriDatiFam, adf.idAltriDatiFam);
                         vcm.ev_altridati = vadfcm.ev_altridati;
@@ -2886,7 +2889,7 @@ namespace NewISE.Controllers
                              a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato &&
                              a.NASCONDI == false)
                                  .OrderByDescending(a => a.IDPENSIONE).ToList();
-                    if (lp_mod.Count() != lp_att.Count() || lp_in_lav.Count()>0)
+                    if (lp_mod.Count() != lp_att.Count() || lp_in_lav.Count() > 0)
                     {
                         vcm.ev_pensione = evidenzia_titolo;
                     }
@@ -3012,7 +3015,7 @@ namespace NewISE.Controllers
                 {
                     decimal? idConiuge_old;
                     var cm = dtc.GetConiugebyID(idConiuge);
-                    if (cm.FK_idConiuge > 0 && cm.idStatoRecord!=(decimal)EnumStatoRecord.Annullato && cm.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
+                    if (cm.FK_idConiuge > 0 && cm.idStatoRecord != (decimal)EnumStatoRecord.Annullato && cm.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
                     {
                         idConiuge_old = cm.FK_idConiuge;
                     }

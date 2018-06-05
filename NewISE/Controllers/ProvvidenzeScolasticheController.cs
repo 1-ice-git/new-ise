@@ -13,7 +13,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
-using NewISE.Models.DBModel.Enum;
+
 
 namespace NewISE.Controllers
 {

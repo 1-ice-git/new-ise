@@ -1,4 +1,5 @@
 ﻿using NewISE.EF;
+using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
-using NewISE.Models.DBModel.Enum;
+
 
 namespace NewISE.Models.DBModel.dtObj
 {

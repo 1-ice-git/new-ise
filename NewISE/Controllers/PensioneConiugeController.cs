@@ -1,6 +1,5 @@
 ﻿using NewISE.Models;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using System;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -149,7 +149,7 @@ namespace NewISE.Controllers
                         pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
                         //if (!pcm.dataFineValidita.HasValue)
                         //{
-                            pcm.dataFineValidita = Utility.DataFineStop();
+                        pcm.dataFineValidita = Utility.DataFineStop();
                         //}
 
                         dtp.SetNuovoImportoPensione(ref pcm, idConiuge, idAttivazioneMagFam);

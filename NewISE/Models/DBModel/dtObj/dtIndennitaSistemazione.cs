@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
-    public enum EnumTipoTrasferimento
-    {
-        ItaliaEstero = 1,
-        EsteroEstero = 2,
-        EsteroEsteroStessaRegiona = 3
-    }
     public class dtIndennitaSistemazione : IDisposable
     {
         public void Dispose()

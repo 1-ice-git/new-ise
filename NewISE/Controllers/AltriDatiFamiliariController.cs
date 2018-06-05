@@ -1,8 +1,9 @@
 ﻿using NewISE.DBComuniItalia;
 using NewISE.Models;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
+
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Enumeratori;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -244,7 +245,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAltriDatiFamiliariConiuge(idConiuge,idAttivazioneMagFam);
+                    adf = dtadf.GetAltriDatiFamiliariConiuge(idConiuge, idAttivazioneMagFam);
                 }
 
 

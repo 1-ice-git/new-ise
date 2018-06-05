@@ -3,7 +3,7 @@ using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
+
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.dtObj;
 using NewISE.Models.Tools;

@@ -1,5 +1,5 @@
 ﻿using NewISE.Models.DBModel.dtObj;
-using NewISE.Models.DBModel.Enum;
+using NewISE.Models.Enumeratori;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

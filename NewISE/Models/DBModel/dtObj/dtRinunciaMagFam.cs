@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
-using NewISE.Models.DBModel.Enum;
+
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -40,7 +41,7 @@ namespace NewISE.Models.DBModel.dtObj
                         IDMAGGIORAZIONIFAMILIARI = rmf.IDMAGGIORAZIONIFAMILIARI,
                         RINUNCIAMAGGIORAZIONI = false,
                         DATAAGGIORNAMENTO = DateTime.Now,
-                        IDSTATORECORD =(decimal)EnumStatoRecord.In_Lavorazione
+                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                     };
 
                     amfNew.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(rmfNew);

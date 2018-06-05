@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -19,31 +20,31 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 //try
                 //{
-                    var f = db.FIGLI.Find(idFiglio);
+                var f = db.FIGLI.Find(idFiglio);
 
-                    var lpmf =
-                        f.PERCENTUALEMAGFIGLI.Where(
-                            a =>
-                                a.ANNULLATO == false && a.IDTIPOLOGIAFIGLIO == f.IDTIPOLOGIAFIGLIO &&
-                                dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
-                            .OrderByDescending(a => a.DATAINIZIOVALIDITA)
-                            .ToList();
+                var lpmf =
+                    f.PERCENTUALEMAGFIGLI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.IDTIPOLOGIAFIGLIO == f.IDTIPOLOGIAFIGLIO &&
+                            dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                        .ToList();
 
 
-                    if (lpmf?.Any() ?? false)
+                if (lpmf?.Any() ?? false)
+                {
+                    var pmf = lpmf.First();
+                    pmfm = new PercentualeMagFigliModel()
                     {
-                        var pmf = lpmf.First();
-                        pmfm = new PercentualeMagFigliModel()
-                        {
-                            idPercMagFigli = pmf.IDPERCMAGFIGLI,
-                            idTipologiaFiglio = (EnumTipologiaFiglio)pmf.IDTIPOLOGIAFIGLIO,
-                            dataInizioValidita = pmf.DATAINIZIOVALIDITA,
-                            dataFineValidita = pmf.DATAFINEVALIDITA,
-                            percentualeFigli = pmf.PERCENTUALEFIGLI,
-                            dataAggiornamento = pmf.DATAAGGIORNAMENTO,
-                            annullato = pmf.ANNULLATO
-                        };
-                    }
+                        idPercMagFigli = pmf.IDPERCMAGFIGLI,
+                        idTipologiaFiglio = (EnumTipologiaFiglio)pmf.IDTIPOLOGIAFIGLIO,
+                        dataInizioValidita = pmf.DATAINIZIOVALIDITA,
+                        dataFineValidita = pmf.DATAFINEVALIDITA,
+                        percentualeFigli = pmf.PERCENTUALEFIGLI,
+                        dataAggiornamento = pmf.DATAAGGIORNAMENTO,
+                        annullato = pmf.ANNULLATO
+                    };
+                }
                 //    else
                 //    { 
                 //        throw new Exception("Errore - Percentuale maggiorazione figli non trovata.");

@@ -23,7 +23,7 @@ namespace NewISE.EF
         }
     
         public decimal IDELABMAB { get; set; }
-        public decimal IDMAB { get; set; }
+        public decimal IDMAGABITAZIONE { get; set; }
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal PERCENTUALEDISAGIO { get; set; }

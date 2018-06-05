@@ -24,16 +24,16 @@ namespace NewISE.EF
         public decimal IDPAGATOCONDIVISO { get; set; }
         public decimal IDMAB { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public bool CONDIVISO { get; set; }
         public bool PAGATO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public decimal IDSTATORECORD { get; set; }
         public Nullable<decimal> FK_IDPAGATOCONDIVISO { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual MAB MAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB1 { get; set; }
         public virtual PAGATOCONDIVISOMAB PAGATOCONDIVISOMAB2 { get; set; }

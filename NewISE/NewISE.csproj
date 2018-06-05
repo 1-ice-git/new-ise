@@ -2486,6 +2486,9 @@
     <Compile Include="EF\ANTICIPI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\ANTICIPOANNUALEMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\ANTICIPOSALDOTE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2555,9 +2558,6 @@
     <Compile Include="EF\DOCUMENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\DOC_ATER.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\ELABINDENNITA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2624,6 +2624,9 @@
     <Compile Include="EF\LOGATTIVITA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\MAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\MAGGIORAZIONEABITAZIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2652,6 +2655,9 @@
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\MODIFICHEMAGFAM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\MODIFICHE_MAB.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\NORMACALCOLO.cs">
@@ -2712,9 +2718,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RINUNCIAANTICIPI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\RINUNCIAMAB.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
@@ -2820,9 +2823,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\VALUTE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\VARIAZIONIMAB.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\VIAGGICONGEDO.cs">
@@ -3143,11 +3143,6 @@
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
-    <Compile Include="Models\DBModel\Enum\EnumFasePassaporti.cs" />
-    <Compile Include="Models\DBModel\Enum\EnumFaseRuoloDipendente.cs" />
-    <Compile Include="Models\DBModel\Enum\EnumFaseViaggioCongedo.cs" />
-    <Compile Include="Models\DBModel\Enum\EnumStatoHome.cs" />
-    <Compile Include="Models\DBModel\Enum\EnumStatoRecord.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
@@ -3565,7 +3560,6 @@
     <Content Include="Views\Richiamo\MessaggioInserisciRichiamo.cshtml" />
     <Content Include="Views\Richiamo\MessaggioModificaRichiamo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
-
     <Content Include="Views\Dataset\DSIndennitaBase.xsc">
       <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
     </Content>
@@ -3597,7 +3591,6 @@
     <Content Include="Views\VariazionePassaporto\MessaggioAnnullaInvioPassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\MessaggioAnnullaRichiestaPassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\MessaggioAttivaRichiestaPassaporto.cshtml" />
-
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

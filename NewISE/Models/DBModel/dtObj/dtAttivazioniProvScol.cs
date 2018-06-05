@@ -6,7 +6,7 @@ using System.Web;
 using NewISE.EF;
 using NewISE.Models.Tools;
 using Newtonsoft.Json.Schema;
-using NewISE.Models.DBModel.Enum;
+
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -32,21 +32,21 @@ namespace NewISE.Models.DBModel.dtObj
                     {
 
                         var aps = apsl.First();
-                    
-                            if (aps.IDPROVSCOLASTICHE > 0)
+
+                        if (aps.IDPROVSCOLASTICHE > 0)
+                        {
+                            apsm = new AttivazioniProvScolasticheModel()
                             {
-                                apsm = new AttivazioniProvScolasticheModel()
-                                {
-                                    idProvScolastiche = aps.IDPROVSCOLASTICHE,
-                                    idTrasfProvScolastiche = aps.IDTRASFPROVSCOLASTICHE,
-                                    notificaRichiesta = aps.NOTIFICARICHIESTA,
-                                    dataNotifica = aps.DATANOTIFICA,
-                                    attivaRichiesta = aps.ATTIVARICHIESTA,
-                                    dataAttivazione = aps.DATAATTIVAZIONE,
-                                    dataAggiornamento = aps.DATAAGGIORNAMENTO,
-                                    annullato = aps.ANNULLATO
-                                };
-                            }
+                                idProvScolastiche = aps.IDPROVSCOLASTICHE,
+                                idTrasfProvScolastiche = aps.IDTRASFPROVSCOLASTICHE,
+                                notificaRichiesta = aps.NOTIFICARICHIESTA,
+                                dataNotifica = aps.DATANOTIFICA,
+                                attivaRichiesta = aps.ATTIVARICHIESTA,
+                                dataAttivazione = aps.DATAATTIVAZIONE,
+                                dataAggiornamento = aps.DATAAGGIORNAMENTO,
+                                annullato = aps.ANNULLATO
+                            };
+                        }
                     }
                 }
             }
@@ -67,11 +67,11 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         IDTRASFPROVSCOLASTICHE = idTrasfProvScolastiche,
                         NOTIFICARICHIESTA = false,
-                        ATTIVARICHIESTA =false,
-                        DATAAGGIORNAMENTO =DateTime.Now,
+                        ATTIVARICHIESTA = false,
+                        DATAAGGIORNAMENTO = DateTime.Now,
                         ANNULLATO = false,
                         FK_IDPROVSCOLASTICHE = 1
-                        
+
                     };
                     db.ATTIVAZIONIPROVSCOLASTICHE.Add(aps);
 
@@ -98,8 +98,8 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
-            
-            PROVVIDENZESCOLASTICHE ps = new PROVVIDENZESCOLASTICHE();
+
+                PROVVIDENZESCOLASTICHE ps = new PROVVIDENZESCOLASTICHE();
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
@@ -126,7 +126,7 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
 
-           
+
         }
 
         public List<ATTIVAZIONIPROVSCOLASTICHE> GetListAttivazioniProvvScolByIdProvvScol(decimal idTrasfProvScolastiche)
@@ -156,7 +156,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     //             }).ToList();
                     //}
-                    
+
                 }
             }
             return lamf;

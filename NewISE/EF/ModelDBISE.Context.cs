@@ -29,6 +29,7 @@ namespace NewISE.EF
         public virtual DbSet<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
         public virtual DbSet<ANTICIPI> ANTICIPI { get; set; }
+        public virtual DbSet<ANTICIPOANNUALEMAB> ANTICIPOANNUALEMAB { get; set; }
         public virtual DbSet<ANTICIPOSALDOTE> ANTICIPOSALDOTE { get; set; }
         public virtual DbSet<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
         public virtual DbSet<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
@@ -51,7 +52,6 @@ namespace NewISE.EF
         public virtual DbSet<CONT_OA> CONT_OA { get; set; }
         public virtual DbSet<DESTINATARI> DESTINATARI { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
-        public virtual DbSet<DOC_ATER> DOC_ATER { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<ELABINDENNITA> ELABINDENNITA { get; set; }
         public virtual DbSet<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
@@ -75,10 +75,12 @@ namespace NewISE.EF
         public virtual DbSet<LIVELLI> LIVELLI { get; set; }
         public virtual DbSet<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
+        public virtual DbSet<MAB> MAB { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<MESEANNOELABORAZIONE> MESEANNOELABORAZIONE { get; set; }
+        public virtual DbSet<MODIFICHE_MAB> MODIFICHE_MAB { get; set; }
         public virtual DbSet<MODIFICHEMAGFAM> MODIFICHEMAGFAM { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
@@ -102,7 +104,6 @@ namespace NewISE.EF
         public virtual DbSet<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
         public virtual DbSet<RINUNCIA_TE_R> RINUNCIA_TE_R { get; set; }
         public virtual DbSet<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
-        public virtual DbSet<RINUNCIAMAB> RINUNCIAMAB { get; set; }
         public virtual DbSet<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
@@ -136,7 +137,6 @@ namespace NewISE.EF
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
-        public virtual DbSet<VARIAZIONIMAB> VARIAZIONIMAB { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
     }

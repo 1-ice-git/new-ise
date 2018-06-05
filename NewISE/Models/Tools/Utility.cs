@@ -1,9 +1,9 @@
 ﻿using NewISE.EF;
 using NewISE.Models.Config.s_admin;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
-using NewISE.Models.dtObj;
 
+using NewISE.Models.dtObj;
+using NewISE.Models.Enumeratori;
 using System;
 using System.Collections.Generic;
 using System.IO;

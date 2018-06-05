@@ -24,6 +24,7 @@ namespace NewISE.EF
     
         public decimal IDATTIVAZIONIPASSAPORTI { get; set; }
         public decimal IDPASSAPORTI { get; set; }
+        public decimal IDFASEPASSAPORTI { get; set; }
         public bool NOTIFICARICHIESTA { get; set; }
         public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
         public bool PRATICACONCLUSA { get; set; }
@@ -31,7 +32,6 @@ namespace NewISE.EF
         public System.DateTime DATAVARIAZIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal IDFASEPASSAPORTI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }

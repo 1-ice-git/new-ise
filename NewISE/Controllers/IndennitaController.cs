@@ -4,8 +4,8 @@ using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
-using NewISE.Models.DBModel.Enum;
 using NewISE.Models.dtObj;
+using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
 using NewISE.Views.Dataset;
 using Oracle.ManagedDataAccess.Client;
@@ -76,7 +76,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
 
             }
-            
+
             return PartialView();
         }
         public JsonResult VerificaIndennita(decimal idTrasferimento)
@@ -111,7 +111,7 @@ namespace NewISE.Controllers
             }
         }
         public ActionResult IndennitaBase(decimal idTrasferimento)
-        {   
+        {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
 
             try
@@ -120,7 +120,7 @@ namespace NewISE.Controllers
                 {
                     libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
                 }
-                
+
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -132,10 +132,10 @@ namespace NewISE.Controllers
                         ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
 
                     }
-                    
+
                 }
                 ViewBag.idTrasferimento = idTrasferimento;
-                
+
 
                 return PartialView(libm);
             }
@@ -143,7 +143,7 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            
+
         }
 
         DSIndennitaBase ds = new DSIndennitaBase();
@@ -165,11 +165,11 @@ namespace NewISE.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    
+
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
                         var tm = dtt.GetTrasferimentoById(idTrasferimento);
-                        
+
                         using (dtRuoloUfficio dtru = new dtRuoloUfficio())
                         {
 
@@ -181,21 +181,21 @@ namespace NewISE.Controllers
 
                                 tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
                                 tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-                                
+
                                 ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
                                 ViewBag.idTrasferimento = idTrasferimento;
 
                                 decimal valore = 0;
-                            
+
                                 if (ViewBag.idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || ViewBag.idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
-                                {   
+                                {
                                     valore = ll.First().VALORE;
-                                    
+
                                 }
                                 else
                                 {
                                     valore = ll.First().VALORERESP;
-                                    
+
                                 }
 
                                 // Livello
@@ -249,7 +249,7 @@ namespace NewISE.Controllers
                                 reportViewer.LocalReport.DataSources.Add(datasource);
                                 //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
                                 reportViewer.LocalReport.Refresh();
-                                
+
                                 ReportParameter[] parameterValues = new ReportParameter[]
                                 {
                                     new ReportParameter ("Nominativo",Nominativo),
@@ -267,18 +267,18 @@ namespace NewISE.Controllers
                     }
                 }
             }
-            
+
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            
+
             return PartialView("RptIndennitaBase");
 
         }
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
-           
+
             try
             {
 
@@ -290,7 +290,7 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            
+
         }
         public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
         {

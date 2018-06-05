@@ -18,19 +18,15 @@ using NewISE.Models.ModelRest;
 using System.Diagnostics;
 using System.IO;
 using NewISE.Models.Config;
-using NewISE.Models.DBModel.Enum;
+
 using NewISE.Models.Config.s_admin;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.dtObj;
 using System.Web.Mvc;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
-    public enum EnumTipologiaCoan
-    {
-        Servizi_Istituzionali = 1,
-        Servizi_Promozionali = 2
-    }
 
     public class dtTrasferimento : IDisposable
     {

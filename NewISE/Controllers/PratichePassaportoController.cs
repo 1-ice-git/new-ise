@@ -6,12 +6,13 @@ using System.Web.Mvc;
 using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
+
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
 using System.Web.Helpers;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -62,7 +63,7 @@ namespace NewISE.Controllers
                     lefm = dtpp.GetFamiliariRichiestaPassaportoPartenza(idTrasferimento).ToList();
 
                     ViewData.Add("idTrasferimento", idTrasferimento);
-                    
+
                 }
             }
             catch (Exception ex)
@@ -103,7 +104,7 @@ namespace NewISE.Controllers
         {
             ElencoFamiliariPassaportoModel efm = new ElencoFamiliariPassaportoModel();
             try
-            { 
+            {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
                     efm = dtpp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
@@ -274,7 +275,7 @@ namespace NewISE.Controllers
                 {
                     gcip = dtap.GetGestioneInludiPassaporto(idAttivitaPassaporto, idFamiliarePassaporto, parentela, esisteDoc, includiPassaporto);
 
-                   
+
                 }
             }
             catch (Exception ex)
@@ -344,7 +345,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    dtpp.AnnullaRichiestaPassaporto(idAttivazionePassaporto,testoAnnulla);
+                    dtpp.AnnullaRichiestaPassaporto(idAttivazionePassaporto, testoAnnulla);
                     msg = "Annullamento effettuato con successo";
                 }
             }
@@ -616,7 +617,7 @@ namespace NewISE.Controllers
                                 if (dimensioneConsentita)
                                 {
                                     //verifica se il documento è gia presente ritornando l'eventuale id
-                                    decimal idDocumentoEsistente = dtpp.VerificaEsistenzaDocumentoPassaporto(idTrasferimento, idTipoDocumento,idParentela, idFamiliarePassaporto);
+                                    decimal idDocumentoEsistente = dtpp.VerificaEsistenzaDocumentoPassaporto(idTrasferimento, idTipoDocumento, idParentela, idFamiliarePassaporto);
 
                                     if (idDocumentoEsistente > 0)
                                     {

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumTipologiaAnticipi
-    {
-        Prima_Sistemazione = 1
-    }
+
 
     public class TipologiaAnticipiModel
     {
