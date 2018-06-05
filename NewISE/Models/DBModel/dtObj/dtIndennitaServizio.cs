@@ -26,11 +26,44 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
 
-                    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
-                    {
-                        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
+                    //using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                    //{
+                    //    RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
 
-                        //CoefficientiSedeModel - GetCoefficenteSedeByIdTrasf (dtCoefficenteSede)
+                    //    //CoefficientiSedeModel - GetCoefficenteSedeByIdTrasf (dtCoefficenteSede)
+
+                    //    //PercentualeDisagioModel - GetPercentualeDisagioByIdTrasf (dtPercentualeDisagio)
+
+                    //    libm = (from e in ll
+                    //            select new IndennitaBaseModel()
+                    //            {
+                    //                idIndennitaBase = e.IDINDENNITABASE,
+                    //                idLivello = e.IDLIVELLO,
+                    //                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                    //                dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                    //                valore = e.VALORE,
+                    //                valoreResponsabile = e.VALORERESP,
+                    //                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                    //                annullato = e.ANNULLATO,
+                    //                Livello = new LivelloModel()
+                    //                {
+                    //                    idLivello = e.LIVELLI.IDLIVELLO,
+                    //                    DescLivello = e.LIVELLI.LIVELLO
+                    //                },
+                    //                RuoloUfficio = new RuoloUfficioModel()
+                    //                {
+                    //                    idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
+                    //                    DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
+                    //                }
+                    //            }).ToList();
+                    //}
+
+
+                    using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+                    {
+                        CoefficientiSedeModel csm = dtcs.GetCoefficenteSedeByIdTrasferimento(idTrasferimento);
+                        
+
                         //PercentualeDisagioModel - GetPercentualeDisagioByIdTrasf (dtPercentualeDisagio)
 
                         libm = (from e in ll
@@ -44,18 +77,16 @@ namespace NewISE.Models.DBModel.dtObj
                                     valoreResponsabile = e.VALORERESP,
                                     dataAggiornamento = e.DATAAGGIORNAMENTO,
                                     annullato = e.ANNULLATO,
-                                    Livello = new LivelloModel()
+                                    CoefficenteSede = new CoefficientiSedeModel
                                     {
-                                        idLivello = e.LIVELLI.IDLIVELLO,
-                                        DescLivello = e.LIVELLI.LIVELLO
-                                    },
-                                    RuoloUfficio = new RuoloUfficioModel()
-                                    {
-                                        idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
-                                        DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
+                                        idCoefficientiSede = csm.idCoefficientiSede,
+                                        idUfficio = csm.idUfficio
+
                                     }
+
                                 }).ToList();
                     }
+
 
                     return libm;
                 }

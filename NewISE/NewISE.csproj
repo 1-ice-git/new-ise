@@ -2470,8 +2470,11 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Controllers\AnticipiController.cs" />
+    <Compile Include="Controllers\ElaborazioniController.cs" />
     <Compile Include="Controllers\IndennitaController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
+    <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
     <Compile Include="EF\ACCESSI.cs">
@@ -2832,9 +2835,12 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtParPercAnticipoTE.cs" />
@@ -3152,6 +3158,8 @@
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
     <Compile Include="Models\DBModel\TipoLiquidazioneModel.cs" />
+    <Compile Include="Models\DBModel\TipoMovimentoModel.cs" />
+    <Compile Include="Models\DBModel\TipoVoceModel.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMABModel.cs" />
     <Compile Include="Models\DBModel\PagatoCondivisoMABModel.cs" />
@@ -3282,6 +3290,7 @@
     <Compile Include="Models\DBModel\ValutaUfficioModel.cs" />
     <Compile Include="Models\DBModel\CanoneMABModel.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
+    <Compile Include="Models\DBModel\VociModel.cs" />
     <Compile Include="Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Models\dtObj\dtAccesso.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCDCGepe.cs" />
@@ -3344,6 +3353,7 @@
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
     <Compile Include="Models\ViewModel\ElencoTitoliViaggioModel.cs" />
+    <Compile Include="Models\ViewModel\LiquidazioniDiretteViewModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfFigliModel.cs" />
@@ -3565,7 +3575,6 @@
     <Content Include="Views\Richiamo\MessaggioInserisciRichiamo.cshtml" />
     <Content Include="Views\Richiamo\MessaggioModificaRichiamo.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
-
     <Content Include="Views\Dataset\DSIndennitaBase.xsc">
       <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
     </Content>
@@ -3597,7 +3606,6 @@
     <Content Include="Views\VariazionePassaporto\MessaggioAnnullaInvioPassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\MessaggioAnnullaRichiestaPassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\MessaggioAttivaRichiestaPassaporto.cshtml" />
-
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

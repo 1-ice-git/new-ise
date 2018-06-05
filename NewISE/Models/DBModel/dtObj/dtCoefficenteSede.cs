@@ -92,42 +92,34 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public CoefficientiSedeModel GetCoefficenteSedeByIdTrasf(decimal idTrasferimento, DateTime dt, ModelDBISE db)
+        public CoefficientiSedeModel GetCoefficenteSedeByIdTrasferimento(decimal idTrasferimento)
         {
+
             CoefficientiSedeModel csm = new CoefficientiSedeModel();
 
-            var lcs = db.INDENNITA.Find(idTrasferimento)
-                                  .COEFFICIENTESEDE.Where(a => a.ANNULLATO == false &&
-                                                          dt >= a.DATAINIZIOVALIDITA &&
-                                                          dt <= a.DATAFINEVALIDITA)
-                                                   .OrderByDescending(a => a.DATAINIZIOVALIDITA)
-                                                   .ToList();
-
-            if (lcs != null && lcs.Count > 0)
+            using (ModelDBISE db = new ModelDBISE())
             {
-                var cs = lcs.First();
+                var lrd = db.INDENNITA.Find(idTrasferimento).COEFFICIENTESEDE.Where(a => a.ANNULLATO == false);
 
-                csm = new CoefficientiSedeModel()
+                var cs = lrd.First();
+                if (lrd?.Any() ?? false)
                 {
-                    idCoefficientiSede = cs.IDCOEFFICIENTESEDE,
-                    idUfficio = cs.IDUFFICIO,
-                    dataInizioValidita = cs.DATAINIZIOVALIDITA,
-                    dataFineValidita = cs.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : cs.DATAFINEVALIDITA,
-                    valore = cs.VALORECOEFFICIENTE,
-                    dataAggiornamento = cs.DATAAGGIORNAMENTO,
-                    annullato = cs.ANNULLATO,
-                    Ufficio = new UfficiModel()
+                    csm = new CoefficientiSedeModel()
                     {
-                        idUfficio = cs.UFFICI.IDUFFICIO,
-                        codiceUfficio = cs.UFFICI.CODICEUFFICIO,
-                        descUfficio = cs.UFFICI.DESCRIZIONEUFFICIO,
-                        pagatoValutaUfficio = cs.UFFICI.PAGATOVALUTAUFFICIO
-                    }
-                };
+                        idCoefficientiSede = cs.IDCOEFFICIENTESEDE,
+                        idUfficio = cs.IDUFFICIO,
+                        dataInizioValidita = cs.DATAINIZIOVALIDITA,
+                        dataFineValidita = cs.DATAFINEVALIDITA,
+                        dataAggiornamento = cs.DATAAGGIORNAMENTO,
+                        annullato = cs.ANNULLATO,
+                        
+                    };
+                }
             }
-
             return csm;
         }
+
+        
 
         public CoefficientiSedeModel GetCoefficenteSede(decimal idCoefficenteSede, ModelDBISE db)
         {
