@@ -658,37 +658,39 @@ namespace NewISE.Models.dtObj
                 var pm = db.PERCENTUALEMAB.Find(idPerceMAB);
                 var item = db.Entry<PERCENTUALEMAB>(pm);
 
-                var lvmab =
-                    db.VARIAZIONIMAB.Where(
-                        a =>
-                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                            a.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO.IDUFFICIO == pm.IDUFFICIO &&
-                            a.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO.DIPENDENTI.LIVELLIDIPENDENTI.Any(
-                                b =>
-                                    b.ANNULLATO == false && b.DATAFINEVALIDITA >= pm.DATAINIZIOVALIDITA &&
-                                    b.DATAINIZIOVALIDITA <= pm.DATAFINEVALIDITA && b.IDLIVELLO == pm.IDLIVELLO) &&
-                            a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA && a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
-                        .OrderBy(a => a.DATAINIZIOMAB)
-                        .ToList();
+                var lmab = db.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                            a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == pm.IDUFFICIO &&
+                                            a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI
+                                                .LIVELLIDIPENDENTI.Any(
+                                                    b =>
+                                                        b.ANNULLATO == false &&
+                                                        b.DATAFINEVALIDITA >= pm.DATAINIZIOVALIDITA &&
+                                                        b.DATAINIZIOVALIDITA <= pm.DATAFINEVALIDITA &&
+                                                        b.IDLIVELLO == pm.IDLIVELLO) &&
+                                            a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
+                                            a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
+                    .OrderBy(a => a.DATAINIZIOMAB)
+                    .ToList();
 
-                if (lvmab?.Any() ?? false)
+
+                if (lmab?.Any() ?? false)
                 {
                     item.State = EntityState.Modified;
-                    item.Collection(a => a.VARIAZIONIMAB).Load();
+                    item.Collection(a => a.MAB).Load();
 
-                    foreach (var vmab in lvmab)
+                    foreach (var mab in lmab)
                     {
                         var nConta =
-                            pm.VARIAZIONIMAB.Count(
+                            pm.MAB.Count(
                                 a =>
                                     a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                    a.IDVARIAZIONIMAB == vmab.IDVARIAZIONIMAB);
+                                    a.IDMAB == mab.IDMAB);
 
                         if (nConta <= 0)
                         {
-                            pm.VARIAZIONIMAB.Add(vmab);
+                            pm.MAB.Add(mab);
 
-                            var t = vmab.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+                            var t = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
 
                             Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);
                         }
@@ -699,7 +701,7 @@ namespace NewISE.Models.dtObj
 
                     if (i <= 0)
                     {
-                        throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella VariazioneMAB.");
+                        throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella MAB.");
                     }
 
                 }
@@ -720,36 +722,42 @@ namespace NewISE.Models.dtObj
                 var item = db.Entry<MAGGIORAZIONIANNUALI>(ma);
 
 
+                //var lmab =
+                //    db.MAGGIORAZIONEABITAZIONE.Where(
+                //        a =>
+                //            a.INDENNITA.TRASFERIMENTO.IDUFFICIO == ma.IDUFFICIO &&
+                //            a.MAB.Where(
+                //                b =>
+                //                    b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                //                    b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA && b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA)
+                //                .Any()).OrderBy(a => a.IDMAGABITAZIONE).ToList();
+
                 var lmab =
-                    db.MAGGIORAZIONEABITAZIONE.Where(
+                    db.MAB.Where(
                         a =>
-                            a.TRASFERIMENTO.IDUFFICIO == ma.IDUFFICIO &&
-                            a.VARIAZIONIMAB.Where(
-                                b =>
-                                    b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                    b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA && b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA)
-                                .Any()).OrderBy(a => a.IDMAB).ToList();
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.DATAFINEMAB >= ma.DATAINIZIOVALIDITA && a.DATAINIZIOMAB <= ma.DATAFINEVALIDITA &&
+                            a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == ma.IDUFFICIO)
+                        .OrderBy(a => a.IDMAB)
+                        .ToList();
 
                 if (lmab?.Any() ?? false)
                 {
                     item.State = EntityState.Modified;
-                    item.Collection(a => a.MAGGIORAZIONEABITAZIONE).Load();
+                    item.Collection(a => a.MAB).Load();
 
                     foreach (var mab in lmab)
                     {
                         var nConta =
-                            ma.MAGGIORAZIONEABITAZIONE.Count(
+                            ma.MAB.Count(
                                 a =>
-                                    a.IDMAB == mab.IDMAB &&
-                                    a.VARIAZIONIMAB.Any(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                                             b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA &&
-                                                             b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA));
+                                    a.IDMAB == mab.IDMAB);
 
                         if (nConta <= 0)
                         {
-                            ma.MAGGIORAZIONEABITAZIONE.Add(mab);
+                            ma.MAB.Add(mab);
 
-                            var t = mab.TRASFERIMENTO;
+                            var t = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
 
                             Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ma.DATAINIZIOVALIDITA, db);
                         }
@@ -760,7 +768,7 @@ namespace NewISE.Models.dtObj
 
                     if (i <= 0)
                     {
-                        throw new Exception("Errore nella fase di associazione delle maggiorazioni annuali sulla tabella MaggiorazioneAbitazione.");
+                        throw new Exception("Errore nella fase di associazione delle maggiorazioni annuali sulla tabella MAB.");
                     }
                 }
 
@@ -806,7 +814,7 @@ namespace NewISE.Models.dtObj
                         {
                             pc.PAGATOCONDIVISOMAB.Add(pgc);
 
-                            var t = pgc.MAGGIORAZIONEABITAZIONE.TRASFERIMENTO;
+                            var t = pgc.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
                             Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pc.DATAINIZIOVALIDITA, db);
 
                         }

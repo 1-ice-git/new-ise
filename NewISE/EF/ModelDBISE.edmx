@@ -952,7 +952,7 @@
           <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOMAB" Type="date" Nullable="false" />
-          <Property Name="DATAFINEMAB" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="DATAFINEMAB" Type="date" Nullable="false" />
           <Property Name="RINUNCIAMAB" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="FK_IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -8235,7 +8235,7 @@
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOMAB" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEMAB" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="DATAFINEMAB" Type="DateTime" Nullable="false" />
           <Property Name="RINUNCIAMAB" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />

@@ -442,7 +442,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var m = db.MAB.Find(mm.idMAB);
 
-                    var aal = m.ANTICIPOANNUALEMAB.Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).ToList();
+                    var aal = m.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
 
                     if (aal?.Any() ?? false)
                     {
@@ -450,13 +450,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                         am = new ANTICIPOANNUALEMAB()
                         {
-                            IDANTICIPOANNUALEMAB=aa_row.IDANTICIPOANNUALEMAB,
+                            IDANTICIPOANNUALEMAB = aa_row.IDANTICIPOANNUALEMAB,
                             IDMAB = aa_row.IDMAB,
                             IDATTIVAZIONEMAB = aa_row.IDATTIVAZIONEMAB,
                             IDSTATORECORD = aa_row.IDSTATORECORD,
-                            ANTICIPOANNUALE=aa_row.ANTICIPOANNUALE,
+                            ANTICIPOANNUALE = aa_row.ANTICIPOANNUALE,
                             DATAAGGIORNAMENTO = aa_row.DATAAGGIORNAMENTO,
-                            FK_IDANTICIPOANNUALEMAB=aa_row.FK_IDANTICIPOANNUALEMAB
+                            FK_IDANTICIPOANNUALEMAB = aa_row.FK_IDANTICIPOANNUALEMAB
                         };
 
                     }
@@ -536,7 +536,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-      
+
 
         public MABModel GetMABPartenza(decimal idTrasferimento)
         {
@@ -552,7 +552,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var amab = amabl.First();
 
-                        var ml = amab.MAB.Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDMAB).ToList();
+                        var ml = amab.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDMAB).ToList();
 
                         if (ml?.Any() ?? false)
                         {
@@ -565,7 +565,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataInizioMAB = m.DATAINIZIOMAB,
                                 //dataFineMAB = m.DATAFINEMAB,
                                 dataAggiornamento = m.DATAAGGIORNAMENTO,
-                                rinunciaMAB=m.RINUNCIAMAB,
+                                rinunciaMAB = m.RINUNCIAMAB,
                                 FK_idMAB = m.FK_IDMAB
                             };
 
@@ -807,7 +807,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 RimuoviAssociazioneMAB_MaggiorazioniAnnuali(mm.idMAB, db);
                                 //se richiesto le riassocio
                                 var aal = db.MAB.Find(mm.idMAB).ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDANTICIPOANNUALEMAB);
-                                if(aal?.Any()??false)
+                                if (aal?.Any() ?? false)
                                 {
                                     var aa = aal.First();
                                     if (aa.ANTICIPOANNUALE)
@@ -887,7 +887,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 #endregion
 
                                 #region imposto lo stato su ATTIVATO (VARIAZIONIMAB, CANONEMAB e PAGATOCONDIVISOMAB)
-                                var mab = am.MAB.Where(a=>a.IDSTATORECORD==(decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDMAB).First();// this.GetVariazioniMABPartenza(am.IDTRASFERIMENTO);
+                                var mab = am.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDMAB).First();// this.GetVariazioniMABPartenza(am.IDTRASFERIMENTO);
                                 UpdateStatoMAB(mab.IDMAB, EnumStatoRecord.Attivato, db);
 
                                 var cmab = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDCANONE).First();
@@ -1116,7 +1116,7 @@ namespace NewISE.Models.DBModel.dtObj
                             DATAINIZIOMAB = mab_old.dataInizioMAB,
                             //DATAFINEMAB = mab_old.dataFineMAB,
                             DATAAGGIORNAMENTO = DateTime.Now,
-                            RINUNCIAMAB=mab_old.rinunciaMAB,
+                            RINUNCIAMAB = mab_old.rinunciaMAB,
                             FK_IDMAB = mab_old.FK_idMAB
                         };
                         db.MAB.Add(mab_new);
@@ -1382,7 +1382,7 @@ namespace NewISE.Models.DBModel.dtObj
                             else
                             {
                                 #region imposto lo stato su DA_ATTIVARE
-                                var mm = am.MAB.Where(a=>a.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.IDMAB).First();// this.GetVariazioniMABPartenza(am.IDTRASFERIMENTO);
+                                var mm = am.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.IDMAB).First();// this.GetVariazioniMABPartenza(am.IDTRASFERIMENTO);
                                 UpdateStatoMAB(mm.IDMAB, EnumStatoRecord.Da_Attivare, db);
 
                                 var cm = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.IDCANONE).First();
@@ -1630,7 +1630,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var att = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
 
 
-                var ma = att.MAB.Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).OrderBy(a=>a.IDMAB).First();
+                var ma = att.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDMAB).First();
                 //if (ma.IDMAB > 0)
                 //{
                 ma.DATAAGGIORNAMENTO = DateTime.Now;
@@ -2131,7 +2131,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
-        
+
         public void RimuoviAssociazione_MAB_PercentualeMAB(decimal idMAB, ModelDBISE db)
         {
             var ma = db.MAB.Find(idMAB);
@@ -2454,19 +2454,18 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
-                var t = db.TRASFERIMENTO.Find(idMagAbitazione); 
+                var t = db.TRASFERIMENTO.Find(idMagAbitazione);
                 MABModel mm = new MABModel();
 
                 MAB m = new MAB()
                 {
                     IDMAGABITAZIONE = idMagAbitazione,
                     IDATTIVAZIONEMAB = idAttivazioneMAB,
-                    IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione,
-                    DATAINIZIOMAB=t.DATAPARTENZA,
-                    DATAFINEMAB=t.DATARIENTRO.ToString(),
-                    RINUNCIAMAB=false,
-                    DATAAGGIORNAMENTO = DateTime.Now,
-                    FK_IDMAB=0
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                    DATAINIZIOMAB = t.DATAPARTENZA,
+                    DATAFINEMAB = t.DATARIENTRO,
+                    RINUNCIAMAB = false,
+                    DATAAGGIORNAMENTO = DateTime.Now
                 };
                 db.MAB.Add(m);
 
@@ -2476,12 +2475,12 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idMAB = m.IDMAB,
                         idAttivazioneMAB = m.IDATTIVAZIONEMAB,
-                        idStatoRecord=m.IDSTATORECORD,
-                        dataInizioMAB=m.DATAINIZIOMAB,
-                        dataFineMAB=Utility.DataFineStop(),//  m.DATAFINEMAB
+                        idStatoRecord = m.IDSTATORECORD,
+                        dataInizioMAB = m.DATAINIZIOMAB,
+                        dataFineMAB = Utility.DataFineStop(),//  m.DATAFINEMAB
                         dataAggiornamento = m.DATAAGGIORNAMENTO,
                         rinunciaMAB = m.RINUNCIAMAB,
-                        FK_idMAB=m.FK_IDMAB
+                        FK_idMAB = m.FK_IDMAB
                     };
 
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento MAB", "MAB", db,
@@ -2523,7 +2522,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     aam = new AnticipoAnnualeMABModel()
                     {
-                        idAnticipoAnnualeMAB=aa.IDANTICIPOANNUALEMAB,
+                        idAnticipoAnnualeMAB = aa.IDANTICIPOANNUALEMAB,
                         idMAB = aa.IDMAB,
                         idAttivazioneMAB = aa.IDATTIVAZIONEMAB,
                         idStatoRecord = aa.IDSTATORECORD,
@@ -2566,11 +2565,11 @@ namespace NewISE.Models.DBModel.dtObj
                         mm = new MABModel()
                         {
                             idMAB = m.IDMAB,
-                            idMagAbitazione=m.IDMAGABITAZIONE,
+                            idMagAbitazione = m.IDMAGABITAZIONE,
                             idAttivazioneMAB = m.IDATTIVAZIONEMAB,
-                            idStatoRecord=m.IDSTATORECORD,
-                            dataInizioMAB=m.DATAINIZIOMAB,
-                            dataFineMAB=Utility.DataFineStop(),// m.DATAFINEMAB,
+                            idStatoRecord = m.IDSTATORECORD,
+                            dataInizioMAB = m.DATAINIZIOMAB,
+                            dataFineMAB = Utility.DataFineStop(),// m.DATAFINEMAB,
                             dataAggiornamento = m.DATAAGGIORNAMENTO,
                             rinunciaMAB = m.RINUNCIAMAB
                         };

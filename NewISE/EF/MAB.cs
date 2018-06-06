@@ -30,7 +30,7 @@ namespace NewISE.EF
         public decimal IDATTIVAZIONEMAB { get; set; }
         public decimal IDSTATORECORD { get; set; }
         public System.DateTime DATAINIZIOMAB { get; set; }
-        public string DATAFINEMAB { get; set; }
+        public System.DateTime DATAFINEMAB { get; set; }
         public bool RINUNCIAMAB { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public decimal FK_IDMAB { get; set; }
