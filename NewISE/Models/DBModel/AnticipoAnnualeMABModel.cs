@@ -30,7 +30,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data agg.")]
         public DateTime dataAggiornamento { get; set; }
 
-        public decimal FK_idAnticipoAnnualeMAB { get; set; }
+        public decimal? FK_idAnticipoAnnualeMAB { get; set; }
 
         public bool HasValue()
         {

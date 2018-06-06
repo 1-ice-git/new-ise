@@ -42,7 +42,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data agg.")]
         public DateTime dataAggiornamento { get; set; }
 
-        public decimal FK_idMAB { get; set; }
+        public decimal? FK_idMAB { get; set; }
 
         public bool HasValue()
         {
