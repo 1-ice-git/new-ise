@@ -363,7 +363,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var lap_richiesta = p.ATTIVAZIONIPASSAPORTI.Where(
                                 a =>
                                         a.ANNULLATO == false &&
-                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Richiesta_Passaporti).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
+                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Richiesta_Passaporti).OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
 
                     if (lap_richiesta?.Any() ?? false)
                     {
@@ -384,7 +384,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var lap_invio = p.ATTIVAZIONIPASSAPORTI
                             .Where(a => a.ANNULLATO == false &&
-                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Invio_Passaporti).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
+                                        a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Invio_Passaporti).OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
 
                     if (lap_invio?.Any() ?? false)
                     {
@@ -406,7 +406,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var tv = t.TITOLIVIAGGIO;
                 if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                 {
-                    var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO);
+                    var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO);
 
                     if (latv?.Any() ?? false)
                     {
@@ -427,7 +427,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var tep = t.TEPARTENZA;
                 if (tep != null && tep.IDTEPARTENZA > 0)
                 {
-                    var latep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATEPARTENZA).ToList();
+                    var latep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATEPARTENZA).ToList();
 
                     if (latep?.Any() ?? false)
                     {
@@ -448,7 +448,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var ps = t.PRIMASITEMAZIONE;
                 if (ps != null && ps.IDPRIMASISTEMAZIONE > 0)
                 {
-                    var laa = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVITAANTICIPI).ToList();
+                    var laa = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVITAANTICIPI).ToList();
 
                     if (laa?.Any() ?? false)
                     {
@@ -462,14 +462,14 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region MaggiorazioneAbitazione
-                var lma = t.MAGGIORAZIONEABITAZIONE.Where(x => x.VARIAZIONE == false).OrderBy(x => x.IDMAB);
+                var lma = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(x => x.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).OrderBy(x => x.IDMAB);
                 if (lma?.Any() ?? false)
                 {
                     var ma = lma.First();
 
                     if (ma != null && ma.IDMAB > 0)
                     {
-                        var lam = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
+                        var lam = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
 
                         if (lam?.Any() ?? false)
                         {
@@ -488,7 +488,7 @@ namespace NewISE.Models.DBModel.dtObj
                 if (lps != null && lps.IDTRASFPROVSCOLASTICHE > 0)
                 {
 
-                    var laps = lps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDPROVSCOLASTICHE).ToList();
+                    var laps = lps.ATTIVAZIONIPROVSCOLASTICHE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDPROVSCOLASTICHE).ToList();
 
                     if (laps?.Any() ?? false)
                     {
@@ -2290,74 +2290,62 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     #endregion
 
-                    #region legge Maggiorazioni Abitazione
-                    var lma = t.MAGGIORAZIONEABITAZIONE.Where(a => a.VARIAZIONE == false).OrderBy(a => a.IDMAB).ToList();
-                    if (!lma?.Any() ?? false)
+                    #region legge MAB
+                    var mm = dtma.GetMABPartenza(t.IDTRASFERIMENTO);
+                    if (!(mm.idMAB>0))
                     {
-                        throw new Exception("Maggiorazione Abitazione non trovata.");
+                        throw new Exception("MAB non trovata.");
                     }
-                    var ma = lma.First();
+                    var m = db.MAB.Find(mm.idMAB);
                     #endregion
 
-                    #region allinea date VariazioniMAB e riassocia percMAB e magg annuali
-                    var lmann = ma.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
+                    #region allinea date MAB e riassocia percMAB e magg annuali
+                    var lmann = m.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
                     foreach (var mann in lmann)
                     {
-                        ma.MAGGIORAZIONIANNUALI.Remove(mann);
+                        m.MAGGIORAZIONIANNUALI.Remove(mann);
                     }
 
-                    VariazioniMABModel vmabm = new VariazioniMABModel();
+                    //VariazioniMABModel vmabm = new VariazioniMABModel();
 
-                    var lvma = ma.VARIAZIONIMAB.Where(a =>
-                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                    if (lvma?.Any() ?? false)
+                    //var lvma = ma.VARIAZIONIMAB.Where(a =>
+                    //         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                    m.DATAINIZIOMAB = t.DATAPARTENZA;
+                    if (db.SaveChanges() <= 0)
                     {
-                        foreach (var vma in lvma)
+                        throw new Exception("Errore di correzione data inizio maggiorazione abitazione su MAB da " + m.DATAINIZIOMAB + " a " + t.DATAPARTENZA);
+                    }
+
+                    //elimina le associazioni percentualeMAB variazioniMAB
+                    var lpm = m.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var pm in lpm)
+                    {
+                        m.PERCENTUALEMAB.Remove(pm);
+                    }
+
+                    var idMAB = m.IDMAB;
+                            
+
+                    var lpmab = dtma.GetListaPercentualeMAB(mm, tm, db);
+                    foreach (var pmab in lpmab)
+                    {
+                        dtma.Associa_MAB_PercentualeMAB(mm.idMAB, pmab.IDPERCMAB, db);
+                    }
+
+
+                    //riassocia maggiorazioni annuali
+                    var mam = dtma.GetMaggiorazioneAnnuale(mm, db);
+                    if (mam.idMagAnnuali > 0)
+                    {
+                        if (mam.annualita)
                         {
-                            vma.DATAINIZIOMAB = t.DATAPARTENZA;
-                            if (db.SaveChanges() <= 0)
-                            {
-                                throw new Exception("Errore di correzione data inizio maggiorazione abitazione su VariazioniMAB da " + vma.DATAINIZIOMAB + " a " + t.DATAPARTENZA);
-                            }
-
-                            //elimina le associazioni percentualeMAB variazioniMAB
-                            var lpm = vma.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
-                            foreach (var pm in lpm)
-                            {
-                                vma.PERCENTUALEMAB.Remove(pm);
-                            }
-
-                            vmabm = new VariazioniMABModel()
-                            {
-                                idVariazioniMAB = vma.IDVARIAZIONIMAB
-                            };
-
-                            var lpmab = dtma.GetListaPercentualeMAB(vmabm, tm, db);
-                            foreach (var pmab in lpmab)
-                            {
-                                dtma.Associa_VariazioniMAB_PercentualeMAB(vmabm.idVariazioniMAB, pmab.IDPERCMAB, db);
-                            }
-                        }
-
-                        vmabm = new VariazioniMABModel()
-                        {
-                            idVariazioniMAB = lvma.First().IDVARIAZIONIMAB
-                        };
-
-                        //riassocia maggiorazioni annuali
-                        var mam = dtma.GetMaggiorazioneAnnuale(vmabm, db);
-                        if (mam.idMagAnnuali > 0)
-                        {
-                            if (mam.annualita)
-                            {
-                                dtma.Associa_MAB_MaggiorazioniAnnuali(ma.IDMAB, mam.idMagAnnuali, db);
-                            }
+                            dtma.Associa_MAB_MaggiorazioniAnnuali(mm.idMAB, mam.idMagAnnuali, db);
                         }
                     }
                     #endregion
 
                     #region allinea date PagatoCondivisoMAB e riassocia perc condiviso MAB
-                    var lpcma = ma.PAGATOCONDIVISOMAB.Where(a =>
+                    var lpcma = m.PAGATOCONDIVISOMAB.Where(a =>
                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                     if (lpcma?.Any() ?? false)
                     {
@@ -2385,7 +2373,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region allinea date CanoneMAB e riassocia TFR
-                    var lcma = ma.CANONEMAB.Where(a =>
+                    var lcma = m.CANONEMAB.Where(a =>
                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                     if (lcma?.Any() ?? false)
                     {
@@ -2406,8 +2394,6 @@ namespace NewISE.Models.DBModel.dtObj
                             using (dtTFR dtTfr = new dtTFR())
                             {
                                 var ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(tm, cma.IDVALUTA, cma.DATAINIZIOVALIDITA, cma.DATAFINEVALIDITA, db);
-
-
                                 foreach (var tfrm in ltfrm)
                                 {
                                     dtma.Associa_TFR_CanoneMAB(tfrm.idTFR, cma.IDCANONE, db);
@@ -2767,8 +2753,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mab = db.MAGGIORAZIONEABITAZIONE.Find(idMAB);
-                var tr = mab.TRASFERIMENTO;
+                var mab = db.MAB.Find(idMAB);
+                var tr = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
 
                 tm = new TrasferimentoModel()
                 {

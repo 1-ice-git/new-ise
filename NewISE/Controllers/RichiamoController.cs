@@ -15,6 +15,7 @@ using NewISE.Areas.Parametri.Models.dtObj;
 using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using System.IO;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {

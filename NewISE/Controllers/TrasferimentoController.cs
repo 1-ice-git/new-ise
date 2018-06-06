@@ -2204,8 +2204,7 @@ namespace NewISE.Controllers
                             }
                             using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                             {
-                                AttivazioneMABModel amm = dtma.GetUltimaAttivazioneMAB(idTrasferimento);
-                                MaggiorazioneAbitazioneModel mam = dtma.GetMaggiorazioneAbitazionePartenza(idTrasferimento);
+                                MABModel mam = dtma.GetMABPartenza(idTrasferimento);
 
                                 if (mam.idMAB.ToString() != null)
                                 {

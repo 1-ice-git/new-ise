@@ -6,7 +6,7 @@ using System.Web;
 using NewISE.EF;
 using NewISE.Models.Tools;
 using Newtonsoft.Json.Schema;
-
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {

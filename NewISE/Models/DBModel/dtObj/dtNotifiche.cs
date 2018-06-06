@@ -1,5 +1,6 @@
 ﻿using NewISE.EF;
 using NewISE.Models.dtObj;
+using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;

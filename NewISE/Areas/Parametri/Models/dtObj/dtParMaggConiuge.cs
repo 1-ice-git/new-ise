@@ -9,6 +9,7 @@ using System.Web;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
 using NewISE.Models.dtObj;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {

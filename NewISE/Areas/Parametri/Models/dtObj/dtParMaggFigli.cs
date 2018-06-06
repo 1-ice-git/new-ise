@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {

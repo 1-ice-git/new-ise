@@ -16,7 +16,7 @@ using System.Web.Helpers;
 using MaggiorazioniFamiliariModel = NewISE.Models.DBModel.MaggiorazioniFamiliariModel;
 using System.IO;
 using NewISE.Interfacce.Modelli;
-
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {

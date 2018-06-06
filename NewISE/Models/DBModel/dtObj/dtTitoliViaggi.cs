@@ -267,14 +267,14 @@ namespace NewISE.Models.DBModel.dtObj
                 switch (parentela)
                 {
                     case EnumParentela.Coniuge:
-                        var ctv = db.CONIUGETITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.ANNULLATO == false).OrderByDescending(a => a.IDCONIUGETITOLIVIAGGIO).First();
+                        var ctv = db.CONIUGETITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.ANNULLATO == false).OrderBy(a => a.IDCONIUGETITOLIVIAGGIO).First();
                         var c = ctv.CONIUGE.First();
                         var adfc = c.ALTRIDATIFAM.First();
                         idAltridatiFamiliari = adfc.IDALTRIDATIFAM;
                         break;
 
                     case EnumParentela.Figlio:
-                        var ftv = db.FIGLITITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.ANNULLATO == false).OrderByDescending(a => a.IDFIGLITITOLIVIAGGIO).First();
+                        var ftv = db.FIGLITITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.ANNULLATO == false).OrderBy(a => a.IDFIGLITITOLIVIAGGIO).First();
                         var f = ftv.FIGLI.First();
                         var adff = f.ALTRIDATIFAM.First();
                         idAltridatiFamiliari = adff.IDALTRIDATIFAM;
@@ -298,7 +298,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 //var ctv = db.CONIUGE.Find(idFamiliare).CONIUGETITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio).First();
                 var c = db.CONIUGE.Find(idFamiliare);
-                var adfc = c.ALTRIDATIFAM.First();
+                var adfc = c.ALTRIDATIFAM.Where(a=>a.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato).OrderBy(a=>a.IDSTATORECORD).First();
 
                 if (adfc.IDALTRIDATIFAM > 0)
                 {
@@ -331,7 +331,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
 
                 //var ftv = db.FIGLITITOLIVIAGGIO.Where(a => a.IDTITOLOVIAGGIO == idTitoliViaggio && a.IDFIGLI == idFamiliare).First();
-                var adff = db.FIGLI.Find(idFamiliare).ALTRIDATIFAM.First();
+                var adff = db.FIGLI.Find(idFamiliare).ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderBy(a => a.IDSTATORECORD).First();
 
                 if (adff.IDALTRIDATIFAM > 0)
                 {
@@ -406,7 +406,8 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var tvc in ltvc)
                     {
-                        var c = tvc.CONIUGE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDCONIUGE).First();
+                        
+                        var c=tvc.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderBy(a => a.IDCONIUGE).First();
                         //var c = db.CONIUGE.Find(tvc.IDCONIUGE);
 
                         ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
@@ -434,7 +435,8 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var tvf in ltvf)
                     {
-                        var f = tvf.FIGLI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDFIGLI).First();
+                        
+                        var f = tvf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderBy(a => a.IDFIGLI).First();
 
                         ElencoTitoliViaggioModel etvfm = new ElencoTitoliViaggioModel()
                         {
@@ -480,8 +482,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 ATTIVAZIONETITOLIVIAGGIO atv_notificata = new ATTIVAZIONETITOLIVIAGGIO();
-                var latv_notificate = db.TITOLIVIAGGIO.Find(idTitoloViaggio).ATTIVAZIONETITOLIVIAGGIO
-                    .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true && a.ATTIVAZIONERICHIESTA == false)
+                var latv_notificate = db.TITOLIVIAGGIO.Find(idTitoloViaggio).ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true && a.ATTIVAZIONERICHIESTA == false)
                     .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
                 if (latv_notificate?.Any() ?? false)
                 {
@@ -501,6 +502,7 @@ namespace NewISE.Models.DBModel.dtObj
                 ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO();
                 atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio);
 
+                
                 if (atv.ATTIVAZIONERICHIESTA == false && atv.NOTIFICARICHIESTA == true && atv.ANNULLATO == false)
                 {
                     notificata = true;
@@ -519,6 +521,7 @@ namespace NewISE.Models.DBModel.dtObj
                 decimal nDoc = 0;
 
                 var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
+                
                 var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
 
                 if (latv?.Any() ?? false)
@@ -538,6 +541,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             //using (ModelDBISE db = new ModelDBISE())
             //{
+                
             var NumAttivazioni = 0;
             NumAttivazioni = db.TITOLIVIAGGIO.Find(idTitoliViaggio).ATTIVAZIONETITOLIVIAGGIO
                                 .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true)
@@ -570,6 +574,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //(se non esistono li creo)
                         var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true && a.RICHIESTAATTIVAZIONE == true).First();
                         var lctv = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
+                        
                         if (lctv.Count() == 0)
                         {
                             //var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente && a.MODIFICATO==false).ToList();
@@ -676,6 +681,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //verifico se è stata fatta almeno una attivazione
                         var richiesta = this.richiestaEseguita(idTitoliViaggio);
 
+                        
                         if (richiesta == false)
                         {
                             //leggo le informazioni del dipendente
@@ -705,6 +711,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //cerco eventuali coniugi residenti e ne creo il titolo di viaggio
                             //var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
                             var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true & a.RICHIESTAATTIVAZIONE == true).First();
+                            
                             var lc = amf.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
                             if (lc?.Any() ?? false)
                             {
@@ -803,6 +810,7 @@ namespace NewISE.Models.DBModel.dtObj
                     switch ((EnumParentela)idParentela)
                     {
                         case EnumParentela.Richiedente:
+                            
                             var tvr = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio).TITOLIVIAGGIORICHIEDENTE.Where(a => a.ANNULLATO == false).First();
                             var stato_r = tvr.RICHIEDITITOLOVIAGGIO;
                             if (stato_r)
@@ -828,6 +836,7 @@ namespace NewISE.Models.DBModel.dtObj
                             break;
 
                         case EnumParentela.Coniuge:
+                            
                             var tvc = db.CONIUGE.Find(idFamiliare).CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).First();
                             //var tvc = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTitoliViaggio).CONIUGETITOLIVIAGGIO
                             //    .Where(a => a.IDCONIUGE == idFamiliare).First();
@@ -901,13 +910,13 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
                 var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where
-                        (a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false)
-                        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO)
+                        (a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO)
                         .ToList();
                 if (latv?.Any() ?? false)
                 {
                     foreach (var atv in latv)
                     {
+                        
                         var ld = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).ToList();
                         if (ld.Count > 0)
                         {
@@ -959,6 +968,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
 
+                
                 var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
 
                 var i = 1;
@@ -995,6 +1005,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
                             EnumStatoTraferimento statoTrasferimento = t.idStatoTrasferimento;
+                            
                             if (statoTrasferimento == EnumStatoTraferimento.Annullato)
                             {
                                 modificabile = false;
@@ -1142,13 +1153,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var latv =
                     tv.ATTIVAZIONETITOLIVIAGGIO.Where(
-                        a => a.ANNULLATO == false && a.ATTIVAZIONERICHIESTA == false && a.NOTIFICARICHIESTA == false)
-                        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+                        a => a.ANNULLATO == false && a.ATTIVAZIONERICHIESTA == false && a.NOTIFICARICHIESTA == false).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
                 if (latv?.Any() ?? false)
                 {
                     atv = latv.First();
-                }
-                else
+                }else
                 {
                     atv = this.CreaAttivazioneTV(idTitoliViaggio, db);
                 }
@@ -1171,6 +1180,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
+                        
                     throw new Exception("Errore nella fase di inserimento del documento (titolo di viaggio).");
                 }
 
@@ -1355,6 +1365,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var t = tv.TRASFERIMENTO;
                     var statoTrasferimeto = t.IDSTATOTRASFERIMENTO;
+                    
                     if (statoTrasferimeto == (decimal)EnumStatoTraferimento.Annullato)
                     {
                         trasfAnnullato = true;
@@ -1362,8 +1373,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                     //verifica se esiste una attivazione non notificata e non attivata 
                     var latv = tv.ATTIVAZIONETITOLIVIAGGIO
+                                
                                 .Where(a => (a.ANNULLATO == false && a.ATTIVAZIONERICHIESTA == false && a.NOTIFICARICHIESTA == false))
-                                .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+                                .OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
 
                     if (latv?.Any() ?? false)
                     {

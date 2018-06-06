@@ -492,14 +492,14 @@ function GestioneRinunciaMABPartenza(idTrasferimento) {
     });
 }
 
-function AggiornaRinunciaMABPartenza(idRinunciaMAB) {
+function AggiornaRinunciaMABPartenza(idMAB) {
     //debugger;
     var rotta = '/MaggiorazioneAbitazione/AggiornaRinunciaMABPartenza';
 
     $.ajax({
         url: rotta,
         type: 'POST', //Le info testuali saranno passate in POST
-        data: { idRinunciaMAB: idRinunciaMAB },
+        data: { idMAB: idMAB },
         dataType: 'json',
         async: false,
         beforeSend: function () {

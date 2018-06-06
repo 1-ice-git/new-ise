@@ -83,7 +83,7 @@ namespace NewISE.Controllers
                 using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
 
-                    lefm = dtvp.GetFamiliariInvioPassaportoPartenza(idTrasferimento).ToList();
+                    lefm = dtvp.GetFamiliariInvioPassaporto(idTrasferimento).ToList();
 
                     ViewData.Add("idTrasferimento", idTrasferimento);
 

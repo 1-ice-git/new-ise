@@ -14,6 +14,7 @@ using System.IO;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
 using System.Data.Entity;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {

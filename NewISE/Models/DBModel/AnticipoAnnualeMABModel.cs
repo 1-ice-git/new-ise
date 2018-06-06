@@ -8,28 +8,33 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class RinunciaMABModel
+    public class AnticipoAnnualeMABModel
     {
         [Key]
-        public decimal idRinunciaMAB { get; set; }
+        public decimal idAnticipoAnnualeMAB { get; set; }
 
         public decimal idMAB { get; set; }
 
         public decimal idAttivazioneMAB { get; set; }
 
+        public decimal idStatoRecord { get; set; }
+
         [Required]
         [DefaultValue(false)]
-        [Display(Name = "Rinuncia Anticipi")]
-        public bool rinuncia { get; set; }
+        [Display(Name = "Anticipo Annuale")]
+        public bool anticipoAnnuale { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data agg.")]
         public DateTime dataAggiornamento { get; set; }
 
+        public decimal FK_idAnticipoAnnualeMAB { get; set; }
+
         public bool HasValue()
         {
-            return idRinunciaMAB > 0 ? true : false;
+            return idAnticipoAnnualeMAB > 0 ? true : false;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace NewISE.Models.DBModel.dtObj
                     FK_IdRinunciaMagFam = null
                 };
 
-                this.SetRinunciaMaggiorazioniFamiliari(ref rmfm, db);
+                SetRinunciaMaggiorazioniFamiliari(ref rmfm, db);
 
                 dtamf.AssociaRinunciaMagFam(amfm.idAttivazioneMagFam, rmfm.idRinunciaMagFam, db);
             }

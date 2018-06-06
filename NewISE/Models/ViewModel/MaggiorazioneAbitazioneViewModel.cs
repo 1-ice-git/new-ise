@@ -16,7 +16,11 @@ namespace NewISE.Models.ViewModel
         public decimal importo_canone { get; set; }
         public decimal id_Valuta { get; set; }
         public decimal idMagAnnuali { get; set; }
+        public decimal idTrasferimento { get; set; }
         public decimal idAttivazioneMAB { get; set; }
+        public decimal idMAB { get; set; }
+
+        public bool rinunciaMAB { get; set; }
 
         [Display(Name = "Valuta")]
         public string descrizioneValuta { get; set; }

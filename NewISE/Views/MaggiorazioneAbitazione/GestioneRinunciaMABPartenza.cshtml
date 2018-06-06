@@ -1,10 +1,10 @@
 ﻿@*@using NewISE.Models.DBModel*@
-@model NewISE.Models.DBModel.RinunciaMABModel
+@model NewISE.Models.DBModel.MABModel
 
 @{
-    decimal idRinunciaMAB = Convert.ToDecimal(Model.idRinunciaMAB);
+    decimal idMAB = Convert.ToDecimal(Model.idMAB);
     bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
-    bool rinunciaMAB = Convert.ToBoolean(Model.rinuncia);
+    bool rinunciaMAB = Convert.ToBoolean(Model.rinunciaMAB);
 }
 
 <div>
@@ -28,11 +28,11 @@
             {
                 if (rinunciaMAB)
                 {
-                    <input type="checkbox" checked="checked" onclick="AggiornaRinunciaMABPartenza(@idRinunciaMAB )">
+                    <input type="checkbox" checked="checked" onclick="AggiornaRinunciaMABPartenza(@idMAB )">
                 }
                 else
                 {
-                    <input type="checkbox" onclick="AggiornaRinunciaMABPartenza(@idRinunciaMAB)">
+                    <input type="checkbox" onclick="AggiornaRinunciaMABPartenza(@idMAB)">
                 }
             }
         </div>
