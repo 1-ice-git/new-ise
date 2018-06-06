@@ -2465,7 +2465,8 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIOMAB = t.DATAPARTENZA,
                     DATAFINEMAB = t.DATARIENTRO,
                     RINUNCIAMAB = false,
-                    DATAAGGIORNAMENTO = DateTime.Now
+                    DATAAGGIORNAMENTO = DateTime.Now,
+                    FK_IDMAB=null
                 };
                 db.MAB.Add(m);
 
