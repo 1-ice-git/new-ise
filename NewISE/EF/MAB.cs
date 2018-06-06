@@ -33,7 +33,7 @@ namespace NewISE.EF
         public System.DateTime DATAFINEMAB { get; set; }
         public bool RINUNCIAMAB { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public decimal FK_IDMAB { get; set; }
+        public Nullable<decimal> FK_IDMAB { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANTICIPOANNUALEMAB> ANTICIPOANNUALEMAB { get; set; }

@@ -105,7 +105,7 @@
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANTICIPOANNUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="FK_IDANTICIPOANNUALEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FK_IDANTICIPOANNUALEMAB" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="ANTICIPOSALDOTE">
           <Key>
@@ -955,7 +955,7 @@
           <Property Name="DATAFINEMAB" Type="date" Nullable="false" />
           <Property Name="RINUNCIAMAB" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="FK_IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="FK_IDMAB" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="MAB_MA">
           <Key>
@@ -1704,7 +1704,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_AAMAB_AAMAB">
-          <End Role="ANTICIPOANNUALEMAB" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="1">
+          <End Role="ANTICIPOANNUALEMAB" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="ANTICIPOANNUALEMAB1" Type="Self.ANTICIPOANNUALEMAB" Multiplicity="*" />
@@ -3564,7 +3564,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_MAB_MAB">
-          <End Role="MAB" Type="Self.MAB" Multiplicity="1">
+          <End Role="MAB" Type="Self.MAB" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="MAB1" Type="Self.MAB" Multiplicity="*" />
@@ -7472,7 +7472,7 @@
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANTICIPOANNUALE" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="FK_IDANTICIPOANNUALEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="FK_IDANTICIPOANNUALEMAB" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ANTICIPOANNUALEMAB1" Relationship="DBISE.R_AAMAB_AAMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="ANTICIPOANNUALEMAB1" />
           <NavigationProperty Name="ANTICIPOANNUALEMAB2" Relationship="DBISE.R_AAMAB_AAMAB" FromRole="ANTICIPOANNUALEMAB1" ToRole="ANTICIPOANNUALEMAB" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_VMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="ATTIVAZIONEMAB" />
@@ -8238,7 +8238,7 @@
           <Property Name="DATAFINEMAB" Type="DateTime" Nullable="false" />
           <Property Name="RINUNCIAMAB" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="FK_IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="FK_IDMAB" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.R_MAB_AAMAB" FromRole="MAB" ToRole="ANTICIPOANNUALEMAB" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_MAB" FromRole="MAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_MAB_CMAB" FromRole="MAB" ToRole="CANONEMAB" />
@@ -9128,7 +9128,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_AAMAB_AAMAB">
-          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB" Multiplicity="1">
+          <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.ANTICIPOANNUALEMAB" Role="ANTICIPOANNUALEMAB1" Multiplicity="*" />
@@ -10442,7 +10442,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_MAB_MAB">
-          <End Type="DBISE.MAB" Role="MAB" Multiplicity="1">
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.MAB" Role="MAB1" Multiplicity="*" />

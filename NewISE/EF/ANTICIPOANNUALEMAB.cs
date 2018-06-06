@@ -26,7 +26,7 @@ namespace NewISE.EF
         public decimal IDSTATORECORD { get; set; }
         public bool ANTICIPOANNUALE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public decimal FK_IDANTICIPOANNUALEMAB { get; set; }
+        public Nullable<decimal> FK_IDANTICIPOANNUALEMAB { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANTICIPOANNUALEMAB> ANTICIPOANNUALEMAB1 { get; set; }
