@@ -94,7 +94,7 @@ namespace NewISE.Models.Enumeratori
         Da_Attivare = 2,
         Non_Trasferito = 3,
         Terminato = 4,
-        Annullato = 21
+        Annullato = 5
     }
 
     public enum EnumTipoSospensione
