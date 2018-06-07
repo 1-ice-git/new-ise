@@ -10,6 +10,7 @@ using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {

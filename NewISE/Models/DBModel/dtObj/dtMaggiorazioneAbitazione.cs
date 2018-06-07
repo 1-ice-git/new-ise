@@ -563,7 +563,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 idMAB = m.IDMAB,
                                 idAttivazioneMAB = m.IDATTIVAZIONEMAB,
                                 dataInizioMAB = m.DATAINIZIOMAB,
-                                //dataFineMAB = m.DATAFINEMAB,
+                                dataFineMAB = m.DATAFINEMAB,
                                 dataAggiornamento = m.DATAAGGIORNAMENTO,
                                 rinunciaMAB = m.RINUNCIAMAB,
                                 FK_idMAB = m.FK_IDMAB
@@ -572,12 +572,12 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            throw new Exception(string.Format("nessuna variazione MAB trovata."));
+                            throw new Exception(string.Format("nessuna MAB trovata."));
                         }
                     }
                     else
                     {
-                        throw new Exception(string.Format("nessuna variazione MAB trovata."));
+                        throw new Exception(string.Format("nessuna MAB trovata."));
                     }
 
                 }
@@ -1114,7 +1114,7 @@ namespace NewISE.Models.DBModel.dtObj
                             IDATTIVAZIONEMAB = am_New.IDATTIVAZIONEMAB,
                             IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
                             DATAINIZIOMAB = mab_old.dataInizioMAB,
-                            //DATAFINEMAB = mab_old.dataFineMAB,
+                            DATAFINEMAB = mab_old.dataFineMAB,
                             DATAAGGIORNAMENTO = DateTime.Now,
                             RINUNCIAMAB = mab_old.rinunciaMAB,
                             FK_IDMAB = mab_old.FK_idMAB
@@ -1144,7 +1144,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idAttivazioneMAB = mab_new.IDATTIVAZIONEMAB,
                                     idStatoRecord = mab_new.IDSTATORECORD,
                                     dataInizioMAB = mab_new.DATAINIZIOMAB,
-                                    //dataFineMAB = mab_new.DATAFINEMAB,
+                                    dataFineMAB = mab_new.DATAFINEMAB,
                                     rinunciaMAB = mab_new.RINUNCIAMAB,
                                     dataAggiornamento = mab_new.DATAAGGIORNAMENTO,
                                     FK_idMAB = mab_new.FK_IDMAB
@@ -1635,7 +1635,7 @@ namespace NewISE.Models.DBModel.dtObj
                 //{
                 ma.DATAAGGIORNAMENTO = DateTime.Now;
                 ma.DATAINIZIOMAB = mvm.dataInizioMAB;
-                //ma.DATAFINEMAB = mvm.dataFineMAB;
+                ma.DATAFINEMAB = mvm.dataFineMAB;
                 //ma.RINUNCIAMAB=mvm
                 if (db.SaveChanges() <= 0)
                 {

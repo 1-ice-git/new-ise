@@ -117,7 +117,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
                                                     a.DATAINIZIOVALIDITA <= mab.DATAINIZIOMAB &&
-                                                    //a.DATAFINEVALIDITA >= mab.DATAFINEMAB &&
+                                                    a.DATAFINEVALIDITA >= mab.DATAFINEMAB &&
                                                     a.IDUFFICIO == u.IDUFFICIO &&
                                                     a.IDLIVELLO == l.IDLIVELLO).ToList();
                 return pl;

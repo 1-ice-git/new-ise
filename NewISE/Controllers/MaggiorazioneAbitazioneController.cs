@@ -667,10 +667,11 @@ namespace NewISE.Controllers
                         {
                             using (dtTrasferimento dtt = new dtTrasferimento())
                             {
-
-                                var ma = dtma.GetMABPartenza(idMAB);
-
                                 var m = db.MAB.Find(idMAB);
+                                var t = dtt.GetTrasferimentoById(m.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO);
+
+                                var ma = dtma.GetMABPartenza(t.idTrasferimento);
+
                                 //var vmam = dtma.GetVariazioniMABPartenza(ma.IDTRASFERIMENTO);
 
                                 CANONEMAB cm = dtma.GetCanoneMABPartenza(ma);
@@ -703,7 +704,6 @@ namespace NewISE.Controllers
                                 lValute = r;
                                 ViewBag.lValute = lValute;
 
-                                var t = dtt.GetTrasferimentoById(m.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO);
                                 mam.idMAB = m.IDMAB;
                                 mam.idTrasferimento = t.idTrasferimento;
                                 var amab = dtma.GetAttivazioneMAB(t.idTrasferimento);
@@ -989,7 +989,7 @@ namespace NewISE.Controllers
                         {
                             var t = dtt.GetTrasferimentoById(idTrasferimento);
 
-                            var mam = dtmab.GetMABPartenza(idTrasferimento);
+                            mabm = dtmab.GetMABPartenza(idTrasferimento);
 
                             //rmabm = dtmab.GetRinunciaMAB(mam);
 
@@ -1001,7 +1001,7 @@ namespace NewISE.Controllers
                             {
                                 soloLettura = true;
                             }
-                            if (mam.rinunciaMAB && amm.notificaRichiesta)
+                            if (mabm.rinunciaMAB && amm.notificaRichiesta)
                             {
                                 soloLettura = true;
                             }
