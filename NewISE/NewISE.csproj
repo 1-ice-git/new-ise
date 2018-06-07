@@ -2471,8 +2471,10 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="Controllers\AnticipiController.cs" />
+    <Compile Include="Controllers\ElaborazioniController.cs" />
     <Compile Include="Controllers\IndennitaController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
+    <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
     <Compile Include="EF\ACCESSI.cs">
@@ -2838,6 +2840,7 @@
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtParPercAnticipoTE.cs" />
@@ -3151,6 +3154,7 @@
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
     <Compile Include="Models\DBModel\TipoLiquidazioneModel.cs" />
+    <Compile Include="Models\DBModel\TipoMovimentoModel.cs" />
     <Compile Include="Models\DBModel\TipoVoceModel.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />
     <Compile Include="Models\DBModel\MABModel.cs" />

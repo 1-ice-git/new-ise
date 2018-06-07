@@ -26,35 +26,44 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
 
-                    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                    using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
                     {
-                        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
+                        CoefficientiSedeModel csm = dtcs.GetCoefficenteSedeByIdTrasferimento(idTrasferimento);
 
-                        //CoefficientiSedeModel - GetCoefficenteSedeByIdTrasf (dtCoefficenteSede)
-                        //PercentualeDisagioModel - GetPercentualeDisagioByIdTrasf (dtPercentualeDisagio)
+                        using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+                        {   
+                            PercentualeDisagioModel pdm = dtpd.GetPercentualeDisagioByIdTrasferimento(idTrasferimento);
 
-                        libm = (from e in ll
-                                select new IndennitaBaseModel()
-                                {
-                                    idIndennitaBase = e.IDINDENNITABASE,
-                                    idLivello = e.IDLIVELLO,
-                                    dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                    dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                    valore = e.VALORE,
-                                    valoreResponsabile = e.VALORERESP,
-                                    dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                    annullato = e.ANNULLATO,
-                                    Livello = new LivelloModel()
+                            libm = (from e in ll
+                                    select new IndennitaBaseModel()
                                     {
-                                        idLivello = e.LIVELLI.IDLIVELLO,
-                                        DescLivello = e.LIVELLI.LIVELLO
-                                    },
-                                    RuoloUfficio = new RuoloUfficioModel()
-                                    {
-                                        idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
-                                        DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
-                                    }
-                                }).ToList();
+                                        idIndennitaBase = e.IDINDENNITABASE,
+                                        idLivello = e.IDLIVELLO,
+                                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                        dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                        valore = e.VALORE,
+                                        valoreResponsabile = e.VALORERESP,
+                                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                        annullato = e.ANNULLATO,
+                                        CoefficenteSede = new CoefficientiSedeModel
+                                        {
+                                            idCoefficientiSede = csm.idCoefficientiSede,
+                                            idUfficio = csm.idUfficio
+
+                                        },
+                                        PercentualeDisagio = new PercentualeDisagioModel
+                                        {
+                                            idPercentualeDisagio = pdm.idPercentualeDisagio,
+                                            idUfficio = pdm.idUfficio,
+                                            dataInizioValidita = pdm.dataInizioValidita,
+                                            dataFineValidita = pdm.dataFineValidita,
+                                            dataAggiornamento = pdm.dataAggiornamento,
+                                            annullato = pdm.annullato
+
+                                        }
+                                    }).ToList();
+                        }
+
                     }
 
                     return libm;

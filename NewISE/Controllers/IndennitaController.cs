@@ -278,14 +278,32 @@ namespace NewISE.Controllers
         }
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
 
             try
             {
+                using (dtIndennitaServizio dtd = new dtIndennitaServizio())
+                {
+                    libm = dtd.GetIndennitaServizio(idTrasferimento).ToList();
+                }
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                    {
+                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+
+                    }
+
+                }
+                ViewBag.idTrasferimento = idTrasferimento;
 
 
-                return PartialView();
+                return PartialView(libm);
             }
-
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });

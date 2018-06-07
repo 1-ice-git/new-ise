@@ -54,7 +54,12 @@ namespace NewISE.Models.DBModel
         public LivelloModel Livello { get; set; }
 
         public RuoloUfficioModel RuoloUfficio { get; set; }
+
         public RuoloDipendenteModel RuoloDipendente { get; set; }
+
+        public CoefficientiSedeModel CoefficenteSede { get; set; }
+
+        public PercentualeDisagioModel PercentualeDisagio { get; set; }
 
         public RiduzioniModel Riduzioni { get; set; }
 
