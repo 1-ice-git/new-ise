@@ -32,7 +32,7 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.idIndennitaBase)
+                @Html.DisplayNameFor(model => model.valore)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.CoefficenteSede.idCoefficientiSede)
@@ -55,7 +55,7 @@
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.idIndennitaBase)
+                    @Html.DisplayFor(modelItem => item.valore)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.CoefficenteSede.idCoefficientiSede)
@@ -90,7 +90,7 @@
             </div>
             <div class="modal-body">
                 <div id="divViewIndennitaServizio">
-                    @Html.Action("RptIndennitaServizio", "Indennita")
+               
                 </div>
             </div>
             <div class="modal-footer">

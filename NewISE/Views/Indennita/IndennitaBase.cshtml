@@ -42,13 +42,28 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.valore)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.valoreResponsabile)
-            </th>
-            
+            @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+            {
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.valore)
+                </th>
+            }
+            else
+            {
+                <td></td>
+            }
+
+            @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Dirigente || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Responsabile)
+            {
+
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.valoreResponsabile)
+                </th>
+            }
+            else
+            {
+            <td></td>
+            }
         </tr>
     </thead>
     <tbody>

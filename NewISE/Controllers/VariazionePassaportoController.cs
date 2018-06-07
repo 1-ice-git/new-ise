@@ -6,12 +6,13 @@ using System.Web.Mvc;
 using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.Enum;
+
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 using NewISE.Interfacce;
 using System.Web.Helpers;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
