@@ -26,67 +26,45 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
 
-                    //using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
-                    //{
-                    //    RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
-
-                    //    //CoefficientiSedeModel - GetCoefficenteSedeByIdTrasf (dtCoefficenteSede)
-
-                    //    //PercentualeDisagioModel - GetPercentualeDisagioByIdTrasf (dtPercentualeDisagio)
-
-                    //    libm = (from e in ll
-                    //            select new IndennitaBaseModel()
-                    //            {
-                    //                idIndennitaBase = e.IDINDENNITABASE,
-                    //                idLivello = e.IDLIVELLO,
-                    //                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                    //                dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                    //                valore = e.VALORE,
-                    //                valoreResponsabile = e.VALORERESP,
-                    //                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                    //                annullato = e.ANNULLATO,
-                    //                Livello = new LivelloModel()
-                    //                {
-                    //                    idLivello = e.LIVELLI.IDLIVELLO,
-                    //                    DescLivello = e.LIVELLI.LIVELLO
-                    //                },
-                    //                RuoloUfficio = new RuoloUfficioModel()
-                    //                {
-                    //                    idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
-                    //                    DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
-                    //                }
-                    //            }).ToList();
-                    //}
-
-
                     using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
                     {
                         CoefficientiSedeModel csm = dtcs.GetCoefficenteSedeByIdTrasferimento(idTrasferimento);
-                        
 
-                        //PercentualeDisagioModel - GetPercentualeDisagioByIdTrasf (dtPercentualeDisagio)
+                        using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+                        {   
+                            PercentualeDisagioModel pdm = dtpd.GetPercentualeDisagioByIdTrasferimento(idTrasferimento);
 
-                        libm = (from e in ll
-                                select new IndennitaBaseModel()
-                                {
-                                    idIndennitaBase = e.IDINDENNITABASE,
-                                    idLivello = e.IDLIVELLO,
-                                    dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                    dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                    valore = e.VALORE,
-                                    valoreResponsabile = e.VALORERESP,
-                                    dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                    annullato = e.ANNULLATO,
-                                    CoefficenteSede = new CoefficientiSedeModel
+                            libm = (from e in ll
+                                    select new IndennitaBaseModel()
                                     {
-                                        idCoefficientiSede = csm.idCoefficientiSede,
-                                        idUfficio = csm.idUfficio
+                                        idIndennitaBase = e.IDINDENNITABASE,
+                                        idLivello = e.IDLIVELLO,
+                                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                        dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                        valore = e.VALORE,
+                                        valoreResponsabile = e.VALORERESP,
+                                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                        annullato = e.ANNULLATO,
+                                        CoefficenteSede = new CoefficientiSedeModel
+                                        {
+                                            idCoefficientiSede = csm.idCoefficientiSede,
+                                            idUfficio = csm.idUfficio
 
-                                    }
+                                        },
+                                        PercentualeDisagio = new PercentualeDisagioModel
+                                        {
+                                            idPercentualeDisagio = pdm.idPercentualeDisagio,
+                                            idUfficio = pdm.idUfficio,
+                                            dataInizioValidita = pdm.dataInizioValidita,
+                                            dataFineValidita = pdm.dataFineValidita,
+                                            dataAggiornamento = pdm.dataAggiornamento,
+                                            annullato = pdm.annullato
 
-                                }).ToList();
+                                        }
+                                    }).ToList();
+                        }
+
                     }
-
 
                     return libm;
                 }

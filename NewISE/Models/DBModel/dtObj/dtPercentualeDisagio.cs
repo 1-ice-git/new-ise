@@ -126,6 +126,33 @@ namespace NewISE.Models.DBModel.dtObj
             return pdm;
         }
 
+        public PercentualeDisagioModel GetPercentualeDisagioByIdTrasferimento(decimal idTrasferimento)
+        {
+
+            PercentualeDisagioModel pdm = new PercentualeDisagioModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lrd = db.INDENNITA.Find(idTrasferimento).PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false);
+
+                var pd = lrd.First();
+                if (lrd?.Any() ?? false)
+                {
+                    pdm = new PercentualeDisagioModel()
+                    {
+                        idPercentualeDisagio = pd.IDPERCENTUALEDISAGIO,
+                        idUfficio = pd.IDUFFICIO,
+                        dataInizioValidita = pd.DATAINIZIOVALIDITA,
+                        dataFineValidita = pd.DATAFINEVALIDITA,
+                        dataAggiornamento = pd.DATAAGGIORNAMENTO,
+                        annullato = pd.ANNULLATO,
+
+                    };
+                }
+            }
+            return pdm;
+        }
+
         public PercentualeDisagioModel GetPercentualeDisagio(decimal idPercentualeDisagio, ModelDBISE db)
         {
             PercentualeDisagioModel pdm = new PercentualeDisagioModel();
@@ -184,9 +211,7 @@ namespace NewISE.Models.DBModel.dtObj
             return lPercentualeDisagio;
 
         }
-
-
-
+        
         public PercentualeDisagioModel GetPercentualeDisagioValida(decimal idUfficio, DateTime dt, ModelDBISE db)
         {
             PercentualeDisagioModel pdm = new PercentualeDisagioModel();

@@ -31,8 +31,16 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.idIndennitaBase)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.CoefficenteSede.idCoefficientiSede)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PercentualeDisagio.idPercentualeDisagio)
+            </th>
             
-
         </tr>
     </thead>
     <tbody>
@@ -46,7 +54,15 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
-
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.idIndennitaBase)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CoefficenteSede.idCoefficientiSede)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.PercentualeDisagio.idPercentualeDisagio)
+                </td>
             </tr>
         }
     </tbody>

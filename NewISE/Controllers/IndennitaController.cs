@@ -282,11 +282,6 @@ namespace NewISE.Controllers
 
             try
             {
-                //using (dtIndennitaBase dtd = new dtIndennitaBase())
-                //{
-                //    libm = dtd.GetIndennitaServizioComune(idTrasferimento).ToList();
-                //}
-
                 using (dtIndennitaServizio dtd = new dtIndennitaServizio())
                 {
                     libm = dtd.GetIndennitaServizio(idTrasferimento).ToList();
