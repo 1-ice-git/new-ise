@@ -481,6 +481,7 @@ namespace NewISE.Controllers
         {
             string errore = string.Empty;
             bool abilitaNotifica = false;
+            bool abilitaElimina = false;
             bool abilitaNuovoTrasferimento = false;
             bool abilitaSalva = false;
             bool trasferimentoSuccessivo = false;
@@ -515,12 +516,14 @@ namespace NewISE.Controllers
                     {
                         abilitaNuovoTrasferimento = true;
                         abilitaSalva = false;
+                        abilitaElimina = false;
                         abilitaNotifica = false;
                     }
                     else if (tm.notificaTrasferimento == false)
                     {
                         abilitaNuovoTrasferimento = false;
                         abilitaSalva = true;
+                        abilitaElimina = true;
 
                         if (tm.idTipoTrasferimento > 0 &&
                             tm.idUfficio > 0 &&
@@ -544,6 +547,7 @@ namespace NewISE.Controllers
                     else if (tm.notificaTrasferimento == true)
                     {
                         abilitaSalva = false;
+                        abilitaElimina = false;
                         abilitaNotifica = false;
                         abilitaNuovoTrasferimento = false;
                     }
@@ -560,6 +564,7 @@ namespace NewISE.Controllers
                     new
                     {
                         err = errore,
+                        abilitaElimina=abilitaElimina,
                         abilitaNotifica = abilitaNotifica,
                         abilitaNuovoTrasferimento = abilitaNuovoTrasferimento,
                         abilitaSalva = abilitaSalva,
@@ -1730,6 +1735,41 @@ namespace NewISE.Controllers
             }
         }
 
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult EliminaTrasferimento(decimal idTrasferimento, int matricola)
+        {
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var ltrasf = new List<SelectListItem>();
+                    //var ltrasf = new IList<TrasferimentoModel>();
+
+
+                    dtt.EliminaTrasferimento(idTrasferimento);
+
+                    decimal idTrasferimentoPrecedente = 0;
+
+                    ltrasf = dtt.LeggiElencoTrasferimentiByMatricola(matricola);
+
+                    var last_t = dtt.GetUltimoTrasferimentoByMatricola(Convert.ToString(matricola));
+
+                    idTrasferimentoPrecedente = last_t.idTrasferimento;
+
+                    return Json(new {
+                                msg = "",
+                                listaTrasferimenti = ltrasf,
+                                idTrasferimentoPrecedente=idTrasferimentoPrecedente
+                            });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+
+        }
 
         [HttpPost]
         public JsonResult VerificaStatoStrasferimentoJsonResult(decimal idTrasferimento)

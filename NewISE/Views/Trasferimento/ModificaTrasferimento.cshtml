@@ -15,6 +15,7 @@
     bool abilitaNotifica = false;
     bool abilitaNuovoTrasferimento = false;
     bool abilitaSalva = false;
+    bool abilitaElimina = false;
 
     bool ricaricaTrasferimenti = Convert.ToBoolean(ViewData["ricaricaTrasferimenti"]);
 
@@ -24,6 +25,7 @@
     {
         abilitaNuovoTrasferimento = true;
         abilitaSalva = false;
+        abilitaElimina = false;
         abilitaNotifica = false;
     }
     else if (Model.notificaTrasferimento == false)
@@ -51,10 +53,28 @@
             abilitaNotifica = false;
         }
 
+
+        if (Model.idTipoTrasferimento > 0 &&
+            Model.idUfficio > 0 &&
+            Model.idStatoTrasferimento > 0 &&
+            Model.idDipendente > 0 &&
+            Model.idTipoCoan > 0 &&
+            Model.dataPartenza > DateTime.MinValue &&
+            Model.idRuoloUfficio > 0 &&
+            Model.idFKM > 0)
+        {
+            abilitaElimina = true;
+        }
+        else
+        {
+            abilitaElimina = false;
+        }
+
     }
     else if (Model.notificaTrasferimento == true)
     {
         abilitaSalva = false;
+        abilitaElimina = false;
         abilitaNotifica = false;
         abilitaNuovoTrasferimento = false;
     }
@@ -62,6 +82,7 @@
 }
 
 @Html.Hidden("habilitaNotifica", abilitaNotifica)
+@Html.Hidden("habilitaElimina", abilitaElimina)
 @Html.Hidden("habilitaNuovoTrasferimento", abilitaNuovoTrasferimento)
 @Html.Hidden("habilitaSalva", abilitaSalva)
 @Html.Hidden("htrasfSucc", trasfSucc)
@@ -190,21 +211,27 @@
 
     <div class="form-group">
 
-        <div class="col-xs-offset-7 col-xs-1">
-            <button type="button" class="btn btn-default btn-sm" id="btModifica">
-                <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
-                Salva
-            </button>
-        </div>
+        <div class="row">
+            <div class="col-xs-offset-7 col-xs-1">
+                <button class="btn btn-default btn-sm " id="btElimina" onclick="EliminaModal();">
+                    <i class="fa fa-2x fa-remove" aria-hidden="true"></i>
+                    Elimina
+                </button>
+            </div>
 
+            <div class="col-xs-1">
+                <button type="button" class="btn btn-default btn-sm" id="btModifica">
+                    <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                    Salva
+                </button>
+            </div>
 
-
-
-        <div class="col-xs-1">
-            <button class="btn btn-default btn-sm " id="btNotifica" onclick="NotifcaModal();">
-                <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
-                Notifica
-            </button>
+            <div class="col-xs-1">
+                <button class="btn btn-default btn-sm " id="btNotifica" onclick="NotifcaModal();">
+                    <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
+                    Notifica
+                </button>
+            </div>
         </div>
 
     </div>
@@ -250,6 +277,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="eliminaModal" tabindex="-2" role="dialog" aria-labelledby="eliminaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="eliminaModelLabel">Eliminazione del Trasferimento</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1.5em;">
+                <p>Procedere con l'eliminazione del trasferimento?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal" onclick="EliminaTrasferimento();">Conferma Eliminazione</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="inviaDocModal" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -273,7 +321,7 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/jqueryval")
 }
 
 <script type="text/javascript">
@@ -322,6 +370,7 @@
                 if (result.err == "" || typeof result.err == "undefined") {
 
                     $('#habilitaNotifica').val(result.abilitaNotifica);
+                    $('#habilitaElimina').val(result.abilitaElimina);
                     $('#habilitaNuovoTrasferimento').val(result.abilitaNuovoTrasferimento);
                     $('#habilitaSalva').val(result.abilitaSalva);
                     $('#htrasfSucc').val(result.trasferimentoSuccessivo);
@@ -359,12 +408,14 @@
         var vabilitaNuovoTrasferimento = $('#habilitaNuovoTrasferimento').val();
         var vAbilitaSalva = $('#habilitaSalva').val();
         var vAbilitaNotofica = $('#habilitaNotifica').val();
+        var vAbilitaElimina = $('#habilitaElimina').val();
         var vTrasfSucc = $('#htrasfSucc').val();
 
 
         var abilitaNuovoTrasferimento = vabilitaNuovoTrasferimento == "true" ? true : false;
         var abilitaSalva = vAbilitaSalva == "true" ? true : false;
         var abilitaNotifica = vAbilitaNotofica == "true" ? true : false;
+        var abilitaElimina = vAbilitaElimina == "true" ? true : false;
         var trasfSucc = vTrasfSucc == "true" ? true : false;
 
         if (trasfSucc) {
@@ -378,6 +429,7 @@
 
             $("#btModifica").attr("disabled", "disabled");
             $("#btNotifica").attr("disabled", "disabled");
+            $("#btElimina").attr("disabled", "disabled");
 
             $("#idTipoTrasferimento").attr("disabled", "disabled");
             $("#idUfficio").attr("disabled", "disabled");
@@ -392,6 +444,7 @@
             $('#divBtNuovoTrasferimento').hide();
 
             $("#btModifica").removeAttr("disabled");
+            $("#btElimina").removeAttr("disabled");
             $("#btNotifica").attr("disabled", "disabled");
 
             $("#idTipoTrasferimento").removeAttr("disabled");
@@ -408,6 +461,7 @@
             $('#divBtNuovoTrasferimento').hide();
             $("#btModifica").removeAttr("disabled");
             $("#btNotifica").removeAttr("disabled");
+            $("#btElimina").removeAttr("disabled");
 
 
             $("#idTipoTrasferimento").removeAttr("disabled");
@@ -423,6 +477,7 @@
 
             $("#btModifica").attr("disabled", "disabled");
             $("#btNotifica").attr("disabled", "disabled");
+            $("#btElimina").attr("disabled", "disabled");
 
             $("#idTipoTrasferimento").attr("disabled", "disabled");
             $("#idUfficio").attr("disabled", "disabled");
@@ -433,15 +488,13 @@
             $("#coan").attr("disabled", "disabled");
             $("#btLetteraTrsf").attr("disabled", "disabled");
         }
-
-
-
-
-
     }
 
     function NotifcaModal() {
         $('#notificaModal').modal().show();
+    }
+    function EliminaModal() {
+        $('#eliminaModal').modal().show();
     }
 
     $("#btModifica").click(function () {
@@ -576,6 +629,7 @@
         }
     }
 
+
     function NotificaTrasferimento() {
         //debugger;
         var rotta = "/Trasferimento/NotificaTrasferimento";
@@ -623,6 +677,82 @@
             },
             error: function (error) {
                 //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+
+    function EliminaTrasferimento() {
+        //debugger;
+        var rotta = "/Trasferimento/EliminaTrasferimento";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        var matricola = parseInt("@vMatricola");
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento,
+                matricola:matricola
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                debugger;
+
+                if (result.msg == "") {
+                    $('#habilitaNotifica').val(false);
+                    $('#habilitaElimina').val(false);
+                    //DialogInfo(result.msg);
+
+                    $('#hidTrasferimento').val(result.idTrasferimentoPrecedente);
+
+
+                    LetturaParametriGestioneTrasferimento();
+
+                    //GestioneAttivitaTrasferimento();
+                    InfoTrasferimento(result.idTrasferimentoPrecedente);
+                    //GestioneMenu();
+                    GestioneAbilitazioneMenu(result.idTrasferimentoPrecedente);
+                    //MenuDaVisualizzare();
+                    //ElencoTrasferimento();
+                    var list = result.listaTrasferimenti;
+                    $("#ElencolistaTrasferimento").select2();
+                    $('#ElencolistaTrasferimento').html('');
+                    $.each(list, function (key, val) {
+                        $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
+                    })
+                    //RicaricaInfoTrasferimento();
+                    //AbilitaDisabilitaCoan();
+
+                    //AbilitaMenuGestioneTrasferimento(idTrasferimento);
+
+                    //disabilitaControlli();
+
+                }
+                else {
+
+                    var err = result.err;
+                    ErroreElaborazioneAjax(err);
+                }
+            },
+            complete: function () {
+
+                Sblocca();
+            },
+            error: function (error) {
+                debugger;
                 Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);
