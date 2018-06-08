@@ -1247,19 +1247,33 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void EliminaTrasferimento(decimal idTrasferimento, ModelDBISE db)
+        public void EliminaTrasferimento(decimal idTrasferimento)
         {
 
             try
             {
-                var t = db.TRASFERIMENTO.Find(idTrasferimento);
-
-                db.TRASFERIMENTO.Remove(t);
-                if(db.SaveChanges()<=0)
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    throw new Exception("Errore in fase di eliminazione trasferimento.");
-                }
+                    try
+                    {
+                        db.Database.BeginTransaction();
 
+                        var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                        db.TRASFERIMENTO.Remove(t);
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore in fase di eliminazione trasferimento.");
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -2879,6 +2893,41 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return r;
         }
+
+        public List<SelectListItem> LeggiElencoTrasferimentiByMatricola(decimal matricola)
+        {
+            var r = new List<SelectListItem>();
+            var lt = GetListaTrasferimentoByMatricola(matricola);
+
+            if (lt?.Any() ?? false)
+            {
+                r = (from e in lt
+                        select new SelectListItem()
+                        {
+                            //Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + ((e.dataRientro.HasValue == true && e.dataRientro < Utility.DataFineStop()) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                            Text = e.Ufficio.descUfficio +
+                                " (" + e.Ufficio.codiceUfficio + ")" + " - " +
+                                    (
+                                        (
+                                            e.idStatoTrasferimento != EnumStatoTraferimento.Annullato ?
+                                                (e.dataPartenza.ToShortDateString() + " ÷ " +
+                                                        (
+                                                        (e.dataRientro.HasValue == true &&
+                                                                e.dataRientro < Utility.DataFineStop()
+                                                        ) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"
+                                                    )
+                                                )
+                                            : "ANNULLATO"
+                                        )
+                                    ),
+                            Value = e.idTrasferimento.ToString()
+                        }).ToList();
+
+                r.First().Selected = true;
+            }
+            return r;
+        }
+
 
         public decimal GetMatricolaByIdTrasferimento(decimal idTrasferimento)
         {

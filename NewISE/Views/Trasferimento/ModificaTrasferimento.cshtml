@@ -629,9 +629,10 @@
         }
     }
 
-    function EliminaTrasferimento() {
+
+    function NotificaTrasferimento() {
         //debugger;
-        var rotta = "/Trasferimento/EliminaTrasferimento";
+        var rotta = "/Trasferimento/NotificaTrasferimento";
         var idTrasferimento = parseInt($("#idTrasferimento").val());
 
         $.ajax({
@@ -649,14 +650,96 @@
 
             },
             success: function (result) {
-                debugger;
+                //debugger;
 
                 if (result.msg != "" && typeof result.msg !== "undefined") {
+                    $('#habilitaNotifica').val(false);
+                    //DialogInfo(result.msg);
+
+                    LetturaParametriGestioneTrasferimento();
+
+                    //RicaricaInfoTrasferimento();
+                    //AbilitaDisabilitaCoan();
+
+                    //AbilitaMenuGestioneTrasferimento(idTrasferimento);
+
+                    //disabilitaControlli();
+                }
+                else {
+
+                    var err = result.err;
+                    ErroreElaborazioneAjax(err);
+                }
+            },
+            complete: function () {
+
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+
+    function EliminaTrasferimento() {
+        //debugger;
+        var rotta = "/Trasferimento/EliminaTrasferimento";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        var matricola = parseInt("@vMatricola");
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento,
+                matricola:matricola
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                debugger;
+
+                if (result.msg == "") {
                     $('#habilitaNotifica').val(false);
                     $('#habilitaElimina').val(false);
                     //DialogInfo(result.msg);
 
+                    $('#hidTrasferimento').val(result.idTrasferimentoPrecedente);
+
+
                     LetturaParametriGestioneTrasferimento();
+
+                    //GestioneAttivitaTrasferimento();
+                    InfoTrasferimento(result.idTrasferimentoPrecedente);
+                    //GestioneMenu();
+                    GestioneAbilitazioneMenu(result.idTrasferimentoPrecedente);
+                    //MenuDaVisualizzare();
+                    //ElencoTrasferimento();
+                    var list = result.listaTrasferimenti;
+                    $("#ElencolistaTrasferimento").select2();
+                    $('#ElencolistaTrasferimento').html('');
+                    $.each(list, function (key, val) {
+                        $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
+                    })
+                    //RicaricaInfoTrasferimento();
+                    //AbilitaDisabilitaCoan();
+
+                    //AbilitaMenuGestioneTrasferimento(idTrasferimento);
+
+                    //disabilitaControlli();
+
                 }
                 else {
 
