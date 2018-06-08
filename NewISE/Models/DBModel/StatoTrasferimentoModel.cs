@@ -39,7 +39,7 @@ namespace NewISE.Models.DBModel
             {
                 return EnumStatoTraferimento.Terminato;
             }
-            else if (v.idStatoTrasferimento == 21)
+            else if (v.idStatoTrasferimento == 5)
             {
                 return EnumStatoTraferimento.Annullato;
             }

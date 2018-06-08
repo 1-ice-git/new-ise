@@ -1730,6 +1730,38 @@ namespace NewISE.Controllers
             }
         }
 
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult EliminaTrasferimento(decimal idTrasferimento)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    try
+                    {
+                        db.Database.BeginTransaction();
+
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            dtt.EliminaTrasferimento(idTrasferimento, db);
+                        }
+                        db.Database.CurrentTransaction.Commit();
+                        return Json(new { msg = "" });
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        return Json(new { err = ex.Message });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+
+        }
 
         [HttpPost]
         public JsonResult VerificaStatoStrasferimentoJsonResult(decimal idTrasferimento)

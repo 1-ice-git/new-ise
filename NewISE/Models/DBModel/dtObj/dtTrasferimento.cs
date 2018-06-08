@@ -1246,6 +1246,28 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+
+        public void EliminaTrasferimento(decimal idTrasferimento, ModelDBISE db)
+        {
+
+            try
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                db.TRASFERIMENTO.Remove(t);
+                if(db.SaveChanges()<=0)
+                {
+                    throw new Exception("Errore in fase di eliminazione trasferimento.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public void SetStatoTrasferimento(decimal idTrasferimento, EnumStatoTraferimento stato)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -2306,40 +2328,40 @@ namespace NewISE.Models.DBModel.dtObj
                         m.MAGGIORAZIONIANNUALI.Remove(mann);
                     }
 
-                    //VariazioniMABModel vmabm = new VariazioniMABModel();
-
-                    //var lvma = ma.VARIAZIONIMAB.Where(a =>
-                    //         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                    m.DATAINIZIOMAB = t.DATAPARTENZA;
-                    if (db.SaveChanges() <= 0)
+                    if (m.DATAINIZIOMAB != t.DATAPARTENZA)
                     {
-                        throw new Exception("Errore di correzione data inizio maggiorazione abitazione su MAB da " + m.DATAINIZIOMAB + " a " + t.DATAPARTENZA);
-                    }
-
-                    //elimina le associazioni percentualeMAB variazioniMAB
-                    var lpm = m.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
-                    foreach (var pm in lpm)
-                    {
-                        m.PERCENTUALEMAB.Remove(pm);
-                    }
-
-                    var idMAB = m.IDMAB;
-                            
-
-                    var lpmab = dtma.GetListaPercentualeMAB(mm, tm, db);
-                    foreach (var pmab in lpmab)
-                    {
-                        dtma.Associa_MAB_PercentualeMAB(mm.idMAB, pmab.IDPERCMAB, db);
-                    }
-
-
-                    //riassocia maggiorazioni annuali
-                    var mam = dtma.GetMaggiorazioneAnnuale(mm, db);
-                    if (mam.idMagAnnuali > 0)
-                    {
-                        if (mam.annualita)
+                        m.DATAINIZIOMAB = t.DATAPARTENZA;
+                        if (db.SaveChanges() <= 0)
                         {
-                            dtma.Associa_MAB_MaggiorazioniAnnuali(mm.idMAB, mam.idMagAnnuali, db);
+                            throw new Exception("Errore di correzione data inizio maggiorazione abitazione su MAB da " + m.DATAINIZIOMAB + " a " + t.DATAPARTENZA);
+                        }
+                        mm.dataInizioMAB = m.DATAINIZIOMAB;
+
+                        //elimina le associazioni percentualeMAB variazioniMAB
+                        var lpm = m.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+                        foreach (var pm in lpm)
+                        {
+                            m.PERCENTUALEMAB.Remove(pm);
+                        }
+
+                        var idMAB = m.IDMAB;
+
+
+                        var lpmab = dtma.GetListaPercentualeMAB(mm, tm, db);
+                        foreach (var pmab in lpmab)
+                        {
+                            dtma.Associa_MAB_PercentualeMAB(mm.idMAB, pmab.IDPERCMAB, db);
+                        }
+
+
+                        //riassocia maggiorazioni annuali
+                        var mam = dtma.GetMaggiorazioneAnnuale(mm, db);
+                        if (mam.idMagAnnuali > 0)
+                        {
+                            if (mam.annualita)
+                            {
+                                dtma.Associa_MAB_MaggiorazioniAnnuali(mm.idMAB, mam.idMagAnnuali, db);
+                            }
                         }
                     }
                     #endregion
@@ -2351,22 +2373,25 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var pcma in lpcma)
                         {
-                            pcma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
-                            if (db.SaveChanges() <= 0)
+                            if (pcma.DATAINIZIOVALIDITA != t.DATAPARTENZA)
                             {
-                                throw new Exception("Errore di correzione data inizio validita su PagatoCondivisoMAB da " + pcma.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
-                            }
+                                pcma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore di correzione data inizio validita su PagatoCondivisoMAB da " + pcma.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
+                                }
 
-                            var lpc = pcma.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
-                            foreach (var pc in lpc)
-                            {
-                                pcma.PERCENTUALECONDIVISIONE.Remove(pc);
-                            }
+                                var lpc = pcma.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
+                                foreach (var pc in lpc)
+                                {
+                                    pcma.PERCENTUALECONDIVISIONE.Remove(pc);
+                                }
 
-                            lpc = dtma.GetListaPercentualeCondivisione(pcma.DATAINIZIOVALIDITA, pcma.DATAFINEVALIDITA, db);
-                            foreach (var pc in lpc)
-                            {
-                                dtma.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pcma.IDPAGATOCONDIVISO, pc.IDPERCCOND, db);
+                                lpc = dtma.GetListaPercentualeCondivisione(pcma.DATAINIZIOVALIDITA, pcma.DATAFINEVALIDITA, db);
+                                foreach (var pc in lpc)
+                                {
+                                    dtma.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pcma.IDPAGATOCONDIVISO, pc.IDPERCCOND, db);
+                                }
                             }
                         }
                     }
@@ -2379,27 +2404,29 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var cma in lcma)
                         {
-                            cma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
-                            if (db.SaveChanges() <= 0)
+                            if (cma.DATAINIZIOVALIDITA != t.DATAPARTENZA)
                             {
-                                throw new Exception("Errore di correzione data inizio validita su CanoneMAB da " + cma.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
-                            }
-
-                            var ltfr = cma.TFR.Where(a => a.ANNULLATO == false).ToList();
-                            foreach (var tfr in ltfr)
-                            {
-                                cma.TFR.Remove(tfr);
-                            }
-
-                            using (dtTFR dtTfr = new dtTFR())
-                            {
-                                var ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(tm, cma.IDVALUTA, cma.DATAINIZIOVALIDITA, cma.DATAFINEVALIDITA, db);
-                                foreach (var tfrm in ltfrm)
+                                cma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                                if (db.SaveChanges() <= 0)
                                 {
-                                    dtma.Associa_TFR_CanoneMAB(tfrm.idTFR, cma.IDCANONE, db);
+                                    throw new Exception("Errore di correzione data inizio validita su CanoneMAB da " + cma.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
+                                }
+
+                                var ltfr = cma.TFR.Where(a => a.ANNULLATO == false).ToList();
+                                foreach (var tfr in ltfr)
+                                {
+                                    cma.TFR.Remove(tfr);
+                                }
+
+                                using (dtTFR dtTfr = new dtTFR())
+                                {
+                                    var ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(tm, cma.IDVALUTA, cma.DATAINIZIOVALIDITA, cma.DATAFINEVALIDITA, db);
+                                    foreach (var tfrm in ltfrm)
+                                    {
+                                        dtma.Associa_TFR_CanoneMAB(tfrm.idTFR, cma.IDCANONE, db);
+                                    }
                                 }
                             }
-
                         }
                     }
                     #endregion
