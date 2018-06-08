@@ -340,7 +340,7 @@
 
     function LetturaParametriGestioneTrasferimento() {
 
-        //debugger;
+        debugger;
 
         var idTrasferimento = parseInt($('#hidTrasferimento').val());
 
@@ -716,23 +716,23 @@
                     $('#habilitaElimina').val(false);
                     //DialogInfo(result.msg);
 
-                    $('#hidTrasferimento').val(result.idTrasferimentoPrecedente);
-
-
-                    LetturaParametriGestioneTrasferimento();
-
-                    //GestioneAttivitaTrasferimento();
-                    InfoTrasferimento(result.idTrasferimentoPrecedente);
-                    //GestioneMenu();
-                    GestioneAbilitazioneMenu(result.idTrasferimentoPrecedente);
-                    //MenuDaVisualizzare();
-                    //ElencoTrasferimento();
-                    var list = result.listaTrasferimenti;
-                    $("#ElencolistaTrasferimento").select2();
-                    $('#ElencolistaTrasferimento').html('');
-                    $.each(list, function (key, val) {
-                        $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
-                    })
+                    if(result.idTrasferimentoPrecedente>0)
+                    {
+                        LetturaParametriGestioneTrasferimento();
+                        $('#hidTrasferimento').val(result.idTrasferimentoPrecedente);
+                        //GestioneAttivitaTrasferimento();
+                        InfoTrasferimento(result.idTrasferimentoPrecedente);
+                        //GestioneMenu();
+                        GestioneAbilitazioneMenu(result.idTrasferimentoPrecedente);
+                        //MenuDaVisualizzare();
+                        //ElencoTrasferimento();
+                        var list = result.listaTrasferimenti;
+                        $("#ElencolistaTrasferimento").select2();
+                        $('#ElencolistaTrasferimento').html('');
+                        $.each(list, function (key, val) {
+                            $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
+                        })
+                    }
                     //RicaricaInfoTrasferimento();
                     //AbilitaDisabilitaCoan();
 
@@ -752,7 +752,7 @@
                 Sblocca();
             },
             error: function (error) {
-                debugger;
+                //debugger;
                 Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);

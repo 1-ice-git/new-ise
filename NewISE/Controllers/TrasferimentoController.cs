@@ -1753,9 +1753,12 @@ namespace NewISE.Controllers
 
                     ltrasf = dtt.LeggiElencoTrasferimentiByMatricola(matricola);
 
-                    var last_t = dtt.GetUltimoTrasferimentoByMatricola(Convert.ToString(matricola));
+                    if (ltrasf.Count() > 0)
+                    {
+                        var last_t = dtt.GetUltimoTrasferimentoByMatricola(Convert.ToString(matricola));
 
-                    idTrasferimentoPrecedente = last_t.idTrasferimento;
+                        idTrasferimentoPrecedente = last_t.idTrasferimento;
+                    }
 
                     return Json(new {
                                 msg = "",
