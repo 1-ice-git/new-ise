@@ -14,7 +14,6 @@ using NewISE.Models.Enumeratori;
 using Newtonsoft.Json.Schema;
 using NewISE.Models.Tools;
 using RestSharp.Extensions;
-using NewISE.Models.DBModel.Enum;
 using System.IO;
 
 namespace NewISE.Models.DBModel.dtObj
