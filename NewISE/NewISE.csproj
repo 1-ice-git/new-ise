@@ -6029,7 +6029,6 @@
     <Folder Include="Lib\json\" />
     <Folder Include="Lib\js\" />
     <Folder Include="Lib\locale\" />
-    <Folder Include="node_modules\" />
     <Folder Include="Scripts\Data\" />
     <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Scripts\ScriptsView\" />
