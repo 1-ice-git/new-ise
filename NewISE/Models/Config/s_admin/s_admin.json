@@ -40,6 +40,20 @@
       "password": "ise",
       "nome": "Daniela",
       "cognome": "Velardi",
+      "email": "d.Velardi@ice.it"
+    },
+    {
+      "username": "2942",
+      "password": "ise",
+      "nome": "Gabriella",
+      "cognome": "Musumeci",
+      "email": "g.musumeci@ice.it"
+    },
+    {
+      "username": "3272",
+      "password": "ise",
+      "nome": "Luigi",
+      "cognome": "Puca",
       "email": "mauro.arduini@ritspa.it"
     }
   ]
