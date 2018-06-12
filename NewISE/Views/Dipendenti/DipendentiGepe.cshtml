@@ -67,10 +67,14 @@
 
     $("#Nominativo").change(function () {
         //debugger;
+        ResetFiltraDipendente();
+    });
+
+    function ResetFiltraDipendente() {
         $("#hidTrasferimento").val("");
         $("#hMenuInLavorazione").val("mnNuovoTrasferimento");
         FiltraDipendente();
-    });
+    }
 
     function ElencoTrasferimento() {
         //debugger;

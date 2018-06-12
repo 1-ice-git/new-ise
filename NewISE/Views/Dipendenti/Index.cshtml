@@ -116,7 +116,7 @@
 
         $("#hMenuInLavorazione").val("mnNuovoTrasferimento");
     });
-    
+
     function NuovoTrasferimento() {
         //debugger;
 
@@ -572,7 +572,7 @@
             $("#mnGestioneTrasferimento").attr("disabled", "disabled");
             $("#mnGestioneTrasferimento").addClass("disabled");
 
-            
+
             $("#ddVariazioneTrasferimento").attr("disabled", "disabled");
             $("#ddVariazioneTrasferimento").addClass("disabled");
 
@@ -714,7 +714,7 @@
             $("#mnProvvidenzeScolastiche").addClass("disabled");
             $("#lkProvvidenzeScolastiche").removeAttr("onClick");
         }
-        
+
         if (MenuIndennita(idTrasferimento) == 1) {
             //debugger;
             $("#lkIndennita").removeAttr("disabled");
@@ -1137,7 +1137,7 @@
     }
 
     function ViaggiCongedoPermesso() {
-    //    debugger;
+        //    debugger;
         //   debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         //rotta = "/ViaggiCongedo/PreventiviDiViaggio";
@@ -1154,8 +1154,8 @@
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
             success: function (result) {
-               // debugger;
-               
+                // debugger;
+
                 $("#tabCongediPermessi").empty();
                 $("#tabCongediPermessi").html(result);
 
