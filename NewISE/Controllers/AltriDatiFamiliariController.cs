@@ -20,7 +20,7 @@ namespace NewISE.Controllers
         {
             AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
 
-            try
+            try 
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
