@@ -5249,6 +5249,7 @@
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtIndennitaPersonale.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />

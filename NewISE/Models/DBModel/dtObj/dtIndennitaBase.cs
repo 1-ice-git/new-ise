@@ -103,12 +103,16 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     
                     var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
-
+                    
                     using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                     {   
                         RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
 
-                        libm = (from e in ll
+                        using (dtTrasferimento dttrasf = new dtTrasferimento())
+                        {
+                            dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+
+                            libm = (from e in ll
                                 select new IndennitaBaseModel()
                                 {
                                     idIndennitaBase = e.IDINDENNITABASE,
@@ -128,10 +132,17 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
                                         DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
+                                    },
+                                    dipInfoTrasferimento = new dipInfoTrasferimentoModel
+                                    {
+                                        Decorrenza = dipInfoTrasf.Decorrenza,
+                                        indennitaServizio = dipInfoTrasf.indennitaServizio
+
                                     }
+
                                 }).ToList();
                     }
-
+                    }
                     return libm;
                 }
             }

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
 
-<link href="~/Views/Content/NoScroller.css" rel="stylesheet" />
+
 
 @{
 
@@ -24,9 +24,9 @@
 <table id="tbIndennitaServizio" class="display" cellspacing="0">
     <thead>
         <tr>
-           
+
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
+                @Html.DisplayNameFor(model => model.dipInfoTrasferimento.Decorrenza)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
@@ -35,21 +35,23 @@
                 @Html.DisplayNameFor(model => model.valore)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.CoefficenteSede.idCoefficientiSede)
+                @Html.DisplayNameFor(model => model.CoefficenteSede.valore)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.PercentualeDisagio.idPercentualeDisagio)
+                @Html.DisplayNameFor(model => model.PercentualeDisagio.percentuale)
             </th>
-            
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dipInfoTrasferimento.indennitaServizio)
+            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                
+
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                    @Html.DisplayFor(modelItem => item.dipInfoTrasferimento.Decorrenza)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
@@ -58,10 +60,13 @@
                     @Html.DisplayFor(modelItem => item.valore)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.CoefficenteSede.idCoefficientiSede)
+                    @Html.DisplayFor(modelItem => item.CoefficenteSede.valore)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.PercentualeDisagio.idPercentualeDisagio)
+                    @Html.DisplayFor(modelItem => item.PercentualeDisagio.percentuale)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dipInfoTrasferimento.indennitaServizio)
                 </td>
             </tr>
         }

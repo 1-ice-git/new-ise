@@ -60,8 +60,10 @@ namespace NewISE.Models.DBModel
         public CoefficientiSedeModel CoefficenteSede { get; set; }
 
         public PercentualeDisagioModel PercentualeDisagio { get; set; }
-
+        
         public RiduzioniModel Riduzioni { get; set; }
+
+        public dipInfoTrasferimentoModel dipInfoTrasferimento { get; set; }
 
         public bool HasValue()
         {
