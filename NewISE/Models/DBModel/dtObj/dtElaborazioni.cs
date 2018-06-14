@@ -7,6 +7,7 @@ using NewISE.EF;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.Enumeratori;
 using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
 using NewISE.Models.IseArio.dtObj;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.Tools;
@@ -19,6 +20,37 @@ namespace NewISE.Models.DBModel.dtObj
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+        public IList<LiquidazioneMensileViewModel> PrelevaLiquidazioniMensili(decimal idMeseAnnoElaborato)
+        {
+            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                var mae = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
+
+                #region Cedolino
+
+                #region Prima sistemazione
+
+                var lTeorici =
+                    db.TEORICI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
+                            a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                            (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
+                             a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true) && a.FLUSSICEDOLINO.IDTEORICI > 0).ToList();
+                #endregion
+
+
+                #endregion
+
+
+                return lLm;
+            }
         }
 
         /// <summary>
@@ -105,6 +137,429 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void InviaSaldoUnicaSoluzionePrimaSitemazioneContabilita(decimal idAttivitaAnticipi, ModelDBISE db)
+        {
+
+            try
+            {
+                var aa = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi);
+                var ps = aa.PRIMASITEMAZIONE;
+                var t = ps.TRASFERIMENTO;
+                var ra = aa.RINUNCIAANTICIPI;
+                decimal primaSistemazioneAnticipabile = 0;
+                decimal primaSistemazioneUnicaSoluzione = 0;
+
+                using (CalcoliIndennita ci = new CalcoliIndennita(t.IDTRASFERIMENTO, t.DATAPARTENZA))
+                {
+
+                    if (ra.RINUNCIAANT == false)
+                    {
+                        var lanticipi =
+                            aa.ANTICIPI.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOLOGIAANTICIPI ==
+                                    (decimal)EnumTipoAnticipi.Prima_sistemazione)
+                                .OrderByDescending(a => a.IDATTIVITAANTICIPI)
+                                .ToList();
+
+                        if (lanticipi?.Any() ?? false)
+                        {
+                            var anticipi = lanticipi.First();
+
+                            ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
+                            {
+                                IDPRIMASISTEMAZIONE = ps.IDPRIMASISTEMAZIONE,
+                                INDENNITABASE = ci.IndennitaDiBase,
+                                COEFFICENTESEDE = ci.CoefficienteDiSede,
+                                PERCENTUALEDISAGIO = ci.PercentualeDisagio,
+                                COEFFICENTEINDSIST = ci.CoefficienteIndennitaSistemazione,
+                                PERCENTUALERIDUZIONE = ci.PercentualeRiduzionePrimaSistemazione,
+                                PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                                PENSIONECONIUGE = ci.PensioneConiuge,
+                                ANTICIPO = false,
+                                SALDO = true,
+                                UNICASOLUZIONE = false,
+                                PERCANTSALDOUNISOL = 100 - anticipi.PERCENTUALEANTICIPO,
+                                DATAOPERAZIONE = DateTime.Now,
+                                ELABORATO = false,
+                                ANNULLATO = false
+                            };
+
+                            db.ELABINDSISTEMAZIONE.Add(eis);
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception(
+                                    "Errore nella fase d'inderimento del saldo di prima sistemazione.");
+                            }
+
+                            if (ci.lDatiFigli?.Any() ?? false)
+                            {
+                                foreach (var df in ci.lDatiFigli)
+                                {
+                                    ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                    {
+                                        IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                                        INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                                        PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
+                                    };
+
+                                    eis.ELABDATIFIGLI.Add(edf);
+                                }
+
+                                int j = db.SaveChanges();
+
+                                if (j <= 0)
+                                {
+                                    throw new Exception(
+                                        "Errore nella fase d'inderimento del saldo di prima sistemazione.");
+                                }
+                            }
+
+                            ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                            var lacDetr =
+                                db.ALIQUOTECONTRIBUTIVE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                        t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                    .ToList();
+
+
+                            if (lacDetr?.Any() ?? false)
+                            {
+                                detrazioni = lacDetr.First();
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                            }
+
+                            this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, detrazioni.IDALIQCONTR, db);
+
+                            ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
+
+                            var lacPrev =
+                                db.ALIQUOTECONTRIBUTIVE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                        t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                    .ToList();
+
+                            if (lacPrev?.Any() ?? false)
+                            {
+                                aliqPrev = lacPrev.First();
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+                            }
+
+
+                            this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, aliqPrev.IDALIQCONTR, db);
+
+                            CalcoliIndennita.ElaboraPrimaSistemazione(eis.INDENNITABASE, eis.COEFFICENTESEDE,
+                                eis.PERCENTUALEDISAGIO, eis.PERCENTUALERIDUZIONE, eis.COEFFICENTEINDSIST,
+                                eis.PERCENTUALEMAGCONIUGE, eis.PENSIONECONIUGE, eis.ELABDATIFIGLI,
+                                out primaSistemazioneAnticipabile, out primaSistemazioneUnicaSoluzione);
+
+
+                            var ImponibilePrevidenziale = primaSistemazioneUnicaSoluzione - detrazioni.VALORE;
+                            var RitenutePrevidenziali = ImponibilePrevidenziale * aliqPrev.VALORE / 100;
+
+                            var dip = t.DIPENDENTI;
+
+                            using (dtAliquotaISE dtai = new dtAliquotaISE())
+                            {
+                                var aliqIse = dtai.GetAliquotaIse(dip.MATRICOLA, RitenutePrevidenziali);
+
+                                var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * aliqIse.Aliquota /
+                                                    100;
+
+                                var Netto = primaSistemazioneUnicaSoluzione - RitenutePrevidenziali - RitenutaIperf;
+
+                                var saldoNetto = Netto * (eis.PERCANTSALDOUNISOL / 100);
+
+                                using (CalcoloMeseAnnoElaborazione cmae = new CalcoloMeseAnnoElaborazione(db))
+                                {
+
+                                    var lmae = cmae.Mae;
+
+                                    if (lmae?.Any() ?? false)
+                                    {
+                                        var mae = lmae.First();
+                                        if (mae.Elaborato == true)
+                                        {
+                                            cmae.NewMeseDaElaborare();
+                                        }
+
+
+
+                                        TEORICI teorici = new TEORICI()
+                                        {
+                                            IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                            IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
+                                            IDMESEANNOELAB = mae.IdMeseAnnoElab,
+                                            MESERIFERIMENTO = t.DATAPARTENZA.Month,
+                                            ANNORIFERIMENTO = t.DATAPARTENZA.Year,
+                                            ALIQUOTAFISCALE = aliqIse.Aliquota,
+                                            GIORNI = 0,
+                                            IMPORTO = saldoNetto,
+                                            DATAOPERAZIONE = DateTime.Now,
+                                            ANNULLATO = false
+                                        };
+
+                                        db.TEORICI.Add(teorici);
+
+                                        int j = db.SaveChanges();
+
+                                        if (j <= 0)
+                                        {
+                                            throw new Exception(
+                                                "Errore nella fase d'inderimento del saldo di prima sistemazione in contabilità.");
+                                        }
+
+                                        CONT_OA contabilita = new CONT_OA()
+                                        {
+                                            IDTEORICI = teorici.IDTEORICI,
+                                            MATRICOLA = dip.MATRICOLA,
+                                            LIVELLO = ci.Livello.LIVELLO,
+                                            CODICESEDE = t.UFFICI.CODICEUFFICIO,
+                                        };
+
+                                        db.CONT_OA.Add(contabilita);
+
+                                        int y = db.SaveChanges();
+
+                                        if (y <= 0)
+                                        {
+                                            throw new Exception(
+                                                "Errore nella fase d'inderimento del saldo di prima sistemazione in contabilità OA.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Errore nella fase di lettura del mese di elaborazione.");
+                                    }
+
+
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            this.UnicaSoluzionePrimaSistemazione(ci, ps, t, db);
+                        }
+
+
+
+                    }
+                    else
+                    {
+                        this.UnicaSoluzionePrimaSistemazione(ci, ps, t, db);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void UnicaSoluzionePrimaSistemazione(CalcoliIndennita ci, PRIMASITEMAZIONE ps, TRASFERIMENTO t, ModelDBISE db)
+        {
+            decimal primaSistemazioneAnticipabile = 0;
+            decimal primaSistemazioneUnicaSoluzione = 0;
+
+            ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
+            {
+                IDPRIMASISTEMAZIONE = ps.IDPRIMASISTEMAZIONE,
+                INDENNITABASE = ci.IndennitaDiBase,
+                COEFFICENTESEDE = ci.CoefficienteDiSede,
+                PERCENTUALEDISAGIO = ci.PercentualeDisagio,
+                COEFFICENTEINDSIST = ci.CoefficienteIndennitaSistemazione,
+                PERCENTUALERIDUZIONE = ci.PercentualeRiduzionePrimaSistemazione,
+                PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                PENSIONECONIUGE = ci.PensioneConiuge,
+                ANTICIPO = false,
+                SALDO = false,
+                UNICASOLUZIONE = true,
+                PERCANTSALDOUNISOL = 100,
+                DATAOPERAZIONE = DateTime.Now,
+                ELABORATO = false,
+                ANNULLATO = false
+            };
+
+            if (ci.lDatiFigli?.Any() ?? false)
+            {
+                foreach (var df in ci.lDatiFigli)
+                {
+                    ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                    {
+                        IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                        INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                        PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
+                    };
+
+                    eis.ELABDATIFIGLI.Add(edf);
+                }
+
+                int j = db.SaveChanges();
+
+                if (j <= 0)
+                {
+                    throw new Exception(
+                        "Errore nella fase d'inderimento della prima sistemazione.");
+                }
+            }
+
+            ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+            var lacDetr =
+                db.ALIQUOTECONTRIBUTIVE.Where(
+                    a =>
+                        a.ANNULLATO == false &&
+                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
+                        t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                    .ToList();
+
+
+            if (lacDetr?.Any() ?? false)
+            {
+                detrazioni = lacDetr.First();
+            }
+            else
+            {
+                throw new Exception(
+                    "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+            }
+
+            this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, detrazioni.IDALIQCONTR, db);
+
+            ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
+
+            var lacPrev =
+                db.ALIQUOTECONTRIBUTIVE.Where(
+                    a =>
+                        a.ANNULLATO == false &&
+                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                        t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                    .ToList();
+
+            if (lacPrev?.Any() ?? false)
+            {
+                aliqPrev = lacPrev.First();
+            }
+            else
+            {
+                throw new Exception(
+                    "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+            }
+
+
+            this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, aliqPrev.IDALIQCONTR, db);
+
+            CalcoliIndennita.ElaboraPrimaSistemazione(eis.INDENNITABASE, eis.COEFFICENTESEDE,
+                eis.PERCENTUALEDISAGIO, eis.PERCENTUALERIDUZIONE, eis.COEFFICENTEINDSIST,
+                eis.PERCENTUALEMAGCONIUGE, eis.PENSIONECONIUGE, eis.ELABDATIFIGLI,
+                out primaSistemazioneAnticipabile, out primaSistemazioneUnicaSoluzione);
+
+
+            var ImponibilePrevidenziale = primaSistemazioneUnicaSoluzione - detrazioni.VALORE;
+            var RitenutePrevidenziali = ImponibilePrevidenziale * aliqPrev.VALORE / 100;
+
+            var dip = t.DIPENDENTI;
+
+            using (dtAliquotaISE dtai = new dtAliquotaISE())
+            {
+                var aliqIse = dtai.GetAliquotaIse(dip.MATRICOLA, RitenutePrevidenziali);
+
+                var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * aliqIse.Aliquota /
+                                    100;
+
+                var Netto = primaSistemazioneUnicaSoluzione - RitenutePrevidenziali - RitenutaIperf;
+
+                var USNetto = Netto * (eis.PERCANTSALDOUNISOL / 100);
+
+                using (CalcoloMeseAnnoElaborazione cmae = new CalcoloMeseAnnoElaborazione(db))
+                {
+
+                    var lmae = cmae.Mae;
+
+                    if (lmae?.Any() ?? false)
+                    {
+                        var mae = lmae.First();
+                        if (mae.Elaborato == true)
+                        {
+                            cmae.NewMeseDaElaborare();
+                        }
+
+
+
+                        TEORICI teorici = new TEORICI()
+                        {
+                            IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                            IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
+                            IDMESEANNOELAB = mae.IdMeseAnnoElab,
+                            MESERIFERIMENTO = t.DATAPARTENZA.Month,
+                            ANNORIFERIMENTO = t.DATAPARTENZA.Year,
+                            ALIQUOTAFISCALE = aliqIse.Aliquota,
+                            GIORNI = 0,
+                            IMPORTO = USNetto,
+                            DATAOPERAZIONE = DateTime.Now,
+                            ANNULLATO = false
+                        };
+
+                        db.TEORICI.Add(teorici);
+
+                        int j = db.SaveChanges();
+
+                        if (j <= 0)
+                        {
+                            throw new Exception(
+                                "Errore nella fase d'inderimento della prima sistemazione in contabilità.");
+                        }
+
+                        CONT_OA contabilita = new CONT_OA()
+                        {
+                            IDTEORICI = teorici.IDTEORICI,
+                            MATRICOLA = dip.MATRICOLA,
+                            LIVELLO = ci.Livello.LIVELLO,
+                            CODICESEDE = t.UFFICI.CODICEUFFICIO,
+                        };
+
+                        db.CONT_OA.Add(contabilita);
+
+                        int y = db.SaveChanges();
+
+                        if (y <= 0)
+                        {
+                            throw new Exception(
+                                "Errore nella fase d'inderimento del saldo di prima sistemazione in contabilità OA.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Errore nella fase di lettura del mese di elaborazione.");
+                    }
+
+
+                }
+            }
+        }
+
         public void InviaAnticipoPrimaSistemazioneContabilita(decimal idAttivitaAnticipi, ModelDBISE db)
         {
             try
@@ -113,6 +568,9 @@ namespace NewISE.Models.DBModel.dtObj
                 var ps = aa.PRIMASITEMAZIONE;
                 var t = ps.TRASFERIMENTO;
                 var ra = aa.RINUNCIAANTICIPI;
+                decimal primaSistemazioneAnticipabile = 0;
+                decimal primaSistemazioneUnicaSoluzione = 0;
+
 
                 if (ra.RINUNCIAANT == false)
                 {
@@ -138,8 +596,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 PERCENTUALERIDUZIONE = ci.PercentualeRiduzionePrimaSistemazione,
                                 PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
                                 PENSIONECONIUGE = ci.PensioneConiuge,
-                                INDENNITAPRIMOSEGRETARIO = ci.IndennitaPrimoSegretario,
-                                PERCENTUALEMAGFIGLIO = ci.PercentualeMaggiorazioneFigli,
                                 ANTICIPO = true,
                                 SALDO = false,
                                 UNICASOLUZIONE = false,
@@ -173,6 +629,29 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 throw new Exception("Errore nella fase d'inderimento dell'anticipo di prima sistemazione.");
                             }
+
+                            if (ci.lDatiFigli?.Any() ?? false)
+                            {
+                                foreach (var df in ci.lDatiFigli)
+                                {
+                                    ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                    {
+                                        IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                                        INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                                        PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
+                                    };
+
+                                    eis.ELABDATIFIGLI.Add(edf);
+                                }
+
+                                int j = db.SaveChanges();
+
+                                if (j <= 0)
+                                {
+                                    throw new Exception("Errore nella fase d'inderimento dell'anticipo di prima sistemazione.");
+                                }
+                            }
+
 
                             ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
 
@@ -214,18 +693,16 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
-                                throw new Exception("Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                                throw new Exception("Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
                             }
 
 
                             this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, aliqPrev.IDALIQCONTR, db);
 
-                            var importoPrimaSistemazioneLorda = CalcoliIndennita.ElaboraPrimaSistemazione(eis.INDENNITABASE,
-                                eis.COEFFICENTESEDE, eis.PERCENTUALEDISAGIO, eis.PERCENTUALERIDUZIONE,
-                                eis.COEFFICENTEINDSIST);
+                            CalcoliIndennita.ElaboraPrimaSistemazione(eis.INDENNITABASE, eis.COEFFICENTESEDE, eis.PERCENTUALEDISAGIO, eis.PERCENTUALERIDUZIONE, eis.COEFFICENTEINDSIST, eis.PERCENTUALEMAGCONIUGE, eis.PENSIONECONIUGE, eis.ELABDATIFIGLI, out primaSistemazioneAnticipabile, out primaSistemazioneUnicaSoluzione);
 
 
-                            var ImponibilePrevidenziale = importoPrimaSistemazioneLorda - detrazioni.VALORE;
+                            var ImponibilePrevidenziale = primaSistemazioneAnticipabile - detrazioni.VALORE;
                             var RitenutePrevidenziali = ImponibilePrevidenziale * aliqPrev.VALORE / 100;
 
                             var dip = t.DIPENDENTI;
@@ -236,7 +713,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * aliqIse.Aliquota / 100;
 
-                                var Netto = importoPrimaSistemazioneLorda - RitenutePrevidenziali - RitenutaIperf;
+                                var Netto = primaSistemazioneAnticipabile - RitenutePrevidenziali - RitenutaIperf;
 
                                 var anticipoNetto = Netto * (eis.PERCANTSALDOUNISOL / 100);
 
@@ -320,6 +797,7 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
 
 
         public void InvioEmailOAAnticipoPrimaSistemazione(decimal idPrimaSistemazione, ModelDBISE db)

@@ -121,6 +121,23 @@ namespace NewISE.Controllers
         public ActionResult ElaborazioneMensile(List<decimal> dipendenti)
         {
 
+
+
+
+            return PartialView();
+        }
+
+        public ActionResult DatiLiquidazioniMensili(decimal idAnnoMeseElaborato)
+        {
+            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+
+
+            using (dtElaborazioni dte = new dtElaborazioni())
+            {
+
+            }
+
+
             return PartialView();
         }
 

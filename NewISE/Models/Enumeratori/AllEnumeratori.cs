@@ -198,7 +198,7 @@ namespace NewISE.Models.Enumeratori
         AnticipoIndennitaPrimaSistemazione = 6,
         IndennitaPrimaSistemazione = 7
     }
-    public enum EnumMovimentazione
+    public enum EnumTipoInserimento
     {
         Software = 1,
         Manuale = 2

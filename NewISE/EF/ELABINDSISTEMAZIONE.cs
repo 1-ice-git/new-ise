@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ELABINDSISTEMAZIONE()
         {
+            this.ELABDATIFIGLI = new HashSet<ELABDATIFIGLI>();
             this.ELABINDSISTEMAZIONE1 = new HashSet<ELABINDSISTEMAZIONE>();
             this.ELABTRASPEFFETTI = new HashSet<ELABTRASPEFFETTI>();
             this.TEORICI = new HashSet<TEORICI>();
@@ -32,8 +33,6 @@ namespace NewISE.EF
         public decimal PERCENTUALERIDUZIONE { get; set; }
         public decimal PERCENTUALEMAGCONIUGE { get; set; }
         public decimal PENSIONECONIUGE { get; set; }
-        public decimal INDENNITAPRIMOSEGRETARIO { get; set; }
-        public decimal PERCENTUALEMAGFIGLIO { get; set; }
         public bool ANTICIPO { get; set; }
         public bool SALDO { get; set; }
         public bool UNICASOLUZIONE { get; set; }
@@ -43,6 +42,8 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
         public Nullable<decimal> FK_IDINDSISTLORDA { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE1 { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE2 { get; set; }
