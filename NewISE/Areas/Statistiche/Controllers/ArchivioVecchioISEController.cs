@@ -1097,7 +1097,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.Width = Unit.Percentage(100);
                 reportViewer.Height = Unit.Percentage(100);
 
-
+                 
                 var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
 
                 OracleConnection conx = new OracleConnection(connectionString);
