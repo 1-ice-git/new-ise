@@ -19,7 +19,9 @@ namespace NewISE.Models
         public UfficiModel UfficioDestinazione { get; set; }
 
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        [DisplayFormat(ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-mm-yyyy}")]
+        
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        //[DisplayFormat(ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-mm-yyyy}")]
         public DateTime? Decorrenza { get; set; }
 
 
@@ -31,15 +33,15 @@ namespace NewISE.Models
         public decimal indennitaBase { get; set; }
 
         [Display(Name = "Indennità di Servizio")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
         public decimal indennitaServizio { get; set; }
 
         [Display(Name = "Maggiorazione Familiari")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
         public decimal maggiorazioniFamiliari { get; set; }
 
         [Display(Name = "Indennità Personale")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
         public decimal indennitaPersonale { get; set; }
 
         [Display(Name = "CDC Destinazione")]

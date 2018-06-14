@@ -5,6 +5,7 @@ using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.dtObj;
+using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
 using NewISE.Views.Dataset;
@@ -110,6 +111,8 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
+
+        // Indennità Base + Report di Stampa
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
@@ -155,13 +158,7 @@ namespace NewISE.Controllers
             try
             {
 
-                ReportViewer reportViewer = new ReportViewer();
-
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                reportViewer.SizeToReportContent = true;
-                reportViewer.Width = Unit.Percentage(100);
-                reportViewer.Height = Unit.Percentage(100);
-
+                
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
@@ -238,6 +235,13 @@ namespace NewISE.Controllers
                                 //param[1] = new ReportParameter("paraEndDate", paraEndDate, false);
                                 //this.reportViewer.LocalReport.SetParameters(param);
 
+                                ReportViewer reportViewer = new ReportViewer();
+
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+                                reportViewer.SizeToReportContent = true;
+                                reportViewer.Width = Unit.Percentage(100);
+                                reportViewer.Height = Unit.Percentage(100);
+
 
                                 var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
                                 ////var datasource = new ReportDataSource("INDENNITABASE", ll.ToList());
@@ -276,9 +280,12 @@ namespace NewISE.Controllers
             return PartialView("RptIndennitaBase");
 
         }
+
+        // Indennità di Servizio + Report di Stampa
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
 
             try
             {
@@ -298,6 +305,13 @@ namespace NewISE.Controllers
 
                     }
 
+                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
+                    {
+                        dit.indennitaBase = ci.IndennitaDiBase;
+                        dit.indennitaServizio = ci.IndennitaDiServizio;
+                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                        dit.indennitaPersonale = ci.IndennitaPersonale;
+                    }
                 }
                 ViewBag.idTrasferimento = idTrasferimento;
 
@@ -310,6 +324,12 @@ namespace NewISE.Controllers
             }
 
         }
+        public ActionResult RptIndennitaServizio()
+        {
+            return View();
+        }
+
+        // Maggiorazioni Familiari + Report di Stampa
         public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
         {
 
@@ -327,23 +347,54 @@ namespace NewISE.Controllers
 
 
         }
+        public ActionResult RptMaggiorazioniFamiliari()
+        {
+            return View();
+        }
+
+        // Indennità Personale + Report di Stampa
         public ActionResult IndennitaPersonale(decimal idTrasferimento)
         {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
 
             try
             {
+                using (dtIndennitaPersonale dtd = new dtIndennitaPersonale())
+                {
+                    libm = dtd.GetIndennitaPersonale(idTrasferimento).ToList();
+                }
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    
+
+                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
+                    {
+                        dit.indennitaBase = ci.IndennitaDiBase;
+                        dit.indennitaServizio = ci.IndennitaDiServizio;
+                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                        dit.indennitaPersonale = ci.IndennitaPersonale;
+                    }
+                }
+                ViewBag.idTrasferimento = idTrasferimento;
 
 
-                return PartialView();
+                return PartialView(libm);
             }
-
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-
         }
+        public ActionResult RptIndennitaPersonale()
+        {
+            return View();
+        }
+
+        // Maggiorazione Abitazione + Report di Stampa
         public ActionResult MaggiorazioneAbitazione(decimal idTrasferimento)
         {
 
@@ -361,6 +412,13 @@ namespace NewISE.Controllers
 
 
         }
+
+        public ActionResult RptMaggiorazioneAbitazione()
+        {
+            return View();
+        }
+
+        // Indennita di Prima Sistemazione + Report di Stampa
         public ActionResult IndennitaPrimaSistemazione(decimal idTrasferimento)
         {
 
@@ -378,6 +436,13 @@ namespace NewISE.Controllers
 
 
         }
+
+        public ActionResult RptIndennitaPrimaSistemazione()
+        {
+            return View();
+        }
+
+        // Indennita di Richiamo + Report di Stampa
         public ActionResult IndennitadiRichiamo(decimal idTrasferimento)
         {
 
@@ -396,5 +461,9 @@ namespace NewISE.Controllers
 
         }
 
+        public ActionResult RptIndennitadiRichiamo()
+        {
+            return View();
+        }
     }
 }
