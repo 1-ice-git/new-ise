@@ -28,7 +28,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Data Inizio Validità</Value>
+                              <Value>Decorrenza</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -132,7 +132,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatDateTime(Fields!DATAINIZIOVALIDITA.Value, DateFormat.ShortDate)</Value>
+                              <Value>=Parameters!Decorrenza.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>

@@ -75,8 +75,7 @@ namespace NewISE.Models.dtObj
                                 DescLivello = e.LIVELLI.LIVELLO
                             }
                         }).ToList();
-
-
+                
             }
             
 

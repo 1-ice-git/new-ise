@@ -44,6 +44,11 @@ namespace NewISE.Models
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
         public decimal indennitaPersonale { get; set; }
 
+        [Display(Name = "Coefficiente Indennità Sistemazione")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
+        public decimal coefficienteIndennitàSistemazione { get; set; }
+
+
         [Display(Name = "CDC Destinazione")]
         public string CDCDestinazione
         {

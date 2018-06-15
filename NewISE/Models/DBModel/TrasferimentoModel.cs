@@ -95,6 +95,8 @@ namespace NewISE.Models.DBModel
         public HttpPostedFileBase file { get; set; }
         public RuoloUfficioModel RuoloUfficio { get; set; }
         public PrimaSistemazioneModel PrimaSistemazione { get; set; }
+        public LivelloDipendenteModel Livello { get; set; }
+
 
         public bool HasValue()
         {

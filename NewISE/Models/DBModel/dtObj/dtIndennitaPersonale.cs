@@ -23,9 +23,10 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
 
-                    var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
-                    
-                            using (dtTrasferimento dttrasf = new dtTrasferimento())
+                    var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.ToList();
+                    //var ll = db.INDENNITABASE.ToList();
+
+                    using (dtTrasferimento dttrasf = new dtTrasferimento())
                             {
                                 dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
 

@@ -24,7 +24,10 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
 
-                    var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
+                    //var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
+
+                    var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.ToList();
+                    //var ll = db.INDENNITABASE.ToList();
 
                     using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
                     {

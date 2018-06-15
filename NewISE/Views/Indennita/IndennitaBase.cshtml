@@ -4,12 +4,15 @@
 <link href="~/Views/Content/NoScroller.css" rel="stylesheet" />
 
 @{
-    
+
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
     decimal idRuoloUfficio = Convert.ToDecimal(ViewBag.idRuoloUfficio);
+    decimal idLivello = Convert.ToDecimal(ViewBag.idLivello);
+ 
 }
 
 @Html.Hidden("hidTrasferimento")
+@Html.Hidden("hididLivello")
 
 @*<div id="divContentpartial" class="row">
     <div id="divPViewIndennita1" class="col-xs-12">
