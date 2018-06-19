@@ -20,6 +20,7 @@ namespace NewISE.Models.ViewModel
 
         [Required(ErrorMessage = "Il campo è richiesto.")]
         [DefaultValue(0)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Importo { get; set; }
         [Required(ErrorMessage = "Il campo è richiesto.")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

@@ -10,27 +10,23 @@
                         @Html.DisplayNameFor(model => model.Nominativo)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voce.descrizione)
+                        @Html.DisplayNameFor(model => model.Voci.descrizione)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voce.codiceVoce)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Movimentazione)
+                        @Html.DisplayNameFor(model => model.Voci.codiceVoce)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.TipoMovimento.DescMovimento)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voce.TipoVoce.descrizione)
+                        Ins.
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voce.TipoLiquidazione.descrizione)
+                        Liquid.
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Importo)
                     </th>
-
                 </tr>
             </thead>
             <tbody>
@@ -40,34 +36,22 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Nominativo)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Voce.descrizione)
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.Voci.descrizione)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Voce.codiceVoce)
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
                         </td>
-                        @if (item.Movimentazione == EnumMovimentazione.Software)
-                        {
-                            <td>
-                                <label>SOFTWARE</label>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <label>MANUALE</label>
-                            </td>
-                        }
                         <td>
                             @Html.DisplayFor(modelItem => item.TipoMovimento.DescMovimento)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Voce.TipoVoce.descrizione)
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.Voci.TipoVoce.descrizione)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Voce.TipoLiquidazione.descrizione)
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.Voci.TipoLiquidazione.descrizione)
                         </td>
-                        <td>
+                        <td style="text-align: right;">
                             @Html.DisplayFor(modelItem => item.Importo)
                         </td>
 
@@ -129,3 +113,5 @@
         //"order": [[0,"desc"],[2, "desc"]]
     });
 </script>
+
+

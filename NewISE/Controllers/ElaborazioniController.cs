@@ -118,12 +118,26 @@ namespace NewISE.Controllers
         }
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
-        public ActionResult ElaborazioneMensile(List<decimal> dipendenti)
+        public ActionResult CalcolaElaborazioneMensile(List<int> dipendenti, decimal idAnnoMeseElaborato)
         {
+            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
 
-            return PartialView();
+            using (dtElaborazioni dte = new dtElaborazioni())
+            {
+                if (dipendenti?.Any() ?? false)
+                {
+                    foreach (var dip in dipendenti)
+                    {
+                        dte.CalcolaElaborazioneMensile(dip, idAnnoMeseElaborato);
+                    }
+                }
+            }
+
+            return RedirectToAction("DatiLiquidazioneMensile", "Elaborazioni", new { idAnnoMeseElaborato = idAnnoMeseElaborato });
         }
 
+
+        [Authorize(Roles = "1 ,2")]
         public ActionResult DatiLiquidazioniDirette(decimal idAnnoMeseElaborato)
         {
             List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
@@ -136,7 +150,18 @@ namespace NewISE.Controllers
             return PartialView(lLd);
         }
 
+        [Authorize(Roles = "1 ,2")]
+        public ActionResult DatiLiquidazioneMensile(decimal idAnnoMeseElaborato)
+        {
+            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
 
+            using (dtElaborazioni dte = new dtElaborazioni())
+            {
+                lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
+            }
+
+            return PartialView(lLm);
+        }
 
     }
 }

@@ -26,10 +26,10 @@ namespace NewISE.EF
         public decimal ANNORIFERIMENTO { get; set; }
         public decimal ALIQUOTAFISCALE { get; set; }
         public decimal GIORNI { get; set; }
-        public decimal IMPORTO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool INSERIMENTOMANUALE { get; set; }
         public bool ANNULLATO { get; set; }
+        public decimal IMPORTO { get; set; }
     
         public virtual CONT_OA CONT_OA { get; set; }
         public virtual ELABINDENNITA ELABINDENNITA { get; set; }

@@ -462,7 +462,7 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region MaggiorazioneAbitazione
-                var lma = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(x => x.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).OrderBy(x => x.IDMAB);
+                var lma = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(x => x.IDMAB);
                 if (lma?.Any() ?? false)
                 {
                     var ma = lma.First();
@@ -2328,7 +2328,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #region legge MAB
                     var mm = dtma.GetMABPartenza(t.IDTRASFERIMENTO);
-                    if (!(mm.idMAB>0))
+                    if (!(mm.idMAB > 0))
                     {
                         throw new Exception("MAB non trovata.");
                     }
@@ -2522,10 +2522,30 @@ namespace NewISE.Models.DBModel.dtObj
                                     //}
                                 }
 
-                                //TODO: implementare il saldo di prima sistemazione o invio unica soluzione se non c'è anticipo.
-                                //var ps = t.PRIMASITEMAZIONE;
 
-                                //var laa = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false);
+                                var ps = t.PRIMASITEMAZIONE;
+
+                                var laa =
+                                    ps.ATTIVITAANTICIPI.Where(
+                                        a =>
+                                            a.ANNULLATO == false && a.NOTIFICARICHIESTA == true &&
+                                            a.ATTIVARICHIESTA == true)
+                                        .OrderByDescending(a => a.IDATTIVITAANTICIPI)
+                                        .ToList();
+
+                                if (laa?.Any() ?? false)
+                                {
+                                    var aa = laa.First();
+                                    using (dtElaborazioni dte = new dtElaborazioni())
+                                    {
+                                        dte.InviaSaldoUnicaSoluzionePrimaSitemazioneContabilita(aa.IDATTIVITAANTICIPI, db);
+                                    }
+
+                                }
+                                else
+                                {
+                                    throw new Exception("Errore nella fase di invio prima sistemazione saldo/unica soluzione, attività non trovata.");
+                                }
 
                                 //using (dtElaborazioni dte = new dtElaborazioni())
                                 //{
@@ -2902,26 +2922,26 @@ namespace NewISE.Models.DBModel.dtObj
             if (lt?.Any() ?? false)
             {
                 r = (from e in lt
-                        select new SelectListItem()
-                        {
-                            //Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + ((e.dataRientro.HasValue == true && e.dataRientro < Utility.DataFineStop()) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
-                            Text = e.Ufficio.descUfficio +
-                                " (" + e.Ufficio.codiceUfficio + ")" + " - " +
-                                    (
-                                        (
-                                            e.idStatoTrasferimento != EnumStatoTraferimento.Annullato ?
-                                                (e.dataPartenza.ToShortDateString() + " ÷ " +
-                                                        (
-                                                        (e.dataRientro.HasValue == true &&
-                                                                e.dataRientro < Utility.DataFineStop()
-                                                        ) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"
-                                                    )
-                                                )
-                                            : "ANNULLATO"
-                                        )
-                                    ),
-                            Value = e.idTrasferimento.ToString()
-                        }).ToList();
+                     select new SelectListItem()
+                     {
+                         //Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + ((e.dataRientro.HasValue == true && e.dataRientro < Utility.DataFineStop()) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                         Text = e.Ufficio.descUfficio +
+                             " (" + e.Ufficio.codiceUfficio + ")" + " - " +
+                                 (
+                                     (
+                                         e.idStatoTrasferimento != EnumStatoTraferimento.Annullato ?
+                                             (e.dataPartenza.ToShortDateString() + " ÷ " +
+                                                     (
+                                                     (e.dataRientro.HasValue == true &&
+                                                             e.dataRientro < Utility.DataFineStop()
+                                                     ) ? e.dataRientro.Value.ToShortDateString() : "--/--/----"
+                                                 )
+                                             )
+                                         : "ANNULLATO"
+                                     )
+                                 ),
+                         Value = e.idTrasferimento.ToString()
+                     }).ToList();
 
                 r.First().Selected = true;
             }

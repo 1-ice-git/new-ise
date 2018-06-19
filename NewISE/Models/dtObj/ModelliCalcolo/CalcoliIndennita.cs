@@ -12,6 +12,11 @@ using NewISE.Models.Tools;
 
 namespace NewISE.Models.dtObj.ModelliCalcolo
 {
+    public class DatiFigli
+    {
+        public decimal indennitaPrimoSegretario { get; set; }
+        public decimal percentualeMaggiorazioniFligli { get; set; }
+    }
     public class CalcoliIndennita : Attribute, IDisposable
     {
         #region Proprietà private
@@ -51,6 +56,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private RUOLOUFFICIO _ruoloUfficio = new RUOLOUFFICIO();
 
         private LIVELLI _livello = new LIVELLI();
+
+        private List<DatiFigli> _lDatiFigli = new List<DatiFigli>();
+
         #endregion
 
 
@@ -70,10 +78,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal PensioneConiuge => _pensioneConiuge;
         [ReadOnly(true)]
         public decimal MaggiorazioneConiugeMenoPensione => _maggiorazioneConiugeMenoPensione;
-        [ReadOnly(true)]
-        public decimal PercentualeMaggiorazioneFigli => _percentualeMaggiorazioniFigli;
-        [ReadOnly(true)]
-        public decimal IndennitaPrimoSegretario => _indennitaPrimoSegretario;
+        //[ReadOnly(true)]
+        //public decimal PercentualeMaggiorazioneFigli => _percentualeMaggiorazioniFigli;
+        //[ReadOnly(true)]
+        //public decimal IndennitaPrimoSegretario => _indennitaPrimoSegretario;
         [ReadOnly(true)]
         public decimal IndennitaServizioPrimoSegretario => _indennitaServizioPrimoSegretario;
         [ReadOnly(true)]
@@ -85,11 +93,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         [ReadOnly(true)]
         public decimal CoefficienteIndennitaSistemazione => _coefficienteIndennitaSistemazione;
         [ReadOnly(true)]
-        public decimal IndennitaSistemazione => _indennitaSistemazione;
+        public decimal IndennitaSistemazioneLorda => _indennitaSistemazione;
         [ReadOnly(true)]
         public decimal PercentualeRiduzionePrimaSistemazione => _percentualeRiduzionePrimaSistemazione;
         [ReadOnly(true)]
-        public decimal IndennitaSistemazioneAnticipabile => _indennitaSistemazioneAnticipabile;
+        public decimal IndennitaSistemazioneAnticipabileLorda => _indennitaSistemazioneAnticipabile;
         [ReadOnly(true)]
         public decimal PercentualeFKMPartenza => _percentualeFKMPartenza;
         [ReadOnly(true)]
@@ -102,6 +110,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal SaldoContributoOmnicomprensivoPartenza => _saldoContributoOmnicomprensivoPartenza;
         [ReadOnly(true)]
         public LIVELLI Livello => _livello;
+        [ReadOnly(true)]
+        public IList<DatiFigli> lDatiFigli => _lDatiFigli;
 
 
 
@@ -432,6 +442,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 {
                     foreach (var f in lf)
                     {
+                        DatiFigli datiFigli = new DatiFigli();
+
                         var lpmf =
                             f.PERCENTUALEMAGFIGLI.Where(
                                 a =>
@@ -469,7 +481,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                                       _percentualeMaggiorazioniFigli / 100;
 
 
+                                datiFigli.indennitaPrimoSegretario = _indennitaPrimoSegretario;
+                                datiFigli.percentualeMaggiorazioniFligli = _percentualeMaggiorazioniFigli;
 
+                                _lDatiFigli.Add(datiFigli);
 
                             }
 
@@ -609,25 +624,56 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         /// <param name="percentualeRiduzione"></param>
         /// <param name="coefficenteIndSistemazione"></param>
         /// <returns></returns>
-        public static decimal ElaboraPrimaSistemazione(decimal indennitaDiBase, decimal coefficenteDiSede, decimal percentualeDiDisagio, decimal percentualeRiduzione, decimal coefficenteIndSistemazione)
+        public static void ElaboraPrimaSistemazione(decimal indennitaDiBase, decimal coefficenteDiSede, decimal percentualeDiDisagio, decimal percentualeRiduzione, decimal coefficenteIndSistemazione, decimal percentualeMagConiuge, decimal pensioneConiuge, ICollection<ELABDATIFIGLI> ledf, out decimal indPrimaSistemazioneAnticipabile, out decimal indPrimaSistemazioneUnicaSoluzione, out decimal maggiorazioniFamiliari)
         {
-            decimal ret = 0;
 
-            var indServ = (((indennitaDiBase * coefficenteDiSede) +
-                            indennitaDiBase) +
-                           (((indennitaDiBase * coefficenteDiSede) +
-                             indennitaDiBase) / 100 * percentualeDiDisagio));
+
+            decimal indServ = 0;
+            //decimal maggiorazioniFamiliari = 0;
+            decimal maggiorazioneConiuge = 0;
+            decimal maggiorazioneConiugeMenoPensione = 0;
+            decimal maggiorazioniFigli = 0;
+
+
+
+            indServ = (((indennitaDiBase * coefficenteDiSede) +
+                        indennitaDiBase) +
+                       (((indennitaDiBase * coefficenteDiSede) +
+                         indennitaDiBase) / 100 * percentualeDiDisagio));
+
+            maggiorazioneConiuge = indServ * percentualeMagConiuge / 100;
+
+
+            if (pensioneConiuge < maggiorazioneConiuge)
+            {
+                maggiorazioneConiugeMenoPensione = maggiorazioneConiuge - pensioneConiuge;
+            }
+
+            if (ledf?.Any() ?? false)
+            {
+                foreach (ELABDATIFIGLI edf in ledf)
+                {
+                    decimal indServPS = (((edf.INDENNITAPRIMOSEGRETARIO * coefficenteDiSede) +
+                                          edf.INDENNITAPRIMOSEGRETARIO) +
+                                         (((edf.INDENNITAPRIMOSEGRETARIO * coefficenteDiSede) +
+                                           edf.INDENNITAPRIMOSEGRETARIO) / 100 * percentualeDiDisagio));
+                    maggiorazioniFigli += indServPS * edf.PERCENTUALEMAGGIORAZIONEFIGLI / 100;
+                }
+            }
+
+            maggiorazioniFamiliari = maggiorazioneConiugeMenoPensione + maggiorazioniFigli;
 
             if (percentualeRiduzione > 0)
             {
-                ret = (coefficenteIndSistemazione * percentualeRiduzione) * indServ;
+                indPrimaSistemazioneAnticipabile = (coefficenteIndSistemazione * percentualeRiduzione) * indServ;
+
             }
             else
             {
-                ret = coefficenteIndSistemazione * indServ;
+                indPrimaSistemazioneAnticipabile = coefficenteIndSistemazione * indServ;
             }
 
-            return ret;
+            indPrimaSistemazioneUnicaSoluzione = indPrimaSistemazioneAnticipabile + maggiorazioniFamiliari;
         }
 
 
