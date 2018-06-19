@@ -99,8 +99,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lrd = db.INDENNITA.Find(idTrasferimento).COEFFICIENTESEDE.Where(a => a.ANNULLATO == false);
-
+                var lrd = db.INDENNITA.Find(idTrasferimento).COEFFICIENTESEDE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDCOEFFICIENTESEDE).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                
                 var cs = lrd.First();
                 if (lrd?.Any() ?? false)
                 {
