@@ -14,30 +14,45 @@ namespace NewISE.Models.ViewModel
     {
         [Key]
         public decimal idTeorici { get; set; }
+
         [Required(ErrorMessage = "Il campo è richiesto.")]
         [Display(Name = "Tipo Mov.")]
         public EnumTipoMovimento idTipoMovimento { get; set; }
+
         [Required(ErrorMessage = "Il campo è richiesto.")]
-        [Display(Name = "Voci")]
+        [Display(Name = "Voce")]
         public decimal idVoci { get; set; }
-        [Required(ErrorMessage = "Il campo è richiesto.")]
-        public EnumMovimentazione Movimentazione { get; set; }
+
+        [Display(Name = "Movimentazione")]
+        public EnumTipoInserimento tipoInserimento { get; set; }
 
         [Required(ErrorMessage = "Il campo è richiesto.")]
         [Display(Name = "Tipo liq.")]
         public EnumTipoLiquidazione idTipoLiquidazione { get; set; }
+
         [Required(ErrorMessage = "Il campo è richiesto.")]
         public string Nominativo { get; set; }
 
+        public string Ufficio { get; set; }
 
         public TipoMovimentoModel TipoMovimento { get; set; }
 
-        public VociModel Voce { get; set; }
+        public VociModel Voci { get; set; }
 
         public TipoLiquidazioneModel TipoLiquidazione { get; set; }
+
+        public decimal meseRiferimento { get; set; }
+
+        public decimal annoRiferimento { get; set; }
+
+        public decimal giorni { get; set; }
+
         [Required(ErrorMessage = "Il campo è richiesto.")]
         [DefaultValue(0)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Importo { get; set; }
+
+
 
 
 

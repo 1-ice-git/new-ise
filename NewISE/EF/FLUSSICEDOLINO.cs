@@ -18,7 +18,7 @@ namespace NewISE.EF
         public int MATRICOLA { get; set; }
         public string LIVELLO { get; set; }
         public string CODICESEDE { get; set; }
-        public Nullable<System.DateTime> DATAINVIOFLUSSI { get; set; }
+        public System.DateTime DATAINVIOFLUSSI { get; set; }
     
         public virtual TEORICI TEORICI { get; set; }
     }

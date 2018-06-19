@@ -117,11 +117,13 @@
     function Calcola() {
         debugger;
 
-        var rotta = "/Elaborazioni/ElaborazioneMensile";
+        var rotta = "/Elaborazioni/CalcolaElaborazioneMensile";
 
         var lCheck = $('#TabElencoDipDaElaborare > tbody > tr > td > :checkbox');
         var lidDip = $('#TabElencoDipDaElaborare > tbody > tr > td > #item_idDipendente');
         var lDip = new Array();
+
+        var valore = $("#mesiAnniElaborati").val();
 
         for (var ck in lCheck) {
             if (is_numeric(ck)) {
@@ -138,7 +140,7 @@
             $.ajax({
                 type: "POST",
                 url: rotta,
-                data: { dipendenti: lDip },
+                data: { dipendenti: lDip, idAnnoMeseElaborato: valore },
                 dataType: 'html',
                 traditional: true,
                 beforeSend: function () {
@@ -149,10 +151,10 @@
 
                 },
                 success: function (result) {
-                    //debugger;
+                    debugger;
                     //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    $("#ContElencoElaborazioni").empty();
-                    $("#ContElencoElaborazioni").html(result);
+                    $("#ContElencoElaborazioniMensili").empty();
+                    $("#ContElencoElaborazioniMensili").html(result);
 
                     //RicercaDocumenti();
 
