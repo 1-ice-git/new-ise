@@ -6000,7 +6000,6 @@
     <Content Include="Views\Shared\_LayoutPage1.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaBase.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaBase.cshtml" />
-    <Content Include="Views\Elaborazioni\ElaborazioneMensile.cshtml" />
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDirette.cshtml" />
     <Content Include="Views\VariazionePassaporto\VariazionePassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\Passaporti_Invio.cshtml" />
@@ -6016,6 +6015,7 @@
     <Content Include="Views\VariazionePassaporto\MessaggioAnnullaInvioPassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\MessaggioAnnullaRichiestaPassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\MessaggioAttivaRichiestaPassaporto.cshtml" />
+    <Content Include="Views\Elaborazioni\DatiLiquidazioneMensile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

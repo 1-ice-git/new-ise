@@ -209,6 +209,12 @@ namespace NewISE.Models.Enumeratori
         Contabilità = 2
     }
 
+    public enum EnumTipoVoce
+    {
+        Software = 1,
+        Manuale = 2
+    }
+
     public enum EnumCicloAttivazione
     {
         Notifica = 1,

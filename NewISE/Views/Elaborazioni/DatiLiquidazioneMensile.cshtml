@@ -16,16 +16,13 @@
                         @Html.DisplayNameFor(model => model.Voci.codiceVoce)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.tipoInserimento)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.TipoMovimento.DescMovimento)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voci.TipoVoce.descrizione)
+                        Ins.
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voci.TipoLiquidazione.descrizione)
+                        Liquid.
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Importo)
@@ -39,34 +36,22 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Nominativo)
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.Voci.descrizione)
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
                         </td>
-                        @if (item.tipoInserimento == EnumTipoInserimento.Software)
-                        {
-                            <td>
-                                <label>SOFTWARE</label>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <label>MANUALE</label>
-                            </td>
-                        }
                         <td>
                             @Html.DisplayFor(modelItem => item.TipoMovimento.DescMovimento)
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.Voci.TipoVoce.descrizione)
                         </td>
-                        <td>
+                        <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.Voci.TipoLiquidazione.descrizione)
                         </td>
-                        <td>
+                        <td style="text-align: right;">
                             @Html.DisplayFor(modelItem => item.Importo)
                         </td>
 
@@ -128,3 +113,5 @@
         //"order": [[0,"desc"],[2, "desc"]]
     });
 </script>
+
+

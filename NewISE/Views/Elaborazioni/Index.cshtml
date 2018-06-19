@@ -72,4 +72,37 @@
             }
         });
     }
+
+    function DatiLiquidazioniMensili(idAnnoMeseElaborato) {
+        //debugger;
+        var rotta = "/Elaborazioni/DatiLiquidazioneMensile";
+
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#ContElencoElaborazioniMensili").empty();
+                $("#ContElencoElaborazioniMensili").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
 </script>

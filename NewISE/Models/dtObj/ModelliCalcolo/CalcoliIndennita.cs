@@ -93,11 +93,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         [ReadOnly(true)]
         public decimal CoefficienteIndennitaSistemazione => _coefficienteIndennitaSistemazione;
         [ReadOnly(true)]
-        public decimal IndennitaSistemazione => _indennitaSistemazione;
+        public decimal IndennitaSistemazioneLorda => _indennitaSistemazione;
         [ReadOnly(true)]
         public decimal PercentualeRiduzionePrimaSistemazione => _percentualeRiduzionePrimaSistemazione;
         [ReadOnly(true)]
-        public decimal IndennitaSistemazioneAnticipabile => _indennitaSistemazioneAnticipabile;
+        public decimal IndennitaSistemazioneAnticipabileLorda => _indennitaSistemazioneAnticipabile;
         [ReadOnly(true)]
         public decimal PercentualeFKMPartenza => _percentualeFKMPartenza;
         [ReadOnly(true)]
@@ -624,12 +624,12 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         /// <param name="percentualeRiduzione"></param>
         /// <param name="coefficenteIndSistemazione"></param>
         /// <returns></returns>
-        public static void ElaboraPrimaSistemazione(decimal indennitaDiBase, decimal coefficenteDiSede, decimal percentualeDiDisagio, decimal percentualeRiduzione, decimal coefficenteIndSistemazione, decimal percentualeMagConiuge, decimal pensioneConiuge, ICollection<ELABDATIFIGLI> ledf, out decimal indPrimaSistemazioneAnticipabile, out decimal indPrimaSistemazioneUnicaSoluzione)
+        public static void ElaboraPrimaSistemazione(decimal indennitaDiBase, decimal coefficenteDiSede, decimal percentualeDiDisagio, decimal percentualeRiduzione, decimal coefficenteIndSistemazione, decimal percentualeMagConiuge, decimal pensioneConiuge, ICollection<ELABDATIFIGLI> ledf, out decimal indPrimaSistemazioneAnticipabile, out decimal indPrimaSistemazioneUnicaSoluzione, out decimal maggiorazioniFamiliari)
         {
 
 
             decimal indServ = 0;
-            decimal maggiorazioniFamiliari = 0;
+            //decimal maggiorazioniFamiliari = 0;
             decimal maggiorazioneConiuge = 0;
             decimal maggiorazioneConiugeMenoPensione = 0;
             decimal maggiorazioniFigli = 0;

@@ -62,7 +62,7 @@ namespace NewISE.Controllers
 
                         CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
 
-                        tepm.indennitaPrimaSistemazione = Math.Round(ci.IndennitaSistemazione, 2);
+                        tepm.indennitaPrimaSistemazione = Math.Round(ci.IndennitaSistemazioneLorda, 2);
                         tepm.percKM = ci.PercentualeFKMPartenza;
                         tepm.contributoLordo = Math.Round(ci.AnticipoContributoOmnicomprensivoPartenza, 2);
                         var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza(idTrasportoEffettiPartenza, (decimal)EnumTipoAnticipoTE.Partenza);

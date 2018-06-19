@@ -20,7 +20,7 @@ namespace NewISE.Models.ViewModel
         public EnumTipoMovimento idTipoMovimento { get; set; }
 
         [Required(ErrorMessage = "Il campo è richiesto.")]
-        [Display(Name = "Voci")]
+        [Display(Name = "Voce")]
         public decimal idVoci { get; set; }
 
         [Display(Name = "Movimentazione")]
@@ -33,6 +33,7 @@ namespace NewISE.Models.ViewModel
         [Required(ErrorMessage = "Il campo è richiesto.")]
         public string Nominativo { get; set; }
 
+        public string Ufficio { get; set; }
 
         public TipoMovimentoModel TipoMovimento { get; set; }
 
@@ -40,9 +41,18 @@ namespace NewISE.Models.ViewModel
 
         public TipoLiquidazioneModel TipoLiquidazione { get; set; }
 
+        public decimal meseRiferimento { get; set; }
+
+        public decimal annoRiferimento { get; set; }
+
+        public decimal giorni { get; set; }
+
         [Required(ErrorMessage = "Il campo è richiesto.")]
         [DefaultValue(0)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Importo { get; set; }
+
+
 
 
 
