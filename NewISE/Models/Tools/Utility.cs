@@ -296,6 +296,66 @@ namespace NewISE.Models.Tools
             return Convert.ToDateTime(Data_Inizio_Base);
         }
 
+
+        public static DateTime GetDtFineMese(DateTime data)
+        {
+            string giorno = "01";
+
+            switch (data.Month)
+            {
+                case 1:
+                    giorno = "31";
+                    break;
+                case 2:
+                    if (DateTime.IsLeapYear(data.Year))
+                    {
+                        giorno = "29";
+                    }
+                    else
+                    {
+                        giorno = "28";
+                    }
+                    break;
+                case 3:
+                    giorno = "31";
+                    break;
+                case 4:
+                    giorno = "30";
+                    break;
+                case 5:
+                    giorno = "31";
+                    break;
+                case 6:
+                    giorno = "30";
+                    break;
+                case 7:
+                    giorno = "31";
+                    break;
+                case 8:
+                    giorno = "31";
+                    break;
+                case 9:
+                    giorno = "30";
+                    break;
+                case 10:
+                    giorno = "31";
+                    break;
+                case 11:
+                    giorno = "30";
+                    break;
+                case 12:
+                    giorno = "31";
+                    break;
+                default:
+                    giorno = "31";
+                    break;
+            }
+
+
+            return Convert.ToDateTime(giorno + "/" + data.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + data.Year.ToString());
+        }
+
+
         public static DateTime GetDtFineMeseCorrente()
         {
             string giorno = "01";
@@ -398,12 +458,12 @@ namespace NewISE.Models.Tools
                     d.DATAINIZIORICALCOLI = dtIniRicalcoli;
                 }
 
-                int i = db.SaveChanges();
+                //int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
-                }
+                //if (i <= 0)
+                //{
+                //    throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                //}
             }
             catch (Exception ex)
             {

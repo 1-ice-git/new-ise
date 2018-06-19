@@ -5249,6 +5249,7 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
+    <Compile Include="Models\DBModel\bsObj\VariazioniIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />

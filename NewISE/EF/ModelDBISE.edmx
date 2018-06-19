@@ -580,6 +580,7 @@
           <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDELABIND" Type="number" Precision="38" Scale="0" />
+          <Property Name="PENSIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABINDSISTEMAZIONE">
           <Key>
@@ -757,7 +758,7 @@
           <Property Name="MATRICOLA" Type="number" Precision="6" Scale="0" Nullable="false" />
           <Property Name="LIVELLO" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="CODICESEDE" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="DATAINVIOFLUSSI" Type="date" />
+          <Property Name="DATAINVIOFLUSSI" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="FP_DOC">
           <Key>
@@ -7994,6 +7995,7 @@
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDELABIND" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EI_EDF" FromRole="ELABINDENNITA" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="ELABINDENNITA1" Relationship="DBISE.R_EI_EI" FromRole="ELABINDENNITA" ToRole="ELABINDENNITA1" />
           <NavigationProperty Name="ELABINDENNITA2" Relationship="DBISE.R_EI_EI" FromRole="ELABINDENNITA1" ToRole="ELABINDENNITA" />
@@ -8179,7 +8181,7 @@
           <Property Name="MATRICOLA" Type="Int32" Nullable="false" />
           <Property Name="LIVELLO" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CODICESEDE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="DATAINVIOFLUSSI" Type="DateTime" />
+          <Property Name="DATAINVIOFLUSSI" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_T_FC" FromRole="FLUSSICEDOLINO" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="FUNZIONERIDUZIONE">
@@ -11871,6 +11873,7 @@
           <EntitySetMapping Name="ELABINDENNITA">
             <EntityTypeMapping TypeName="DBISE.ELABINDENNITA">
               <MappingFragment StoreEntitySet="ELABINDENNITA">
+                <ScalarProperty Name="PENSIONECONIUGE" ColumnName="PENSIONECONIUGE" />
                 <ScalarProperty Name="FK_IDELABIND" ColumnName="FK_IDELABIND" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />

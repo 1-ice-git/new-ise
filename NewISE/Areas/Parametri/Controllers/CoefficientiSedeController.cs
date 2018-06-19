@@ -61,7 +61,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficientiSedeNonAnnullato(idLivello);
                     libm = dtib.getListCoefficientiSede(idLivello, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                }  
+                }
             }
             catch (Exception ex)
             {
@@ -100,7 +100,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                     ViewBag.LivelliList = r;
                 }
-                
+
                 using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficientiSedeNonAnnullato(idUfficio);
@@ -121,7 +121,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovoCoefficienteSede(decimal idUfficio, bool escludiAnnullati)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
-           
+
             var r = new List<SelectListItem>();
             try
             {
@@ -136,42 +136,42 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficientiSedeNonAnnullato(idUfficio);
                     libm = dtib.getListCoefficientiSede(idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
-               
+
                 List<UfficiModel> llm = new List<UfficiModel>();
                 ViewBag.escludiAnnullati = escludiAnnullati;
-                
-                    using (dtUffici dtl = new dtUffici())
-                    {
-                        llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
-                        if (llm != null && llm.Count > 0)
-                        {
-                            r = (from t in llm
-                                 select new SelectListItem()
-                                 {
-                                     Text = t.descUfficio,
-                                     Value = t.idUfficio.ToString()
-                                 }).ToList();
 
-                            if (idUfficio == 0)
+                using (dtUffici dtl = new dtUffici())
+                {
+                    llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
+                    if (llm != null && llm.Count > 0)
+                    {
+                        r = (from t in llm
+                             select new SelectListItem()
+                             {
+                                 Text = t.descUfficio,
+                                 Value = t.idUfficio.ToString()
+                             }).ToList();
+
+                        if (idUfficio == 0)
+                        {
+                            r.First().Selected = true;
+                            idUfficio = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            var temp = r.Where(a => a.Value == idUfficio.ToString()).ToList();
+                            if (temp.Count == 0)
                             {
                                 r.First().Selected = true;
                                 idUfficio = Convert.ToDecimal(r.First().Value);
                             }
                             else
-                            {
-                                var temp = r.Where(a => a.Value == idUfficio.ToString()).ToList();
-                                if (temp.Count == 0)
-                                {
-                                    r.First().Selected = true;
-                                    idUfficio = Convert.ToDecimal(r.First().Value);
-                                }
-                                else
-                                    r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
-                            }
+                                r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
                         }
-                        ViewBag.LivelliList = r;
                     }
-                    return PartialView();
+                    ViewBag.LivelliList = r;
+                }
+                return PartialView();
             }
             catch (Exception ex)
             {
@@ -181,18 +181,18 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciCoefficientiSede(CoefficientiSedeModel ibm, bool escludiAnnullati = true, bool aggiornaTutto=false)
+        public ActionResult InserisciCoefficientiSede(CoefficientiSedeModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
             List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
-            try 
+            try
             {
                 if (ModelState.IsValid)
                 {
                     using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                     {
-                        dtib.SetCoefficientiSede(ibm,aggiornaTutto);
+                        dtib.SetCoefficientiSede(ibm, aggiornaTutto);
                     }
 
                     using (dtUffici dtl = new dtUffici())
@@ -284,8 +284,8 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficientiSedeNonAnnullato(idUfficio);
                     libm = dtib.getListCoefficientiSede(idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
-                AggiornaLivelliList(idUfficio);                
-                return PartialView("PercentualeDisagio", libm);
+                AggiornaLivelliList(idUfficio);
+                return PartialView("CoefficientiSede", libm);
             }
             catch (Exception ex)
             {

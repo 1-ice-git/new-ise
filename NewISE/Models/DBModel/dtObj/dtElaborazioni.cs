@@ -12,6 +12,7 @@ using System.Globalization;
 using Microsoft.Ajax.Utilities;
 using NewISE.Models.IseArio.dtObj;
 using NewISE.Interfacce.Modelli;
+using NewISE.Models.DBModel.bsObj;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 
@@ -1186,8 +1187,152 @@ namespace NewISE.Models.DBModel.dtObj
         private void InsIndennitaMensile(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
             var indennita = trasferimento.INDENNITA;
+            DateTime dataInizioElaborazione =
+                Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" + meseAnnoElaborazione.ANNO);
+
+            DateTime dataFineMese = Utility.GetDtFineMese(dataInizioElaborazione);
+
+            var lElabIndOld =
+                indennita.ELABINDENNITA.Where(
+                    a =>
+                        a.ANNULLATO == false && a.ELABORATO == false && a.DAL >= dataInizioElaborazione &&
+                        a.AL <= dataFineMese).OrderBy(a => a.DAL).ToList();
+
+            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+            if (lElabIndOld?.Any() ?? false)
+            {
+                foreach (var eio in lElabIndOld)
+                {
+                    eio.ANNULLATO = false;
+                }
+
+                db.SaveChanges();
+
+            }
+
+            var lIndBase =
+                indennita.INDENNITABASE.Where(
+                    a =>
+                        a.ANNULLATO == false && a.DATAFINEVALIDITA >= dataInizioElaborazione &&
+                        a.DATAINIZIOVALIDITA <= dataFineMese).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+            foreach (var ib in lIndBase)
+            {
+                DateTime dtVar = new DateTime();
 
 
+
+
+            }
+
+
+
+
+            //using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dataInizioElaborazione))
+            //{
+            //    if (lElabIndOld?.Any() ?? false)
+            //    {
+            //        foreach (var eio in lElabIndOld)
+            //        {
+            //            eio.ANNULLATO = false;
+            //        }
+
+            //        db.SaveChanges();
+
+            //    }
+
+            //    var lIndBase =
+            //        indennita.INDENNITABASE.Where(
+            //            a =>
+            //                a.ANNULLATO == false && a.DATAFINEVALIDITA >= dataInizioElaborazione &&
+            //                a.DATAINIZIOVALIDITA <= dataFineMese).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+            //    List<VariazioniIndennita> lvi = new List<VariazioniIndennita>();
+
+            //    if (lIndBase?.Any() ?? false)
+            //    {
+            //        foreach (var ib in lIndBase)
+            //        {
+            //            VariazioniIndennita vi = new VariazioniIndennita()
+            //            {
+            //                parametro = EnumParametri.IndennitaBase,
+            //                DataVariazione = ib.DATAINIZIOVALIDITA,
+            //                Valore = ib.VALORE,
+            //                ValoreResp = ib.VALORERESP
+            //            };
+
+            //            lvi.Add(vi);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        throw new Exception("Non risulta l'indennità di base.");
+            //    }
+
+
+
+            //    var lCoefSede =
+            //        indennita.COEFFICIENTESEDE.Where(
+            //            a =>
+            //                a.ANNULLATO == false && a.DATAFINEVALIDITA >= dataInizioElaborazione &&
+            //                a.DATAINIZIOVALIDITA <= dataFineMese).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+            //    if (lCoefSede?.Any() ?? false)
+            //    {
+            //        foreach (var cs in lCoefSede)
+            //        {
+            //            VariazioniIndennita vi = new VariazioniIndennita()
+            //            {
+            //                parametro = EnumParametri.CoefficenteSede,
+            //                DataVariazione = cs.DATAINIZIOVALIDITA,
+            //                Valore = cs.VALORECOEFFICIENTE
+            //            };
+
+            //            lvi.Add(vi);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        throw new Exception("Non risulta il coefficente di sede.");
+            //    }
+
+            //    var lPercDisagio =
+            //        indennita.PERCENTUALEDISAGIO.Where(
+            //            a =>
+            //                a.ANNULLATO == false && a.DATAFINEVALIDITA >= dataInizioElaborazione &&
+            //                a.DATAFINEVALIDITA <= dataFineMese).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            //    if (lPercDisagio?.Any() ?? false)
+            //    {
+            //        foreach (var pd in lPercDisagio)
+            //        {
+            //            VariazioniIndennita vi = new VariazioniIndennita()
+            //            {
+            //                parametro = EnumParametri.PercentualeDisagio,
+            //                DataVariazione = pd.DATAINIZIOVALIDITA,
+            //                Valore = pd.PERCENTUALE
+            //            };
+
+            //            lvi.Add(vi);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        throw new Exception("Non risulta la percentuale di disagio.");
+            //    }
+
+
+
+            //    //ELABINDENNITA ei = new ELABINDENNITA()
+            //    //{
+
+            //    //};
+
+
+
+
+
+            //}
 
 
 
