@@ -133,7 +133,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lrd = db.INDENNITA.Find(idTrasferimento).PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false);
+                //var lrd = db.INDENNITA.Find(idTrasferimento).PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false);
+                var lrd = db.INDENNITA.Find(idTrasferimento).PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDPERCENTUALEDISAGIO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
 
                 var pd = lrd.First();
                 if (lrd?.Any() ?? false)

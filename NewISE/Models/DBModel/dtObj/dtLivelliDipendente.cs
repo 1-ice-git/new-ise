@@ -57,7 +57,7 @@ namespace NewISE.Models.dtObj
                 var lld = db.INDENNITA.Find(idTrasferimento)
                         .LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false)
                                           .OrderBy(a => a.IDDIPENDENTE)
-                                          .ToList();
+                                          .ToList(); 
                 
                 lldm = (from e in lld
                         select new LivelloDipendenteModel()
@@ -75,8 +75,7 @@ namespace NewISE.Models.dtObj
                                 DescLivello = e.LIVELLI.LIVELLO
                             }
                         }).ToList();
-
-
+                
             }
             
 

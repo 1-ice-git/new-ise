@@ -33,6 +33,8 @@ namespace NewISE.Controllers
             try
             {
                 TrasferimentoModel tm = new TrasferimentoModel();
+                
+                
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     tm = dtt.GetTrasferimentoById(idTrasferimento);
@@ -41,7 +43,6 @@ namespace NewISE.Controllers
                     ViewData.Add("dataPartenza", dataPartenza);
                     ViewData.Add("Trasferimento", tm);
                 }
-
                 ViewBag.idTrasferimento = idTrasferimento;
 
                 return PartialView("GestioneIndennita", tm);
@@ -116,6 +117,8 @@ namespace NewISE.Controllers
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
+            
 
             try
             {
@@ -128,6 +131,7 @@ namespace NewISE.Controllers
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
                     using (dtRuoloUfficio dtru = new dtRuoloUfficio())
                     {
                         tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
@@ -136,10 +140,17 @@ namespace NewISE.Controllers
 
                     }
 
+                    //using (dtLivelliDipendente dtld = new dtLivelliDipendente())
+                    //{
+                    //    lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
+                    //    //lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValdita).ThenBy(a => a.dataFineValidita).ToList();
+                        
+                    //}
+
                 }
+                
                 ViewBag.idTrasferimento = idTrasferimento;
-
-
+                
                 return PartialView(libm);
             }
             catch (Exception ex)
@@ -332,9 +343,18 @@ namespace NewISE.Controllers
         // Maggiorazioni Familiari + Report di Stampa
         public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
         {
+            List<ConiugeModel> ListaConiuge = new List<ConiugeModel>();
+            List<FigliModel> ListaFigli = new List<FigliModel>();
+
 
             try
             {
+
+                using (dtMaggiorazioniFamiliari dtd = new dtMaggiorazioniFamiliari())
+                {
+                    //ListaConiuge = dtd.GetMaggiorazioniFamiliaribyConiuge(idTrasferimento).ToList();
+                }
+
 
 
                 return PartialView();
@@ -421,12 +441,30 @@ namespace NewISE.Controllers
         // Indennita di Prima Sistemazione + Report di Stampa
         public ActionResult IndennitaPrimaSistemazione(decimal idTrasferimento)
         {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
+            List<IndennitaSistemazioneModel> lism = new List<IndennitaSistemazioneModel>();
 
             try
             {
+                using (dtIndennitaPersonale dtd = new dtIndennitaPersonale())
+                {
+                    libm = dtd.GetIndennitaPersonale(idTrasferimento).ToList();
+                }
 
 
-                return PartialView();
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
+                    {
+                        dit.coefficienteIndennitàSistemazione = ci.CoefficienteIndennitaSistemazione;
+                        
+                    }
+
+                }
+                    return PartialView(libm);
             }
 
             catch (Exception ex)

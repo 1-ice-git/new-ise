@@ -1744,6 +1744,75 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public IList<MaggiorazioniFamiliariModel> GetMaggiorazioniFamiliari(decimal idTrasferimento)
+        {
+            List<MaggiorazioniFamiliariModel> libm = new List<MaggiorazioniFamiliariModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    var ll = db.MAGGIORAZIONIFAMILIARI.Find(idTrasferimento);
+
+                    
+
+                        
+
+                            //using (dtTrasferimento dttrasf = new dtTrasferimento())
+                            //{
+                            //    dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+
+                            //    libm = (from e in ll
+                            //            select new MaggiorazioniFamiliariModel()
+
+                            //            {
+                            //                idIndennitaBase = e.IDINDENNITABASE,
+                            //                idLivello = e.IDLIVELLO,
+                            //                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                            //                dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                            //                valore = e.VALORE,
+                            //                valoreResponsabile = e.VALORERESP,
+                            //                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                            //                annullato = e.ANNULLATO,
+                            //                CoefficenteSede = new CoefficientiSedeModel
+                            //                {
+                            //                    idCoefficientiSede = csm.idCoefficientiSede,
+                            //                    idUfficio = csm.idUfficio
+
+                            //                },
+                            //                PercentualeDisagio = new PercentualeDisagioModel
+                            //                {
+                            //                    idPercentualeDisagio = pdm.idPercentualeDisagio,
+                            //                    idUfficio = pdm.idUfficio,
+                            //                    dataInizioValidita = pdm.dataInizioValidita,
+                            //                    dataFineValidita = pdm.dataFineValidita,
+                            //                    dataAggiornamento = pdm.dataAggiornamento,
+                            //                    annullato = pdm.annullato
+
+                            //                },
+
+                            //                dipInfoTrasferimento = new dipInfoTrasferimentoModel
+                            //                {
+                            //                    Decorrenza = dipInfoTrasf.Decorrenza,
+                            //                    indennitaServizio = dipInfoTrasf.indennitaServizio
+
+                            //                }
+                            //            }).ToList();
+                            //}
+                        
+                    
+
+                    return libm;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public void SetMaggiorazioneFamiliari(ref MaggiorazioniFamiliariModel mfm, ModelDBISE db)
         {
             MAGGIORAZIONIFAMILIARI mf = new MAGGIORAZIONIFAMILIARI()

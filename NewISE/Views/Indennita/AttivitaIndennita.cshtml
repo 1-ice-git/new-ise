@@ -3,13 +3,14 @@
 
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+    decimal idLivello = Convert.ToDecimal(ViewBag.idLivello);
 }
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th>
-                INDENNITA PERIODICHE
+                Indennità Periodiche
             </th>
             
         </tr>
@@ -18,7 +19,7 @@
         <tr>
             <th>
                 
-                @Ajax.ActionLink("Indennità Base", "IndennitaBase", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" } )
+                @Ajax.ActionLink("Indennità Base", "IndennitaBase", "Indennita", new { idTrasferimento = idTrasferimento, idLivello= idLivello }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" } )
             </th>
             
         </tr>

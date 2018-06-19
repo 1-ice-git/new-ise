@@ -100,9 +100,9 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
-                {
-                    
-                    var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
+                {   
+                    //var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                    var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
                     
                     using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                     {   

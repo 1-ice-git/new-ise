@@ -158,6 +158,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var lrd = db.TRASFERIMENTO.Find(idTrasferimento).RUOLODIPENDENTE.Where(a => a.ANNULLATO == false);
 
+
                 var rd = lrd.First();
                 if (lrd?.Any() ?? false)
                 {
