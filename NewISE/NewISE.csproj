@@ -4885,6 +4885,7 @@
     <Compile Include="Controllers\ElaborazioniController.cs" />
     <Compile Include="Controllers\IndennitaController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
+    <Compile Include="Controllers\RiepilogoVociController.cs" />
     <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
@@ -6018,6 +6019,10 @@
     <Content Include="Views\VariazionePassaporto\MessaggioAnnullaRichiestaPassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\MessaggioAttivaRichiestaPassaporto.cshtml" />
     <Content Include="Views\Elaborazioni\DatiLiquidazioneMensile.cshtml" />
+    <Content Include="Views\RiepilogoVoci\RiepilogoVoci.cshtml" />
+    <Content Include="Views\RiepilogoVoci\Index.cshtml" />
+    <Content Include="Views\RiepilogoVoci\AttivitaRiepilogoVoci.cshtml" />
+    <Content Include="Views\RiepilogoVoci\ElencoRiepilogoVoci.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
