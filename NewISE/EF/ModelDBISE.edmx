@@ -572,7 +572,6 @@
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEDISAGIO" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="PERCENTUALERIDUZIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEMAGCONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DAL" Type="date" Nullable="false" />
           <Property Name="AL" Type="date" Nullable="false" />
@@ -7987,7 +7986,6 @@
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="PERCENTUALERIDUZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEMAGCONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DAL" Type="DateTime" Nullable="false" />
           <Property Name="AL" Type="DateTime" Nullable="false" />
@@ -11881,7 +11879,6 @@
                 <ScalarProperty Name="AL" ColumnName="AL" />
                 <ScalarProperty Name="DAL" ColumnName="DAL" />
                 <ScalarProperty Name="PERCENTUALEMAGCONIUGE" ColumnName="PERCENTUALEMAGCONIUGE" />
-                <ScalarProperty Name="PERCENTUALERIDUZIONE" ColumnName="PERCENTUALERIDUZIONE" />
                 <ScalarProperty Name="PERCENTUALEDISAGIO" ColumnName="PERCENTUALEDISAGIO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />

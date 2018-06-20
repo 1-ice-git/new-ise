@@ -14,10 +14,26 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
     public class GiorniRateo : IDisposable
     {
-        private int _rateoGiorni = 0;
 
-
+        #region Proprietà pubbliche
         public int RateoGiorni => _rateoGiorni;
+        public int CicliElaborazione => _cicliElaborazione;
+        #endregion
+
+        #region Proprietà private
+        private int _rateoGiorni = 0;
+        private int _cicliElaborazione = 0;
+        #endregion
+
+
+
+        #region Metodi pubblici
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
+
 
         public GiorniRateo(DateTime dtInizio, DateTime dtFine)
         {
@@ -147,10 +163,12 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             }
 
             _rateoGiorni = nGiorni;
+
+            this.ElaboraCicliElaborazione(dtInizio, dtFine);
         }
+        #endregion
 
-
-
+        #region Metodi privati
         private GiornoMeseAnno GetGiornoFineMese(int mese, int anno)
         {
             GiornoMeseAnno gma = new GiornoMeseAnno();
@@ -192,7 +210,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
             return gma;
         }
-
 
         private bool VerificaFineMese(int giorno, int mese, int anno)
         {
@@ -244,9 +261,61 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         }
 
 
-        public void Dispose()
+        private void ElaboraCicliElaborazione(DateTime dtInizio, DateTime dtFine)
         {
-            GC.SuppressFinalize(this);
+            int annoIni = dtInizio.Year;
+            int annoFin = dtFine.Year;
+            int cicli = 0;
+
+
+            for (int i = annoIni; i <= annoFin; i++)
+            {
+                if (i == annoIni && i == annoFin)
+                {
+                    int meseIni = dtInizio.Month;
+                    int meseFin = dtFine.Month;
+
+                    for (int j = meseIni; j <= meseFin; j++)
+                    {
+                        cicli++;
+                    }
+                }
+                else
+                {
+                    if (i == annoIni)
+                    {
+                        int meseIni = dtInizio.Month;
+
+                        for (int j = meseIni; j <= 12; j++)
+                        {
+                            cicli++;
+                        }
+
+                    }
+                    else if (i > annoIni && i < annoFin)
+                    {
+                        for (int j = 1; j <= 12; j++)
+                        {
+                            cicli++;
+                        }
+                    }
+                    else if (i > annoIni && i == annoFin)
+                    {
+                        int meseFin = dtFine.Month;
+
+
+                        for (int j = 1; j <= meseFin; j++)
+                        {
+                            cicli++;
+                        }
+                    }
+                }
+            }
+
+            _cicliElaborazione = cicli;
+
+
         }
+        #endregion
     }
 }

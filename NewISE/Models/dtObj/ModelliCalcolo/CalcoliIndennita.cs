@@ -353,6 +353,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private void CalcolaMaggiorazioneFamiliare()
         {
             var mf = _trasferimento.MAGGIORAZIONIFAMILIARI;
+
             var lattivazioneMF =
                 mf.ATTIVAZIONIMAGFAM.Where(
                     a =>
@@ -363,13 +364,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             if (lattivazioneMF?.Any() ?? false)
             {
                 #region Maggiorazione coniuge
+
                 var lc =
-                            mf.CONIUGE.Where(
-                                a =>
-                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                    _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                    _dtDatiParametri <= a.DATAFINEVALIDITA)
-                                .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                    mf.CONIUGE.Where(
+                        a =>
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                            _dtDatiParametri <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                 if (lc?.Any() ?? false)
                 {

@@ -28,7 +28,6 @@ namespace NewISE.EF
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal PERCENTUALEDISAGIO { get; set; }
-        public decimal PERCENTUALERIDUZIONE { get; set; }
         public decimal PERCENTUALEMAGCONIUGE { get; set; }
         public System.DateTime DAL { get; set; }
         public System.DateTime AL { get; set; }
