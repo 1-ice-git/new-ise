@@ -19,7 +19,7 @@
         <tr>
             <th>
                 
-                @Ajax.ActionLink("Indennità Base", "IndennitaBase", "Indennita", new { idTrasferimento = idTrasferimento, idLivello= idLivello }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" } )
+                @Ajax.ActionLink("Indennità Base", "IndennitaBase", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" } )
             </th>
             
         </tr>

@@ -26,7 +26,8 @@
         <tr>
 
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dipInfoTrasferimento.Decorrenza)
+                @*@Html.DisplayNameFor(model => model.dipInfoTrasferimento.Decorrenza)*@
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
@@ -51,7 +52,8 @@
             <tr>
 
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dipInfoTrasferimento.Decorrenza)
+                    @*@Html.DisplayFor(modelItem => item.dipInfoTrasferimento.Decorrenza)*@
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)

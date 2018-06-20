@@ -133,8 +133,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                //var lrd = db.INDENNITA.Find(idTrasferimento).PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false);
-                var lrd = db.INDENNITA.Find(idTrasferimento).PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDPERCENTUALEDISAGIO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                var lrd = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false);
+                //var lrd = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == 79 && a.ANNULLATO == false).ToList();
 
                 var pd = lrd.First();
                 if (lrd?.Any() ?? false)
@@ -147,7 +147,6 @@ namespace NewISE.Models.DBModel.dtObj
                         dataFineValidita = pd.DATAFINEVALIDITA,
                         dataAggiornamento = pd.DATAAGGIORNAMENTO,
                         annullato = pd.ANNULLATO,
-
                     };
                 }
             }

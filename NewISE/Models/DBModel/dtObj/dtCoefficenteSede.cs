@@ -99,11 +99,12 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lrd = db.INDENNITA.Find(idTrasferimento).COEFFICIENTESEDE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDCOEFFICIENTESEDE).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                
+                var lrd = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDCOEFFICIENTESEDE).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
                 
                 var cs = lrd.First();
                 if (lrd?.Any() ?? false)
-                {
+                {   
                     csm = new CoefficientiSedeModel()
                     {
                         idCoefficientiSede = cs.IDCOEFFICIENTESEDE,

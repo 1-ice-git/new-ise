@@ -24,8 +24,7 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     
-                    var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
-                  
+                    
 
                     using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
                     {
@@ -33,11 +32,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                         using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
                         {
-                            //PercentualeDisagioModel pdm = dtpd.GetPercentualeDisagioByIdTrasferimento(idTrasferimento);
+                            PercentualeDisagioModel pdm = dtpd.GetPercentualeDisagioByIdTrasferimento(idTrasferimento);
 
                             using (dtTrasferimento dttrasf = new dtTrasferimento())
                             {
                                 dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+
+                                var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
 
                                 libm = (from e in ll
                                         select new IndennitaBaseModel()
@@ -56,17 +57,16 @@ namespace NewISE.Models.DBModel.dtObj
                                                 idUfficio = csm.idUfficio
 
                                             },
-                                            //PercentualeDisagio = new PercentualeDisagioModel
-                                            //{
-                                            //    idPercentualeDisagio = pdm.idPercentualeDisagio,
-                                            //    idUfficio = pdm.idUfficio,
-                                            //    dataInizioValidita = pdm.dataInizioValidita,
-                                            //    dataFineValidita = pdm.dataFineValidita,
-                                            //    dataAggiornamento = pdm.dataAggiornamento,
-                                            //    annullato = pdm.annullato
+                                            PercentualeDisagio = new PercentualeDisagioModel
+                                            {
+                                                idPercentualeDisagio = pdm.idPercentualeDisagio,
+                                                idUfficio = pdm.idUfficio,
+                                                dataInizioValidita = pdm.dataInizioValidita,
+                                                dataFineValidita = pdm.dataFineValidita,
+                                                dataAggiornamento = pdm.dataAggiornamento,
+                                                annullato = pdm.annullato
 
-                                            //},
-
+                                            },
                                             dipInfoTrasferimento = new dipInfoTrasferimentoModel
                                             {
                                                 Decorrenza = dipInfoTrasf.Decorrenza,
