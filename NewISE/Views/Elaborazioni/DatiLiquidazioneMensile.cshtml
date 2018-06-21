@@ -13,16 +13,19 @@
                         @Html.DisplayNameFor(model => model.Voci.descrizione)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Voci.codiceVoce)
+                        Voce
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.TipoMovimento.DescMovimento)
+                        Mov.
                     </th>
                     <th>
                         Ins.
                     </th>
                     <th>
-                        Liquid.
+                        Liq.
+                    </th>
+                    <th>
+                        Data rif.
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Importo)
@@ -42,14 +45,32 @@
                         <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TipoMovimento.DescMovimento)
-                        </td>
+                        @if (item.TipoMovimento.idTipoMovimento == (decimal)EnumTipoMovimento.MeseCorrente_M)
+                        {
+                            <td style="text-align: center;">M.C.</td>
+                        }
+                        else
+                        {
+                            <td style="text-align: center;">C.</td>
+                        }
                         <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.Voci.TipoVoce.descrizione)
                         </td>
+                        @if (item.Voci.TipoLiquidazione.idTipoLiquidazione == (decimal)EnumTipoLiquidazione.Contabilità)
+                        {
+                            <td style="text-align: center;">
+                                Cont.
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align: center;">
+                                Paghe
+                            </td>
+
+                        }
                         <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.Voci.TipoLiquidazione.descrizione)
+                            @Html.DisplayFor(modelItem => item.MeseAnnoRiferimento)
                         </td>
                         <td style="text-align: right;">
                             @Html.DisplayFor(modelItem => item.Importo)

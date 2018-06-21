@@ -62,6 +62,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         #endregion
 
 
+        #region Proprietà pubbliche
         [ReadOnly(true)]
         public decimal IndennitaDiBase => _indennitaDiBase;
         [ReadOnly(true)]
@@ -112,6 +113,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public LIVELLI Livello => _livello;
         [ReadOnly(true)]
         public IList<DatiFigli> lDatiFigli => _lDatiFigli;
+        #endregion
 
 
 
@@ -678,6 +680,15 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             indPrimaSistemazioneUnicaSoluzione = indPrimaSistemazioneAnticipabile + maggiorazioniFamiliari;
         }
 
+        public decimal RateoIndennitaPersonale(int giorniRateo)
+        {
+            decimal ret = 0;
+
+            ret = (_indennitaPersonale / 30) * giorniRateo;
+
+            return ret;
+
+        }
 
         public void Dispose()
         {

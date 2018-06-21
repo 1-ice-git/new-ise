@@ -556,7 +556,7 @@
           <Key>
             <PropertyRef Name="IDELABDATIFLIGLI" />
           </Key>
-          <Property Name="IDELABDATIFLIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABDATIFLIGLI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" />
@@ -7967,7 +7967,7 @@
           <Key>
             <PropertyRef Name="IDELABDATIFLIGLI" />
           </Key>
-          <Property Name="IDELABDATIFLIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDELABDATIFLIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABIND" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
