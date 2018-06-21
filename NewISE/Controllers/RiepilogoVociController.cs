@@ -17,30 +17,7 @@ namespace NewISE.Controllers
         {
             return View();
         }
-
-        public ActionResult RiepilogoVoci(decimal idTrasferimento)
-        {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            
-            try
-            {
-                using (dtIndennitaBase dtd = new dtIndennitaBase())
-                {
-                    libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
-                }
-
-
-                ViewData["idTrasferimento"] = idTrasferimento;
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-
-            return PartialView(libm);
-
-
-        }
+        
         public JsonResult VerificaRiepilogoVoci(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -72,7 +49,6 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
-
         public ActionResult AttivitaRiepilogoVoci(decimal idTrasferimento)
         {
 
@@ -87,11 +63,17 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
-
         public ActionResult ElencoRiepilogoVoci(decimal idTrasferimento)
         {
+            List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
+
             try
             {
+                using (dtRiepilogoVoci dtrv = new dtRiepilogoVoci())
+                {
+                    lrvm = dtrv.GetRiepilogoVoci(idTrasferimento).ToList();
+                }
+
                 ViewData["idTrasferimento"] = idTrasferimento;
             }
             catch (Exception ex)
@@ -99,8 +81,12 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView();
+            return PartialView(lrvm);
+        }
+        public ActionResult RptRiepilogoVoci(decimal idTrasferimento)
+        {
+            return View();
         }
 
-}
+    }
 }

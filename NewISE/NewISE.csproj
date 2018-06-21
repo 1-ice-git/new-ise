@@ -4566,8 +4566,6 @@
     </Content>
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpSpeseDiverse.cshtml" />
     <Content Include="Content\DatiConfig\Data_Inizio_Base.json" />
-    <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita.cshtml" />
-    <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita1.cshtml" />
     <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita2.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\PartialViewOpIndennitaEstera.cshtml" />
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet99.xsc">
@@ -4590,7 +4588,6 @@
     <Content Include="Areas\Statistiche\Views\RiepiloghiAltreIndennita\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\Riepiloghi\AltreSpese.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\Test.cshtml" />
-    <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita3.cshtml" />
     <Content Include="Areas\Statistiche\Views\DislocazioneDipEstero\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\PresenzeLivelliEstero\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\PresenzeLivelliEstero\PresenzeLivelli.cshtml" />
@@ -5257,6 +5254,7 @@
     <Compile Include="Models\DBModel\dtObj\dtIndennitaPersonale.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtRiepilogoVoci.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
@@ -5567,6 +5565,7 @@
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\AnticipoAnnualeMABModel.cs" />
+    <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />

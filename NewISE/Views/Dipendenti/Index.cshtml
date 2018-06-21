@@ -87,7 +87,19 @@
                 }
 
                 <li class="disabled" id="mnIndennita"><a id="lkIndennita" disabled href="#tabIndennita" data-toggle="tab" onclick="GestioneIndennita();">Indennità</a></li>
-                <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#tabRiepilogoVoci" data-toggle="tab" onclick="RiepilogoVoci();">Riepilogo Voci</a></li>
+
+                @if (admin)
+                {
+                    <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#tabRiepilogoVoci" data-toggle="tab" onclick="RiepilogoVoci();">Riepilogo Voci</a></li>
+                }
+                else
+                {
+                    <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#tabRiepilogoVoci" data-toggle="tab" >Riepilogo Voci</a></li>
+
+                }
+
+
+                
                 <li class="disabled" id="mnProvvidenzeScolastiche"><a id="lkProvvidenzeScolastiche" disabled href="#tabProvvidenzeScolastiche" data-toggle="tab" onclick="ProvvidenzeScolastiche();">Provv. Socio Scolastiche</a></li>
             </ul>
         </div>
