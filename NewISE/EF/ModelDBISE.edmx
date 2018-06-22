@@ -632,8 +632,8 @@
           <Property Name="IDELABTRASPEFFETTI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" />
           <Property Name="IDTERIENTRO" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
-          <Property Name="COEFFICENTEFK" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALEFK" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PERCENTUALEANTICIPOSALDO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANTICIPO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="SALDO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
@@ -2991,20 +2991,6 @@
             </Principal>
             <Dependent Role="ELABINDSISTEMAZIONE1">
               <PropertyRef Name="FK_IDINDSISTLORDA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_EIS_ETE">
-          <End Role="ELABINDSISTEMAZIONE" Type="Self.ELABINDSISTEMAZIONE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELABTRASPEFFETTI" Type="Self.ELABTRASPEFFETTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABINDSISTEMAZIONE">
-              <PropertyRef Name="IDINDSISTLORDA" />
-            </Principal>
-            <Dependent Role="ELABTRASPEFFETTI">
-              <PropertyRef Name="IDINDSISTLORDA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5862,10 +5848,6 @@
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
             <End Role="ELABINDSISTEMAZIONE1" EntitySet="ELABINDSISTEMAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_EIS_ETE" Association="Self.R_EIS_ETE">
-            <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
-            <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
-          </AssociationSet>
           <AssociationSet Name="R_EIS_SA" Association="Self.R_EIS_SA">
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
             <End Role="SIST_ALIQ" EntitySet="SIST_ALIQ" />
@@ -6951,10 +6933,6 @@
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
             <End Role="ELABINDSISTEMAZIONE1" EntitySet="ELABINDSISTEMAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_EIS_ETE" Association="DBISE.R_EIS_ETE">
-            <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
-            <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
-          </AssociationSet>
           <AssociationSet Name="R_EIS_T" Association="DBISE.R_EIS_T">
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
             <End Role="TEORICI" EntitySet="TEORICI" />
@@ -8025,7 +8003,6 @@
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIS_EDF" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE1" Relationship="DBISE.R_EIS_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABINDSISTEMAZIONE1" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE2" Relationship="DBISE.R_EIS_EIS" FromRole="ELABINDSISTEMAZIONE1" ToRole="ELABINDSISTEMAZIONE" />
-          <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISE.R_EIS_ETE" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABTRASPEFFETTI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EIS_T" FromRole="ELABINDSISTEMAZIONE" ToRole="TEORICI" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISE.R_PS_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.SIST_ALIQ" FromRole="ELABINDSISTEMAZIONE" ToRole="ALIQUOTECONTRIBUTIVE" />
@@ -8065,14 +8042,13 @@
           <Property Name="IDELABTRASPEFFETTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTEPARTENZA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDTERIENTRO" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="COEFFICENTEFK" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALEFK" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PERCENTUALEANTICIPOSALDO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ANTICIPO" Type="Boolean" Nullable="false" />
           <Property Name="SALDO" Type="Boolean" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_ETE" FromRole="ELABTRASPEFFETTI" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_ETE_T" FromRole="ELABTRASPEFFETTI" ToRole="TEORICI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISE.R_TEP_ETE" FromRole="ELABTRASPEFFETTI" ToRole="TEPARTENZA" />
           <NavigationProperty Name="TERIENTRO" Relationship="DBISE.R_TER_ETE" FromRole="ELABTRASPEFFETTI" ToRole="TERIENTRO" />
@@ -10189,20 +10165,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EIS_ETE">
-          <End Type="DBISE.ELABINDSISTEMAZIONE" Role="ELABINDSISTEMAZIONE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ELABTRASPEFFETTI" Role="ELABTRASPEFFETTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABINDSISTEMAZIONE">
-              <PropertyRef Name="IDINDSISTLORDA" />
-            </Principal>
-            <Dependent Role="ELABTRASPEFFETTI">
-              <PropertyRef Name="IDINDSISTLORDA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_EIS_T">
           <End Type="DBISE.ELABINDSISTEMAZIONE" Role="ELABINDSISTEMAZIONE" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -11941,8 +11903,8 @@
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="SALDO" ColumnName="SALDO" />
                 <ScalarProperty Name="ANTICIPO" ColumnName="ANTICIPO" />
-                <ScalarProperty Name="COEFFICENTEFK" ColumnName="COEFFICENTEFK" />
-                <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
+                <ScalarProperty Name="PERCENTUALEANTICIPOSALDO" ColumnName="PERCENTUALEANTICIPOSALDO" />
+                <ScalarProperty Name="PERCENTUALEFK" ColumnName="PERCENTUALEFK" />
                 <ScalarProperty Name="IDTERIENTRO" ColumnName="IDTERIENTRO" />
                 <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
                 <ScalarProperty Name="IDELABTRASPEFFETTI" ColumnName="IDELABTRASPEFFETTI" />

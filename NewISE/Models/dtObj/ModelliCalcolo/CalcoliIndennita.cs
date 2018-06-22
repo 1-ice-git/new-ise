@@ -12,6 +12,16 @@ using NewISE.Models.Tools;
 
 namespace NewISE.Models.dtObj.ModelliCalcolo
 {
+    //public class DatiCalcoloTrasportoEffetti
+    //{
+    //    public decimal percentualeFK { get; set; }
+    //    public decimal percentualeAnticipoTE { get; set; }
+    //    public decimal percentualeSaldoTE { get; set; }
+    //    public decimal AnticipoTE { get; set; }
+    //    public decimal SaldoTE { get; set; }
+
+
+    //}
     public class DatiFigli
     {
         public decimal indennitaPrimoSegretario { get; set; }
@@ -58,6 +68,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private LIVELLI _livello = new LIVELLI();
 
         private List<DatiFigli> _lDatiFigli = new List<DatiFigli>();
+        //private DatiCalcoloTrasportoEffetti _datiCalcoloTrasportoEffetti = new DatiCalcoloTrasportoEffetti();
 
         #endregion
 
@@ -113,10 +124,71 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public LIVELLI Livello => _livello;
         [ReadOnly(true)]
         public IList<DatiFigli> lDatiFigli => _lDatiFigli;
+        //[ReadOnly(true)]
+        //public DatiCalcoloTrasportoEffetti DatiCalcoloTrasportoEffetti => _datiCalcoloTrasportoEffetti;
         #endregion
 
 
+        public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita, ModelDBISE db)
+        {
+            DateTime dt;
 
+            try
+            {
+                dt = dataCalcoloIndennita ?? DateTime.Now;
+
+                _trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                if (_trasferimento.DATARIENTRO != Utility.DataFineStop())
+                {
+                    if (_trasferimento.DATARIENTRO < dt)
+                    {
+                        _dtDatiParametri = _trasferimento.DATARIENTRO;
+                    }
+                    else
+                    {
+                        if (_trasferimento.DATAPARTENZA > dt)
+                        {
+                            _dtDatiParametri = _trasferimento.DATAPARTENZA;
+                        }
+                        else
+                        {
+                            _dtDatiParametri = dt;
+                        }
+                    }
+                }
+                else
+                {
+                    if (_trasferimento.DATAPARTENZA > dt)
+                    {
+                        _dtDatiParametri = _trasferimento.DATAPARTENZA;
+                    }
+                    else
+                    {
+                        _dtDatiParametri = dt;
+                    }
+                }
+
+                this.Indennita();
+                this.RuoloDipendente_Ufficio();
+                this.PrelevaIndennitaDiBase();
+                this.PrelevaCoefficenteDiSede();
+                this.PrelevaPercentualeDisagio();
+                this.CalcolaIndennitaDiServizio();
+                this.CalcolaMaggiorazioneFamiliare();
+                this.CalcolaIndennitaPersonale();
+                this.CalcolaPrimaSistemazione();
+                this.CalcolaContributoOmniComprensivoPartenza();
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
 
         public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita = null)
         {
@@ -129,14 +201,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                 try
                 {
-                    if (dataCalcoloIndennita.HasValue)
-                    {
-                        dt = dataCalcoloIndennita.Value;
-                    }
-                    else
-                    {
-                        dt = DateTime.Now;
-                    }
+                    dt = dataCalcoloIndennita ?? DateTime.Now;
 
                     _trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
 
@@ -181,11 +246,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     this.CalcolaPrimaSistemazione();
                     this.CalcolaContributoOmniComprensivoPartenza();
 
-
+                    db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
                 {
-
+                    db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
             }
@@ -597,6 +662,15 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                     _saldoContributoOmnicomprensivoPartenza = (_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
                                                                   (_percentualeSaldoTEPartenza / 100));
+
+                    //_datiCalcoloTrasportoEffetti = new DatiCalcoloTrasportoEffetti()
+                    //{
+                    //    percentualeAnticipoTE = _percentualeAnticipoTEPartenza,
+                    //    percentualeSaldoTE = _percentualeSaldoTEPartenza,
+                    //    percentualeFK = _percentualeFKMPartenza,
+                    //    AnticipoTE = _anticipoContributoOmnicomprensivoPartenza,
+                    //    SaldoTE = _saldoContributoOmnicomprensivoPartenza
+                    //};
 
                 }
 

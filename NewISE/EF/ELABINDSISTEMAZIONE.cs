@@ -19,7 +19,6 @@ namespace NewISE.EF
         {
             this.ELABDATIFIGLI = new HashSet<ELABDATIFIGLI>();
             this.ELABINDSISTEMAZIONE1 = new HashSet<ELABINDSISTEMAZIONE>();
-            this.ELABTRASPEFFETTI = new HashSet<ELABTRASPEFFETTI>();
             this.TEORICI = new HashSet<TEORICI>();
             this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
         }
@@ -47,8 +46,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE1 { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
