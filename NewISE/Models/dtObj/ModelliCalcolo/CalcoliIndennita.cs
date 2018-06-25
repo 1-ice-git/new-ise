@@ -55,7 +55,17 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _percentualeSaldoTEPartenza = 0;
         private decimal _saldoContributoOmnicomprensivoPartenza = 0;
 
+        private decimal _percentualeFKMRientro = 0;
+        private decimal _anticipoContributoOmnicomprensivoRientro = 0;
+        private decimal _percentualeAnticipoTERientro = 0;
+        private decimal _percentualeSaldoTERientro = 0;
+        private decimal _saldoContributoOmnicomprensivoRientro = 0;
 
+        private decimal _coefficenteIndennitaRichiamo = 0;
+        private decimal _indennitaRichiamoLordo = 0;
+        private decimal _indennitaRichiamoNetto = 0;
+        //private int _giorniSospensione = 0;
+        //private decimal _importoAbbattimentoSospensione = 0;
 
 
         private DateTime _dtDatiParametri;
@@ -120,6 +130,33 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal PercentualeSaldoTEPartenza => _percentualeSaldoTEPartenza;
         [ReadOnly(true)]
         public decimal SaldoContributoOmnicomprensivoPartenza => _saldoContributoOmnicomprensivoPartenza;
+
+
+        [ReadOnly(true)]
+        public decimal PercentualeFKMRientro => _percentualeFKMRientro;
+        [ReadOnly(true)]
+        public decimal AnticipoContributoOmnicomprensivoRientro => _anticipoContributoOmnicomprensivoRientro;
+        [ReadOnly(true)]
+        public decimal PercentualeAnticipoTERientro => _percentualeAnticipoTERientro;
+        [ReadOnly(true)]
+        public decimal PercentualeSaldoTERientro => _percentualeSaldoTERientro;
+        [ReadOnly(true)]
+        public decimal SaldoContributoOmnicomprensivoRientro => _saldoContributoOmnicomprensivoRientro;
+
+        [ReadOnly(true)]
+        public decimal CoefficenteIndennitaRichiamo => _coefficenteIndennitaRichiamo;
+        [ReadOnly(true)]
+        public decimal IndennitaRichiamoLordo => _indennitaRichiamoLordo;
+        [ReadOnly(true)]
+        public decimal IndennitaRichiamoNetto => _indennitaRichiamoNetto;
+
+        //[ReadOnly(true)]
+        //public int GiorniSospensione => _giorniSospensione;
+
+        //[ReadOnly(true)]
+        //public decimal ImportoAbbattimentoSospensione => _importoAbbattimentoSospensione;
+
+
         [ReadOnly(true)]
         public LIVELLI Livello => _livello;
         [ReadOnly(true)]
@@ -130,6 +167,58 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
 
         public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita, ModelDBISE db)
+        {
+
+            try
+            {
+                this.Elaborazioni(idTrasferimento, dataCalcoloIndennita, db);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita = null)
+        {
+            DateTime dt;
+
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    this.Elaborazioni(idTrasferimento, dataCalcoloIndennita, db);
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+
+
+
+        #region Metodi per il calcolo degli importi
+        /// <summary>
+        /// Istanzia l'indennità
+        /// </summary>
+        /// <param name="trasf"></param>
+        public void Indennita()
+        {
+            _indennita = _trasferimento.INDENNITA;
+
+        }
+
+        private void Elaborazioni(decimal idTrasferimento, DateTime? dataCalcoloIndennita, ModelDBISE db)
         {
             DateTime dt;
 
@@ -179,6 +268,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 this.CalcolaIndennitaPersonale();
                 this.CalcolaPrimaSistemazione();
                 this.CalcolaContributoOmniComprensivoPartenza();
+                this.CalcolaRichiamo();
+                this.CalcolaContributoOmniComprensivoRientro();
 
 
             }
@@ -187,87 +278,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                 throw ex;
             }
-
-        }
-
-        public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita = null)
-        {
-            DateTime dt;
-
-
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                db.Database.BeginTransaction();
-
-                try
-                {
-                    dt = dataCalcoloIndennita ?? DateTime.Now;
-
-                    _trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-
-                    if (_trasferimento.DATARIENTRO != Utility.DataFineStop())
-                    {
-                        if (_trasferimento.DATARIENTRO < dt)
-                        {
-                            _dtDatiParametri = _trasferimento.DATARIENTRO;
-                        }
-                        else
-                        {
-                            if (_trasferimento.DATAPARTENZA > dt)
-                            {
-                                _dtDatiParametri = _trasferimento.DATAPARTENZA;
-                            }
-                            else
-                            {
-                                _dtDatiParametri = dt;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (_trasferimento.DATAPARTENZA > dt)
-                        {
-                            _dtDatiParametri = _trasferimento.DATAPARTENZA;
-                        }
-                        else
-                        {
-                            _dtDatiParametri = dt;
-                        }
-                    }
-
-                    this.Indennita();
-                    this.RuoloDipendente_Ufficio();
-                    this.PrelevaIndennitaDiBase();
-                    this.PrelevaCoefficenteDiSede();
-                    this.PrelevaPercentualeDisagio();
-                    this.CalcolaIndennitaDiServizio();
-                    this.CalcolaMaggiorazioneFamiliare();
-                    this.CalcolaIndennitaPersonale();
-                    this.CalcolaPrimaSistemazione();
-                    this.CalcolaContributoOmniComprensivoPartenza();
-
-                    db.Database.CurrentTransaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
-                }
-            }
-        }
-
-
-
-
-        #region Metodi per il calcolo degli importi
-        /// <summary>
-        /// Istanzia l'indennità
-        /// </summary>
-        /// <param name="trasf"></param>
-        public void Indennita()
-        {
-            _indennita = _trasferimento.INDENNITA;
-
         }
 
         private void RuoloDipendente_Ufficio()
@@ -576,7 +586,12 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private void CalcolaIndennitaPersonale()
         {
             _indennitaPersonale = _indennitaDiServizio + _maggiorazioniFimailiri;
+
         }
+
+
+
+
 
         private void CalcolaPrimaSistemazione()
         {
@@ -628,6 +643,48 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         }
 
+        private void CalcolaRichiamo()
+        {
+            var lRichiamo = _trasferimento.RICHIAMO.Where(a => a.ANNULLATO == false).ToList();
+
+            if (lRichiamo?.Any() ?? false)
+            {
+                var richiamo = lRichiamo.First();
+                //DateTime dataRientro = richiamo.DATARICHIAMO.AddDays(-1);
+
+
+                var lcr =
+                    richiamo.COEFFICIENTEINDRICHIAMO.Where(
+                        a =>
+                            a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                            _dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (lcr?.Any() ?? false)
+                {
+                    var cr = lcr.First();
+
+                    var maggiorazione = _indennitaDiBase * _coefficienteDiSede;
+
+                    _coefficenteIndennitaRichiamo = cr.COEFFICIENTERICHIAMO;
+
+                    var abbattimento = maggiorazione * _coefficenteIndennitaRichiamo;
+
+                    _indennitaRichiamoLordo = abbattimento + _maggiorazioniFimailiri;
+
+
+                }
+
+
+
+
+
+
+
+            }
+
+        }
+
+
         private void CalcolaContributoOmniComprensivoPartenza()
         {
             var ps = _trasferimento.PRIMASITEMAZIONE;
@@ -663,15 +720,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     _saldoContributoOmnicomprensivoPartenza = (_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
                                                                   (_percentualeSaldoTEPartenza / 100));
 
-                    //_datiCalcoloTrasportoEffetti = new DatiCalcoloTrasportoEffetti()
-                    //{
-                    //    percentualeAnticipoTE = _percentualeAnticipoTEPartenza,
-                    //    percentualeSaldoTE = _percentualeSaldoTEPartenza,
-                    //    percentualeFK = _percentualeFKMPartenza,
-                    //    AnticipoTE = _anticipoContributoOmnicomprensivoPartenza,
-                    //    SaldoTE = _saldoContributoOmnicomprensivoPartenza
-                    //};
-
                 }
 
 
@@ -679,7 +727,68 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
 
         }
+
+        private void CalcolaContributoOmniComprensivoRientro()
+        {
+            var lric = _trasferimento.RICHIAMO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATARICHIAMO);
+
+            if (lric?.Any() ?? false)
+            {
+                var ric = lric.First();
+                DateTime dataRientro = ric.DATARICHIAMO.AddDays(-1);
+
+                var lpfk =
+                ric.PERCENTUALEFKM.Where(
+                    a =>
+                        a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
+                        dataRientro <= a.DATAFINEVALIDITA)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (lpfk?.Any() ?? false)
+                {
+                    var pfkm = lpfk.First();
+                    _percentualeFKMRientro = pfkm.COEFFICIENTEKM;
+
+                    var lpa =
+                        _trasferimento.TERIENTRO.PERCENTUALEANTICIPOTE.Where(
+                            a =>
+                                a.ANNULLATO == false && a.IDTIPOANTICIPOTE == (decimal)EnumTrasportoEffetti.Rientro &&
+                                dataRientro >= a.DATAINIZIOVALIDITA &&
+                                dataRientro <= a.DATAFINEVALIDITA)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
+                    if (lpa?.Any() ?? false)
+                    {
+                        var pa = lpa.First();
+                        _percentualeAnticipoTERientro = pa.PERCENTUALE;
+                        _percentualeSaldoTERientro = 100 - _percentualeAnticipoTERientro;
+
+                        _anticipoContributoOmnicomprensivoRientro = (_indennitaRichiamoLordo * (_percentualeFKMRientro / 100) *
+                                                                      (_percentualeAnticipoTERientro / 100));
+
+                        _saldoContributoOmnicomprensivoRientro = (_indennitaRichiamoLordo * (_percentualeFKMRientro / 100) *
+                                                                      (_percentualeSaldoTERientro / 100));
+
+                    }
+                }
+
+
+
+
+
+            }
+
+
+        }
+
+
         #endregion
+
+
+
+
+
+
 
 
 
@@ -763,6 +872,44 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             return ret;
 
         }
+
+        public void CalcolaGiorniSospensione(DateTime dtIni, DateTime dtFin, int giorniRateoIndPers, out int oGiorniSospensione, out decimal oImportoAbbattimentoSospensione)
+        {
+            oGiorniSospensione = 0;
+            oImportoAbbattimentoSospensione = 0;
+
+            var lSosp =
+                _trasferimento.SOSPENSIONE.Where(
+                    a =>
+                        a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == (decimal)EnumTipoSospensione.Idennita &&
+                        dtIni <= a.DATAFINE && dtFin >= a.DATAINIZIO)
+                    .OrderByDescending(a => a.DATAINIZIO)
+                    .ToList();
+
+            if (lSosp?.Any() ?? false)
+            {
+                int gs = 0;
+                decimal impSosp = 0;
+
+                foreach (var sosp in lSosp)
+                {
+                    using (GiorniRateo gr = new GiorniRateo(sosp.DATAINIZIO, sosp.DATAFINE))
+                    {
+                        gs = gr.RateoGiorni;
+                        impSosp = (_indennitaPersonale / giorniRateoIndPers) * gs;
+                    }
+                    oGiorniSospensione += gs;
+                    oImportoAbbattimentoSospensione += impSosp;
+                }
+
+            }
+        }
+
+
+
+
+
+
 
         public void Dispose()
         {

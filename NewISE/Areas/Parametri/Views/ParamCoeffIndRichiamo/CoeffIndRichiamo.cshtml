@@ -13,18 +13,18 @@
 
 <p>
     @*<div class="form-group">
-        @Html.Label("lblCoeffIndRichiamo", "Seleziona nuovo Coeff. Ind. Richiamo ", new { @class = "control-label" })
-        <div id="divCombo">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idRiduzioni", ViewBag.CoeffIndRichiamo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffIndRichiamo();", @onClick = "PrelevaPVCoeffIndRichiamo();" })
+            @Html.Label("lblCoeffIndRichiamo", "Seleziona nuovo Coeff. Ind. Richiamo ", new { @class = "control-label" })
+            <div id="divCombo">
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("idRiduzioni", ViewBag.CoeffIndRichiamo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffIndRichiamo();", @onClick = "PrelevaPVCoeffIndRichiamo();" })
+                </div>
             </div>
-        </div>
-    </div>*@
+        </div>*@
 </p>
 
 <table id="tbCoeffIndRichiamo" class="display" cellspacing="0">
     <thead>
-        <tr>            
+        <tr>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -34,9 +34,9 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.coefficienteRichiamo)
             </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.coefficienteIndBase)
-            </th>            
+            @*<th class="text-center">
+                    @Html.DisplayNameFor(model => model.coefficienteIndBase)
+                </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
@@ -63,13 +63,13 @@
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.coefficienteRichiamo)
                 </td>
+                @*<td class="text-center">
+                        @Html.DisplayFor(modelItem => item.coefficienteIndBase)
+                    </td>*@
                 <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.coefficienteIndBase)
-                </td>                
-                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
-                <td style="text-align:center;">                    
+                <td style="text-align:center;">
                     @using (dtCoefficienteRichiamo dtib = new dtCoefficienteRichiamo())
                     {
                         if (dtib.CoeffIndRichiamoAnnullato(item))
@@ -147,7 +147,7 @@
             $("#divPViewParametri").empty();
             return false;
         }
-               
+
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
@@ -189,10 +189,10 @@
 
 
     function NuovoCoeffIndRichiamo() {
-       
+
         var rotta = "/Parametri/ParamCoeffIndRichiamo/NuovoCoeffIndRichiamo";
         var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
-       
+
         if (isNaN(idRiduzioni)) {
             ////$("#divPViewParametri").empty();
             //AlertDialog("Selezionare un coeff. per procedere.");
@@ -249,7 +249,7 @@
         //    return false;
         //}
 
-       
+
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
