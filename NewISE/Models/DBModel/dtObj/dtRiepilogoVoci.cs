@@ -17,15 +17,7 @@ namespace NewISE.Models.DBModel.dtObj
         public IList<RiepiloVociModel> GetRiepilogoVoci(decimal idTrasferimento)
         {
             List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
-            List<TipoLiquidazioneModel> tlm = new List<TipoLiquidazioneModel>();
-            List<TipoVoceModel> tvm = new List<TipoVoceModel>();
-
-            TIPOLIQUIDAZIONE TL = new TIPOLIQUIDAZIONE();
-            TIPOMOVIMENTO TM = new TIPOMOVIMENTO();
-            TIPOVOCE TV = new TIPOVOCE();
-            ELABINDSISTEMAZIONE elabIndSist = new ELABINDSISTEMAZIONE();
-
-
+           
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -40,11 +32,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                         var ps = t.PRIMASITEMAZIONE;
                         var lElabPs = ps.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false && a.ELABORATO == true).OrderBy(a => a.IDINDSISTLORDA).ToList();
+                        
                         var lTeorici =
                         db.TEORICI.Where(
-                            a =>
+                            a => 
                                 a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
-                                a.INSERIMENTOMANUALE == false &&
+                                a.INSERIMENTOMANUALE == false && a.IDINDSISTLORDA == 87 &&
                                 (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
                                  a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
                             .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
@@ -56,7 +49,7 @@ namespace NewISE.Models.DBModel.dtObj
                             foreach (var teorico in lTeorici)
                             {
                                 var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
-                                var tm = teorico.TIPOMOVIMENTO;
+                                //var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
                                 var voce = teorico.VOCI;
                                 var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                 var tv = teorico.VOCI.TIPOVOCE;
@@ -75,7 +68,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             idTipoVoce = tv.IDTIPOVOCE,
                                             descrizione = tv.DESCRIZIONE
-                                    },
+                                        },
                                 };
 
                                 lrvm.Add(rv);
@@ -99,5 +92,7 @@ namespace NewISE.Models.DBModel.dtObj
             return lrvm;
 
         }
+
+
     }
 }
