@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.DBModel;
 using NewISE.Models.Enumeratori;
 
@@ -39,8 +40,6 @@ namespace NewISE.Models.ViewModel
 
         public VociModel Voci { get; set; }
 
-        public TipoLiquidazioneModel TipoLiquidazione { get; set; }
-
         public decimal meseRiferimento { get; set; }
 
         public decimal annoRiferimento { get; set; }
@@ -53,7 +52,13 @@ namespace NewISE.Models.ViewModel
         public decimal Importo { get; set; }
 
 
-
+        public string MeseAnnoRiferimento
+        {
+            get
+            {
+                return meseRiferimento.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + annoRiferimento;
+            }
+        }
 
 
 

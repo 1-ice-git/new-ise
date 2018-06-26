@@ -30,10 +30,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
         [Display(Name = "Coefficiente Indennita di Richiamo")]
         public decimal coefficienteRichiamo { get; set; }
-        //[CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeINDBASE")]
-        [Required(ErrorMessage = "Il coefficiente Indennita Base è richiesto.")]
-        [Display(Name = "Coefficiente Indennita Base")]
-        public decimal coefficienteIndBase { get; set; }
+
 
         // [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]

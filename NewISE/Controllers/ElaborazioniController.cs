@@ -120,7 +120,7 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult CalcolaElaborazioneMensile(List<int> dipendenti, decimal idAnnoMeseElaborato)
         {
-            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+            //List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
 
             using (dtElaborazioni dte = new dtElaborazioni())
             {
@@ -128,7 +128,7 @@ namespace NewISE.Controllers
                 {
                     foreach (var dip in dipendenti)
                     {
-                        dte.CalcolaElaborazioneMensile(dip, idAnnoMeseElaborato);
+                        dte.Elaborazione(dip, idAnnoMeseElaborato);
                     }
                 }
             }

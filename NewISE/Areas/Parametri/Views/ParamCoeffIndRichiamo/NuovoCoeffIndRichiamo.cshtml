@@ -76,13 +76,13 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.coefficienteIndBase, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.coefficienteIndBase, new { htmlAttributes = new { @class = "form-control number" } })
-                @Html.ValidationMessageFor(model => model.coefficienteIndBase, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.coefficienteIndBase, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.coefficienteIndBase, new { htmlAttributes = new { @class = "form-control number" } })
+                    @Html.ValidationMessageFor(model => model.coefficienteIndBase, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
 
 
@@ -183,7 +183,7 @@
             return true;
         }
         catch (e) {
-            debugger;
+            //debugger;
 
         }
 
