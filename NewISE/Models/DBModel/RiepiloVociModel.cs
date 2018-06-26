@@ -15,6 +15,8 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Importo")]
         public decimal importo { get; set; }
 
+        [Display(Name = "Voce")]
+        public string descrizione { get; set; }
         public TipoLiquidazioneModel TipoLiquidazione { get; set; }
         public TipoVoceModel TipoVoce { get; set; }
 

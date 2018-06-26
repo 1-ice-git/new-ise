@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Models.dtObj.ModelliCalcolo;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -35,30 +36,52 @@ namespace NewISE.Models.DBModel.dtObj
                     
                     if (t != null && t.IDTRASFERIMENTO > 0)
                     {
-                        var ll =
-                            db.TEORICI.Where(
-                                a =>
-                                    a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
-                                    a.INSERIMENTOMANUALE == false)
-                                .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
-                                .ToList();
 
-                        lrvm = (from e in ll
-                                select new RiepiloVociModel()
+                        var ps = t.PRIMASITEMAZIONE;
+                        var lElabPs = ps.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false && a.ELABORATO == true).OrderBy(a => a.IDINDSISTLORDA).ToList();
+                        var lTeorici =
+                        db.TEORICI.Where(
+                            a =>
+                                a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
+                                a.INSERIMENTOMANUALE == false &&
+                                (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
+                                 a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
+                            .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
+                            .ToList();
+
+                        if (lTeorici?.Any() ?? false)
+                        {
+
+                            foreach (var teorico in lTeorici)
+                            {
+                                var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
+                                var tm = teorico.TIPOMOVIMENTO;
+                                var voce = teorico.VOCI;
+                                var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+                                var tv = teorico.VOCI.TIPOVOCE;
+
+                                RiepiloVociModel rv = new RiepiloVociModel()
                                 {
-                                    dataOperazione = e.DATAOPERAZIONE,
-                                    importo = e.IMPORTO,
+                                    dataOperazione = teorico.DATAOPERAZIONE,
+                                    importo = teorico.IMPORTO,
+                                    descrizione = teorico.VOCI.DESCRIZIONE,
                                     TipoLiquidazione = new TipoLiquidazioneModel()
-                                    {
-
-                                    },
+                                        {
+                                            idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                            descrizione = tl.DESCRIZIONE
+                                        },
                                     TipoVoce = new TipoVoceModel()
-                                    {
+                                        {
+                                            idTipoVoce = tv.IDTIPOVOCE,
+                                            descrizione = tv.DESCRIZIONE
+                                    },
+                                };
 
-                                    }
-                                }).ToList();
+                                lrvm.Add(rv);
 
-
+                            }
+                            
+                        }
                     }
 
                     db.Database.CurrentTransaction.Commit();
