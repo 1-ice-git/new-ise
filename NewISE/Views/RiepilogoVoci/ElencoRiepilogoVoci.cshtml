@@ -27,16 +27,14 @@
                 @Html.DisplayNameFor(model => model.dataOperazione)
             </th>
             <th class="text-center">
-                
+                @Html.DisplayNameFor(model => model.descrizione)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.importo)
             </th>
             <th class="text-center">
-                
+                @Html.DisplayNameFor(model => model.TipoLiquidazione.descrizione)
             </th>
-            
-
            
         </tr>
     </thead>
@@ -48,20 +46,15 @@
                     @Html.DisplayFor(modelItem => item.dataOperazione)
                 </td>
                 <td style="text-align:center;">
-                    
+                    @Html.DisplayFor(modelItem => item.descrizione)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.importo)
                 </td>
                 <td style="text-align:center;">
-                    
+                    @Html.DisplayFor(modelItem => item.TipoLiquidazione.descrizione)
                 </td>
 
-                
-
-
-
-                
             </tr>
         }
     </tbody>
