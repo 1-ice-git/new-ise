@@ -128,7 +128,7 @@ namespace NewISE.Controllers
                 {
                     foreach (var dip in dipendenti)
                     {
-                        dte.CalcolaElaborazioneMensile(dip, idAnnoMeseElaborato);
+                        dte.Elaborazione(dip, idAnnoMeseElaborato);
                     }
                 }
             }
