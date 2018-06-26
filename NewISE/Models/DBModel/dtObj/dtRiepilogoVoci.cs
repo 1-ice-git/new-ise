@@ -26,6 +26,7 @@ namespace NewISE.Models.DBModel.dtObj
             ELABINDSISTEMAZIONE elabIndSist = new ELABINDSISTEMAZIONE();
 
 
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 db.Database.BeginTransaction();
