@@ -28,7 +28,6 @@ namespace NewISE.EF
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal PERCENTUALEDISAGIO { get; set; }
-        public decimal PERCENTUALERIDUZIONE { get; set; }
         public decimal PERCENTUALEMAGCONIUGE { get; set; }
         public System.DateTime DAL { get; set; }
         public System.DateTime AL { get; set; }
@@ -37,6 +36,7 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
         public Nullable<decimal> FK_IDELABIND { get; set; }
         public decimal PENSIONECONIUGE { get; set; }
+        public decimal GIORNISOSPENSIONE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }

@@ -36,7 +36,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
-                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                             }).ToList();
@@ -67,7 +66,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
-                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                             }).ToList();
@@ -106,7 +104,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
-                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                             }).ToList();
@@ -142,7 +139,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
-                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                             }).ToList();
@@ -423,7 +419,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
-                                COEFFICIENTEINDBASE = precedenteIB.COEFFICIENTEINDBASE,
                                 ANNULLATO = false
                             };
 
@@ -498,7 +493,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                             // ALIQUOTA = precedenteIB.ALIQUOTA,
                             COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
-                            COEFFICIENTEINDBASE = precedenteIB.COEFFICIENTEINDBASE,
                             DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
                             ANNULLATO = false
                         };
@@ -604,7 +598,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
-                    tmp.Add(libm[0].COEFFICIENTEINDBASE.ToString());
                 }
             }
             return tmp;
@@ -623,7 +616,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
-                    tmp.Add(libm[0].COEFFICIENTEINDBASE.ToString());
                 }
             }
             return tmp;
@@ -644,7 +636,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
-                    tmp.Add(libm[0].COEFFICIENTEINDBASE.ToString());
                 }
             }
             return tmp;
@@ -663,7 +654,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
-                    tmp.Add(libm[0].COEFFICIENTEINDBASE.ToString());
                 }
             }
             return tmp;
@@ -722,7 +712,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = dataInizioFirst,
                                 DATAFINEVALIDITA = dataFineFirst,
                                 COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                 DATAAGGIORNAMENTO = DateTime.Now,
                             };
 
@@ -733,7 +723,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = dataInizioFirst,
                                     DATAFINEVALIDITA = Utility.DataFineStop(),
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                    COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                    //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 //qui annullo tutti i record rimanenti dalla data inizio inserita
@@ -777,7 +767,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAFINEVALIDITA = dataFineLast.AddDays(-1),
                                     //COEFFICIENTEKM = aliquotaLast,
                                     COEFFICIENTERICHIAMO = COEFFICIENTERICHIAMO_last,
-                                    COEFFICIENTEINDBASE = COEFFICIENTEINDBASE_last,
+                                    //COEFFICIENTEINDBASE = COEFFICIENTEINDBASE_last,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 ibNew2 = new COEFFICIENTEINDRICHIAMO()
@@ -786,7 +776,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
                                                                               //COEFFICIENTEKM = ibm.coefficienteKm,
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                    COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                    //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
                                 if (aggiornaTutto)
@@ -797,7 +787,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm,
                                         COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                        COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                        //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
@@ -841,7 +831,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DateTime dataFine = Convert.ToDateTime(lista[2]);
                                 //  decimal aliquota = Convert.ToDecimal(lista[3]);
                                 decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
-                                decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
+                                //decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
                                 DateTime NewdataFine1 = ibm.dataInizioValidita.AddDays(-1);
 
                                 ibNew1 = new COEFFICIENTEINDRICHIAMO()
@@ -850,7 +840,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAFINEVALIDITA = NewdataFine1,
                                     // COEFFICIENTEKM = aliquota,
                                     COEFFICIENTERICHIAMO = COEFFICIENTERICHIAMO,
-                                    COEFFICIENTEINDBASE = COEFFICIENTEINDBASE,
+                                    //COEFFICIENTEINDBASE = COEFFICIENTEINDBASE,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 ibNew2 = new COEFFICIENTEINDRICHIAMO()
@@ -859,7 +849,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAFINEVALIDITA = dataFine,
                                     //COEFFICIENTEKM = ibm.coefficienteKm,
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                    COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                    //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
 
@@ -871,7 +861,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm,
                                         COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                        COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
@@ -913,7 +902,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                    COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 libNew.Add(ibNew1);
@@ -944,7 +932,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = dataFineUltimo,
                                         // COEFFICIENTEKM = ibm.coefficienteKm,//nuova aliquota rispetto alla vecchia registrata
                                         COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                        COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1);
@@ -970,7 +957,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
                                         // COEFFICIENTEKM = aliquotaUltimo,
                                         COEFFICIENTERICHIAMO = COEFFICIENTERICHIAMO_Ultimo,
-                                        COEFFICIENTEINDBASE = COEFFICIENTEINDBASE_Ultimo,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     ibNew2 = new COEFFICIENTEINDRICHIAMO()
@@ -980,7 +966,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm,//nuova aliquota rispetto alla vecchia registrata
                                         COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                        COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1); libNew.Add(ibNew2);

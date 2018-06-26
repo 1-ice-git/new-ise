@@ -23,15 +23,14 @@ namespace NewISE.EF
         public decimal IDELABTRASPEFFETTI { get; set; }
         public Nullable<decimal> IDTEPARTENZA { get; set; }
         public Nullable<decimal> IDTERIENTRO { get; set; }
-        public Nullable<decimal> IDINDSISTLORDA { get; set; }
-        public decimal COEFFICENTEFK { get; set; }
+        public decimal PERCENTUALEFK { get; set; }
+        public decimal PERCENTUALEANTICIPOSALDO { get; set; }
         public bool ANTICIPO { get; set; }
         public bool SALDO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ELABORATO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual TEPARTENZA TEPARTENZA { get; set; }
