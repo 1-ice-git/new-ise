@@ -26,85 +26,34 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public void CalcolaElaborazioniConguagli(decimal IdDip, decimal idMeseAnnoElaborato)
+
+        public void Elaborazione(decimal IdDip, decimal idMeseAnnoElaborato)
         {
 
-        }
-
-        public void CalcolaElaborazioneMensile(decimal IdDip, decimal idMeseAnnoElaborato)
-        {
-            try
+            using (ModelDBISE db = new ModelDBISE())
             {
-                using (ModelDBISE db = new ModelDBISE())
+                try
                 {
                     db.Database.BeginTransaction();
 
-                    try
-                    {
-                        var dipendente = db.DIPENDENTI.Find(IdDip);
+                    this.CalcolaElaborazioneMensile(IdDip, idMeseAnnoElaborato, db);
 
+                    this.CalcolaConguagli(IdDip, idMeseAnnoElaborato, db);
 
-                        DateTime dataInizioRicalcoli = dipendente.DATAINIZIORICALCOLI;
-
-                        var meseAnnoElaborazione = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
-
-                        //decimal AnnoMeseElaborato = meseAnnoElaborazione.ANNO + meseAnnoElaborazione.MESE;
-                        //decimal AnnoMeseRicalcolare = dataInizioRicalcoli.Year + dataInizioRicalcoli.Month;
-
-                        //if (AnnoMeseRicalcolare >= AnnoMeseElaborato)
-                        //{
-                        //    dataInizioRicalcoli =
-                        //        Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" +
-                        //                           meseAnnoElaborazione.ANNO);
-                        //}
-
-                        if (meseAnnoElaborazione.ELABORATO == true)
-                        {
-                            throw new Exception("ATTENZIONE!!! Mese/Anno già elaborato.");
-                        }
-
-                        #region Elaborazione mese corrente
-
-                        DateTime dataElaborazioneCorrente =
-                            Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" +
-                                               meseAnnoElaborazione.ANNO);
-
-                        #endregion
-
-                        var lTrasferimenti =
-                            dipendente.TRASFERIMENTO.Where(
-                                a =>
-                                    a.DATARIENTRO >= dataElaborazioneCorrente &&
-                                    a.DATAPARTENZA <= dataElaborazioneCorrente)
-                                .OrderBy(a => a.DATAPARTENZA)
-                                .ToList();
-
-                        if (lTrasferimenti?.Any() ?? false)
-                        {
-                            foreach (var trasferimento in lTrasferimenti)
-                            {
-                                this.InsPrimaSistemazioneCedolino(trasferimento, meseAnnoElaborazione, db);
-
-                                this.InsIndennitaMensile(trasferimento, meseAnnoElaborazione, db);
-
-                                this.InsTrasportoEffetti(trasferimento, meseAnnoElaborazione, db);
-                            }
-                        }
-
-                        db.Database.CurrentTransaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        db.Database.CurrentTransaction.Rollback();
-                        throw ex;
-                    }
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
         }
+
+
+
+
 
         public IList<LiquidazioneMensileViewModel> PrelevaLiquidazioniMensili(decimal idMeseAnnoElaborato)
         {
@@ -241,31 +190,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void InviaConguaglioPrimaSistemazioneContabilita(decimal IdDip, decimal idMeseAnnoElaborato, ModelDBISE db)
-        {
 
-            try
-            {
-                var dip = db.DIPENDENTI.Find(IdDip);
-
-                DateTime dataInizioRicalcoli = dip.DATAINIZIORICALCOLI;
-
-                decimal annoMeseRicalcoli =
-                    Convert.ToDecimal(dataInizioRicalcoli.Year.ToString() + dataInizioRicalcoli.Month.ToString());
-                var MeseAnnoElaborato = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
-
-
-
-
-
-
-            }
-            catch (Exception)
-            {
-
-                throw ex;
-            }
-        }
 
 
         public void InviaSaldoUnicaSoluzionePrimaSitemazioneContabilita(decimal idAttivitaAnticipi, ModelDBISE db)
@@ -1051,7 +976,73 @@ namespace NewISE.Models.DBModel.dtObj
 
         #region Metodi privati
 
+        private void CalcolaElaborazioneMensile(decimal IdDip, decimal idMeseAnnoElaborato, ModelDBISE db)
+        {
 
+            try
+            {
+                var dipendente = db.DIPENDENTI.Find(IdDip);
+
+
+                //DateTime dataInizioRicalcoli = dipendente.DATAINIZIORICALCOLI;
+
+                var meseAnnoElaborazione = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
+
+                //decimal AnnoMeseElaborato = meseAnnoElaborazione.ANNO + meseAnnoElaborazione.MESE;
+                //decimal AnnoMeseRicalcolare = dataInizioRicalcoli.Year + dataInizioRicalcoli.Month;
+
+                //if (AnnoMeseRicalcolare >= AnnoMeseElaborato)
+                //{
+                //    dataInizioRicalcoli =
+                //        Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" +
+                //                           meseAnnoElaborazione.ANNO);
+                //}
+
+                if (meseAnnoElaborazione.ELABORATO == true)
+                {
+                    throw new Exception("ATTENZIONE!!! Mese/Anno già elaborato.");
+                }
+
+                #region Elaborazione mese corrente
+
+                DateTime dataElaborazioneCorrente =
+                    Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" +
+                                       meseAnnoElaborazione.ANNO);
+
+                #endregion
+
+                var lTrasferimenti =
+                    dipendente.TRASFERIMENTO.Where(
+                        a =>
+                            (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                             a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                            a.DATARIENTRO >= dataElaborazioneCorrente &&
+                            a.DATAPARTENZA <= dataElaborazioneCorrente)
+                        .OrderBy(a => a.DATAPARTENZA)
+                        .ToList();
+
+                if (lTrasferimenti?.Any() ?? false)
+                {
+                    foreach (var trasferimento in lTrasferimenti)
+                    {
+                        this.InsPrimaSistemazioneCedolino(trasferimento, meseAnnoElaborazione, db);
+
+                        this.InsIndennitaMensile(trasferimento, meseAnnoElaborazione, db);
+
+                        this.InsTrasportoEffetti(trasferimento, meseAnnoElaborazione, db);
+                    }
+                }
+
+                db.Database.CurrentTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+
+
+        }
 
         private IList<LiquidazioneMensileViewModel> PlmIndennitaPersonale(MESEANNOELABORAZIONE mae, ModelDBISE db)
         {
@@ -1128,7 +1119,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             return lLm;
         }
-
 
         private IList<LiquidazioneMensileViewModel> PlmTrasportoEffettiPartenza(MESEANNOELABORAZIONE mae, ModelDBISE db)
         {
@@ -1291,8 +1281,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        private decimal NettoPrimaSistemazione(int matricola, decimal imponibileLordo, decimal aliqPrev,
-            decimal detrazioni, out decimal outAliqIse)
+        private decimal NettoPrimaSistemazione(int matricola, decimal imponibileLordo, decimal aliqPrev, decimal detrazioni, out decimal outAliqIse)
         {
             decimal ret = 0;
 
@@ -1654,12 +1643,6 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
-
-        //private ELABTRASPEFFETTI SetElabTraspEffetti()
-        //{
-
-        //}
-
 
         private void InsIndennitaMensile(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
@@ -2276,7 +2259,274 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
 
-            #endregion
+
+
+
         }
+
+        private void CalcolaConguagli(decimal IdDip, decimal idMeseAnnoElaborato, ModelDBISE db)
+        {
+
+            try
+            {
+                var dip = db.DIPENDENTI.Find(IdDip);
+
+                DateTime dataInizioRicalcoli = dip.DATAINIZIORICALCOLI;
+
+                decimal annoMeseRicalcoli =
+                    Convert.ToDecimal(dataInizioRicalcoli.Year.ToString() + dataInizioRicalcoli.Month.ToString());
+
+                var MeseAnnoElaborato = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
+
+                decimal annoMeseElaborato =
+                    Convert.ToDecimal(MeseAnnoElaborato.ANNO.ToString() + MeseAnnoElaborato.MESE.ToString());
+
+                if (annoMeseRicalcoli > annoMeseElaborato)
+                {
+                    var ltrasferimento =
+                        dip.TRASFERIMENTO.Where(
+                            a =>
+                                (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                 a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                                 dataInizioRicalcoli <= a.DATARIENTRO)
+                            .OrderBy(a => a.DATAPARTENZA)
+                            .ToList();
+
+
+                    if (ltrasferimento?.Any() ?? false)
+                    {
+                        foreach (var trasferimento in ltrasferimento)
+                        {
+                            if (trasferimento.DATAPARTENZA >= dataInizioRicalcoli)
+                            {
+                                this.ConguaglioPrimaSistemazione(trasferimento, MeseAnnoElaborato, db);
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private void ConguaglioPrimaSistemazione(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
+        {
+            decimal outPrimaSistemazioneAnticipabileOld = 0;
+            decimal outPrimaSistemazioneUnicaSoluzioneOld = 0;
+            decimal outMaggiorazioniFamiliariOld = 0;
+
+            decimal outPrimaSistemazioneAnticipabileNew = 0;
+            decimal outPrimaSistemazioneUnicaSoluzioneNew = 0;
+            decimal outMaggiorazioniFamiliariNew = 0;
+
+            var primaSistemazione = trasferimento.PRIMASITEMAZIONE;
+
+            var lElabIndSistemazione =
+                primaSistemazione.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false && a.ELABORATO == true)
+                    .OrderByDescending(a => a.IDINDSISTLORDA)
+                    .ToList();
+
+            if (lElabIndSistemazione?.Any() ?? false)
+            {
+                var eisOld = lElabIndSistemazione.First();
+
+                if (eisOld.UNICASOLUZIONE == true)
+                {
+                    var lTeoriciOld =
+                        eisOld.TEORICI.Where(
+                            a => a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS)
+                            .ToList();
+
+                    if (lTeoriciOld?.Any() ?? false)
+                    {
+                        decimal nettoOld = lTeoriciOld.Sum(a => a.IMPORTO);
+
+                        if (nettoOld > 0)
+                        {
+                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA, db))
+                            {
+                                ELABINDSISTEMAZIONE eisNew = new ELABINDSISTEMAZIONE()
+                                {
+                                    IDPRIMASISTEMAZIONE = primaSistemazione.IDPRIMASISTEMAZIONE,
+                                    INDENNITABASE = ci.IndennitaDiBase,
+                                    COEFFICENTESEDE = ci.CoefficienteDiSede,
+                                    PERCENTUALEDISAGIO = ci.PercentualeDisagio,
+                                    COEFFICENTEINDSIST = ci.CoefficienteIndennitaSistemazione,
+                                    PERCENTUALERIDUZIONE = ci.PercentualeRiduzionePrimaSistemazione,
+                                    PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                                    PENSIONECONIUGE = ci.PensioneConiuge,
+                                    ANTICIPO = false,
+                                    SALDO = false,
+                                    UNICASOLUZIONE = true,
+                                    PERCANTSALDOUNISOL = 100,
+                                    DATAOPERAZIONE = DateTime.Now,
+                                    ELABORATO = false,
+                                    ANNULLATO = false,
+                                    FK_IDINDSISTLORDA = eisOld.IDINDSISTLORDA
+                                };
+
+                                primaSistemazione.ELABINDSISTEMAZIONE.Add(eisNew);
+
+                                int i = db.SaveChanges();
+
+                                if (i <= 0)
+                                {
+                                    throw new Exception(
+                                        "Errore nella fase d'inderimento del conguaglio di prima sistemazione (ELABINDSISTEMAZIONE).");
+                                }
+
+                                if (ci.lDatiFigli?.Any() ?? false)
+                                {
+                                    foreach (var df in ci.lDatiFigli)
+                                    {
+                                        ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                        {
+                                            IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
+                                            INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                                            PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
+                                        };
+
+                                        eisNew.ELABDATIFIGLI.Add(edf);
+                                    }
+
+                                    int j = db.SaveChanges();
+
+                                    if (j <= 0)
+                                    {
+                                        throw new Exception(
+                                            "Errore nella fase d'inderimento del Conguaglio di prima sistemazione (ELABDATIFIGLI)");
+                                    }
+                                }
+
+                                ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                                var lacDetr =
+                                    db.ALIQUOTECONTRIBUTIVE.Where(
+                                        a =>
+                                            a.ANNULLATO == false &&
+                                            a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                            trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
+                                            trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                        .ToList();
+
+
+                                if (lacDetr?.Any() ?? false)
+                                {
+                                    detrazioni = lacDetr.First();
+                                }
+                                else
+                                {
+                                    throw new Exception(
+                                        "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                                }
+
+                                this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, detrazioni.IDALIQCONTR, db);
+
+                                ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
+
+                                var lacPrev =
+                                    db.ALIQUOTECONTRIBUTIVE.Where(
+                                        a =>
+                                            a.ANNULLATO == false &&
+                                            a.IDTIPOCONTRIBUTO ==
+                                            (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                            trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
+                                            trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                        .ToList();
+
+                                if (lacPrev?.Any() ?? false)
+                                {
+                                    aliqPrev = lacPrev.First();
+                                }
+                                else
+                                {
+                                    throw new Exception(
+                                        "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+                                }
+
+                                this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, aliqPrev.IDALIQCONTR, db);
+
+
+                                CalcoliIndennita.ElaboraPrimaSistemazione(eisOld.INDENNITABASE, eisOld.COEFFICENTESEDE,
+                                    eisOld.PERCENTUALEDISAGIO, eisOld.PERCENTUALERIDUZIONE, eisOld.COEFFICENTEINDSIST,
+                                    eisOld.PERCENTUALEMAGCONIUGE, eisOld.PENSIONECONIUGE, eisOld.ELABDATIFIGLI,
+                                    out outPrimaSistemazioneAnticipabileOld, out outPrimaSistemazioneUnicaSoluzioneOld,
+                                    out outMaggiorazioniFamiliariOld);
+
+
+                                CalcoliIndennita.ElaboraPrimaSistemazione(eisNew.INDENNITABASE, eisNew.COEFFICENTESEDE,
+                                    eisNew.PERCENTUALEDISAGIO, eisNew.PERCENTUALERIDUZIONE, eisNew.COEFFICENTEINDSIST,
+                                    eisNew.PERCENTUALEMAGCONIUGE, eisNew.PENSIONECONIUGE, eisNew.ELABDATIFIGLI,
+                                    out outPrimaSistemazioneAnticipabileNew, out outPrimaSistemazioneUnicaSoluzioneNew,
+                                    out outMaggiorazioniFamiliariNew);
+
+                                decimal differenzaPrimaSistemazioneLorda = outPrimaSistemazioneUnicaSoluzioneNew -
+                                                                           outPrimaSistemazioneUnicaSoluzioneOld;
+
+                                if (differenzaPrimaSistemazioneLorda != 0)
+                                {
+                                    var dip = trasferimento.DIPENDENTI;
+                                    decimal outAliqIse = 0;
+
+                                    decimal nettoNew = this.NettoPrimaSistemazione(dip.MATRICOLA,
+                                        outPrimaSistemazioneUnicaSoluzioneNew,
+                                        aliqPrev.VALORE, detrazioni.VALORE, out outAliqIse);
+
+
+                                    decimal conguaglioNetto = nettoNew + nettoOld;
+
+                                    TEORICI teorici = new TEORICI()
+                                    {
+                                        IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                        IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
+                                        IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                        MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
+                                        ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
+                                        ALIQUOTAFISCALE = outAliqIse,
+                                        GIORNI = 0,
+                                        IMPORTO = conguaglioNetto,
+                                        DATAOPERAZIONE = DateTime.Now,
+                                        ANNULLATO = false
+                                    };
+
+                                    db.TEORICI.Add(teorici);
+
+                                    int j = db.SaveChanges();
+
+                                    if (j <= 0)
+                                    {
+                                        throw new Exception(
+                                            "Errore nella fase d'inderimento del conguaglio di prima sistemazione in contabilità.");
+                                    }
+
+
+                                }
+
+
+                            }
+                        }
+
+
+                    }
+                }
+
+
+
+            }
+
+
+
+        }
+
+
+        #endregion
+
     }
 }
