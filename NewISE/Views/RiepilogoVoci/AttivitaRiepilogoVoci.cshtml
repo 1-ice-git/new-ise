@@ -2,6 +2,31 @@
     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
 }
 
+@*<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Riepilogo Voci
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>
+
+                @Ajax.ActionLink("Riepilogo Voci", "ElencoRiepilogoVoci", "RiepilogoVoci", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+            </th>
+
+        </tr>
+        
+
+    </tbody>
+
+   
+</table>*@
+
+
 <div class="row">
     <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
         <div class="tab-content" id="tabContenuti_Var" style="border:1px;border-color:red">

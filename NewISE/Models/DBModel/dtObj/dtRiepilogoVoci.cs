@@ -18,7 +18,6 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
            
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 db.Database.BeginTransaction();
@@ -31,8 +30,10 @@ namespace NewISE.Models.DBModel.dtObj
                     {
 
                         var ps = t.PRIMASITEMAZIONE;
-                        var lElabPs = ps.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false && a.ELABORATO == true).OrderBy(a => a.IDINDSISTLORDA).ToList();
-                        
+                        //var lElabPs = ps.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false && a.ELABORATO == true).OrderBy(a => a.IDINDSISTLORDA).ToList();
+
+
+                        // Trovare il campo IDINDSISTLORDA
                         var lTeorici =
                         db.TEORICI.Where(
                             a => 
@@ -49,7 +50,7 @@ namespace NewISE.Models.DBModel.dtObj
                             foreach (var teorico in lTeorici)
                             {
                                 var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
-                                //var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
+                                var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
                                 var voce = teorico.VOCI;
                                 var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                 var tv = teorico.VOCI.TIPOVOCE;

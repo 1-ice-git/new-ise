@@ -169,8 +169,6 @@ namespace NewISE.Controllers
             try
             {
 
-                
-
                 using (ModelDBISE db = new ModelDBISE())
                 {
 

@@ -5781,6 +5781,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Views\Dataset\DSRiepilogoVoci.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DSRiepilogoVoci.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -6022,6 +6027,20 @@
     <Content Include="Views\RiepilogoVoci\Index.cshtml" />
     <Content Include="Views\RiepilogoVoci\AttivitaRiepilogoVoci.cshtml" />
     <Content Include="Views\RiepilogoVoci\ElencoRiepilogoVoci.cshtml" />
+    <Content Include="Views\Dataset\DSRiepilogoVoci.xsc">
+      <DependentUpon>DSRiepilogoVoci.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DSRiepilogoVoci.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSRiepilogoVoci.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DSRiepilogoVoci.xss">
+      <DependentUpon>DSRiepilogoVoci.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\RiepilogoVoci\GestioneRiepilogoVoci.cshtml" />
+    <Content Include="Views\RiepilogoVoci\RptRiepilogoVoci.cshtml" />
+    <Content Include="Views\RiepilogoVoci\ReportViewer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6139,6 +6158,7 @@
     <EmbeddedResource Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
