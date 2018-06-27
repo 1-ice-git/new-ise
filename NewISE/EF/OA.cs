@@ -31,6 +31,6 @@ namespace NewISE.EF
         public Nullable<short> CTB_GIORNI_MAB { get; set; }
         public Nullable<System.DateTime> CTB_DT_CONTABILE { get; set; }
     
-        public virtual CONT_OA CONT_OA { get; set; }
+        public virtual TEORICI TEORICI { get; set; }
     }
 }

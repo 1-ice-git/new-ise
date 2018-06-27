@@ -1,0 +1,53 @@
+﻿
+@{
+    decimal idAnnoMeseElaborato = Convert.ToDecimal(ViewData["idAnnoMeseElaborato"]);
+}
+
+<div class="row">
+    <div class="col-xs-offset-4 col-xs-4 text-right">
+        <button class="btn btn-default" onclick="InviaFlussiDiretti(@idAnnoMeseElaborato);">Invia flussi diretti</button>
+    </div>
+
+    <div class="col-xs-4 text-right">
+        <button class="btn btn-default">Invia flussi cedolino/contabilità</button>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function InviaFlussiDiretti(idAnnoMeseElaborato) {
+        debugger;
+        var rotta = "/Elaborazioni/InviaFlussiDirettiOA";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                debugger;
+                if (result.err == "") {
+                    InfoElaborazioneAjax(result.msg);
+                    DatiLiquidazioniDirette(idAnnoMeseElaborato);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+</script>

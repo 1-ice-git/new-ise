@@ -28,5 +28,9 @@ namespace NewISE.Models.ViewModel
         public DateTime Data { get; set; }
 
         public VociModel Voci { get; set; }
+
+        [Display(Name = "Elab.")]
+        [DefaultValue(false)]
+        public bool Elaborato { get; set; }
     }
 }

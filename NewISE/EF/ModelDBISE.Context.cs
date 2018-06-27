@@ -49,7 +49,6 @@ namespace NewISE.EF
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         public virtual DbSet<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
-        public virtual DbSet<CONT_OA> CONT_OA { get; set; }
         public virtual DbSet<DESTINATARI> DESTINATARI { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }

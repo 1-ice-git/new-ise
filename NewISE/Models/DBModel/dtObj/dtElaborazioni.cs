@@ -52,7 +52,39 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public void InviaFlussiDirettiContabilita()
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
 
+                    var lTeorici =
+                        db.TEORICI.Where(
+                            a =>
+                                a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true && a.OA.Count <= 0 &&
+                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)
+                            .OrderBy(a => a.ANNORIFERIMENTO)
+                            .ThenBy(a => a.MESERIFERIMENTO)
+                            .ToList();
+
+                    if (lTeorici?.Any() ?? false)
+                    {
+
+                    }
+
+
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
 
 
         public IList<LiquidazioneMensileViewModel> PrelevaLiquidazioniMensili(decimal idMeseAnnoElaborato)
@@ -130,8 +162,8 @@ namespace NewISE.Models.DBModel.dtObj
                         a =>
                             a.ANNULLATO == false && a.INSERIMENTOMANUALE == false && a.VOCI.FLAGDIRETTO == true &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
-                            (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
-                             a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true)).ToList();
+                            a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D).ToList();
 
                 foreach (var t in lTeorici)
                 {
@@ -153,14 +185,9 @@ namespace NewISE.Models.DBModel.dtObj
                             flagDiretto = t.VOCI.FLAGDIRETTO
                         },
                         Data = t.DATAOPERAZIONE,
-                        Importo = t.IMPORTO
+                        Importo = t.IMPORTO,
+                        Elaborato = t.ELABINDSISTEMAZIONE.ELABORATO
                     };
-
-                    //if (t.ELABINDSISTEMAZIONE.ANTICIPO == true)
-                    //{
-                    //    ldvm.Voci.descrizione += " (" + t.ELABINDSISTEMAZIONE.PERCANTSALDOUNISOL;
-                    //}
-                    //else
 
                     lLdvm.Add(ldvm);
                 }
@@ -346,8 +373,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     datiAticipoInseriti.TEORICI.Where(
                                         a =>
                                             a.ANNULLATO == false &&
-                                            a.IDTIPOMOVIMENTO == (decimal)EnumTipoMovimento.MeseCorrente_M &&
-                                            a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                            a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D &&
                                             a.INSERIMENTOMANUALE == false)
                                         .OrderByDescending(a => a.IDTEORICI)
                                         .ToList();
@@ -373,7 +399,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 cmae.NewMeseDaElaborare();
                                             }
 
-                                            #region Invio diretto contabilita
+                                            #region Invio contabilita
 
                                             TEORICI teorici = new TEORICI()
                                             {
@@ -400,23 +426,23 @@ namespace NewISE.Models.DBModel.dtObj
                                                     "Errore nella fase d'inderimento del saldo di prima sistemazione in contabilità.");
                                             }
 
-                                            CONT_OA contabilita = new CONT_OA()
-                                            {
-                                                IDTEORICI = teorici.IDTEORICI,
-                                                MATRICOLA = dip.MATRICOLA,
-                                                LIVELLO = ci.Livello.LIVELLO,
-                                                CODICESEDE = t.UFFICI.CODICEUFFICIO,
-                                            };
+                                            //CONT_OA contabilita = new CONT_OA()
+                                            //{
+                                            //    IDTEORICI = teorici.IDTEORICI,
+                                            //    MATRICOLA = dip.MATRICOLA,
+                                            //    LIVELLO = ci.Livello.LIVELLO,
+                                            //    CODICESEDE = t.UFFICI.CODICEUFFICIO,
+                                            //};
 
-                                            db.CONT_OA.Add(contabilita);
+                                            //db.CONT_OA.Add(contabilita);
 
-                                            int y = db.SaveChanges();
+                                            //int y = db.SaveChanges();
 
-                                            if (y <= 0)
-                                            {
-                                                throw new Exception(
-                                                    "Errore nella fase d'inderimento del saldo di prima sistemazione in contabilità OA.");
-                                            }
+                                            //if (y <= 0)
+                                            //{
+                                            //    throw new Exception(
+                                            //        "Errore nella fase d'inderimento del saldo di prima sistemazione in contabilità OA.");
+                                            //}
 
                                             #endregion
                                         }
@@ -599,23 +625,23 @@ namespace NewISE.Models.DBModel.dtObj
                                 "Errore nella fase d'inderimento della prima sistemazione in contabilità.");
                         }
 
-                        CONT_OA contabilita = new CONT_OA()
-                        {
-                            IDTEORICI = teorici.IDTEORICI,
-                            MATRICOLA = dip.MATRICOLA,
-                            LIVELLO = ci.Livello.LIVELLO,
-                            CODICESEDE = t.UFFICI.CODICEUFFICIO,
-                        };
+                        //CONT_OA contabilita = new CONT_OA()
+                        //{
+                        //    IDTEORICI = teorici.IDTEORICI,
+                        //    MATRICOLA = dip.MATRICOLA,
+                        //    LIVELLO = ci.Livello.LIVELLO,
+                        //    CODICESEDE = t.UFFICI.CODICEUFFICIO,
+                        //};
 
-                        db.CONT_OA.Add(contabilita);
+                        //db.CONT_OA.Add(contabilita);
 
-                        int y = db.SaveChanges();
+                        //int y = db.SaveChanges();
 
-                        if (y <= 0)
-                        {
-                            throw new Exception(
-                                "Errore nella fase d'inderimento del saldo di prima sistemazione in contabilità OA.");
-                        }
+                        //if (y <= 0)
+                        //{
+                        //    throw new Exception(
+                        //        "Errore nella fase d'inderimento del saldo di prima sistemazione in contabilità OA.");
+                        //}
                     }
                     else
                     {
@@ -801,7 +827,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         IDINDSISTLORDA = eis.IDINDSISTLORDA,
                                         IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
-                                        IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
+                                        IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D,
                                         IDMESEANNOELAB = mae.IdMeseAnnoElab,
                                         MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -820,24 +846,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         throw new Exception(
                                             "Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità.");
-                                    }
-
-                                    CONT_OA contabilita = new CONT_OA()
-                                    {
-                                        IDTEORICI = teorici.IDTEORICI,
-                                        MATRICOLA = dip.MATRICOLA,
-                                        LIVELLO = ci.Livello.LIVELLO,
-                                        CODICESEDE = t.UFFICI.CODICEUFFICIO,
-                                    };
-
-                                    db.CONT_OA.Add(contabilita);
-
-                                    int y = db.SaveChanges();
-
-                                    if (y <= 0)
-                                    {
-                                        throw new Exception(
-                                            "Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità OA.");
                                     }
 
                                     #endregion
@@ -1209,11 +1217,10 @@ namespace NewISE.Models.DBModel.dtObj
                         a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
                         (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
                          a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true) &&
-                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
-                        a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
                         (a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
-                         a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384))
+                         a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
+                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS))
                     .OrderBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.NOME)
                     .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
@@ -2474,37 +2481,41 @@ namespace NewISE.Models.DBModel.dtObj
                                     var dip = trasferimento.DIPENDENTI;
                                     decimal outAliqIse = 0;
 
-                                    decimal nettoNew = this.NettoPrimaSistemazione(dip.MATRICOLA,
-                                        outPrimaSistemazioneUnicaSoluzioneNew,
-                                        aliqPrev.VALORE, detrazioni.VALORE, out outAliqIse);
+                                    decimal conguaglioNetto = this.NettoPrimaSistemazione(dip.MATRICOLA,
+                                        differenzaPrimaSistemazioneLorda,
+                                        aliqPrev.VALORE, 0, out outAliqIse);
 
 
-                                    decimal conguaglioNetto = nettoNew + nettoOld;
+                                    //decimal conguaglioNetto = nettoNew - nettoOld;
 
-                                    TEORICI teorici = new TEORICI()
+                                    if (conguaglioNetto > 0)
                                     {
-                                        IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
-                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
-                                        IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
-                                        IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
-                                        MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
-                                        ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
-                                        ALIQUOTAFISCALE = outAliqIse,
-                                        GIORNI = 0,
-                                        IMPORTO = conguaglioNetto,
-                                        DATAOPERAZIONE = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
+                                        TEORICI teorici = new TEORICI()
+                                        {
+                                            IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
+                                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                            IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
+                                            IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                            MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
+                                            ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
+                                            ALIQUOTAFISCALE = outAliqIse,
+                                            GIORNI = 0,
+                                            IMPORTO = conguaglioNetto,
+                                            DATAOPERAZIONE = DateTime.Now,
+                                            ANNULLATO = false
+                                        };
 
-                                    db.TEORICI.Add(teorici);
+                                        db.TEORICI.Add(teorici);
 
-                                    int j = db.SaveChanges();
+                                        int j = db.SaveChanges();
 
-                                    if (j <= 0)
-                                    {
-                                        throw new Exception(
-                                            "Errore nella fase d'inderimento del conguaglio di prima sistemazione in contabilità.");
+                                        if (j <= 0)
+                                        {
+                                            throw new Exception(
+                                                "Errore nella fase d'inderimento del conguaglio di prima sistemazione in contabilità.");
+                                        }
                                     }
+
 
 
                                 }

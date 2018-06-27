@@ -251,14 +251,15 @@ namespace NewISE.Models.Enumeratori
         Sistemazione_Richiamo_Netto_086_383 = 1,
         Sistemazione_Lorda_086_380 = 2,
         Detrazione_086_384 = 3,
-        Trasp_Mass_Partenza_Rientro_162_131 = 25
+        Trasp_Mass_Partenza_Rientro_162_131 = 9
 
     }
 
     public enum EnumVociContabili
     {
-        Ind_Prima_Sist_IPS = 4,
-        Ind_Sede_Estera = 8
+        Ind_Prima_Sist_IPS_D = 4,
+        Ind_Sede_Estera = 8,
+        Ind_Prima_Sist_IPS = 10
 
     }
 

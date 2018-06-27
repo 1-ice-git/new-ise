@@ -20,14 +20,21 @@
         <div class="row margineTop5px">
             <div class="col-xs-12">
                 <div id="ContElencoElaborazioniMensili">
-                    <img src="http://placehold.it/800x350/" alt="" />
+                    <img src="http://placehold.it/800x370/" alt="" />
                 </div>
             </div>
         </div>
         <div class="row margineTop15px">
             <div class="col-xs-12">
                 <div id="ContElencoElaborazioniDirette">
-                    @*<img src="http://placehold.it/800x250/" alt="" />*@
+                    <img src="http://placehold.it/800x180/" alt="" />
+                </div>
+            </div>
+        </div>
+        <div class="row margineTop5px">
+            <div class="col-xs-12">
+                <div id="ContBtElab">
+                    <img src="http://placehold.it/800x50/" alt="" />
                 </div>
             </div>
         </div>
@@ -39,6 +46,7 @@
 <script type="text/javascript">
 
     ValorizzazioneIniziale();
+
 
     function DatiLiquidazioniDirette(idAnnoMeseElaborato) {
         //debugger;
@@ -105,4 +113,36 @@
             }
         });
     }
+
+    function PulsantiInvioElaborazione(idAnnoMeseElaborato) {
+        var rotta = "/Elaborazioni/PulsantiInvioElaborazione";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#ContBtElab").empty();
+                $("#ContBtElab").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
 </script>

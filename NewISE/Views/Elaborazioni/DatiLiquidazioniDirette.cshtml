@@ -3,11 +3,11 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <div class="text-center" style="border-top-style: solid;">
-            <label class="text-info" style="font-size: 16px;">Liquidazioni dirette</label>
+        <div class="text-center" style="border-top-style: solid; max-height: 30px;">
+            <label class="text-info" style="font-size: 14px;">Liquidazioni dirette</label>
         </div>
 
-        <table id="TabLiquidazioniDirette" cellspacing="0" class="table">
+        <table id="TabLiquidazioniDirette" cellspacing="0" class="table DimensioneFontTable">
             <thead>
                 <tr>
                     <th>
@@ -25,6 +25,10 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Data)
                     </th>
+                    <th class="no-sort">
+                        @Html.CheckBox("selectAllVociDirette", false, new { @onclick = "SelezionaAllVociDirette(this.checked);" })
+
+                    </th>
                 </tr>
             </thead>
 
@@ -33,6 +37,7 @@
             {
                     <tr>
                         <td>
+                            @Html.HiddenFor(modelItem => item.idTeorici)
                             @Html.DisplayFor(modelItem => item.Nominativo)
                         </td>
                         <td style="text-align: center;">
@@ -46,6 +51,9 @@
                         </td>
                         <td style="text-align: center;">
                             @Html.DisplayFor(modelItem => item.Data)
+                        </td>
+                        <td style="width: 10px;">
+                            @Html.CheckBox("selectVoceDiretta", false, new { @onclick = "SelezionaVoceDiretta(this.checked);" })
                         </td>
                     </tr>
                 }
@@ -87,7 +95,7 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "scrollY": 200,
+        "scrollY": 150,
         "scrollCollapse": true,
         "columnDefs": [
                 {
@@ -98,4 +106,16 @@
         ],
         //"order": [[0,"desc"],[2, "desc"]]
     });
+
+    function SelezionaAllVociDirette(checked) {
+        //debugger;
+
+        var lCheck = $('#TabLiquidazioniDirette > tbody > tr > td > :checkbox');
+
+        for (var ck in lCheck) {
+            if (is_numeric(ck)) {
+                lCheck[parseInt(ck)].checked = checked;
+            }
+        }
+    }
 </script>

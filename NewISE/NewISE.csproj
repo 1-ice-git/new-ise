@@ -4958,9 +4958,6 @@
     <Compile Include="EF\CONIUGETITOLIVIAGGIO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\CONT_OA.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\DESTINATARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -6022,6 +6019,7 @@
     <Content Include="Views\RiepilogoVoci\Index.cshtml" />
     <Content Include="Views\RiepilogoVoci\AttivitaRiepilogoVoci.cshtml" />
     <Content Include="Views\RiepilogoVoci\ElencoRiepilogoVoci.cshtml" />
+    <Content Include="Views\Elaborazioni\PulsantiInvioElaborazione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
