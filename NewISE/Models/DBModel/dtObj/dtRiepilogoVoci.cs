@@ -17,7 +17,7 @@ namespace NewISE.Models.DBModel.dtObj
         public IList<RiepiloVociModel> GetRiepilogoVoci(decimal idTrasferimento)
         {
             List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
-           
+            
             using (ModelDBISE db = new ModelDBISE())
             {
                 db.Database.BeginTransaction();
@@ -30,27 +30,32 @@ namespace NewISE.Models.DBModel.dtObj
                     {
 
                         var ps = t.PRIMASITEMAZIONE;
+                        
+                        //var apm = CreaAttivazioneRichiestaPassaporti(idTrasferimento, db);
+                        //idAttivazione = apm.idAttivazioniPassaporti;
+                        //ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazione);
+
+                        //elabIndSist = db.ELABINDSISTEMAZIONE.Find(IDINDSISTLORDA);
                         //var lElabPs = ps.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false && a.ELABORATO == true).OrderBy(a => a.IDINDSISTLORDA).ToList();
 
-
-                        // Trovare il campo IDINDSISTLORDA
                         var lTeorici =
                         db.TEORICI.Where(
                             a => 
-                                a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
-                                a.INSERIMENTOMANUALE == false && a.IDINDSISTLORDA == 87 &&
+                                a.ANNULLATO == false && a.IDINDSISTLORDA == 87 &&
                                 (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
                                  a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
                             .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
                             .ToList();
+
+                        
 
                         if (lTeorici?.Any() ?? false)
                         {
 
                             foreach (var teorico in lTeorici)
                             {
-                                var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
-                                var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
+                                //var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
+                                //var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
                                 var voce = teorico.VOCI;
                                 var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                 var tv = teorico.VOCI.TIPOVOCE;
@@ -93,7 +98,6 @@ namespace NewISE.Models.DBModel.dtObj
             return lrvm;
 
         }
-
-
+                
     }
 }
