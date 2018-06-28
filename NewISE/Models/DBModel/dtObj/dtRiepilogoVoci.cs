@@ -30,32 +30,42 @@ namespace NewISE.Models.DBModel.dtObj
                     {
 
                         var ps = t.PRIMASITEMAZIONE;
-                        
-                        //var apm = CreaAttivazioneRichiestaPassaporti(idTrasferimento, db);
-                        //idAttivazione = apm.idAttivazioniPassaporti;
-                        //ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazione);
+                        var ind = t.INDENNITA;
+                        var mab = ind.MAGGIORAZIONEABITAZIONE;
+                        var tep = t.TEPARTENZA;
+                        var ter = t.TERIENTRO;
 
-                        //elabIndSist = db.ELABINDSISTEMAZIONE.Find(IDINDSISTLORDA);
-                        //var lElabPs = ps.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false && a.ELABORATO == true).OrderBy(a => a.IDINDSISTLORDA).ToList();
+                     
+                        //var lTeorici =
+                        //db.TEORICI.Where(
+                        //    a => 
+                        //        a.ANNULLATO == false && a.ELABORATO == true && a.IDINDSISTLORDA == 87 &&
+                        //        (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
+                        //         a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
+                        //    .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
+                        //    .ToList();
 
                         var lTeorici =
                         db.TEORICI.Where(
-                            a => 
-                                a.ANNULLATO == false && a.IDINDSISTLORDA == 87 &&
-                                (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
-                                 a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
-                            .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
+                            a =>
+                                a.ANNULLATO == false && a.ELABORATO == true && 
+                                (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
+                                a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
+                                a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
+                                a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
+                                a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
+                            .OrderBy(a => a.ANNORIFERIMENTO)
+                            .ThenBy(a => a.MESERIFERIMENTO)
                             .ToList();
 
-                        
 
                         if (lTeorici?.Any() ?? false)
                         {
 
                             foreach (var teorico in lTeorici)
                             {
-                                //var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
-                                //var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
+                                var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
+                                var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
                                 var voce = teorico.VOCI;
                                 var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                 var tv = teorico.VOCI.TIPOVOCE;

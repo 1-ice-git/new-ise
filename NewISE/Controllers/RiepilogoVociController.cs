@@ -143,21 +143,27 @@ namespace NewISE.Controllers
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
                         var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        
+                        var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                        //using (dtRiepilogoVoci dtrv = new dtRiepilogoVoci())
-                        //{
-                        //    lrvm1.indSistLorda = dtrv.GetRiepilogoVoci(idTrasferimento).ToList();
-                        //}
-
+                        var ps = t.PRIMASITEMAZIONE;
+                        var ind = t.INDENNITA;
+                        var mab = ind.MAGGIORAZIONEABITAZIONE;
+                        var tep = t.TEPARTENZA;
+                        var ter = t.TERIENTRO;
 
                         var lTeorici =
                         db.TEORICI.Where(
-                           a =>
-                               a.ANNULLATO == false && a.IDINDSISTLORDA == 87 &&
-                               (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
-                                a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
-                           .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
-                           .ToList();
+                            a =>
+                                a.ANNULLATO == false && a.ELABORATO == true &&
+                                (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
+                                a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
+                                a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
+                                a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
+                                a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
+                            .OrderBy(a => a.ANNORIFERIMENTO)
+                            .ThenBy(a => a.MESERIFERIMENTO)
+                            .ToList();
 
                         ViewBag.idTrasferimento = idTrasferimento;
 
@@ -173,7 +179,6 @@ namespace NewISE.Controllers
                                 var voce = teorico.VOCI;
                                 var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                 var tv = teorico.VOCI.TIPOVOCE;
-                                
 
                                 lrvm = (from e in lTeorici
                                         select new RiepiloVociModel()
