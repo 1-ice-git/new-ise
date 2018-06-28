@@ -37,7 +37,6 @@ namespace NewISE.EF
         public bool UNICASOLUZIONE { get; set; }
         public decimal PERCANTSALDOUNISOL { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
-        public bool ELABORATO { get; set; }
         public bool ANNULLATO { get; set; }
         public Nullable<decimal> FK_IDINDSISTLORDA { get; set; }
     

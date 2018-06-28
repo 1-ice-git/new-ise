@@ -28,7 +28,6 @@ namespace NewISE.EF
         public bool ANTICIPO { get; set; }
         public bool SALDO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
-        public bool ELABORATO { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

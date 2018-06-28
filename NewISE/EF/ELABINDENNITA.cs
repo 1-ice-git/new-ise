@@ -32,7 +32,6 @@ namespace NewISE.EF
         public System.DateTime DAL { get; set; }
         public System.DateTime AL { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
-        public bool ELABORATO { get; set; }
         public bool ANNULLATO { get; set; }
         public Nullable<decimal> FK_IDELABIND { get; set; }
         public decimal PENSIONECONIUGE { get; set; }

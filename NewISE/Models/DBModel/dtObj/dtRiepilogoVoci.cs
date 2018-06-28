@@ -34,12 +34,12 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                    
+
                     if (t != null && t.IDTRASFERIMENTO > 0)
                     {
 
                         var ps = t.PRIMASITEMAZIONE;
-                        var lElabPs = ps.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false && a.ELABORATO == true).OrderBy(a => a.IDINDSISTLORDA).ToList();
+                        var lElabPs = ps.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDINDSISTLORDA).ToList();
                         var lTeorici =
                         db.TEORICI.Where(
                             a =>
@@ -67,21 +67,21 @@ namespace NewISE.Models.DBModel.dtObj
                                     importo = teorico.IMPORTO,
                                     descrizione = teorico.VOCI.DESCRIZIONE,
                                     TipoLiquidazione = new TipoLiquidazioneModel()
-                                        {
-                                            idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
-                                            descrizione = tl.DESCRIZIONE
-                                        },
+                                    {
+                                        idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                        descrizione = tl.DESCRIZIONE
+                                    },
                                     TipoVoce = new TipoVoceModel()
-                                        {
-                                            idTipoVoce = tv.IDTIPOVOCE,
-                                            descrizione = tv.DESCRIZIONE
+                                    {
+                                        idTipoVoce = tv.IDTIPOVOCE,
+                                        descrizione = tv.DESCRIZIONE
                                     },
                                 };
 
                                 lrvm.Add(rv);
 
                             }
-                            
+
                         }
                     }
 

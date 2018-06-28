@@ -34,28 +34,56 @@
 
             <tbody>
                 @foreach (var item in Model)
-            {
-                    <tr>
-                        <td>
-                            @Html.HiddenFor(modelItem => item.idTeorici)
-                            @Html.DisplayFor(modelItem => item.Nominativo)
-                        </td>
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.Voci.descrizione)
-                        </td>
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
-                        </td>
-                        <td style="text-align: right;">
-                            @Html.DisplayFor(modelItem => item.Importo)
-                        </td>
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.Data)
-                        </td>
-                        <td style="width: 10px;">
-                            @Html.CheckBox("selectVoceDiretta", false, new { @onclick = "SelezionaVoceDiretta(this.checked);" })
-                        </td>
-                    </tr>
+                {
+                    if (item.Elaborato == false)
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(modelItem => item.idTeorici)
+                                @Html.DisplayFor(modelItem => item.Nominativo)
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Voci.descrizione)
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
+                            </td>
+                            <td style="text-align: right;">
+                                @Html.DisplayFor(modelItem => item.Importo)
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Data)
+                            </td>
+                            <td style="width: 10px;">
+                                @Html.CheckBox("selectVoceDiretta", false, new { @onclick = "SelezionaVoceDiretta(this.checked);" })
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="ColoreTesto1">
+                                @Html.HiddenFor(modelItem => item.idTeorici)
+                                @Html.DisplayFor(modelItem => item.Nominativo)
+                            </td>
+                            <td class="text-center ColoreTesto1">
+                                @Html.DisplayFor(modelItem => item.Voci.descrizione)
+                            </td>
+                            <td class="text-center ColoreTesto1">
+                                @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
+                            </td>
+                            <td class="text-center ColoreTesto1">
+                                @Html.DisplayFor(modelItem => item.Importo)
+                            </td>
+                            <td class="text-center ColoreTesto1">
+                                @Html.DisplayFor(modelItem => item.Data)
+                            </td>
+                            <td style="width: 10px;">
+                                @Html.CheckBoxFor(modelItem => item.Elaborato, new { disabled = "disabled", @id = "selectVoceDiretta" })
+                            </td>
+                        </tr>
+                    }
+
                 }
             </tbody>
         </table>
@@ -117,5 +145,9 @@
                 lCheck[parseInt(ck)].checked = checked;
             }
         }
+    }
+
+    function SelezionaVoceDiretta(checked) {
+
     }
 </script>

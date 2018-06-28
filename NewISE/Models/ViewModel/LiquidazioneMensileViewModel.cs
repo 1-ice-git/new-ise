@@ -51,6 +51,10 @@ namespace NewISE.Models.ViewModel
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Importo { get; set; }
 
+        [Display(Name = "Elab.")]
+        [DefaultValue(false)]
+        public bool Elaborato { get; set; }
+
 
         public string MeseAnnoRiferimento
         {

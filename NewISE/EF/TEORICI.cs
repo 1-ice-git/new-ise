@@ -36,6 +36,7 @@ namespace NewISE.EF
         public bool INSERIMENTOMANUALE { get; set; }
         public bool ANNULLATO { get; set; }
         public decimal IMPORTO { get; set; }
+        public bool ELABORATO { get; set; }
     
         public virtual ELABINDENNITA ELABINDENNITA { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
