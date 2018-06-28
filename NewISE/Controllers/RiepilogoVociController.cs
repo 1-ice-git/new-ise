@@ -104,6 +104,8 @@ namespace NewISE.Controllers
             }
 
 
+
+
             return PartialView();
         }
         public ActionResult ElencoRiepilogoVoci(decimal idTrasferimento)
