@@ -1788,6 +1788,11 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     trm.TipoCoan = dttc.GetTipologiaCoanByID(trm.idTipoCoan, db);
                 }
+
+                using (dtRiepilogoVoci dtrv = new dtRiepilogoVoci())
+                {
+                    //trm.PrimaSistemazione.idPrimaSistemazione = dttc.GetTipologiaCoanByID(trm.idTipoCoan, db);
+                }
             }
 
             return trm;

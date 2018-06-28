@@ -6003,7 +6003,6 @@
     <Content Include="Views\Indennita\ReportViewer.cshtml" />
     <Content Include="Views\Shared\_LayoutPage1.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaBase.cshtml" />
-    <Content Include="Views\Indennita\RptIndennitaBase.cshtml" />
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDirette.cshtml" />
     <Content Include="Views\VariazionePassaporto\VariazionePassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\Passaporti_Invio.cshtml" />
@@ -6020,7 +6019,6 @@
     <Content Include="Views\VariazionePassaporto\MessaggioAnnullaRichiestaPassaporto.cshtml" />
     <Content Include="Views\VariazionePassaporto\MessaggioAttivaRichiestaPassaporto.cshtml" />
     <Content Include="Views\Elaborazioni\DatiLiquidazioneMensile.cshtml" />
-    <Content Include="Views\RiepilogoVoci\RiepilogoVoci.cshtml" />
     <Content Include="Views\RiepilogoVoci\Index.cshtml" />
     <Content Include="Views\RiepilogoVoci\AttivitaRiepilogoVoci.cshtml" />
     <Content Include="Views\RiepilogoVoci\ElencoRiepilogoVoci.cshtml" />
@@ -6153,10 +6151,11 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc" />
+    <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
