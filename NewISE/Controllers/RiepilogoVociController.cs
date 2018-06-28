@@ -103,6 +103,7 @@ namespace NewISE.Controllers
 
             }
 
+
             return PartialView();
         }
         public ActionResult ElencoRiepilogoVoci(decimal idTrasferimento)
@@ -150,8 +151,7 @@ namespace NewISE.Controllers
                         var lTeorici =
                         db.TEORICI.Where(
                            a =>
-                               a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
-                               a.INSERIMENTOMANUALE == false && a.IDINDSISTLORDA == 87 &&
+                               a.ANNULLATO == false && a.IDINDSISTLORDA == 87 &&
                                (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
                                 a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
                            .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
@@ -166,8 +166,8 @@ namespace NewISE.Controllers
 
                             foreach (var teorico in lTeorici)
                             {
-                                //var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
-                                //var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
+                                var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
+                                var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
                                 var voce = teorico.VOCI;
                                 var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                 var tv = teorico.VOCI.TIPOVOCE;
