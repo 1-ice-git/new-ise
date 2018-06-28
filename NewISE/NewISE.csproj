@@ -4958,9 +4958,6 @@
     <Compile Include="EF\CONIUGETITOLIVIAGGIO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\CONT_OA.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\DESTINATARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>

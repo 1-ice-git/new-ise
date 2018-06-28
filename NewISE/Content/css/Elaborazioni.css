@@ -22,3 +22,11 @@
 tr input[type="checkbox"] {
     cursor: pointer;
 }
+
+.DimensioneFontTable > thead > tr > th {
+    font-size: 10px;
+}
+
+.DimensioneFontTable > tbody > tr > td {
+    font-size: 10px;
+}

@@ -25,7 +25,7 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                    
+
                     if (t != null && t.IDTRASFERIMENTO > 0)
                     {
 
@@ -61,21 +61,21 @@ namespace NewISE.Models.DBModel.dtObj
                                     importo = teorico.IMPORTO,
                                     descrizione = teorico.VOCI.DESCRIZIONE,
                                     TipoLiquidazione = new TipoLiquidazioneModel()
-                                        {
-                                            idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
-                                            descrizione = tl.DESCRIZIONE
-                                        },
+                                    {
+                                        idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                        descrizione = tl.DESCRIZIONE
+                                    },
                                     TipoVoce = new TipoVoceModel()
-                                        {
-                                            idTipoVoce = tv.IDTIPOVOCE,
-                                            descrizione = tv.DESCRIZIONE
+                                    {
+                                        idTipoVoce = tv.IDTIPOVOCE,
+                                        descrizione = tv.DESCRIZIONE
                                         },
                                 };
 
                                 lrvm.Add(rv);
 
                             }
-                            
+
                         }
                     }
 

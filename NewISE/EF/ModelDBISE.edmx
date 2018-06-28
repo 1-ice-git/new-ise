@@ -450,16 +450,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="CONT_OA">
-          <Key>
-            <PropertyRef Name="IDTEORICI" />
-          </Key>
-          <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="MATRICOLA" Type="number" Precision="6" Scale="0" Nullable="false" />
-          <Property Name="LIVELLO" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="CODICESEDE" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="DATAINVIOCONTABILITA" Type="date" />
-        </EntityType>
         <EntityType Name="CP_DOC">
           <Key>
             <PropertyRef Name="IDCONIUGEPASSAPORTO" />
@@ -575,7 +565,6 @@
           <Property Name="DAL" Type="date" Nullable="false" />
           <Property Name="AL" Type="date" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDELABIND" Type="number" Precision="38" Scale="0" />
           <Property Name="PENSIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -599,7 +588,6 @@
           <Property Name="UNICASOLUZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="PERCANTSALDOUNISOL" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
         </EntityType>
@@ -621,7 +609,6 @@
           <Property Name="AL" Type="date" Nullable="false" />
           <Property Name="ANNUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDELABMAB" Type="number" Precision="38" Scale="0" />
         </EntityType>
@@ -637,7 +624,6 @@
           <Property Name="ANTICIPO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="SALDO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="EMAB_ALIQ">
@@ -1432,6 +1418,7 @@
           <Property Name="INSERIMENTOMANUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -2431,20 +2418,6 @@
             </Principal>
             <Dependent Role="CMAB_TFR">
               <PropertyRef Name="IDCANONE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_COA_OA">
-          <End Role="CONT_OA" Type="Self.CONT_OA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="OA" Type="Self.OA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CONT_OA">
-              <PropertyRef Name="IDTEORICI" />
-            </Principal>
-            <Dependent Role="OA">
-              <PropertyRef Name="IDTEORICI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4462,20 +4435,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_COA">
-          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CONT_OA" Type="Self.CONT_OA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TEORICI">
-              <PropertyRef Name="IDTEORICI" />
-            </Principal>
-            <Dependent Role="CONT_OA">
-              <PropertyRef Name="IDTEORICI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_FC">
           <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4529,6 +4488,20 @@
             </Principal>
             <Dependent Role="MAGGIORAZIONIFAMILIARI">
               <PropertyRef Name="IDMAGGIORAZIONIFAMILIARI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_OA">
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OA" Type="Self.OA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+            </Principal>
+            <Dependent Role="OA">
+              <PropertyRef Name="IDTEORICI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5345,7 +5318,6 @@
           <EntitySet Name="CONIUGE_DOC" EntityType="Self.CONIUGE_DOC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="CONIUGEPASSAPORTO" EntityType="Self.CONIUGEPASSAPORTO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="CONIUGETITOLIVIAGGIO" EntityType="Self.CONIUGETITOLIVIAGGIO" Schema="ISESIM" store:Type="Tables" />
-          <EntitySet Name="CONT_OA" EntityType="Self.CONT_OA" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="CP_DOC" EntityType="Self.CP_DOC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="CTV_DOC" EntityType="Self.CTV_DOC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="DESTINATARI" EntityType="Self.DESTINATARI" Schema="ISESIM" store:Type="Tables" />
@@ -5687,10 +5659,6 @@
           <AssociationSet Name="R_CMAB_CMABTFR" Association="Self.R_CMAB_CMABTFR">
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
             <End Role="CMAB_TFR" EntitySet="CMAB_TFR" />
-          </AssociationSet>
-          <AssociationSet Name="R_COA_OA" Association="Self.R_COA_OA">
-            <End Role="CONT_OA" EntitySet="CONT_OA" />
-            <End Role="OA" EntitySet="OA" />
           </AssociationSet>
           <AssociationSet Name="R_CP_CCP" Association="Self.R_CP_CCP">
             <End Role="CONIUGEPASSAPORTO" EntitySet="CONIUGEPASSAPORTO" />
@@ -6268,10 +6236,6 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
           </AssociationSet>
-          <AssociationSet Name="R_T_COA" Association="Self.R_T_COA">
-            <End Role="TEORICI" EntitySet="TEORICI" />
-            <End Role="CONT_OA" EntitySet="CONT_OA" />
-          </AssociationSet>
           <AssociationSet Name="R_T_FC" Association="Self.R_T_FC">
             <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="FLUSSICEDOLINO" EntitySet="FLUSSICEDOLINO" />
@@ -6287,6 +6251,10 @@
           <AssociationSet Name="R_T_MF" Association="Self.R_T_MF">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_OA" Association="Self.R_T_OA">
+            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="OA" EntitySet="OA" />
           </AssociationSet>
           <AssociationSet Name="R_T_P" Association="Self.R_T_P">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -6538,7 +6506,6 @@
           <EntitySet Name="CONIUGE" EntityType="DBISE.CONIUGE" />
           <EntitySet Name="CONIUGEPASSAPORTO" EntityType="DBISE.CONIUGEPASSAPORTO" />
           <EntitySet Name="CONIUGETITOLIVIAGGIO" EntityType="DBISE.CONIUGETITOLIVIAGGIO" />
-          <EntitySet Name="CONT_OA" EntityType="DBISE.CONT_OA" />
           <EntitySet Name="DESTINATARI" EntityType="DBISE.DESTINATARI" />
           <EntitySet Name="DIPENDENTI" EntityType="DBISE.DIPENDENTI" />
           <EntitySet Name="DOCUMENTI" EntityType="DBISE.DOCUMENTI" />
@@ -6853,14 +6820,6 @@
             <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
             <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
           </AssociationSet>
-          <AssociationSet Name="R_COA_OA" Association="DBISE.R_COA_OA">
-            <End Role="CONT_OA" EntitySet="CONT_OA" />
-            <End Role="OA" EntitySet="OA" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_COA" Association="DBISE.R_T_COA">
-            <End Role="TEORICI" EntitySet="TEORICI" />
-            <End Role="CONT_OA" EntitySet="CONT_OA" />
-          </AssociationSet>
           <AssociationSet Name="R_DIP_DEST" Association="DBISE.R_DIP_DEST">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="DESTINATARI" EntitySet="DESTINATARI" />
@@ -7080,6 +7039,10 @@
           <AssociationSet Name="R_NC_RC" Association="DBISE.R_NC_RC">
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_OA" Association="DBISE.R_T_OA">
+            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="OA" EntitySet="OA" />
           </AssociationSet>
           <AssociationSet Name="R_PCMAB_PCMAB" Association="DBISE.R_PCMAB_PCMAB">
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
@@ -7854,18 +7817,6 @@
           <NavigationProperty Name="CONIUGE" Relationship="DBISE.C_CTV" FromRole="CONIUGETITOLIVIAGGIO" ToRole="CONIUGE" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.CTV_DOC" FromRole="CONIUGETITOLIVIAGGIO" ToRole="DOCUMENTI" />
         </EntityType>
-        <EntityType Name="CONT_OA">
-          <Key>
-            <PropertyRef Name="IDTEORICI" />
-          </Key>
-          <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="MATRICOLA" Type="Int32" Nullable="false" />
-          <Property Name="LIVELLO" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CODICESEDE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="DATAINVIOCONTABILITA" Type="DateTime" />
-          <NavigationProperty Name="OA" Relationship="DBISE.R_COA_OA" FromRole="CONT_OA" ToRole="OA" />
-          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_T_COA" FromRole="CONT_OA" ToRole="TEORICI" />
-        </EntityType>
         <EntityType Name="DESTINATARI">
           <Key>
             <PropertyRef Name="IDDIPENDENTE" />
@@ -7967,7 +7918,6 @@
           <Property Name="DAL" Type="DateTime" Nullable="false" />
           <Property Name="AL" Type="DateTime" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDELABIND" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
@@ -7997,7 +7947,6 @@
           <Property Name="UNICASOLUZIONE" Type="Boolean" Nullable="false" />
           <Property Name="PERCANTSALDOUNISOL" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIS_EDF" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABDATIFIGLI" />
@@ -8025,7 +7974,6 @@
           <Property Name="AL" Type="DateTime" Nullable="false" />
           <Property Name="ANNUALE" Type="Boolean" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EMAB_EDF" FromRole="ELABMAB" ToRole="ELABDATIFIGLI" />
@@ -8047,7 +7995,6 @@
           <Property Name="ANTICIPO" Type="Boolean" Nullable="false" />
           <Property Name="SALDO" Type="Boolean" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_ETE_T" FromRole="ELABTRASPEFFETTI" ToRole="TEORICI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISE.R_TEP_ETE" FromRole="ELABTRASPEFFETTI" ToRole="TEPARTENZA" />
@@ -8423,7 +8370,7 @@
           <Property Name="CTB_DTFIN_MAB" Type="DateTime" />
           <Property Name="CTB_GIORNI_MAB" Type="Int16" />
           <Property Name="CTB_DT_CONTABILE" Type="DateTime" />
-          <NavigationProperty Name="CONT_OA" Relationship="DBISE.R_COA_OA" FromRole="OA" ToRole="CONT_OA" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_T_OA" FromRole="OA" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="PAGATOCONDIVISOMAB">
           <Key>
@@ -8799,13 +8746,14 @@
           <Property Name="INSERIMENTOMANUALE" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <NavigationProperty Name="CONT_OA" Relationship="DBISE.R_T_COA" FromRole="TEORICI" ToRole="CONT_OA" />
+          <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_EI_T" FromRole="TEORICI" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_EMAB_T" FromRole="TEORICI" ToRole="ELABMAB" />
           <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISE.R_ETE_T" FromRole="TEORICI" ToRole="ELABTRASPEFFETTI" />
           <NavigationProperty Name="FLUSSICEDOLINO" Relationship="DBISE.R_T_FC" FromRole="TEORICI" ToRole="FLUSSICEDOLINO" />
           <NavigationProperty Name="MESEANNOELABORAZIONE" Relationship="DBISE.R_MAE_T" FromRole="TEORICI" ToRole="MESEANNOELABORAZIONE" />
+          <NavigationProperty Name="OA" Relationship="DBISE.R_T_OA" FromRole="TEORICI" ToRole="OA" />
           <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISE.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
           <NavigationProperty Name="VOCI" Relationship="DBISE.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
         </EntityType>
@@ -9887,34 +9835,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_COA_OA">
-          <End Type="DBISE.CONT_OA" Role="CONT_OA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.OA" Role="OA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CONT_OA">
-              <PropertyRef Name="IDTEORICI" />
-            </Principal>
-            <Dependent Role="OA">
-              <PropertyRef Name="IDTEORICI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_COA">
-          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.CONT_OA" Role="CONT_OA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TEORICI">
-              <PropertyRef Name="IDTEORICI" />
-            </Principal>
-            <Dependent Role="CONT_OA">
-              <PropertyRef Name="IDTEORICI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_DIP_DEST">
           <End Type="DBISE.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -10680,6 +10600,20 @@
             </Principal>
             <Dependent Role="REGOLECALCOLO">
               <PropertyRef Name="IDNORMACALCOLO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_OA">
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.OA" Role="OA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+            </Principal>
+            <Dependent Role="OA">
+              <PropertyRef Name="IDTEORICI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11761,17 +11695,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CONT_OA">
-            <EntityTypeMapping TypeName="DBISE.CONT_OA">
-              <MappingFragment StoreEntitySet="CONT_OA">
-                <ScalarProperty Name="DATAINVIOCONTABILITA" ColumnName="DATAINVIOCONTABILITA" />
-                <ScalarProperty Name="CODICESEDE" ColumnName="CODICESEDE" />
-                <ScalarProperty Name="LIVELLO" ColumnName="LIVELLO" />
-                <ScalarProperty Name="MATRICOLA" ColumnName="MATRICOLA" />
-                <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DESTINATARI">
             <EntityTypeMapping TypeName="DBISE.DESTINATARI">
               <MappingFragment StoreEntitySet="DESTINATARI">
@@ -11836,7 +11759,6 @@
                 <ScalarProperty Name="PENSIONECONIUGE" ColumnName="PENSIONECONIUGE" />
                 <ScalarProperty Name="FK_IDELABIND" ColumnName="FK_IDELABIND" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="AL" ColumnName="AL" />
                 <ScalarProperty Name="DAL" ColumnName="DAL" />
@@ -11854,7 +11776,6 @@
               <MappingFragment StoreEntitySet="ELABINDSISTEMAZIONE">
                 <ScalarProperty Name="FK_IDINDSISTLORDA" ColumnName="FK_IDINDSISTLORDA" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="PERCANTSALDOUNISOL" ColumnName="PERCANTSALDOUNISOL" />
                 <ScalarProperty Name="UNICASOLUZIONE" ColumnName="UNICASOLUZIONE" />
@@ -11877,7 +11798,6 @@
               <MappingFragment StoreEntitySet="ELABMAB">
                 <ScalarProperty Name="FK_IDELABMAB" ColumnName="FK_IDELABMAB" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="ANNUALE" ColumnName="ANNUALE" />
                 <ScalarProperty Name="AL" ColumnName="AL" />
@@ -11899,7 +11819,6 @@
             <EntityTypeMapping TypeName="DBISE.ELABTRASPEFFETTI">
               <MappingFragment StoreEntitySet="ELABTRASPEFFETTI">
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="SALDO" ColumnName="SALDO" />
                 <ScalarProperty Name="ANTICIPO" ColumnName="ANTICIPO" />
@@ -12532,6 +12451,7 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="INSERIMENTOMANUALE" ColumnName="INSERIMENTOMANUALE" />
