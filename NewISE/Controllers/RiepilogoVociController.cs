@@ -126,10 +126,11 @@ namespace NewISE.Controllers
             return PartialView(lrvm);
         }
 
-        DSRiepilogoVoci ds = new DSRiepilogoVoci();
+        DSRiepilogoVoci DSRiepilogoVoci = new DSRiepilogoVoci();
         public ActionResult RptRiepilogoVoci(decimal idTrasferimento)
         {
             List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
+            RiepiloVociModel lrvm1 = new RiepiloVociModel();
 
             try
             {
@@ -140,14 +141,58 @@ namespace NewISE.Controllers
                     {
                         var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        using (dtRiepilogoVoci dtrv = new dtRiepilogoVoci())
-                        {
-                            lrvm = dtrv.GetRiepilogoVoci(idTrasferimento).ToList();
-                        }
+                        //using (dtRiepilogoVoci dtrv = new dtRiepilogoVoci())
+                        //{
+                        //    lrvm1.indSistLorda = dtrv.GetRiepilogoVoci(idTrasferimento).ToList();
+                        //}
+
+
+                        var lTeorici =
+                        db.TEORICI.Where(
+                           a =>
+                               a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
+                               a.INSERIMENTOMANUALE == false && a.IDINDSISTLORDA == 87 &&
+                               (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
+                                a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
+                           .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
+                           .ToList();
 
                         ViewBag.idTrasferimento = idTrasferimento;
 
                         string Nominativo = tm.Dipendente.Nominativo;
+
+                        if (lTeorici?.Any() ?? false)
+                        {
+
+                            foreach (var teorico in lTeorici)
+                            {
+                                //var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
+                                //var ips = teorico.ELABINDSISTEMAZIONE.IDINDSISTLORDA;
+                                var voce = teorico.VOCI;
+                                var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+                                var tv = teorico.VOCI.TIPOVOCE;
+                                
+
+                                lrvm = (from e in lTeorici
+                                        select new RiepiloVociModel()
+                                        {
+                                            dataOperazione = teorico.DATAOPERAZIONE,
+                                            importo = teorico.IMPORTO,
+                                            descrizione = teorico.VOCI.DESCRIZIONE,
+                                            TipoLiquidazione = new TipoLiquidazioneModel()
+                                            {
+                                                idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                                descrizione = tl.DESCRIZIONE
+                                            },
+                                            TipoVoce = new TipoVoceModel()
+                                            {
+                                                idTipoVoce = tv.IDTIPOVOCE,
+                                                descrizione = tv.DESCRIZIONE
+                                            },
+                                        }).ToList();
+
+                            }
+                        }
 
                         // ****************************************************************************
 
@@ -158,7 +203,7 @@ namespace NewISE.Controllers
                         reportViewer.Width = Unit.Percentage(100);
                         reportViewer.Height = Unit.Percentage(100);
                         
-                        var datasource = new ReportDataSource("DSRiepilogoVoci", lrvm.ToList());
+                        var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
                         reportViewer.Visible = true;
                         reportViewer.ProcessingMode = ProcessingMode.Local;
                         reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptRiepilogoVoci.rdlc";
@@ -170,7 +215,7 @@ namespace NewISE.Controllers
                         ReportParameter[] parameterValues = new ReportParameter[]
                         {
                             new ReportParameter ("Nominativo",Nominativo),
-                                    
+                            
                         };
 
                         reportViewer.LocalReport.SetParameters(parameterValues);

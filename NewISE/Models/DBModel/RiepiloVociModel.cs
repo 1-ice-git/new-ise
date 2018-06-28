@@ -17,6 +17,13 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "Voce")]
         public string descrizione { get; set; }
+
+        [Display(Name = "Ind. Sist. Lorda ")]
+        public string indPrimaSist { get; set; }
+
+        [Display(Name = "Ind. Sist. Lorda ")]
+        public string indSistLorda { get; set; }
+        
         public TipoLiquidazioneModel TipoLiquidazione { get; set; }
         public TipoVoceModel TipoVoce { get; set; }
 
