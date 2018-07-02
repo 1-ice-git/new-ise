@@ -204,6 +204,7 @@ namespace NewISE.Controllers
                                             },
                                         }).ToList();
 
+
                                 //DateTime dataOperazione = teorico.DATAOPERAZIONE;
                                 string descrizione = teorico.VOCI.DESCRIZIONE;
                                 string descrTipoVoce = tv.DESCRIZIONE;
