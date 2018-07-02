@@ -35,28 +35,22 @@ namespace NewISE.Models.DBModel.dtObj
                         var tep = t.TEPARTENZA;
                         var ter = t.TERIENTRO;
 
-                     
-                        //var lTeorici =
-                        //db.TEORICI.Where(
-                        //    a => 
-                        //        a.ANNULLATO == false && a.ELABORATO == true && a.IDINDSISTLORDA == 87 &&
-                        //        (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
-                        //         a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true))
-                        //    .OrderBy(a => a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
-                        //    .ToList();
 
                         var lTeorici =
-                        db.TEORICI.Where(
-                            a =>
-                                a.ANNULLATO == false && a.ELABORATO == true && 
-                                (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
-                                a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
-                                a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
-                                a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
-                                a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
-                            .OrderBy(a => a.ANNORIFERIMENTO)
-                            .ThenBy(a => a.MESERIFERIMENTO)
-                            .ToList();
+                        db.TEORICI.ToList();
+
+                        //var lTeorici =
+                        //db.TEORICI.Where(
+                        //    a =>
+                        //        a.ANNULLATO == false && a.ELABORATO == true &&
+                        //        (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
+                        //        a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
+                        //        a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
+                        //        a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
+                        //        a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
+                        //    .OrderBy(a => a.ANNORIFERIMENTO)
+                        //    .ThenBy(a => a.MESERIFERIMENTO)
+                        //    .ToList();
 
 
                         if (lTeorici?.Any() ?? false)

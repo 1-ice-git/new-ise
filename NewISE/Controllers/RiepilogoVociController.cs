@@ -134,6 +134,7 @@ namespace NewISE.Controllers
         {
             List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
             RiepiloVociModel lrvm1 = new RiepiloVociModel();
+            
 
             try
             {
@@ -152,22 +153,27 @@ namespace NewISE.Controllers
                         var tep = t.TEPARTENZA;
                         var ter = t.TERIENTRO;
 
+
+                        //var lTeorici =
+                        //db.TEORICI.Where(
+                        //    a =>
+                        //        a.ANNULLATO == false && a.ELABORATO == true &&
+                        //        (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
+                        //        a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
+                        //        a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
+                        //        a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
+                        //        a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
+                        //    .OrderBy(a => a.ANNORIFERIMENTO)
+                        //    .ThenBy(a => a.MESERIFERIMENTO)
+                        //    .ToList();
+
                         var lTeorici =
-                        db.TEORICI.Where(
-                            a =>
-                                a.ANNULLATO == false && a.ELABORATO == true &&
-                                (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
-                                a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
-                                a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
-                                a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
-                                a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
-                            .OrderBy(a => a.ANNORIFERIMENTO)
-                            .ThenBy(a => a.MESERIFERIMENTO)
-                            .ToList();
+                         db.TEORICI.ToList();
 
                         ViewBag.idTrasferimento = idTrasferimento;
 
                         string Nominativo = tm.Dipendente.Nominativo;
+                        
 
                         if (lTeorici?.Any() ?? false)
                         {
@@ -198,35 +204,41 @@ namespace NewISE.Controllers
                                             },
                                         }).ToList();
 
+                                //DateTime dataOperazione = teorico.DATAOPERAZIONE;
+                                string descrizione = teorico.VOCI.DESCRIZIONE;
+                                string descrTipoVoce = tv.DESCRIZIONE;
+
+                                ReportViewer reportViewer = new ReportViewer();
+
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+                                reportViewer.SizeToReportContent = true;
+                                reportViewer.Width = Unit.Percentage(100);
+                                reportViewer.Height = Unit.Percentage(100);
+
+                                var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                                reportViewer.Visible = true;
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptRiepilogoVoci.rdlc";
+                                reportViewer.LocalReport.DataSources.Clear();
+                                reportViewer.LocalReport.DataSources.Add(datasource);
+
+                                reportViewer.LocalReport.Refresh();
+
+                                ReportParameter[] parameterValues = new ReportParameter[]
+                                {
+                                    new ReportParameter ("Nominativo",Nominativo),
+                                    new ReportParameter ("descrizione",descrizione),
+                                    new ReportParameter ("descrTipoVoce",descrTipoVoce),
+                                };
+
+                                reportViewer.LocalReport.SetParameters(parameterValues);
+                                ViewBag.ReportViewer = reportViewer;
                             }
                         }
-
-                        // ****************************************************************************
-
-                        ReportViewer reportViewer = new ReportViewer();
-
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
-                        
-                        var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptRiepilogoVoci.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        reportViewer.LocalReport.DataSources.Add(datasource);
-                                
-                        reportViewer.LocalReport.Refresh();
-
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                        else
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            
-                        };
-
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
+                            throw new Exception("Nessun Dato Presente");
+                        }
                         
                     }
                 }
