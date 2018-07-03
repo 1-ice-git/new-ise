@@ -14,12 +14,6 @@ namespace NewISE.EF
     
     public partial class TEORICI
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TEORICI()
-        {
-            this.OA = new HashSet<OA>();
-        }
-    
         public decimal IDTEORICI { get; set; }
         public Nullable<decimal> IDINDSISTLORDA { get; set; }
         public decimal IDTIPOMOVIMENTO { get; set; }
@@ -37,15 +31,16 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
         public decimal IMPORTO { get; set; }
         public bool ELABORATO { get; set; }
+        public Nullable<decimal> IDELABINDRICHIAMO { get; set; }
     
         public virtual ELABINDENNITA ELABINDENNITA { get; set; }
+        public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
         public virtual ELABMAB ELABMAB { get; set; }
         public virtual ELABTRASPEFFETTI ELABTRASPEFFETTI { get; set; }
         public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
         public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OA> OA { get; set; }
+        public virtual OA OA { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
         public virtual VOCI VOCI { get; set; }
     }

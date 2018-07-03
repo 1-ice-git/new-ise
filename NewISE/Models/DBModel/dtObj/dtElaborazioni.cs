@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Web;
@@ -52,8 +53,13 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void InviaFlussiDirettiContabilita()
+        public void InviaFlussiDirettiContabilita(decimal idMeseAnnoElaborato)
         {
+            const int operazione99 = 99;
+
+
+            List<OA> loa = new List<OA>();
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
@@ -63,7 +69,8 @@ namespace NewISE.Models.DBModel.dtObj
                     var lTeorici =
                         db.TEORICI.Where(
                             a =>
-                                a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true && a.OA.Count <= 0 &&
+                                a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true && a.ELABORATO == false &&
+                                a.IDMESEANNOELAB == idMeseAnnoElaborato &&
                                 a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)
                             .OrderBy(a => a.ANNORIFERIMENTO)
                             .ThenBy(a => a.MESERIFERIMENTO)
@@ -71,7 +78,126 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (lTeorici?.Any() ?? false)
                     {
+                        #region Prima sistemazione
 
+                        var ltps = lTeorici.Where(a => a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0).ToList();
+
+                        if (ltps?.Any() ?? false)
+                        {
+                            foreach (var tps in ltps)
+                            {
+                                var eis = tps.ELABINDSISTEMAZIONE;
+                                //var ps = eis.PRIMASITEMAZIONE;
+                                var trasferimento = eis.PRIMASITEMAZIONE.TRASFERIMENTO;
+                                var dip = trasferimento.DIPENDENTI;
+                                var liv = eis.LIVELLI;
+                                var ufficio = trasferimento.UFFICI;
+                                var voce = tps.VOCI;
+                                char delimitatore = Convert.ToChar("-");
+
+                                string anticipoSaldoUnicaSoluzione = string.Empty;
+                                string tipoMovimento = string.Empty;
+                                //string tipoMovimentoRif = string.Empty;
+                                decimal importoRif = 0;
+
+                                string numeroDoc = string.Empty;
+                                string numeroDocRif = string.Empty;
+
+                                TEORICI teoricoAnticipoRif = new TEORICI();
+                                OA oaRif = new OA();
+
+
+                                string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
+                                decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
+
+
+
+                                if (tps.ELABINDSISTEMAZIONE.ANTICIPO == true)
+                                {
+                                    anticipoSaldoUnicaSoluzione = " - Anticipo";
+                                    tipoMovimento = "A";
+                                }
+                                else if (tps.ELABINDSISTEMAZIONE.SALDO == true)
+                                {
+                                    anticipoSaldoUnicaSoluzione = " - Saldo";
+                                    tipoMovimento = "S";
+
+                                    var lteoriciAnticipi =
+                                        db.TEORICI.Where(
+                                            a =>
+                                                a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true &&
+                                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                                a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
+                                                a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE ==
+                                                tps.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
+                                            .OrderBy(a => a.ANNORIFERIMENTO)
+                                            .ThenBy(a => a.MESERIFERIMENTO)
+                                            .ToList();
+
+                                    if (lteoriciAnticipi?.Any() ?? false)
+                                    {
+                                        teoricoAnticipoRif = lteoriciAnticipi.First();
+                                        oaRif = teoricoAnticipoRif.OA;
+                                    }
+
+                                }
+                                else if (tps.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true)
+                                {
+                                    anticipoSaldoUnicaSoluzione = " - Unica soluzione";
+                                    tipoMovimento = "U";
+                                }
+                                else
+                                {
+                                    throw new Exception("Errore nella fase di definizione dell'anticipo, saldo, unica soluzione.");
+                                }
+
+                                numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
+
+                                if (oaRif.IDTEORICI > 0)
+                                {
+                                    numeroDocRif = oaRif.CTB_NUM_DOC;
+                                    importoRif = oaRif.CTB_IMPORTO;
+
+                                    oaRif.CTB_NUM_DOC_RIF = numeroDoc;
+                                    oaRif.CTB_IMPORTO_RIF = tps.IMPORTO;
+                                }
+
+
+                                OA oa = new OA()
+                                {
+                                    IDTEORICI = tps.IDTEORICI,
+                                    CTB_ID_RECORD = idOA,
+                                    CTB_MATRICOLA = (short)dip.MATRICOLA,
+                                    CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
+                                    CTB_COD_SEDE = ufficio.CODICEUFFICIO,
+                                    CTB_TIPO_VOCE = tipoVoce,
+                                    CTB_TIPO_MOVIMENTO = tipoMovimento,
+                                    CTB_DESCRIZIONE = voce.DESCRIZIONE + anticipoSaldoUnicaSoluzione,
+                                    CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
+                                    CTB_DT_DECORRENZA = trasferimento.DATAPARTENZA,
+                                    CTB_DT_RIFERIMENTO = trasferimento.DATAPARTENZA,
+                                    CTB_DT_OPERAZIONE = DateTime.Now,
+                                    CTB_NUM_DOC = numeroDoc,
+                                    CTB_NUM_DOC_RIF = numeroDocRif,
+                                    CTB_IMPORTO = tps.IMPORTO,
+                                    CTB_IMPORTO_RIF = importoRif,
+                                    CTB_OPER_99 = operazione99.ToString()
+                                };
+
+
+                                db.OA.Add(oa);
+                                int i = db.SaveChanges();
+                                if (i > 0)
+                                {
+                                    tps.ELABORATO = true;
+                                    db.SaveChanges();
+                                }
+                            }
+
+
+                        }
+
+                        #endregion
                     }
 
 
@@ -253,6 +379,7 @@ namespace NewISE.Models.DBModel.dtObj
                             ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
                             {
                                 IDPRIMASISTEMAZIONE = ps.IDPRIMASISTEMAZIONE,
+                                IDLIVELLO = ci.Livello.IDLIVELLO,
                                 INDENNITABASE = ci.IndennitaDiBase,
                                 COEFFICENTESEDE = ci.CoefficienteDiSede,
                                 PERCENTUALEDISAGIO = ci.PercentualeDisagio,
@@ -405,7 +532,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
                                                 IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
-                                                IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
+                                                IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D,
                                                 IDMESEANNOELAB = mae.IdMeseAnnoElab,
                                                 MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                                 ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -463,6 +590,7 @@ namespace NewISE.Models.DBModel.dtObj
             ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
             {
                 IDPRIMASISTEMAZIONE = ps.IDPRIMASISTEMAZIONE,
+                IDLIVELLO = ci.Livello.IDLIVELLO,
                 INDENNITABASE = ci.IndennitaDiBase,
                 COEFFICENTESEDE = ci.CoefficienteDiSede,
                 PERCENTUALEDISAGIO = ci.PercentualeDisagio,
@@ -586,7 +714,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
                             IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
-                            IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
+                            IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D,
                             IDMESEANNOELAB = mae.IdMeseAnnoElab,
                             MESERIFERIMENTO = t.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -647,6 +775,7 @@ namespace NewISE.Models.DBModel.dtObj
                             ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
                             {
                                 IDPRIMASISTEMAZIONE = ps.IDPRIMASISTEMAZIONE,
+                                IDLIVELLO = ci.Livello.IDLIVELLO,
                                 INDENNITABASE = ci.IndennitaDiBase,
                                 COEFFICENTESEDE = ci.CoefficienteDiSede,
                                 PERCENTUALEDISAGIO = ci.PercentualeDisagio,
@@ -950,6 +1079,61 @@ namespace NewISE.Models.DBModel.dtObj
         #endregion
 
         #region Metodi privati
+
+        public string NumeroDoc(TRASFERIMENTO t, string tipoVoce, string tipoMovimento, decimal id)
+        {
+            string ret = string.Empty;
+            var dip = t.DIPENDENTI;
+            string nTrasf = string.Empty;
+
+
+
+            var lTrasf =
+                dip.TRASFERIMENTO.Where(
+                    a =>
+                        a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                        a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                    .OrderBy(a => a.DATAPARTENZA)
+                    .ToList();
+
+            if (lTrasf?.Any() ?? false)
+            {
+                for (int i = 0; i < lTrasf.Count(); i++)
+                {
+                    if (lTrasf[i].IDTRASFERIMENTO == t.IDTRASFERIMENTO)
+                    {
+                        nTrasf = (i + 1).ToString().PadLeft(2, Convert.ToChar("0"));
+                    }
+                }
+            }
+
+
+            ret = "ISE" + nTrasf + tipoVoce + tipoMovimento + id.ToString().PadLeft(6, Convert.ToChar(0));
+
+            return ret;
+        }
+
+
+
+
+        //        Public Function NumeroDoc(ByVal pNtrasf As Integer, _
+        //                          ByVal pTipoVoce As String, _
+        //                          ByVal pTipologiaMov As String, _
+        //                          ByVal pId As Long) As String
+        //   ' Costruisce il numero documento per il campo CTB_NUM_DOC per la tabella CONTABILITA.
+        //   Dim nTr As String
+
+        //   If Len(CStr(pNtrasf)) = 1 Then
+        //      nTr = "0" & CStr(pNtrasf)
+        //   Else
+        //      nTr = CStr(pNtrasf)
+        //   End If
+
+        //   NumeroDoc = "ISE" & nTr & pTipoVoce & pTipologiaMov & Format(pId, "000000")
+        //   'Debug.Print NumeroDoc, pId
+
+        //End Function
+
 
         private void CalcolaElaborazioneMensile(decimal IdDip, decimal idMeseAnnoElaborato, ModelDBISE db)
         {
@@ -1319,6 +1503,7 @@ namespace NewISE.Models.DBModel.dtObj
                             ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                             {
                                 IDTEPARTENZA = tePartenza.IDTEPARTENZA,
+                                IDLIVELLO = ci.Livello.IDLIVELLO,
                                 PERCENTUALEFK = ci.PercentualeFKMPartenza,
                                 PERCENTUALEANTICIPOSALDO = ci.PercentualeAnticipoTEPartenza,
                                 ANTICIPO = true,
@@ -1413,6 +1598,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                                     {
                                         IDTEPARTENZA = tePartenza.IDTEPARTENZA,
+                                        IDLIVELLO = ci.Livello.IDLIVELLO,
                                         PERCENTUALEFK = ci.PercentualeFKMPartenza,
                                         PERCENTUALEANTICIPOSALDO = ci.PercentualeSaldoTEPartenza,
                                         ANTICIPO = false,
@@ -1525,6 +1711,7 @@ namespace NewISE.Models.DBModel.dtObj
                             ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                             {
                                 IDTERIENTRO = teRientro.IDTERIENTRO,
+                                IDLIVELLO = ci.Livello.IDLIVELLO,
                                 PERCENTUALEFK = ci.PercentualeFKMRientro,
                                 PERCENTUALEANTICIPOSALDO = ci.PercentualeAnticipoTERientro,
                                 ANTICIPO = true,
@@ -1619,6 +1806,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                                     {
                                         IDTERIENTRO = teRientro.IDTERIENTRO,
+                                        IDLIVELLO = ci.Livello.IDLIVELLO,
                                         PERCENTUALEFK = ci.PercentualeFKMRientro,
                                         PERCENTUALEANTICIPOSALDO = ci.PercentualeSaldoTERientro,
                                         ANTICIPO = false,
@@ -2026,6 +2214,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     ELABINDENNITA ei = new ELABINDENNITA()
                                     {
                                         IDTRASFINDENNITA = trasferimento.IDTRASFERIMENTO,
+                                        IDLIVELLO = ci.Livello.IDLIVELLO,
                                         INDENNITABASE = ci.IndennitaDiBase,
                                         COEFFICENTESEDE = ci.CoefficienteDiSede,
                                         PERCENTUALEDISAGIO = ci.PercentualeDisagio,
@@ -2588,6 +2777,40 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        //private void ProvaLettura(TRASFERIMENTO tr)
+        //{
+        //    var ps = tr.PRIMASITEMAZIONE;
+        //    var ind = tr.INDENNITA;
+        //    var mab = ind.MAGGIORAZIONEABITAZIONE;
+        //    var tep = tr.TEPARTENZA;
+        //    var ter = tr.TERIENTRO;
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        var lt =
+        //            db.TEORICI.Where(
+        //                a =>
+        //                    a.ANNULLATO == false && a.ELABORATO == true &&
+        //                    (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
+        //                     a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
+        //                     a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
+        //                     a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
+        //                     a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
+        //                .OrderBy(a => a.ANNORIFERIMENTO)
+        //                .ThenBy(a => a.MESERIFERIMENTO)
+        //                .ThenBy(a => a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe)
+        //                .ToList();
+
+        //        foreach (var t in lt)
+        //        {
+        //            var voce = t.VOCI.DESCRIZIONE;
+        //            //var dataElaborato = t.OA.
+        //        }
+
+
+
+        //    }
+        //}
 
         #endregion
 

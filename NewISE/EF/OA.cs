@@ -14,8 +14,8 @@ namespace NewISE.EF
     
     public partial class OA
     {
-        public decimal CTB_ID_RECORD { get; set; }
         public decimal IDTEORICI { get; set; }
+        public decimal CTB_ID_RECORD { get; set; }
         public short CTB_MATRICOLA { get; set; }
         public string CTB_QUALIFICA { get; set; }
         public string CTB_COD_SEDE { get; set; }
@@ -23,13 +23,18 @@ namespace NewISE.EF
         public string CTB_TIPO_MOVIMENTO { get; set; }
         public string CTB_DESCRIZIONE { get; set; }
         public string CTB_COAN { get; set; }
+        public System.DateTime CTB_DT_DECORRENZA { get; set; }
+        public System.DateTime CTB_DT_RIFERIMENTO { get; set; }
+        public System.DateTime CTB_DT_OPERAZIONE { get; set; }
+        public Nullable<System.DateTime> CTB_DT_CONTABILE { get; set; }
         public string CTB_NUM_DOC { get; set; }
+        public string CTB_NUM_DOC_RIF { get; set; }
         public decimal CTB_IMPORTO { get; set; }
+        public decimal CTB_IMPORTO_RIF { get; set; }
         public string CTB_OPER_99 { get; set; }
         public Nullable<System.DateTime> CTB_DTINI_MAB { get; set; }
         public Nullable<System.DateTime> CTB_DTFIN_MAB { get; set; }
         public Nullable<short> CTB_GIORNI_MAB { get; set; }
-        public Nullable<System.DateTime> CTB_DT_CONTABILE { get; set; }
     
         public virtual TEORICI TEORICI { get; set; }
     }

@@ -208,7 +208,7 @@ namespace NewISE.Controllers
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-                    dte.InviaFlussiDirettiContabilita();
+                    dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato);
                 }
             }
             catch (Exception ex)
