@@ -6037,6 +6037,7 @@
     <Content Include="Views\RiepilogoVoci\RptRiepilogoVoci.cshtml" />
     <Content Include="Views\RiepilogoVoci\ReportViewer.cshtml" />
     <Content Include="Views\Elaborazioni\PulsantiInvioElaborazione.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitaServizio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6151,6 +6152,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitaServizio.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

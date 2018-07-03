@@ -83,7 +83,6 @@
             <div class="modal-body">
                 <div id="divRiepilogoVoci">
                     @*@Html.Action("RptRiepilogoVoci", "RiepilogoVoci")*@
-                    
                     @Html.Action("RptRiepilogoVoci", "RiepilogoVoci", new { idTrasferimento = idTrasferimento })
                     @*@Ajax.ActionLink("Riepilogo Voci", "RptRiepilogoVoci", "RiepilogoVoci", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })*@
                 </div>

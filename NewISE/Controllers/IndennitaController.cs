@@ -333,9 +333,53 @@ namespace NewISE.Controllers
             }
 
         }
-        public ActionResult RptIndennitaServizio()
+        public ActionResult RptIndennitaServizio(decimal idTrasferimento)
         {
-            return View();
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    ViewBag.idTrasferimento = idTrasferimento;
+
+                    string Nominativo = tm.Dipendente.Nominativo;
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                    reportViewer.LocalReport.Refresh();
+                    reportViewer.ShowReportBody = true;
+
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                    {
+                        new ReportParameter ("Nominativo",Nominativo)
+                    };
+
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptIndennitaServizio");
         }
 
         // Maggiorazioni Familiari + Report di Stampa

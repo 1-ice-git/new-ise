@@ -97,7 +97,8 @@
             </div>
             <div class="modal-body">
                 <div id="divViewIndennitaServizio">
-               
+                    @*@Html.Action("RptIndennitaServizio", "Indennita", new { idTrasferimento = idTrasferimento })*@
+                    @Html.Action("RptIndennitaServizio", "Indennita")
                 </div>
             </div>
             <div class="modal-footer">
@@ -156,7 +157,7 @@
 
 
      function RptIndennitaServizio() {
-         //debugger;
+         debugger;
          var rotta = "/Indennita/RptIndennitaServizio";
 
          var idTrasferimento = 0;
