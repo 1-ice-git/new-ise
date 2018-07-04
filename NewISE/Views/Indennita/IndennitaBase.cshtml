@@ -19,6 +19,8 @@
     </div>
 </div>*@
 
+<div id="dialog" title=""></div>
+
 <div class="row">
     <div class="col-md-12">
         <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
@@ -120,7 +122,12 @@
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
        
-        <button class="btn btn-default btn-sm" onclick="DownloadReport();">
+        @*<button class="btn btn-default btn-sm" onclick="DownloadReport();">
+            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+            Stampa
+        </button>*@
+
+        <button class="btn btn-default btn-sm" id="opener">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
             Stampa
         </button>
@@ -139,7 +146,7 @@
             </div>
             <div class="modal-body">
                 <div id="divPViewIndennita1">
-                    @Html.Action("RptIndennitaBase", "Indennita")
+                    @*@Html.Action("RptIndennitaBase", "Indennita")*@
                 </div>
             </div>
             <div class="modal-footer">
@@ -207,7 +214,71 @@
 
          window.location.href = "/Indennita/RptIndennitaBase?idTrasferimento=" + idTrasferimento;
          target = "_blank";
-    };
+     };
+
+     var windowWidth = $(window).width();
+     var windowHeight = $(window).height();
+
+     $(function () {
+         $("#dialog").dialog({
+             autoOpen: false,
+             show: {
+                 //effect: "blind",
+                 //duration: 1000
+             },
+             hide: {
+                 //effect: "explode",
+                 //duration: 1000
+             },
+             close: function (event, ui) {
+                 $('.container').removeClass("NoOverflow");
+             },
+             height: windowHeight, width: windowWidth
+
+
+         });
+
+         $("#opener").on("click", function () {
+             $('.container').addClass("NoOverflow");
+
+             $("#dialog").dialog("open");
+             $("#dialog").css("background-color", "#ffffff");
+
+             var rotta = "/Indennita/RptIndennitaBase";
+
+             var idTrasferimento = $("#hidTrasferimento").val();
+
+
+             $.ajax({
+                 type: "POST",
+                 url: rotta,
+                 data: { idTrasferimento: idTrasferimento },
+                 dataType: 'html',
+                 beforeSend: function () {
+                     //debugger;
+                     $("#dialog").empty();
+
+                 },
+                 success: function (result) {
+                     //debugger;
+                     $("#dialog").html(result);
+
+
+                 },
+                 complete: function () {
+                     //$("#divEffettoLoadAutNoDoc").hide("slow");
+                     //                $("#Centro").getNiceScroll().resize();
+                 },
+                 error: function (jqXHR, textStatus, errorThrow) {
+                     //debugger;
+                     var msg = errorThrow.err;
+                     AlertDialog(msg);
+                 }
+
+             });
+
+         });
+     });
 
      function RptIndennitaBase() {
          debugger;
