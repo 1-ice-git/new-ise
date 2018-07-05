@@ -293,14 +293,16 @@ namespace NewISE.Controllers
         // Indennità di Servizio + Report di Stampa
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            //List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
-
+            List<IndennitaServizioModel> lism = new List<IndennitaServizioModel>();
+            
             try
             {
                 using (dtIndennitaServizio dtd = new dtIndennitaServizio())
                 {
-                    libm = dtd.GetIndennitaServizio(idTrasferimento).ToList();
+                    //libm = dtd.GetIndennitaServizio(idTrasferimento).ToList();
+                    lism = dtd.GetIndennitaServizio2(idTrasferimento).ToList();
                 }
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -325,7 +327,7 @@ namespace NewISE.Controllers
                 ViewBag.idTrasferimento = idTrasferimento;
 
 
-                return PartialView(libm);
+                return PartialView(lism);
             }
             catch (Exception ex)
             {

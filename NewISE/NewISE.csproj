@@ -5562,6 +5562,7 @@
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\AnticipoAnnualeMABModel.cs" />
+    <Compile Include="Models\DBModel\IndennitaServizioModel.cs" />
     <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
