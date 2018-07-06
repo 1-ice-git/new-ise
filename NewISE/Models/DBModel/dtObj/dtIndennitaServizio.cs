@@ -265,6 +265,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 var pd = new IndennitaServizioModel
                                 {
+                                    
                                     IndennitaBase = ci.IndennitaDiBase,
                                     percentuale = ci.PercentualeDisagio,
                                     valore = ci.CoefficienteDiSede,

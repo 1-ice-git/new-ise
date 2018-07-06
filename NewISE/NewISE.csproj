@@ -5248,6 +5248,7 @@
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtEvoluzioneIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaPersonale.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
@@ -5560,8 +5561,10 @@
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
+    <Compile Include="Models\DBModel\dtVariazioneIndennita.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\AnticipoAnnualeMABModel.cs" />
+    <Compile Include="Models\DBModel\EvoluzioneIndennitaModel.cs" />
     <Compile Include="Models\DBModel\IndennitaServizioModel.cs" />
     <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
