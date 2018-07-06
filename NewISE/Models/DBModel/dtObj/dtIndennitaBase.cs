@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Models.dtObj.ModelliCalcolo;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -93,57 +94,128 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
-        public IList<IndennitaBaseModel> GetIndennitaBaseComune(decimal idTrasferimento)
+        public IList<EvoluzioneIndennitaModel> GetIndennitaBaseComune(decimal idTrasferimento)
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
-                {   
-                    //var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
-                    var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                {
+
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var indennita = trasferimento.INDENNITA;
+
+                    List<DateTime> lDateVariazioni = new List<DateTime>();
+                                        
+                    var ll = 
+                        db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
+                        .Where(a => a.ANNULLATO == false)
+                        .OrderBy(a => a.IDLIVELLO)
+                        .ThenBy(a => a.DATAINIZIOVALIDITA)
+                        .ThenBy(a => a.DATAFINEVALIDITA)
+                        .ToList();
                     
                     using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                     {   
                         RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
 
-                        using (dtTrasferimento dttrasf = new dtTrasferimento())
-                        {
-                            dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
-
-                            libm = (from e in ll
-                                select new IndennitaBaseModel()
+                                using (dtTrasferimento dttrasf = new dtTrasferimento())
                                 {
-                                    idIndennitaBase = e.IDINDENNITABASE,
-                                    idLivello = e.IDLIVELLO,
-                                    dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                    dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                    valore = e.VALORE,
-                                    valoreResponsabile = e.VALORERESP,
-                                    dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                    annullato = e.ANNULLATO,
-                                    Livello = new LivelloModel()
-                                    {
-                                        idLivello = e.LIVELLI.IDLIVELLO,
-                                        DescLivello = e.LIVELLI.LIVELLO
-                                    }, 
-                                    RuoloUfficio = new RuoloUfficioModel()
-                                    {
-                                        idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
-                                        DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
-                                    },
-                                    dipInfoTrasferimento = new dipInfoTrasferimentoModel
-                                    {
-                                        Decorrenza = dipInfoTrasf.Decorrenza,
-                                        indennitaServizio = dipInfoTrasf.indennitaServizio
+                                    dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
 
+                                    eim = (from e in ll
+                                        select new EvoluzioneIndennitaModel()
+                                        {
+                                            idIndennitaBase = e.IDINDENNITABASE,
+                                            idLivello = e.IDLIVELLO,
+                                            dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                            valore = e.VALORE,
+                                            valoreResponsabile = e.VALORERESP,
+                                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                            annullato = e.ANNULLATO,
+                                            Livello = new LivelloModel()
+                                            {
+                                                idLivello = e.LIVELLI.IDLIVELLO,
+                                                DescLivello = e.LIVELLI.LIVELLO
+                                            }, 
+                                            RuoloUfficio = new RuoloUfficioModel()
+                                            {
+                                                idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
+                                                DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
+                                            },
+                                            dipInfoTrasferimento = new dipInfoTrasferimentoModel
+                                            {
+                                                Decorrenza = dipInfoTrasf.Decorrenza,
+                                                indennitaServizio = dipInfoTrasf.indennitaServizio
+
+                                            }
+
+                                        }).ToList();
+
+                            foreach (var ib in ll)
+                            {
+                                DateTime dtVar = new DateTime();
+
+                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = ib.DATAINIZIOVALIDITA;
+                                }
+
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                }
+                            }
+
+                            if (lDateVariazioni?.Any() ?? false)
+                            {
+                                lDateVariazioni =
+                                    lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
+
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
+
+                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    {
+
+
+                                        var pd = new EvoluzioneIndennitaModel
+                                        {
+
+                                            IndennitaBase = ci.IndennitaDiBase,
+                                            percentuale = ci.PercentualeDisagio,
+                                            //valore = ci.CoefficienteDiSede,
+                                            Coefficiente = ci.CoefficienteDiSede,
+                                            IndennitaServizio = ci.IndennitaDiServizio
+                                        };
+
+
+
+
+                                        eim.Add(pd);
                                     }
+                                }
+                            }
 
-                                }).ToList();
+
+
+                        }
+
+                        
+
+
+
                     }
-                    }
-                    return libm;
+                    
+                    return eim;
                 }
             }
             catch (Exception ex)

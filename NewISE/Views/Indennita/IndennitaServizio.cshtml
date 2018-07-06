@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaServizioModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
 <link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
 @{
@@ -36,7 +36,7 @@
                 @Html.DisplayNameFor(model => model.IndennitaBase)
             </th>
             <th class="text-center">
-               @Html.DisplayNameFor(model => model.valore)
+               @Html.DisplayNameFor(model => model.Coefficiente)
             </th>
             <th class="text-center">
                @Html.DisplayNameFor(model => model.percentuale)
@@ -61,7 +61,7 @@
                     @Html.DisplayFor(modelItem => item.IndennitaBase)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.valore)
+                    @Html.DisplayFor(modelItem => item.Coefficiente)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.percentuale)

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
 @using NewISE.Models.Enumeratori
 
 <link href="~/Views/Content/NoScroller.css" rel="stylesheet" />
@@ -51,7 +51,7 @@
             @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
             {
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.valore)
+                    @Html.DisplayNameFor(model => model.IndennitaBase)
                 </th>
             }
             else
@@ -63,7 +63,8 @@
             {
 
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.valoreResponsabile)
+                    @*@Html.DisplayNameFor(model => model.valoreResponsabile)*@
+                    @Html.DisplayNameFor(model => model.IndennitaBase)
                 </th>
             }
             else
@@ -93,7 +94,7 @@
                     @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
                     {
                         <td style="text-align:center;">
-                            @Html.DisplayFor(modelItem => item.valore)
+                            @Html.DisplayFor(modelItem => item.IndennitaBase)
                         </td>
                     }
                     else
@@ -106,7 +107,7 @@
                     @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Dirigente || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Responsabile)
                     {
                         <td style="text-align:center;">
-                            @Html.DisplayFor(modelItem => item.valoreResponsabile)
+                            @Html.DisplayFor(modelItem => item.IndennitaBase)
                         </td>
                         
                     }

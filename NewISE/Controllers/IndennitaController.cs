@@ -116,17 +116,25 @@ namespace NewISE.Controllers
         // Indennità Base + Report di Stampa
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            //List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
             
 
             try
             {
-                using (dtIndennitaBase dtd = new dtIndennitaBase())
-                {
-                    libm = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
-                }
 
+                // da testare
+                //using (dtIndennitaBase dtd = new dtIndennitaBase())
+                //{
+                //    eim = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
+                //}
+
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+                }
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -151,7 +159,7 @@ namespace NewISE.Controllers
                 
                 ViewBag.idTrasferimento = idTrasferimento;
                 
-                return PartialView(libm);
+                return PartialView(eim);
             }
             catch (Exception ex)
             {
@@ -294,16 +302,25 @@ namespace NewISE.Controllers
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
             //List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
-            List<IndennitaServizioModel> lism = new List<IndennitaServizioModel>();
+            //List<IndennitaServizioModel> lism = new List<IndennitaServizioModel>();
             
+
             try
             {
-                using (dtIndennitaServizio dtd = new dtIndennitaServizio())
+                //using (dtIndennitaServizio dtd = new dtIndennitaServizio())
+                //{
+                //    //libm = dtd.GetIndennitaServizio(idTrasferimento).ToList();
+                //    lism = dtd.GetIndennitaServizio2(idTrasferimento).ToList();
+                //}
+
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
-                    //libm = dtd.GetIndennitaServizio(idTrasferimento).ToList();
-                    lism = dtd.GetIndennitaServizio2(idTrasferimento).ToList();
+                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+
                 }
+                
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -327,7 +344,7 @@ namespace NewISE.Controllers
                 ViewBag.idTrasferimento = idTrasferimento;
 
 
-                return PartialView(lism);
+                return PartialView(eim);
             }
             catch (Exception ex)
             {
@@ -387,33 +404,96 @@ namespace NewISE.Controllers
         // Maggiorazioni Familiari + Report di Stampa
         public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
         {
-            List<ConiugeModel> ListaConiuge = new List<ConiugeModel>();
-            List<FigliModel> ListaFigli = new List<FigliModel>();
-
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
 
             try
             {
 
-                using (dtMaggiorazioniFamiliari dtd = new dtMaggiorazioniFamiliari())
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
-                    //ListaConiuge = dtd.GetMaggiorazioniFamiliaribyConiuge(idTrasferimento).ToList();
+                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+
                 }
 
 
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                    {
+                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
 
-                return PartialView();
+                    }
+
+                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
+                    {
+                        dit.indennitaBase = ci.IndennitaDiBase;
+                        dit.indennitaServizio = ci.IndennitaDiServizio;
+                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                        dit.indennitaPersonale = ci.IndennitaPersonale;
+                    }
+                }
+                ViewBag.idTrasferimento = idTrasferimento;
+
+
+                return PartialView(eim);
             }
-
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-
         }
-        public ActionResult RptMaggiorazioniFamiliari()
+        public ActionResult RptMaggiorazioniFamiliari(decimal idTrasferimento)
         {
-            return View();
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    ViewBag.idTrasferimento = idTrasferimento;
+
+                    string Nominativo = tm.Dipendente.Nominativo;
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                    reportViewer.LocalReport.Refresh();
+                    reportViewer.ShowReportBody = true;
+
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                    {
+                        new ReportParameter ("Nominativo",Nominativo)
+                    };
+
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptMaggiorazioniFamiliari");
         }
 
         // Indennità Personale + Report di Stampa
@@ -461,25 +541,96 @@ namespace NewISE.Controllers
         // Maggiorazione Abitazione + Report di Stampa
         public ActionResult MaggiorazioneAbitazione(decimal idTrasferimento)
         {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
 
             try
             {
 
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
 
-                return PartialView();
+                }
+
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                    {
+                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+
+                    }
+
+                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
+                    {
+                        dit.indennitaBase = ci.IndennitaDiBase;
+                        dit.indennitaServizio = ci.IndennitaDiServizio;
+                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                        dit.indennitaPersonale = ci.IndennitaPersonale;
+                    }
+                }
+                ViewBag.idTrasferimento = idTrasferimento;
+
+
+                return PartialView(eim);
             }
-
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-
         }
-
-        public ActionResult RptMaggiorazioneAbitazione()
+        public ActionResult RptMaggiorazioneAbitazione(decimal idTrasferimento)
         {
-            return View();
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    ViewBag.idTrasferimento = idTrasferimento;
+
+                    string Nominativo = tm.Dipendente.Nominativo;
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                    reportViewer.LocalReport.Refresh();
+                    reportViewer.ShowReportBody = true;
+
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                    {
+                        new ReportParameter ("Nominativo",Nominativo)
+                    };
+
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptMaggiorazioneAbitazione");
         }
 
         // Indennita di Prima Sistemazione + Report di Stampa
@@ -518,34 +669,104 @@ namespace NewISE.Controllers
 
 
         }
-
-        public ActionResult RptIndennitaPrimaSistemazione()
+        public ActionResult RptIndennitaPrimaSistemazione(decimal idTrasferimento)
         {
             return View();
         }
 
         // Indennita di Richiamo + Report di Stampa
         public ActionResult IndennitadiRichiamo(decimal idTrasferimento)
-        {
-
+        {   
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
+         
             try
             {
+                
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+
+                }
 
 
-                return PartialView();
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                    {
+                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+
+                    }
+
+                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
+                    {
+                        dit.indennitaBase = ci.IndennitaDiBase;
+                        dit.indennitaServizio = ci.IndennitaDiServizio;
+                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                        dit.indennitaPersonale = ci.IndennitaPersonale;
+                    }
+                }
+                ViewBag.idTrasferimento = idTrasferimento;
+
+
+                return PartialView(eim);
             }
-
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-
         }
-
-        public ActionResult RptIndennitadiRichiamo()
+        public ActionResult RptIndennitadiRichiamo(decimal idTrasferimento)
         {
-            return View();
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    ViewBag.idTrasferimento = idTrasferimento;
+
+                    string Nominativo = tm.Dipendente.Nominativo;
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiRichiamo.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                    reportViewer.LocalReport.Refresh();
+                    reportViewer.ShowReportBody = true;
+
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                    {
+                        new ReportParameter ("Nominativo",Nominativo)
+                    };
+
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptIndennitadiRichiamo");
         }
     }
 }

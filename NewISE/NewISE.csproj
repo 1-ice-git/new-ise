@@ -6042,6 +6042,9 @@
     <Content Include="Views\RiepilogoVoci\ReportViewer.cshtml" />
     <Content Include="Views\Elaborazioni\PulsantiInvioElaborazione.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaServizio.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitadiRichiamo.cshtml" />
+    <Content Include="Views\Indennita\RptMaggiorazioneAbitazione.cshtml" />
+    <Content Include="Views\Indennita\RptMaggiorazioniFamiliari.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6156,7 +6159,10 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitadiRichiamo.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaServizio.rdlc" />
+    <EmbeddedResource Include="Report\RptMaggiorazioneAbitazione.rdlc" />
+    <EmbeddedResource Include="Report\RptMaggiorazioniFamiliari.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

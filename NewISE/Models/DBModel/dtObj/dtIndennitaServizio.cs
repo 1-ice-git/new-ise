@@ -25,9 +25,6 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-
-
-
                     using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
                     {
                         CoefficientiSedeModel csm = dtcs.GetCoefficenteSedeByIdTrasferimento(idTrasferimento);
