@@ -1,5 +1,6 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
-
+﻿
+@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 @{
 
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
@@ -7,6 +8,7 @@
 }
 
 @Html.Hidden("hidTrasferimento")
+<div id="dialog" title=""></div>
 
 <div class="row">
     <div class="col-md-12">
@@ -25,17 +27,17 @@
         <tr>
 
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dipInfoTrasferimento.Decorrenza)
+                @*@Html.DisplayNameFor(model => model.dipInfoTrasferimento.Decorrenza)*@
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataFineValidita)
+                @*@Html.DisplayNameFor(model => model.dataFineValidita)*@
             </th>
            
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dipInfoTrasferimento.indennitaPersonale)
+                @*@Html.DisplayNameFor(model => model.dipInfoTrasferimento.indennitaPersonale)*@
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dipInfoTrasferimento.coefficienteIndennitàSistemazione)
+                @*@Html.DisplayNameFor(model => model.dipInfoTrasferimento.coefficienteIndennitàSistemazione)*@
             </th>
         </tr>
     </thead>
@@ -45,16 +47,16 @@
             <tr>
 
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dipInfoTrasferimento.Decorrenza)
+                    @*@Html.DisplayFor(modelItem => item.dipInfoTrasferimento.Decorrenza)*@
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    @*@Html.DisplayFor(modelItem => item.dataFineValidita)*@
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dipInfoTrasferimento.indennitaPersonale)
+                    @*@Html.DisplayFor(modelItem => item.dipInfoTrasferimento.indennitaPersonale)*@
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dipInfoTrasferimento.coefficienteIndennitàSistemazione)
+                    @*@Html.DisplayFor(modelItem => item.dipInfoTrasferimento.coefficienteIndennitàSistemazione)*@
                 </td>
             </tr>
         }
@@ -64,7 +66,12 @@
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
 
-        <button class="btn btn-default btn-sm" onclick="DownloadReportIndennitaSistemazione();">
+        @*<button class="btn btn-default btn-sm" onclick="DownloadReportIndennitaSistemazione();">
+            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+            Stampa
+        </button>*@
+
+        <button class="btn btn-default btn-sm" id="opener">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
             Stampa
         </button>
@@ -140,10 +147,73 @@
 
     }
 
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
 
-    function RptIndennitaSistemazione() {
-         //debugger;
-         var rotta = "/Indennita/RptIndennitaSistemazione";
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            var rotta = "/Indennita/RptIndennitaPrimaSistemazione";
+
+            var idTrasferimento = $("#hidTrasferimento").val();
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+    function RptIndennitaPrimaSistemazione() {
+        debugger;
+        var rotta = "/Indennita/RptIndennitaPrimaSistemazione";
 
          var idTrasferimento = 0;
 

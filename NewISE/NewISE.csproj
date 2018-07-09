@@ -6045,6 +6045,8 @@
     <Content Include="Views\Indennita\RptIndennitadiRichiamo.cshtml" />
     <Content Include="Views\Indennita\RptMaggiorazioneAbitazione.cshtml" />
     <Content Include="Views\Indennita\RptMaggiorazioniFamiliari.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitaPersonale.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitaPrimaSistemazione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6160,6 +6162,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Report\RptIndennitadiRichiamo.rdlc" />
+    <EmbeddedResource Include="Report\RptIndennitaPersonale.rdlc" />
+    <EmbeddedResource Include="Report\RptIndennitaPrimaSistemazione.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaServizio.rdlc" />
     <EmbeddedResource Include="Report\RptMaggiorazioneAbitazione.rdlc" />
     <EmbeddedResource Include="Report\RptMaggiorazioniFamiliari.rdlc" />

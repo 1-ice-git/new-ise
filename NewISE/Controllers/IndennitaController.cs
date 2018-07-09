@@ -113,7 +113,8 @@ namespace NewISE.Controllers
             }
         }
 
-        // Indennità Base + Report di Stampa
+        #region Indennità Base + Report di Stampa
+        
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
             //List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
@@ -297,8 +298,9 @@ namespace NewISE.Controllers
             return PartialView("RptIndennitaBase");
 
         }
+        #endregion
 
-        // Indennità di Servizio + Report di Stampa
+        #region Indennità di Servizio + Report di Stampa
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
             //List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
@@ -400,8 +402,9 @@ namespace NewISE.Controllers
             }
             return PartialView("RptIndennitaServizio");
         }
+        #endregion
 
-        // Maggiorazioni Familiari + Report di Stampa
+        #region Maggiorazioni Familiari + Report di Stampa
         public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -495,8 +498,9 @@ namespace NewISE.Controllers
             }
             return PartialView("RptMaggiorazioniFamiliari");
         }
+        #endregion
 
-        // Indennità Personale + Report di Stampa
+        #region Indennità Personale + Report di Stampa
         public ActionResult IndennitaPersonale(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
@@ -533,12 +537,58 @@ namespace NewISE.Controllers
             }
 
         }
-        public ActionResult RptIndennitaPersonale()
+        public ActionResult RptIndennitaPersonale(decimal idTrasferimento)
         {
-            return View();
-        }
 
-        // Maggiorazione Abitazione + Report di Stampa
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    ViewBag.idTrasferimento = idTrasferimento;
+
+                    string Nominativo = tm.Dipendente.Nominativo;
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPersonale.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                    reportViewer.LocalReport.Refresh();
+                    reportViewer.ShowReportBody = true;
+
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                    {
+                        new ReportParameter ("Nominativo",Nominativo)
+                    };
+
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptIndennitaPersonale");
+        }
+        #endregion
+
+        #region Maggiorazione Abitazione + Report di Stampa
+
         public ActionResult MaggiorazioneAbitazione(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -632,49 +682,107 @@ namespace NewISE.Controllers
             }
             return PartialView("RptMaggiorazioneAbitazione");
         }
+        #endregion
 
-        // Indennita di Prima Sistemazione + Report di Stampa
+        #region Indennita di Prima Sistemazione + Report di Stampa
+
         public ActionResult IndennitaPrimaSistemazione(decimal idTrasferimento)
-        {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+        {   
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
-            List<IndennitaSistemazioneModel> lism = new List<IndennitaSistemazioneModel>();
-
+         
             try
             {
-                using (dtIndennitaPersonale dtd = new dtIndennitaPersonale())
+                
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
-                    libm = dtd.GetIndennitaPersonale(idTrasferimento).ToList();
+                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+
                 }
 
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                    {
+                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+
+                    }
 
                     using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
                     {
-                        dit.coefficienteIndennitàSistemazione = ci.CoefficienteIndennitaSistemazione;
-                        
+                        dit.indennitaBase = ci.IndennitaDiBase;
+                        dit.indennitaServizio = ci.IndennitaDiServizio;
+                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                        dit.indennitaPersonale = ci.IndennitaPersonale;
                     }
-
                 }
-                    return PartialView(libm);
-            }
+                ViewBag.idTrasferimento = idTrasferimento;
 
+
+                return PartialView(eim);
+            }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-
         }
         public ActionResult RptIndennitaPrimaSistemazione(decimal idTrasferimento)
         {
-            return View();
-        }
 
-        // Indennita di Richiamo + Report di Stampa
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    ViewBag.idTrasferimento = idTrasferimento;
+
+                    string Nominativo = tm.Dipendente.Nominativo;
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPrimaSistemazione.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                    reportViewer.LocalReport.Refresh();
+                    reportViewer.ShowReportBody = true;
+
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                    {
+                        new ReportParameter ("Nominativo",Nominativo)
+                    };
+
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptIndennitaPrimaSistemazione");
+        }
+        #endregion
+
+        #region Indennita di Richiamo + Report di Stampa
+
         public ActionResult IndennitadiRichiamo(decimal idTrasferimento)
         {   
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -768,5 +876,6 @@ namespace NewISE.Controllers
             }
             return PartialView("RptIndennitadiRichiamo");
         }
+        #endregion 
     }
 }
