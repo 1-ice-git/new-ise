@@ -474,7 +474,7 @@ namespace NewISE.Controllers
                     //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
                     reportViewer.Visible = true;
                     reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFamiliari.rdlc";
                     reportViewer.LocalReport.DataSources.Clear();
                     //reportViewer.LocalReport.DataSources.Add(datasource);
 

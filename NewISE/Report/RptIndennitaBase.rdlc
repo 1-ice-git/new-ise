@@ -274,7 +274,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>0.17639cm</Top>
+        <Top>0.20461cm</Top>
         <Left>0.32872cm</Left>
         <Height>1.82273cm</Height>
         <Width>23.86757cm</Width>
@@ -365,7 +365,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>2.77495cm</Top>
+        <Top>2.74849cm</Top>
         <Left>0.3175cm</Left>
         <Height>0.6cm</Height>
         <Width>3.29057cm</Width>
@@ -515,7 +515,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Top>2.77495cm</Top>
+        <Top>2.74849cm</Top>
         <Left>3.67863cm</Left>
         <Height>0.6cm</Height>
         <Width>4.11396cm</Width>
