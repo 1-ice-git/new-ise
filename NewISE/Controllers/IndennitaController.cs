@@ -222,6 +222,8 @@ namespace NewISE.Controllers
                                 string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
                                 string Livello = liv1.Livello.DescLivello;
                                 string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                                string Ufficio = tm.Ufficio.descUfficio;
+
 
 
                                 libm = (from e in ll
@@ -277,7 +279,9 @@ namespace NewISE.Controllers
                                     new ReportParameter ("Nominativo",Nominativo),
                                     new ReportParameter ("Ruolo",Ruolo),
                                     new ReportParameter ("Livello",Livello),
-                                    new ReportParameter ("Decorrenza",Decorrenza)
+                                    new ReportParameter ("Decorrenza",Decorrenza),
+                                    new ReportParameter ("Ufficio",Ufficio)
+                                    
                                 };
 
                                 reportViewer.LocalReport.SetParameters(parameterValues);
@@ -841,6 +845,8 @@ namespace NewISE.Controllers
                     ViewBag.idTrasferimento = idTrasferimento;
 
                     string Nominativo = tm.Dipendente.Nominativo;
+                    string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                    string Ufficio = tm.Ufficio.descUfficio;
 
                     ReportViewer reportViewer = new ReportViewer();
 
@@ -861,7 +867,10 @@ namespace NewISE.Controllers
 
                     ReportParameter[] parameterValues = new ReportParameter[]
                     {
-                        new ReportParameter ("Nominativo",Nominativo)
+                        new ReportParameter ("Nominativo",Nominativo),
+                        new ReportParameter ("Decorrenza",Decorrenza),
+                        new ReportParameter ("Ufficio",Ufficio)
+
                     };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);

@@ -419,7 +419,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Decorrenza</Value>
+                <Value>Data Inzio Trasferimento</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -429,10 +429,10 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>2.77495cm</Top>
+        <Top>2.74849cm</Top>
         <Left>13.81317cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.29057cm</Width>
+        <Width>5.52833cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -451,7 +451,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Ruolo</Value>
+                <Value>Ufficio</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -461,10 +461,10 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox14</rd:DefaultName>
-        <Top>3.81592cm</Top>
+        <Top>3.78946cm</Top>
         <Left>13.81317cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.29057cm</Width>
+        <Width>5.45777cm</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -537,7 +537,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Ruolo.Value</Value>
+                <Value>=Parameters!Ufficio.Value</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -545,8 +545,8 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>3.81592cm</Top>
-        <Left>17.10374cm</Left>
+        <Top>3.78946cm</Top>
+        <Left>19.44733cm</Left>
         <Height>0.6cm</Height>
         <Width>4.74896cm</Width>
         <ZIndex>10</ZIndex>
@@ -605,8 +605,8 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>2.77495cm</Top>
-        <Left>17.10374cm</Left>
+        <Top>2.74849cm</Top>
+        <Left>19.44733cm</Left>
         <Height>0.6cm</Height>
         <Width>4.74896cm</Width>
         <ZIndex>12</ZIndex>
@@ -796,11 +796,15 @@ Indennità Teorica * Coefficiente di riduzione</Value>
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="Decorrenza">
+    <ReportParameter Name="Livello">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="Livello">
+    <ReportParameter Name="Ufficio">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Decorrenza">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
