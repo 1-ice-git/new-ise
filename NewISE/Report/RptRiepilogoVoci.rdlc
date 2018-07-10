@@ -32,7 +32,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>0.38509cm</Top>
-        <Left>0.32872cm</Left>
+        <Left>0.44778cm</Left>
         <Height>1.82273cm</Height>
         <Width>23.25903cm</Width>
         <Style>
@@ -63,7 +63,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>3.01597cm</Top>
-        <Left>0.32872cm</Left>
+        <Left>0.44778cm</Left>
         <Height>0.6cm</Height>
         <Width>3.29057cm</Width>
         <ZIndex>1</ZIndex>
@@ -88,12 +88,14 @@
                 <Style />
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Left</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>3.01597cm</Top>
-        <Left>3.68985cm</Left>
+        <Left>3.80891cm</Left>
         <Height>0.6cm</Height>
         <Width>4.11396cm</Width>
         <ZIndex>2</ZIndex>
@@ -423,8 +425,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DSRiepilogoVoci</DataSetName>
-        <Top>5.07683cm</Top>
-        <Left>0.32872cm</Left>
+        <Top>5.606cm</Top>
+        <Left>0.44778cm</Left>
         <Height>1.2cm</Height>
         <Width>23.25903cm</Width>
         <ZIndex>3</ZIndex>
@@ -434,11 +436,201 @@
           </Border>
         </Style>
       </Tablix>
+      <Textbox Name="Textbox9">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Data Inzio Trasferimento</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox4</rd:DefaultName>
+        <Top>3.01597cm</Top>
+        <Left>13.32369cm</Left>
+        <Height>0.6cm</Height>
+        <Width>5.52833cm</Width>
+        <ZIndex>4</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox12">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!Decorrenza.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Left</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox11</rd:DefaultName>
+        <Top>3.01597cm</Top>
+        <Left>18.95785cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.74896cm</Width>
+        <ZIndex>5</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox15">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Ufficio</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox14</rd:DefaultName>
+        <Top>4.05694cm</Top>
+        <Left>13.32369cm</Left>
+        <Height>0.6cm</Height>
+        <Width>5.45777cm</Width>
+        <ZIndex>6</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox13">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!Ufficio.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Left</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox9</rd:DefaultName>
+        <Top>4.05694cm</Top>
+        <Left>18.95785cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.74896cm</Width>
+        <ZIndex>7</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox21">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Livello</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox21</rd:DefaultName>
+        <Top>4.05694cm</Top>
+        <Left>0.44778cm</Left>
+        <Height>0.6cm</Height>
+        <Width>3.29057cm</Width>
+        <ZIndex>8</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox23">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!Livello.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox23</rd:DefaultName>
+        <Top>4.05694cm</Top>
+        <Left>3.73835cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.18452cm</Width>
+        <ZIndex>9</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>3.02083in</Height>
+    <Height>3.04791in</Height>
     <Style />
   </Body>
-  <Width>9.43235in</Width>
+  <Width>9.5261in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -450,7 +642,7 @@
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.24094cm</Top>
-          <Left>0.32872cm</Left>
+          <Left>0.44778cm</Left>
           <Height>2.05811cm</Height>
           <Width>23.25903cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
@@ -472,6 +664,17 @@
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
+        <Line Name="Line2">
+          <Top>0.4572cm</Top>
+          <Left>0.44778cm</Left>
+          <Height>0cm</Height>
+          <Width>23.25903cm</Width>
+          <Style>
+            <Border>
+              <Style>Solid</Style>
+            </Border>
+          </Style>
+        </Line>
         <Textbox Name="Textbox22">
           <CanGrow>true</CanGrow>
           <KeepTogether>true</KeepTogether>
@@ -479,7 +682,14 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>Riepilogo Voci</Value>
+                  <Value>I</Value>
+                  <Style>
+                    <FontStyle>Italic</FontStyle>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+                <TextRun>
+                  <Value>ndennità di Servizio all'Estero</Value>
                   <Style>
                     <FontStyle>Italic</FontStyle>
                     <FontSize>9pt</FontSize>
@@ -493,10 +703,11 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox22</rd:DefaultName>
-          <Top>0.97cm</Top>
-          <Left>0.32872cm</Left>
+          <Top>1.15521cm</Top>
+          <Left>0.44778cm</Left>
           <Height>0.6cm</Height>
           <Width>23.25903cm</Width>
+          <ZIndex>1</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -626,6 +837,18 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="descrizione">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Decorrenza">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Ufficio">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Livello">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>

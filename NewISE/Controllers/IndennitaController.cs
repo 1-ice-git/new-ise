@@ -368,36 +368,50 @@ namespace NewISE.Controllers
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    ViewBag.idTrasferimento = idTrasferimento;
-
-                    string Nominativo = tm.Dipendente.Nominativo;
-
-                    ReportViewer reportViewer = new ReportViewer();
-
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.SizeToReportContent = true;
-                    reportViewer.Width = Unit.Percentage(100);
-                    reportViewer.Height = Unit.Percentage(100);
-
-                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                    reportViewer.Visible = true;
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
-                    reportViewer.LocalReport.DataSources.Clear();
-                    //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                    reportViewer.LocalReport.Refresh();
-                    reportViewer.ShowReportBody = true;
-
-                    ReportParameter[] parameterValues = new ReportParameter[]
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        new ReportParameter ("Nominativo",Nominativo)
-                    };
+                        ViewBag.idTrasferimento = idTrasferimento;
 
-                    reportViewer.LocalReport.SetParameters(parameterValues);
-                    ViewBag.ReportViewer = reportViewer;
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                            reportViewer.LocalReport.Refresh();
+                            reportViewer.ShowReportBody = true;
+
+                            ReportParameter[] parameterValues = new ReportParameter[]
+                            {
+                                new ReportParameter ("Nominativo",Nominativo),
+                                new ReportParameter ("Livello",Livello),
+                                new ReportParameter ("Decorrenza",Decorrenza),
+                                new ReportParameter ("Ufficio",Ufficio)
+
+                            };
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
+                    
+                        }
                 }
-
 
             }
             catch (Exception ex)
@@ -464,11 +478,19 @@ namespace NewISE.Controllers
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    ViewBag.idTrasferimento = idTrasferimento;
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
 
-                    string Nominativo = tm.Dipendente.Nominativo;
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
 
-                    ReportViewer reportViewer = new ReportViewer();
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
 
                     reportViewer.ProcessingMode = ProcessingMode.Local;
                     reportViewer.SizeToReportContent = true;
@@ -487,13 +509,17 @@ namespace NewISE.Controllers
 
                     ReportParameter[] parameterValues = new ReportParameter[]
                     {
-                        new ReportParameter ("Nominativo",Nominativo)
+                        new ReportParameter ("Nominativo",Nominativo),
+                        new ReportParameter ("Livello",Livello),
+                        new ReportParameter ("Decorrenza",Decorrenza),
+                        new ReportParameter ("Ufficio",Ufficio)
+
                     };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
                     ViewBag.ReportViewer = reportViewer;
                 }
-
+                }
 
             }
             catch (Exception ex)
@@ -551,34 +577,48 @@ namespace NewISE.Controllers
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    ViewBag.idTrasferimento = idTrasferimento;
-
-                    string Nominativo = tm.Dipendente.Nominativo;
-
-                    ReportViewer reportViewer = new ReportViewer();
-
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.SizeToReportContent = true;
-                    reportViewer.Width = Unit.Percentage(100);
-                    reportViewer.Height = Unit.Percentage(100);
-
-                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                    reportViewer.Visible = true;
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPersonale.rdlc";
-                    reportViewer.LocalReport.DataSources.Clear();
-                    //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                    reportViewer.LocalReport.Refresh();
-                    reportViewer.ShowReportBody = true;
-
-                    ReportParameter[] parameterValues = new ReportParameter[]
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        new ReportParameter ("Nominativo",Nominativo)
-                    };
 
-                    reportViewer.LocalReport.SetParameters(parameterValues);
-                    ViewBag.ReportViewer = reportViewer;
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPersonale.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+                    }
                 }
 
 
@@ -648,36 +688,48 @@ namespace NewISE.Controllers
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    ViewBag.idTrasferimento = idTrasferimento;
-
-                    string Nominativo = tm.Dipendente.Nominativo;
-
-                    ReportViewer reportViewer = new ReportViewer();
-
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.SizeToReportContent = true;
-                    reportViewer.Width = Unit.Percentage(100);
-                    reportViewer.Height = Unit.Percentage(100);
-
-                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                    reportViewer.Visible = true;
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
-                    reportViewer.LocalReport.DataSources.Clear();
-                    //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                    reportViewer.LocalReport.Refresh();
-                    reportViewer.ShowReportBody = true;
-
-                    ReportParameter[] parameterValues = new ReportParameter[]
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        new ReportParameter ("Nominativo",Nominativo)
-                    };
+                        ViewBag.idTrasferimento = idTrasferimento;
 
-                    reportViewer.LocalReport.SetParameters(parameterValues);
-                    ViewBag.ReportViewer = reportViewer;
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+                    }
                 }
-
 
             }
             catch (Exception ex)
@@ -745,37 +797,49 @@ namespace NewISE.Controllers
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    ViewBag.idTrasferimento = idTrasferimento;
-
-                    string Nominativo = tm.Dipendente.Nominativo;
-
-                    ReportViewer reportViewer = new ReportViewer();
-
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.SizeToReportContent = true;
-                    reportViewer.Width = Unit.Percentage(100);
-                    reportViewer.Height = Unit.Percentage(100);
-
-                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                    reportViewer.Visible = true;
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPrimaSistemazione.rdlc";
-                    reportViewer.LocalReport.DataSources.Clear();
-                    //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                    reportViewer.LocalReport.Refresh();
-                    reportViewer.ShowReportBody = true;
-
-                    ReportParameter[] parameterValues = new ReportParameter[]
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        new ReportParameter ("Nominativo",Nominativo)
-                    };
+                        ViewBag.idTrasferimento = idTrasferimento;
 
-                    reportViewer.LocalReport.SetParameters(parameterValues);
-                    ViewBag.ReportViewer = reportViewer;
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPrimaSistemazione.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                                new ReportParameter ("Nominativo",Nominativo),
+                                new ReportParameter ("Livello",Livello),
+                                new ReportParameter ("Decorrenza",Decorrenza),
+                                new ReportParameter ("Ufficio",Ufficio)
+
+                       };
+
+                       reportViewer.LocalReport.SetParameters(parameterValues);
+                       ViewBag.ReportViewer = reportViewer;
+                    }
+
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -842,39 +906,48 @@ namespace NewISE.Controllers
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    ViewBag.idTrasferimento = idTrasferimento;
-
-                    string Nominativo = tm.Dipendente.Nominativo;
-                    string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                    string Ufficio = tm.Ufficio.descUfficio;
-
-                    ReportViewer reportViewer = new ReportViewer();
-
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.SizeToReportContent = true;
-                    reportViewer.Width = Unit.Percentage(100);
-                    reportViewer.Height = Unit.Percentage(100);
-
-                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                    reportViewer.Visible = true;
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiRichiamo.rdlc";
-                    reportViewer.LocalReport.DataSources.Clear();
-                    //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                    reportViewer.LocalReport.Refresh();
-                    reportViewer.ShowReportBody = true;
-
-                    ReportParameter[] parameterValues = new ReportParameter[]
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        new ReportParameter ("Nominativo",Nominativo),
-                        new ReportParameter ("Decorrenza",Decorrenza),
-                        new ReportParameter ("Ufficio",Ufficio)
+                        ViewBag.idTrasferimento = idTrasferimento;
 
-                    };
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiRichiamo.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
                     ViewBag.ReportViewer = reportViewer;
+
+                }
                 }
 
 
