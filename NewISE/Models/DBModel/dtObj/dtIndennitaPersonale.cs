@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Models.dtObj.ModelliCalcolo;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -22,14 +23,25 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var indennita = trasferimento.INDENNITA;
 
-                    var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO).ThenBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
-                    //var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.ToList();
-                    //var ll = db.INDENNITABASE.ToList();
+                    //var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
+                    //    .Where(a => a.ANNULLATO == false)
+                    //    .OrderBy(a => a.IDLIVELLO)
+                    //    .ThenBy(a => a.DATAINIZIOVALIDITA)
+                    //    .ThenBy(a => a.DATAFINEVALIDITA).ToList();
+
+                    var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
+                        .Where(a => a.ANNULLATO == false).ToList();
+                       
 
                     using (dtTrasferimento dttrasf = new dtTrasferimento())
-                            {
-                                dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+                   {
+
+                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
+                        {
+                            dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
 
                                 libm = (from e in ll
                                         select new IndennitaBaseModel()
@@ -48,11 +60,18 @@ namespace NewISE.Models.DBModel.dtObj
                                                 indennitaPersonale = dipInfoTrasf.indennitaPersonale,
                                                 indennitaServizio = dipInfoTrasf.indennitaServizio,
                                                 maggiorazioniFamiliari = dipInfoTrasf.maggiorazioniFamiliari
+                                            },
+                                            EvoluzioneIndennita = new EvoluzioneIndennitaModel
+                                            {
+                                                IndennitaServizio = ci.IndennitaDiServizio,
+                                                MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari,
+                                                IndennitaPersonale = ci.IndennitaPersonale
+
                                             }
                                         }).ToList();
                             }
-                        
-                    
+
+                    }
 
                     return libm;
                 }

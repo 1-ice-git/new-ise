@@ -117,8 +117,8 @@ namespace NewISE.Controllers
         
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
-            //List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            //List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
             
@@ -127,14 +127,21 @@ namespace NewISE.Controllers
             {
 
                 // da testare
+
                 //using (dtIndennitaBase dtd = new dtIndennitaBase())
                 //{
                 //    eim = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
                 //}
 
-                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+
+                //using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                //{
+                //    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+                //}
+
+                using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
                 {
-                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+                    libm = dtd.GetIndennita(idTrasferimento).ToList();
                 }
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -153,14 +160,14 @@ namespace NewISE.Controllers
                     //{
                     //    lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
                     //    //lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValdita).ThenBy(a => a.dataFineValidita).ToList();
-                        
+
                     //}
 
                 }
                 
                 ViewBag.idTrasferimento = idTrasferimento;
                 
-                return PartialView(eim);
+                return PartialView(libm);
             }
             catch (Exception ex)
             {
@@ -307,8 +314,8 @@ namespace NewISE.Controllers
         #region Indennità di Servizio + Report di Stampa
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
-            //List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            //List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             //List<IndennitaServizioModel> lism = new List<IndennitaServizioModel>();
             
@@ -321,12 +328,16 @@ namespace NewISE.Controllers
                 //    lism = dtd.GetIndennitaServizio2(idTrasferimento).ToList();
                 //}
 
-                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
-                {
-                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+                //using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                //{
+                //    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
 
+                //}
+
+                using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
+                {
+                    libm = dtd.GetIndennita(idTrasferimento).ToList();
                 }
-                
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -350,7 +361,7 @@ namespace NewISE.Controllers
                 ViewBag.idTrasferimento = idTrasferimento;
 
 
-                return PartialView(eim);
+                return PartialView(libm);
             }
             catch (Exception ex)
             {

@@ -183,25 +183,25 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     DateTime dv = lDateVariazioni[j];
 
-                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
-                                    {
+                                    //using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    //{
 
 
-                                        var pd = new EvoluzioneIndennitaModel
-                                        {
+                                    //    var pd = new EvoluzioneIndennitaModel
+                                    //    {
 
-                                            IndennitaBase = ci.IndennitaDiBase,
-                                            percentuale = ci.PercentualeDisagio,
-                                            //valore = ci.CoefficienteDiSede,
-                                            Coefficiente = ci.CoefficienteDiSede,
-                                            IndennitaServizio = ci.IndennitaDiServizio
-                                        };
-
-
+                                    //        IndennitaBase = ci.IndennitaDiBase,
+                                    //        percentuale = ci.PercentualeDisagio,
+                                    //        //valore = ci.CoefficienteDiSede,
+                                    //        Coefficiente = ci.CoefficienteDiSede,
+                                    //        IndennitaServizio = ci.IndennitaDiServizio
+                                    //    };
 
 
-                                        eim.Add(pd);
-                                    }
+
+
+                                    //    eim.Add(pd);
+                                    //}
                                 }
                             }
 

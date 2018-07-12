@@ -65,6 +65,9 @@ namespace NewISE.Models.DBModel
 
         public dipInfoTrasferimentoModel dipInfoTrasferimento { get; set; }
 
+        public EvoluzioneIndennitaModel EvoluzioneIndennita { get; set; }
+
+
         public bool HasValue()
         {
             return idIndennitaBase > 0 ? true : false;

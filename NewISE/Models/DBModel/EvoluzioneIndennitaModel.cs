@@ -13,17 +13,24 @@ namespace NewISE.Models.DBModel
         public decimal idCoefficientiSede { get; set; }
         public decimal idPercentualeDisagio { get; set; }
 
-        [Display(Name = "Coefficiente")]
-        public decimal Coefficiente { get; set; }
+        [Display(Name = "Coefficiente di Sede")]
+        public decimal CoefficienteSede { get; set; }
 
-        [Display(Name = "Percentuale Disagio")]
-        public decimal percentuale { get; set; }
+        [Display(Name = "Percentuale di Disagio")]
+        public decimal PercentualeDisagio { get; set; }
 
         [Display(Name = "Indennita Base")]
         public decimal IndennitaBase { get; set; }
 
         [Display(Name = "Indennita Servizio")]
         public decimal IndennitaServizio { get; set; }
+
+        [Display(Name = "Indennita Personale")]
+        public decimal IndennitaPersonale { get; set; }
+
+        [Display(Name = "Maggiorazioni Familiari")]
+        public decimal MaggiorazioniFamiliari { get; set; }
+
 
         public UfficiModel Ufficio { get; set; }
 
@@ -74,9 +81,9 @@ namespace NewISE.Models.DBModel
         
         public RuoloDipendenteModel RuoloDipendente { get; set; }
 
-        public CoefficientiSedeModel CoefficenteSede { get; set; }
+        
 
-        public PercentualeDisagioModel PercentualeDisagio { get; set; }
+        
 
         public RiduzioniModel Riduzioni { get; set; }
         

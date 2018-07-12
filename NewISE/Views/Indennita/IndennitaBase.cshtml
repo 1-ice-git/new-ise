@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
 @using NewISE.Models.Enumeratori
 
 <link href="~/Views/Content/NoScroller.css" rel="stylesheet" />
@@ -51,7 +51,7 @@
             @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
             {
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.IndennitaBase)
+                    @Html.DisplayNameFor(model => model.valore)
                 </th>
             }
             else
@@ -64,13 +64,16 @@
 
                 <th class="text-center">
                     @*@Html.DisplayNameFor(model => model.valoreResponsabile)*@
-                    @Html.DisplayNameFor(model => model.IndennitaBase)
+                    @Html.DisplayNameFor(model => model.valoreResponsabile)
                 </th>
             }
             else
             {
             <td></td>
             }
+            <th class="text-center">
+               @Html.DisplayNameFor(model => model.EvoluzioneIndennita.IndennitaBase)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -94,7 +97,7 @@
                     @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
                     {
                         <td style="text-align:center;">
-                            @Html.DisplayFor(modelItem => item.IndennitaBase)
+                            @Html.DisplayFor(modelItem => item.valore)
                         </td>
                     }
                     else
@@ -107,7 +110,7 @@
                     @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Dirigente || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Responsabile)
                     {
                         <td style="text-align:center;">
-                            @Html.DisplayFor(modelItem => item.IndennitaBase)
+                            @Html.DisplayFor(modelItem => item.valoreResponsabile)
                         </td>
                         
                     }
@@ -115,6 +118,9 @@
                     {
                         <td></td>
                     }
+                 <th class="text-center">
+                     @Html.DisplayFor(modelItem => item.EvoluzioneIndennita.IndennitaBase)
+                 </th>
             </tr>
         }
     </tbody>

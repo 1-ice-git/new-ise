@@ -17,6 +17,87 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public IList<IndennitaBaseModel> GetIndennita(decimal idTrasferimento)
+        {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var indennita = trasferimento.INDENNITA;
+
+                    List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                    var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
+                        .Where(a => a.ANNULLATO == false)
+                        .OrderBy(a => a.IDLIVELLO)
+                        .ThenBy(a => a.DATAINIZIOVALIDITA)
+                        .ThenBy(a => a.DATAFINEVALIDITA).ToList();
+
+
+                    using (dtTrasferimento dttrasf = new dtTrasferimento())
+                    {
+                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                        {
+                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
+
+                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
+                            {
+                                dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+                            
+                                    libm = (from e in ll
+                                            select new IndennitaBaseModel()
+                                            {
+                                                idIndennitaBase = e.IDINDENNITABASE,
+                                                idLivello = e.IDLIVELLO,
+                                                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                                dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                                valore = e.VALORE,
+                                                valoreResponsabile = e.VALORERESP,
+                                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                                annullato = e.ANNULLATO,
+                                                Livello = new LivelloModel()
+                                                {
+                                                    idLivello = e.LIVELLI.IDLIVELLO,
+                                                    DescLivello = e.LIVELLI.LIVELLO
+                                                },
+                                                RuoloUfficio = new RuoloUfficioModel()
+                                                {
+                                                    idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
+                                                    DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
+                                                },
+                                                dipInfoTrasferimento = new dipInfoTrasferimentoModel
+                                                {
+                                                    Decorrenza = dipInfoTrasf.Decorrenza,
+                                                    indennitaPersonale = dipInfoTrasf.indennitaPersonale,
+                                                    indennitaServizio = dipInfoTrasf.indennitaServizio,
+                                                    maggiorazioniFamiliari = dipInfoTrasf.maggiorazioniFamiliari
+                                                },
+                                                EvoluzioneIndennita = new EvoluzioneIndennitaModel
+                                                {
+                                                    IndennitaBase = ci.IndennitaDiBase,
+                                                    PercentualeDisagio = ci.PercentualeDisagio,
+                                                    CoefficienteSede = ci.CoefficienteDiSede,
+                                                    IndennitaServizio = ci.IndennitaDiServizio,
+                                                    MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari,
+                                                    IndennitaPersonale = ci.IndennitaPersonale
+
+                                                }
+                                            }).ToList();
+                            }
+                        }
+                    }
+
+                    return libm;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public IList<EvoluzioneIndennitaModel> GetIndennitaEvoluzione(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -123,25 +204,25 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             DateTime dv = lDateVariazioni[j];
 
-                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
-                            {
+                            //using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                            //{
                                 
 
-                                    var pd = new EvoluzioneIndennitaModel
-                                    {
+                            //        //var pd = new EvoluzioneIndennitaModel
+                            //        //{
 
-                                        IndennitaBase = ci.IndennitaDiBase,
-                                        percentuale = ci.PercentualeDisagio,
-                                        //valore = ci.CoefficienteDiSede,
-                                        Coefficiente = ci.CoefficienteDiSede,
-                                        IndennitaServizio = ci.IndennitaDiServizio
-                                    };
+                            //        //    IndennitaBase = ci.IndennitaDiBase,
+                            //        //    percentuale = ci.PercentualeDisagio,
+                            //        //    //valore = ci.CoefficienteDiSede,
+                            //        //    Coefficiente = ci.CoefficienteDiSede,
+                            //        //    IndennitaServizio = ci.IndennitaDiServizio
+                            //        //};
 
                                 
 
 
-                                eim.Add(pd);
-                            }
+                            //    eim.Add(pd);
+                            //}
                         }
                     }
                 }
@@ -154,9 +235,7 @@ namespace NewISE.Models.DBModel.dtObj
                 throw;
             }
         }
-
-
-
+        
 
     }
 }
