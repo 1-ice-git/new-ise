@@ -1,0 +1,111 @@
+﻿@model IEnumerable<NewISE.Models.ViewModel.LiquidazioniDiretteViewModel>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="text-center" style="border-top-style: solid; max-height: 30px;">
+            <label class="text-info" style="font-size: 14px;">Liquidazioni dirette</label>
+        </div>
+        <table id="TabLiquidazioniDiretteDaInviare" cellspacing="0" class="table DimensioneFontTable tabElaborazioniDirette">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nominativo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Voci.descrizione)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Voci.codiceVoce)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Importo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Data)
+                    </th>
+                    <th class="no-sort">
+                        @Html.CheckBox("selectAllVociDirette", false, new { @onclick = "SelezionaAllVociDirette(this.checked);" })
+
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(modelItem => item.idTeorici)
+                            @Html.HiddenFor(modelItem => item.Elaborato)
+
+                            @Html.DisplayFor(modelItem => item.Nominativo)
+                        </td>
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.Voci.descrizione)
+                        </td>
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
+                        </td>
+                        <td style="text-align: right;">
+                            @Html.DisplayFor(modelItem => item.Importo)
+                        </td>
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.Data)
+                        </td>
+                        <td style="width: 10px;">
+                            @Html.CheckBox("selectVoceDiretta", false)
+                        </td>
+                    </tr>
+
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#TabLiquidazioniDiretteDaInviare").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": true,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 150,
+        "scrollCollapse": true,
+        "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": false,
+
+                }
+        ],
+        //"order": [[0,"desc"],[2, "desc"]]
+    });
+</script>

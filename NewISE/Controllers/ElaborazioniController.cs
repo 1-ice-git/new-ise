@@ -152,23 +152,53 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult DatiLiquidazioniDirette(decimal idAnnoMeseElaborato)
         {
+
+            ViewData.Add("idAnnoMeseElaborato", idAnnoMeseElaborato);
+            return PartialView();
+        }
+
+        public ActionResult DatiLiquidazioniDiretteDaInviare(decimal idAnnoMeseElaborato)
+        {
             List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
 
             try
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-                    lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).ToList();
+                    lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).Where(a => a.Elaborato == false).ToList();
                 }
             }
             catch (Exception ex)
             {
+
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+            return PartialView(lLd);
+        }
+
+
+        public ActionResult DatiLiquidazioniDiretteInviate(decimal idAnnoMeseElaborato)
+        {
+            List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
+
+            try
+            {
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).Where(a => a.Elaborato == true).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
             return PartialView(lLd);
         }
+
+
 
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
@@ -201,14 +231,18 @@ namespace NewISE.Controllers
 
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
-        public JsonResult InviaFlussiDirettiOA(decimal idAnnoMeseElaborato)
+        public JsonResult InviaFlussiDirettiOA(decimal idAnnoMeseElaborato, List<decimal> Teorici)
         {
-            string err = string.Empty;
+
             try
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-                    dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato);
+
+                    foreach (decimal teorico in Teorici)
+                    {
+                        dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato, teorico);
+                    }
                 }
             }
             catch (Exception ex)

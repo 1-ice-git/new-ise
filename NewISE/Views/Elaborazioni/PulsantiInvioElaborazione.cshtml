@@ -19,35 +19,64 @@
         debugger;
         var rotta = "/Elaborazioni/InviaFlussiDirettiOA";
 
-        $.ajax({
-            url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
-            dataType: 'html',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$('#inviaDocModal').modal('show');
-                //Blocca();
+        var lCheck = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > :checkbox');
+        //var lElaborato = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > #item_Elaborato');
+        var lIdTeorici = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > #item_idTeorici');
 
-            },
-            success: function (result) {
-                debugger;
-                if (result.err == "") {
-                    InfoElaborazioneAjax(result.msg);
-                    DatiLiquidazioniDirette(idAnnoMeseElaborato);
-                } else {
-                    ErroreElaborazioneAjax(result.err);
+        var lTeorici = new Array();
+
+        //var valore = $("#mesiAnniElaborati").val();
+
+        for (var i = 0; i < lCheck.length; i++) {
+            if (lCheck[parseInt(i)].checked) {
+                var idTeorico = lIdTeorici[parseInt(i)].value;
+                if ($.isNumeric(idTeorico)) {
+                    lTeorici.push(idTeorico);
                 }
 
-            },
-            error: function (error) {
-                //debugger;
-                //Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
+                //var elaborato = lElaborato[parseInt(i)].value;
+                //if (elaborato == "False") {
+                //    lTeorici.push(idTeorico);
+                //}
+
             }
-        });
+        }
+
+
+        if (lTeorici.length > 0) {
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Teorici: lTeorici },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$('#inviaDocModal').modal('show');
+                    //Blocca();
+
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.err == "") {
+                        InfoElaborazioneAjax(result.msg);
+                        DatiLiquidazioniDirette(idAnnoMeseElaborato);
+                    } else {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        } else {
+            ErroreElaborazioneAjax("Selezionare almeno una voce per l'invio diretto a contabilità");
+        }
+
     }
 </script>

@@ -1,153 +1,52 @@
-﻿@model IEnumerable<NewISE.Models.ViewModel.LiquidazioniDiretteViewModel>
+﻿
 
+@{
+    decimal idAnnoMeseElaborato = Convert.ToDecimal(ViewData["idAnnoMeseElaborato"]);
+}
 
 <div class="row">
     <div class="col-xs-12">
-        <div class="text-center" style="border-top-style: solid; max-height: 30px;">
-            <label class="text-info" style="font-size: 14px;">Liquidazioni dirette</label>
+
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a data-toggle="tab" href="#DaInviare">Da inviare</a></li>
+            <li><a data-toggle="tab" href="#Inviate">Inviate</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="DaInviare" class="tab-pane fade in active">
+                @Html.Action("DatiLiquidazioniDiretteDaInviare", "Elaborazioni", new { idAnnoMeseElaborato = idAnnoMeseElaborato })
+            </div>
+            <div id="Inviate" class="tab-pane fade">
+                @Html.Action("DatiLiquidazioniDiretteInviate", "Elaborazioni", new { idAnnoMeseElaborato = idAnnoMeseElaborato })
+            </div>
+
         </div>
 
-        <table id="TabLiquidazioniDirette" cellspacing="0" class="table DimensioneFontTable">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Nominativo)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Voci.descrizione)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Voci.codiceVoce)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Importo)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Data)
-                    </th>
-                    <th class="no-sort">
-                        @Html.CheckBox("selectAllVociDirette", false, new { @onclick = "SelezionaAllVociDirette(this.checked);" })
 
-                    </th>
-                </tr>
-            </thead>
 
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    if (item.Elaborato == false)
-                    {
-                        <tr>
-                            <td>
-                                @Html.HiddenFor(modelItem => item.idTeorici)
-                                @Html.DisplayFor(modelItem => item.Nominativo)
-                            </td>
-                            <td style="text-align: center;">
-                                @Html.DisplayFor(modelItem => item.Voci.descrizione)
-                            </td>
-                            <td style="text-align: center;">
-                                @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
-                            </td>
-                            <td style="text-align: right;">
-                                @Html.DisplayFor(modelItem => item.Importo)
-                            </td>
-                            <td style="text-align: center;">
-                                @Html.DisplayFor(modelItem => item.Data)
-                            </td>
-                            <td style="width: 10px;">
-                                @Html.CheckBox("selectVoceDiretta", false, new { @onclick = "SelezionaVoceDiretta(this.checked);" })
-                            </td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <td class="ColoreTesto1">
-                                @Html.HiddenFor(modelItem => item.idTeorici)
-                                @Html.DisplayFor(modelItem => item.Nominativo)
-                            </td>
-                            <td class="text-center ColoreTesto1">
-                                @Html.DisplayFor(modelItem => item.Voci.descrizione)
-                            </td>
-                            <td class="text-center ColoreTesto1">
-                                @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
-                            </td>
-                            <td class="text-center ColoreTesto1">
-                                @Html.DisplayFor(modelItem => item.Importo)
-                            </td>
-                            <td class="text-center ColoreTesto1">
-                                @Html.DisplayFor(modelItem => item.Data)
-                            </td>
-                            <td style="width: 10px;">
-                                @Html.CheckBoxFor(modelItem => item.Elaborato, new { disabled = "disabled", @id = "selectVoceDiretta" })
-                            </td>
-                        </tr>
-                    }
 
-                }
-            </tbody>
-        </table>
     </div>
 </div>
 
 <script type="text/javascript">
-    $("#TabLiquidazioniDirette").DataTable({
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-
-        },
-        "info": false,
-        "lengthChange": false,
-        "pageLength": 5,
-        "searching": true,
-        "paging": false,
-        "bJQueryUI": true,
-        "sDom": 'lfrtip',
-        "scrollY": 150,
-        "scrollCollapse": true,
-        "columnDefs": [
-                {
-                    "targets": 'no-sort',
-                    "orderable": false,
-
-                }
-        ],
-        //"order": [[0,"desc"],[2, "desc"]]
-    });
 
     function SelezionaAllVociDirette(checked) {
         //debugger;
 
-        var lCheck = $('#TabLiquidazioniDirette > tbody > tr > td > :checkbox');
+        var lCheck = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > :checkbox');
+        var lElaborato = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > #item_Elaborato');
 
-        for (var ck in lCheck) {
-            if (is_numeric(ck)) {
-                lCheck[parseInt(ck)].checked = checked;
+        for (var i = 0; i < lCheck.length; i++) {
+            var elaborato = lElaborato[parseInt(i)].value;
+            if (elaborato == "False") {
+                lCheck[parseInt(i)].checked = checked;
             }
         }
     }
 
-    function SelezionaVoceDiretta(checked) {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        //debugger;
+        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+    });
 
-    }
 </script>

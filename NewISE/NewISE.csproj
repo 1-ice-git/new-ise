@@ -6040,6 +6040,8 @@
     <Content Include="Views\RiepilogoVoci\RptRiepilogoVoci.cshtml" />
     <Content Include="Views\RiepilogoVoci\ReportViewer.cshtml" />
     <Content Include="Views\Elaborazioni\PulsantiInvioElaborazione.cshtml" />
+    <Content Include="Views\Elaborazioni\DatiLiquidazioniDiretteDaInviare.cshtml" />
+    <Content Include="Views\Elaborazioni\DatiLiquidazioniDiretteInviate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

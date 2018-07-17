@@ -53,7 +53,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void InviaFlussiDirettiContabilita(decimal idMeseAnnoElaborato)
+        public void InviaFlussiDirettiContabilita(decimal idMeseAnnoElaborato, decimal idTeorico)
         {
             const int operazione99 = 99;
 
@@ -70,7 +70,7 @@ namespace NewISE.Models.DBModel.dtObj
                         db.TEORICI.Where(
                             a =>
                                 a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true && a.ELABORATO == false &&
-                                a.IDMESEANNOELAB == idMeseAnnoElaborato &&
+                                a.IDMESEANNOELAB == idMeseAnnoElaborato && a.IDTEORICI == idTeorico &&
                                 a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)
                             .OrderBy(a => a.ANNORIFERIMENTO)
                             .ThenBy(a => a.MESERIFERIMENTO)
@@ -1085,8 +1085,7 @@ namespace NewISE.Models.DBModel.dtObj
             string ret = string.Empty;
             var dip = t.DIPENDENTI;
             string nTrasf = string.Empty;
-
-
+            char carattereSostitutivo = Convert.ToChar("0");
 
             var lTrasf =
                 dip.TRASFERIMENTO.Where(
@@ -1102,13 +1101,12 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (lTrasf[i].IDTRASFERIMENTO == t.IDTRASFERIMENTO)
                     {
-                        nTrasf = (i + 1).ToString().PadLeft(2, Convert.ToChar("0"));
+                        nTrasf = (i + 1).ToString().PadLeft(2, carattereSostitutivo);
                     }
                 }
             }
 
-
-            ret = "ISE" + nTrasf + tipoVoce + tipoMovimento + id.ToString().PadLeft(6, Convert.ToChar(0));
+            ret = "ISE" + nTrasf + tipoVoce + tipoMovimento + id.ToString().PadLeft(6, carattereSostitutivo).ToString();
 
             return ret;
         }
@@ -1192,11 +1190,11 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                 }
 
-                db.Database.CurrentTransaction.Commit();
+                //db.Database.CurrentTransaction.Commit();
             }
             catch (Exception ex)
             {
-                db.Database.CurrentTransaction.Rollback();
+                //db.Database.CurrentTransaction.Rollback();
                 throw ex;
             }
 
@@ -2529,7 +2527,7 @@ namespace NewISE.Models.DBModel.dtObj
                 decimal annoMeseElaborato =
                     Convert.ToDecimal(MeseAnnoElaborato.ANNO.ToString() + MeseAnnoElaborato.MESE.ToString());
 
-                if (annoMeseRicalcoli > annoMeseElaborato)
+                if (annoMeseRicalcoli < annoMeseElaborato)
                 {
                     var ltrasferimento =
                         dip.TRASFERIMENTO.Where(
@@ -2547,7 +2545,17 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             if (trasferimento.DATAPARTENZA >= dataInizioRicalcoli)
                             {
-                                this.ConguaglioPrimaSistemazione(trasferimento, MeseAnnoElaborato, db);
+                                var leis =
+                                    trasferimento.PRIMASITEMAZIONE.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false)
+                                        .OrderBy(a => a.IDINDSISTLORDA).ToList();
+
+                                if (leis?.Any() ?? false)
+                                {
+                                    this.ConguaglioPrimaSistemazione(trasferimento, MeseAnnoElaborato, db);
+                                }
+
+
+
                             }
                         }
                     }
@@ -2577,12 +2585,12 @@ namespace NewISE.Models.DBModel.dtObj
 
             var lElabIndSistemazione =
                 primaSistemazione.ELABINDSISTEMAZIONE.Where(a => a.ANNULLATO == false)
-                    .OrderByDescending(a => a.IDINDSISTLORDA)
+                    .OrderBy(a => a.IDINDSISTLORDA)
                     .ToList();
 
             if (lElabIndSistemazione?.Any() ?? false)
             {
-                var eisOld = lElabIndSistemazione.First();
+                var eisOld = lElabIndSistemazione.Last();
 
                 if (eisOld.UNICASOLUZIONE == true)
                 {
