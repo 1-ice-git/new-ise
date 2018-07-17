@@ -118,7 +118,7 @@ namespace NewISE.Controllers
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            //List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
             
@@ -139,9 +139,14 @@ namespace NewISE.Controllers
                 //    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
                 //}
 
+                //using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
+                //{
+                //    libm = dtd.GetIndennita(idTrasferimento).ToList();
+                //}
+
                 using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
                 {
-                    libm = dtd.GetIndennita(idTrasferimento).ToList();
+                    eim = dtd.GetIndennitaEvoluzione(idTrasferimento).ToList();
                 }
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -166,8 +171,13 @@ namespace NewISE.Controllers
                 }
                 
                 ViewBag.idTrasferimento = idTrasferimento;
+
+                return PartialView("EvoluzioneIndennita", eim);
+                //return PartialView(libm);
+
                 
-                return PartialView(libm);
+
+                
             }
             catch (Exception ex)
             {
@@ -312,10 +322,15 @@ namespace NewISE.Controllers
         #endregion
 
         #region Indennità di Servizio + Report di Stampa
+
+        
+
+
+
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            //List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             //List<IndennitaServizioModel> lism = new List<IndennitaServizioModel>();
             
@@ -328,16 +343,18 @@ namespace NewISE.Controllers
                 //    lism = dtd.GetIndennitaServizio2(idTrasferimento).ToList();
                 //}
 
-                //using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
-                //{
-                //    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
 
+                }
+
+                //using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
+                //{
+                //    libm = dtd.GetIndennita(idTrasferimento).ToList();
                 //}
 
-                using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
-                {
-                    libm = dtd.GetIndennita(idTrasferimento).ToList();
-                }
+
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -350,18 +367,18 @@ namespace NewISE.Controllers
 
                     }
 
-                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
-                    {
-                        dit.indennitaBase = ci.IndennitaDiBase;
-                        dit.indennitaServizio = ci.IndennitaDiServizio;
-                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
-                        dit.indennitaPersonale = ci.IndennitaPersonale;
+                    //    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
+                    //    {
+                    //        dit.indennitaBase = ci.IndennitaDiBase;
+                    //        dit.indennitaServizio = ci.IndennitaDiServizio;
+                    //        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                    //        dit.indennitaPersonale = ci.IndennitaPersonale;
+                    //    }
                     }
-                }
-                ViewBag.idTrasferimento = idTrasferimento;
+                    ViewBag.idTrasferimento = idTrasferimento;
 
-
-                return PartialView(libm);
+                return PartialView("EvoluzioneIndennita", eim);
+                //return PartialView(libm);
             }
             catch (Exception ex)
             {

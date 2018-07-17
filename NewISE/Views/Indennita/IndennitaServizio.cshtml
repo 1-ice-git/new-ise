@@ -44,6 +44,9 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.EvoluzioneIndennita.IndennitaServizio)
             </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.EvoluzioneIndennita.dataTest)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -68,6 +71,9 @@
                 </td>
                 <td style="text-align:center;">
                    @Html.DisplayFor(modelItem => item.EvoluzioneIndennita.IndennitaServizio)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.EvoluzioneIndennita.dataTest)
                 </td>
             </tr>
         }

@@ -31,7 +31,11 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Maggiorazioni Familiari")]
         public decimal MaggiorazioniFamiliari { get; set; }
 
-
+        [Display(Name = "Data Test")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime? dataTest { get; set; }
+        
         public UfficiModel Ufficio { get; set; }
 
         public dipInfoTrasferimentoModel dipInfoTrasferimento { get; set; }
@@ -81,10 +85,10 @@ namespace NewISE.Models.DBModel
         
         public RuoloDipendenteModel RuoloDipendente { get; set; }
 
-        
+        public List<IndennitaBaseModel> IndennitaBaseEvoluzione { get; set; }
 
+        public List<CoefficientiSedeModel> CoefficientiSedeEvoluzione { get; set; }
         
-
         public RiduzioniModel Riduzioni { get; set; }
         
         public bool HasValue()

@@ -5561,6 +5561,7 @@
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\EvIndennita.cs" />
     <Compile Include="Models\DBModel\dtVariazioneIndennita.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\AnticipoAnnualeMABModel.cs" />
@@ -6047,6 +6048,7 @@
     <Content Include="Views\Indennita\RptMaggiorazioniFamiliari.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaPersonale.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaPrimaSistemazione.cshtml" />
+    <Content Include="Views\Indennita\EvoluzioneIndennita.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -94,7 +94,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Indennita Base Lorda</Value>
+                              <Value>Valore</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -132,7 +132,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Parameters!Decorrenza.Value</Value>
+                              <Value>=FormatDateTime(Fields!DATAINIZIOVALIDITA.Value, DateFormat.ShortDate)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -162,7 +162,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FormatDateTime(Fields!DATAFINEVALIDITA.Value)="31/12/9999","",FormatDateTime(Fields!DATAFINEVALIDITA.Value,DateFormat.ShortDate))</Value>
+                              <Value>=IIF(IsNothing(Fields!DATAFINEVALIDITA.Value),"", FormatDateTime(Fields!DATAFINEVALIDITA.Value, DateFormat.ShortDate))</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
