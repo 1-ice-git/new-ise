@@ -37,7 +37,7 @@
         <Width>23.62712cm</Width>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Style>Solid</Style>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -164,12 +164,12 @@
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>5.32383cm</Top>
         <Left>0.41042cm</Left>
-        <Height>2.71667cm</Height>
+        <Height>1.68479cm</Height>
         <Width>23.62712cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Style>Solid</Style>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -366,7 +366,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>3.54411in</Height>
+    <Height>4.56634in</Height>
     <Style />
   </Body>
   <Width>9.70318in</Width>
@@ -488,6 +488,10 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="Livello">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DataInizioValidita">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>

@@ -241,7 +241,7 @@ namespace NewISE.Controllers
                                 string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                                 string Ufficio = tm.Ufficio.descUfficio;
 
-
+                                
 
                                 libm = (from e in ll
                                         select new IndennitaBaseModel()
@@ -322,11 +322,6 @@ namespace NewISE.Controllers
         #endregion
 
         #region Indennità di Servizio + Report di Stampa
-
-        
-
-
-
         public ActionResult IndennitaServizio(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
@@ -377,7 +372,8 @@ namespace NewISE.Controllers
                     }
                     ViewBag.idTrasferimento = idTrasferimento;
 
-                return PartialView("EvoluzioneIndennita", eim);
+                //return PartialView("EvoluzioneIndennita", eim);
+                return PartialView("IndennitaServizio", eim);
                 //return PartialView(libm);
             }
             catch (Exception ex)
@@ -386,61 +382,219 @@ namespace NewISE.Controllers
             }
 
         }
+
+       
+        
         public ActionResult RptIndennitaServizio(decimal idTrasferimento)
         {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
 
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        ViewBag.idTrasferimento = idTrasferimento;
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                        {
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
+
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
+
+                            //using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                            //{
+                            //    //eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+                            //    var eim = dtei.GetIndennitaEvoluzione(idTrasferimento);
+
+                            //}
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                            var indennita = trasferimento.INDENNITA;
+
+                            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                            #region Variazioni di indennità di base
+
+                            var ll =
+                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
+                                .Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO)
+                                    .ThenBy(a => a.DATAINIZIOVALIDITA)
+                                    .ThenBy(a => a.DATAFINEVALIDITA).ToList();
 
 
-                        ReportViewer reportViewer = new ReportViewer();
-
-                            reportViewer.ProcessingMode = ProcessingMode.Local;
-                            reportViewer.SizeToReportContent = true;
-                            reportViewer.Width = Unit.Percentage(100);
-                            reportViewer.Height = Unit.Percentage(100);
-
-                            //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                            reportViewer.Visible = true;
-                            reportViewer.ProcessingMode = ProcessingMode.Local;
-                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
-                            reportViewer.LocalReport.DataSources.Clear();
-                            //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                            reportViewer.LocalReport.Refresh();
-                            reportViewer.ShowReportBody = true;
-
-                            ReportParameter[] parameterValues = new ReportParameter[]
+                            foreach (var ib in ll)
                             {
-                                new ReportParameter ("Nominativo",Nominativo),
-                                new ReportParameter ("Livello",Livello),
-                                new ReportParameter ("Decorrenza",Decorrenza),
-                                new ReportParameter ("Ufficio",Ufficio)
+                                DateTime dtVar = new DateTime();
 
-                            };
+                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = ib.DATAINIZIOVALIDITA;
+                                }
 
-                            reportViewer.LocalReport.SetParameters(parameterValues);
-                            ViewBag.ReportViewer = reportViewer;
-                    
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                }
+                            }
+
+                            #endregion
+
+                            #region Variazioni del coefficiente di sede
+
+                            var lrd =
+                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.COEFFICIENTESEDE
+                                .Where(a => a.ANNULLATO == false)
+                                .OrderBy(a => a.IDCOEFFICIENTESEDE)
+                                .ThenBy(a => a.DATAINIZIOVALIDITA)
+                                .ThenBy(a => a.DATAFINEVALIDITA).ToList();
+
+                            foreach (var cs in lrd)
+                            {
+                                DateTime dtVar = new DateTime();
+
+                                if (cs.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = cs.DATAINIZIOVALIDITA;
+                                }
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                }
+                            }
+
+                            #endregion
+
+                            #region Variazioni percentuale di disagio
+
+                            var perc =
+                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.PERCENTUALEDISAGIO
+                                .Where(a => a.ANNULLATO == false)
+                                .OrderBy(a => a.IDPERCENTUALEDISAGIO)
+                                .ThenBy(a => a.DATAINIZIOVALIDITA)
+                                .ThenBy(a => a.DATAFINEVALIDITA).ToList();
+
+
+                            foreach (var pd in perc)
+                            {
+                                DateTime dtVar = new DateTime();
+
+                                if (pd.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = pd.DATAINIZIOVALIDITA;
+                                }
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                }
+                            }
+
+
+
+
+
+
+                            #endregion
+
+                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                            if (lDateVariazioni?.Any() ?? false)
+                            {
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
+
+                                    if (dv < Utility.DataFineStop())
+                                    {
+
+
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+                                            EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
+
+                                            // Inserire le date di variazione delle Indennità
+
+                                            //xx.dataInizioValidita = pd.DATAINIZIOVALIDITA;
+                                            //xx.dataFineValidita = pd.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? pd.DATAFINEVALIDITA : new EvoluzioneIndennitaModel().dataFineValidita;
+                                            //xx.valore = pd.VALORE;
+                                            //xx.valoreResponsabile = pd.VALORERESP;
+
+                                            xx.dataInizioValidita = dv;
+                                            xx.IndennitaBase = ci.IndennitaDiBase;
+                                            xx.PercentualeDisagio = ci.PercentualeDisagio;
+                                            xx.CoefficienteSede = ci.CoefficienteDiSede;
+                                            xx.IndennitaServizio = ci.IndennitaDiServizio;
+
+                                            //eim.Add(xx);
+
+                                            var DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString();
+                                            var IndennitaBase = ci.IndennitaDiBase;
+                                            var PercentualeDisagio = ci.PercentualeDisagio;
+                                            var CoefficienteSede = ci.CoefficienteDiSede;
+                                            var IndennitaServizio = ci.IndennitaDiServizio;
+                                        
+
+                                            ReportViewer reportViewer = new ReportViewer();
+
+                                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                                            reportViewer.SizeToReportContent = true;
+                                            reportViewer.Width = Unit.Percentage(100);
+                                            reportViewer.Height = Unit.Percentage(100);
+
+                                            var datasource = new ReportDataSource("DSIndennitaBase", "");
+                                            reportViewer.Visible = true;
+                                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
+                                            reportViewer.LocalReport.DataSources.Clear();
+                                            //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                                            reportViewer.LocalReport.Refresh();
+                                            reportViewer.ShowReportBody = true;
+
+                                            ReportParameter[] parameterValues = new ReportParameter[]
+                                            {
+                                                new ReportParameter ("Nominativo",Nominativo),
+                                                new ReportParameter ("Livello",Livello),
+                                                new ReportParameter ("Decorrenza",Decorrenza),
+                                                new ReportParameter ("Ufficio",Ufficio),
+                                                new ReportParameter ("DataInizioValidita",DataInizioValidita)
+
+
+                                            };
+
+                                            reportViewer.LocalReport.SetParameters(parameterValues);
+                                            ViewBag.ReportViewer = reportViewer;
+
+                                        }
+                                    }
+                                }
+                            }
+
                         }
+                    }
                 }
-
             }
             catch (Exception ex)
             {
@@ -617,6 +771,9 @@ namespace NewISE.Controllers
                         string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                         string Livello = liv1.Livello.DescLivello;
                         string Ufficio = tm.Ufficio.descUfficio;
+
+                        
+
 
                         ReportViewer reportViewer = new ReportViewer();
 
