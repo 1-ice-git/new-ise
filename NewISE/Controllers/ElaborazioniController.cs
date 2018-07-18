@@ -130,10 +130,7 @@ namespace NewISE.Controllers
                 {
                     if (dipendenti?.Any() ?? false)
                     {
-                        foreach (var dip in dipendenti)
-                        {
-                            dte.Elaborazione(dip, idAnnoMeseElaborato);
-                        }
+                        dte.Elaborazione(dipendenti, idAnnoMeseElaborato);
                     }
                 }
             }

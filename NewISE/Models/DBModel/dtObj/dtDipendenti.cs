@@ -506,5 +506,71 @@ namespace NewISE.Models.DBModel.dtObj
             return ldm;
 
         }
+
+
+        /// <summary>
+        /// Imposta la data di inizio ricalcoli per il dipendente passato come parametro.
+        /// </summary>
+        /// <param name="idDipendente"></param>
+        /// <param name="dtIniRicalcoli"></param>
+        /// <param name="db"></param>
+        public void DataInizioRicalcoliDipendente(decimal idTrasferimento, DateTime dtIniRicalcoli, ModelDBISE db, bool saveDb = false)
+        {
+            try
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var d = t.DIPENDENTI;
+                if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
+                {
+                    d.DATAINIZIORICALCOLI = dtIniRicalcoli;
+                }
+
+                if (saveDb)
+                {
+                    int i = db.SaveChanges();
+
+                    if (i <= 0)
+                    {
+                        throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+
+        }
+        /// <summary>
+        /// Imposta la data del dipendente trasferito alla data di partenza del trasferimento passato come parametro.
+        /// </summary>
+        /// <param name="idTrasferimento"></param>
+        /// <param name="db"></param>
+        /// <param name="saveDB">Se vero salva immediatamente la modifica effettuata sul database.</param>
+        public void ResetDataInizioRicalcoli(decimal idTrasferimento, ModelDBISE db, bool saveDB = false)
+        {
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+            var d = t.DIPENDENTI;
+
+            d.DATAINIZIORICALCOLI = t.DATAPARTENZA;
+
+            if (saveDB)
+            {
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile resettare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                }
+            }
+        }
+
     }
 }
