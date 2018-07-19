@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-xs-offset-4 col-xs-4 text-right">
-        <button class="btn btn-default" onclick="InviaFlussiDiretti(@idAnnoMeseElaborato);">Invia flussi diretti</button>
+        <button class="btn btn-default" onclick="InvioFlussi();">Invia flussi diretti</button>
     </div>
 
     <div class="col-xs-4 text-right">
@@ -14,7 +14,31 @@
 
 </div>
 
+<div class="modal fade" id="myModalInviiDiretti" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabel">?</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfo" class="text-info">Confermare l'invio dei flussi diretti?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiDiretti(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btAnnulla" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
+    function InvioFlussi() {
+        //$("#msgModalInfo").text(response);
+        $('#myModalInviiDiretti').modal('toggle');
+    }
     function InviaFlussiDiretti(idAnnoMeseElaborato) {
         debugger;
         var rotta = "/Elaborazioni/InviaFlussiDirettiOA";

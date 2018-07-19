@@ -23,7 +23,7 @@ namespace NewISE.EF
         public decimal IDMESEANNOELAB { get; set; }
         public decimal MESE { get; set; }
         public decimal ANNO { get; set; }
-        public bool ELABORATO { get; set; }
+        public bool CHIUSO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }

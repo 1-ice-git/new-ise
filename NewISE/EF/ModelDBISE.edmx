@@ -1018,7 +1018,7 @@
           <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MESE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="CHIUSO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MODIFICHE_MAB">
           <Key>
@@ -8537,7 +8537,7 @@
           <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MESE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
+          <Property Name="CHIUSO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_MAE_T" FromRole="MESEANNOELABORAZIONE" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="MODIFICHE_MAB">
@@ -12451,7 +12451,7 @@
           <EntitySetMapping Name="MESEANNOELABORAZIONE">
             <EntityTypeMapping TypeName="DBISE.MESEANNOELABORAZIONE">
               <MappingFragment StoreEntitySet="MESEANNOELABORAZIONE">
-                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
+                <ScalarProperty Name="CHIUSO" ColumnName="CHIUSO" />
                 <ScalarProperty Name="ANNO" ColumnName="ANNO" />
                 <ScalarProperty Name="MESE" ColumnName="MESE" />
                 <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />

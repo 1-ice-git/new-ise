@@ -572,5 +572,23 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void SetLastMeseElabDataInizioRicalcoli(decimal idDipendente, decimal idMeseAnnoElaborato, ModelDBISE db, bool saveDB = false)
+        {
+            var d = db.DIPENDENTI.Find(idDipendente);
+            var mae = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
+
+            d.DATAINIZIORICALCOLI = Convert.ToDateTime("01/" + mae.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + mae.ANNO);
+
+            if (saveDB)
+            {
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile resettare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                }
+            }
+        }
+
     }
 }

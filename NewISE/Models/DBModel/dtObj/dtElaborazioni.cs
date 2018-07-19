@@ -61,12 +61,68 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public void InviaFlussiMensili(decimal idMeseAnnoElaborato, decimal idTeorico)
+        {
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
+
+                    TEORICI teorico = db.TEORICI.Find(idTeorico);
+
+
+                    if (teorico.ANNULLATO == false && teorico.IDMESEANNOELAB == idMeseAnnoElaborato &&
+                        teorico.ELABORATO == false)
+                    {
+                        switch ((EnumTipoLiquidazione)teorico.VOCI.IDTIPOLIQUIDAZIONE)
+                        {
+                            case EnumTipoLiquidazione.Paghe:
+
+                                break;
+                            case EnumTipoLiquidazione.Contabilità:
+
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        private void InviaFlussiMensiliContabilita(TEORICI t, ModelDBISE db)
+        {
+            int operazione99 = DateTime.Now.Month;
+
+            if (t.ELABINDENNITA?.IDELABIND > 0)
+            {
+                var ei = t.ELABINDENNITA;
+                var trasferimento = ei.INDENNITA.TRASFERIMENTO;
+                var dip = trasferimento.DIPENDENTI;
+                var liv = ei.LIVELLI;
+                var ufficio = trasferimento.UFFICI;
+                var voce = tps.VOCI;
+                char delimitatore = Convert.ToChar("-");
+            }
+
+
+
+        }
+
         public void InviaFlussiDirettiContabilita(decimal idMeseAnnoElaborato, decimal idTeorico)
         {
             const int operazione99 = 99;
 
 
-            List<OA> loa = new List<OA>();
+            //List<OA> loa = new List<OA>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -146,6 +202,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         teoricoAnticipoRif = lteoriciAnticipi.First();
                                         oaRif = teoricoAnticipoRif.OA;
+
                                     }
 
                                 }
@@ -169,7 +226,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     oaRif.CTB_NUM_DOC_RIF = numeroDoc;
                                     oaRif.CTB_IMPORTO_RIF = tps.IMPORTO;
                                 }
-
 
                                 OA oa = new OA()
                                 {
@@ -198,7 +254,12 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (i > 0)
                                 {
                                     tps.ELABORATO = true;
-                                    db.SaveChanges();
+                                    int j = db.SaveChanges();
+
+                                    if (j > 0)
+                                    {
+                                        EmailElaborazione.EmailInviiDirettiPrimaSistemazione(trasferimento.IDTRASFERIMENTO, db);
+                                    }
                                 }
                             }
 
@@ -297,11 +358,26 @@ namespace NewISE.Models.DBModel.dtObj
                             a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                             a.VOCI.FLAGDIRETTO == true &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
-                            a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
+                            (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
+                             a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true) &&
                             a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D).ToList();
 
                 foreach (var t in lTeorici)
                 {
+                    string tipoOperazione = string.Empty;
+
+                    if (t.ELABINDSISTEMAZIONE.ANTICIPO == true)
+                    {
+                        tipoOperazione = "Anticipo";
+                    }
+                    else if (t.ELABINDSISTEMAZIONE.SALDO == true)
+                    {
+                        tipoOperazione = "Saldo";
+                    }
+                    else if (t.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true)
+                    {
+                        tipoOperazione = "Unica sol.";
+                    }
                     var dip = t.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
 
                     var ldvm = new LiquidazioniDiretteViewModel()
@@ -316,7 +392,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idTipoVoce = t.VOCI.IDTIPOVOCE,
                             codiceVoce = t.VOCI.CODICEVOCE,
                             descrizione =
-                                t.VOCI.DESCRIZIONE + " (" + t.ELABINDSISTEMAZIONE.PERCANTSALDOUNISOL.ToString() + "%)",
+                                t.VOCI.DESCRIZIONE + " (" + t.ELABINDSISTEMAZIONE.PERCANTSALDOUNISOL.ToString() + "% - " + tipoOperazione + ")",
                             flagDiretto = t.VOCI.FLAGDIRETTO
                         },
                         Data = t.DATAOPERAZIONE,
@@ -529,7 +605,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         if (lmae?.Any() ?? false)
                                         {
                                             var mae = lmae.First();
-                                            if (mae.Elaborato == true)
+                                            if (mae.Chiuso == true)
                                             {
                                                 cmae.NewMeseDaElaborare();
                                             }
@@ -718,7 +794,7 @@ namespace NewISE.Models.DBModel.dtObj
                     if (lmae?.Any() ?? false)
                     {
                         var mae = lmae.First();
-                        if (mae.Elaborato == true)
+                        if (mae.Chiuso == true)
                         {
                             cmae.NewMeseDaElaborare();
                         }
@@ -924,7 +1000,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (lmae?.Any() ?? false)
                                 {
                                     var mae = lmae.First();
-                                    if (mae.Elaborato == true)
+                                    if (mae.Chiuso == true)
                                     {
                                         cmae.NewMeseDaElaborare();
                                     }
@@ -1168,7 +1244,7 @@ namespace NewISE.Models.DBModel.dtObj
                 //                           meseAnnoElaborazione.ANNO);
                 //}
 
-                if (meseAnnoElaborazione.ELABORATO == true)
+                if (meseAnnoElaborazione.CHIUSO == true)
                 {
                     throw new Exception("ATTENZIONE!!! Mese/Anno già elaborato.");
                 }
@@ -2459,7 +2535,9 @@ namespace NewISE.Models.DBModel.dtObj
                             a =>
                                 (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
                                  a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
-                                 dataInizioRicalcoli <= a.DATARIENTRO && (a.DATAPARTENZA.Year + a.DATAPARTENZA.Month) < annoMeseElaborato)
+                                dataInizioRicalcoli <= a.DATARIENTRO &&
+                                Convert.ToDecimal(a.DATAPARTENZA.Year.ToString() + a.DATAPARTENZA.Month.ToString()) <
+                                annoMeseElaborato)
                             .OrderBy(a => a.DATAPARTENZA)
                             .ToList();
 
@@ -2482,6 +2560,13 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                             }
+                        }
+                    }
+                    else
+                    {
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            dtd.SetLastMeseElabDataInizioRicalcoli(dip.IDDIPENDENTE, idMeseAnnoElaborato, db, true);
                         }
                     }
 

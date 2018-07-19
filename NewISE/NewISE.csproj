@@ -5723,6 +5723,7 @@
     <Compile Include="Models\IseArio\dtObj\dtAliquotaISE.cs" />
     <Compile Include="Models\IseArio\Model\AliquotaIseModel.cs" />
     <Compile Include="Models\Ricalcoli\RicalcoloPrimaSistemazione.cs" />
+    <Compile Include="Models\Tools\EmailElaborazione.cs" />
     <Compile Include="Models\Tools\EmailTrasferimento.cs" />
     <Compile Include="Models\Tools\EmailCredenziali.cs" />
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />

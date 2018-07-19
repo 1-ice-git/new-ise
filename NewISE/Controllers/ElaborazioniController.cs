@@ -230,7 +230,6 @@ namespace NewISE.Controllers
         [HttpPost]
         public JsonResult InviaFlussiDirettiOA(decimal idAnnoMeseElaborato, List<decimal> Teorici)
         {
-
             try
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
@@ -250,6 +249,28 @@ namespace NewISE.Controllers
             return Json(new { msg = "I flussi diretti sono stati inviati.", err = "" });
 
             //return RedirectToAction("DatiLiquidazioniDirette", "Elaborazioni", new { idAnnoMeseElaborato = idAnnoMeseElaborato });
+        }
+
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult InviaFlussiMensili(decimal idAnnoMeseElaborato, List<decimal> Teorici)
+        {
+            try
+            {
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    foreach (decimal teorico in Teorici)
+                    {
+                        dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { msg = "", err = ex.Message });
+            }
+
+            return Json(new { msg = "I flussi mensili sono stati inviati.", err = "" });
         }
 
     }
