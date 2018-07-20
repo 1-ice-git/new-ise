@@ -3539,6 +3539,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_L_EI">
+          <End Role="LIVELLI" Type="Self.LIVELLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABINDENNITA" Type="Self.ELABINDENNITA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIVELLI">
+              <PropertyRef Name="IDLIVELLO" />
+            </Principal>
+            <Dependent Role="ELABINDENNITA">
+              <PropertyRef Name="IDLIVELLO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_L_EIR">
           <End Role="LIVELLI" Type="Self.LIVELLI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6109,6 +6123,10 @@
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
             <End Role="IS_R" EntitySet="IS_R" />
           </AssociationSet>
+          <AssociationSet Name="R_L_EI" Association="Self.R_L_EI">
+            <End Role="LIVELLI" EntitySet="LIVELLI" />
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
+          </AssociationSet>
           <AssociationSet Name="R_L_EIR" Association="Self.R_L_EIR">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
@@ -7060,6 +7078,10 @@
           </AssociationSet>
           <AssociationSet Name="R_I_EI" Association="DBISE.R_I_EI">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="R_L_EI" Association="DBISE.R_L_EI">
+            <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
           </AssociationSet>
           <AssociationSet Name="R_EIR_EIR" Association="DBISE.R_EIR_EIR">
@@ -8132,6 +8154,7 @@
           <NavigationProperty Name="ELABINDENNITA2" Relationship="DBISE.R_EI_EI" FromRole="ELABINDENNITA1" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EI_T" FromRole="ELABINDENNITA" ToRole="TEORICI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_EI" FromRole="ELABINDENNITA" ToRole="INDENNITA" />
+          <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EI" FromRole="ELABINDENNITA" ToRole="LIVELLI" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.IND_ALIQ" FromRole="ELABINDENNITA" ToRole="ALIQUOTECONTRIBUTIVE" />
         </EntityType>
         <EntityType Name="ELABINDRICHIAMO">
@@ -8432,6 +8455,7 @@
           </Key>
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LIVELLO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_L_EI" FromRole="LIVELLI" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_L_EIR" FromRole="LIVELLI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_L_EIS" FromRole="LIVELLI" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISE.RELATIONSHIP8" FromRole="LIVELLI" ToRole="ELABMAB" />
@@ -10326,6 +10350,20 @@
             </Principal>
             <Dependent Role="ELABINDENNITA">
               <PropertyRef Name="IDTRASFINDENNITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_L_EI">
+          <End Type="DBISE.LIVELLI" Role="LIVELLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIVELLI">
+              <PropertyRef Name="IDLIVELLO" />
+            </Principal>
+            <Dependent Role="ELABINDENNITA">
+              <PropertyRef Name="IDLIVELLO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

@@ -82,17 +82,18 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 break;
                             case EnumTipoLiquidazione.Contabilità:
-
+                                this.InviaFlussiMensiliContabilita(teorico, db);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
                     }
 
-
+                    db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
                 {
+                    db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
             }
@@ -102,6 +103,8 @@ namespace NewISE.Models.DBModel.dtObj
         {
             int operazione99 = DateTime.Now.Month;
 
+            #region Indennità
+
             if (t.ELABINDENNITA?.IDELABIND > 0)
             {
                 var ei = t.ELABINDENNITA;
@@ -109,10 +112,93 @@ namespace NewISE.Models.DBModel.dtObj
                 var dip = trasferimento.DIPENDENTI;
                 var liv = ei.LIVELLI;
                 var ufficio = trasferimento.UFFICI;
-                var voce = tps.VOCI;
+                var voce = t.VOCI;
                 char delimitatore = Convert.ToChar("-");
+                string tipoMovimento = string.Empty;
+                string numeroDoc = string.Empty;
+
+                try
+                {
+                    string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
+                    decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
+
+                    var lteoriciIndennitaOld =
+                        db.TEORICI.Where(
+                            a =>
+                                a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == false &&
+                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                a.IDMESEANNOELAB == t.IDMESEANNOELAB &&
+                                a.ELABORATO == false &&
+                                a.ANNORIFERIMENTO == t.ANNORIFERIMENTO &&
+                                a.MESERIFERIMENTO == t.MESERIFERIMENTO &&
+                                a.GIORNI == t.GIORNI &&
+                                a.IDELABIND == t.IDELABIND)
+                            .OrderBy(a => a.ANNORIFERIMENTO)
+                            .ThenBy(a => a.MESERIFERIMENTO)
+                            .ToList();
+
+                    if (lteoriciIndennitaOld?.Any() ?? false)
+                    {
+                        foreach (var tiOld in lteoriciIndennitaOld)
+                        {
+                            tiOld.ANNULLATO = true;
+                        }
+
+                        int j = db.SaveChanges();
+
+                        if (j <= 0)
+                        {
+                            throw new Exception("Non è stato possibile annullare il calcolo dell'elaborazione precedente per le informazioni di indennità.");
+                        }
+                    }
+
+
+                    numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
+                    OA oa = new OA()
+                    {
+                        IDTEORICI = t.IDTEORICI,
+                        CTB_ID_RECORD = idOA,
+                        CTB_MATRICOLA = (short)dip.MATRICOLA,
+                        CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
+                        CTB_COD_SEDE = ufficio.CODICEUFFICIO,
+                        CTB_TIPO_VOCE = tipoVoce,
+                        CTB_TIPO_MOVIMENTO = tipoMovimento,
+                        CTB_DESCRIZIONE = voce.DESCRIZIONE + " - Mese Corr.",
+                        CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
+                        CTB_DT_DECORRENZA = trasferimento.DATAPARTENZA,
+                        CTB_DT_RIFERIMENTO = trasferimento.DATAPARTENZA,
+                        CTB_DT_OPERAZIONE = DateTime.Now,
+                        CTB_NUM_DOC = numeroDoc,
+                        CTB_NUM_DOC_RIF = null,
+                        CTB_IMPORTO = t.IMPORTO,
+                        CTB_IMPORTO_RIF = 0,
+                        CTB_OPER_99 = operazione99.ToString()
+                    };
+
+                    db.OA.Add(oa);
+                    int i = db.SaveChanges();
+
+                    if (i > 0)
+                    {
+                        t.ELABORATO = true;
+                        int j = db.SaveChanges();
+
+                        //if (j > 0)
+                        //{
+                        //    EmailElaborazione.EmailInviiDirettiPrimaSistemazione(trasferimento.IDTRASFERIMENTO, db);
+                        //}
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+
             }
 
+            #endregion
 
 
         }
@@ -170,11 +256,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 TEORICI teoricoAnticipoRif = new TEORICI();
                                 OA oaRif = new OA();
 
-
                                 string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
                                 decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
-
-
 
                                 if (tps.ELABINDSISTEMAZIONE.ANTICIPO == true)
                                 {

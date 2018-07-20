@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LIVELLI()
         {
+            this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
             this.ELABINDRICHIAMO = new HashSet<ELABINDRICHIAMO>();
             this.ELABINDSISTEMAZIONE = new HashSet<ELABINDSISTEMAZIONE>();
             this.ELABMAB = new HashSet<ELABMAB>();
@@ -29,6 +30,8 @@ namespace NewISE.EF
         public decimal IDLIVELLO { get; set; }
         public string LIVELLO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDRICHIAMO> ELABINDRICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
