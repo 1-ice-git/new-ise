@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.EF;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
@@ -232,14 +233,31 @@ namespace NewISE.Controllers
         {
             try
             {
-                using (dtElaborazioni dte = new dtElaborazioni())
+                using (ModelDBISE db = new ModelDBISE())
                 {
+                    db.Database.BeginTransaction();
 
-                    foreach (decimal teorico in Teorici)
+                    using (dtElaborazioni dte = new dtElaborazioni())
                     {
-                        dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato, teorico);
+                        try
+                        {
+                            foreach (decimal teorico in Teorici)
+                            {
+                                dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato, teorico);
+                            }
+
+                            db.Database.CurrentTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            db.Database.CurrentTransaction.Rollback();
+                            throw ex;
+                        }
+
                     }
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -257,11 +275,27 @@ namespace NewISE.Controllers
         {
             try
             {
-                using (dtElaborazioni dte = new dtElaborazioni())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    foreach (decimal teorico in Teorici)
+                    db.Database.BeginTransaction();
+
+                    using (dtElaborazioni dte = new dtElaborazioni())
                     {
-                        dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico);
+                        try
+                        {
+                            foreach (decimal teorico in Teorici)
+                            {
+                                dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
+                            }
+
+                            db.Database.CurrentTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            db.Database.CurrentTransaction.Rollback();
+                            throw ex;
+                        }
+
                     }
                 }
             }

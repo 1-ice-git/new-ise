@@ -633,6 +633,15 @@
           <Property Name="FK_IDELABMAB" Type="number" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="ELABORAZIONI">
+          <Key>
+            <PropertyRef Name="IDEALBORAZIONI" />
+          </Key>
+          <Property Name="IDEALBORAZIONI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ANNOMESE" Type="number" Precision="6" Scale="0" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="ELABTRASPEFFETTI">
           <Key>
             <PropertyRef Name="IDELABTRASPEFFETTI" />
@@ -762,9 +771,6 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="MATRICOLA" Type="number" Precision="6" Scale="0" Nullable="false" />
-          <Property Name="LIVELLO" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="CODICESEDE" Type="varchar2" MaxLength="10" Nullable="false" />
           <Property Name="DATAINVIOFLUSSI" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="FP_DOC">
@@ -2712,6 +2718,20 @@
             </Principal>
             <Dependent Role="DOCVC">
               <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_E">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABORAZIONI" Type="Self.ELABORAZIONI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="ELABORAZIONI">
+              <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5482,6 +5502,7 @@
           <EntitySet Name="ELABINDRICHIAMO" EntityType="Self.ELABINDRICHIAMO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABINDSISTEMAZIONE" EntityType="Self.ELABINDSISTEMAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABMAB" EntityType="Self.ELABMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABORAZIONI" EntityType="Self.ELABORAZIONI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABTRASPEFFETTI" EntityType="Self.ELABTRASPEFFETTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="EMAB_ALIQ" EntityType="Self.EMAB_ALIQ" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="EMAILSECONDARIEDIP" EntityType="Self.EMAILSECONDARIEDIP" Schema="ISESIM" store:Type="Tables" />
@@ -5886,6 +5907,10 @@
           <AssociationSet Name="R_D_DVC" Association="Self.R_D_DVC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="DOCVC" EntitySet="DOCVC" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_E" Association="Self.R_D_E">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="ELABORAZIONI" EntitySet="ELABORAZIONI" />
           </AssociationSet>
           <AssociationSet Name="R_D_ESD" Association="Self.R_D_ESD">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
@@ -6701,6 +6726,7 @@
           <EntitySet Name="ELABINDRICHIAMO" EntityType="DBISE.ELABINDRICHIAMO" />
           <EntitySet Name="ELABINDSISTEMAZIONE" EntityType="DBISE.ELABINDSISTEMAZIONE" />
           <EntitySet Name="ELABMAB" EntityType="DBISE.ELABMAB" />
+          <EntitySet Name="ELABORAZIONI" EntityType="DBISE.ELABORAZIONI" />
           <EntitySet Name="ELABTRASPEFFETTI" EntityType="DBISE.ELABTRASPEFFETTI" />
           <EntitySet Name="EMAILSECONDARIEDIP" EntityType="DBISE.EMAILSECONDARIEDIP" />
           <EntitySet Name="FASCIA_KM" EntityType="DBISE.FASCIA_KM" />
@@ -7015,6 +7041,10 @@
           <AssociationSet Name="R_NOTIF_DEST" Association="DBISE.R_NOTIF_DEST">
             <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
             <End Role="DESTINATARI" EntitySet="DESTINATARI" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_E" Association="DBISE.R_D_E">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="ELABORAZIONI" EntitySet="ELABORAZIONI" />
           </AssociationSet>
           <AssociationSet Name="R_D_ESD" Association="DBISE.R_D_ESD">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
@@ -8073,6 +8103,7 @@
           <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="CDCGEPE" Relationship="DBISE.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
           <NavigationProperty Name="DESTINATARI" Relationship="DBISE.R_DIP_DEST" FromRole="DIPENDENTI" ToRole="DESTINATARI" />
+          <NavigationProperty Name="ELABORAZIONI" Relationship="DBISE.R_D_E" FromRole="DIPENDENTI" ToRole="ELABORAZIONI" />
           <NavigationProperty Name="EMAILSECONDARIEDIP" Relationship="DBISE.R_D_ESD" FromRole="DIPENDENTI" ToRole="EMAILSECONDARIEDIP" />
           <NavigationProperty Name="NOTIFICHE" Relationship="DBISE.R_D_MIT_N" FromRole="DIPENDENTI" ToRole="NOTIFICHE" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_D_UA" FromRole="DIPENDENTI" ToRole="UTENTIAUTORIZZATI" />
@@ -8238,6 +8269,16 @@
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.RELATIONSHIP8" FromRole="ELABMAB" ToRole="LIVELLI" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.EMAB_ALIQ" FromRole="ELABMAB" ToRole="ALIQUOTECONTRIBUTIVE" />
         </EntityType>
+        <EntityType Name="ELABORAZIONI">
+          <Key>
+            <PropertyRef Name="IDEALBORAZIONI" />
+          </Key>
+          <Property Name="IDEALBORAZIONI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ANNOMESE" Type="Int32" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_D_E" FromRole="ELABORAZIONI" ToRole="DIPENDENTI" />
+        </EntityType>
         <EntityType Name="ELABTRASPEFFETTI">
           <Key>
             <PropertyRef Name="IDELABTRASPEFFETTI" />
@@ -8356,9 +8397,6 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="MATRICOLA" Type="Int32" Nullable="false" />
-          <Property Name="LIVELLO" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CODICESEDE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DATAINVIOFLUSSI" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_T_FC" FromRole="FLUSSICEDOLINO" ToRole="TEORICI" />
         </EntityType>
@@ -10128,6 +10166,20 @@
             </Principal>
             <Dependent Role="DESTINATARI">
               <PropertyRef Name="IDNOTIFICA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_E">
+          <End Type="DBISE.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ELABORAZIONI" Role="ELABORAZIONI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="ELABORAZIONI">
+              <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -12229,6 +12281,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ELABORAZIONI">
+            <EntityTypeMapping TypeName="DBISE.ELABORAZIONI">
+              <MappingFragment StoreEntitySet="ELABORAZIONI">
+                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="ANNOMESE" ColumnName="ANNOMESE" />
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
+                <ScalarProperty Name="IDEALBORAZIONI" ColumnName="IDEALBORAZIONI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ELABTRASPEFFETTI">
             <EntityTypeMapping TypeName="DBISE.ELABTRASPEFFETTI">
               <MappingFragment StoreEntitySet="ELABTRASPEFFETTI">
@@ -12325,9 +12387,6 @@
             <EntityTypeMapping TypeName="DBISE.FLUSSICEDOLINO">
               <MappingFragment StoreEntitySet="FLUSSICEDOLINO">
                 <ScalarProperty Name="DATAINVIOFLUSSI" ColumnName="DATAINVIOFLUSSI" />
-                <ScalarProperty Name="CODICESEDE" ColumnName="CODICESEDE" />
-                <ScalarProperty Name="LIVELLO" ColumnName="LIVELLO" />
-                <ScalarProperty Name="MATRICOLA" ColumnName="MATRICOLA" />
                 <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
               </MappingFragment>
             </EntityTypeMapping>

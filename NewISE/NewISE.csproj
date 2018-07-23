@@ -1054,8 +1054,16 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Immagini\2.GIF" />
     <Content Include="Immagini\39.gif" />
+    <Content Include="Immagini\euro-add-black.png" />
+    <Content Include="Immagini\euro-stop-black.png" />
+    <Content Include="Immagini\locked-black-padlock-security_54500.png" />
     <Content Include="Immagini\new-icon.png" />
+    <Content Include="Immagini\sync-icons10.png" />
+    <Content Include="Immagini\sync-icons4.png" />
     <Content Include="Immagini\undo.png" />
+    <Content Include="Immagini\undo_black.png" />
+    <Content Include="Immagini\undo_white.png" />
+    <Content Include="Immagini\unlocked-padlock-black-security_54444.png" />
     <Content Include="Immagini\user.png" />
     <Content Include="Immagini\Button-Green.png" />
     <Content Include="Immagini\Button-Red.png" />
@@ -4986,6 +4994,9 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\ELABMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ELABORAZIONI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\ELABTRASPEFFETTI.cs">

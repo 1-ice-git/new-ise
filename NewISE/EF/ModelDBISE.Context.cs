@@ -57,6 +57,7 @@ namespace NewISE.EF
         public virtual DbSet<ELABINDRICHIAMO> ELABINDRICHIAMO { get; set; }
         public virtual DbSet<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
         public virtual DbSet<ELABMAB> ELABMAB { get; set; }
+        public virtual DbSet<ELABORAZIONI> ELABORAZIONI { get; set; }
         public virtual DbSet<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
         public virtual DbSet<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
         public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }

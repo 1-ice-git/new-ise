@@ -41,10 +41,8 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (decimal idDip in dipendenti)
                         {
-                            this.CalcolaConguagli(idDip, idMeseAnnoElaborato, db);
-
                             this.CalcolaElaborazioneMensile(idDip, idMeseAnnoElaborato, db);
-
+                            this.CalcolaConguagli(idDip, idMeseAnnoElaborato, db);
 
                         }
                     }
@@ -61,42 +59,66 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void InviaFlussiMensili(decimal idMeseAnnoElaborato, decimal idTeorico)
+
+        public void InviaFlussiMensili(decimal idMeseAnnoElaborato, decimal idTeorico, ModelDBISE db)
         {
 
-            using (ModelDBISE db = new ModelDBISE())
+
+            try
             {
-                try
+                TEORICI teorico = db.TEORICI.Find(idTeorico);
+
+                if (teorico.ANNULLATO == false && teorico.IDMESEANNOELAB == idMeseAnnoElaborato &&
+                    teorico.ELABORATO == false)
                 {
-                    db.Database.BeginTransaction();
-
-                    TEORICI teorico = db.TEORICI.Find(idTeorico);
-
-
-                    if (teorico.ANNULLATO == false && teorico.IDMESEANNOELAB == idMeseAnnoElaborato &&
-                        teorico.ELABORATO == false)
+                    switch ((EnumTipoLiquidazione)teorico.VOCI.IDTIPOLIQUIDAZIONE)
                     {
-                        switch ((EnumTipoLiquidazione)teorico.VOCI.IDTIPOLIQUIDAZIONE)
-                        {
-                            case EnumTipoLiquidazione.Paghe:
-
-                                break;
-                            case EnumTipoLiquidazione.Contabilità:
-                                this.InviaFlussiMensiliContabilita(teorico, db);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        case EnumTipoLiquidazione.Paghe:
+                            this.InviaFlussiMensiliCedolino(teorico, db);
+                            break;
+                        case EnumTipoLiquidazione.Contabilità:
+                            this.InviaFlussiMensiliContabilita(teorico, db);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
-
-                    db.Database.CurrentTransaction.Commit();
                 }
-                catch (Exception ex)
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        private void InviaFlussiMensiliCedolino(TEORICI t, ModelDBISE db)
+        {
+            FLUSSICEDOLINO fc = new FLUSSICEDOLINO()
+            {
+                IDTEORICI = t.IDTEORICI,
+                DATAINVIOFLUSSI = DateTime.Now
+            };
+
+            db.FLUSSICEDOLINO.Add(fc);
+
+            int i = db.SaveChanges();
+
+            if (i > 0)
+            {
+                t.ELABORATO = true;
+                int j = db.SaveChanges();
+
+                if (j <= 0)
                 {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
+                    throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
                 }
             }
+            else
+            {
+                throw new Exception("Impossibile inserire i flussi per il cedolino.");
+            }
+
         }
 
         private void InviaFlussiMensiliContabilita(TEORICI t, ModelDBISE db)
@@ -114,7 +136,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var ufficio = trasferimento.UFFICI;
                 var voce = t.VOCI;
                 char delimitatore = Convert.ToChar("-");
-                string tipoMovimento = string.Empty;
+                string tipoMovimento = "M";
                 string numeroDoc = string.Empty;
 
                 try
@@ -122,35 +144,35 @@ namespace NewISE.Models.DBModel.dtObj
                     string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
                     decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
 
-                    var lteoriciIndennitaOld =
-                        db.TEORICI.Where(
-                            a =>
-                                a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == false &&
-                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                a.IDMESEANNOELAB == t.IDMESEANNOELAB &&
-                                a.ELABORATO == false &&
-                                a.ANNORIFERIMENTO == t.ANNORIFERIMENTO &&
-                                a.MESERIFERIMENTO == t.MESERIFERIMENTO &&
-                                a.GIORNI == t.GIORNI &&
-                                a.IDELABIND == t.IDELABIND)
-                            .OrderBy(a => a.ANNORIFERIMENTO)
-                            .ThenBy(a => a.MESERIFERIMENTO)
-                            .ToList();
+                    //var lteoriciIndennitaOld =
+                    //    db.TEORICI.Where(
+                    //        a =>
+                    //            a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == false &&
+                    //            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                    //            a.IDMESEANNOELAB == t.IDMESEANNOELAB &&
+                    //            a.ELABORATO == false &&
+                    //            a.ANNORIFERIMENTO == t.ANNORIFERIMENTO &&
+                    //            a.MESERIFERIMENTO == t.MESERIFERIMENTO &&
+                    //            a.GIORNI == t.GIORNI &&
+                    //            a.IDELABIND == t.IDELABIND)
+                    //        .OrderBy(a => a.ANNORIFERIMENTO)
+                    //        .ThenBy(a => a.MESERIFERIMENTO)
+                    //        .ToList();
 
-                    if (lteoriciIndennitaOld?.Any() ?? false)
-                    {
-                        foreach (var tiOld in lteoriciIndennitaOld)
-                        {
-                            tiOld.ANNULLATO = true;
-                        }
+                    //if (lteoriciIndennitaOld?.Any() ?? false)
+                    //{
+                    //    foreach (var tiOld in lteoriciIndennitaOld)
+                    //    {
+                    //        tiOld.ANNULLATO = true;
+                    //    }
 
-                        int j = db.SaveChanges();
+                    //    int j = db.SaveChanges();
 
-                        if (j <= 0)
-                        {
-                            throw new Exception("Non è stato possibile annullare il calcolo dell'elaborazione precedente per le informazioni di indennità.");
-                        }
-                    }
+                    //    if (j <= 0)
+                    //    {
+                    //        throw new Exception("Non è stato possibile annullare il calcolo dell'elaborazione precedente per le informazioni di indennità.");
+                    //    }
+                    //}
 
 
                     numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
@@ -183,10 +205,14 @@ namespace NewISE.Models.DBModel.dtObj
                         t.ELABORATO = true;
                         int j = db.SaveChanges();
 
-                        //if (j > 0)
-                        //{
-                        //    EmailElaborazione.EmailInviiDirettiPrimaSistemazione(trasferimento.IDTRASFERIMENTO, db);
-                        //}
+                        if (j <= 0)
+                        {
+                            throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Impossibile inserire le informazioni in oracle application.");
                     }
 
                 }
@@ -203,165 +229,165 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void InviaFlussiDirettiContabilita(decimal idMeseAnnoElaborato, decimal idTeorico)
+        public void InviaFlussiDirettiContabilita(decimal idMeseAnnoElaborato, decimal idTeorico, ModelDBISE db)
         {
             const int operazione99 = 99;
 
 
             //List<OA> loa = new List<OA>();
 
-            using (ModelDBISE db = new ModelDBISE())
+
+
+            try
             {
-                try
+
+
+                var lTeorici =
+                    db.TEORICI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true && a.ELABORATO == false &&
+                            a.IDMESEANNOELAB == idMeseAnnoElaborato && a.IDTEORICI == idTeorico &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)
+                        .OrderBy(a => a.ANNORIFERIMENTO)
+                        .ThenBy(a => a.MESERIFERIMENTO)
+                        .ToList();
+
+                if (lTeorici?.Any() ?? false)
                 {
-                    db.Database.BeginTransaction();
+                    #region Prima sistemazione
 
-                    var lTeorici =
-                        db.TEORICI.Where(
-                            a =>
-                                a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true && a.ELABORATO == false &&
-                                a.IDMESEANNOELAB == idMeseAnnoElaborato && a.IDTEORICI == idTeorico &&
-                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)
-                            .OrderBy(a => a.ANNORIFERIMENTO)
-                            .ThenBy(a => a.MESERIFERIMENTO)
-                            .ToList();
+                    var ltps = lTeorici.Where(a => a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0).ToList();
 
-                    if (lTeorici?.Any() ?? false)
+                    if (ltps?.Any() ?? false)
                     {
-                        #region Prima sistemazione
-
-                        var ltps = lTeorici.Where(a => a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0).ToList();
-
-                        if (ltps?.Any() ?? false)
+                        foreach (var tps in ltps)
                         {
-                            foreach (var tps in ltps)
+                            var eis = tps.ELABINDSISTEMAZIONE;
+                            //var ps = eis.PRIMASITEMAZIONE;
+                            var trasferimento = eis.PRIMASITEMAZIONE.TRASFERIMENTO;
+                            var dip = trasferimento.DIPENDENTI;
+                            var liv = eis.LIVELLI;
+                            var ufficio = trasferimento.UFFICI;
+                            var voce = tps.VOCI;
+                            char delimitatore = Convert.ToChar("-");
+
+                            string anticipoSaldoUnicaSoluzione = string.Empty;
+                            string tipoMovimento = string.Empty;
+                            //string tipoMovimentoRif = string.Empty;
+                            decimal importoRif = 0;
+
+                            string numeroDoc = string.Empty;
+                            string numeroDocRif = string.Empty;
+
+                            TEORICI teoricoAnticipoRif = new TEORICI();
+                            OA oaRif = new OA();
+
+                            string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
+                            decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
+
+                            if (tps.ELABINDSISTEMAZIONE.ANTICIPO == true)
                             {
-                                var eis = tps.ELABINDSISTEMAZIONE;
-                                //var ps = eis.PRIMASITEMAZIONE;
-                                var trasferimento = eis.PRIMASITEMAZIONE.TRASFERIMENTO;
-                                var dip = trasferimento.DIPENDENTI;
-                                var liv = eis.LIVELLI;
-                                var ufficio = trasferimento.UFFICI;
-                                var voce = tps.VOCI;
-                                char delimitatore = Convert.ToChar("-");
+                                anticipoSaldoUnicaSoluzione = " - Anticipo";
+                                tipoMovimento = "A";
+                            }
+                            else if (tps.ELABINDSISTEMAZIONE.SALDO == true)
+                            {
+                                anticipoSaldoUnicaSoluzione = " - Saldo";
+                                tipoMovimento = "S";
 
-                                string anticipoSaldoUnicaSoluzione = string.Empty;
-                                string tipoMovimento = string.Empty;
-                                //string tipoMovimentoRif = string.Empty;
-                                decimal importoRif = 0;
+                                var lteoriciAnticipi =
+                                    db.TEORICI.Where(
+                                        a =>
+                                            a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true &&
+                                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                            a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
+                                            a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE ==
+                                            tps.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
+                                        .OrderBy(a => a.ANNORIFERIMENTO)
+                                        .ThenBy(a => a.MESERIFERIMENTO)
+                                        .ToList();
 
-                                string numeroDoc = string.Empty;
-                                string numeroDocRif = string.Empty;
-
-                                TEORICI teoricoAnticipoRif = new TEORICI();
-                                OA oaRif = new OA();
-
-                                string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
-                                decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
-
-                                if (tps.ELABINDSISTEMAZIONE.ANTICIPO == true)
+                                if (lteoriciAnticipi?.Any() ?? false)
                                 {
-                                    anticipoSaldoUnicaSoluzione = " - Anticipo";
-                                    tipoMovimento = "A";
-                                }
-                                else if (tps.ELABINDSISTEMAZIONE.SALDO == true)
-                                {
-                                    anticipoSaldoUnicaSoluzione = " - Saldo";
-                                    tipoMovimento = "S";
-
-                                    var lteoriciAnticipi =
-                                        db.TEORICI.Where(
-                                            a =>
-                                                a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == true &&
-                                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                                a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
-                                                a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE ==
-                                                tps.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
-                                            .OrderBy(a => a.ANNORIFERIMENTO)
-                                            .ThenBy(a => a.MESERIFERIMENTO)
-                                            .ToList();
-
-                                    if (lteoriciAnticipi?.Any() ?? false)
-                                    {
-                                        teoricoAnticipoRif = lteoriciAnticipi.First();
-                                        oaRif = teoricoAnticipoRif.OA;
-
-                                    }
+                                    teoricoAnticipoRif = lteoriciAnticipi.First();
+                                    oaRif = teoricoAnticipoRif.OA;
 
                                 }
-                                else if (tps.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true)
-                                {
-                                    anticipoSaldoUnicaSoluzione = " - Unica soluzione";
-                                    tipoMovimento = "U";
-                                }
-                                else
-                                {
-                                    throw new Exception("Errore nella fase di definizione dell'anticipo, saldo, unica soluzione.");
-                                }
 
-                                numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
-
-                                if (oaRif.IDTEORICI > 0)
-                                {
-                                    numeroDocRif = oaRif.CTB_NUM_DOC;
-                                    importoRif = oaRif.CTB_IMPORTO;
-
-                                    oaRif.CTB_NUM_DOC_RIF = numeroDoc;
-                                    oaRif.CTB_IMPORTO_RIF = tps.IMPORTO;
-                                }
-
-                                OA oa = new OA()
-                                {
-                                    IDTEORICI = tps.IDTEORICI,
-                                    CTB_ID_RECORD = idOA,
-                                    CTB_MATRICOLA = (short)dip.MATRICOLA,
-                                    CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
-                                    CTB_COD_SEDE = ufficio.CODICEUFFICIO,
-                                    CTB_TIPO_VOCE = tipoVoce,
-                                    CTB_TIPO_MOVIMENTO = tipoMovimento,
-                                    CTB_DESCRIZIONE = voce.DESCRIZIONE + anticipoSaldoUnicaSoluzione,
-                                    CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
-                                    CTB_DT_DECORRENZA = trasferimento.DATAPARTENZA,
-                                    CTB_DT_RIFERIMENTO = trasferimento.DATAPARTENZA,
-                                    CTB_DT_OPERAZIONE = DateTime.Now,
-                                    CTB_NUM_DOC = numeroDoc,
-                                    CTB_NUM_DOC_RIF = numeroDocRif,
-                                    CTB_IMPORTO = tps.IMPORTO,
-                                    CTB_IMPORTO_RIF = importoRif,
-                                    CTB_OPER_99 = operazione99.ToString()
-                                };
-
-
-                                db.OA.Add(oa);
-                                int i = db.SaveChanges();
-                                if (i > 0)
-                                {
-                                    tps.ELABORATO = true;
-                                    int j = db.SaveChanges();
-
-                                    if (j > 0)
-                                    {
-                                        EmailElaborazione.EmailInviiDirettiPrimaSistemazione(trasferimento.IDTRASFERIMENTO, db);
-                                    }
-                                }
+                            }
+                            else if (tps.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true)
+                            {
+                                anticipoSaldoUnicaSoluzione = " - Unica soluzione";
+                                tipoMovimento = "U";
+                            }
+                            else
+                            {
+                                throw new Exception("Errore nella fase di definizione dell'anticipo, saldo, unica soluzione.");
                             }
 
+                            numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
 
+                            if (oaRif.IDTEORICI > 0)
+                            {
+                                numeroDocRif = oaRif.CTB_NUM_DOC;
+                                importoRif = oaRif.CTB_IMPORTO;
+
+                                oaRif.CTB_NUM_DOC_RIF = numeroDoc;
+                                oaRif.CTB_IMPORTO_RIF = tps.IMPORTO;
+                            }
+
+                            OA oa = new OA()
+                            {
+                                IDTEORICI = tps.IDTEORICI,
+                                CTB_ID_RECORD = idOA,
+                                CTB_MATRICOLA = (short)dip.MATRICOLA,
+                                CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
+                                CTB_COD_SEDE = ufficio.CODICEUFFICIO,
+                                CTB_TIPO_VOCE = tipoVoce,
+                                CTB_TIPO_MOVIMENTO = tipoMovimento,
+                                CTB_DESCRIZIONE = voce.DESCRIZIONE + anticipoSaldoUnicaSoluzione,
+                                CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
+                                CTB_DT_DECORRENZA = trasferimento.DATAPARTENZA,
+                                CTB_DT_RIFERIMENTO = trasferimento.DATAPARTENZA,
+                                CTB_DT_OPERAZIONE = DateTime.Now,
+                                CTB_NUM_DOC = numeroDoc,
+                                CTB_NUM_DOC_RIF = numeroDocRif,
+                                CTB_IMPORTO = tps.IMPORTO,
+                                CTB_IMPORTO_RIF = importoRif,
+                                CTB_OPER_99 = operazione99.ToString()
+                            };
+
+
+                            db.OA.Add(oa);
+                            int i = db.SaveChanges();
+                            if (i > 0)
+                            {
+                                tps.ELABORATO = true;
+                                int j = db.SaveChanges();
+
+                                if (j > 0)
+                                {
+                                    EmailElaborazione.EmailInviiDirettiPrimaSistemazione(trasferimento.IDTRASFERIMENTO, db);
+                                }
+                            }
                         }
 
-                        #endregion
+
                     }
 
+                    #endregion
+                }
 
 
-                    db.Database.CurrentTransaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
-                }
+
+
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
 
 
@@ -1262,8 +1288,9 @@ namespace NewISE.Models.DBModel.dtObj
             var lTrasf =
                 dip.TRASFERIMENTO.Where(
                     a =>
-                        a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
-                        a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                        (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                         a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                         a.DATARIENTRO >= a.DIPENDENTI.DATAINIZIORICALCOLI)
                     .OrderBy(a => a.DATAPARTENZA)
                     .ToList();
 
@@ -1372,6 +1399,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
+
 
         private IList<LiquidazioneMensileViewModel> PlmIndennitaPersonale(MESEANNOELABORAZIONE mae, ModelDBISE db)
         {
