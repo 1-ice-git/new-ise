@@ -92,6 +92,95 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public IList<DIPENDENTI> EstrapolaDipendentiDaTeorici(List<decimal> lTeorici, ModelDBISE db)
+        {
+            List<DIPENDENTI> lDip = new List<DIPENDENTI>();
+            DIPENDENTI dip = new DIPENDENTI();
+
+            foreach (var idTeorico in lTeorici)
+            {
+                var teorico = db.TEORICI.Find(idTeorico);
+
+                if (teorico?.IDINDSISTLORDA > 0)
+                {
+                    dip = new DIPENDENTI();
+                    dip = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
+                    if (!lDip.Contains(dip))
+                    {
+                        lDip.Add(dip);
+                    }
+
+                }
+                else if (teorico?.IDELABIND > 0)
+                {
+                    dip = new DIPENDENTI();
+                    dip = teorico.ELABINDENNITA.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                    if (!lDip.Contains(dip))
+                    {
+                        lDip.Add(dip);
+                    }
+                }
+                else if (teorico?.IDELABMAB > 0)
+                {
+                    dip = new DIPENDENTI();
+                    dip = teorico.ELABMAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                    if (!lDip.Contains(dip))
+                    {
+                        lDip.Add(dip);
+                    }
+                }
+                else if (teorico?.IDELABTRASPEFFETTI > 0)
+                {
+                    dip = new DIPENDENTI();
+                    dip = teorico.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI;
+                    if (!lDip.Contains(dip))
+                    {
+                        lDip.Add(dip);
+                    }
+                }
+                else if (teorico?.IDELABINDRICHIAMO > 0)
+                {
+                    dip = new DIPENDENTI();
+                    dip = teorico.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI;
+                    if (!lDip.Contains(dip))
+                    {
+                        lDip.Add(dip);
+                    }
+                }
+            }
+
+            return lDip;
+        }
+
+
+        public void SetPeriodoElaborazioniDipendente(decimal idDipendente, decimal idMeseAnnoElab, ModelDBISE db)
+        {
+            ELABORAZIONI el = new ELABORAZIONI();
+
+            var dip = db.DIPENDENTI.Find(idDipendente);
+
+            if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idMeseAnnoElab) ?? false)
+            {
+                el = new ELABORAZIONI()
+                {
+                    IDDIPENDENTE = idDipendente,
+                    IDMESEANNOELAB = idMeseAnnoElab,
+                    DATAOPERAZIONE = DateTime.Now
+                };
+
+                dip.ELABORAZIONI.Add(el);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile inserire l'elaborazione del dipendente.");
+                }
+            }
+
+
+        }
+
         private void InviaFlussiMensiliCedolino(TEORICI t, ModelDBISE db)
         {
             FLUSSICEDOLINO fc = new FLUSSICEDOLINO()
@@ -233,10 +322,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             const int operazione99 = 99;
 
-
             //List<OA> loa = new List<OA>();
-
-
 
             try
             {
@@ -357,7 +443,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 CTB_OPER_99 = operazione99.ToString()
                             };
 
-
                             db.OA.Add(oa);
                             int i = db.SaveChanges();
                             if (i > 0)
@@ -371,7 +456,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                             }
                         }
-
 
                     }
 
@@ -1379,13 +1463,24 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (lTrasferimenti?.Any() ?? false)
                 {
+
                     foreach (var trasferimento in lTrasferimenti)
                     {
-                        this.InsPrimaSistemazioneCedolino(trasferimento, meseAnnoElaborazione, db);
+                        var dip = trasferimento.DIPENDENTI;
 
-                        this.InsIndennitaMensile(trasferimento, meseAnnoElaborazione, db);
+                        if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idMeseAnnoElaborato) ?? false)
+                        {
+                            this.InsPrimaSistemazioneCedolino(trasferimento, meseAnnoElaborazione, db);
 
-                        this.InsTrasportoEffetti(trasferimento, meseAnnoElaborazione, db);
+                            this.InsIndennitaMensile(trasferimento, meseAnnoElaborazione, db);
+
+                            this.InsTrasportoEffetti(trasferimento, meseAnnoElaborazione, db);
+                        }
+                        else
+                        {
+                            throw new Exception("Il dipendente " + dip.COGNOME + " " + dip.NOME + " per il perido selezionato risulta già elaborato.");
+                        }
+
                     }
                 }
 

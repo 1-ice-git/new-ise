@@ -16,9 +16,10 @@ namespace NewISE.EF
     {
         public decimal IDEALBORAZIONI { get; set; }
         public decimal IDDIPENDENTE { get; set; }
-        public int ANNOMESE { get; set; }
+        public decimal IDMESEANNOELAB { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
     
         public virtual DIPENDENTI DIPENDENTI { get; set; }
+        public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
     }
 }

@@ -243,7 +243,7 @@ namespace NewISE.Controllers
                         {
                             foreach (decimal teorico in Teorici)
                             {
-                                dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato, teorico);
+                                dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato, teorico, db);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -273,6 +273,8 @@ namespace NewISE.Controllers
         [HttpPost]
         public JsonResult InviaFlussiMensili(decimal idAnnoMeseElaborato, List<decimal> Teorici)
         {
+            List<DIPENDENTI> lDip = new List<DIPENDENTI>();
+
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -286,6 +288,13 @@ namespace NewISE.Controllers
                             foreach (decimal teorico in Teorici)
                             {
                                 dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
+                            }
+
+                            lDip = dte.EstrapolaDipendentiDaTeorici(Teorici, db).ToList();
+
+                            foreach (var dip in lDip)
+                            {
+                                dte.SetPeriodoElaborazioniDipendente(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
                             }
 
                             db.Database.CurrentTransaction.Commit();

@@ -639,7 +639,7 @@
           </Key>
           <Property Name="IDEALBORAZIONI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="ANNOMESE" Type="number" Precision="6" Scale="0" Nullable="false" />
+          <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABTRASPEFFETTI">
@@ -3769,6 +3769,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAE_E">
+          <End Role="MESEANNOELABORAZIONE" Type="Self.MESEANNOELABORAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABORAZIONI" Type="Self.ELABORAZIONI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MESEANNOELABORAZIONE">
+              <PropertyRef Name="IDMESEANNOELAB" />
+            </Principal>
+            <Dependent Role="ELABORAZIONI">
+              <PropertyRef Name="IDMESEANNOELAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MAE_T">
           <End Role="MESEANNOELABORAZIONE" Type="Self.MESEANNOELABORAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6208,6 +6222,10 @@
             <End Role="MAB" EntitySet="MAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_MAE_E" Association="Self.R_MAE_E">
+            <End Role="MESEANNOELABORAZIONE" EntitySet="MESEANNOELABORAZIONE" />
+            <End Role="ELABORAZIONI" EntitySet="ELABORAZIONI" />
+          </AssociationSet>
           <AssociationSet Name="R_MAE_T" Association="Self.R_MAE_T">
             <End Role="MESEANNOELABORAZIONE" EntitySet="MESEANNOELABORAZIONE" />
             <End Role="TEORICI" EntitySet="TEORICI" />
@@ -7161,6 +7179,10 @@
           <AssociationSet Name="RELATIONSHIP8" Association="DBISE.RELATIONSHIP8">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAE_E" Association="DBISE.R_MAE_E">
+            <End Role="MESEANNOELABORAZIONE" EntitySet="MESEANNOELABORAZIONE" />
+            <End Role="ELABORAZIONI" EntitySet="ELABORAZIONI" />
           </AssociationSet>
           <AssociationSet Name="R_ETE_T" Association="DBISE.R_ETE_T">
             <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
@@ -8275,9 +8297,10 @@
           </Key>
           <Property Name="IDEALBORAZIONI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="ANNOMESE" Type="Int32" Nullable="false" />
+          <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_D_E" FromRole="ELABORAZIONI" ToRole="DIPENDENTI" />
+          <NavigationProperty Name="MESEANNOELABORAZIONE" Relationship="DBISE.R_MAE_E" FromRole="ELABORAZIONI" ToRole="MESEANNOELABORAZIONE" />
         </EntityType>
         <EntityType Name="ELABTRASPEFFETTI">
           <Key>
@@ -8600,6 +8623,7 @@
           <Property Name="MESE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CHIUSO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ELABORAZIONI" Relationship="DBISE.R_MAE_E" FromRole="MESEANNOELABORAZIONE" ToRole="ELABORAZIONI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_MAE_T" FromRole="MESEANNOELABORAZIONE" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="MODIFICHE_MAB">
@@ -10585,6 +10609,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAE_E">
+          <End Type="DBISE.MESEANNOELABORAZIONE" Role="MESEANNOELABORAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ELABORAZIONI" Role="ELABORAZIONI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MESEANNOELABORAZIONE">
+              <PropertyRef Name="IDMESEANNOELAB" />
+            </Principal>
+            <Dependent Role="ELABORAZIONI">
+              <PropertyRef Name="IDMESEANNOELAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_ETE_T">
           <End Type="DBISE.ELABTRASPEFFETTI" Role="ELABTRASPEFFETTI" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -12285,7 +12323,7 @@
             <EntityTypeMapping TypeName="DBISE.ELABORAZIONI">
               <MappingFragment StoreEntitySet="ELABORAZIONI">
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-                <ScalarProperty Name="ANNOMESE" ColumnName="ANNOMESE" />
+                <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="IDEALBORAZIONI" ColumnName="IDEALBORAZIONI" />
               </MappingFragment>

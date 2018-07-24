@@ -64,6 +64,7 @@ namespace NewISE.Models.Tools
                         };
 
                         var lua = db.UTENTIAUTORIZZATI.Where(a => a.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).ToList();
+
                         foreach (var ua in lua)
                         {
                             var dipAdmin = ua.DIPENDENTI;
