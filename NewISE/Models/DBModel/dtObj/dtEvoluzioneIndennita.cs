@@ -28,11 +28,65 @@ namespace NewISE.Models.DBModel.dtObj
                     var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                     var indennita = trasferimento.INDENNITA;
 
-                    var ll = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
+                    List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                    var ll =
+                        db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
                         .Where(a => a.ANNULLATO == false)
-                        .OrderBy(a => a.IDLIVELLO)
-                        .ThenBy(b => b.DATAINIZIOVALIDITA)
-                        .ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                    foreach (var ib in ll)
+                    {
+                        DateTime dtVar = new DateTime();
+
+                        if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                        {
+                            dtVar = trasferimento.DATAPARTENZA;
+                        }
+                        else
+                        {
+                            dtVar = ib.DATAINIZIOVALIDITA;
+                        }
+
+
+                        if (!lDateVariazioni.Contains(dtVar))
+                        {
+                            lDateVariazioni.Add(dtVar);
+                            lDateVariazioni.Sort();
+                        }
+                    }
+
+                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                    if (lDateVariazioni?.Any() ?? false)
+                    {
+                        for (int j = 0; j < lDateVariazioni.Count; j++)
+                        {
+                            DateTime dv = lDateVariazioni[j];
+
+                            if (dv < Utility.DataFineStop())
+                            {
+                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+                                
+                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                {
+
+                                    //IndennitaBaseModel xx = new IndennitaBaseModel();
+
+                                    //xx.dataInizioValidita = dv;
+                                    //xx.dataFineValidita = dvSucc;
+
+                                    //libm.Add(xx);
+
+                                    
+
+
+                                }
+                            }
+                        }
+                    }
+
+
 
                     using (dtTrasferimento dttrasf = new dtTrasferimento())
                     {
@@ -40,51 +94,32 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
 
-                            //using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
-                            //{
-                                dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+                            dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
 
-                                libm = (from e in ll
-                                        select new IndennitaBaseModel()
+                            libm = (from e in ll
+                                    select new IndennitaBaseModel()
+                                    {
+                                        idIndennitaBase = e.IDINDENNITABASE,
+                                        idLivello = e.IDLIVELLO,
+                                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                        dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                        valore = e.VALORE,
+                                        valoreResponsabile = e.VALORERESP,
+                                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                        annullato = e.ANNULLATO,
+                                        Livello = new LivelloModel()
                                         {
-                                            idIndennitaBase = e.IDINDENNITABASE,
-                                            idLivello = e.IDLIVELLO,
-                                            dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                            //dataFineValidita = e.DATAFINEVALIDITA,
-                                            valore = e.VALORE,
-                                            valoreResponsabile = e.VALORERESP,
-                                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                            annullato = e.ANNULLATO,
-                                            Livello = new LivelloModel()
-                                            {
-                                                idLivello = e.LIVELLI.IDLIVELLO,
-                                                DescLivello = e.LIVELLI.LIVELLO
-                                            },
-                                            RuoloUfficio = new RuoloUfficioModel()
-                                            {
-                                                idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
-                                                DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
-                                            },
-                                            //dipInfoTrasferimento = new dipInfoTrasferimentoModel
-                                            //{
-                                            //    Decorrenza = dipInfoTrasf.Decorrenza,
-                                            //    indennitaPersonale = dipInfoTrasf.indennitaPersonale,
-                                            //    indennitaServizio = dipInfoTrasf.indennitaServizio,
-                                            //    maggiorazioniFamiliari = dipInfoTrasf.maggiorazioniFamiliari
-                                            //},
-                                            //EvoluzioneIndennita = new EvoluzioneIndennitaModel
-                                            //{
-                                            //    IndennitaBase = ci.IndennitaDiBase,
-                                            //    PercentualeDisagio = ci.PercentualeDisagio,
-                                            //    CoefficienteSede = ci.CoefficienteDiSede,
-                                            //    IndennitaServizio = ci.IndennitaDiServizio,
-                                            //    MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari,
-                                            //    IndennitaPersonale = ci.IndennitaPersonale
+                                            idLivello = e.LIVELLI.IDLIVELLO,
+                                            DescLivello = e.LIVELLI.LIVELLO
+                                        },
+                                        RuoloUfficio = new RuoloUfficioModel()
+                                        {
+                                            idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
+                                            DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
+                                        },
 
-                                            //}
-                                        }).ToList();
-                            //}
+                                    }).ToList();
+
                         }
                     }
 
@@ -114,13 +149,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var ll =
                         db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
-                        .Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO)
-                            .ThenBy(a => a.DATAINIZIOVALIDITA)
-                            .ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                        .Where(a => a.ANNULLATO == false)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                     
 
                     foreach (var ib in ll)
-                        {
+                    {
                             DateTime dtVar = new DateTime();
 
                             if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
@@ -136,8 +170,9 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
                             }
-                        }
+                   }
 
                     #endregion
 
@@ -146,12 +181,10 @@ namespace NewISE.Models.DBModel.dtObj
                     var lrd =
                         db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.COEFFICIENTESEDE
                         .Where(a => a.ANNULLATO == false)
-                        .OrderBy(a => a.IDCOEFFICIENTESEDE)
-                        .ThenBy(a => a.DATAINIZIOVALIDITA)
-                        .ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                     foreach (var cs in lrd)
-                        {
+                    {
                             DateTime dtVar = new DateTime();
 
                             if (cs.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
@@ -166,8 +199,9 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
                             }
-                        }
+                    }
 
                     #endregion
 
@@ -176,9 +210,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var perc =
                         db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.PERCENTUALEDISAGIO
                         .Where(a => a.ANNULLATO == false)
-                        .OrderBy(a => a.IDPERCENTUALEDISAGIO)
-                        .ThenBy(a => a.DATAINIZIOVALIDITA)
-                        .ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                     
 
                     foreach (var pd in perc)
@@ -197,6 +229,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
+                            lDateVariazioni.Sort();
                             }
                         }
 
@@ -217,81 +250,23 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (dv < Utility.DataFineStop())
                             {
-                                
+                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
-                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                     {
                                         EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
 
-                                        // Inserire le date di variazione delle Indennità
-                                        
-                                        //xx.dataInizioValidita = pd.DATAINIZIOVALIDITA;
-                                        //xx.dataFineValidita = pd.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? pd.DATAFINEVALIDITA : new EvoluzioneIndennitaModel().dataFineValidita;
-                                        //xx.valore = pd.VALORE;
-                                        //xx.valoreResponsabile = pd.VALORERESP;
-
                                         xx.dataInizioValidita = dv;
+                                        xx.dataFineValidita = dvSucc;
                                         xx.IndennitaBase = ci.IndennitaDiBase;
                                         xx.PercentualeDisagio = ci.PercentualeDisagio;
                                         xx.CoefficienteSede = ci.CoefficienteDiSede;
                                         xx.IndennitaServizio = ci.IndennitaDiServizio;
+                                        xx.IndennitaPersonale = ci.IndennitaPersonale;
+                                        xx.MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
 
                                         eim.Add(xx);
                                     }
-
-                                //            foreach (var pd in ll)
-                                //            {
-
-                                //                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv))
-                                //                {
-
-                                //                    EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-                                //                    xx.dataInizioValidita = pd.DATAINIZIOVALIDITA;
-                                //                    //xx.dataFineValidita = pd.DATAFINEVALIDITA;
-                                //                    xx.dataFineValidita = pd.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? pd.DATAFINEVALIDITA : new EvoluzioneIndennitaModel().dataFineValidita;
-                                //                    xx.valore = pd.VALORE;
-                                //                    xx.valoreResponsabile = pd.VALORERESP;
-
-                                //                    eim.Add(xx);
-
-                                //                }
-                                //            }
-
-                                //            foreach (var pd in lrd)
-                                //            {
-                                //                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv))
-                                //                {
-
-
-                                //                    EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-                                //                    xx.dataInizioValidita = pd.DATAINIZIOVALIDITA;
-                                //                    //xx.dataFineValidita = pd.DATAFINEVALIDITA;
-                                //                    xx.dataFineValidita = pd.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? pd.DATAFINEVALIDITA : new EvoluzioneIndennitaModel().dataFineValidita;
-                                //                    xx.CoefficienteSede = ci.CoefficienteDiSede;
-                                //                    xx.IndennitaServizio = ci.IndennitaDiServizio;
-
-                                //                    eim.Add(xx);
-                                //                }
-                                //            }
-
-                                //            foreach (var pd in perc)
-                                //            {
-                                //                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv))
-                                //                {
-
-                                //                    EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-                                //                    xx.dataInizioValidita = pd.DATAINIZIOVALIDITA;
-                                //                    //xx.dataFineValidita = pd.DATAFINEVALIDITA;
-                                //                    xx.dataFineValidita = pd.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? pd.DATAFINEVALIDITA : new EvoluzioneIndennitaModel().dataFineValidita;
-                                //                    xx.PercentualeDisagio = ci.PercentualeDisagio;
-                                //                    xx.IndennitaServizio = ci.IndennitaDiServizio;
-
-                                //                    eim.Add(xx);
-                                //                }
-                                //            }
-
-
-
                             }
                         }
                     }
@@ -306,8 +281,6 @@ namespace NewISE.Models.DBModel.dtObj
                 throw;
             }
         }
-
-
         
     }
 }
