@@ -12,45 +12,37 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class ELABMAB
+    public partial class ELABINDRICHIAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ELABMAB()
+        public ELABINDRICHIAMO()
         {
             this.ELABDATIFIGLI = new HashSet<ELABDATIFIGLI>();
-            this.ELABMAB1 = new HashSet<ELABMAB>();
+            this.ELABINDRICHIAMO1 = new HashSet<ELABINDRICHIAMO>();
             this.TEORICI = new HashSet<TEORICI>();
-            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
         }
     
-        public decimal IDELABMAB { get; set; }
-        public decimal IDMAGABITAZIONE { get; set; }
+        public decimal IDELABINDRICHIAMO { get; set; }
+        public decimal IDRICHIAMO { get; set; }
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
-        public decimal PERCENTUALEDISAGIO { get; set; }
+        public decimal COEFFICENTEINDRICHIAMO { get; set; }
         public decimal PERCENTUALERIDUZIONE { get; set; }
-        public decimal PERCENTUALEMAGCONIUGE { get; set; }
-        public decimal CANONELOCAZIONE { get; set; }
-        public decimal TASSOFISSORAGGUAGLIO { get; set; }
-        public decimal PERCMAB { get; set; }
-        public System.DateTime DAL { get; set; }
-        public System.DateTime AL { get; set; }
-        public bool ANNUALE { get; set; }
+        public decimal PERCMAGCONIUGE { get; set; }
+        public decimal PENSIONECONIUGE { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public Nullable<decimal> FK_IDELABMAB { get; set; }
+        public Nullable<decimal> FK_IDELABINDRICHIAMO { get; set; }
         public decimal IDLIVELLO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABMAB> ELABMAB1 { get; set; }
-        public virtual ELABMAB ELABMAB2 { get; set; }
+        public virtual ICollection<ELABINDRICHIAMO> ELABINDRICHIAMO1 { get; set; }
+        public virtual ELABINDRICHIAMO ELABINDRICHIAMO2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
+        public virtual RICHIAMO RICHIAMO { get; set; }
     }
 }

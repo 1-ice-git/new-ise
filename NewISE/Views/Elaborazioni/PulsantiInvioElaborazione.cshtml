@@ -5,49 +5,185 @@
 
 <div class="row">
     <div class="col-xs-offset-4 col-xs-4 text-right">
-        <button class="btn btn-default" onclick="InviaFlussiDiretti(@idAnnoMeseElaborato);">Invia flussi diretti</button>
+        <button class="btn btn-default" onclick="InvioFlussiDiretti();">Invia flussi diretti</button>
     </div>
 
     <div class="col-xs-4 text-right">
-        <button class="btn btn-default">Invia flussi cedolino/contabilità</button>
+        <button class="btn btn-default" onclick="InvioFlussiMensili();">Invia flussi cedolino/contabilità</button>
     </div>
 
 </div>
 
+<div class="modal fade" id="myModalInviiDiretti" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabel">?</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfo" class="text-info">Confermare l'invio dei flussi diretti?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiDiretti(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btAnnulla" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalInviiMensili" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabelMensili">?</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfoMensili" class="text-info">Confermare l'invio dei flussi mensili?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcediMensili" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiMensili(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btAnnullaMensili" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
+
+
+    function GestionePulsantiinvioFlussi() {
+
+    }
+
+    function InvioFlussiDiretti() {
+        //$("#msgModalInfo").text(response);
+        $('#myModalInviiDiretti').modal('toggle');
+    }
+
+    function InvioFlussiMensili() {
+        //$("#msgModalInfo").text(response);
+        $('#myModalInviiMensili').modal('toggle');
+    }
+
+    function InviaFlussiMensili(idAnnoMeseElaborato) {
+        debugger;
+
+        var rotta = "/Elaborazioni/InviaFlussiMensili";
+        //TabLiquidazioniMensili
+
+        var lIdTeorici = $('#TabLiquidazioniMensili > tbody > tr > td > #item_idTeorici');
+        var lTeorici = new Array();
+
+        for (var i = 0; i < lIdTeorici.length; i++) {
+            var idTeorico = lIdTeorici[parseInt(i)].value;
+            if ($.isNumeric(idTeorico)) {
+                lTeorici.push(idTeorico);
+            }
+        }
+
+        if (lTeorici.length > 0) {
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Teorici: lTeorici },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$('#inviaDocModal').modal('show');
+                    //Blocca();
+
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.err == "") {
+                        InfoElaborazioneAjax(result.msg);
+                        DatiLiquidazioniMensili(idAnnoMeseElaborato);
+                    } else {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        }
+
+    }
+
     function InviaFlussiDiretti(idAnnoMeseElaborato) {
         debugger;
         var rotta = "/Elaborazioni/InviaFlussiDirettiOA";
 
-        $.ajax({
-            url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
-            dataType: 'html',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$('#inviaDocModal').modal('show');
-                //Blocca();
+        var lCheck = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > :checkbox');
+        //var lElaborato = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > #item_Elaborato');
+        var lIdTeorici = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > #item_idTeorici');
 
-            },
-            success: function (result) {
-                debugger;
-                if (result.err == "") {
-                    InfoElaborazioneAjax(result.msg);
-                    DatiLiquidazioniDirette(idAnnoMeseElaborato);
-                } else {
-                    ErroreElaborazioneAjax(result.err);
+        var lTeorici = new Array();
+
+        //var valore = $("#mesiAnniElaborati").val();
+
+        for (var i = 0; i < lCheck.length; i++) {
+            if (lCheck[parseInt(i)].checked) {
+                var idTeorico = lIdTeorici[parseInt(i)].value;
+                if ($.isNumeric(idTeorico)) {
+                    lTeorici.push(idTeorico);
                 }
 
-            },
-            error: function (error) {
-                //debugger;
-                //Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
+                //var elaborato = lElaborato[parseInt(i)].value;
+                //if (elaborato == "False") {
+                //    lTeorici.push(idTeorico);
+                //}
+
             }
-        });
+        }
+
+
+        if (lTeorici.length > 0) {
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Teorici: lTeorici },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$('#inviaDocModal').modal('show');
+                    //Blocca();
+
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.err == "") {
+                        InfoElaborazioneAjax(result.msg);
+                        DatiLiquidazioniDirette(idAnnoMeseElaborato);
+                    } else {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        } else {
+            ErroreElaborazioneAjax("Selezionare almeno una voce per l'invio diretto a contabilità");
+        }
+
     }
 </script>

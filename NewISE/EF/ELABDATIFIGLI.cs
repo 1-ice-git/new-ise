@@ -20,8 +20,10 @@ namespace NewISE.EF
         public Nullable<decimal> IDELABMAB { get; set; }
         public decimal INDENNITAPRIMOSEGRETARIO { get; set; }
         public decimal PERCENTUALEMAGGIORAZIONEFIGLI { get; set; }
+        public Nullable<decimal> IDELABINDRICHIAMO { get; set; }
     
         public virtual ELABINDENNITA ELABINDENNITA { get; set; }
+        public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
         public virtual ELABMAB ELABMAB { get; set; }
     }

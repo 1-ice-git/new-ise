@@ -15,7 +15,6 @@ namespace NewISE.Models.dtObj.Tests
         [TestMethod()]
         public void AssociaConiuge_PMCTest()
         {
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -30,8 +29,6 @@ namespace NewISE.Models.dtObj.Tests
             {
                 Assert.Fail(ex.Message);
             }
-
-
         }
 
         //[TestMethod()]

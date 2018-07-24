@@ -36,6 +36,7 @@ namespace NewISE.EF
         public Nullable<decimal> FK_IDELABIND { get; set; }
         public decimal PENSIONECONIUGE { get; set; }
         public decimal GIORNISOSPENSIONE { get; set; }
+        public decimal IDLIVELLO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
@@ -45,6 +46,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
+        public virtual LIVELLI LIVELLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
     }

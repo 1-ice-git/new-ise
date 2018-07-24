@@ -12,11 +12,14 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class FLUSSICEDOLINO
+    public partial class ELABORAZIONI
     {
-        public decimal IDTEORICI { get; set; }
-        public System.DateTime DATAINVIOFLUSSI { get; set; }
+        public decimal IDEALBORAZIONI { get; set; }
+        public decimal IDDIPENDENTE { get; set; }
+        public decimal IDMESEANNOELAB { get; set; }
+        public System.DateTime DATAOPERAZIONE { get; set; }
     
-        public virtual TEORICI TEORICI { get; set; }
+        public virtual DIPENDENTI DIPENDENTI { get; set; }
+        public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
     }
 }

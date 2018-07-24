@@ -48,8 +48,11 @@ namespace NewISE.Models.dtObj
                             tfr.CANONEMAB.Add(cmab);
 
                             var t = cmab.ATTIVAZIONEMAB.TRASFERIMENTO;
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
+                            }
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
                         }
                     }
 
@@ -107,11 +110,15 @@ namespace NewISE.Models.dtObj
 
                                 var lr = cir.RICHIAMO;
 
-                                foreach (var r in lr)
+                                using (dtDipendenti dtd = new dtDipendenti())
                                 {
-                                    var t = r.TRASFERIMENTO;
+                                    foreach (var r in lr)
+                                    {
+                                        var t = r.TRASFERIMENTO;
 
-                                    Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, riduzioni.DATAINIZIOVALIDITA, db);
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, riduzioni.DATAINIZIOVALIDITA, db);
+
+                                    }
                                 }
 
                             }
@@ -171,8 +178,11 @@ namespace NewISE.Models.dtObj
                             pmc.CONIUGE.Add(c);
 
                             var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmc.DATAINIZIOVALIDITA, db);
+                            }
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmc.DATAINIZIOVALIDITA, db);
                         }
                     }
 
@@ -227,8 +237,10 @@ namespace NewISE.Models.dtObj
                         {
                             pmf.FIGLI.Add(f);
                             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
-
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmf.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmf.DATAINIZIOVALIDITA, db);
+                            }
                         }
                     }
 
@@ -280,7 +292,11 @@ namespace NewISE.Models.dtObj
                         {
                             ips.FIGLI.Add(f);
                             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ips.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ips.DATAINIZIOVALIDITA, db);
+                            }
+
                         }
                     }
 
@@ -329,8 +345,10 @@ namespace NewISE.Models.dtObj
                         if (nCont <= 0)
                         {
                             pd.INDENNITA.Add(indennita);
-
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pd.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pd.DATAINIZIOVALIDITA, db);
+                            }
                         }
                     }
 
@@ -384,8 +402,10 @@ namespace NewISE.Models.dtObj
                         if (nCont <= 0)
                         {
                             ib.INDENNITA.Add(indennita);
-
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                            }
                         }
                     }
 
@@ -449,8 +469,11 @@ namespace NewISE.Models.dtObj
                                 foreach (var i in li)
                                 {
                                     var t = i.TRASFERIMENTO;
+                                    using (dtDipendenti dtd = new dtDipendenti())
+                                    {
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+                                    }
 
-                                    Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
 
                                 }
 
@@ -517,8 +540,11 @@ namespace NewISE.Models.dtObj
                                 foreach (var i in li)
                                 {
                                     var t = i.TRASFERIMENTO;
+                                    using (dtDipendenti dtd = new dtDipendenti())
+                                    {
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+                                    }
 
-                                    Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
 
                                 }
 
@@ -572,8 +598,11 @@ namespace NewISE.Models.dtObj
                         if (nCont <= 0)
                         {
                             cs.INDENNITA.Add(indennita);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cs.DATAINIZIOVALIDITA, db);
+                            }
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cs.DATAINIZIOVALIDITA, db);
                         }
                     }
 
@@ -630,8 +659,11 @@ namespace NewISE.Models.dtObj
                         if (nCont <= 0)
                         {
                             tfr.INDENNITA.Add(indennita);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
+                            }
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
                         }
                     }
 
@@ -691,8 +723,11 @@ namespace NewISE.Models.dtObj
                             pm.MAB.Add(mab);
 
                             var t = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);
+                            }
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);
                         }
 
                     }
@@ -758,8 +793,11 @@ namespace NewISE.Models.dtObj
                             ma.MAB.Add(mab);
 
                             var t = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ma.DATAINIZIOVALIDITA, db);
+                            }
 
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ma.DATAINIZIOVALIDITA, db);
                         }
 
                     }
@@ -815,7 +853,11 @@ namespace NewISE.Models.dtObj
                             pc.PAGATOCONDIVISOMAB.Add(pgc);
 
                             var t = pgc.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pc.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pc.DATAINIZIOVALIDITA, db);
+                            }
+
 
                         }
 
@@ -872,7 +914,11 @@ namespace NewISE.Models.dtObj
                             patep.TEPARTENZA.Add(tep);
 
                             var t = tep.TRASFERIMENTO;
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, patep.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, patep.DATAINIZIOVALIDITA, db);
+                            }
+
                         }
 
                     }
@@ -927,7 +973,11 @@ namespace NewISE.Models.dtObj
                             pater.TERIENTRO.Add(ter);
 
                             var t = ter.TRASFERIMENTO;
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pater.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pater.DATAINIZIOVALIDITA, db);
+                            }
+
                         }
 
                     }
@@ -983,7 +1033,11 @@ namespace NewISE.Models.dtObj
                     {
                         indSist.PRIMASITEMAZIONE.Add(ps);
                         var t = ps.TRASFERIMENTO;
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, indSist.DATAINIZIOVALIDITA, db);
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, indSist.DATAINIZIOVALIDITA, db);
+                        }
+
                     }
                 }
 
@@ -1033,7 +1087,11 @@ namespace NewISE.Models.dtObj
                     {
                         pfkm.PRIMASITEMAZIONE.Add(ps);
                         var t = ps.TRASFERIMENTO;
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pfkm.DATAINIZIOVALIDITA, db);
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pfkm.DATAINIZIOVALIDITA, db);
+                        }
+
                     }
                 }
 
@@ -1079,9 +1137,12 @@ namespace NewISE.Models.dtObj
                     {
                         cr.RICHIAMO.Add(r);
                         var t = r.TRASFERIMENTO;
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cr.DATAINIZIOVALIDITA, db);
-                    }
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cr.DATAINIZIOVALIDITA, db);
+                        }
 
+                    }
 
                 }
 
@@ -1126,7 +1187,11 @@ namespace NewISE.Models.dtObj
                     {
                         pfkm.RICHIAMO.Add(r);
                         var t = r.TRASFERIMENTO;
-                        Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pfkm.DATAINIZIOVALIDITA, db);
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pfkm.DATAINIZIOVALIDITA, db);
+                        }
+
                     }
 
 
@@ -1181,7 +1246,11 @@ namespace NewISE.Models.dtObj
                         foreach (var ind in li)
                         {
                             var t = ind.TRASFERIMENTO;
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                            }
+
                         }
 
                     }
@@ -1229,7 +1298,11 @@ namespace NewISE.Models.dtObj
                         foreach (var ric in lric)
                         {
                             var t = ric.TRASFERIMENTO;
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cr.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cr.DATAINIZIOVALIDITA, db);
+                            }
+
                         }
 
                     }
@@ -1280,7 +1353,10 @@ namespace NewISE.Models.dtObj
                         foreach (var ps in lps)
                         {
                             var t = ps.TRASFERIMENTO;
-                            Utility.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, indSist.DATAINIZIOVALIDITA, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, indSist.DATAINIZIOVALIDITA, db);
+                            }
                         }
 
                     }

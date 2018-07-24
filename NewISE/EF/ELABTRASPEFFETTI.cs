@@ -29,9 +29,11 @@ namespace NewISE.EF
         public bool SALDO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
+        public decimal IDLIVELLO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
+        public virtual LIVELLI LIVELLI { get; set; }
         public virtual TEPARTENZA TEPARTENZA { get; set; }
         public virtual TERIENTRO TERIENTRO { get; set; }
     }

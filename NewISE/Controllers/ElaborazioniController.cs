@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.EF;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
@@ -130,10 +131,7 @@ namespace NewISE.Controllers
                 {
                     if (dipendenti?.Any() ?? false)
                     {
-                        foreach (var dip in dipendenti)
-                        {
-                            dte.Elaborazione(dip, idAnnoMeseElaborato);
-                        }
+                        dte.Elaborazione(dipendenti, idAnnoMeseElaborato);
                     }
                 }
             }
@@ -152,23 +150,53 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult DatiLiquidazioniDirette(decimal idAnnoMeseElaborato)
         {
+
+            ViewData.Add("idAnnoMeseElaborato", idAnnoMeseElaborato);
+            return PartialView();
+        }
+
+        public ActionResult DatiLiquidazioniDiretteDaInviare(decimal idAnnoMeseElaborato)
+        {
             List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
 
             try
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-                    lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).ToList();
+                    lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).Where(a => a.Elaborato == false).ToList();
                 }
             }
             catch (Exception ex)
             {
+
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+            return PartialView(lLd);
+        }
+
+
+        public ActionResult DatiLiquidazioniDiretteInviate(decimal idAnnoMeseElaborato)
+        {
+            List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
+
+            try
+            {
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).Where(a => a.Elaborato == true).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
             return PartialView(lLd);
         }
+
+
 
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
@@ -201,15 +229,35 @@ namespace NewISE.Controllers
 
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
-        public JsonResult InviaFlussiDirettiOA(decimal idAnnoMeseElaborato)
+        public JsonResult InviaFlussiDirettiOA(decimal idAnnoMeseElaborato, List<decimal> Teorici)
         {
-            string err = string.Empty;
             try
             {
-                using (dtElaborazioni dte = new dtElaborazioni())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    dte.InviaFlussiDirettiContabilita();
+                    db.Database.BeginTransaction();
+
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        try
+                        {
+                            foreach (decimal teorico in Teorici)
+                            {
+                                dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato, teorico, db);
+                            }
+
+                            db.Database.CurrentTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            db.Database.CurrentTransaction.Rollback();
+                            throw ex;
+                        }
+
+                    }
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -219,6 +267,53 @@ namespace NewISE.Controllers
             return Json(new { msg = "I flussi diretti sono stati inviati.", err = "" });
 
             //return RedirectToAction("DatiLiquidazioniDirette", "Elaborazioni", new { idAnnoMeseElaborato = idAnnoMeseElaborato });
+        }
+
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult InviaFlussiMensili(decimal idAnnoMeseElaborato, List<decimal> Teorici)
+        {
+            List<DIPENDENTI> lDip = new List<DIPENDENTI>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        try
+                        {
+                            foreach (decimal teorico in Teorici)
+                            {
+                                dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
+                            }
+
+                            lDip = dte.EstrapolaDipendentiDaTeorici(Teorici, db).ToList();
+
+                            foreach (var dip in lDip)
+                            {
+                                dte.SetPeriodoElaborazioniDipendente(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
+                            }
+
+                            db.Database.CurrentTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            db.Database.CurrentTransaction.Rollback();
+                            throw ex;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { msg = "", err = ex.Message });
+            }
+
+            return Json(new { msg = "I flussi mensili sono stati inviati.", err = "" });
         }
 
     }

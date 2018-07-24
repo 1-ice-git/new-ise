@@ -12,7 +12,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal IdMeseAnnoElab { get; set; }
         public int Anno { get; set; }
         public int Mese { get; set; }
-        public bool Elaborato { get; set; }
+        public bool Chiuso { get; set; }
 
     }
 
@@ -149,7 +149,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         IdMeseAnnoElab = mae.IDMESEANNOELAB,
                         Anno = (int)mae.ANNO,
                         Mese = (int)mae.MESE,
-                        Elaborato = mae.ELABORATO
+                        Chiuso = mae.CHIUSO
                     };
 
                     _mae.Add(maem);
@@ -167,7 +167,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 {
                     ANNO = anno,
                     MESE = mese,
-                    ELABORATO = false
+                    CHIUSO = false
                 };
 
                 _db.MESEANNOELABORAZIONE.Add(mae);
@@ -184,7 +184,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     IdMeseAnnoElab = mae.IDMESEANNOELAB,
                     Anno = (int)mae.ANNO,
                     Mese = (int)mae.MESE,
-                    Elaborato = mae.ELABORATO
+                    Chiuso = mae.CHIUSO
                 };
 
                 _mae.Add(maem);
@@ -197,7 +197,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public void SetMeseElaborato()
         {
             var lastMae =
-                _db.MESEANNOELABORAZIONE.Where(a => a.ELABORATO == false)
+                _db.MESEANNOELABORAZIONE.Where(a => a.CHIUSO == false)
                     .OrderByDescending(a => a.IDMESEANNOELAB)
                     .ToList();
 
@@ -205,7 +205,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             {
                 var mae = lastMae.First();
 
-                mae.ELABORATO = true;
+                mae.CHIUSO = true;
 
                 int i = _db.SaveChanges();
 
@@ -233,7 +233,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             //Prelevo l'ultima riga inserita.
             var lastMae = AllMae.First();
             //Se l'ultima riga inserita risulta elaborata incremento di un mese, inserisco una nuova riga e carico tutte le righe sulla proprietà.
-            if (lastMae.ELABORATO == true)
+            if (lastMae.CHIUSO == true)
             {
                 var mese = 0;
                 var anno = 0;
@@ -253,7 +253,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 {
                     ANNO = anno,
                     MESE = mese,
-                    ELABORATO = false
+                    CHIUSO = false
                 };
 
                 _db.MESEANNOELABORAZIONE.Add(newMae);

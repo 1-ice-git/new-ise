@@ -440,40 +440,7 @@ namespace NewISE.Models.Tools
             return result;
 
         }
-        /// <summary>
-        /// Imposta la data di inizio ricalcoli per il dipendente passato come parametro.
-        /// </summary>
-        /// <param name="idDipendente"></param>
-        /// <param name="dtIniRicalcoli"></param>
-        /// <param name="db"></param>
-        public static void DataInizioRicalcoliDipendente(decimal idTrasferimento, DateTime dtIniRicalcoli, ModelDBISE db)
-        {
-            try
-            {
-                var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                var d = t.DIPENDENTI;
-                if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
-                {
-                    d.DATAINIZIORICALCOLI = dtIniRicalcoli;
-                }
-
-                //int i = db.SaveChanges();
-
-                //if (i <= 0)
-                //{
-                //    throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
-                //}
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-
-
-
-        }
 
 
 

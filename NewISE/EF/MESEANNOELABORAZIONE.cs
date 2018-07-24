@@ -17,14 +17,17 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MESEANNOELABORAZIONE()
         {
+            this.ELABORAZIONI = new HashSet<ELABORAZIONI>();
             this.TEORICI = new HashSet<TEORICI>();
         }
     
         public decimal IDMESEANNOELAB { get; set; }
         public decimal MESE { get; set; }
         public decimal ANNO { get; set; }
-        public bool ELABORATO { get; set; }
+        public bool CHIUSO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABORAZIONI> ELABORAZIONI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
     }

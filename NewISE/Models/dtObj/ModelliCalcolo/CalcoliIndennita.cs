@@ -346,7 +346,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         }
                         if (_riduzioneIndennitaDiBase > 0)
                         {
-                            _indennitaDiBase = valRespIB * _riduzioneIndennitaDiBase / 100;
+                            _indennitaDiBase = valRespIB - (valRespIB * (_riduzioneIndennitaDiBase / 100));
                         }
                         else
                         {
@@ -364,7 +364,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         }
                         if (_riduzioneIndennitaDiBase > 0)
                         {
-                            _indennitaDiBase = valIB * _riduzioneIndennitaDiBase / 100;
+                            _indennitaDiBase = valIB - (valIB * (_riduzioneIndennitaDiBase / 100));
                         }
                         else
                         {
