@@ -27,6 +27,28 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public bool VerificaElaborazioneDipendenti(List<decimal> lIdDip, decimal idAnnoMeseElab, ModelDBISE db)
+        {
+            bool ret = false;
+
+            foreach (var idDip in lIdDip)
+            {
+                var dip = db.DIPENDENTI.Find(idDip);
+
+                if (dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElab) ?? false)
+                {
+                    ret = true;
+                }
+                else
+                {
+                    ret = false;
+                    break;
+                }
+            }
+
+            return ret;
+        }
+
 
         public void Elaborazione(List<int> dipendenti, decimal idMeseAnnoElaborato)
         {
@@ -91,6 +113,51 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
         }
+
+
+        public DIPENDENTI EstrapolaDipendenteDaTeorico(decimal idTeorico, ModelDBISE db)
+        {
+
+            DIPENDENTI dip = new DIPENDENTI();
+
+            var teorico = db.TEORICI.Find(idTeorico);
+
+            if (teorico?.IDINDSISTLORDA > 0)
+            {
+                dip = new DIPENDENTI();
+                dip = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
+
+
+            }
+            else if (teorico?.IDELABIND > 0)
+            {
+                dip = new DIPENDENTI();
+                dip = teorico.ELABINDENNITA.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+
+            }
+            else if (teorico?.IDELABMAB > 0)
+            {
+                dip = new DIPENDENTI();
+                dip = teorico.ELABMAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+
+            }
+            else if (teorico?.IDELABTRASPEFFETTI > 0)
+            {
+                dip = new DIPENDENTI();
+                dip = teorico.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI;
+
+            }
+            else if (teorico?.IDELABINDRICHIAMO > 0)
+            {
+                dip = new DIPENDENTI();
+                dip = teorico.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI;
+
+            }
+
+
+            return dip;
+        }
+
 
         public IList<DIPENDENTI> EstrapolaDipendentiDaTeorici(List<decimal> lTeorici, ModelDBISE db)
         {
@@ -1476,10 +1543,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             this.InsTrasportoEffetti(trasferimento, meseAnnoElaborazione, db);
                         }
-                        else
-                        {
-                            throw new Exception("Il dipendente " + dip.COGNOME + " " + dip.NOME + " per il perido selezionato risulta già elaborato.");
-                        }
+
 
                     }
                 }

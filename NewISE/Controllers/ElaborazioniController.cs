@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using NewISE.EF;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.DBModel.dtObj;
@@ -137,8 +138,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-
-                ModelState.AddModelError("err", ex.Message);
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 
@@ -229,6 +229,35 @@ namespace NewISE.Controllers
 
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
+        public JsonResult GestionePulsanteCalcola(List<decimal> lDipendenti, decimal idAnnoMeseElab)
+        {
+            bool gestPulsanti = false;
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        if (lDipendenti?.Any() ?? false)
+                        {
+                            gestPulsanti = dte.VerificaElaborazioneDipendenti(lDipendenti, idAnnoMeseElab, db);
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { gp = gestPulsanti, err = ex.Message });
+            }
+
+            return Json(new { gp = gestPulsanti, err = "" });
+        }
+
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
         public JsonResult InviaFlussiDirettiOA(decimal idAnnoMeseElaborato, List<decimal> Teorici)
         {
             try
@@ -285,9 +314,15 @@ namespace NewISE.Controllers
                     {
                         try
                         {
+
                             foreach (decimal teorico in Teorici)
                             {
-                                dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
+                                var dip = dte.EstrapolaDipendenteDaTeorico(teorico, db);
+
+                                if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElaborato) ?? false)
+                                {
+                                    dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
+                                }
                             }
 
                             lDip = dte.EstrapolaDipendentiDaTeorici(Teorici, db).ToList();

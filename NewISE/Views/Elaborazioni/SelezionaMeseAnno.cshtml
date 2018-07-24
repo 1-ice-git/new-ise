@@ -47,11 +47,15 @@
 
     $("#mesiAnniElaborati").change(function () {
         //debugger;
-        var valore = this.value();
 
-        DatiLiquidazioniDirette(valore);
-        DatiLiquidazioniMensili(valore);
-        PulsantiInvioElaborazione(valore);
+        if (this.value != "") {
+            var valore = this.value;
+            DatiLiquidazioniDirette(valore);
+            DatiLiquidazioniMensili(valore);
+            PulsantiInvioElaborazione(valore);
+            GesionePulsanteCalcola();
+        }
+
     });
 
     function ValorizzazioneIniziale() {
@@ -60,9 +64,9 @@
         DatiLiquidazioniDirette(valore);
         DatiLiquidazioniMensili(valore);
         PulsantiInvioElaborazione(valore);
+        GesionePulsanteCalcola();
     }
 
 
 
 </script>
-
