@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-xs-4 text-right">
-        <button class="btn btn-default" onclick="InvioFlussiMensili();">Invia flussi cedolino/contabilità</button>
+        <button id="btInvioFm" class="btn btn-default" onclick="InvioFlussiMensili();">Invia flussi cedolino/contabilità</button>
     </div>
 
 </div>
@@ -27,7 +27,7 @@
                 <p id="msgModalInfo" class="text-info">Confermare l'invio dei flussi diretti?</p>
             </div>
             <div class="modal-footer">
-                <button id="btProcedi" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiDiretti(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btInvioFlussiMensili" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiDiretti(@idAnnoMeseElaborato); ">OK</button>
                 <button id="btAnnulla" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
@@ -57,9 +57,7 @@
 <script type="text/javascript">
 
 
-    function GestionePulsantiinvioFlussi() {
 
-    }
 
     function InvioFlussiDiretti() {
         //$("#msgModalInfo").text(response);
@@ -71,8 +69,53 @@
         $('#myModalInviiMensili').modal('toggle');
     }
 
+    function GestionePulsanteInviaFlussiMensili() {
+        //debugger;
+        var rotta = "/Elaborazioni/GestionePulsanteInvioFlussiMensili";
+        var valore = parseInt('@idAnnoMeseElaborato');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAnnoMeseElab: valore },
+            dataType: 'json',
+            traditional: true,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    if (result.pc == true) {
+                        $("#btInvioFm").attr("disabled", "disabled");
+                    } else {
+                        $("#btInvioFm").removeAttr('disabled');
+                    }
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+
+    }
+
     function InviaFlussiMensili(idAnnoMeseElaborato) {
-        debugger;
+        //debugger;
 
         var rotta = "/Elaborazioni/InviaFlussiMensili";
         //TabLiquidazioniMensili
@@ -102,10 +145,11 @@
 
                 },
                 success: function (result) {
-                    debugger;
+                    //debugger;
                     if (result.err == "") {
                         InfoElaborazioneAjax(result.msg);
                         DatiLiquidazioniMensili(idAnnoMeseElaborato);
+                        GesionePulsanteCalcola();
                     } else {
                         ErroreElaborazioneAjax(result.err);
                     }
@@ -123,7 +167,7 @@
     }
 
     function InviaFlussiDiretti(idAnnoMeseElaborato) {
-        debugger;
+        //debugger;
         var rotta = "/Elaborazioni/InviaFlussiDirettiOA";
 
         var lCheck = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > :checkbox');
@@ -165,7 +209,7 @@
 
                 },
                 success: function (result) {
-                    debugger;
+                    //debugger;
                     if (result.err == "") {
                         InfoElaborazioneAjax(result.msg);
                         DatiLiquidazioniDirette(idAnnoMeseElaborato);

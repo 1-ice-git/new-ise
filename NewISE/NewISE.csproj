@@ -4666,17 +4666,6 @@
     <Content Include="EF\ModelDBISE.edmx.diagram">
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Content>
-    <Content Include="DSIndennitaServizio.xsc">
-      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
-    </Content>
-    <None Include="DSIndennitaServizio.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DSIndennitaServizio.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="DSIndennitaServizio.xss">
-      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
-    </Content>
     <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
     <Content Include="DataSet20.xsc">
@@ -4911,11 +4900,6 @@
     <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
-    <Compile Include="DSIndennitaServizio.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
-    </Compile>
     <Compile Include="EF\ACCESSI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -5601,8 +5585,10 @@
     <Compile Include="Models\DBModel\dtVariazioneIndennita.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\AnticipoAnnualeMABModel.cs" />
+    <Compile Include="Models\DBModel\ElaborazioniModel.cs" />
     <Compile Include="Models\DBModel\EvoluzioneIndennitaModel.cs" />
     <Compile Include="Models\DBModel\IndennitaServizioModel.cs" />
+    <Compile Include="Models\DBModel\MeseAnnoElaborazioneModel.cs" />
     <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
@@ -5761,6 +5747,7 @@
     <Compile Include="Models\IseArio\dtObj\dtAliquotaISE.cs" />
     <Compile Include="Models\IseArio\Model\AliquotaIseModel.cs" />
     <Compile Include="Models\Ricalcoli\RicalcoloPrimaSistemazione.cs" />
+    <Compile Include="Models\Select2Model.cs" />
     <Compile Include="Models\Tools\EmailElaborazione.cs" />
     <Compile Include="Models\Tools\EmailTrasferimento.cs" />
     <Compile Include="Models\Tools\EmailCredenziali.cs" />
@@ -6079,7 +6066,6 @@
     <Content Include="Views\RiepilogoVoci\RptRiepilogoVoci.cshtml" />
     <Content Include="Views\RiepilogoVoci\ReportViewer.cshtml" />
     <Content Include="Views\Elaborazioni\PulsantiInvioElaborazione.cshtml" />
-
     <Content Include="Views\Indennita\RptIndennitaServizio.cshtml" />
     <Content Include="Views\Indennita\RptIndennitadiRichiamo.cshtml" />
     <Content Include="Views\Indennita\RptMaggiorazioneAbitazione.cshtml" />
@@ -6087,10 +6073,8 @@
     <Content Include="Views\Indennita\RptIndennitaPersonale.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaPrimaSistemazione.cshtml" />
     <Content Include="Views\Indennita\EvoluzioneIndennita.cshtml" />
-
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDiretteDaInviare.cshtml" />
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDiretteInviate.cshtml" />
-
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

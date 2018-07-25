@@ -11,6 +11,8 @@ using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using NewISE.Models;
 using NewISE.Models.ViewModel;
+using NewISE.Models.DBModel;
+using RestSharp;
 
 namespace NewISE.Controllers
 {
@@ -37,6 +39,41 @@ namespace NewISE.Controllers
 
             return View();
         }
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult PrelevaMesiAnniElab()
+        {
+            List<Select2Model> ls2 = new List<Select2Model>();
+            List<MeseAnnoElaborazioneModel> lmaem = new List<MeseAnnoElaborazioneModel>();
+
+            try
+            {
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    lmaem = dte.PrelevaAnniMesiElaborati().ToList();
+                    foreach (var mae in lmaem)
+                    {
+                        Select2Model s2 = new Select2Model()
+                        {
+                            id = mae.idMeseAnnoElab.ToString(),
+                            text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mae.mese) + "-" + mae.anno.ToString("D4"),
+                        };
+
+                        ls2.Add(s2);
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { results = new List<Select2Model>(), err = ex.Message });
+            }
+
+            return Json(new { results = ls2, err = "" });
+        }
+
         [Authorize(Roles = "1 ,2")]
         [HttpGet]
         public ActionResult SelezionaMeseAnno(int mese = 0, int anno = 0)
@@ -65,8 +102,8 @@ namespace NewISE.Controllers
 
                         rMeseAnno.Add(new SelectListItem()
                         {
-                            Text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.Mese) + "-" + item.Anno.ToString("D4"),
-                            Value = item.IdMeseAnnoElab.ToString()
+                            Text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.mese) + "-" + item.anno.ToString("D4"),
+                            Value = item.idMeseAnnoElab.ToString()
                         });
 
                     }
@@ -100,7 +137,7 @@ namespace NewISE.Controllers
         }
 
         [Authorize(Roles = "1 ,2")]
-        [HttpGet]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult DipendentiDaElaborare()
         {
             List<ElencoDipendentiDaCalcolareModel> ledcm = new List<ElencoDipendentiDaCalcolareModel>();
@@ -110,6 +147,15 @@ namespace NewISE.Controllers
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
                     ledcm = dte.PrelevaDipendentiDaElaborare().ToList();
+
+
+                    //foreach (var ed in ledcm)
+                    //{
+
+                    //}
+
+
+
                 }
             }
             catch (Exception ex)
@@ -231,7 +277,8 @@ namespace NewISE.Controllers
         [HttpPost]
         public JsonResult GestionePulsanteCalcola(List<decimal> lDipendenti, decimal idAnnoMeseElab)
         {
-            bool gestPulsanti = false;
+            bool gpCalcola = false;
+            bool gpFlussoMensile = false;
 
             try
             {
@@ -239,22 +286,51 @@ namespace NewISE.Controllers
                 {
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
+
                         if (lDipendenti?.Any() ?? false)
                         {
-                            gestPulsanti = dte.VerificaElaborazioneDipendenti(lDipendenti, idAnnoMeseElab, db);
+                            gpCalcola = !dte.VerificaElaborazioneDipendenti(lDipendenti, idAnnoMeseElab, db);
                         }
+
+                        gpFlussoMensile = dte.VerificaChiusuraPeriodoElab(idAnnoMeseElab, db);
                     }
                 }
-
 
             }
             catch (Exception ex)
             {
-                return Json(new { gp = gestPulsanti, err = ex.Message });
+                return Json(new { gpCalcola = gpCalcola, gpFlussoMensile = gpFlussoMensile, err = ex.Message });
             }
 
-            return Json(new { gp = gestPulsanti, err = "" });
+            return Json(new { gpCalcola = gpCalcola, gpFlussoMensile = gpFlussoMensile, err = "" });
         }
+
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult GestionePulsanteInvioFlussiMensili(decimal idAnnoMeseElab)
+        {
+            bool periodoChiuso = false;
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        periodoChiuso = dte.VerificaChiusuraPeriodoElab(idAnnoMeseElab, db);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { pc = periodoChiuso, err = ex.Message });
+            }
+
+            return Json(new { pc = periodoChiuso, err = "" });
+        }
+
+
 
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
@@ -331,6 +407,9 @@ namespace NewISE.Controllers
                             {
                                 dte.SetPeriodoElaborazioniDipendente(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
                             }
+
+                            dte.ChiudiPeridoElaborazione(idAnnoMeseElaborato, db);
+
 
                             db.Database.CurrentTransaction.Commit();
                         }

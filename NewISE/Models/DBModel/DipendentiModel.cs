@@ -98,6 +98,8 @@ namespace NewISE.Models.DBModel
 
         public UtenteAutorizzatoModel UtenteAutorizzato { get; set; }
 
+        public IList<ElaborazioniModel> lElaborazioni { get; set; }
+
 
     }
 }

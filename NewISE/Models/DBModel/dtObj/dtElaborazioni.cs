@@ -27,6 +27,72 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public void ChiudiPeridoElaborazione(decimal idAnnoMeseElab, ModelDBISE db)
+        {
+            try
+            {
+                var annoMese = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElab);
+
+                annoMese.CHIUSO = true;
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile chiudere la fase di elaborazione.");
+                }
+                else
+                {
+
+                    DateTime dtNewMese = Convert.ToDateTime("01/" + annoMese.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + annoMese.ANNO);
+
+
+                    dtNewMese = Utility.GetDtFineMese(dtNewMese);
+
+                    dtNewMese = dtNewMese.AddDays(1);
+
+
+                    MESEANNOELABORAZIONE me = new MESEANNOELABORAZIONE()
+                    {
+                        MESE = dtNewMese.Month,
+                        ANNO = dtNewMese.Year,
+                        CHIUSO = false
+                    };
+
+                    db.MESEANNOELABORAZIONE.Add(me);
+
+                    int j = db.SaveChanges();
+
+                    if (j <= 0)
+                    {
+                        throw new Exception("Impossibile inserire il nuovo periodo di elaborazione.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool VerificaChiusuraPeriodoElab(decimal idAnnoMeseElab, ModelDBISE db)
+        {
+            bool ret = false;
+
+            var meseAnno = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElab);
+
+            if (meseAnno.CHIUSO)
+            {
+                ret = true;
+            }
+            else
+            {
+                ret = false;
+            }
+
+            return ret;
+        }
+
         public bool VerificaElaborazioneDipendenti(List<decimal> lIdDip, decimal idAnnoMeseElab, ModelDBISE db)
         {
             bool ret = false;
@@ -865,7 +931,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         if (lmae?.Any() ?? false)
                                         {
                                             var mae = lmae.First();
-                                            if (mae.Chiuso == true)
+                                            if (mae.chiuso == true)
                                             {
                                                 cmae.NewMeseDaElaborare();
                                             }
@@ -877,7 +943,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
                                                 IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                                 IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D,
-                                                IDMESEANNOELAB = mae.IdMeseAnnoElab,
+                                                IDMESEANNOELAB = mae.idMeseAnnoElab,
                                                 MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                                 ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                                 ALIQUOTAFISCALE = outAliqIse,
@@ -1054,7 +1120,7 @@ namespace NewISE.Models.DBModel.dtObj
                     if (lmae?.Any() ?? false)
                     {
                         var mae = lmae.First();
-                        if (mae.Chiuso == true)
+                        if (mae.chiuso == true)
                         {
                             cmae.NewMeseDaElaborare();
                         }
@@ -1064,7 +1130,7 @@ namespace NewISE.Models.DBModel.dtObj
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
                             IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                             IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D,
-                            IDMESEANNOELAB = mae.IdMeseAnnoElab,
+                            IDMESEANNOELAB = mae.idMeseAnnoElab,
                             MESERIFERIMENTO = t.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = aliqIse.Aliquota,
@@ -1260,7 +1326,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (lmae?.Any() ?? false)
                                 {
                                     var mae = lmae.First();
-                                    if (mae.Chiuso == true)
+                                    if (mae.chiuso == true)
                                     {
                                         cmae.NewMeseDaElaborare();
                                     }
@@ -1272,7 +1338,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         IDINDSISTLORDA = eis.IDINDSISTLORDA,
                                         IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                         IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS_D,
-                                        IDMESEANNOELAB = mae.IdMeseAnnoElab,
+                                        IDMESEANNOELAB = mae.idMeseAnnoElab,
                                         MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                         ALIQUOTAFISCALE = outAliqIse,

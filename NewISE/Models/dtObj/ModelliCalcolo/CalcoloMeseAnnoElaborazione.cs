@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Models.DBModel;
 
 namespace NewISE.Models.dtObj.ModelliCalcolo
 {
 
-    public class MeseAnnoElaborazioneModel
-    {
-        public decimal IdMeseAnnoElab { get; set; }
-        public int Anno { get; set; }
-        public int Mese { get; set; }
-        public bool Chiuso { get; set; }
 
-    }
 
     public enum EnumDescrizioneMesi
     {
@@ -83,9 +77,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             //}
         }
 
-
-
-
         private List<MeseAnnoElaborazioneModel> _mae = new List<MeseAnnoElaborazioneModel>();
 
         private ModelDBISE _db;
@@ -146,15 +137,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 {
                     MeseAnnoElaborazioneModel maem = new MeseAnnoElaborazioneModel()
                     {
-                        IdMeseAnnoElab = mae.IDMESEANNOELAB,
-                        Anno = (int)mae.ANNO,
-                        Mese = (int)mae.MESE,
-                        Chiuso = mae.CHIUSO
+                        idMeseAnnoElab = mae.IDMESEANNOELAB,
+                        anno = (int)mae.ANNO,
+                        mese = (int)mae.MESE,
+                        chiuso = mae.CHIUSO
                     };
 
                     _mae.Add(maem);
                 }
-
 
             }
             //Se non ci sono ancora righe vuol dire che è la prima volta che si procede con l'elaborazione.
@@ -181,10 +171,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                 MeseAnnoElaborazioneModel maem = new MeseAnnoElaborazioneModel()
                 {
-                    IdMeseAnnoElab = mae.IDMESEANNOELAB,
-                    Anno = (int)mae.ANNO,
-                    Mese = (int)mae.MESE,
-                    Chiuso = mae.CHIUSO
+                    idMeseAnnoElab = mae.IDMESEANNOELAB,
+                    anno = (int)mae.ANNO,
+                    mese = (int)mae.MESE,
+                    chiuso = mae.CHIUSO
                 };
 
                 _mae.Add(maem);

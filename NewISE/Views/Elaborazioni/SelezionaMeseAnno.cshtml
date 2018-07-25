@@ -42,7 +42,18 @@
         placeholder: "Seleziona il mese-anno",
         allowClear: true,
         language: "it",
-        width: '150'
+        width: '150',
+        ajax: {
+            url: "/Elaborazioni/PrelevaMesiAnniElab",
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
     });
 
     $("#mesiAnniElaborati").change(function () {
@@ -54,6 +65,7 @@
             DatiLiquidazioniMensili(valore);
             PulsantiInvioElaborazione(valore);
             GesionePulsanteCalcola();
+            GestionePulsanteInviaFlussiMensili();
         }
 
     });
@@ -65,6 +77,7 @@
         DatiLiquidazioniMensili(valore);
         PulsantiInvioElaborazione(valore);
         GesionePulsanteCalcola();
+        GestionePulsanteInviaFlussiMensili();
     }
 
 
