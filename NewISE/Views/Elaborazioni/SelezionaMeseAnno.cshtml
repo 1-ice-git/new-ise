@@ -4,8 +4,11 @@
             <div class="form-group">
                 @Html.Label("lblAnniMesiElaborati", "Seleziona Mese-Anno", new { @class = "control-label col-xs-5" })
                 <div class="select2-container select2-container--classic">
-                    @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati", @class = "form-control select2 select2-select" })
+                    <div id="divSelect2ME">
+                        @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati", @class = "form-control select2 select2-select js-data-example-ajax" })
+                    </div>
                 </div>
+
             </div>
         </div>
 
@@ -40,11 +43,22 @@
 
     $("#mesiAnniElaborati").select2({
         placeholder: "Seleziona il mese-anno",
-        allowClear: true,
+        allowClear: false,
         language: "it",
         width: '150',
         ajax: {
+            delay: 250,
             url: "/Elaborazioni/PrelevaMesiAnniElab",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
             dataType: 'json',
             type: "post",
             processResults: function (data) {
@@ -66,9 +80,49 @@
             PulsantiInvioElaborazione(valore);
             GesionePulsanteCalcola();
             GestionePulsanteInviaFlussiMensili();
+            VerificaChiusuraMese(valore);
         }
 
     });
+
+    function VerificaChiusuraMese(valore) {
+        var rotta = "/Elaborazioni/VerificaChiusuraMeseElab";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAnnoMeseElab: valore },
+            dataType: 'json',
+            traditional: true,
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                //style = "border: red solid 2px;"
+                if (result.err == "") {
+                    if (result.pc == true) {
+                        $('#divSelect2ME').addClass("BordoRossoS2");
+                    } else {
+                        $('#divSelect2ME').removeClass("BordoRossoS2");
+                    }
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
 
     function ValorizzazioneIniziale() {
         //debugger;
@@ -78,6 +132,7 @@
         PulsantiInvioElaborazione(valore);
         GesionePulsanteCalcola();
         GestionePulsanteInviaFlussiMensili();
+        VerificaChiusuraMese(valore);
     }
 
 

@@ -39,9 +39,30 @@ namespace NewISE.Controllers
 
             return View();
         }
+
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
-        public JsonResult PrelevaMesiAnniElab()
+        public JsonResult VerificaFlussiDirettiDaInviare(decimal idAnnoMeseElaborato)
+        {
+            bool vfd = false;
+
+            try
+            {
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    vfd = dte.VerificaLiquidazioniDiretteDaInviare(idAnnoMeseElaborato);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { vfd = false, err = ex.Message });
+            }
+            return Json(new { vfd = vfd, err = "" });
+        }
+
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult PrelevaMesiAnniElab(string search)
         {
             List<Select2Model> ls2 = new List<Select2Model>();
             List<MeseAnnoElaborazioneModel> lmaem = new List<MeseAnnoElaborazioneModel>();
@@ -50,7 +71,10 @@ namespace NewISE.Controllers
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
+
+
                     lmaem = dte.PrelevaAnniMesiElaborati().ToList();
+
                     foreach (var mae in lmaem)
                     {
                         Select2Model s2 = new Select2Model()
@@ -62,6 +86,12 @@ namespace NewISE.Controllers
                         ls2.Add(s2);
                     }
 
+
+                }
+
+                if (search != null && search != string.Empty)
+                {
+                    ls2 = ls2.Where(a => a.text.ToUpper().Contains(search.ToUpper())).ToList();
 
                 }
             }
@@ -305,6 +335,32 @@ namespace NewISE.Controllers
             return Json(new { gpCalcola = gpCalcola, gpFlussoMensile = gpFlussoMensile, err = "" });
         }
 
+
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult VerificaChiusuraMeseElab(decimal idAnnoMeseElab)
+        {
+            bool periodoChiuso = false;
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        periodoChiuso = dte.VerificaChiusuraPeriodoElab(idAnnoMeseElab, db);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { pc = periodoChiuso, err = ex.Message });
+            }
+
+            return Json(new { pc = periodoChiuso, err = "" });
+        }
+
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
         public JsonResult GestionePulsanteInvioFlussiMensili(decimal idAnnoMeseElab)
@@ -346,6 +402,7 @@ namespace NewISE.Controllers
                     {
                         try
                         {
+                            Teorici = Teorici.OrderBy(a => a).ToList();
                             foreach (decimal teorico in Teorici)
                             {
                                 dte.InviaFlussiDirettiContabilita(idAnnoMeseElaborato, teorico, db);

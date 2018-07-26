@@ -30,3 +30,8 @@ tr input[type="checkbox"] {
 .DimensioneFontTable > tbody > tr > td {
     font-size: 10px;
 }
+
+.BordoRossoS2 {
+    border: red solid 2px;
+    padding: 1px;
+}
