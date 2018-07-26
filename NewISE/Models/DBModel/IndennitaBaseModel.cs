@@ -15,9 +15,10 @@ namespace NewISE.Models.DBModel
         public decimal idIndennitaBase { get; set; }
         [Required(ErrorMessage = "Il livello è richiesto.")]
         public decimal idLivello { get; set; }
-
+        public decimal idRuoloUfficio { get; set; }
         public decimal? idRiduzioni { get; set; }
 
+        public string DescrizioneRuolo { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data inizio validità")]

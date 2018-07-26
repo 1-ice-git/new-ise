@@ -95,6 +95,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         [ReadOnly(true)]
         public decimal PercentualeMaggiorazioneConiuge => _percentualeMaggiorazioneConiuge;
         [ReadOnly(true)]
+        public decimal PercentualeMaggiorazioneFigli => _percentualeMaggiorazioniFigli;
+        [ReadOnly(true)]
+
         public decimal MaggiorazioneConiuge => _maggiorazioneConiuge;
         [ReadOnly(true)]
         public decimal PensioneConiuge => _pensioneConiuge;
@@ -132,6 +135,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal SaldoContributoOmnicomprensivoPartenza => _saldoContributoOmnicomprensivoPartenza;
 
 
+        
+
         [ReadOnly(true)]
         public decimal PercentualeFKMRientro => _percentualeFKMRientro;
         [ReadOnly(true)]
@@ -149,6 +154,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal IndennitaRichiamoLordo => _indennitaRichiamoLordo;
         [ReadOnly(true)]
         public decimal IndennitaRichiamoNetto => _indennitaRichiamoNetto;
+
+        
 
         //[ReadOnly(true)]
         //public int GiorniSospensione => _giorniSospensione;
