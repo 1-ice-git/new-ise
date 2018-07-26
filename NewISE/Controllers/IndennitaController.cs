@@ -126,50 +126,69 @@ namespace NewISE.Controllers
             try
             {
 
-                // da testare
-
-                //using (dtIndennitaBase dtd = new dtIndennitaBase())
-                //{
-                //    eim = dtd.GetIndennitaBaseComune(idTrasferimento).ToList();
-                //}
-
-
-                //using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
-                //{
-                //    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
-                //}
-
                 using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
                 {
                     libm = dtd.GetIndennita(idTrasferimento).ToList();
                 }
 
+                // **************************************************************
                 //using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
                 //{
                 //    eim = dtd.GetIndennitaEvoluzione(idTrasferimento).ToList();
                 //}
+                // **************************************************************
 
-                using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                // **************************************************************
+                //using (dtTrasferimento dtt = new dtTrasferimento())
+                //{
+                //    var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
-                    {
-                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+                //    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                //    {
+                //        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                //        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                //        //tm.RuoloUfficio.DescrizioneRuolo = tm.RuoloUfficio.DescrizioneRuolo;
+                //        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+                //        //ViewBag.RuoloDipendente = tm.RuoloUfficio.DescrizioneRuolo;
 
-                    }
+                //    }
 
-                    using (dtLivelliDipendente dtld = new dtLivelliDipendente())
-                    {
-                        lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
-                        //lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValdita).ThenBy(a => a.dataFineValidita).ToList();
+                //    using (dtLivelliDipendente dtld = new dtLivelliDipendente())
+                //    {
+                //        lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
+                //        //lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValdita).ThenBy(a => a.dataFineValidita).ToList();
 
-                    }
+                //    }
+                //}
+                // **************************************************************
 
-                }
-                
+                // **************************************************************
+                //using (dtTrasferimento dtt = new dtTrasferimento())
+                //{
+                //        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                //        using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                //        {
+
+                //            using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                //            {
+
+                //                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                //                var liv1 = liv.First();
+
+                //                string Nominativo = tm.Dipendente.Nominativo;
+                //                //string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
+                //                string Livello = liv1.Livello.DescLivello;
+                //                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                //                string Ufficio = tm.Ufficio.descUfficio;
+
+                //                ViewBag.Livello = liv1.Livello.DescLivello;
+
+                //        }
+                //        }
+                // }
+                // **************************************************************
+
                 ViewBag.idTrasferimento = idTrasferimento;
 
                 //return PartialView("EvoluzioneIndennita", eim);
@@ -584,30 +603,32 @@ namespace NewISE.Controllers
 
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
-                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+                    eim = dtei.GetMaggiorazioniFamiliariEvoluzione(idTrasferimento).ToList();
 
                 }
 
 
-                using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-                    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
-                    {
-                        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-                        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
+                //using (dtTrasferimento dtt = new dtTrasferimento())
+                //{
+                //    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                //    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                //    {
+                //        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                //        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                //        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
 
-                    }
+                //    }
 
-                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
-                    {
-                        dit.indennitaBase = ci.IndennitaDiBase;
-                        dit.indennitaServizio = ci.IndennitaDiServizio;
-                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
-                        dit.indennitaPersonale = ci.IndennitaPersonale;
-                    }
-                }
+                    
+
+                //    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
+                //    {
+                //        dit.indennitaBase = ci.IndennitaDiBase;
+                //        dit.indennitaServizio = ci.IndennitaDiServizio;
+                //        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                //        dit.indennitaPersonale = ci.IndennitaPersonale;
+                //    }
+                //}
                 ViewBag.idTrasferimento = idTrasferimento;
 
 
@@ -785,7 +806,7 @@ namespace NewISE.Controllers
 
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
-                    eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
+                    eim = dtei.GetMaggiorazioneAbitazioneEvoluzione(idTrasferimento).ToList();
 
                 }
 

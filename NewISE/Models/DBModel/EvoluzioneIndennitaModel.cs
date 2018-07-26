@@ -28,8 +28,24 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Indennita Personale")]
         public decimal IndennitaPersonale { get; set; }
 
+        [Display(Name = "Perc. Magg. Coniuge")]
+        public decimal PercentualeMaggConiuge { get; set; }
+
+        [Display(Name = "Perc. Magg. Figli")]
+        public decimal percentualeMaggiorazioniFligli { get; set; }
+
+        [Display(Name = "Maggiorazioni Coniuge")]
+        public decimal MaggiorazioneConiuge { get; set; }
+
+        [Display(Name = "Maggiorazioni Figli")]
+        public decimal MaggiorazioniFigli { get; set; }
+
         [Display(Name = "Maggiorazioni Familiari")]
         public decimal MaggiorazioniFamiliari { get; set; }
+
+        [Display(Name = "Indennità Base Primo Segretario")]
+        public decimal IndennitaPrimoSegretario { get; set; }
+
 
         [Display(Name = "Data Test")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

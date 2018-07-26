@@ -7,8 +7,10 @@
 
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
     decimal idRuoloUfficio = Convert.ToDecimal(ViewBag.idRuoloUfficio);
+    //string Ruolo = ViewBag.Ruolo;
+
     decimal idLivello = Convert.ToDecimal(ViewBag.idLivello);
- 
+    string Livello = ViewBag.Livello;
 }
 
 @Html.Hidden("hidTrasferimento")
@@ -35,12 +37,12 @@
 <table id="tbIndennitaBase" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Livello.DescLivello)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.RuoloUfficio.DescrizioneRuolo)
-            </th>
+            @*<th class="text-center">
+                @Html.DisplayNameFor(model => model.Livello)
+            </th>*@
+            @*<th class="text-center">
+                @Html.DisplayNameFor(model => model.idLivello)
+            </th>*@
             <th class="text-center">
                 @*@Html.DisplayNameFor(model => model.dipInfoTrasferimento.Decorrenza)*@
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -78,12 +80,12 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.RuoloUfficio.DescrizioneRuolo)
-                </td>
+                @*<td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Livello)
+                </td>*@
+                @*<td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.idLivello)
+                </td>*@
                 <td style="text-align:center;">
                     @*@Html.DisplayFor(modelItem => item.dipInfoTrasferimento.Decorrenza)*@
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -196,7 +198,7 @@
 
                 }
         ],
-        "order": [[0, "desc"]]
+        "order": [[0, "asc"]]
     });
 
     function DownloadReport() {
