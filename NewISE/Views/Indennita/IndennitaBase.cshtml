@@ -7,10 +7,8 @@
 
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
     decimal idRuoloUfficio = Convert.ToDecimal(ViewBag.idRuoloUfficio);
-    //string Ruolo = ViewBag.Ruolo;
-
     decimal idLivello = Convert.ToDecimal(ViewBag.idLivello);
-    string Livello = ViewBag.Livello;
+
 }
 
 @Html.Hidden("hidTrasferimento")
@@ -38,19 +36,21 @@
     <thead>
         <tr>
             @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.Livello)
-            </th>*@
-            @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.idLivello)
+                @Html.DisplayNameFor(model => model.Livello.DescLivello)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.RuoloUfficio.DescrizioneRuolo)
             </th>*@
             <th class="text-center">
-                @*@Html.DisplayNameFor(model => model.dipInfoTrasferimento.Decorrenza)*@
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.valore)
+            </th>
+            @*@if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
             {
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.valore)
@@ -65,14 +65,14 @@
             {
 
                 <th class="text-center">
-                    @*@Html.DisplayNameFor(model => model.valoreResponsabile)*@
+                    
                     @Html.DisplayNameFor(model => model.valoreResponsabile)
                 </th>
             }
             else
             {
             <td></td>
-            }
+            }*@
            
         </tr>
     </thead>
@@ -81,20 +81,22 @@
         {
             <tr>
                 @*<td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.Livello)
-                </td>*@
-                @*<td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.idLivello)
+                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                </td>
+                <td style="text-align:center;">
+                    
+                    @Html.DisplayFor(modelItem => item.RuoloUfficio.DescrizioneRuolo)
                 </td>*@
                 <td style="text-align:center;">
-                    @*@Html.DisplayFor(modelItem => item.dipInfoTrasferimento.Decorrenza)*@
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
-                
-                    @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.valore)
+                </td>
+                    @*@if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
                     {
                         <td style="text-align:center;">
                             @Html.DisplayFor(modelItem => item.valore)
@@ -115,7 +117,7 @@
                     else
                     {
                         <td></td>
-                    }
+                    }*@
                 
             </tr>
         }

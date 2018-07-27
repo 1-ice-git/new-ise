@@ -34,13 +34,84 @@ namespace NewISE.Models.DBModel.dtObj
                     var ll =
                         db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
                         .Where(a => a.ANNULLATO == false)
-                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-                    
+                        .OrderBy(a => a.IDLIVELLO)
+                        .ThenBy(a => a.DATAINIZIOVALIDITA)
+                        .ThenBy(a => a.DATAFINEVALIDITA)
+                        .ToList();
+
+
+                    using (dtTrasferimento dttrasf = new dtTrasferimento())
+                    {
+                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                        {
+                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
+
+                            dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+
+                            //IndennitaBaseModel xx = new IndennitaBaseModel();
+
+                            //var tm = dttrasf.GetTrasferimentoById(idTrasferimento);
+
+                            //using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                            //{
+                            //    tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
+                            //    tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+
+                            //    tm.RuoloUfficio.DescrizioneRuolo = tm.RuoloUfficio.DescrizioneRuolo;
+                                
+                            //    libm.Add(xx);
+                            //}
+
+
+
+                        }
+                    }
+
+
+
+                    //using (dtTrasferimento dttrasf = new dtTrasferimento())
+                    //{
+                    //    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                    //    {
+                    //        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
+
+                    //        dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+
+                    //        libm = (from e in ll
+                    //                select new IndennitaBaseModel()
+                    //                {
+                    //                    idIndennitaBase = e.IDINDENNITABASE,
+                    //                    idLivello = e.IDLIVELLO,
+                    //                    //dataInizioValidita = e.DATAINIZIOVALIDITA,
+                    //                    //dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                    //                    valore = e.VALORE,
+                    //                    valoreResponsabile = e.VALORERESP,
+                    //                    dataAggiornamento = e.DATAAGGIORNAMENTO,
+                    //                    annullato = e.ANNULLATO,
+                    //                    Livello = new LivelloModel()
+                    //                    {
+                    //                        idLivello = e.LIVELLI.IDLIVELLO,
+                    //                        DescLivello = e.LIVELLI.LIVELLO
+                    //                    },
+                    //                    RuoloUfficio = new RuoloUfficioModel()
+                    //                    {
+                    //                        idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
+                    //                        DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
+                    //                    },
+
+                    //                }).ToList();
+
+
+
+
+                    //    }
+                    //}
+
+
 
                     foreach (var ib in ll)
                     {
                         DateTime dtVar = new DateTime();
-                        
 
                         if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
                         {
@@ -71,93 +142,20 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
-                                //using (dtTrasferimento dttrasf = new dtTrasferimento())
-                                //{
-                                //    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
-                                //    {
-                                //        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
-
-                                //        dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
-
-                                //        libm = (from e in ll
-                                //                select new IndennitaBaseModel()
-                                //                {
-                                //                    idIndennitaBase = e.IDINDENNITABASE,
-                                //                    idLivello = e.IDLIVELLO,
-                                //                    //dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                //                    //dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                //                    valore = e.VALORE,
-                                //                    valoreResponsabile = e.VALORERESP,
-                                //                    dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                //                    annullato = e.ANNULLATO,
-                                //                    Livello = new LivelloModel()
-                                //                    {
-                                //                        idLivello = e.LIVELLI.IDLIVELLO,
-                                //                        DescLivello = e.LIVELLI.LIVELLO
-                                //                    },
-                                //                    RuoloUfficio = new RuoloUfficioModel()
-                                //                    {
-                                //                        idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
-                                //                        DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
-                                //                    },
-
-                                //                }).ToList();
-
-                                //    }
-                                //}
-
                                 using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                 {
-
                                     IndennitaBaseModel xx = new IndennitaBaseModel();
 
                                     xx.dataInizioValidita = dv;
                                     xx.dataFineValidita = dvSucc;
-                                    
                                     xx.valore = ci.IndennitaDiBase;
 
                                     libm.Add(xx);
-                                   
                                 }
-                                
-                                //using (dtTrasferimento dttrasf = new dtTrasferimento())
-                                //{
-                                //var tm = dtt.GetTrasferimentoById(idTrasferimento);
-                                //using (dtRuoloUfficio dtru = new dtRuoloUfficio())
-                                //{
-                                //    tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                                //    tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-                                //}
 
-
-                                //using (dtTrasferimento dtt = new dtTrasferimento())
-                                //{
-                                //    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                                //    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
-                                //    {
-                                //        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                                //        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-                                        
-
-                                //    }
-
-                                //    //using (dtLivelliDipendente dtld = new dtLivelliDipendente())
-                                //    //{
-                                //    //    lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
-                                //    //    //lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValdita).ThenBy(a => a.dataFineValidita).ToList();
-
-                                //    //}
-
-                                //}
-
-                            }
+                             }
                         }
                     }
-
-
-
-                    
 
                     return libm;
                 }
@@ -352,14 +350,14 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (lattivazioneMF?.Any() ?? false)
                     {
-                        #region Coniuge
+                        #region Coniuge e Pensioni
 
                         var lc =
                             mf.CONIUGE.Where(
                                 a =>
                                     a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-                                .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-
+                                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                            //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                         if (lc?.Any() ?? false)
                         {
@@ -370,7 +368,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         a =>
                                             a.ANNULLATO == false &&
                                             a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE)
-                                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                 if (lpmc?.Any() ?? false)
                                 {
@@ -398,8 +397,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     coniuge.PENSIONE.Where(
                                         a =>
                                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
-                                        .OrderByDescending(a => a.DATAINIZIO)
-                                        .ToList();
+                                            .OrderBy(a => a.DATAINIZIO).ToList();
+                                //.OrderByDescending(a => a.DATAINIZIO).ToList();
 
                                 if (lpensioni?.Any() ?? false)
                                 {
@@ -443,7 +442,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     f.PERCENTUALEMAGFIGLI.Where(
                                         a =>
                                             a.ANNULLATO == false)
-                                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                            //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                 if (lpmf?.Any() ?? false)
                                 {

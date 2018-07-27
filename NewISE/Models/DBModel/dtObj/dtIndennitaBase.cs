@@ -154,56 +154,58 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         }).ToList();
 
-                            foreach (var ib in ll)
-                            {
-                                DateTime dtVar = new DateTime();
-
-                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = ib.DATAINIZIOVALIDITA;
-                                }
 
 
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                }
-                            }
+                            //foreach (var ib in ll)
+                            //{
+                            //    DateTime dtVar = new DateTime();
 
-                            if (lDateVariazioni?.Any() ?? false)
-                            {
-                                lDateVariazioni =
-                                    lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
-
-                                for (int j = 0; j < lDateVariazioni.Count; j++)
-                                {
-                                    DateTime dv = lDateVariazioni[j];
-
-                                    //using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
-                                    //{
+                            //    if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            //    {
+                            //        dtVar = trasferimento.DATAPARTENZA;
+                            //    }
+                            //    else
+                            //    {
+                            //        dtVar = ib.DATAINIZIOVALIDITA;
+                            //    }
 
 
-                                    //    var pd = new EvoluzioneIndennitaModel
-                                    //    {
+                            //    if (!lDateVariazioni.Contains(dtVar))
+                            //    {
+                            //        lDateVariazioni.Add(dtVar);
+                            //    }
+                            //}
 
-                                    //        IndennitaBase = ci.IndennitaDiBase,
-                                    //        percentuale = ci.PercentualeDisagio,
-                                    //        //valore = ci.CoefficienteDiSede,
-                                    //        Coefficiente = ci.CoefficienteDiSede,
-                                    //        IndennitaServizio = ci.IndennitaDiServizio
-                                    //    };
+                            //if (lDateVariazioni?.Any() ?? false)
+                            //{
+                            //    lDateVariazioni =
+                            //        lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
+
+                            //    for (int j = 0; j < lDateVariazioni.Count; j++)
+                            //    {
+                            //        DateTime dv = lDateVariazioni[j];
+
+                            //        //using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                            //        //{
+
+
+                            //        //    var pd = new EvoluzioneIndennitaModel
+                            //        //    {
+
+                            //        //        IndennitaBase = ci.IndennitaDiBase,
+                            //        //        percentuale = ci.PercentualeDisagio,
+                            //        //        //valore = ci.CoefficienteDiSede,
+                            //        //        Coefficiente = ci.CoefficienteDiSede,
+                            //        //        IndennitaServizio = ci.IndennitaDiServizio
+                            //        //    };
 
 
 
 
-                                    //    eim.Add(pd);
-                                    //}
-                                }
-                            }
+                            //        //    eim.Add(pd);
+                            //        //}
+                            //    }
+                            //}
 
 
 
