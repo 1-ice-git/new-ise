@@ -480,7 +480,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #endregion
 
-                    
+                       
 
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
 

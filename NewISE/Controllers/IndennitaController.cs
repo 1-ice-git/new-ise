@@ -569,7 +569,7 @@ namespace NewISE.Controllers
         }
         #endregion
 
-        #region Maggiorazioni Familiari + Report di Stampa
+        #region Maggiorazioni Familiari (Maggiorazioni Coniuge e Figli) + Report di Stampa
         public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -617,7 +617,6 @@ namespace NewISE.Controllers
             }
 
         }
-
         public ActionResult RptMaggiorazioniFigli(decimal idTrasferimento)
         {
 
@@ -678,8 +677,6 @@ namespace NewISE.Controllers
             }
             return PartialView("RptMaggiorazioniFigli");
         }
-
-
         public ActionResult RptMaggiorazioniConiuge(decimal idTrasferimento)
         {
 
@@ -740,7 +737,6 @@ namespace NewISE.Controllers
             }
             return PartialView("RptMaggiorazioniConiuge");
         }
-
         public ActionResult RptMaggiorazioniFamiliari(decimal idTrasferimento)
         {
 
@@ -801,9 +797,7 @@ namespace NewISE.Controllers
             }
             return PartialView("RptMaggiorazioniFamiliari");
         }
-
-
-
+        
         #endregion
 
         #region Indennità Personale + Report di Stampa
