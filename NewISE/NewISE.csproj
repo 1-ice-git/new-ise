@@ -6079,7 +6079,6 @@
     <Content Include="Views\RiepilogoVoci\RptRiepilogoVoci.cshtml" />
     <Content Include="Views\RiepilogoVoci\ReportViewer.cshtml" />
     <Content Include="Views\Elaborazioni\PulsantiInvioElaborazione.cshtml" />
-
     <Content Include="Views\Indennita\RptIndennitaServizio.cshtml" />
     <Content Include="Views\Indennita\RptIndennitadiRichiamo.cshtml" />
     <Content Include="Views\Indennita\RptMaggiorazioneAbitazione.cshtml" />
@@ -6087,10 +6086,10 @@
     <Content Include="Views\Indennita\RptIndennitaPersonale.cshtml" />
     <Content Include="Views\Indennita\RptIndennitaPrimaSistemazione.cshtml" />
     <Content Include="Views\Indennita\EvoluzioneIndennita.cshtml" />
-
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDiretteDaInviare.cshtml" />
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDiretteInviate.cshtml" />
-
+    <Content Include="Views\Indennita\RptMaggiorazioniConiuge.cshtml" />
+    <Content Include="Views\Indennita\RptMaggiorazioniFigli.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6210,7 +6209,9 @@
     <EmbeddedResource Include="Report\RptIndennitaPrimaSistemazione.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaServizio.rdlc" />
     <EmbeddedResource Include="Report\RptMaggiorazioneAbitazione.rdlc" />
+    <EmbeddedResource Include="Report\RptMaggiorazioniConiuge.rdlc" />
     <EmbeddedResource Include="Report\RptMaggiorazioniFamiliari.rdlc" />
+    <EmbeddedResource Include="Report\RptMaggiorazioniFigli.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

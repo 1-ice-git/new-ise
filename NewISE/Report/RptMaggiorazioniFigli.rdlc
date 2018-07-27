@@ -18,7 +18,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>INDENNITA BASE</Value>
+                <Value>MAGGIORAZIONE FIGLI</Value>
                 <Style>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
@@ -31,8 +31,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>0.20461cm</Top>
-        <Left>0.32872cm</Left>
+        <Top>0.4808cm</Top>
+        <Left>0.39486cm</Left>
         <Height>1.82273cm</Height>
         <Width>23.86757cm</Width>
         <Style>
@@ -45,65 +45,18 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox2">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Regola di calcolo
-
-</Value>
-                <Style>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-              <TextRun>
-                <Value>Indennità di Base Estera – ORC001
-VT001 * VT002
-***
-Indennità Teorica * Coefficiente di riduzione</Value>
-                <Style>
-                  <FontStyle>Italic</FontStyle>
-                  <FontSize>9pt</FontSize>
-                  <FontWeight>Normal</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value />
-                <Style>
-                  <FontSize>9pt</FontSize>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>5.63245cm</Top>
-        <Left>0.3175cm</Left>
-        <Height>2.71667cm</Height>
-        <Width>23.87879cm</Width>
+      <Line Name="Line3">
+        <Top>2.40343cm</Top>
+        <Left>0.41539cm</Left>
+        <Height>0cm</Height>
+        <Width>23.84704cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
           </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Textbox>
+      </Line>
       <Textbox Name="Textbox4">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -121,8 +74,8 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>2.74849cm</Top>
-        <Left>0.3175cm</Left>
+        <Top>2.71776cm</Top>
+        <Left>0.38364cm</Left>
         <Height>0.6cm</Height>
         <Width>3.29057cm</Width>
         <ZIndex>2</ZIndex>
@@ -136,27 +89,25 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox14">
+      <Textbox Name="Textbox1">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Livello</Value>
-                <Style>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
+                <Value>=Parameters!Nominativo.Value</Value>
+                <Style />
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox14</rd:DefaultName>
-        <Top>3.81592cm</Top>
-        <Left>0.38806cm</Left>
+        <rd:DefaultName>Textbox1</rd:DefaultName>
+        <Top>2.71776cm</Top>
+        <Left>3.74477cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.22001cm</Width>
+        <Width>4.11396cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -185,11 +136,71 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>2.74849cm</Top>
-        <Left>13.81317cm</Left>
+        <Top>2.71776cm</Top>
+        <Left>13.87931cm</Left>
         <Height>0.6cm</Height>
         <Width>5.52833cm</Width>
         <ZIndex>4</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox11">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!Decorrenza.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox11</rd:DefaultName>
+        <Top>2.71776cm</Top>
+        <Left>19.51347cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.74896cm</Width>
+        <ZIndex>5</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox9">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!Ufficio.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox9</rd:DefaultName>
+        <Top>3.75873cm</Top>
+        <Left>19.51347cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.74896cm</Width>
+        <ZIndex>6</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -217,95 +228,11 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox14</rd:DefaultName>
-        <Top>3.78946cm</Top>
-        <Left>13.81317cm</Left>
+        <Top>3.75873cm</Top>
+        <Left>13.87931cm</Left>
         <Height>0.6cm</Height>
         <Width>5.45777cm</Width>
-        <ZIndex>5</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Line Name="Line2">
-        <Top>5.20912cm</Top>
-        <Left>0.3175cm</Left>
-        <Height>0cm</Height>
-        <Width>23.87879cm</Width>
-        <ZIndex>6</ZIndex>
-        <Style>
-          <Border>
-            <Style>Solid</Style>
-          </Border>
-        </Style>
-      </Line>
-      <Line Name="Line3">
-        <Top>2.43416cm</Top>
-        <Left>0.34925cm</Left>
-        <Height>0cm</Height>
-        <Width>23.84704cm</Width>
         <ZIndex>7</ZIndex>
-        <Style>
-          <Border>
-            <Style>Solid</Style>
-          </Border>
-        </Style>
-      </Line>
-      <Textbox Name="Textbox1">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Parameters!Nominativo.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Top>2.74849cm</Top>
-        <Left>3.67863cm</Left>
-        <Height>0.6cm</Height>
-        <Width>4.11396cm</Width>
-        <ZIndex>8</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox9">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Parameters!Ufficio.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>3.78946cm</Top>
-        <Left>19.44733cm</Left>
-        <Height>0.6cm</Height>
-        <Width>4.74896cm</Width>
-        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -331,11 +258,11 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox10</rd:DefaultName>
-        <Top>3.81592cm</Top>
-        <Left>3.64335cm</Left>
+        <Top>3.78519cm</Top>
+        <Left>3.70949cm</Left>
         <Height>0.6cm</Height>
         <Width>4.14924cm</Width>
-        <ZIndex>10</ZIndex>
+        <ZIndex>8</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -346,29 +273,99 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox11">
+      <Textbox Name="Textbox14">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Decorrenza.Value</Value>
-                <Style />
+                <Value>Livello</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>2.74849cm</Top>
-        <Left>19.44733cm</Left>
+        <rd:DefaultName>Textbox14</rd:DefaultName>
+        <Top>3.78519cm</Top>
+        <Left>0.4542cm</Left>
         <Height>0.6cm</Height>
-        <Width>4.74896cm</Width>
-        <ZIndex>11</ZIndex>
+        <Width>3.22001cm</Width>
+        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Line Name="Line2">
+        <Top>5.17839cm</Top>
+        <Left>0.38364cm</Left>
+        <Height>0cm</Height>
+        <Width>23.87879cm</Width>
+        <ZIndex>10</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+        </Style>
+      </Line>
+      <Textbox Name="Textbox2">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Regola di calcolo
+
+</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>Indennità di Primo Segretario * Numero Figli</Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Normal</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value />
+                <Style>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox2</rd:DefaultName>
+        <Top>5.60172cm</Top>
+        <Left>0.38364cm</Left>
+        <Height>2.71667cm</Height>
+        <Width>23.87879cm</Width>
+        <ZIndex>11</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -392,7 +389,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.24094cm</Top>
-          <Left>0.3175cm</Left>
+          <Left>0.38364cm</Left>
           <Height>2.05811cm</Height>
           <Width>23.87879cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
@@ -410,10 +407,21 @@ Indennità Teorica * Coefficiente di riduzione</Value>
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>2.80459cm</Height>
+      <Height>2.54cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
+        <Line Name="Line1">
+          <Top>0.73636cm</Top>
+          <Left>0.22554cm</Left>
+          <Height>0cm</Height>
+          <Width>24.19564cm</Width>
+          <Style>
+            <Border>
+              <Style>Solid</Style>
+            </Border>
+          </Style>
+        </Line>
         <Textbox Name="Textbox22">
           <CanGrow>true</CanGrow>
           <KeepTogether>true</KeepTogether>
@@ -442,9 +450,11 @@ Indennità Teorica * Coefficiente di riduzione</Value>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox22</rd:DefaultName>
-          <Top>0.97cm</Top>
+          <Top>1.20364cm</Top>
+          <Left>0.22489cm</Left>
           <Height>0.6cm</Height>
           <Width>24.19629cm</Width>
+          <ZIndex>1</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -455,18 +465,6 @@ Indennità Teorica * Coefficiente di riduzione</Value>
             <PaddingBottom>2pt</PaddingBottom>
           </Style>
         </Textbox>
-        <Line Name="Line1">
-          <Top>0.50271cm</Top>
-          <Left>0.00065cm</Left>
-          <Height>0cm</Height>
-          <Width>24.19564cm</Width>
-          <ZIndex>1</ZIndex>
-          <Style>
-            <Border>
-              <Style>Solid</Style>
-            </Border>
-          </Style>
-        </Line>
       </ReportItems>
       <Style>
         <Border>
@@ -474,8 +472,8 @@ Indennità Teorica * Coefficiente di riduzione</Value>
         </Border>
       </Style>
     </PageFooter>
-    <PageHeight>21cm</PageHeight>
-    <PageWidth>29.7cm</PageWidth>
+    <PageHeight>29.7cm</PageHeight>
+    <PageWidth>21cm</PageWidth>
     <LeftMargin>2cm</LeftMargin>
     <RightMargin>2cm</RightMargin>
     <TopMargin>2cm</TopMargin>
@@ -489,19 +487,15 @@ Indennità Teorica * Coefficiente di riduzione</Value>
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="Ruolo">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
     <ReportParameter Name="Livello">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="Ufficio">
+    <ReportParameter Name="Decorrenza">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="Decorrenza">
+    <ReportParameter Name="Ufficio">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
@@ -534,5 +528,5 @@ k+knx+DOzXkxblLestrlOWueGaodjqdSaKsMkkY69/ZTrUL9Co0SjQAceEvybbCeZlpzYtNGVseI4hHU
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>82a5fe5a-e05f-4043-b155-eb6db45db7bd</rd:ReportID>
+  <rd:ReportID>93a9d3b0-2c05-4100-bc7b-97afcc886fb0</rd:ReportID>
 </Report>

@@ -9,6 +9,8 @@
 
 @Html.Hidden("hidTrasferimento")
 <div id="dialog" title=""></div>
+<div id="dialog1" title=""></div>
+<div id="dialog2" title=""></div>
 
 <div class="row">
     <div class="col-md-12">
@@ -86,7 +88,7 @@
                 Stampa
             </button>*@
 
-        <button class="btn btn-default btn-sm" id="opener">
+        <button class="btn btn-default btn-sm" id="opener1">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
             Stampa
         </button>
@@ -163,7 +165,7 @@
                 Stampa
             </button>*@
 
-        <button class="btn btn-default btn-sm" id="opener">
+        <button class="btn btn-default btn-sm" id="opener2">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
             Stampa
         </button>
@@ -384,6 +386,7 @@
 
     }
 
+    // Report Maggiorazioni Familiari
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
 
@@ -447,6 +450,217 @@
 
         });
     });
+
+
+    // Report MaggiorazioniConiuge
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog1").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener1").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog1").dialog("open");
+            $("#dialog1").css("background-color", "#ffffff");
+
+            var rotta = "/Indennita/RptMaggiorazioniConiuge";
+
+            var idTrasferimento = $("#hidTrasferimento").val();
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog1").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog1").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+    // Report MaggiorazioniFigli
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog2").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener2").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog2").dialog("open");
+            $("#dialog2").css("background-color", "#ffffff");
+
+            var rotta = "/Indennita/RptMaggiorazioniFigli";
+
+            var idTrasferimento = $("#hidTrasferimento").val();
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog2").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog2").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+    function RptMaggiorazioniFigli() {
+        //debugger;
+        var rotta = "/Indennita/RptMaggiorazioniFigli";
+
+        var idTrasferimento = 0;
+
+        if (!isNaN(idTrasf)) {
+            idTrasferimento = idTrasf;
+        } else {
+            idTrasferimento = $("#hidTrasferimento").val();
+        }
+         @*var idTrasferimento = parseInt('@idTrasferimento');*@
+
+                 $.ajax({
+                     type: "POST",
+                     url: rotta,
+                     data: { idTrasferimento: idTrasferimento },
+                     dataType: 'html',
+                     beforeSend: function () {
+                         //debugger;
+                         VerificaAutenticazione();
+                     },
+                     success: function (result) {
+                         //debugger;
+
+                         $("#divViewMaggiorazioneFamiliari").empty();
+                         $("#divViewMaggiorazioneFamiliari").html(result);
+                     },
+                     complete: function () {
+                     },
+                     error: function (jqXHR, textStatus, errorThrow) {
+                         //debugger;
+                         var msg = errorThrow.err;
+                         ErroreElaborazioneAjax(msg);
+                     }
+
+                 });
+
+    }
+
+    function RptMaggiorazioniConiuge() {
+        //debugger;
+        var rotta = "/Indennita/RptMaggiorazioniConiuge";
+
+        var idTrasferimento = 0;
+
+        if (!isNaN(idTrasf)) {
+            idTrasferimento = idTrasf;
+        } else {
+            idTrasferimento = $("#hidTrasferimento").val();
+        }
+         @*var idTrasferimento = parseInt('@idTrasferimento');*@
+
+                 $.ajax({
+                     type: "POST",
+                     url: rotta,
+                     data: { idTrasferimento: idTrasferimento },
+                     dataType: 'html',
+                     beforeSend: function () {
+                         //debugger;
+                         VerificaAutenticazione();
+                     },
+                     success: function (result) {
+                         //debugger;
+
+                         $("#divViewMaggiorazioneFamiliari").empty();
+                         $("#divViewMaggiorazioneFamiliari").html(result);
+                     },
+                     complete: function () {
+                     },
+                     error: function (jqXHR, textStatus, errorThrow) {
+                         //debugger;
+                         var msg = errorThrow.err;
+                         ErroreElaborazioneAjax(msg);
+                     }
+
+                 });
+
+    }
 
     function RptMaggiorazioniFamiliari() {
          //debugger;

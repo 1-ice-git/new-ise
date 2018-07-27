@@ -236,24 +236,22 @@ namespace NewISE.Controllers
                                 string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                                 string Ufficio = tm.Ufficio.descUfficio;
 
-                                
-
-                                libm = (from e in ll
-                                        select new IndennitaBaseModel()
-                                        {
-                                            idIndennitaBase = e.IDINDENNITABASE,
-                                            idLivello = e.IDLIVELLO,
-                                            dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                            valore = valore,
-                                            //valoreResponsabile = e.VALORERESP,
-                                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                            Livello = new LivelloModel()
-                                            {
-                                                idLivello = e.LIVELLI.IDLIVELLO,
-                                                DescLivello = e.LIVELLI.LIVELLO
-                                            },
-                                        }).ToList();
+                                //libm = (from e in ll
+                                //        select new IndennitaBaseModel()
+                                //        {
+                                //            idIndennitaBase = e.IDINDENNITABASE,
+                                //            idLivello = e.IDLIVELLO,
+                                //            dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                //            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                //            valore = valore,
+                                //            //valoreResponsabile = e.VALORERESP,
+                                //            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                //            Livello = new LivelloModel()
+                                //            {
+                                //                idLivello = e.LIVELLI.IDLIVELLO,
+                                //                DescLivello = e.LIVELLI.LIVELLO
+                                //            },
+                                //        }).ToList();
 
 
                                 // ****************************************************************************
@@ -275,14 +273,14 @@ namespace NewISE.Controllers
                                 reportViewer.Height = Unit.Percentage(100);
 
 
-                                var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
-                                ////var datasource = new ReportDataSource("INDENNITABASE", ll.ToList());
+                                //var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
+                                
                                 reportViewer.Visible = true;
                                 reportViewer.ProcessingMode = ProcessingMode.Local;
                                 //reportViewer.LocalReport.ReportPath = @"~/Report/RptIndennitaBase.rdlc";
                                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaBase.rdlc";
                                 reportViewer.LocalReport.DataSources.Clear();
-                                reportViewer.LocalReport.DataSources.Add(datasource);
+                                //reportViewer.LocalReport.DataSources.Add(datasource);
                                 //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
                                 reportViewer.LocalReport.Refresh();
 
@@ -619,6 +617,130 @@ namespace NewISE.Controllers
             }
 
         }
+
+        public ActionResult RptMaggiorazioniFigli(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFigli.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptMaggiorazioniFigli");
+        }
+
+
+        public ActionResult RptMaggiorazioniConiuge(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniConiuge.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptMaggiorazioniConiuge");
+        }
+
         public ActionResult RptMaggiorazioniFamiliari(decimal idTrasferimento)
         {
 
@@ -643,32 +765,32 @@ namespace NewISE.Controllers
 
                         ReportViewer reportViewer = new ReportViewer();
 
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.SizeToReportContent = true;
-                    reportViewer.Width = Unit.Percentage(100);
-                    reportViewer.Height = Unit.Percentage(100);
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
 
-                    //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                    reportViewer.Visible = true;
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFamiliari.rdlc";
-                    reportViewer.LocalReport.DataSources.Clear();
-                    //reportViewer.LocalReport.DataSources.Add(datasource);
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFamiliari.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
 
-                    reportViewer.LocalReport.Refresh();
-                    reportViewer.ShowReportBody = true;
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
 
-                    ReportParameter[] parameterValues = new ReportParameter[]
-                    {
-                        new ReportParameter ("Nominativo",Nominativo),
-                        new ReportParameter ("Livello",Livello),
-                        new ReportParameter ("Decorrenza",Decorrenza),
-                        new ReportParameter ("Ufficio",Ufficio)
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
 
-                    };
+                        };
 
-                    reportViewer.LocalReport.SetParameters(parameterValues);
-                    ViewBag.ReportViewer = reportViewer;
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
                 }
                 }
 
@@ -679,6 +801,9 @@ namespace NewISE.Controllers
             }
             return PartialView("RptMaggiorazioniFamiliari");
         }
+
+
+
         #endregion
 
         #region Indennità Personale + Report di Stampa
