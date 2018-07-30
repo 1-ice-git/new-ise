@@ -32,6 +32,7 @@ namespace NewISE.EF
         public decimal IMPORTO { get; set; }
         public bool ELABORATO { get; set; }
         public Nullable<decimal> IDELABINDRICHIAMO { get; set; }
+        public bool DIRETTO { get; set; }
     
         public virtual ELABINDENNITA ELABINDENNITA { get; set; }
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }

@@ -37,6 +37,7 @@ namespace NewISE.EF
         public decimal PENSIONECONIUGE { get; set; }
         public decimal GIORNISOSPENSIONE { get; set; }
         public decimal IDLIVELLO { get; set; }
+        public bool RICALCOLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
