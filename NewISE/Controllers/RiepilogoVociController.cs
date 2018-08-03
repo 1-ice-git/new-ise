@@ -36,7 +36,7 @@ namespace NewISE.Controllers
                 {
                     tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                   
+
                 }
                 ViewBag.idTrasferimento = idTrasferimento;
 
@@ -136,7 +136,7 @@ namespace NewISE.Controllers
         {
             List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
             RiepiloVociModel lrvm1 = new RiepiloVociModel();
-            
+
 
             try
             {
@@ -174,8 +174,8 @@ namespace NewISE.Controllers
                             db.TEORICI.Where(
                                 a =>
                                     a.ANNULLATO == false && a.ELABORATO == true &&
-                                    (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
-                                    a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
+                                    (a.ELABINDSISTEMAZIONE.Any(b => b.ANNULLATO == false && b.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
+                                    a.ELABINDENNITA.Any(b => b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
                                     a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
                                     a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
                                     a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
@@ -325,11 +325,11 @@ namespace NewISE.Controllers
                                     reportViewer.LocalReport.SetParameters(parameterValues);
                                     ViewBag.ReportViewer = reportViewer;
                                 }
-                        }
-                        else
-                        {
-                            throw new Exception("Nessun Dato Presente");
-                        }
+                            }
+                            else
+                            {
+                                throw new Exception("Nessun Dato Presente");
+                            }
 
                         }
                     }

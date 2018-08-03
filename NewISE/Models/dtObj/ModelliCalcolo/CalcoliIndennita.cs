@@ -423,7 +423,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                (((_indennitaDiBase * _coefficienteDiSede) +
                                  _indennitaDiBase) / 100 * _percentualeDisagio));
 
-                _indennitaDiServizio = indServ;
+                _indennitaDiServizio = Math.Round(indServ, 8);
             }
         }
 
@@ -578,14 +578,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 }
                 #endregion
 
-                _maggiorazioniFimailiri = _maggiorazioneConiugeMenoPensione + _maggiorazioneFigli;
+                _maggiorazioniFimailiri = Math.Round(_maggiorazioneConiugeMenoPensione + _maggiorazioneFigli, 8);
             }
 
         }
 
         private void CalcolaIndennitaPersonale()
         {
-            _indennitaPersonale = _indennitaDiServizio + _maggiorazioniFimailiri;
+            _indennitaPersonale = Math.Round(_indennitaDiServizio + _maggiorazioniFimailiri, 8);
 
         }
 
@@ -628,13 +628,13 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                 if (_percentualeRiduzionePrimaSistemazione > 0)
                 {
-                    _indennitaSistemazione = (_coefficienteIndennitaSistemazione * (_percentualeRiduzionePrimaSistemazione / 100)) * _indennitaPersonale;
-                    _indennitaSistemazioneAnticipabile = (_coefficienteIndennitaSistemazione * (_percentualeRiduzionePrimaSistemazione / 100)) * _indennitaDiServizio;
+                    _indennitaSistemazione = Math.Round((_coefficienteIndennitaSistemazione * (_percentualeRiduzionePrimaSistemazione / 100)) * _indennitaPersonale, 8);
+                    _indennitaSistemazioneAnticipabile = Math.Round((_coefficienteIndennitaSistemazione * (_percentualeRiduzionePrimaSistemazione / 100)) * _indennitaDiServizio, 8);
                 }
                 else
                 {
-                    _indennitaSistemazione = _coefficienteIndennitaSistemazione * _indennitaPersonale;
-                    _indennitaSistemazioneAnticipabile = _coefficienteIndennitaSistemazione * _indennitaDiServizio;
+                    _indennitaSistemazione = Math.Round(_coefficienteIndennitaSistemazione * _indennitaPersonale, 8);
+                    _indennitaSistemazioneAnticipabile = Math.Round(_coefficienteIndennitaSistemazione * _indennitaDiServizio, 8);
                 }
 
 
@@ -669,7 +669,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                     var abbattimento = maggiorazione * _coefficenteIndennitaRichiamo;
 
-                    _indennitaRichiamoLordo = abbattimento + _maggiorazioniFimailiri;
+                    _indennitaRichiamoLordo = Math.Round(abbattimento + _maggiorazioniFimailiri, 8);
 
 
                 }
@@ -714,11 +714,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     _percentualeAnticipoTEPartenza = pa.PERCENTUALE;
                     _percentualeSaldoTEPartenza = 100 - _percentualeAnticipoTEPartenza;
 
-                    _anticipoContributoOmnicomprensivoPartenza = (_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
-                                                                  (_percentualeAnticipoTEPartenza / 100));
+                    _anticipoContributoOmnicomprensivoPartenza = Math.Round((_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
+                                                                  (_percentualeAnticipoTEPartenza / 100)), 8);
 
-                    _saldoContributoOmnicomprensivoPartenza = (_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
-                                                                  (_percentualeSaldoTEPartenza / 100));
+                    _saldoContributoOmnicomprensivoPartenza = Math.Round((_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
+                                                                  (_percentualeSaldoTEPartenza / 100)), 8);
 
                 }
 
@@ -763,11 +763,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         _percentualeAnticipoTERientro = pa.PERCENTUALE;
                         _percentualeSaldoTERientro = 100 - _percentualeAnticipoTERientro;
 
-                        _anticipoContributoOmnicomprensivoRientro = (_indennitaRichiamoLordo * (_percentualeFKMRientro / 100) *
-                                                                      (_percentualeAnticipoTERientro / 100));
+                        _anticipoContributoOmnicomprensivoRientro = Math.Round((_indennitaRichiamoLordo * (_percentualeFKMRientro / 100) *
+                                                                      (_percentualeAnticipoTERientro / 100)), 8);
 
-                        _saldoContributoOmnicomprensivoRientro = (_indennitaRichiamoLordo * (_percentualeFKMRientro / 100) *
-                                                                      (_percentualeSaldoTERientro / 100));
+                        _saldoContributoOmnicomprensivoRientro = Math.Round((_indennitaRichiamoLordo * (_percentualeFKMRientro / 100) *
+                                                                      (_percentualeSaldoTERientro / 100)), 8);
 
                     }
                 }
@@ -799,7 +799,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         /// <returns></returns>
         public decimal AnticipoPrimaSistemazione(decimal percentualeAnticipo)
         {
-            return _indennitaSistemazioneAnticipabile * percentualeAnticipo / 100;
+            return Math.Round(_indennitaSistemazioneAnticipabile * percentualeAnticipo / 100, 8);
         }
 
         /// <summary>
@@ -860,14 +860,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 indPrimaSistemazioneAnticipabile = coefficenteIndSistemazione * indServ;
             }
 
-            indPrimaSistemazioneUnicaSoluzione = indPrimaSistemazioneAnticipabile + maggiorazioniFamiliari;
+            indPrimaSistemazioneUnicaSoluzione = Math.Round(indPrimaSistemazioneAnticipabile + maggiorazioniFamiliari, 8);
         }
 
         public decimal RateoIndennitaPersonale(int giorniRateo)
         {
             decimal ret = 0;
 
-            ret = (_indennitaPersonale / 30) * giorniRateo;
+            ret = Math.Round((_indennitaPersonale / 30) * giorniRateo, 8);
 
             return ret;
 
@@ -877,6 +877,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         {
             oGiorniSospensione = 0;
             oImportoAbbattimentoSospensione = 0;
+            decimal _impSosp = 0;
 
             var lSosp =
                 _trasferimento.SOSPENSIONE.Where(
@@ -899,8 +900,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         impSosp = (_indennitaPersonale / giorniRateoIndPers) * gs;
                     }
                     oGiorniSospensione += gs;
-                    oImportoAbbattimentoSospensione += impSosp;
+                    _impSosp += impSosp;
                 }
+
+                oImportoAbbattimentoSospensione = Math.Round(_impSosp, 8);
 
             }
         }

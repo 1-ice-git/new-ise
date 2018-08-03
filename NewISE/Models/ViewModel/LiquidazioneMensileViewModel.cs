@@ -43,9 +43,6 @@ namespace NewISE.Models.ViewModel
         public decimal meseRiferimento { get; set; }
 
         public decimal annoRiferimento { get; set; }
-        [Display(Name = "G.ni")]
-        [DisplayFormat(DataFormatString = "{0:N0}")]
-        public decimal giorni { get; set; }
 
         [Required(ErrorMessage = "Il campo è richiesto.")]
         [DefaultValue(0)]

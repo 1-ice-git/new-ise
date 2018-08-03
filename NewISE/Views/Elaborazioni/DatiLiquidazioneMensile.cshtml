@@ -31,9 +31,6 @@
                         Data rif.
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.giorni)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Importo)
                     </th>
                     <th></th>
@@ -82,16 +79,7 @@
                             <td style="text-align: center;">
                                 @Html.DisplayFor(modelItem => item.MeseAnnoRiferimento)
                             </td>
-                            @if (item.giorni > 0)
-                            {
-                                <td style="text-align: center;">
-                                    @Html.DisplayFor(modelItem => item.giorni)
-                                </td>
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
+
                             <td style="text-align: right;">
                                 @Html.DisplayFor(modelItem => item.Importo)
                             </td>
@@ -141,16 +129,7 @@
                             <td style="text-align: center;">
                                 @Html.DisplayFor(modelItem => item.MeseAnnoRiferimento)
                             </td>
-                            @if (item.giorni > 0)
-                            {
-                                <td style="text-align: center;">
-                                    @Html.DisplayFor(modelItem => item.giorni)
-                                </td>
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
+
                             <td style="text-align: right;">
                                 @Html.DisplayFor(modelItem => item.Importo)
                             </td>

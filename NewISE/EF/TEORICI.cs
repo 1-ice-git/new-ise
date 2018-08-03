@@ -14,18 +14,22 @@ namespace NewISE.EF
     
     public partial class TEORICI
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TEORICI()
+        {
+            this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
+            this.ELABINDSISTEMAZIONE = new HashSet<ELABINDSISTEMAZIONE>();
+        }
+    
         public decimal IDTEORICI { get; set; }
-        public Nullable<decimal> IDINDSISTLORDA { get; set; }
         public decimal IDTIPOMOVIMENTO { get; set; }
         public decimal IDVOCI { get; set; }
-        public Nullable<decimal> IDELABIND { get; set; }
         public Nullable<decimal> IDELABMAB { get; set; }
         public Nullable<decimal> IDELABTRASPEFFETTI { get; set; }
         public decimal IDMESEANNOELAB { get; set; }
         public decimal MESERIFERIMENTO { get; set; }
         public decimal ANNORIFERIMENTO { get; set; }
         public decimal ALIQUOTAFISCALE { get; set; }
-        public decimal GIORNI { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool INSERIMENTOMANUALE { get; set; }
         public bool ANNULLATO { get; set; }
@@ -34,9 +38,7 @@ namespace NewISE.EF
         public Nullable<decimal> IDELABINDRICHIAMO { get; set; }
         public bool DIRETTO { get; set; }
     
-        public virtual ELABINDENNITA ELABINDENNITA { get; set; }
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
-        public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
         public virtual ELABMAB ELABMAB { get; set; }
         public virtual ELABTRASPEFFETTI ELABTRASPEFFETTI { get; set; }
         public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
@@ -44,5 +46,9 @@ namespace NewISE.EF
         public virtual OA OA { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
         public virtual VOCI VOCI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
     }
 }

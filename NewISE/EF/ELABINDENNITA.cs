@@ -18,7 +18,6 @@ namespace NewISE.EF
         public ELABINDENNITA()
         {
             this.ELABDATIFIGLI = new HashSet<ELABDATIFIGLI>();
-            this.ELABINDENNITA1 = new HashSet<ELABINDENNITA>();
             this.TEORICI = new HashSet<TEORICI>();
             this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
         }
@@ -33,21 +32,19 @@ namespace NewISE.EF
         public System.DateTime AL { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public Nullable<decimal> FK_IDELABIND { get; set; }
         public decimal PENSIONECONIUGE { get; set; }
         public decimal GIORNISOSPENSIONE { get; set; }
         public decimal IDLIVELLO { get; set; }
-        public bool RICALCOLATO { get; set; }
+        public decimal PROGRESSIVO { get; set; }
+        public decimal ALIQUOTAFISCALE { get; set; }
+        public decimal GIORNI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABINDENNITA> ELABINDENNITA1 { get; set; }
-        public virtual ELABINDENNITA ELABINDENNITA2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
     }
