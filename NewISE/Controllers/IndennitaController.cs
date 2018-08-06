@@ -113,7 +113,7 @@ namespace NewISE.Controllers
             }
         }
 
-        #region Indennità Base + Report di Stampa
+        #region Indennità di Base Estera + Report di Stampa
         
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {

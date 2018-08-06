@@ -511,6 +511,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     xx.MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+
+                                    
                                     
                                     
                                     eim.Add(xx);

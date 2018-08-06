@@ -1034,6 +1034,12 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.wijmo-open.1.5.0.css" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.wijmo-open.1.5.0.min.js" />
     <Content Include="Content\NuovoTrasferimento.css" />
+    <Content Include="DSIndennitaServizio.xsc">
+      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
+    </Content>
+    <Content Include="DSIndennitaServizio.xss">
+      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
+    </Content>
     <Content Include="EF\ModelDBISE.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
@@ -4666,17 +4672,11 @@
     <Content Include="EF\ModelDBISE.edmx.diagram">
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Content>
-    <Content Include="DSIndennitaServizio.xsc">
-      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
-    </Content>
     <None Include="DSIndennitaServizio.xsd">
+      <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DSIndennitaServizio.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </None>
-    <Content Include="DSIndennitaServizio.xss">
-      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
-    </Content>
     <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
     <Content Include="DataSet20.xsc">
@@ -4912,9 +4912,9 @@
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
     <Compile Include="DSIndennitaServizio.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="EF\ACCESSI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
