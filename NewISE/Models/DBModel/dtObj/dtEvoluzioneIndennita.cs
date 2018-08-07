@@ -301,7 +301,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
                                         xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                         xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
-                                        xx.MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                        xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
 
                                         eim.Add(xx);
                                 }
@@ -510,7 +510,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
-                                    xx.MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                    xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
 
                                     
                                     
@@ -675,7 +675,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
-                                    xx.MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                    xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+
+                                    
 
                                     eim.Add(xx);
                                 }
@@ -697,6 +699,112 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public IList<EvoluzioneIndennitaModel> GetIndennitaSistemazioneEvoluzione(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
+
+                    List<DateTime> lDateVariazioni = new List<DateTime>();
+
+
+                    #region Variazioni Indennità di Sistemazione
+
+                    var ll =
+                        db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
+                        .Where(a => a.ANNULLATO == false)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                    foreach (var ib in ll)
+                    {
+                        DateTime dtVar = new DateTime();
+
+                        if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                        {
+                            dtVar = trasferimento.DATAPARTENZA;
+                        }
+                        else
+                        {
+                            dtVar = ib.DATAINIZIOVALIDITA;
+                        }
+
+
+                        if (!lDateVariazioni.Contains(dtVar))
+                        {
+                            lDateVariazioni.Add(dtVar);
+                            lDateVariazioni.Sort();
+                        }
+                    }
+
+                    #endregion
+
+
+
+                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                    if (lDateVariazioni?.Any() ?? false)
+                    {
+                        for (int j = 0; j < lDateVariazioni.Count; j++)
+                        {
+                            DateTime dv = lDateVariazioni[j];
+
+                            if (dv < Utility.DataFineStop())
+                            {
+                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                {
+                                    EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
+
+                                    xx.dataInizioValidita = dv;
+                                    xx.dataFineValidita = dvSucc;
+                                    xx.IndennitaBase = ci.IndennitaDiBase;
+                                    xx.PercentualeDisagio = ci.PercentualeDisagio;
+                                    xx.CoefficienteSede = ci.CoefficienteDiSede;
+                                    xx.IndennitaServizio = ci.IndennitaDiServizio;
+                                    xx.IndennitaPersonale = ci.IndennitaPersonale;
+                                    xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
+                                    xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
+                                    xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
+                                    xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
+                                    xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
+                                    xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                    xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
+                                    xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
+
+
+
+                                    eim.Add(xx);
+
+
+
+
+
+                                }
+
+
+
+                            }
+                        }
+                    }
+
+                }
+
+                return eim;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 }

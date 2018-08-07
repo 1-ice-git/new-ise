@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-md-12">
         <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
-            <h4>Totale Maggiorazioni Familiari</h4>
+            <h4>Maggiorazioni Figli</h4>
 
 
 
@@ -21,7 +21,7 @@
     </div>
 </div>
 
-<table id="tbMaggiorazioniFamiliari" class="display" cellspacing="0">
+<table id="tbMaggiorazioniFigli" class="display" cellspacing="0">
     <thead>
         <tr>
 
@@ -32,7 +32,16 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.MaggiorazioniFamiliari)
+                @Html.DisplayNameFor(model => model.IndennitaPrimoSegretario)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.percentualeMaggiorazioniFligli)
+            </th>
+            <th class="text-center">
+
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.MaggiorazioniFigli)
             </th>
         </tr>
     </thead>
@@ -48,20 +57,22 @@
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.MaggiorazioniFamiliari)
+                    @Html.DisplayFor(modelItem => item.IndennitaPrimoSegretario)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.percentualeMaggiorazioniFligli)
+                </td>
+                <td style="text-align:center;"></td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.MaggiorazioniFigli)
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
+<br />
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-
-        @*<button class="btn btn-default btn-sm" onclick="DownloadReportIndennitaServizio();">
-                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-                Stampa
-            </button>*@
 
         <button class="btn btn-default btn-sm" id="opener">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
@@ -71,29 +82,10 @@
     </div>
 </div>
 
-<div class="modal fade modal-fullscreen force-fullscreen" id="ModalReport" tabindex="-1" role="dialog" aria-labelledby="ModalReportLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:980px; align-content:center" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="DownloadReportLabel">Maggiorazioni Familiari</h3>
-            </div>
-            <div class="modal-body">
-                <div id="divViewIndennitaServizio">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
 
-    $('#tbMaggiorazioniFamiliari').DataTable({
+    $('#tbMaggiorazioniFigli').DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -135,7 +127,12 @@
     });
 
 
-    // Report Maggiorazioni Familiari
+    
+
+
+    
+
+    // Report MaggiorazioniFigli
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
 
@@ -164,7 +161,7 @@
             $("#dialog").dialog("open");
             $("#dialog").css("background-color", "#ffffff");
 
-            var rotta = "/Indennita/RptMaggiorazioniFamiliari";
+            var rotta = "/Indennita/RptMaggiorazioniFigli";
 
             var idTrasferimento = $("#hidTrasferimento").val();
 
@@ -200,20 +197,17 @@
         });
     });
 
+    function RptMaggiorazioniFigli() {
+        //debugger;
+        var rotta = "/Indennita/RptMaggiorazioniFigli";
 
-    
+        var idTrasferimento = 0;
 
-    function RptMaggiorazioniFamiliari() {
-         //debugger;
-         var rotta = "/Indennita/RptMaggiorazioniFamiliari";
-
-         var idTrasferimento = 0;
-
-         if (!isNaN(idTrasf)) {
-             idTrasferimento = idTrasf;
-         } else {
-             idTrasferimento = $("#hidTrasferimento").val();
-         }
+        if (!isNaN(idTrasf)) {
+            idTrasferimento = idTrasf;
+        } else {
+            idTrasferimento = $("#hidTrasferimento").val();
+        }
          @*var idTrasferimento = parseInt('@idTrasferimento');*@
 
                  $.ajax({
@@ -241,5 +235,7 @@
 
                  });
 
-     }
+    }
+
+    
 </script>

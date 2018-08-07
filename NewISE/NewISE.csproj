@@ -6090,6 +6090,22 @@
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDiretteInviate.cshtml" />
     <Content Include="Views\Indennita\RptMaggiorazioniConiuge.cshtml" />
     <Content Include="Views\Indennita\RptMaggiorazioniFigli.cshtml" />
+    <Content Include="Views\Indennita\MaggiorazioniConiuge.cshtml" />
+    <Content Include="Views\Indennita\MaggiorazioniFigli.cshtml" />
+    <Content Include="Views\Indennita\IndennitadiRichiamoLorda.cshtml" />
+    <Content Include="Views\Indennita\IndennitadiRichiamoNetta.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitadiRichiamoLorda.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitadiRichiamoNetta.cshtml" />
+    <Content Include="Views\Indennita\AnticipoIndennitadiSistemazioneLorda.cshtml" />
+    <Content Include="Views\Indennita\RptAnticipoIndennitadiSistemazioneLorda.cshtml" />
+    <Content Include="Views\Indennita\IndennitadiSistemazioneLorda.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitadiSistemazioneLorda.cshtml" />
+    <Content Include="Views\Indennita\IndennitadiSistemazioneNetta.cshtml" />
+    <Content Include="Views\Indennita\RptIndennitadiSistemazioneNetta.cshtml" />
+    <Content Include="Views\Indennita\ContributoOmnicomprensivoTrasferimento.cshtml" />
+    <Content Include="Views\Indennita\RptContributoOmnicomprensivoTrasferimento.cshtml" />
+    <Content Include="Views\Indennita\ContributoOmnicomprensivoRientro.cshtml" />
+    <Content Include="Views\Indennita\RptContributoOmnicomprensivoRientro.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6204,7 +6220,14 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
+    <EmbeddedResource Include="Report\RptContributoOmnicomprensivoRientro.rdlc" />
+    <EmbeddedResource Include="Report\RptContributoOmnicomprensivoTrasferimento.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitadiRichiamo.rdlc" />
+    <EmbeddedResource Include="Report\RptIndennitadiRichiamoLorda.rdlc" />
+    <EmbeddedResource Include="Report\RptIndennitadiRichiamoNetta.rdlc" />
+    <EmbeddedResource Include="Report\RptIndennitadiSistemazioneLorda.rdlc" />
+    <EmbeddedResource Include="Report\RptIndennitadiSistemazioneNetta.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaPersonale.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaPrimaSistemazione.rdlc" />
     <EmbeddedResource Include="Report\RptIndennitaServizio.rdlc" />

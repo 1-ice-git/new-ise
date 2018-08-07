@@ -40,12 +40,17 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Maggiorazioni Figli")]
         public decimal MaggiorazioniFigli { get; set; }
 
-        [Display(Name = "Maggiorazioni Familiari")]
-        public decimal MaggiorazioniFamiliari { get; set; }
+        [Display(Name = "Totale Maggiorazioni Familiari")]
+        public decimal TotaleMaggiorazioniFamiliari { get; set; }
 
         [Display(Name = "Indennità Base Primo Segretario")]
         public decimal IndennitaPrimoSegretario { get; set; }
 
+        [Display(Name = "Anticipo Indennità di Sistemazione Lorda")]
+        public decimal IndennitaSistemazioneAnticipabileLorda { get; set; }
+
+        [Display(Name = "Coefficiente di Maggiorazione")]
+        public decimal CoefficientediMaggiorazione { get; set; }
 
         [Display(Name = "Data Test")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

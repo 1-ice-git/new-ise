@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-md-12">
         <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
-            <h4>Totale Maggiorazioni Familiari</h4>
+            <h4>Anticipo Indennità di Sistemazione Lorda</h4>
 
 
 
@@ -21,19 +21,20 @@
     </div>
 </div>
 
-<table id="tbMaggiorazioniFamiliari" class="display" cellspacing="0">
+<table id="tbAnticipoIndennitadiSistemazioneLorda" class="display" cellspacing="0">
     <thead>
         <tr>
 
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
+                @Html.DisplayNameFor(model => model.IndennitaServizio)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataFineValidita)
+                @Html.DisplayNameFor(model => model.CoefficientediMaggiorazione)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.MaggiorazioniFamiliari)
+                @Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)
             </th>
+           
         </tr>
     </thead>
     <tbody>
@@ -42,14 +43,15 @@
             <tr>
 
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                    @Html.DisplayFor(modelItem => item.IndennitaServizio)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    @Html.DisplayFor(modelItem => item.CoefficientediMaggiorazione)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.MaggiorazioniFamiliari)
+                    @Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)
                 </td>
+                
             </tr>
         }
     </tbody>
@@ -57,11 +59,6 @@
 
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-
-        @*<button class="btn btn-default btn-sm" onclick="DownloadReportIndennitaServizio();">
-                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-                Stampa
-            </button>*@
 
         <button class="btn btn-default btn-sm" id="opener">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
@@ -71,29 +68,11 @@
     </div>
 </div>
 
-<div class="modal fade modal-fullscreen force-fullscreen" id="ModalReport" tabindex="-1" role="dialog" aria-labelledby="ModalReportLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:980px; align-content:center" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="DownloadReportLabel">Maggiorazioni Familiari</h3>
-            </div>
-            <div class="modal-body">
-                <div id="divViewIndennitaServizio">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
+<br />
 
 <script type="text/javascript">
 
-    $('#tbMaggiorazioniFamiliari').DataTable({
+    $('#tbAnticipoIndennitadiSistemazioneLorda').DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -135,7 +114,9 @@
     });
 
 
-    // Report Maggiorazioni Familiari
+
+
+    // Report tbAnticipoIndennitadiSistemazioneLorda
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
 
@@ -164,7 +145,7 @@
             $("#dialog").dialog("open");
             $("#dialog").css("background-color", "#ffffff");
 
-            var rotta = "/Indennita/RptMaggiorazioniFamiliari";
+            var rotta = "/Indennita/RptAnticipoIndennitadiSistemazioneLorda";
 
             var idTrasferimento = $("#hidTrasferimento").val();
 
@@ -201,45 +182,12 @@
     });
 
 
-    
 
-    function RptMaggiorazioniFamiliari() {
-         //debugger;
-         var rotta = "/Indennita/RptMaggiorazioniFamiliari";
 
-         var idTrasferimento = 0;
 
-         if (!isNaN(idTrasf)) {
-             idTrasferimento = idTrasf;
-         } else {
-             idTrasferimento = $("#hidTrasferimento").val();
-         }
-         @*var idTrasferimento = parseInt('@idTrasferimento');*@
 
-                 $.ajax({
-                     type: "POST",
-                     url: rotta,
-                     data: { idTrasferimento: idTrasferimento },
-                     dataType: 'html',
-                     beforeSend: function () {
-                         //debugger;
-                         VerificaAutenticazione();
-                     },
-                     success: function (result) {
-                         //debugger;
 
-                         $("#divViewMaggiorazioneFamiliari").empty();
-                         $("#divViewMaggiorazioneFamiliari").html(result);
-                     },
-                     complete: function () {
-                     },
-                     error: function (jqXHR, textStatus, errorThrow) {
-                         //debugger;
-                         var msg = errorThrow.err;
-                         ErroreElaborazioneAjax(msg);
-                     }
 
-                 });
-
-     }
 </script>
+
+

@@ -569,6 +569,60 @@ namespace NewISE.Controllers
         }
         #endregion
 
+        #region Maggiorazioni Coniuge (Maggiorazioni Coniuge)
+        public ActionResult MaggiorazioniConiuge(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+
+            try
+            {
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetMaggiorazioniFamiliariEvoluzione(idTrasferimento).ToList();
+
+                }
+
+                ViewBag.idTrasferimento = idTrasferimento;
+
+                return PartialView(eim);
+            }
+            
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            
+        }
+
+        #endregion
+
+        #region Maggiorazioni Figli (Maggiorazioni Figli) 
+        public ActionResult MaggiorazioniFigli(decimal idTrasferimento)
+        {
+
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                ViewBag.idTrasferimento = idTrasferimento;
+
+                return PartialView(eim);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+            
+        }
+
+
+
+        #endregion
+
         #region Maggiorazioni Familiari (Maggiorazioni Coniuge e Figli) + Report di Stampa
         public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
         {
@@ -1219,6 +1273,606 @@ namespace NewISE.Controllers
             }
             return PartialView("RptIndennitadiRichiamo");
         }
-        #endregion 
+        #endregion
+
+        #region Indennita di Richiamo Lorda + Report di Stampa
+        public ActionResult IndennitadiRichiamoLorda(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+
+                
+
+                ViewBag.idTrasferimento = idTrasferimento;
+                return PartialView(eim);
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+
+        }
+        public ActionResult RptIndennitadiRichiamoLorda(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiRichiamoLorda.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView("RptIndennitadiRichiamoLorda");
+        }
+        
+        #endregion
+
+        #region Indennita di Richiamo Netta + Report di Stampa
+        public ActionResult IndennitadiRichiamoNetta(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+
+             
+
+                ViewBag.idTrasferimento = idTrasferimento;
+
+                return PartialView(eim);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+
+        }
+        public ActionResult RptIndennitadiRichiamoNetta(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiRichiamoNetta.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("RptIndennitadiRichiamoNetta");
+        }
+
+        #endregion
+
+        #region Anticipo Indennita di Sistemazione Lorda + Report di Stampa
+        public ActionResult AnticipoIndennitadiSistemazioneLorda(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetIndennitaSistemazioneEvoluzione(idTrasferimento).ToList();
+
+                }
+
+
+                ViewBag.idTrasferimento = idTrasferimento;
+
+                return PartialView(eim);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+        }
+        public ActionResult RptAnticipoIndennitadiSistemazioneLorda(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptAnticipoIndennitadiSistemazioneLorda.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("RptAnticipoIndennitadiSistemazioneLorda");
+        }
+        #endregion
+
+        #region Indennita di Sistemazione Lorda + Report di Stampa
+        public ActionResult IndennitadiSistemazioneLorda(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                ViewBag.idTrasferimento = idTrasferimento;
+                return PartialView(eim);
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+        public ActionResult RptIndennitadiSistemazioneLorda(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("RptIndennitadiSistemazioneLorda");
+        }
+
+        #endregion
+
+        #region Indennita di Sistemazione Netta + Report di Stampa
+        public ActionResult IndennitadiSistemazioneNetta(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                ViewBag.idTrasferimento = idTrasferimento;
+                return PartialView(eim);
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+        public ActionResult RptIndennitadiSistemazioneNetta(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneNetta.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("RptIndennitadiSistemazioneNetta");
+        }
+
+        #endregion
+
+        #region Contributo Omnicomprensivo Trasferimento + Report di Stampa
+        public ActionResult ContributoOmnicomprensivoTrasferimento(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                ViewBag.idTrasferimento = idTrasferimento;
+                return PartialView(eim);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            
+        }
+        public ActionResult RptContributoOmnicomprensivoTrasferimento(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptContributoOmnicomprensivoTrasferimento.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("RptContributoOmnicomprensivoTrasferimento");
+        }
+
+        #endregion
+
+        #region Contributo Omnicomprensivo Rientro + Report di Stampa
+        public ActionResult ContributoOmnicomprensivoRientro(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                ViewBag.idTrasferimento = idTrasferimento;
+                return PartialView(eim);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+        public ActionResult RptContributoOmnicomprensivoRientro(decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    {
+                        ViewBag.idTrasferimento = idTrasferimento;
+
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.First();
+
+                        string Nominativo = tm.Dipendente.Nominativo;
+                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = tm.Ufficio.descUfficio;
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptContributoOmnicomprensivoRientro.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                        reportViewer.LocalReport.Refresh();
+                        reportViewer.ShowReportBody = true;
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter ("Livello",Livello),
+                            new ReportParameter ("Decorrenza",Decorrenza),
+                            new ReportParameter ("Ufficio",Ufficio)
+
+                        };
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("RptContributoOmnicomprensivoRientro");
+        }
+
+        #endregion
+
     }
 }

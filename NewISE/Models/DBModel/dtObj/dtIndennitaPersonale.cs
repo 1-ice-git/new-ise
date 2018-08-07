@@ -64,7 +64,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             EvoluzioneIndennita = new EvoluzioneIndennitaModel
                                             {
                                                 IndennitaServizio = ci.IndennitaDiServizio,
-                                                MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari,
+                                                //MaggiorazioniFamiliari = ci.MaggiorazioniFamiliari,
                                                 IndennitaPersonale = ci.IndennitaPersonale
 
                                             }
