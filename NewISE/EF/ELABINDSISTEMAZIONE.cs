@@ -38,14 +38,14 @@ namespace NewISE.EF
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
         public decimal IDLIVELLO { get; set; }
-        public decimal PROGRESSIVO { get; set; }
+        public bool CONGUAGLIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
-        public virtual LIVELLI LIVELLI { get; set; }
-        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
+        public virtual LIVELLI LIVELLI { get; set; }
+        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
     }

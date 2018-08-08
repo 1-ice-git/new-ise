@@ -174,11 +174,11 @@ namespace NewISE.Controllers
                             db.TEORICI.Where(
                                 a =>
                                     a.ANNULLATO == false && a.ELABORATO == true &&
-                                    (a.ELABINDSISTEMAZIONE.Any(b => b.ANNULLATO == false && b.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
+                                    (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
                                     a.ELABINDENNITA.Any(b => b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
                                     a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
                                     a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
-                                    a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
+                                    a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO)
                                 .OrderBy(a => a.ANNORIFERIMENTO)
                                 .ThenBy(a => a.MESERIFERIMENTO)
                                 .ToList();
@@ -237,7 +237,9 @@ namespace NewISE.Controllers
 
                                 foreach (var teorico in lTeorici)
                                 {
-                                    var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
+                                    var tr =
+                                        teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
+
                                     var dip = tr.DIPENDENTI;
                                     var tm1 = teorico.TIPOMOVIMENTO;
                                     var voce = teorico.VOCI;

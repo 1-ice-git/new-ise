@@ -189,7 +189,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             var teorico = db.TEORICI.Find(idTeorico);
 
-            if (teorico?.IDINDSISTLORDA > 0)
+            if (teorico.ELABINDSISTEMAZIONE?.IDINDSISTLORDA > 0)
             {
                 dip = new DIPENDENTI();
                 dip = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
@@ -199,7 +199,13 @@ namespace NewISE.Models.DBModel.dtObj
             else if (teorico.ELABINDENNITA?.Any() ?? false)
             {
                 dip = new DIPENDENTI();
-                dip = teorico.ELABINDENNITA.First(a => a.ANNULLATO == false && a.PROGRESSIVO == teorico.ELABINDENNITA.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO)).INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                dip =
+                    teorico.ELABINDENNITA.First(
+                        a =>
+                            a.ANNULLATO == false &&
+                            a.PROGRESSIVO ==
+                            teorico.ELABINDENNITA.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO))
+                        .INDENNITA.TRASFERIMENTO.DIPENDENTI;
 
             }
             else if (teorico?.IDELABMAB > 0)
@@ -235,7 +241,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var teorico = db.TEORICI.Find(idTeorico);
 
-                if (teorico?.IDINDSISTLORDA > 0)
+                if (teorico.ELABINDSISTEMAZIONE?.IDINDSISTLORDA > 0)
                 {
                     dip = new DIPENDENTI();
                     dip = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
@@ -248,7 +254,14 @@ namespace NewISE.Models.DBModel.dtObj
                 else if (teorico.ELABINDENNITA?.Any() ?? false)
                 {
                     dip = new DIPENDENTI();
-                    dip = teorico.ELABINDENNITA.First(a => a.ANNULLATO == false && a.PROGRESSIVO == teorico.ELABINDENNITA.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO)).INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                    dip =
+                        teorico.ELABINDENNITA.First(
+                            a =>
+                                a.ANNULLATO == false &&
+                                a.PROGRESSIVO ==
+                                teorico.ELABINDENNITA.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO))
+                            .INDENNITA.TRASFERIMENTO.DIPENDENTI;
+
                     if (!lDip.Contains(dip))
                     {
                         lDip.Add(dip);
@@ -482,15 +495,26 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     #region Prima sistemazione
 
-                    var ltps = lTeorici.Where(a => a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0).OrderBy(a => a.ELABINDSISTEMAZIONE.IDINDSISTLORDA).ToList();
+                    var ltps =
+                        lTeorici.Where(
+                            a =>
+                                a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                                (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
+                                 a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true) &&
+                                 a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS)
+                            .OrderBy(a => a.ANNORIFERIMENTO)
+                            .ThenBy(a => a.MESERIFERIMENTO)
+                            .ToList();
 
                     if (ltps?.Any() ?? false)
                     {
                         foreach (var tps in ltps)
                         {
                             var eis = tps.ELABINDSISTEMAZIONE;
+
                             //var ps = eis.PRIMASITEMAZIONE;
-                            var trasferimento = eis.PRIMASITEMAZIONE.TRASFERIMENTO;
+                            var trasferimento =
+                                eis.PRIMASITEMAZIONE.TRASFERIMENTO;
                             var dip = trasferimento.DIPENDENTI;
                             var liv = eis.LIVELLI;
                             var ufficio = trasferimento.UFFICI;
@@ -511,12 +535,12 @@ namespace NewISE.Models.DBModel.dtObj
                             string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
                             decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
 
-                            if (tps.ELABINDSISTEMAZIONE.ANTICIPO == true)
+                            if (eis.ANTICIPO == true)
                             {
                                 anticipoSaldoUnicaSoluzione = " - Anticipo";
                                 tipoMovimento = "A";
                             }
-                            else if (tps.ELABINDSISTEMAZIONE.SALDO == true)
+                            else if (eis.SALDO == true)
                             {
                                 anticipoSaldoUnicaSoluzione = " - Saldo";
                                 tipoMovimento = "S";
@@ -526,9 +550,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         a =>
                                             a.ANNULLATO == false && a.DIRETTO == true &&
                                             a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                            a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
-                                            a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE ==
-                                            tps.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE)
+                                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                            a.ELABINDSISTEMAZIONE.ANTICIPO == true)
                                         .OrderBy(a => a.ANNORIFERIMENTO)
                                         .ThenBy(a => a.MESERIFERIMENTO)
                                         .ToList();
@@ -541,7 +564,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
 
                             }
-                            else if (tps.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true)
+                            else if (eis.UNICASOLUZIONE == true)
                             {
                                 anticipoSaldoUnicaSoluzione = " - Unica soluzione";
                                 tipoMovimento = "U";
@@ -682,11 +705,12 @@ namespace NewISE.Models.DBModel.dtObj
                                           a.DIRETTO == true &&
                                           a.IDMESEANNOELAB == idMeseAnnoElaborato &&
                                           a.ELABORATO == false &&
-                                          a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
-                                          (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
-                                           a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true) &&
-                                          a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS
+                                          a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità
                     );
+
+
+
+
             }
 
             return ret;
@@ -713,11 +737,11 @@ namespace NewISE.Models.DBModel.dtObj
                 var lTeorici =
                     db.TEORICI.Where(
                         a =>
-                            a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
+                            a.ANNULLATO == false &&
+                            a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                            a.ELABINDSISTEMAZIONE.CONGUAGLIO == false &&
                             a.DIRETTO == true &&
-                            a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
-                            (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
-                             a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true) &&
+                            a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                             a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS).ToList();
 
                 foreach (var t in lTeorici)
@@ -816,7 +840,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (lanticipi?.Any() ?? false)
                         {
-                            decimal maxProgressivo = db.Database.SqlQuery<decimal>("SELECT SEQ_PS.nextval PROG_MAX FROM dual").First();
+                            //decimal maxProgressivo = db.Database.SqlQuery<decimal>("SELECT SEQ_PS.nextval PROG_MAX FROM dual").First();
 
                             var anticipi = lanticipi.First();
 
@@ -835,7 +859,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 SALDO = true,
                                 UNICASOLUZIONE = false,
                                 PERCANTSALDOUNISOL = 100 - anticipi.PERCENTUALEANTICIPO,
-                                PROGRESSIVO = maxProgressivo,
+                                CONGUAGLIO = false,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false
                             };
@@ -1036,7 +1060,7 @@ namespace NewISE.Models.DBModel.dtObj
             decimal primaSistemazioneUnicaSoluzione = 0;
             decimal outMaggiorazioniFamiliari = 0;
 
-            decimal maxProgressivo = db.Database.SqlQuery<decimal>("SELECT SEQ_PS.nextval PROG_MAX FROM dual").First();
+            //decimal maxProgressivo = db.Database.SqlQuery<decimal>("SELECT SEQ_PS.nextval PROG_MAX FROM dual").First();
 
 
             ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
@@ -1054,7 +1078,7 @@ namespace NewISE.Models.DBModel.dtObj
                 SALDO = false,
                 UNICASOLUZIONE = true,
                 PERCANTSALDOUNISOL = 100,
-                PROGRESSIVO = maxProgressivo,
+                CONGUAGLIO = false,
                 DATAOPERAZIONE = DateTime.Now,
                 ANNULLATO = false
             };
@@ -1238,7 +1262,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         using (CalcoliIndennita ci = new CalcoliIndennita(t.IDTRASFERIMENTO, t.DATAPARTENZA, db))
                         {
-                            decimal maxProgressivo = db.Database.SqlQuery<decimal>("SELECT SEQ_PS.nextval PROG_MAX FROM dual").First();
+                            //decimal maxProgressivo = db.Database.SqlQuery<decimal>("SELECT SEQ_PS.nextval PROG_MAX FROM dual").First();
 
                             ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
                             {
@@ -1255,7 +1279,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 SALDO = false,
                                 UNICASOLUZIONE = false,
                                 PERCANTSALDOUNISOL = anticipi.PERCENTUALEANTICIPO,
-                                PROGRESSIVO = maxProgressivo,
+                                CONGUAGLIO = false,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false
                             };
@@ -1829,15 +1853,15 @@ namespace NewISE.Models.DBModel.dtObj
             var lTeorici =
                 db.TEORICI.Where(
                     a =>
-                        a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
-                        a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.ELABINDSISTEMAZIONE.Any(b => b.ANNULLATO == false) &&
+                        a.ANNULLATO == false &&
+                        a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
                         (a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                          a.DIRETTO == false))
-                    .OrderBy(a => a.ELABINDSISTEMAZIONE.Last(b => b.ANNULLATO == false).PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.COGNOME)
-                    .ThenBy(a => a.ELABINDSISTEMAZIONE.Last(b => b.ANNULLATO == false).PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.NOME)
+                    .OrderBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.COGNOME)
+                    .ThenBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.NOME)
                     .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
                     .ToList();
 
@@ -1845,7 +1869,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 foreach (var teorico in lTeorici)
                 {
-                    var tr = teorico.ELABINDSISTEMAZIONE.Last(a => a.ANNULLATO == false).PRIMASITEMAZIONE.TRASFERIMENTO;
+                    var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
                     var dip = tr.DIPENDENTI;
                     var tm = teorico.TIPOMOVIMENTO;
                     var voce = teorico.VOCI;
@@ -2999,7 +3023,7 @@ namespace NewISE.Models.DBModel.dtObj
                 dataFineElaborazione = dataFineTrasferimento;
             }
 
-
+            decimal progMax = db.Database.SqlQuery<decimal>("SELECT SEQ_P_ELABIND.nextval PROG_MAX FROM dual").First();
 
             decimal annoMeseElab =
                 Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
@@ -3374,7 +3398,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     AL = dvSucc,
                                                     GIORNI = grVariazione.RateoGiorni,
                                                     DATAOPERAZIONE = DateTime.Now,
-                                                    PROGRESSIVO = maxProgressivo,
+                                                    PROGRESSIVO = progMax,
                                                     ANNULLATO = false
                                                 };
 
@@ -3507,18 +3531,15 @@ namespace NewISE.Models.DBModel.dtObj
                 primaSistemazione.ELABINDSISTEMAZIONE.Where(
                     a =>
                         a.ANNULLATO == false &&
-                        a.PROGRESSIVO ==
-                        primaSistemazione.ELABINDSISTEMAZIONE.Where(
-                            b =>
-                                b.ANNULLATO == false &&
-                                (b.ANTICIPO == true || b.SALDO == true || b.UNICASOLUZIONE == true))
-                            .Max(b => b.PROGRESSIVO) &&
+                        a.CONGUAGLIO == false &&
                         (a.ANTICIPO == true || a.SALDO == true || a.UNICASOLUZIONE == true))
                     .OrderBy(a => a.IDINDSISTLORDA)
                     .ToList();
 
             if (lElabIndSistemazione?.Any() ?? false)
             {
+                ///Prelevo l'ultimo record inserito di prima sistemazione perché se fosse stato richiesto l'anticipo l'ultimo sarebbe il saldo altrimenti
+                /// ci sarebbe un solo record che è l'unica soluzione.
                 var eis = lElabIndSistemazione.Last();
 
                 bool vic = false;
@@ -3537,7 +3558,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var teoriciOLD =
                     eis.TEORICI.Where(
                         a =>
-                            a.ANNULLATO == false && a.INSERIMENTOMANUALE == false && a.DIRETTO == false &&
+                            a.ANNULLATO == false && a.DIRETTO == false &&
                             a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe && a.ELABORATO == false &&
                             !a.FLUSSICEDOLINO.IfNotNull(b => b.IDTEORICI > 0)).ToList();
 
@@ -3608,7 +3629,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         TEORICI teoriciLordo = new TEORICI()
                         {
-
+                            IDINDSISTLORDA = eis.IDINDSISTLORDA,
                             IDTIPOMOVIMENTO = (decimal)tipoMov,
                             IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
@@ -3636,7 +3657,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         TEORICI teoriciNetto = new TEORICI()
                         {
-
+                            IDINDSISTLORDA = eis.IDINDSISTLORDA,
                             IDTIPOMOVIMENTO = (decimal)tipoMov,
                             IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
@@ -3664,7 +3685,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         TEORICI teoriciDetrazioni = new TEORICI()
                         {
-
+                            IDINDSISTLORDA = eis.IDINDSISTLORDA,
                             IDTIPOMOVIMENTO = (decimal)tipoMov,
                             IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
@@ -3773,6 +3794,12 @@ namespace NewISE.Models.DBModel.dtObj
                                 this.ConguaglioIndennita(trasferimento, MeseAnnoElaborato, db);
                             }
 
+
+
+
+
+
+
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.SetLastMeseElabDataInizioRicalcoli(dip.IDDIPENDENTE, idMeseAnnoElaborato, db, true);
@@ -3816,11 +3843,7 @@ namespace NewISE.Models.DBModel.dtObj
             var lElabIndSistemazione =
                 primaSistemazione.ELABINDSISTEMAZIONE.Where(
                     a =>
-                        a.ANNULLATO == false && (a.SALDO == true || a.UNICASOLUZIONE == true) &&
-                        a.PROGRESSIVO ==
-                        primaSistemazione.ELABINDSISTEMAZIONE.Where(
-                            b => b.ANNULLATO == false && (a.SALDO == true || a.UNICASOLUZIONE == true))
-                            .Max(b => b.PROGRESSIVO))
+                        a.ANNULLATO == false && (a.SALDO == true || a.UNICASOLUZIONE == true))
                     .OrderBy(a => a.IDINDSISTLORDA)
                     .ToList();
 
@@ -3831,31 +3854,30 @@ namespace NewISE.Models.DBModel.dtObj
                     db.TEORICI.Where(
                         a =>
                             a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                             a.ELABORATO == true)
                         .ToList();
 
                 #region Unica soluzione
                 if (eisOld.UNICASOLUZIONE == true)
                 {
-
-
                     if (lTeoriciOld?.Any() ?? false)
                     {
                         decimal nettoOld = lTeoriciOld.Sum(a => a.IMPORTO);
 
                         if (nettoOld > 0)
                         {
-
                             var lTeoriciNoElab =
                                 eisOld.TEORICI.Where(
                                     a =>
                                         a.ANNULLATO == false &&
                                         a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                         a.ELABORATO == false && a.DIRETTO == false).ToList();
 
                             if (lTeoriciNoElab?.Any() ?? false)
                             {
-                                lTeoriciNoElab.ForEach(a => a.ANNULLATO = false);
+                                lTeoriciNoElab.ForEach(a => a.ANNULLATO = true);
 
                                 int i = db.SaveChanges();
 
@@ -3885,8 +3907,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     PERCANTSALDOUNISOL = 100,
                                     DATAOPERAZIONE = DateTime.Now,
                                     ANNULLATO = false,
-                                    RICALCOLATO = false,
-                                    FK_IDINDSISTLORDA = eisOld.IDINDSISTLORDA
+                                    CONGUAGLIO = true
                                 };
 
                                 primaSistemazione.ELABINDSISTEMAZIONE.Add(eisNew);

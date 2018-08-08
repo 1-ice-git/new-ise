@@ -41,17 +41,17 @@ namespace NewISE.Models.DBModel.dtObj
                         //db.TEORICI.ToList();
 
                         var lTeorici =
-                        db.TEORICI.Where(
-                            a =>
-                                a.ANNULLATO == false && a.ELABORATO == true &&
-                                (a.ELABINDSISTEMAZIONE.Any(b => b.ANNULLATO == false && b.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
-                                a.ELABINDENNITA.Any(b => b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
-                                a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
-                                a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
-                                a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
-                            .OrderBy(a => a.ANNORIFERIMENTO)
-                            .ThenBy(a => a.MESERIFERIMENTO)
-                            .ToList();
+                            db.TEORICI.Where(
+                                a =>
+                                    a.ANNULLATO == false && a.ELABORATO == true &&
+                                    (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
+                                    a.ELABINDENNITA.Any(b => b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
+                                    a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
+                                    a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
+                                    a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO)
+                                .OrderBy(a => a.ANNORIFERIMENTO)
+                                .ThenBy(a => a.MESERIFERIMENTO)
+                                .ToList();
 
 
                         // Indennità Personale
