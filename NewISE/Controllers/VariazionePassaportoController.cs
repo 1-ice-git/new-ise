@@ -23,10 +23,10 @@ namespace NewISE.Controllers
             //leggo in che fase mi trovo
             using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
             {
-                decimal idFasePassaportiCorrente = (decimal)dtvp.GetFasePassaporti_Corrente(idTrasferimento);
+                //decimal idFasePassaportiCorrente = (decimal)dtvp.GetFasePassaporti_Corrente(idTrasferimento);
 
                 ViewData.Add("idTrasferimento", idTrasferimento);
-                ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
+                //ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
 
                 return PartialView();
             }
@@ -47,6 +47,20 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+
+        public ActionResult ElaborazionePassaporti(decimal idTrasferimento)
+        {
+            //leggo in che fase mi trovo
+            using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
+            {
+                decimal idFasePassaportidaElaborare = (decimal)dtvp.GetFasePassaporti_Da_Elaborare(idTrasferimento);
+
+                ViewData.Add("idTrasferimento", idTrasferimento);
+                ViewData.Add("idFasePassaportidaElaborare", idFasePassaportidaElaborare);
+
+                return PartialView();
+            }
+        }
 
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
@@ -99,7 +113,7 @@ namespace NewISE.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult ColonnaElencoDoc(decimal idAttivazionePassaporto, decimal idFamiliarePassaporto, EnumParentela parentela)
+        public ActionResult ColonnaElencoDoc(decimal idAttivazionePassaporto, decimal idFamiliarePassaporto, EnumParentela parentela, decimal idFaseCorrente)
         {
             ElencoFamiliariPassaportoModel efm = new ElencoFamiliariPassaportoModel();
             try
@@ -107,10 +121,11 @@ namespace NewISE.Controllers
                 using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
                     efm = dtvp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
-                    var ap = dtvp.GetAttivazioneById(idAttivazionePassaporto);
-                    EnumFasePassaporti FasePassaporti = dtvp.GetFasePassaporti_Corrente(ap.IDPASSAPORTI);
+                    //var ap = dtvp.GetAttivazioneById(idAttivazionePassaporto);
+                    //EnumFasePassaporti FasePassaporti = dtvp.GetFasePassaporti_Corrente(ap.IDPASSAPORTI);
+                    //EnumFasePassaporti FasePassaporti = (EnumFasePassaporti)ap.IDFASEPASSAPORTI;
 
-                    ViewData.Add("idFasePassaportiCorrente", (decimal)FasePassaporti);
+                    ViewData.Add("idFaseCorrente", idFaseCorrente);
                 }
             }
             catch (Exception ex)
@@ -130,9 +145,6 @@ namespace NewISE.Controllers
                 using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
                     efm = dtvp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
-                    //EnumFasePassaporti FasePassaporti = dtvp.GetFasePassaporti(idTrasferimento);
-
-                    //ViewData.Add("idFasePassaporti", (decimal)FasePassaporti);
                 }
             }
             catch (Exception ex)
@@ -143,7 +155,7 @@ namespace NewISE.Controllers
             return PartialView(efm);
         }
 
-        public JsonResult ConfermaIncludiEscludiPassaporto(decimal id, EnumParentela parentela)
+        public JsonResult ConfermaIncludiEscludiPassaporto_var(decimal id, EnumParentela parentela)
         {
             string errore = string.Empty;
             bool chk = false;
@@ -162,12 +174,6 @@ namespace NewISE.Controllers
                         using (dtFigliPassaporto dtfp = new dtFigliPassaporto())
                         {
                             dtfp.SetIncludiEscludiPassaporto(id, ref chk, ref idAttivazioniPassaporto);
-                        }
-                        break;
-                    case EnumParentela.Richiedente:
-                        using (dtPassaportoRichiedente dtpr = new dtPassaportoRichiedente())
-                        {
-                            dtpr.SetIncludiEscludiPassaporto(id, ref chk, ref idAttivazioniPassaporto);
                         }
                         break;
                     default:
@@ -267,7 +273,7 @@ namespace NewISE.Controllers
         }
 
 
-        public ActionResult ChkIncludiPassaporto(decimal idAttivitaPassaporto, decimal idFamiliarePassaporto, EnumParentela parentela, bool esisteDoc, bool includiPassaporto)
+        public ActionResult ChkIncludiPassaporto(decimal idAttivitaPassaporto, decimal idFamiliarePassaporto, EnumParentela parentela, bool esisteDoc, bool includiPassaporto, bool notificato)
         {
             GestioneChkincludiPassaportoModel gcip = new GestioneChkincludiPassaportoModel();
 
@@ -275,7 +281,7 @@ namespace NewISE.Controllers
             {
                 using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
-                    gcip = dtvp.GetGestioneInludiPassaporto_var(idAttivitaPassaporto, idFamiliarePassaporto, parentela, esisteDoc, includiPassaporto);
+                    gcip = dtvp.GetGestioneInludiPassaporto_var(idAttivitaPassaporto, idFamiliarePassaporto, parentela, esisteDoc, includiPassaporto, notificato);
                 }
             }
             catch (Exception ex)
@@ -673,6 +679,170 @@ namespace NewISE.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult AltriDatiFamiliariConiugePassaporti(decimal idAltriDati, decimal idFaseCorrente)
+        {
+            AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
+
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adf = dtadf.GetAltriDatiFamiliariConiuge(idAltriDati);
+                }
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    tm = dtt.GetTrasferimentoByIdConiuge(adf.idConiuge);
+                }
+
+                ViewData.Add("idFasePassaportiCorrente", idFaseCorrente);
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+            ViewData.Add("idTrasferimento", tm.idTrasferimento);
+
+
+            return PartialView(adf);
+        }
+
+        [HttpPost]
+        public ActionResult AltriDatiFamiliariFiglioPassaporto(decimal idAltriDati, decimal idFaseCorrente)
+        {
+            AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
+
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adf = dtadf.GetAltriDatiFamiliariFiglio(idAltriDati);
+                }
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    tm = dtt.GetTrasferimentoByIdFiglio(adf.idFigli);
+                }
+                
+                ViewData.Add("idFasePassaportiCorrente", idFaseCorrente);
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("idTrasferimento", tm.idTrasferimento);
+
+            return PartialView(adf);
+        }
+
+        public ActionResult ElencoDocumentiPassaporto(decimal idFamiliarePassaporto, EnumTipoDoc tipoDoc, EnumParentela parentela, decimal idFaseCorrente)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
+            bool solaLettura = false;
+            decimal idTrasferimento = 0;
+            EnumStatoTraferimento statoTrasferimento;
+
+            try
+            {
+                using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
+                {
+
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+
+                                ldm = dtd.GetDocumentiIdentitaConiugePassaporto(idFamiliarePassaporto).ToList();
+                                apm = dtap.GetAttivazionePassaportiByIdConiugePassaporto(idFamiliarePassaporto);
+                                break;
+
+                            case EnumParentela.Figlio:
+                                ldm = dtd.GetDocumentiIdentitaFiglioPassaporto(idFamiliarePassaporto).ToList();
+                                apm = dtap.GetAttivazionePassaportiByIdFiglioPassaporto(idFamiliarePassaporto);
+                                break;
+
+                            case EnumParentela.Richiedente:
+                                ldm = dtd.GetDocumentiIdentitaRichiedentePassaporto(idFamiliarePassaporto).ToList();
+                                apm = dtap.GetAttivazionePassaportiByIdRichiedente(idFamiliarePassaporto);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
+                    }
+
+                }
+
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    bool notificaRichiesta = false;
+                    bool attivazioneRichiesta = false;
+                    bool annullaRichiesta = false;
+
+                    dtpp.SituazionePassaporto(apm.idAttivazioniPassaporti, out notificaRichiesta, out attivazioneRichiesta, out annullaRichiesta);
+
+                    if (notificaRichiesta == true || attivazioneRichiesta == true)
+                    {
+                        solaLettura = true;
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                    //var idFasePassaportiCorrente = dtpp.GetFasePassaporti_Corrente(apm.idPassaporti);
+                    if (idFaseCorrente == (decimal)EnumFasePassaporti.Invio_Passaporti)
+                    {
+                        solaLettura = true;
+                    }
+                 
+                }
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var t = dtt.GetTrasferimentoByIdAttPassaporto(apm.idAttivazioniPassaporti);
+                    idTrasferimento = t.idTrasferimento;
+                    statoTrasferimento = t.idStatoTrasferimento;
+
+                    if (statoTrasferimento == EnumStatoTraferimento.Attivo || statoTrasferimento == EnumStatoTraferimento.Annullato)
+                    {
+                        solaLettura = true;
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+            ViewData.Add("solaLettura", solaLettura);
+            ViewData.Add("idFamiliarePassaporto", idFamiliarePassaporto);
+            ViewData.Add("tipoDoc", (decimal)tipoDoc);
+            ViewData.Add("idAttivazionePassaporto", apm.idAttivazioniPassaporti);
+            ViewData.Add("parentela", (decimal)parentela);
+            ViewData.Add("chiamante", (decimal)EnumChiamante.Passaporti);
+            ViewData.Add("idTrasferimento", idTrasferimento);
+            ViewData.Add("idFaseCorrente", idFaseCorrente);
+
+
+            return PartialView(ldm);
+
+        }
 
     }
 }

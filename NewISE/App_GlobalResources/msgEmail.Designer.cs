@@ -288,7 +288,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica l&apos;invio dei passaporto per il trasferimento presso la sede di {0} del {1} è stato confermato..
+        ///   Looks up a localized string similar to Si notifica che l&apos;invio dei passaporti per il trasferimento presso la sede di {0} del {1} è stato confermato..
         /// </summary>
         internal static string MessaggioInvioPratichePassaportoConcluse {
             get {

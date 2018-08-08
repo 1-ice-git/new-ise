@@ -4,7 +4,7 @@
 @model NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel
 
 @{ 
-    decimal idFasePassaportiCorrente = Convert.ToDecimal(ViewData["idFasePassaportiCorrente"]);
+    decimal idFaseCorrente = Convert.ToDecimal(ViewData["idFaseCorrente"]);
     decimal idFaseRichiesta = Convert.ToDecimal(EnumFasePassaporti.Richiesta_Passaporti);
 }
 
@@ -24,16 +24,18 @@ else
 <script type="text/javascript">
     function ElencoDocumentiPassaporto_var(idFamiliarePassaporto, tipoDoc, idParentela) {
         //debugger;
-        var rotta = "/Documenti/ElencoDocumentiPassaporto";
-        var idFasePassaportiCorrente = parseInt('@idFasePassaportiCorrente');
+        var rotta = "/VariazionePassaporto/ElencoDocumentiPassaporto";
+        var idFaseCorrente = parseInt('@idFaseCorrente');
         var idFaseRichiesta = parseInt('@idFaseRichiesta');
+
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: {
                 idFamiliarePassaporto: idFamiliarePassaporto,
                 tipoDoc: tipoDoc,
-                parentela: idParentela
+                parentela: idParentela,
+                idFaseCorrente: idFaseCorrente
             },
             dataType: 'html',
             async: false,
@@ -50,7 +52,7 @@ else
                 //$("#viewPensione").html(result);
                 $("#divPassaporto_var").empty();
                 $("#divPassaporto_var").html(result);
-                if (idFasePassaportiCorrente == idFaseRichiesta) {
+                if (idFaseCorrente == idFaseRichiesta) {
                     GestionePulsantiNotificaAndConcludiPassaporto_Richiesta_var();
                 } else {
                     GestionePulsantiNotificaAndConcludiPassaporto_Invio_var();

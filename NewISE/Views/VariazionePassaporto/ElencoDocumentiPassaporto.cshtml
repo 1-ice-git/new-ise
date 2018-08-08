@@ -1,0 +1,382 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+@model IEnumerable<DocumentiModel>
+
+
+@{
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    decimal idFamiliarePassaporto = (decimal)ViewData["idFamiliarePassaporto"];
+    decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    decimal idAttivazionePassaporto = Convert.ToDecimal(ViewData["idAttivazionePassaporto"]);
+    decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
+    decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
+    decimal idFaseCorrente = Convert.ToDecimal(ViewData["idFaseCorrente"]);
+    //decimal idFaseRichiesta = Convert.ToDecimal(EnumFasePassaporti.Richiesta_Passaporti);
+
+    EnumParentela enParentela = (EnumParentela)parentela;
+
+    int nDocOld = 0;
+    if (Model?.Any() ?? false)
+    {
+        nDocOld = Model.Count();
+    }
+
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+
+
+}
+
+<div style="padding-left: 15px">
+    <h4>Elenco Documenti Passaporto (@enParentela)</h4>
+</div>
+
+@Html.Hidden("hiEliminaDoc")
+
+<p style="padding-left: 15px;">
+    @if (enParentela == EnumParentela.Richiedente)
+    {
+        if (solaLettura)
+        {
+            <button class="btn btn-default disabled" disabled="disabled">Nuovo documento</button>
+        }
+        else
+        {
+            <button class="btn btn-success" onclick="NuovoDocumento(@idAttivazionePassaporto, @idFamiliarePassaporto , @tipoDoc , @parentela , @chiamante ) ">Nuovo documento</button>
+        }
+    }
+
+</p>
+
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 0px;">
+    <table id="tabElencoDocPassaporto_var" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nomeDocumento)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.estensione)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataInserimento)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.file)
+                </th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                    <td style="text-align: center; width: 10%;">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                        </a>
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @if (enParentela == EnumParentela.Richiedente)
+                        {
+                            if (solaLettura)
+                            {
+                                //<a href="#" class="disabled">Elimina</a>
+                                <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+
+                            }
+                            else
+                            {
+                                //<a href="#" onclick="EliminaDoc(@item.idDocumenti)" id="linkEliminaDoc">Elimina</a>
+                                <a href="#" onclick="EliminaDoc(@item.idDocumenti) " id="linkEliminaDoc">
+                                    <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;documento" />
+                                </a>
+                            }
+                        }
+
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+
+    </table>
+</div>
+
+@if (idFaseCorrente == (decimal)EnumFasePassaporti.Richiesta_Passaporti)
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Richiesta", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+else
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Invio", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+
+<div class="modal fade " id="NewDocModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="NewnotificaModelLabel">Documenti</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="NewViewDocumento">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade " id="DelDocModal" tabindex="-2" role="dialog" aria-labelledby="DelDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DelnotificaModelLabel">ATTENZIONE!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="DelViewDocumento">
+                    Procedere con l'eliminazione del documento?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btEliminaDoc" type="button" class="btn btn-info" onclick="ConfermaEliminaDoc();">Procedere</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#tabElencoDocPassaporto_var").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 3,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "destroy": true,
+        //"columnDefs": [
+        //    {
+        //        "targets": [0],
+        //        "width": "150px"
+        //    }
+
+        //]
+        //dom: 'Bfrtip',
+        //buttons: [
+        //    {
+        //        text: 'Nuovo Coniuge',
+        //        className: 'green',
+        //        action: function (e, dt, node, config) {
+        //            NuovoConiuge();
+        //        }
+        //    }
+        //],
+        //"columnDefs": [
+        //    {
+        //        "targets": [0],
+        //        "visible": false,
+        //        "searchable": false
+        //    },
+
+        //]
+    });
+
+    function NuovoDocumento(idAttivazionePassaporto, idFamiliarePassaporto, TipoDocumento, Parentela, Chiamante) {
+        //debugger;
+        var rotta = "/Documenti/NuovoDocumento";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { tipoDoc: TipoDocumento, id: idFamiliarePassaporto, parentela: Parentela, chiamante: Chiamante },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+                $('#NewDocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#NewViewDocumento").empty();
+                $("#NewViewDocumento").html(result);
+
+                var titoloPagina = $("#titoloPagina").val();
+                $("#NewnotificaModelLabel").empty();
+                $("#NewnotificaModelLabel").html('Documenti - ' + titoloPagina);
+
+            },
+            complete: {
+
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    $('#NewDocModal').on('hidden.bs.modal', function(e) {
+        //debugger;
+        AggiornaElencoDoc();
+        //$(this).remove();
+    });
+
+    function AggiornaElencoDoc() {
+        //debugger;
+        var nDocOld = parseInt(@nDocOld);
+        var newDoc = PrelevaNumeroDocumentiAttualiPassaporto(@idFamiliarePassaporto, @tipoDoc, @parentela);
+        //debugger;
+        if (newDoc != nDocOld) {
+            ElencoDocumenti(@idFamiliarePassaporto, @tipoDoc, @parentela);
+        }
+    }
+
+    function PrelevaNumeroDocumentiAttualiPassaporto(id, tipoDoc, parentela ) {
+        //debugger;
+        var rotta = "/Documenti/NumeroDocumentiSalvatiPassaporto";
+        var nDoc = 0;
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idFamiliarePassaporto: id, tipoDoc: tipoDoc, parentela: parentela },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.errore === "") {
+                    nDoc = parseInt(result.nDoc);
+                } else {
+                    ErroreElaborazioneAjax(result.errore);
+                }
+            },
+            complete: {
+
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+        return nDoc;
+    }
+
+
+    function EliminaDoc(idDocumento) {
+        $('#DelDocModal').modal('show');
+        $('#hiEliminaDoc').val(idDocumento);
+    }
+
+    $('#DelDocModal').on('hidden.bs.modal', function(e) {
+        //debugger;
+        AggiornaElencoDoc();
+        //$(this).remove();
+    });
+
+    function ConfermaEliminaDoc() {
+        //debugger;
+        var rotta = "/Documenti/EliminaDocumentoPassaporto";
+        var idDoc = parseInt($("#hiEliminaDoc").val());
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idDocumento: idDoc
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.errore === "") {
+                    $('#DelDocModal').modal('hide');
+                    //PulsantiNotificaAttivaMagFam();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+            },
+            complete: function () {
+
+                Sblocca();
+
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+
+    }
+</script>
+

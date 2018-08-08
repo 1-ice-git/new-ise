@@ -55,6 +55,13 @@
       "nome": "Luigi",
       "cognome": "Puca",
       "email": "mauro.arduini@ritspa.it"
+    },
+    {
+      "username": "3409",
+      "password": "ise",
+      "nome": "Giampiero",
+      "cognome": "Testardi",
+      "email": "progetto.ise@gmail.com"
     }
   ]
 
