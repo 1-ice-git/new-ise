@@ -11,17 +11,17 @@
 @Html.Hidden("HidAttivazionePassaporto", Model.idAttivazionePassaporto)
 
 <div class="row">
-    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:15px ">
 
-        @if (Model.statoTrasferimento != EnumStatoTraferimento.Attivo && Model.statoTrasferimento != EnumStatoTraferimento.Annullato)
+        @if (Model.statoTrasferimento != EnumStatoTraferimento.Terminato && Model.statoTrasferimento != EnumStatoTraferimento.Annullato)
         {
             if (Model.praticaConclusa == false)
             {
                 if (Model.notificaRichiesta == false)
                 {
-                    if (Model.richiedenteIncluso || Model.coniugeIncluso || Model.figliIncluso)
+                    if (Model.coniugeIncluso || Model.figliIncluso)
                     {
-                        <button class="btn btn-default btn-sm " id="btNotificaRichiestaPassaporti_var" onclick="ModalNotificaRichiestaPassaporti_var(); ">
+                        <button class="btn btn-default btn-sm " id="btNotificaRichiestaPassaporti_var" onclick="ModalNotificaRichiestaPassaporti_var();">
                             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                             Notifica richiesta
                         </button>
@@ -54,7 +54,7 @@
 
                     if (admin)
                     {
-                        <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ModalAttivaRichiestaPassaporti_var();">
+                        <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ModalAttivaRichiestaPassaporti_var(@Model.idAttivazionePassaporto);">
                             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                             Completa richiesta
                         </button>
@@ -126,7 +126,7 @@
     }
 
 
-    function ModalAttivaRichiestaPassaporti_var()
+    function ModalAttivaRichiestaPassaporti_var(idAttivazionePassaporto)
     {
         //debugger;
         MessaggioAttivaRichiestaPassaporto_var(idAttivazionePassaporto);

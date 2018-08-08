@@ -6090,6 +6090,10 @@
     <Content Include="Views\Elaborazioni\DatiLiquidazioniDiretteInviate.cshtml" />
     <Content Include="Views\Indennita\RptMaggiorazioniConiuge.cshtml" />
     <Content Include="Views\Indennita\RptMaggiorazioniFigli.cshtml" />
+    <Content Include="Views\VariazionePassaporto\AltriDatiFamiliariConiugePassaporti.cshtml" />
+    <Content Include="Views\VariazionePassaporto\AltriDatiFamiliariFiglioPassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ElencoDocumentiPassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ElaborazionePassaporti.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

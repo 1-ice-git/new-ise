@@ -1,0 +1,22 @@
+﻿@using NewISE.Models.Enumeratori
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idFasePassaportidaElaborare = Convert.ToDecimal(ViewData["idFasePassaportidaElaborare"]);
+}
+
+@Html.Hidden("hiIdTipoDocumento", 0)
+@Html.Hidden("hiIdParentela", 0)
+@Html.Hidden("hiIdFamiliarePassaporto", 0)
+
+
+@if (idFasePassaportidaElaborare == (decimal)EnumFasePassaporti.Richiesta_Passaporti)
+{
+    @Html.Action("Passaporti_Richiesta", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
+}
+else
+{
+    @Html.Action("Passaporti_Invio", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
+
+}
+

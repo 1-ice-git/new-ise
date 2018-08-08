@@ -1,0 +1,133 @@
+﻿@using NewISE.Models.Enumeratori
+
+@model NewISE.Models.DBModel.AltriDatiFamFiglioModel
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idFasePassaportiCorrente = Convert.ToDecimal(ViewData["idFasePassaportiCorrente"]);
+}
+
+<div style="padding-left: 15px;">
+    <h4>Altri Dati Familiari Figlio</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Figli.nominativo)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.Figli.nominativo)</span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dataNascita)
+        </dt>
+
+        @if (Model.dataNascita.HasValue)
+        {
+            <dd>
+                <span class="text-uppercase">@Model.dataNascita.Value.ToShortDateString()</span>
+            </dd>
+        }
+        else
+        {
+            <dd></dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.capNascita)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.capNascita)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comuneNascita)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.provinciaNascita)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nazionalita)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.indirizzoResidenza)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.indirizzoResidenza)</span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.capResidenza)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.capResidenza)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comuneResidenza)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.comuneResidenza)</span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.provinciaResidenza)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaResidenza)</span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.residente)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.residente)</span>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.studente)
+        </dt>
+
+        <dd>
+            <span class="text-uppercase">@Html.DisplayFor(model => model.studente)</span>
+        </dd>
+
+    </dl>
+</div>
+
+@if (idFasePassaportiCorrente == (decimal)EnumFasePassaporti.Richiesta_Passaporti)
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Richiesta", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+else
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Invio", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+

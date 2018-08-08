@@ -58,7 +58,7 @@ namespace NewISE.Models.Tools
                 MailMessage messaggio = new MailMessage();
                 //string NomeMittente = string.Empty;
 
-                if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente))
+                if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente) || test)
                 {
                     string mittenteIse = System.Configuration.ConfigurationManager.AppSettings["EmailISE"];
                     messaggio.From = new MailAddress(mittenteIse, "ISE");
