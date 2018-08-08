@@ -553,6 +553,14 @@
           <Property Name="PERCENTUALEMAGGIORAZIONEFIGLI" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
         </EntityType>
+        <EntityType Name="ELABIND_TEORICI">
+          <Key>
+            <PropertyRef Name="IDELABIND" />
+            <PropertyRef Name="IDTEORICI" />
+          </Key>
+          <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="ELABINDENNITA">
           <Key>
             <PropertyRef Name="IDELABIND" />
@@ -567,10 +575,12 @@
           <Property Name="AL" Type="date" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="FK_IDELABIND" Type="number" Precision="38" Scale="0" />
           <Property Name="PENSIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="GIORNISOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PROGRESSIVO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ALIQUOTAFISCALE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABINDRICHIAMO">
           <Key>
@@ -608,8 +618,8 @@
           <Property Name="PERCANTSALDOUNISOL" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="FK_IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABMAB">
           <Key>
@@ -656,6 +666,7 @@
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="RICALCOLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="EMAB_ALIQ">
           <Key>
@@ -1436,23 +1447,22 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
           <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABTRASPEFFETTI" Type="number" Precision="38" Scale="0" />
           <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESERIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNORIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ALIQUOTAFISCALE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="INSERIMENTOMANUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
+          <Property Name="DIRETTO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -1699,7 +1709,6 @@
           <Property Name="IDTIPOVOCE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CODICEVOCE" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
-          <Property Name="FLAGDIRETTO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <Association Name="R_AA_A">
           <End Role="ATTIVITAANTICIPI" Type="Self.ATTIVITAANTICIPI" Multiplicity="1">
@@ -2945,17 +2954,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EI_EI">
-          <End Role="ELABINDENNITA" Type="Self.ELABINDENNITA" Multiplicity="0..1">
+        <Association Name="R_EI_EIT">
+          <End Role="ELABINDENNITA" Type="Self.ELABINDENNITA" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ELABINDENNITA1" Type="Self.ELABINDENNITA" Multiplicity="*" />
+          <End Role="ELABIND_TEORICI" Type="Self.ELABIND_TEORICI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ELABINDENNITA">
               <PropertyRef Name="IDELABIND" />
             </Principal>
-            <Dependent Role="ELABINDENNITA1">
-              <PropertyRef Name="FK_IDELABIND" />
+            <Dependent Role="ELABIND_TEORICI">
+              <PropertyRef Name="IDELABIND" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2969,20 +2978,6 @@
               <PropertyRef Name="IDELABIND" />
             </Principal>
             <Dependent Role="IND_ALIQ">
-              <PropertyRef Name="IDELABIND" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_EI_T">
-          <End Role="ELABINDENNITA" Type="Self.ELABINDENNITA" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABINDENNITA">
-              <PropertyRef Name="IDELABIND" />
-            </Principal>
-            <Dependent Role="TEORICI">
               <PropertyRef Name="IDELABIND" />
             </Dependent>
           </ReferentialConstraint>
@@ -3038,20 +3033,6 @@
             </Principal>
             <Dependent Role="ELABDATIFIGLI">
               <PropertyRef Name="IDINDSISTLORDA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_EIS_EIS">
-          <End Role="ELABINDSISTEMAZIONE" Type="Self.ELABINDSISTEMAZIONE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELABINDSISTEMAZIONE1" Type="Self.ELABINDSISTEMAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABINDSISTEMAZIONE">
-              <PropertyRef Name="IDINDSISTLORDA" />
-            </Principal>
-            <Dependent Role="ELABINDSISTEMAZIONE1">
-              <PropertyRef Name="FK_IDINDSISTLORDA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4607,6 +4588,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_T_EIT">
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABIND_TEORICI" Type="Self.ELABIND_TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+            </Principal>
+            <Dependent Role="ELABIND_TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_FC">
           <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5512,6 +5507,7 @@
           <EntitySet Name="DOCUMENTO_NORMACALCOLO" EntityType="Self.DOCUMENTO_NORMACALCOLO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="DOCVC" EntityType="Self.DOCVC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABDATIFIGLI" EntityType="Self.ELABDATIFIGLI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABIND_TEORICI" EntityType="Self.ELABIND_TEORICI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABINDENNITA" EntityType="Self.ELABINDENNITA" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABINDRICHIAMO" EntityType="Self.ELABINDRICHIAMO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABINDSISTEMAZIONE" EntityType="Self.ELABINDSISTEMAZIONE" Schema="ISESIM" store:Type="Tables" />
@@ -5986,17 +5982,13 @@
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
             <End Role="ELABDATIFIGLI" EntitySet="ELABDATIFIGLI" />
           </AssociationSet>
-          <AssociationSet Name="R_EI_EI" Association="Self.R_EI_EI">
+          <AssociationSet Name="R_EI_EIT" Association="Self.R_EI_EIT">
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
-            <End Role="ELABINDENNITA1" EntitySet="ELABINDENNITA" />
+            <End Role="ELABIND_TEORICI" EntitySet="ELABIND_TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_EI_IA" Association="Self.R_EI_IA">
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
             <End Role="IND_ALIQ" EntitySet="IND_ALIQ" />
-          </AssociationSet>
-          <AssociationSet Name="R_EI_T" Association="Self.R_EI_T">
-            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
-            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_EIR_EDF" Association="Self.R_EIR_EDF">
             <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
@@ -6013,10 +6005,6 @@
           <AssociationSet Name="R_EIS_EDF" Association="Self.R_EIS_EDF">
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
             <End Role="ELABDATIFIGLI" EntitySet="ELABDATIFIGLI" />
-          </AssociationSet>
-          <AssociationSet Name="R_EIS_EIS" Association="Self.R_EIS_EIS">
-            <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
-            <End Role="ELABINDSISTEMAZIONE1" EntitySet="ELABINDSISTEMAZIONE" />
           </AssociationSet>
           <AssociationSet Name="R_EIS_SA" Association="Self.R_EIS_SA">
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
@@ -6461,6 +6449,10 @@
           <AssociationSet Name="R_T_CE" Association="Self.R_T_CE">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_EIT" Association="Self.R_T_EIT">
+            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="ELABIND_TEORICI" EntitySet="ELABIND_TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_T_FC" Association="Self.R_T_FC">
             <End Role="TEORICI" EntitySet="TEORICI" />
@@ -7116,14 +7108,6 @@
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="ELABDATIFIGLI" EntitySet="ELABDATIFIGLI" />
           </AssociationSet>
-          <AssociationSet Name="R_EI_EI" Association="DBISE.R_EI_EI">
-            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
-            <End Role="ELABINDENNITA1" EntitySet="ELABINDENNITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_EI_T" Association="DBISE.R_EI_T">
-            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
-            <End Role="TEORICI" EntitySet="TEORICI" />
-          </AssociationSet>
           <AssociationSet Name="R_I_EI" Association="DBISE.R_I_EI">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
@@ -7147,10 +7131,6 @@
           <AssociationSet Name="R_R_EIR" Association="DBISE.R_R_EIR">
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
             <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
-          </AssociationSet>
-          <AssociationSet Name="R_EIS_EIS" Association="DBISE.R_EIS_EIS">
-            <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
-            <End Role="ELABINDSISTEMAZIONE1" EntitySet="ELABINDSISTEMAZIONE" />
           </AssociationSet>
           <AssociationSet Name="R_EIS_T" Association="DBISE.R_EIS_T">
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
@@ -7567,6 +7547,10 @@
           <AssociationSet Name="DOCVC" Association="DBISE.DOCVC">
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="ELABIND_TEORICI" Association="DBISE.ELABIND_TEORICI">
+            <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="EMAB_ALIQ" Association="DBISE.EMAB_ALIQ">
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
@@ -8198,16 +8182,16 @@
           <Property Name="AL" Type="DateTime" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="FK_IDELABIND" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="GIORNISOSPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EI_EDF" FromRole="ELABINDENNITA" ToRole="ELABDATIFIGLI" />
-          <NavigationProperty Name="ELABINDENNITA1" Relationship="DBISE.R_EI_EI" FromRole="ELABINDENNITA" ToRole="ELABINDENNITA1" />
-          <NavigationProperty Name="ELABINDENNITA2" Relationship="DBISE.R_EI_EI" FromRole="ELABINDENNITA1" ToRole="ELABINDENNITA" />
-          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EI_T" FromRole="ELABINDENNITA" ToRole="TEORICI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_EI" FromRole="ELABINDENNITA" ToRole="INDENNITA" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EI" FromRole="ELABINDENNITA" ToRole="LIVELLI" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.ELABIND_TEORICI" FromRole="ELABINDENNITA" ToRole="TEORICI" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.IND_ALIQ" FromRole="ELABINDENNITA" ToRole="ALIQUOTECONTRIBUTIVE" />
         </EntityType>
         <EntityType Name="ELABINDRICHIAMO">
@@ -8252,11 +8236,9 @@
           <Property Name="PERCANTSALDOUNISOL" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="FK_IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIS_EDF" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABDATIFIGLI" />
-          <NavigationProperty Name="ELABINDSISTEMAZIONE1" Relationship="DBISE.R_EIS_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABINDSISTEMAZIONE1" />
-          <NavigationProperty Name="ELABINDSISTEMAZIONE2" Relationship="DBISE.R_EIS_EIS" FromRole="ELABINDSISTEMAZIONE1" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EIS_T" FromRole="ELABINDSISTEMAZIONE" ToRole="TEORICI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="LIVELLI" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISE.R_PS_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="PRIMASITEMAZIONE" />
@@ -8316,6 +8298,7 @@
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="RICALCOLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_ETE_T" FromRole="ELABTRASPEFFETTI" ToRole="TEORICI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_ETE" FromRole="ELABTRASPEFFETTI" ToRole="LIVELLI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISE.R_TEP_ETE" FromRole="ELABTRASPEFFETTI" ToRole="TEPARTENZA" />
@@ -9061,24 +9044,22 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDELABIND" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABTRASPEFFETTI" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="MESERIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNORIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="INSERIMENTOMANUALE" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="IDELABINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_EI_T" FromRole="TEORICI" ToRole="ELABINDENNITA" />
+          <Property Name="DIRETTO" Type="Boolean" Nullable="false" />
+          <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_T" FromRole="TEORICI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_EMAB_T" FromRole="TEORICI" ToRole="ELABMAB" />
@@ -9088,6 +9069,7 @@
           <NavigationProperty Name="OA" Relationship="DBISE.R_T_OA" FromRole="TEORICI" ToRole="OA" />
           <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISE.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
           <NavigationProperty Name="VOCI" Relationship="DBISE.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
+          <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.ELABIND_TEORICI" FromRole="TEORICI" ToRole="ELABINDENNITA" />
         </EntityType>
         <EntityType Name="TEPARTENZA">
           <Key>
@@ -9378,7 +9360,6 @@
           <Property Name="IDTIPOVOCE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CODICEVOCE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FLAGDIRETTO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_V_T" FromRole="VOCI" ToRole="TEORICI" />
           <NavigationProperty Name="TIPOLIQUIDAZIONE" Relationship="DBISE.R_TL_V" FromRole="VOCI" ToRole="TIPOLIQUIDAZIONE" />
           <NavigationProperty Name="TIPOVOCE" Relationship="DBISE.R_TV_V" FromRole="VOCI" ToRole="TIPOVOCE" />
@@ -10387,34 +10368,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EI_EI">
-          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABINDENNITA">
-              <PropertyRef Name="IDELABIND" />
-            </Principal>
-            <Dependent Role="ELABINDENNITA1">
-              <PropertyRef Name="FK_IDELABIND" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_EI_T">
-          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABINDENNITA">
-              <PropertyRef Name="IDELABIND" />
-            </Principal>
-            <Dependent Role="TEORICI">
-              <PropertyRef Name="IDELABIND" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_I_EI">
           <End Type="DBISE.INDENNITA" Role="INDENNITA" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -10496,20 +10449,6 @@
             </Principal>
             <Dependent Role="ELABINDRICHIAMO">
               <PropertyRef Name="IDRICHIAMO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_EIS_EIS">
-          <End Type="DBISE.ELABINDSISTEMAZIONE" Role="ELABINDSISTEMAZIONE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ELABINDSISTEMAZIONE" Role="ELABINDSISTEMAZIONE1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABINDSISTEMAZIONE">
-              <PropertyRef Name="IDINDSISTLORDA" />
-            </Principal>
-            <Dependent Role="ELABINDSISTEMAZIONE1">
-              <PropertyRef Name="FK_IDINDSISTLORDA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11727,6 +11666,10 @@
           <End Type="DBISE.ATTIVAZIONIVIAGGICONGEDO" Role="ATTIVAZIONIVIAGGICONGEDO" Multiplicity="*" />
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
         </Association>
+        <Association Name="ELABIND_TEORICI">
+          <End Type="DBISE.ELABINDENNITA" Role="ELABINDENNITA" Multiplicity="*" />
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
+        </Association>
         <Association Name="EMAB_ALIQ">
           <End Type="DBISE.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
           <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="*" />
@@ -12238,10 +12181,12 @@
           <EntitySetMapping Name="ELABINDENNITA">
             <EntityTypeMapping TypeName="DBISE.ELABINDENNITA">
               <MappingFragment StoreEntitySet="ELABINDENNITA">
+                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
+                <ScalarProperty Name="ALIQUOTAFISCALE" ColumnName="ALIQUOTAFISCALE" />
+                <ScalarProperty Name="PROGRESSIVO" ColumnName="PROGRESSIVO" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="GIORNISOSPENSIONE" ColumnName="GIORNISOSPENSIONE" />
                 <ScalarProperty Name="PENSIONECONIUGE" ColumnName="PENSIONECONIUGE" />
-                <ScalarProperty Name="FK_IDELABIND" ColumnName="FK_IDELABIND" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="AL" ColumnName="AL" />
@@ -12276,8 +12221,8 @@
           <EntitySetMapping Name="ELABINDSISTEMAZIONE">
             <EntityTypeMapping TypeName="DBISE.ELABINDSISTEMAZIONE">
               <MappingFragment StoreEntitySet="ELABINDSISTEMAZIONE">
+                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
-                <ScalarProperty Name="FK_IDINDSISTLORDA" ColumnName="FK_IDINDSISTLORDA" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="PERCANTSALDOUNISOL" ColumnName="PERCANTSALDOUNISOL" />
@@ -12332,6 +12277,7 @@
           <EntitySetMapping Name="ELABTRASPEFFETTI">
             <EntityTypeMapping TypeName="DBISE.ELABTRASPEFFETTI">
               <MappingFragment StoreEntitySet="ELABTRASPEFFETTI">
+                <ScalarProperty Name="RICALCOLATO" ColumnName="RICALCOLATO" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
@@ -12968,23 +12914,22 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
+                <ScalarProperty Name="DIRETTO" ColumnName="DIRETTO" />
                 <ScalarProperty Name="IDELABINDRICHIAMO" ColumnName="IDELABINDRICHIAMO" />
                 <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="INSERIMENTOMANUALE" ColumnName="INSERIMENTOMANUALE" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="ALIQUOTAFISCALE" ColumnName="ALIQUOTAFISCALE" />
                 <ScalarProperty Name="ANNORIFERIMENTO" ColumnName="ANNORIFERIMENTO" />
                 <ScalarProperty Name="MESERIFERIMENTO" ColumnName="MESERIFERIMENTO" />
                 <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
                 <ScalarProperty Name="IDELABTRASPEFFETTI" ColumnName="IDELABTRASPEFFETTI" />
                 <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
-                <ScalarProperty Name="IDELABIND" ColumnName="IDELABIND" />
                 <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
                 <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
-                <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
                 <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -13221,7 +13166,6 @@
           <EntitySetMapping Name="VOCI">
             <EntityTypeMapping TypeName="DBISE.VOCI">
               <MappingFragment StoreEntitySet="VOCI">
-                <ScalarProperty Name="FLAGDIRETTO" ColumnName="FLAGDIRETTO" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
                 <ScalarProperty Name="CODICEVOCE" ColumnName="CODICEVOCE" />
                 <ScalarProperty Name="IDTIPOVOCE" ColumnName="IDTIPOVOCE" />
@@ -13420,6 +13364,14 @@
             </EndProperty>
             <EndProperty Name="ATTIVAZIONIVIAGGICONGEDO">
               <ScalarProperty Name="IDATTIVAZIONEVC" ColumnName="IDATTIVAZIONEVC" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ELABIND_TEORICI" TypeName="DBISE.ELABIND_TEORICI" StoreEntitySet="ELABIND_TEORICI">
+            <EndProperty Name="TEORICI">
+              <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
+            </EndProperty>
+            <EndProperty Name="ELABINDENNITA">
+              <ScalarProperty Name="IDELABIND" ColumnName="IDELABIND" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="EMAB_ALIQ" TypeName="DBISE.EMAB_ALIQ" StoreEntitySet="EMAB_ALIQ">

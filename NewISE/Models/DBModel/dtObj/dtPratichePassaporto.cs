@@ -3406,7 +3406,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (i <= 0)
                 {
-                    throw new Exception(string.Format("Impossibile associare il passaporto al coniuge"));
+                    throw new Exception(string.Format("Impossibile associare il documento per il passaporto del coniuge"));
                 }
             }
             catch (Exception ex)

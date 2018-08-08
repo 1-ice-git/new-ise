@@ -18,7 +18,6 @@ namespace NewISE.EF
         public ELABINDSISTEMAZIONE()
         {
             this.ELABDATIFIGLI = new HashSet<ELABDATIFIGLI>();
-            this.ELABINDSISTEMAZIONE1 = new HashSet<ELABINDSISTEMAZIONE>();
             this.TEORICI = new HashSet<TEORICI>();
             this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
         }
@@ -38,14 +37,11 @@ namespace NewISE.EF
         public decimal PERCANTSALDOUNISOL { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public Nullable<decimal> FK_IDINDSISTLORDA { get; set; }
         public decimal IDLIVELLO { get; set; }
+        public bool CONGUAGLIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE1 { get; set; }
-        public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }

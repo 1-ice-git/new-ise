@@ -295,8 +295,23 @@ namespace NewISE.Models.Tools
         {
             return Convert.ToDateTime(Data_Inizio_Base);
         }
+        /// <summary>
+        /// Passando una data riporta la data di inizio mese.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static DateTime GetDataInizioMese(DateTime data)
+        {
+            return
+                Convert.ToDateTime("01/" + data.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" +
+                                   data.Year.ToString());
 
-
+        }
+        /// <summary>
+        /// Passando una data riporta la data di fine mese
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static DateTime GetDtFineMese(DateTime data)
         {
             string giorno = "01";

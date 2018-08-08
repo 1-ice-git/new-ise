@@ -18,7 +18,7 @@ namespace NewISE.Models.DBModel.dtObj
         public IList<RiepiloVociModel> GetRiepilogoVoci(decimal idTrasferimento)
         {
             List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
-            
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 db.Database.BeginTransaction();
@@ -41,17 +41,17 @@ namespace NewISE.Models.DBModel.dtObj
                         //db.TEORICI.ToList();
 
                         var lTeorici =
-                        db.TEORICI.Where(
-                            a =>
-                                a.ANNULLATO == false && a.ELABORATO == true &&
-                                (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE ||
-                                a.ELABINDENNITA.IDTRASFINDENNITA == ind.IDTRASFINDENNITA ||
-                                a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
-                                a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
-                                a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO))
-                            .OrderBy(a => a.ANNORIFERIMENTO)
-                            .ThenBy(a => a.MESERIFERIMENTO)
-                            .ToList();
+                            db.TEORICI.Where(
+                                a =>
+                                    a.ANNULLATO == false && a.ELABORATO == true &&
+                                    (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
+                                    a.ELABINDENNITA.Any(b => b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
+                                    a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
+                                    a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
+                                    a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO)
+                                .OrderBy(a => a.ANNORIFERIMENTO)
+                                .ThenBy(a => a.MESERIFERIMENTO)
+                                .ToList();
 
 
                         // Indennità Personale
@@ -151,7 +151,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     Importo = teorico.IMPORTO,
                                     Elaborato = teorico.ELABORATO
                                 };
-                                
+
 
                                 lrvm.Add(rv);
 
@@ -174,6 +174,6 @@ namespace NewISE.Models.DBModel.dtObj
             return lrvm;
 
         }
-                
+
     }
 }
