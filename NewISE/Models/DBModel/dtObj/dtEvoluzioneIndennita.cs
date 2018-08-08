@@ -321,7 +321,6 @@ namespace NewISE.Models.DBModel.dtObj
                 throw;
             }
         }
-
         public IList<EvoluzioneIndennitaModel> GetIndennitaPersonaleEvoluzione(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -1202,6 +1201,302 @@ namespace NewISE.Models.DBModel.dtObj
                 throw;
             }
         }
-        
+        public IList<EvoluzioneIndennitaModel> GetContrOmnicomprensivoTrasfEvoluzione(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    
+                    List<DateTime> lDateVariazioni = new List<DateTime>();
+
+
+                    #region Variazioni Percentuale Fascia Km
+
+                    var ll =
+                        db.PERCENTUALEFKM
+                        .Where(a => a.ANNULLATO == false)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                    foreach (var ib in ll)
+                    {
+                        DateTime dtVar = new DateTime();
+
+                        if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                        {
+                            dtVar = trasferimento.DATAPARTENZA;
+                        }
+                        else
+                        {
+                            dtVar = ib.DATAINIZIOVALIDITA;
+                        }
+
+
+                        if (!lDateVariazioni.Contains(dtVar))
+                        {
+                            lDateVariazioni.Add(dtVar);
+                            lDateVariazioni.Sort();
+                        }
+                    }
+
+                    #endregion
+
+                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                    if (lDateVariazioni?.Any() ?? false)
+                    {
+                        for (int j = 0; j < lDateVariazioni.Count; j++)
+                        {
+                            DateTime dv = lDateVariazioni[j];
+
+                            if (dv < Utility.DataFineStop())
+                            {
+                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                {
+                                    EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
+
+                                    xx.dataInizioValidita = dv;
+                                    xx.dataFineValidita = dvSucc;
+                                    xx.IndennitaBase = ci.IndennitaDiBase;
+                                    xx.PercentualeDisagio = ci.PercentualeDisagio;
+                                    xx.CoefficienteSede = ci.CoefficienteDiSede;
+                                    xx.IndennitaServizio = ci.IndennitaDiServizio;
+                                    xx.IndennitaPersonale = ci.IndennitaPersonale;
+                                    xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
+                                    xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
+                                    xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
+                                    xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
+                                    xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
+                                    xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                    xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
+                                    xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
+
+                                    xx.IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda;
+                                    xx.AnticipoContributoOmnicomprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza;
+                                    xx.SaldoContributoOmnicomprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza;
+                                    
+                                    
+                                    eim.Add(xx);
+
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+                return eim;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public IList<EvoluzioneIndennitaModel> GetContrOmnicomprensivoRientroEvoluzione(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    
+
+                    List<DateTime> lDateVariazioni = new List<DateTime>();
+
+
+                    #region Variazioni Percentuale Fascia Km
+
+                    var ll =
+                        db.PERCENTUALEFKM
+                        .Where(a => a.ANNULLATO == false)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                    foreach (var ib in ll)
+                    {
+                        DateTime dtVar = new DateTime();
+
+                        if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                        {
+                            dtVar = trasferimento.DATAPARTENZA;
+                        }
+                        else
+                        {
+                            dtVar = ib.DATAINIZIOVALIDITA;
+                        }
+
+
+                        if (!lDateVariazioni.Contains(dtVar))
+                        {
+                            lDateVariazioni.Add(dtVar);
+                            lDateVariazioni.Sort();
+                        }
+                    }
+
+                    #endregion
+
+                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                    if (lDateVariazioni?.Any() ?? false)
+                    {
+                        for (int j = 0; j < lDateVariazioni.Count; j++)
+                        {
+                            DateTime dv = lDateVariazioni[j];
+
+                            if (dv < Utility.DataFineStop())
+                            {
+                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                {
+                                    EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
+
+                                    xx.dataInizioValidita = dv;
+                                    xx.dataFineValidita = dvSucc;
+                                    xx.IndennitaBase = ci.IndennitaDiBase;
+                                    xx.PercentualeDisagio = ci.PercentualeDisagio;
+                                    xx.CoefficienteSede = ci.CoefficienteDiSede;
+                                    xx.IndennitaServizio = ci.IndennitaDiServizio;
+                                    xx.IndennitaPersonale = ci.IndennitaPersonale;
+                                    xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
+                                    xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
+                                    xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
+                                    xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
+                                    xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
+                                    xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                    xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
+                                    xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
+
+                                    xx.IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda;
+                                    xx.IndennitaRichiamo = ci.IndennitaRichiamoLordo;
+                                    xx.AnticipoContributoOmnicomprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza;
+                                    xx.SaldoContributoOmnicomprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza;
+                                    
+                                    
+
+                                    eim.Add(xx);
+
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+                return eim;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public IList<EvoluzioneIndennitaModel> GetIndennitaRichiamoEvoluzione(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+
+
+
+                    List<DateTime> lDateVariazioni = new List<DateTime>();
+
+
+                    #region Variazioni Richiamo
+
+                    //var ll =
+                    //    db.PERCENTUALEFKM
+                    //    .Where(a => a.ANNULLATO == false)
+                    //    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                    var ll = db.COEFFICIENTEINDRICHIAMO.ToList();
+
+                    foreach (var ib in ll)
+                    {
+                        DateTime dtVar = new DateTime();
+
+                        if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                        {
+                            dtVar = trasferimento.DATAPARTENZA;
+                        }
+                        else
+                        {
+                            dtVar = ib.DATAINIZIOVALIDITA;
+                        }
+
+
+                        if (!lDateVariazioni.Contains(dtVar))
+                        {
+                            lDateVariazioni.Add(dtVar);
+                            lDateVariazioni.Sort();
+                        }
+                    }
+
+                    #endregion
+
+                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                    if (lDateVariazioni?.Any() ?? false)
+                    {
+                        for (int j = 0; j < lDateVariazioni.Count; j++)
+                        {
+                            DateTime dv = lDateVariazioni[j];
+
+                            if (dv < Utility.DataFineStop())
+                            {
+                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                {
+                                    EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
+
+                                    xx.dataInizioValidita = dv;
+                                    xx.dataFineValidita = dvSucc;
+                                    xx.IndennitaBase = ci.IndennitaDiBase;
+                                    
+                                    xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
+                                    xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
+                                    
+                                    
+                                    xx.IndennitaRichiamo = ci.IndennitaRichiamoLordo;
+
+                                    eim.Add(xx);
+
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+                return eim;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }

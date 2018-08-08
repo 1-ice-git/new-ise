@@ -1291,7 +1291,11 @@ namespace NewISE.Controllers
             try
             {
 
-                
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetIndennitaRichiamoEvoluzione(idTrasferimento).ToList();
+
+                }
 
                 ViewBag.idTrasferimento = idTrasferimento;
                 return PartialView(eim);
@@ -1730,6 +1734,13 @@ namespace NewISE.Controllers
 
             try
             {
+
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetContrOmnicomprensivoTrasfEvoluzione(idTrasferimento).ToList();
+
+                }
+
                 ViewBag.idTrasferimento = idTrasferimento;
                 return PartialView(eim);
             }
@@ -1813,6 +1824,13 @@ namespace NewISE.Controllers
 
             try
             {
+                using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
+                {
+                    eim = dtei.GetContrOmnicomprensivoRientroEvoluzione(idTrasferimento).ToList();
+
+                }
+
+
                 ViewBag.idTrasferimento = idTrasferimento;
                 return PartialView(eim);
             }
