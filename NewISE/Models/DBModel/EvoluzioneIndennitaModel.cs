@@ -43,11 +43,14 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Totale Maggiorazioni Familiari")]
         public decimal TotaleMaggiorazioniFamiliari { get; set; }
 
-        [Display(Name = "Indennità Base Primo Segretario")]
+        [Display(Name = "Indennità Primo Segretario")]
         public decimal IndennitaPrimoSegretario { get; set; }
 
         [Display(Name = "Anticipo Indennità di Sistemazione Lorda")]
         public decimal IndennitaSistemazioneAnticipabileLorda { get; set; }
+
+        [Display(Name = "Indennità di Sistemazione Lorda")]
+        public decimal IndennitaSistemazioneLorda { get; set; }
 
         [Display(Name = "Coefficiente di Maggiorazione")]
         public decimal CoefficientediMaggiorazione { get; set; }

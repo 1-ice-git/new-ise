@@ -105,8 +105,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal MaggiorazioneConiugeMenoPensione => _maggiorazioneConiugeMenoPensione;
         //[ReadOnly(true)]
         //public decimal PercentualeMaggiorazioneFigli => _percentualeMaggiorazioniFigli;
-        //[ReadOnly(true)]
-        //public decimal IndennitaPrimoSegretario => _indennitaPrimoSegretario;
+        [ReadOnly(true)]
+        public decimal IndennitaPrimoSegretario => _indennitaPrimoSegretario;
         [ReadOnly(true)]
         public decimal IndennitaServizioPrimoSegretario => _indennitaServizioPrimoSegretario;
         [ReadOnly(true)]
