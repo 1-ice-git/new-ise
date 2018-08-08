@@ -24,21 +24,17 @@
 <table id="tbIndennitadiSistemazioneLorda" class="display" cellspacing="0">
     <thead>
         <tr>
-
             <th class="text-center">
-
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
             <th class="text-center">
-
+                @Html.DisplayNameFor(model => model.IndennitaPersonale)
             </th>
             <th class="text-center">
-
+                @Html.DisplayNameFor(model => model.CoefficientediMaggiorazione)
             </th>
             <th class="text-center">
-
-            </th>
-            <th class="text-center">
-
+                @Html.DisplayNameFor(model => model.IndennitaSistemazioneLorda)
             </th>
         </tr>
     </thead>
@@ -47,11 +43,19 @@
         {
             <tr>
 
-                <td style="text-align:center;"></td>
-                <td style="text-align:center;"></td>
-                <td style="text-align:center;"></td>
-                <td style="text-align:center;"></td>
-                <td style="text-align:center;"></td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.IndennitaPersonale)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CoefficientediMaggiorazione)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.IndennitaSistemazioneLorda)
+                </td>
+                
             </tr>
         }
     </tbody>
