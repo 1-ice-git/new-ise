@@ -16,17 +16,33 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <ul class="nav nav-tabs nav-justified">
-                <li class="active"><a id="tabElaborazionePassaporti" data-toggle="tab" href="#" >Elaborazione</a></li>
-                <li><a id="tabPassaportiCompletati" data-toggle="tab" href="#">Completati</a></li>
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li class="active" role="presentation">
+                    <a 
+                       id="tabElaborazionePassaporti" 
+                       aria-controls="P_Elaborazioni" 
+                       data-toggle="tab" 
+                       href="#P_Elaborazioni"
+                       role="tab"
+                    >Elaborazione</a>
+                </li>
+                <li role="presentation">
+                    <a 
+                       id="tabPassaportiCompletati"
+                       aria-controls="P_Completati"
+                       data-toggle="tab" 
+                       href="#P_Completati"
+                       role="tab"
+                    >Completati</a>
+                </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active">
-                    <div class="active tab-pane" id="divElaborazionePassaporti">
+                <div role="tabpanel" class="active tab-pane" id="P_Elaborazioni">
+                    <div id="divElaborazionePassaporti">
                     </div>
                 </div>
-                <div class="tab-pane">
-                    <div class="tab-pane" id="divPassaportiCompletati">
+                <div role="tabpanel" class="tab-pane" id="P_Completati">
+                    <div id="divPassaportiCompletati">
                     </div>
                 </div>
             </div>
@@ -189,12 +205,18 @@
 
 <script type="text/javascript">
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        localStorage.setItem('lastActiveTab', $(this).attr('href'));
+        var lastTab = localStorage.getItem('lastActiveTab');
+        if (lastTab) {
+            $('[href="' + lastTab + '"]').tab('show');
+        }
         var x = e.target.id;
         if(x=="tabElaborazionePassaporti")
         {
             ElaborazionePassaporti();
         } else {
-            var a = 0; //test
+            PassaportoCompletato();
+            //$('[id="divElaborazionePassaporti"]').tab('show');
         }
 
     });
@@ -280,6 +302,44 @@
 
     }
 
+    function AltriDatiFamiliariConiuge_var_Completati(idAltriDati,idFaseCorrente) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/AltriDatiFamiliariConiugePassaporti";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAltriDati: idAltriDati, idFaseCorrente:idFaseCorrente },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divElencoPassaporto_Completato").empty();
+                $("#divElencoPassaporto_Completato").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
     function AltriDatiFamiliariFiglio_var(idAltriDati, idFaseCorrente) {
         //debugger;
         var rotta = "/VariazionePassaporto/AltriDatiFamiliariFiglioPassaporto";
@@ -303,6 +363,43 @@
                 //$("#viewPensione").html(result);
                 $("#divPassaporto_var").empty();
                 $("#divPassaporto_var").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+    function AltriDatiFamiliariFiglio_var_Completati(idAltriDati, idFaseCorrente) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/AltriDatiFamiliariFiglioPassaporto";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAltriDati: idAltriDati, idFaseCorrente:idFaseCorrente },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divElencoPassaporto_Completato").empty();
+                $("#divElencoPassaporto_Completato").html(result);
 
             },
             complete: function () {
@@ -1101,8 +1198,39 @@
             }
 
         });
-
     }
 
+    function PassaportoCompletato() {
+        //debugger;
+        var rotta = "/VariazionePassaporto/PassaportoCompletato";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPassaportiCompletati").empty();
+                $("#divPassaportiCompletati").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
 
 </script>

@@ -116,216 +116,221 @@
 </div>
 
 <script type="text/javascript">
-        $("#tabElencoFamiliariPass_var").DataTable({
-            "language": {
-                "sEmptyTable": "Nessun dato presente nella tabella",
-                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "Visualizza _MENU_ elementi",
-                "sLoadingRecords": "Caricamento...",
-                "sProcessing": "Elaborazione...",
-                "sSearch": "Cerca:",
-                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-                "oPaginate": {
-                    "sFirst": "Inizio",
-                    "sPrevious": "Precedente",
-                    "sNext": "Successivo",
-                    "sLast": "Fine"
-                },
-                "oAria": {
-                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-                }
+    $("#tabElencoFamiliariPass_var").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
             },
-            "bSort": false,
-            "bSortable": false,
-            "columnDefs": [
-                { "visible": false, "targets": [0] },
-                { "orderable": false, "targets": [0] },
-            ],
-            "info": false,
-            "lengthChange": false,
-            "pageLength": 5,
-            "searching": false,
-            "paging": false,
-            "bJQueryUI": true,
-            "sDom": 'lfrtip',
-            "order": [0]
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "bSort": false,
+        "bSortable": false,
+        "columnDefs": [
+            { "visible": false, "targets": [0] },
+            { "orderable": false, "targets": [0] },
+        ],
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "order": [0]
+    });
+
+
+    function DisabilitaCheckBox_var() {
+        //debugger;
+        var row = $("#tabElencoFamiliariPass_var tr");
+        var objChk = row.find("#includiPassaporto");
+
+        try {
+            for (var i = 0; i < objChk.length; i++) {
+                $(objChk[i]).attr("disabled", "disabled");
+                $(objChk[i]).addClass("disabled");
+            }
+        }
+        catch (e) {
+            var msg = e;
+            ErroreElaborazioneAjax(msg);
+        }
+    }
+
+    function AggiornaColElencoDoc_var(result, idFamiliare, parentela) {
+        //debugger;
+        var row = $("#tabElencoFamiliariPass_var tr");
+        var objIdFamiliare = row.find("#hColElencoDocIdFamiliare");
+        var objParentela = row.find("#hColElencoDocParentela");
+        var ldiv = row.find("#divColElencoDoc");
+
+        try {
+            for (var i = 0; i < objIdFamiliare.length; i++) {
+                var valIdFam = objIdFamiliare[i].value;
+                var valParentela = objParentela[i].value;
+                if (valIdFam == idFamiliare && valParentela == parentela) {
+                    //var id = obj[i].id;
+                    //var unicoId = obj[i].uniqueID;
+                    var div = ldiv[i];
+
+                    $(div).empty();
+                    $(div).html(result);
+
+                    return;
+                }
+            }
+        }
+        catch (e) {
+            var msg = e;
+            ErroreElaborazioneAjax(msg);
+        }
+
+    }
+
+    function ColElencoDoc_var(idAttivazioniPassaporto, idFamiliare, parentela, idFaseCorrente) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/ColonnaElencoDoc";
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idAttivazionePassaporto: idAttivazioniPassaporto,
+                idFamiliarePassaporto: idFamiliare,
+                parentela: parentela,
+                idFaseCorrente: idFaseCorrente
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                AggiornaColElencoDoc_var(result, idFamiliare, parentela);
+
+                //$("#divColElencoDoc").empty();
+                //$("#divColElencoDoc").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    function ConfermaIncludiEscludiPassaporto_var(chkEscludi, id, parentela) {
+        //debugger;
+        var idFaseCorrente = parseInt('@idFaseCorrente');
+
+        var rotta = "/VariazionePassaporto/ConfermaIncludiEscludiPassaporto_var";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { id: id, parentela: parentela },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                if (result.err == "") {
+                    chkEscludi.checked = result.chk;
+                    ColElencoDoc_var(result.idAttivazioniPassaporto, id, parentela, idFaseCorrente);
+                    GestionePulsantiNotificaAndConcludiPassaporto_Richiesta_var();
+
+                } else {
+                    chkEscludi.checked = !chkEscludi.checked;
+                    ErroreElaborazioneAjax(result.err);
+                }
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
         });
 
+    }
 
-        function DisabilitaCheckBox_var() {
-            //debugger;
-            var row = $("#tabElencoFamiliariPass_var tr");
-            var objChk = row.find("#includiPassaporto");
 
-            try {
-                for (var i = 0; i < objChk.length; i++) {
-                    $(objChk[i]).attr("disabled", "disabled");
-                    $(objChk[i]).addClass("disabled");
-                }
-            }
-            catch (e) {
-                var msg = e;
+    function ElencoDocumenti_var(idFamiliarePassaporto, tipoDoc, idParentela) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/ElencoDocumentiPassaporto";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFamiliarePassaporto: idFamiliarePassaporto,
+                tipoDoc: tipoDoc,
+                parentela: idParentela
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+
+                $("#divPassaporto_var").empty();
+                $("#divPassaporto_var").html(result);
+                //GestionePulsantiNotificaAndConcludiPassaporto();
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);
             }
-        }
+        });
 
-        function AggiornaColElencoDoc_var(result, idFamiliare, parentela) {
-            //debugger;
-            var row = $("#tabElencoFamiliariPass_var tr");
-            var objIdFamiliare = row.find("#hColElencoDocIdFamiliare");
-            var objParentela = row.find("#hColElencoDocParentela");
-            var ldiv = row.find("#divColElencoDoc");
-
-            try {
-                for (var i = 0; i < objIdFamiliare.length; i++) {
-                    var valIdFam = objIdFamiliare[i].value;
-                    var valParentela = objParentela[i].value;
-                    if (valIdFam == idFamiliare && valParentela == parentela) {
-                        //var id = obj[i].id;
-                        //var unicoId = obj[i].uniqueID;
-                        var div = ldiv[i];
-
-                        $(div).empty();
-                        $(div).html(result);
-
-                        return;
-                    }
-                }
-            }
-            catch (e) {
-                var msg = e;
-                ErroreElaborazioneAjax(msg);
-            }
-
-        }
-
-        function ColElencoDoc_var(idAttivazioniPassaporto, idFamiliare, parentela) {
-            //debugger;
-            var rotta = "/VariazionePassaporto/ColonnaElencoDoc";
-            $.ajax({
-                url: rotta,
-                type: "POST", //Le info testuali saranno passate in POST
-                data: { idAttivazionePassaporto: idAttivazioniPassaporto, idFamiliarePassaporto: idFamiliare, parentela: parentela },
-                dataType: 'html',
-                async: false,
-                beforeSend: function () {
-                    //debugger;
-                    //VerificaAutenticazione();
-                    //$('#ModalPensione').modal('show');
-                    //Blocca();
-
-                },
-                success: function (result) {
-                    //debugger;
-                    AggiornaColElencoDoc_var(result, idFamiliare, parentela);
-
-                    //$("#divColElencoDoc").empty();
-                    //$("#divColElencoDoc").html(result);
-
-                },
-                complete: function () {
-
-                },
-                error: function (error) {
-                    //debugger;
-                    //Sblocca();
-                    var msg = error.responseText;
-                    ErroreElaborazioneAjax(msg);
-                }
-            });
-        }
-
-
-        function ConfermaIncludiEscludiPassaporto_var(chkEscludi, id, parentela) {
-            //debugger;
-
-            var rotta = "/VariazionePassaporto/ConfermaIncludiEscludiPassaporto_var";
-
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { id: id, parentela: parentela },
-                dataType: 'json',
-                beforeSend: function () {
-                    //debugger;
-                    //VerificaAutenticazione();
-                    //$("#DialogNewDoc").dialog("destroy");
-                    //$("#divEffettoLoadAutNoDoc").show("slow");
-                },
-                success: function (result) {
-                    //debugger;
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    if (result.err == "") {
-                        chkEscludi.checked = result.chk;
-                        ColElencoDoc_var(result.idAttivazioniPassaporto, id, parentela);
-                        GestionePulsantiNotificaAndConcludiPassaporto_Richiesta_var();
-
-                    } else {
-                        chkEscludi.checked = !chkEscludi.checked;
-                        ErroreElaborazioneAjax(result.err);
-                    }
-                    //RicercaDocumenti();
-
-                },
-                complete: function () {
-
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    ErroreElaborazioneAjax(msg);
-                }
-
-            });
-
-        }
-
-
-        function ElencoDocumenti_var(idFamiliarePassaporto, tipoDoc, idParentela) {
-            //debugger;
-            var rotta = "/Documenti/ElencoDocumentiPassaporto";
-
-            $.ajax({
-                url: rotta,
-                type: "POST", //Le info testuali saranno passate in POST
-                data: {
-                    idFamiliarePassaporto: idFamiliarePassaporto,
-                    tipoDoc: tipoDoc,
-                    parentela: idParentela
-                },
-                dataType: 'html',
-                async: false,
-                beforeSend: function () {
-                    //debugger;
-                    VerificaAutenticazione();
-                    //Blocca();
-
-                    //$('#DocModal').modal('show');
-                },
-                success: function (result) {
-                    //debugger;
-
-                    $("#divPassaporto_var").empty();
-                    $("#divPassaporto_var").html(result);
-                    //GestionePulsantiNotificaAndConcludiPassaporto();
-                },
-                complete: function () {
-
-                },
-                error: function (error) {
-                    //debugger;
-                    //Sblocca();
-                    var msg = error.responseText;
-                    ErroreElaborazioneAjax(msg);
-                }
-            });
-
-        }
+    }
 
 
 

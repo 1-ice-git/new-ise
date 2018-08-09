@@ -119,10 +119,17 @@
         @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Richiesta", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
     </p>
 }
-else
+@if (idFaseCorrente == (decimal)EnumFasePassaporti.Invio_Passaporti)
 {
     <p style="padding-left: 15px;">
         @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Invio", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+
+@if (idFaseCorrente == 0)
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "PassaportoCompletato", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divElencoPassaporto_Completato", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
     </p>
 }
 

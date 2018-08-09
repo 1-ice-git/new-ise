@@ -40,6 +40,13 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+        public ActionResult PassaportoCompletato(decimal idTrasferimento)
+        {
+            ViewData.Add("idTrasferimento", idTrasferimento);
+
+            return PartialView();
+        }
+
         public ActionResult Passaporti_Invio(decimal idTrasferimento)
         {
             ViewData.Add("idTrasferimento", idTrasferimento);
@@ -112,6 +119,8 @@ namespace NewISE.Controllers
         }
 
 
+
+
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult ColonnaElencoDoc(decimal idAttivazionePassaporto, decimal idFamiliarePassaporto, EnumParentela parentela, decimal idFaseCorrente)
         {
@@ -121,10 +130,6 @@ namespace NewISE.Controllers
                 using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
                 {
                     efm = dtvp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
-                    //var ap = dtvp.GetAttivazioneById(idAttivazionePassaporto);
-                    //EnumFasePassaporti FasePassaporti = dtvp.GetFasePassaporti_Corrente(ap.IDPASSAPORTI);
-                    //EnumFasePassaporti FasePassaporti = (EnumFasePassaporti)ap.IDFASEPASSAPORTI;
-
                     ViewData.Add("idFaseCorrente", idFaseCorrente);
                 }
             }
@@ -829,7 +834,6 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-
             ViewData.Add("solaLettura", solaLettura);
             ViewData.Add("idFamiliarePassaporto", idFamiliarePassaporto);
             ViewData.Add("tipoDoc", (decimal)tipoDoc);
@@ -839,9 +843,31 @@ namespace NewISE.Controllers
             ViewData.Add("idTrasferimento", idTrasferimento);
             ViewData.Add("idFaseCorrente", idFaseCorrente);
 
-
             return PartialView(ldm);
+        }
 
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult ElencoPassaporto_Completato(decimal idTrasferimento)
+        {
+            List<ElencoFamiliariPassaportoModel> lefm = new List<ElencoFamiliariPassaportoModel>();
+
+            try
+            {
+                using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
+                {
+
+                    lefm = dtvp.GetFamiliariPassaportoCompletato(idTrasferimento).ToList();
+
+                    ViewData.Add("idTrasferimento", idTrasferimento);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(lefm);
         }
 
     }

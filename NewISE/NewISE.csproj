@@ -6109,6 +6109,12 @@
     <Content Include="Views\Indennita\RptContributoOmnicomprensivoTrasferimento.cshtml" />
     <Content Include="Views\Indennita\ContributoOmnicomprensivoRientro.cshtml" />
     <Content Include="Views\Indennita\RptContributoOmnicomprensivoRientro.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ElencoDocumentiPassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\AltriDatiFamiliariConiugePassaporti.cshtml" />
+    <Content Include="Views\VariazionePassaporto\AltriDatiFamiliariFiglioPassaporto.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ElaborazionePassaporti.cshtml" />
+    <Content Include="Views\VariazionePassaporto\PassaportoCompletato.cshtml" />
+    <Content Include="Views\VariazionePassaporto\ElencoPassaporto_Completato.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
