@@ -1,0 +1,12 @@
+﻿@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divElencoPassaporto_Completato" style="padding-top: 5px;padding-bottom:10px">
+            @Html.Action("ElencoPassaporto_Completato", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
+        </div>
+    </div>
+</div>
+

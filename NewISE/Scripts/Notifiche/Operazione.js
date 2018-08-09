@@ -307,7 +307,7 @@ function SalvaDocumentoNotifica(listaMailPrincipale, listaMailToCc, Oggetto, Cor
                 //$("#btUpload").removeAttr("disabled");
             },
             error: function (error) {
-                debugger;               
+                //debugger;               
                 var msg = error.responseText;
                 MsgErroreJson(msg);
             }

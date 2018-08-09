@@ -60,10 +60,7 @@
                 </Style>
               </TextRun>
               <TextRun>
-                <Value>Indennità di Base Estera – ORC001
-VT001 * VT002
-***
-Indennità Teorica * Coefficiente di riduzione</Value>
+                <Value>IIndennità Teorica * Coefficiente di riduzione</Value>
                 <Style>
                   <FontStyle>Italic</FontStyle>
                   <FontSize>9pt</FontSize>
@@ -91,7 +88,7 @@ Indennità Teorica * Coefficiente di riduzione</Value>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>5.63245cm</Top>
         <Left>0.3175cm</Left>
-        <Height>2.71667cm</Height>
+        <Height>1.81709cm</Height>
         <Width>23.87879cm</Width>
         <ZIndex>1</ZIndex>
         <Style>

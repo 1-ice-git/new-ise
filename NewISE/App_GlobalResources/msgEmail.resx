@@ -321,7 +321,7 @@
     <value>Notifica dell'invio dei passaporti/visti per il dipendente {0}, trasferito dal {1} verso l'ufficio di {2}.</value>
   </data>
   <data name="MessaggioInvioPratichePassaportoConcluse" xml:space="preserve">
-    <value>Si notifica l'invio dei passaporto per il trasferimento presso la sede di {0} del {1} è stato confermato.</value>
+    <value>Si notifica che l'invio dei passaporti per il trasferimento presso la sede di {0} del {1} è stato confermato.</value>
   </data>
   <data name="MessaggioAttivazioneProvvidenzeScolastiche" xml:space="preserve">
     <value>Si informa la richiesta di rimborso per le provvidenze scolastiche è stata accettata.</value>

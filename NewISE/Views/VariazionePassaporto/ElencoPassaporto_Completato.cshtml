@@ -6,14 +6,12 @@
 @model IEnumerable<ElencoFamiliariPassaportoModel>
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-    decimal idFaseCorrente = (decimal)EnumFasePassaporti.Invio_Passaporti;
+    decimal idFaseCorrente = 0;
 }
 
 <div class="row">
     <div class="col-xs-12">
-        <h4>Elaborazione Passaporti - Invio</h4>
-        <hr />
-        <table cellspacing="0" id="tabElencoFamiliariPassInvio_var" class="table-striped" style="width:100%">
+        <table cellspacing="0" id="tabElencoCompletati" class="table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th></th>
@@ -77,14 +75,14 @@
                             {
                                 case EnumParentela.Coniuge:
                                     <td class="text-center">
-                                        <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariConiuge_var(@item.idAltriDati,@idFaseCorrente); ">
+                                        <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariConiuge_var_Completati(@item.idAltriDati,@idFaseCorrente); ">
                                             <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                         </a>
                                     </td>
                                     break;
                                 case EnumParentela.Figlio:
                                     <td class="text-center">
-                                        <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariFiglio_var(@item.idAltriDati,@idFaseCorrente); ">
+                                        <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariFiglio_var_Completati(@item.idAltriDati,@idFaseCorrente); ">
                                             <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                         </a>
                                     </td>
@@ -136,8 +134,8 @@
 
 
 
-    <script type="text/javascript">
-        $("#tabElencoFamiliariPassInvio_var").DataTable({
+<script type="text/javascript">
+    $("#tabElencoCompletati").DataTable({
             "language": {
                 "sEmptyTable": "Nessun dato presente nella tabella",
                 "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -178,4 +176,4 @@
 
         });
 
-    </script>
+</script>

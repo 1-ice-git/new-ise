@@ -100,13 +100,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                             foreach (var teorico in lTeorici)
                             {
-                                var tr = teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
-                                var dip = tr.DIPENDENTI;
+                                //var tr = teorico.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE.;
+                                //var dip = tr.DIPENDENTI;
                                 var tm = teorico.TIPOMOVIMENTO;
                                 var voce = teorico.VOCI;
                                 var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                 var tv = teorico.VOCI.TIPOVOCE;
-                                var uf = tr.UFFICI;
+                                //var uf = tr.UFFICI;
 
                                 RiepiloVociModel rv = new RiepiloVociModel()
                                 {

@@ -4,7 +4,7 @@
 @model NewISE.Models.ViewModel.GestioneChkincludiPassaportoModel
 
 
-@if (Model.esisteDoc == false || Model.disabilitaChk == true || Model.parentela==EnumParentela.Richiedente )
+@if (Model.esisteDoc == false || Model.disabilitaChk == true )
 {
 
     @Html.CheckBoxFor(model => model.includiPassaporto, new { @onclick = "return null;", @disabled = "disabled" })
