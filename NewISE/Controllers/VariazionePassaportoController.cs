@@ -862,7 +862,7 @@ namespace NewISE.Controllers
 
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)   
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
