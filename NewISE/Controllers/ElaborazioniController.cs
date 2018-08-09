@@ -168,7 +168,7 @@ namespace NewISE.Controllers
 
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult DipendentiDaElaborare()
+        public ActionResult DipendentiDaElaborare(decimal idMeseAnnoElaborato)
         {
             List<ElencoDipendentiDaCalcolareModel> ledcm = new List<ElencoDipendentiDaCalcolareModel>();
 
@@ -176,15 +176,7 @@ namespace NewISE.Controllers
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-                    ledcm = dte.PrelevaDipendentiDaElaborare().ToList();
-
-
-                    //foreach (var ed in ledcm)
-                    //{
-
-                    //}
-
-
+                    ledcm = dte.PrelevaDipendentiDaElaborare(idMeseAnnoElaborato).ToList();
 
                 }
             }
@@ -302,6 +294,29 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
+
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public JsonResult VerificaDipendentiCalcolati(decimal idMeseAnnoElab)
+        {
+            bool ret = false;
+            try
+            {
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    ret = dte.VerificaElencoDipElab(idMeseAnnoElab);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { Calcolati = ret, err = ex.Message });
+            }
+
+            return Json(new { Calcolati = ret, err = "" });
+
+        }
+
 
         [Authorize(Roles = "1 ,2")]
         [HttpPost]

@@ -10,6 +10,7 @@ using NewISE.Models.Enumeratori;
 using System.Data.Entity;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Globalization;
+using System.Net.Configuration;
 using System.Runtime.CompilerServices;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -27,6 +28,122 @@ namespace NewISE.Models.DBModel.dtObj
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+
+
+        public bool VerificaElencoDipElab(decimal idMeseAnnoElab)
+        {
+            bool ret = false;
+            List<DIPENDENTI> lElencoDipCalcolati = new List<DIPENDENTI>();
+            DIPENDENTI dip = new DIPENDENTI();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+
+                try
+                {
+                    var annoMeseElab = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElab);
+
+                    if (annoMeseElab.CHIUSO)
+                    {
+                        ret = false;
+                        return ret;
+                    }
+
+                    decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+
+                    var lt =
+                        db.TEORICI.Where(
+                            a => a.ANNULLATO == false && a.INSERIMENTOMANUALE == false && a.DIRETTO == false &&
+                                 a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
+                                 a.ANNORIFERIMENTO == annoMeseElab.ANNO &&
+                                 a.MESERIFERIMENTO == annoMeseElab.MESE).ToList();
+
+                    foreach (var t in lt)
+                    {
+                        dip = new DIPENDENTI();
+
+                        if (t.ELABINDSISTEMAZIONE?.IDINDSISTLORDA > 0)
+                        {
+                            dip = t.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
+                        }
+                        else if (t.ELABINDENNITA.Any())
+                        {
+                            dip = t.ELABINDENNITA.Last().INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                        }
+                        else if (t.ELABTRASPEFFETTI?.IDELABTRASPEFFETTI > 0)
+                        {
+                            if (t.ELABTRASPEFFETTI?.IDTEPARTENZA > 0)
+                            {
+                                dip = t.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI;
+                            }
+                            else if (t.ELABTRASPEFFETTI?.IDTERIENTRO > 0)
+                            {
+                                dip = t.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI;
+                            }
+                        }
+                        else if (t.ELABINDRICHIAMO?.IDELABINDRICHIAMO > 0)
+                        {
+                            dip = t.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI;
+                        }
+                        else if (t.ELABMAB?.IDELABMAB > 0)
+                        {
+                            dip = t.ELABMAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                        }
+                        if (!lElencoDipCalcolati.Contains(dip))
+                        {
+                            lElencoDipCalcolati.Add(dip);
+                        }
+
+                    }
+
+
+                    var ldipDaCalcolare =
+                        db.DIPENDENTI.ToList().Where(
+                            a =>
+                                a.TRASFERIMENTO.Any(
+                                    b =>
+                                        (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                         b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                                        Convert.ToDecimal(b.DATAPARTENZA.Year.ToString() +
+                                                          b.DATAPARTENZA.Month.ToString()
+                                                              .PadLeft(2, Convert.ToChar("0"))) <=
+                                        annoMese &&
+                                        (Convert.ToDecimal(b.DATARIENTRO.Year.ToString() +
+                                                           b.DATARIENTRO.Month.ToString()
+                                                               .PadLeft(2, Convert.ToChar("0"))) >=
+                                         annoMese) ||
+                                        Convert.ToDecimal(a.DATAINIZIORICALCOLI.Year.ToString() +
+                                                          a.DATAINIZIORICALCOLI.Month.ToString()
+                                                              .PadLeft(2, Convert.ToChar("0"))) <= annoMese))
+                            .OrderBy(a => a.NOME)
+                            .ThenBy(a => a.COGNOME)
+                            .ThenBy(a => a.MATRICOLA)
+                            .ThenBy(a => a.DATAINIZIORICALCOLI)
+                            .ToList();
+
+
+                    foreach (var d in ldipDaCalcolare)
+                    {
+                        if (lElencoDipCalcolati.Contains(d))
+                        {
+                            ret = true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return ret;
         }
 
         public void ChiudiPeridoElaborazione(decimal idAnnoMeseElab, ModelDBISE db)
@@ -94,6 +211,42 @@ namespace NewISE.Models.DBModel.dtObj
 
             return ret;
         }
+
+        public bool VerificaElaborazioneCompletaDipendenti(decimal idAnnoMeseElab, ModelDBISE db)
+        {
+            bool ret = false;
+            var annoMeseElab = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElab);
+            decimal anno = annoMeseElab.ANNO;
+            decimal mese = annoMeseElab.MESE;
+
+            var ldip =
+                db.DIPENDENTI.Where(
+                    a =>
+                        a.TRASFERIMENTO.Any(
+                            b =>
+                                (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                 b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                                b.DATAPARTENZA.Year + b.DATAPARTENZA.Month <= anno + mese) &&
+                        a.ELABORAZIONI.All(b => b.IDMESEANNOELAB != idAnnoMeseElab))
+                    .OrderBy(a => a.NOME)
+                    .ThenBy(a => a.COGNOME)
+                    .ThenBy(a => a.MATRICOLA)
+                    .ThenBy(a => a.DATAINIZIORICALCOLI)
+                    .ToList();
+
+            if (ldip?.Any() ?? false)
+            {
+                ret = true;
+            }
+            else
+            {
+                ret = false;
+            }
+
+            return ret;
+
+        }
+
 
         public bool VerificaElaborazioneDipendenti(List<decimal> lIdDip, decimal idAnnoMeseElab, ModelDBISE db)
         {
@@ -1491,35 +1644,61 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public IList<ElencoDipendentiDaCalcolareModel> PrelevaDipendentiDaElaborare()
+        public IList<ElencoDipendentiDaCalcolareModel> PrelevaDipendentiDaElaborare(decimal idAnnoMeseElab)
         {
             List<ElencoDipendentiDaCalcolareModel> ledem = new List<ElencoDipendentiDaCalcolareModel>();
-            int anno = DateTime.Now.Year;
-            int mese = DateTime.Now.Month;
+            //int anno = DateTime.Now.Year;
+            //int mese = DateTime.Now.Month;
 
+            //int anno = 0;
+            //int mese = 0;
+
+
+
+            //decimal annoMese = Convert.ToDecimal(anno.ToString() + mese.ToString().PadLeft(2, Convert.ToChar("0")));
             using (ModelDBISE db = new ModelDBISE())
             {
+                //var ldip =
+                //    db.DIPENDENTI.Where(
+                //        a =>
+                //            a.DATAINIZIORICALCOLI.Year + a.DATAINIZIORICALCOLI.Month <= anno + mese &&
+                //            a.TRASFERIMENTO.Any(
+                //                b =>
+                //                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                //                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato))
+                //        .OrderBy(a => a.NOME)
+                //        .ThenBy(a => a.COGNOME)
+                //        .ThenBy(a => a.MATRICOLA)
+                //        .ThenBy(a => a.DATAINIZIORICALCOLI)
+                //        .ToList();
+
+                var annoMeseElab = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElab);
+
+                decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+
+
                 var ldip =
-                    db.DIPENDENTI.Where(
+                    db.DIPENDENTI.ToList().Where(
                         a =>
-                            a.DATAINIZIORICALCOLI.Year + a.DATAINIZIORICALCOLI.Month <= anno + mese &&
                             a.TRASFERIMENTO.Any(
                                 b =>
-                                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
-                                    b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato))
+                                    (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                     b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                                    Convert.ToDecimal(b.DATAPARTENZA.Year.ToString() +
+                                                      b.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0"))) <=
+                                    annoMese &&
+                                    (Convert.ToDecimal(b.DATARIENTRO.Year.ToString() +
+                                                       b.DATARIENTRO.Month.ToString().PadLeft(2, Convert.ToChar("0"))) >=
+                                     annoMese) ||
+                                    Convert.ToDecimal(a.DATAINIZIORICALCOLI.Year.ToString() +
+                                                      a.DATAINIZIORICALCOLI.Month.ToString()
+                                                          .PadLeft(2, Convert.ToChar("0"))) <= annoMese))
                         .OrderBy(a => a.NOME)
                         .ThenBy(a => a.COGNOME)
                         .ThenBy(a => a.MATRICOLA)
                         .ThenBy(a => a.DATAINIZIORICALCOLI)
                         .ToList();
 
-                //var ldip =
-                //    db.DIPENDENTI
-                //        .OrderBy(a => a.NOME)
-                //        .ThenBy(a => a.COGNOME)
-                //        .ThenBy(a => a.MATRICOLA)
-                //        .ThenBy(a => a.DATAINIZIORICALCOLI)
-                //        .ToList();
 
                 if (ldip?.Any() ?? false)
                 {
@@ -1629,25 +1808,44 @@ namespace NewISE.Models.DBModel.dtObj
                 #region Elaborazione mese corrente
 
                 DateTime dataElaborazioneCorrente =
-                    Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" +
+                    Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "/" +
                                        meseAnnoElaborazione.ANNO);
+                decimal annoMese =
+                    Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
+                                      meseAnnoElaborazione.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+
 
                 #endregion
 
-                var lTrasferimenti =
-                    dipendente.TRASFERIMENTO.Where(
-                        a =>
-                            (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
-                             a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
-                            Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year, a.DATARIENTRO.Month)) >=
-                            Convert.ToDecimal(string.Concat(dataElaborazioneCorrente.Year,
-                                dataElaborazioneCorrente.Month)) &&
-                            Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year, a.DATAPARTENZA.Month)) <=
-                            Convert.ToDecimal(string.Concat(dataElaborazioneCorrente.Year,
-                                dataElaborazioneCorrente.Month)))
-                        .OrderBy(a => a.DATAPARTENZA)
-                        .ToList();
+                //var lTrasferimenti =
+                //    dipendente.TRASFERIMENTO.Where(
+                //        a =>
+                //            (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                //             a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                //            Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year, a.DATARIENTRO.Month)) >=
+                //            Convert.ToDecimal(string.Concat(dataElaborazioneCorrente.Year,
+                //                dataElaborazioneCorrente.Month)) &&
+                //            Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year, a.DATAPARTENZA.Month)) <=
+                //            Convert.ToDecimal(string.Concat(dataElaborazioneCorrente.Year,
+                //                dataElaborazioneCorrente.Month)))
+                //        .OrderBy(a => a.DATAPARTENZA)
+                //        .ToList();
 
+
+
+                var lTrasferimenti =
+                    dipendente.TRASFERIMENTO
+                        .Where(a => (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                     a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                                    &&
+                                    Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year.ToString(),
+                                        a.DATARIENTRO.Month.ToString().PadLeft(2, Convert.ToChar("0")))) >=
+                                    annoMese
+                                    &&
+                                    Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year.ToString(),
+                                        a.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0")))) <=
+                                    annoMese
+                        ).OrderBy(a => a.DATAPARTENZA).ToList();
 
                 if (lTrasferimenti?.Any() ?? false)
                 {
@@ -1688,9 +1886,9 @@ namespace NewISE.Models.DBModel.dtObj
             var lTeorici = db.TEORICI.Where(a => a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                                                  a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                                                  a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                                 a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
                                                  a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
-                                                 a.DIRETTO == false)
+                                                 a.DIRETTO == false &&
+                                                 a.ELABINDENNITA.Any(b => b.ANNULLATO == false))
                 .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
                 .ToList();
 
@@ -1704,6 +1902,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 a.ANNULLATO == false &&
                                 a.PROGRESSIVO ==
                                 teorico.ELABINDENNITA.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO));
+
 
                     var tr = ei.INDENNITA.TRASFERIMENTO;
                     var dip = tr.DIPENDENTI;
@@ -3087,6 +3286,10 @@ namespace NewISE.Models.DBModel.dtObj
                             foreach (var eio in lElabIndOld)
                             {
                                 eio.ANNULLATO = true;
+                                foreach (var teorici in eio.TEORICI)
+                                {
+                                    teorici.ANNULLATO = true;
+                                }
                             }
 
                             db.SaveChanges();

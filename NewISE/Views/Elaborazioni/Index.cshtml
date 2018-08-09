@@ -47,11 +47,9 @@
 
     ValorizzazioneIniziale();
 
-
     function DatiLiquidazioniDirette(idAnnoMeseElaborato) {
         //debugger;
         var rotta = "/Elaborazioni/DatiLiquidazioniDirette";
-
 
         $.ajax({
             url: rotta,
@@ -64,13 +62,11 @@
                 //VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 //Blocca();
-
             },
             success: function (result) {
                 //debugger;
                 $("#ContElencoElaborazioniDirette").empty();
                 $("#ContElencoElaborazioniDirette").html(result);
-
             },
             error: function (error) {
                 //debugger;
@@ -147,6 +143,7 @@
 
     function GesionePulsanteCalcola() {
         //debugger;
+
         var rotta = "/Elaborazioni/GestionePulsanteCalcola";
         var valore = $("#mesiAnniElaborati").val();
         //var lCheck = $('#TabElencoDipDaElaborare > tbody > tr > td > :checkbox');
