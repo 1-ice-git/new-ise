@@ -579,8 +579,9 @@ namespace NewISE.Controllers
             {
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
-                    eim = dtei.GetMaggiorazioniFamiliariEvoluzione(idTrasferimento).ToList();
-
+                    //eim = dtei.GetMaggiorazioniFamiliariEvoluzione(idTrasferimento).ToList();
+                    eim = dtei.GetMaggiorazioniConiugeEvoluzione(idTrasferimento).ToList();
+                    
                 }
 
                 ViewBag.idTrasferimento = idTrasferimento;
