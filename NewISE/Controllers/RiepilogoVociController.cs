@@ -237,15 +237,16 @@ namespace NewISE.Controllers
 
                                 foreach (var teorico in lTeorici)
                                 {
-                                    var tr =
-                                        teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
+                                    //var tr =
+                                    //    teorico.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO;
 
-                                    var dip = tr.DIPENDENTI;
+                                    //var dip = tr.DIPENDENTI;
                                     var tm1 = teorico.TIPOMOVIMENTO;
                                     var voce = teorico.VOCI;
                                     var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                     var tv = teorico.VOCI.TIPOVOCE;
-                                    var uf = tr.UFFICI;
+                                    //var uf = tr.UFFICI;
+                                    
 
                                     lrvm = (from e in lTeorici
                                             select new RiepiloVociModel()
