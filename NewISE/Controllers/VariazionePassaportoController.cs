@@ -859,7 +859,7 @@ namespace NewISE.Controllers
                     lefm = dtvp.GetFamiliariPassaportoCompletato(idTrasferimento).ToList();
 
                     ViewData.Add("idTrasferimento", idTrasferimento);
-
+                         
                 }
             }
             catch (Exception ex)
