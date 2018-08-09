@@ -6229,22 +6229,54 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
-    <EmbeddedResource Include="Report\RptContributoOmnicomprensivoRientro.rdlc" />
-    <EmbeddedResource Include="Report\RptContributoOmnicomprensivoTrasferimento.rdlc" />
-    <EmbeddedResource Include="Report\RptIndennitadiRichiamo.rdlc" />
-    <EmbeddedResource Include="Report\RptIndennitadiRichiamoLorda.rdlc" />
-    <EmbeddedResource Include="Report\RptIndennitadiRichiamoNetta.rdlc" />
-    <EmbeddedResource Include="Report\RptIndennitadiSistemazioneLorda.rdlc" />
-    <EmbeddedResource Include="Report\RptIndennitadiSistemazioneNetta.rdlc" />
-    <EmbeddedResource Include="Report\RptIndennitaPersonale.rdlc" />
-    <EmbeddedResource Include="Report\RptIndennitaPrimaSistemazione.rdlc" />
-    <EmbeddedResource Include="Report\RptIndennitaServizio.rdlc" />
-    <EmbeddedResource Include="Report\RptMaggiorazioneAbitazione.rdlc" />
-    <EmbeddedResource Include="Report\RptMaggiorazioniConiuge.rdlc" />
-    <EmbeddedResource Include="Report\RptMaggiorazioniFamiliari.rdlc" />
-    <EmbeddedResource Include="Report\RptMaggiorazioniFigli.rdlc" />
-    <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc" />
+    <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptContributoOmnicomprensivoRientro.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptContributoOmnicomprensivoTrasferimento.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitadiRichiamo.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitadiRichiamoLorda.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitadiRichiamoNetta.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitadiSistemazioneLorda.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitadiSistemazioneNetta.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitaPersonale.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitaPrimaSistemazione.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptIndennitaServizio.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptMaggiorazioneAbitazione.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptMaggiorazioniConiuge.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptMaggiorazioniFamiliari.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptMaggiorazioniFigli.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

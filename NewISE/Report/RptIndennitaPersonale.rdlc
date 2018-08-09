@@ -31,7 +31,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>0.29559cm</Top>
+        <Top>0.26913cm</Top>
         <Left>0.39486cm</Left>
         <Height>1.82273cm</Height>
         <Width>23.86757cm</Width>
@@ -46,8 +46,8 @@
         </Style>
       </Textbox>
       <Line Name="Line3">
-        <Top>2.68125cm</Top>
-        <Left>0.41539cm</Left>
+        <Top>2.62833cm</Top>
+        <Left>0.46831cm</Left>
         <Height>0cm</Height>
         <Width>23.84704cm</Width>
         <ZIndex>1</ZIndex>
@@ -74,8 +74,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>2.99558cm</Top>
-        <Left>0.38364cm</Left>
+        <Top>2.96912cm</Top>
+        <Left>0.43656cm</Left>
         <Height>0.6cm</Height>
         <Width>3.29057cm</Width>
         <ZIndex>2</ZIndex>
@@ -104,8 +104,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Top>2.99558cm</Top>
-        <Left>3.74477cm</Left>
+        <Top>2.96912cm</Top>
+        <Left>3.79769cm</Left>
         <Height>0.6cm</Height>
         <Width>4.11396cm</Width>
         <ZIndex>3</ZIndex>
@@ -145,28 +145,24 @@
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
+              <TextRun>
+                <Value>IIndennità Servizio + Magg. Coniuge + Magg. Figli</Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Normal</FontWeight>
+                </Style>
+              </TextRun>
             </TextRuns>
             <Style>
               <TextAlign>Center</TextAlign>
             </Style>
           </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value />
-                <Style>
-                  <FontSize>9pt</FontSize>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>6.11924cm</Top>
         <Left>0.22554cm</Left>
-        <Height>2.71667cm</Height>
+        <Height>1.81709cm</Height>
         <Width>24.03689cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
@@ -196,8 +192,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>2.94193cm</Top>
-        <Left>13.87931cm</Left>
+        <Top>2.91547cm</Top>
+        <Left>13.93223cm</Left>
         <Height>0.6cm</Height>
         <Width>5.52833cm</Width>
         <ZIndex>6</ZIndex>
@@ -226,8 +222,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>2.94193cm</Top>
-        <Left>19.51347cm</Left>
+        <Top>2.91547cm</Top>
+        <Left>19.56639cm</Left>
         <Height>0.6cm</Height>
         <Width>4.74896cm</Width>
         <ZIndex>7</ZIndex>

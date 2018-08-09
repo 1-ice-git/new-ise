@@ -32,10 +32,16 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th class="text-center">
+                @Html.DisplayNameFor(model => model.IndennitaBase)
+            </th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.IndennitaServizio)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.MaggiorazioniFamiliari)
+                @Html.DisplayNameFor(model => model.MaggiorazioneConiuge)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.MaggiorazioniFigli)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.IndennitaPersonale)
@@ -55,10 +61,16 @@
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.IndennitaBase)
+                </td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaServizio)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.MaggiorazioniFamiliari)
+                    @Html.DisplayFor(modelItem => item.MaggiorazioneConiuge)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.MaggiorazioniFigli)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaPersonale)

@@ -25,6 +25,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Indennita Servizio")]
         public decimal IndennitaServizio { get; set; }
 
+        [Display(Name = "Indennita Richiamo")]
+        public decimal IndennitaRichiamo { get; set; }
+
         [Display(Name = "Indennita Personale")]
         public decimal IndennitaPersonale { get; set; }
 
@@ -43,14 +46,25 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Totale Maggiorazioni Familiari")]
         public decimal TotaleMaggiorazioniFamiliari { get; set; }
 
-        [Display(Name = "Indennità Base Primo Segretario")]
+        [Display(Name = "Indennità Primo Segretario")]
         public decimal IndennitaPrimoSegretario { get; set; }
 
         [Display(Name = "Anticipo Indennità di Sistemazione Lorda")]
         public decimal IndennitaSistemazioneAnticipabileLorda { get; set; }
 
+        [Display(Name = "Indennità di Sistemazione Lorda")]
+        public decimal IndennitaSistemazioneLorda { get; set; }
+
         [Display(Name = "Coefficiente di Maggiorazione")]
         public decimal CoefficientediMaggiorazione { get; set; }
+
+        [Display(Name = "Anticipo Contr.Omnicomprensivo Partenza")]
+        public decimal AnticipoContributoOmnicomprensivoPartenza { get; set; }
+
+        [Display(Name = "Saldo Contr.Omnicomprensivo Partenza")]
+        public decimal SaldoContributoOmnicomprensivoPartenza { get; set; }
+
+
 
         [Display(Name = "Data Test")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
