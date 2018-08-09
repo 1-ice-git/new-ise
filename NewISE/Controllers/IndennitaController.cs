@@ -27,7 +27,7 @@ namespace NewISE.Controllers
         public ActionResult Index()
         {
             return View();
-        }
+        }  
         public ActionResult GestioneIndennita(decimal idTrasferimento)
         {
             try
