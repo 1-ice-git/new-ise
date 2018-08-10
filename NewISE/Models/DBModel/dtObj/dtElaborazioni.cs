@@ -1849,7 +1849,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (lTrasferimenti?.Any() ?? false)
                 {
-
                     foreach (var trasferimento in lTrasferimenti)
                     {
                         var dip = trasferimento.DIPENDENTI;
@@ -2919,38 +2918,54 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (lIdElabInd?.Any() ?? false)
                         {
-                            EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
-
-                            TEORICI teorico = new TEORICI()
+                            if (Math.Round(sumImportoNew, 3) - Math.Round(sumImportoOld, 3) > 0)
                             {
-                                IDTIPOMOVIMENTO = (decimal)tipoMov,
-                                IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
-                                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
-                                MESERIFERIMENTO = dataInizioCiclo.Month,
-                                ANNORIFERIMENTO = dataInizioCiclo.Year,
-                                IMPORTO = sumImportoNew - sumImportoOld,
-                                DATAOPERAZIONE = DateTime.Now,
-                                INSERIMENTOMANUALE = false,
-                                ELABORATO = false,
-                                DIRETTO = false,
-                                ANNULLATO = false
-                            };
+                                EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
 
-                            db.TEORICI.Add(teorico);
-
-                            int k = db.SaveChanges();
-
-                            if (k > 0)
-                            {
-                                foreach (var idElabInd in lIdElabInd)
+                                TEORICI teorico = new TEORICI()
                                 {
-                                    this.AssociaTeoriciElabIndennita(idElabInd, teorico.IDTEORICI, db);
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                    IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
+                                    IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                    MESERIFERIMENTO = dataInizioCiclo.Month,
+                                    ANNORIFERIMENTO = dataInizioCiclo.Year,
+                                    IMPORTO = sumImportoNew - sumImportoOld,
+                                    DATAOPERAZIONE = DateTime.Now,
+                                    INSERIMENTOMANUALE = false,
+                                    ELABORATO = false,
+                                    DIRETTO = false,
+                                    ANNULLATO = false
+                                };
+
+                                db.TEORICI.Add(teorico);
+
+                                int k = db.SaveChanges();
+
+                                if (k > 0)
+                                {
+                                    foreach (var idElabInd in lIdElabInd)
+                                    {
+                                        this.AssociaTeoriciElabIndennita(idElabInd, teorico.IDTEORICI, db);
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Impossibile inserire il teorico dell'indennità mensile.");
                                 }
                             }
                             else
                             {
-                                throw new Exception("Impossibile inserire il teorico dell'indennità mensile.");
+                                foreach (var idei in lIdElabInd)
+                                {
+                                    var ei = db.ELABINDENNITA.Find(idei);
+
+                                    db.ELABINDENNITA.Remove(ei);
+
+                                    db.SaveChanges();
+
+                                }
                             }
+
 
                         }
 

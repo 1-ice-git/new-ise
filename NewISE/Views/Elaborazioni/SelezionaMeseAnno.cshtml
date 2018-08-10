@@ -102,7 +102,7 @@
 
             },
             success: function (result) {
-                debugger;
+                //debugger;
                 if (result.err == "") {
                     if (result.Calcolati == false) {
                         $("#btInvioFm").attr("disabled", "disabled");
@@ -118,7 +118,7 @@
 
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                debugger;
+                //debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
             }
@@ -205,7 +205,7 @@
         GesionePulsanteCalcola();
         GestionePulsanteInviaFlussiMensili();
         VerificaChiusuraMese(valore);
-        debugger;
+        //debugger;
         VerificaDipendentiInvioFlussiMensili(valore);
     }
 
