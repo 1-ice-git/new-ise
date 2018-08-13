@@ -14,7 +14,8 @@
 {
     @Html.Action("Passaporti_Richiesta", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
 }
-else
+
+@if (idFasePassaportidaElaborare == (decimal)EnumFasePassaporti.Invio_Passaporti)
 {
     @Html.Action("Passaporti_Invio", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
 

@@ -19,7 +19,7 @@
 @Html.Hidden("hiAnnullaModFiglio")
 @Html.Hidden("hiEliminaFiglio")
 
-<p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
+<p style="margin-top: 10px; padding-right:15px">
     @if (solaLettura || trasfSolaLettura)
     {
         <button href="#" class="btn btn-default disabled" disabled="disabled">Inserisci Coniuge</button>
@@ -47,7 +47,7 @@
 
 </p>
 
-<div style="padding-left: 15px; padding-right: 35px; padding-top: 10px;">
+<div>
     <table id="tabElencoFamiliari" class="table-striped" cellspacing="0">
         <thead>
             <tr>
@@ -322,6 +322,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade " id="AnnullaModFiglioModal" tabindex="-2" role="dialog" aria-labelledby="AnnullaModFiglioModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -365,7 +366,6 @@
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript">
 

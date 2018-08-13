@@ -377,6 +377,7 @@
         });
 
     }
+    
     function AltriDatiFamiliariFiglio_var_Completati(idAltriDati, idFaseCorrente) {
         //debugger;
         var rotta = "/VariazionePassaporto/AltriDatiFamiliariFiglioPassaporto";
@@ -983,7 +984,8 @@
                     //GestionePulsantiNotificaAndConcludiPassaporto_Invio();
                     //GestioneAttivitaTrasferimento();
                     //$('#linkPratichePassaporto').stop().fadeIn();
-                    Passaporto();
+                    ElaborazionePassaporti();
+                    //Passaporto();
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }

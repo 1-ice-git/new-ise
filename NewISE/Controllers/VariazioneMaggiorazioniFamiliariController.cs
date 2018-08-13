@@ -201,8 +201,6 @@ namespace NewISE.Controllers
             bool siDocFormulario = false;
             bool siPensioniConiuge = false;
 
-
-
             var solaLettura = 0;
 
             using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
@@ -227,7 +225,7 @@ namespace NewISE.Controllers
 
             try
             {
-                //Lista Coniugi
+                #region Coniugi
                 using (dtConiuge dtc = new dtConiuge())
                 {
                     List<VariazioneConiugeModel> lcm = dtc.GetListaAttivazioniConiugeByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a => a.progressivo).ThenByDescending(a => a.idStatoRecord).ToList();
@@ -274,8 +272,9 @@ namespace NewISE.Controllers
                     }
                     ViewData.Add("check_nuovo_coniuge", check_nuovo_coniuge);
                 }
+                #endregion
 
-                // Lista Figli
+                #region Figli
                 using (dtFigli dtf = new dtFigli())
                 {
                     List<VariazioneFigliModel> lfm = dtf.GetListaAttivazioniFigliByIdMagFam(idMaggiorazioniFamiliari).OrderBy(a => a.progressivo).ThenByDescending(a => a.idStatoRecord).ToList();
@@ -323,6 +322,7 @@ namespace NewISE.Controllers
                     }
                     ViewData.Add("check_nuovo_figlio", check_nuovo_figlio);
                 }
+                #endregion
 
                 ViewData.Add("solaLettura", solaLettura);
                 ViewData.Add("visualizzaGestModifiche", visualizzaGestModifiche);
@@ -2219,6 +2219,7 @@ namespace NewISE.Controllers
                                                                 dtvmf.AssociaDocumentoAttivazione(last_att.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
                                                             }
                                                         }
+
                                                         break;
                                                     default:
                                                         throw new ArgumentOutOfRangeException("parentela");

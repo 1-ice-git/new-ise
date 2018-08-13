@@ -94,7 +94,7 @@
     </p>
 }
 
-@if (idFasePassaportiCorrente == 0)
+@if (idFasePassaportiCorrente == (decimal)EnumFasePassaporti.Completati)
 {
     <p style="padding-left: 15px;">
         @Ajax.ActionLink("Torna indietro", "PassaportoCompletato", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divElencoPassaporto_Completato", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
