@@ -63,7 +63,6 @@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.file)
                 </th>
-                <th></th>
 
             </tr>
         </thead>
@@ -84,25 +83,6 @@
                         <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
                             <img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                         </a>
-                    </td>
-                    <td class="text-center" style="width: 10%;">
-                        @if (enParentela == EnumParentela.Richiedente)
-                        {
-                            if (solaLettura)
-                            {
-                                //<a href="#" class="disabled">Elimina</a>
-                                <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
-
-                            }
-                            else
-                            {
-                                //<a href="#" onclick="EliminaDoc(@item.idDocumenti)" id="linkEliminaDoc">Elimina</a>
-                                <a href="#" onclick="EliminaDoc(@item.idDocumenti) " id="linkEliminaDoc">
-                                    <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;documento" />
-                                </a>
-                            }
-                        }
-
                     </td>
 
                 </tr>
@@ -126,7 +106,7 @@
     </p>
 }
 
-@if (idFaseCorrente == 0)
+@if (idFaseCorrente == (decimal)EnumFasePassaporti.Completati)
 {
     <p style="padding-left: 15px;">
         @Ajax.ActionLink("Torna indietro", "PassaportoCompletato", "VariazionePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divElencoPassaporto_Completato", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
@@ -200,40 +180,22 @@
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
         },
+        "bSort": false,
+        "bSortable": false,
+        "columnDefs": [
+            { "visible": true, "targets": [0] },
+            { "orderable": true, "targets": [0] },
+        ],
         "info": false,
         "lengthChange": false,
-        "pageLength": 3,
+        "pageLength": 5,
         "searching": false,
-        "paging": true,
+        "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "destroy": true,
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "width": "150px"
-        //    }
-
-        //]
-        //dom: 'Bfrtip',
-        //buttons: [
-        //    {
-        //        text: 'Nuovo Coniuge',
-        //        className: 'green',
-        //        action: function (e, dt, node, config) {
-        //            NuovoConiuge();
-        //        }
-        //    }
-        //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
+        "order": [0]
     });
+       
 
     function NuovoDocumento(idAttivazionePassaporto, idFamiliarePassaporto, TipoDocumento, Parentela, Chiamante) {
         //debugger;

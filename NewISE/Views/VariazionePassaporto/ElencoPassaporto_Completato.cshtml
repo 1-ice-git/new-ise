@@ -6,12 +6,12 @@
 @model IEnumerable<ElencoFamiliariPassaportoModel>
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-    decimal idFaseCorrente = 0;
+    decimal idFaseCorrente = Convert.ToDecimal(EnumFasePassaporti.Completati);
 }
 
 <div class="row">
     <div class="col-xs-12">
-        <table cellspacing="0" id="tabElencoCompletati" class="table-striped" style="width:100%">
+        <table cellspacing="0" id="tabElencoPassaportiCompletati_var" class="table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th></th>
@@ -39,9 +39,6 @@
                     </th>
                     <th class="text-center">
                         Doc. Passaporto
-                    </th>
-                    <th class="text-center">
-
                     </th>
                 </tr>
             </thead>
@@ -108,21 +105,6 @@
                                 @Html.Action("ColonnaElencoDocPassaporti", "VariazionePassaporto", new { idAttivazionePassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela })
                             </div>
                         </td>
-                        <td class="text-center">
-                            @if (item.notificato == false && item.attivato == false)
-                            {
-                                <a href="#" onclick="UploadDocumentoPassaportoModal_var(@Convert.ToDecimal(item.HasDocPassaporto.tipoDocPassaporto),@idTrasferimento, @Convert.ToDecimal(item.parentela), @item.idFamiliarePassaporto );" id="uploadDocPassaporto">
-                                    @if (item.HasDocPassaporto.esisteDocPassaporto)
-                                    {
-                                        <img src="~/Immagini/switch.png" width="17" title="Sostituisci Documento Passaporto" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/Immagini/Plus_Green.png" width="17" title="Upload Documento Passaporto" />
-                                    }
-                                </a>
-                            }
-                        </td>
                     </tr>
                 }
             </tbody>
@@ -135,7 +117,7 @@
 
 
 <script type="text/javascript">
-    $("#tabElencoCompletati").DataTable({
+    $("#tabElencoPassaportiCompletati_var").DataTable({
             "language": {
                 "sEmptyTable": "Nessun dato presente nella tabella",
                 "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",

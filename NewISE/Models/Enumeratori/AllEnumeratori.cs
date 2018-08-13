@@ -74,7 +74,8 @@ namespace NewISE.Models.Enumeratori
     public enum EnumFasePassaporti
     {
         Richiesta_Passaporti = 1,
-        Invio_Passaporti = 2
+        Invio_Passaporti = 2,
+        Completati = 3
     }
 
     public enum TipologiaCOAN

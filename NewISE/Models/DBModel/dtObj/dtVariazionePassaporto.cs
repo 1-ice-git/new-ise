@@ -1623,23 +1623,23 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 #region eventuali CONIUGI senza passaporto su AP Richiesta attiva
                                 //elenco
-                                var lc = p.CONIUGEPASSAPORTO
+                                var lc_p = p.CONIUGEPASSAPORTO
                                             .Where(a => a.ANNULLATO == false &&
                                                         a.INCLUDIPASSAPORTO == false &&
                                                         a.IDATTIVAZIONIPASSAPORTI == ultima_ap_richiesta.IDATTIVAZIONIPASSAPORTI)
                                                         .ToList();
 
                                 //li replico su CONIUGEPASSAPORTO e li associo alla nuova attivazione Fase 1
-                                if (lc?.Any() ?? false)
+                                if (lc_p?.Any() ?? false)
                                 {
-                                    foreach (var c in lc)
+                                    foreach (var c_p in lc_p)
                                     {
                                         cp = new CONIUGEPASSAPORTO()
                                         {
                                             IDPASSAPORTI = idPassaporti,
                                             IDATTIVAZIONIPASSAPORTI = ap_new.IDATTIVAZIONIPASSAPORTI,
-                                            INCLUDIPASSAPORTO = c.INCLUDIPASSAPORTO,
-                                            ANNULLATO = c.ANNULLATO,
+                                            INCLUDIPASSAPORTO = c_p.INCLUDIPASSAPORTO,
+                                            ANNULLATO = c_p.ANNULLATO,
                                             DATAAGGIORNAMENTO = DateTime.Now
                                         };
                                         db.CONIUGEPASSAPORTO.Add(cp);
@@ -1648,11 +1648,11 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             throw new Exception("Errore nella fase di creazione di coniugepassaporto (richiesta).");
                                         }
-                                        var coniuge = c.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDCONIUGE).First();
+                                        var coniuge = c_p.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDCONIUGE).First();
 
                                         AssociaConiugePassaportoConiuge(cp.IDCONIUGEPASSAPORTO, coniuge.IDCONIUGE, db);
 
-                                        var lDocIdentita = c.DOCUMENTI.Where(a =>
+                                        var lDocIdentita = c_p.DOCUMENTI.Where(a =>
                                                 a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
                                                 a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
 
@@ -1668,23 +1668,23 @@ namespace NewISE.Models.DBModel.dtObj
                                 #endregion
 
                                 #region eventuali FIGLI senza passaporto su AP Richiesta attiva
-                                var lf = p.FIGLIPASSAPORTO
+                                var lf_p = p.FIGLIPASSAPORTO
                                             .Where(a => a.ANNULLATO == false &&
                                                         a.INCLUDIPASSAPORTO == false &&
                                                         a.IDATTIVAZIONIPASSAPORTI == ultima_ap_richiesta.IDATTIVAZIONIPASSAPORTI)
                                                         .ToList();
 
-                                if (lf?.Any() ?? false)
+                                if (lf_p?.Any() ?? false)
                                 {
-                                    foreach (var f in lf)
+                                    foreach (var f_p in lf_p)
                                     {
 
                                         fp = new FIGLIPASSAPORTO()
                                         {
                                             IDPASSAPORTI = idPassaporti,
                                             IDATTIVAZIONIPASSAPORTI = ap_new.IDATTIVAZIONIPASSAPORTI,
-                                            INCLUDIPASSAPORTO = f.INCLUDIPASSAPORTO,
-                                            ANNULLATO = f.ANNULLATO,
+                                            INCLUDIPASSAPORTO = f_p.INCLUDIPASSAPORTO,
+                                            ANNULLATO = f_p.ANNULLATO,
                                             DATAAGGIORNAMENTO = DateTime.Now
                                         };
                                         db.FIGLIPASSAPORTO.Add(fp);
@@ -1693,11 +1693,11 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             throw new Exception("Errore nella fase di creazione di figlipassaporto (richiesta).");
                                         }
-                                        var figlio = f.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDFIGLI).First();
+                                        var figlio = f_p.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDFIGLI).First();
 
                                         AssociaFigliPassaportoFigli(fp.IDFIGLIPASSAPORTO, figlio.IDFIGLI, db);
 
-                                        var lDocIdentita = f.DOCUMENTI.Where(a =>
+                                        var lDocIdentita = f_p.DOCUMENTI.Where(a =>
                                                 a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
                                                 a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
 
@@ -1893,7 +1893,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var cp_invio in lcp_invio)
                                         {
                                             ordine++;
-                                            var c = cp_invio.CONIUGE.First();
+                                            var c = cp_invio.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDCONIUGE).ToList().First();
+
 
                                             idDocPassaporto = GetIdDocFamiliare((decimal)EnumTipoDoc.Passaporto, cp_invio.IDATTIVAZIONIPASSAPORTI, c.IDCONIUGE, (decimal)EnumParentela.Coniuge, db);
                                             idDocIdentita = GetIdDocFamiliare((decimal)EnumTipoDoc.Documento_Identita, cp_invio.IDATTIVAZIONIPASSAPORTI, c.IDCONIUGE, (decimal)EnumParentela.Coniuge, db);
@@ -1953,7 +1954,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var fp_invio in lfp_invio)
                                         {
                                             ordine++;
-                                            var f = fp_invio.FIGLI.First();
+                                            var f = fp_invio.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDFIGLI).ToList().First();
 
                                             idDocPassaporto = GetIdDocFamiliare((decimal)EnumTipoDoc.Passaporto, fp_invio.IDATTIVAZIONIPASSAPORTI, f.IDFIGLI, (decimal)EnumParentela.Figlio, db);
                                             idDocIdentita = GetIdDocFamiliare((decimal)EnumTipoDoc.Documento_Identita, fp_invio.IDATTIVAZIONIPASSAPORTI, f.IDFIGLI, (decimal)EnumParentela.Figlio, db);
@@ -3574,7 +3575,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var cp_invio_attiva in lcp_invio_attiva)
                                         {
                                             ordine++;
-                                            var c = cp_invio_attiva.CONIUGE.First();
+                                            var c = cp_invio_attiva.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a=>a.IDCONIUGE).ToList().First();
 
                                             idDocPassaporto = GetIdDocFamiliare((decimal)EnumTipoDoc.Passaporto, cp_invio_attiva.IDATTIVAZIONIPASSAPORTI, c.IDCONIUGE, (decimal)EnumParentela.Coniuge, db);
                                             idDocIdentita = GetIdDocFamiliare((decimal)EnumTipoDoc.Documento_Identita, cp_invio_attiva.IDATTIVAZIONIPASSAPORTI, c.IDCONIUGE, (decimal)EnumParentela.Coniuge, db);
@@ -3608,13 +3609,13 @@ namespace NewISE.Models.DBModel.dtObj
                                                 ordinamento = ordine
                                             };
 
-                                            lConiuge.Add(coniuge);
+                                            lefm.Add(coniuge);
 
                                         }
-                                        if (lConiuge?.Any() ?? false)
-                                        {
-                                            lefm.AddRange(lConiuge);
-                                        }
+                                        //if (lConiuge?.Any() ?? false)
+                                        //{
+                                        //    lefm.AddRange(lConiuge);
+                                        //}
 
                                     }
 
@@ -3630,7 +3631,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var fp_invio_attiva in lfp_invio_attiva)
                                         {
                                             ordine++;
-                                            var f = fp_invio_attiva.FIGLI.First();
+                                            var f = fp_invio_attiva.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDFIGLI).ToList().First();
+
 
                                             idDocPassaporto = GetIdDocFamiliare((decimal)EnumTipoDoc.Passaporto, fp_invio_attiva.IDATTIVAZIONIPASSAPORTI, f.IDFIGLI, (decimal)EnumParentela.Figlio, db);
                                             idDocIdentita = GetIdDocFamiliare((decimal)EnumTipoDoc.Documento_Identita, fp_invio_attiva.IDATTIVAZIONIPASSAPORTI, f.IDFIGLI, (decimal)EnumParentela.Figlio, db);
@@ -3661,12 +3663,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 ordinamento = ordine
                                             };
-                                            lFiglio.Add(figlio);
+                                            lefm.Add(figlio);
                                         }
-                                        if (lFiglio?.Any() ?? false)
-                                        {
-                                            lefm.AddRange(lFiglio);
-                                        }
+                                        //if (lFiglio?.Any() ?? false)
+                                        //{
+                                        //    lefm.AddRange(lFiglio);
+                                        //}
 
                                     }
 
@@ -3692,6 +3694,53 @@ namespace NewISE.Models.DBModel.dtObj
             return lefm;
         }
 
+        public ATTIVAZIONIPASSAPORTI GetUltimaFasePassaporti_Richiesta_Da_Notificare(decimal idPassaporti, ModelDBISE db)
+        {
+            List<ATTIVAZIONIPASSAPORTI> lap = new List<ATTIVAZIONIPASSAPORTI>();
+            ATTIVAZIONIPASSAPORTI ap = new ATTIVAZIONIPASSAPORTI();
+
+            var p = db.PASSAPORTI.Find(idPassaporti);
+            lap = p.ATTIVAZIONIPASSAPORTI.Where(
+                    a => a.ANNULLATO == false && 
+                    a.IDFASEPASSAPORTI == (decimal)EnumFasePassaporti.Richiesta_Passaporti &&
+                    a.NOTIFICARICHIESTA==false
+                    ).OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI).ToList();
+            if (lap?.Any() ?? false)
+            {
+                ap = lap.First();
+            }
+            return ap;
+        }
+
+        public CONIUGEPASSAPORTO GetConiugePassaportoByIDConiuge(decimal id, ModelDBISE db)
+        {
+            CONIUGEPASSAPORTO cp = new CONIUGEPASSAPORTO();
+
+            var c = db.CONIUGE.Find(id);
+
+            var lcp = c.CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDCONIUGEPASSAPORTO).ToList();
+            if(lcp?.Any()??false)
+            {
+                cp = lcp.First();
+            }
+
+            return cp;
+        }
+
+        public FIGLIPASSAPORTO GetFigliPassaportoByIDFigli(decimal id, ModelDBISE db)
+        {
+            FIGLIPASSAPORTO fp = new FIGLIPASSAPORTO();
+
+            var f = db.FIGLI.Find(id);
+
+            var lfp = f.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDFIGLIPASSAPORTO).ToList();
+            if (lfp?.Any() ?? false)
+            {
+                fp = lfp.First();
+            }
+
+            return fp;
+        }
 
 
     }

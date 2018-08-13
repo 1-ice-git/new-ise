@@ -6,11 +6,12 @@
 @{ 
     decimal idFaseCorrente = Convert.ToDecimal(ViewData["idFaseCorrente"]);
     decimal idFaseRichiesta = Convert.ToDecimal(EnumFasePassaporti.Richiesta_Passaporti);
+    decimal idFaseCompletati = Convert.ToDecimal(EnumFasePassaporti.Completati);
 }
 
 @if (Model.HasDoc.esisteDoc)
 {
-    if (idFaseCorrente == 0) //fasecorrente=0 significa che sto visualizzando l'elenco completati
+    if (idFaseCorrente == idFaseCompletati) //fasecorrente=0 significa che sto visualizzando l'elenco completati
     {
         <a href="#" onclick="ElencoDocumentiPassaporto_var_Completati(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) )">
             <img class="SfondoBordoImg" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
@@ -23,7 +24,7 @@
         </a>
     }
 }else {
-    if (idFaseCorrente == 0) //fasecorrente=0 significa che sto visualizzando l'elenco completati
+    if (idFaseCorrente == idFaseCompletati) //fasecorrente=0 significa che sto visualizzando l'elenco completati
     {
         //questo codice è messo per sicurezza perchè è impossibile che nell'elenco dei completati non ci sia il documento
         <a href="#" onclick="ElencoDocumentiPassaporto_var_Completati(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) )">

@@ -83,7 +83,8 @@ namespace NewISE.Controllers
                     lefm = dtvp.GetFamiliariRichiestaPassaporto(idTrasferimento).ToList();
 
                     ViewData.Add("idTrasferimento", idTrasferimento);
-                    
+                    ViewData.Add("idFasecorrente", (decimal)EnumFasePassaporti.Richiesta_Passaporti);
+
                 }
             }
             catch (Exception ex)
