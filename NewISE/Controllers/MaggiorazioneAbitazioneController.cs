@@ -43,8 +43,8 @@ namespace NewISE.Controllers
 
         public ActionResult AttivitaMAB(decimal idTrasferimento)
         {
-            List<MaggiorazioneAbitazioneViewModel> mavml = new List<MaggiorazioneAbitazioneViewModel>();
-            MaggiorazioneAbitazioneViewModel mavm = new MaggiorazioneAbitazioneViewModel();
+            List<MABViewModel> mavml = new List<MABViewModel>();
+            MABViewModel mavm = new MABViewModel();
             MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
             MABModel mabm = new MABModel();
 
@@ -613,7 +613,7 @@ namespace NewISE.Controllers
 
         public ActionResult NuovaMAB(decimal idTrasferimento)
         {
-            MaggiorazioneAbitazioneViewModel mam = new MaggiorazioneAbitazioneViewModel();
+            MABViewModel mam = new MABViewModel();
 
             List<SelectListItem> lValute = new List<SelectListItem>();
 
@@ -680,7 +680,7 @@ namespace NewISE.Controllers
 
         public ActionResult ModificaMAB(decimal idMAB)
         {
-            MaggiorazioneAbitazioneViewModel mam = new MaggiorazioneAbitazioneViewModel();
+            MABViewModel mam = new MABViewModel();
 
             List<SelectListItem> lValute = new List<SelectListItem>();
 
@@ -780,9 +780,9 @@ namespace NewISE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfermaNuovaMAB(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento)
+        public ActionResult ConfermaNuovaMAB(MABViewModel mvm, decimal idTrasferimento)
         {
-            MaggiorazioneAbitazioneViewModel mam = new MaggiorazioneAbitazioneViewModel();
+            MABViewModel mam = new MABViewModel();
 
             try
             {
@@ -876,9 +876,9 @@ namespace NewISE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfermaModificaMAB(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento, decimal idMAB)
+        public ActionResult ConfermaModificaMAB(MABViewModel mvm, decimal idTrasferimento, decimal idMAB)
         {
-            MaggiorazioneAbitazioneViewModel mam = new MaggiorazioneAbitazioneViewModel();
+            MABViewModel mam = new MABViewModel();
 
             try
             {

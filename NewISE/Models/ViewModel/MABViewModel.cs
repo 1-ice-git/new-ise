@@ -7,7 +7,7 @@ using System.Web;
 
 namespace NewISE.Models.ViewModel
 {
-    public class MaggiorazioneAbitazioneViewModel : MaggiorazioneAbitazioneModel
+    public class MABViewModel : MABModel
     {
 
 
@@ -17,10 +17,10 @@ namespace NewISE.Models.ViewModel
         public decimal id_Valuta { get; set; }
         public decimal idMagAnnuali { get; set; }
         public decimal idTrasferimento { get; set; }
-        public decimal idAttivazioneMAB { get; set; }
-        public decimal idMAB { get; set; }
+        //public decimal idAttivazioneMAB { get; set; }
+        //public decimal idMAB { get; set; }
 
-        public bool rinunciaMAB { get; set; }
+        //public bool rinunciaMAB { get; set; }
 
         [Display(Name = "Valuta")]
         public string descrizioneValuta { get; set; }
@@ -35,12 +35,14 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Anticipo Annuale")]
         public bool anticipoAnnuale { get; set; }
 
-        [Display(Name = "Data Inizio")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime dataInizioMAB { get; set; }
-        [Display(Name = "Data Fine")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime dataFineMAB { get; set; }
+        public bool annualita { get; set; }
+
+        //[Display(Name = "Data Inizio")]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        //public DateTime dataInizioMAB { get; set; }
+        //[Display(Name = "Data Fine")]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        //public DateTime dataFineMAB { get; set; }
 
     }
 }

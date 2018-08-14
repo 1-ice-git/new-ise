@@ -612,7 +612,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<PAGATOCONDIVISOMAB> GetListPagatoCondivisoMABPartenza(MaggiorazioneAbitazioneViewModel mvm)
+        public List<PAGATOCONDIVISOMAB> GetListPagatoCondivisoMABPartenza(MABViewModel mvm)
         {
             try
             {
@@ -1624,7 +1624,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public decimal SetMaggiorazioneAbitazione(ref MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
+        public decimal SetMaggiorazioneAbitazione(ref MABViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
         {
             try
             {
@@ -1668,7 +1668,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void UpdateMABPartenza(ref MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
+        public void UpdateMABPartenza(ref MABViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
         {
             try
             {
@@ -1707,7 +1707,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public CANONEMAB SetCanoneMAB(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public CANONEMAB SetCanoneMAB(MABViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -1745,7 +1745,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public CANONEMAB UpdateCanoneMAB(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public CANONEMAB UpdateCanoneMAB(MABViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -1792,7 +1792,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public PAGATOCONDIVISOMAB CreaPagatoCondivisoMAB(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public PAGATOCONDIVISOMAB CreaPagatoCondivisoMAB(MABViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -1831,7 +1831,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public PAGATOCONDIVISOMAB UpdatePagatoCondivisoMAB(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
+        public PAGATOCONDIVISOMAB UpdatePagatoCondivisoMAB(MABViewModel mvm, ModelDBISE db)
         {
             try
             {
@@ -1874,7 +1874,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void UpdateAnticipoAnnualeMAB(MABModel mm, MaggiorazioneAbitazioneViewModel mavm, ModelDBISE db)
+        public void UpdateAnticipoAnnualeMAB(MABModel mm, MABViewModel mavm, ModelDBISE db)
         {
             try
             {
@@ -1914,7 +1914,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public void InserisciMAB(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento)
+        public void InserisciMAB(MABViewModel mvm, decimal idTrasferimento)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -2037,7 +2037,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AggiornaMAB(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento, decimal idMAB)
+        public void AggiornaMAB(MABViewModel mvm, decimal idTrasferimento, decimal idMAB)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -2546,7 +2546,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public AnticipoAnnualeMABModel CreaAnticipoAnnualePartenza(MaggiorazioneAbitazioneViewModel mavm, ModelDBISE db)
+        public AnticipoAnnualeMABModel CreaAnticipoAnnualePartenza(MABViewModel mavm, ModelDBISE db)
         {
             try
             {
