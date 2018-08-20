@@ -22,6 +22,7 @@ namespace NewISE.EF
             this.MAB = new HashSet<MAB>();
             this.MODIFICHE_MAB = new HashSet<MODIFICHE_MAB>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
+            this.PERIODOMAB = new HashSet<PERIODOMAB>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
@@ -45,6 +46,8 @@ namespace NewISE.EF
         public virtual ICollection<MODIFICHE_MAB> MODIFICHE_MAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERIODOMAB> PERIODOMAB { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
