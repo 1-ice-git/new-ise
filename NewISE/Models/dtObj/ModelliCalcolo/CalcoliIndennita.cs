@@ -67,6 +67,15 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         //private int _giorniSospensione = 0;
         //private decimal _importoAbbattimentoSospensione = 0;
 
+        private decimal _percentualeMAB = 0;
+        private decimal _canoneMab = 0;
+        private decimal _tassoCambio = 0;
+        private bool _anticipoAnnualeMAB = false;
+        private bool _condivisioneMAB = false;
+        private bool _pagatoMAB = false;
+        private decimal _canoneInEuro = 0;
+        private decimal _importoMABMaxMensile = 0;
+        private decimal _importoMABMensile = 0;
 
         private DateTime _dtDatiParametri;
         private TRASFERIMENTO _trasferimento = new TRASFERIMENTO();
@@ -135,7 +144,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal SaldoContributoOmnicomprensivoPartenza => _saldoContributoOmnicomprensivoPartenza;
 
 
-        
+
 
         [ReadOnly(true)]
         public decimal PercentualeFKMRientro => _percentualeFKMRientro;
@@ -154,9 +163,24 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal IndennitaRichiamoLordo => _indennitaRichiamoLordo;
         [ReadOnly(true)]
         public decimal IndennitaRichiamoNetto => _indennitaRichiamoNetto;
-
-        
-
+        [ReadOnly(true)]
+        public decimal PercentualeMAB => _percentualeMAB;
+        [ReadOnly(true)]
+        public decimal CanoneMAB => _canoneMab;
+        [ReadOnly(true)]
+        public decimal TassoCambio => _tassoCambio;
+        [ReadOnly(true)]
+        public bool AnticipoAnnualeMAB => _anticipoAnnualeMAB;
+        [ReadOnly(true)]
+        public bool CondivisioneMAB => _condivisioneMAB;
+        [ReadOnly(true)]
+        public bool PagatoMab => _pagatoMAB;
+        [ReadOnly(true)]
+        public decimal CanoneMABEuro => _canoneInEuro;
+        [ReadOnly(true)]
+        public decimal ImportoMABMaxMensile => _importoMABMaxMensile;
+        [ReadOnly(true)]
+        public decimal ImportoMABMensile => _importoMABMensile;
         //[ReadOnly(true)]
         //public int GiorniSospensione => _giorniSospensione;
 
@@ -277,6 +301,12 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 this.CalcolaContributoOmniComprensivoPartenza();
                 this.CalcolaRichiamo();
                 this.CalcolaContributoOmniComprensivoRientro();
+                this.CalcolaMab();
+
+
+
+
+
 
 
             }
@@ -285,6 +315,164 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                 throw ex;
             }
+        }
+
+        private void PrelevaPagatoCondiviso(MAB mab)
+        {
+            var lpcMab =
+                mab.PAGATOCONDIVISOMAB.Where(
+                    a =>
+                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
+                        a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
+                        _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                        _dtDatiParametri <= a.DATAFINEVALIDITA)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+            if (lpcMab?.Any() ?? false)
+            {
+                var pcMab = lpcMab.First();
+                _condivisioneMAB = pcMab.CONDIVISO;
+                _pagatoMAB = pcMab.PAGATO;
+            }
+        }
+
+        private void PrelevaAnticipoAnnualeMab(MAB mab)
+        {
+            var lAntAnnMab =
+                mab.ANTICIPOANNUALEMAB.Where(
+                    a =>
+                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
+                        a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+                    .OrderByDescending(a => a.IDANTICIPOANNUALEMAB)
+                    .ToList();
+            if (lAntAnnMab?.Any() ?? false)
+            {
+                var aamab = lAntAnnMab.First();
+
+                _anticipoAnnualeMAB = aamab.ANTICIPOANNUALE;
+
+            }
+        }
+
+        private void PrelevaTFRMAB(CANONEMAB cmab)
+        {
+            var ltfr =
+                cmab.TFR.Where(
+                    a =>
+                        a.ANNULLATO == false && a.IDVALUTA == cmab.IDVALUTA && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                        _dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+            if (ltfr?.Any() ?? false)
+            {
+                var tfr = ltfr.First();
+
+                _tassoCambio = tfr.TASSOCAMBIO;
+
+            }
+        }
+
+        private void PrelevaCanoneMab(MAB mab)
+        {
+            var lcmab =
+                mab.CANONEMAB.Where(
+                    a =>
+                        a.ATTIVAZIONEMAB.ANNULLATO == false && a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                        a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
+                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                        _dtDatiParametri >= a.DATAINIZIOVALIDITA && _dtDatiParametri <= a.DATAFINEVALIDITA)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+            if (lcmab?.Any() ?? false)
+            {
+                var cmab = lcmab.First();
+
+                _canoneMab = cmab.IMPORTOCANONE;
+
+                this.PrelevaTFRMAB(cmab);
+
+            }
+        }
+
+        private void PrelevaDatiMab()
+        {
+
+
+            var lmab =
+                _indennita.MAGGIORAZIONEABITAZIONE.MAB.Where(
+                    a =>
+                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
+                        a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
+                        a.IDMAB ==
+                        a.PERIODOMAB.Where(
+                            b =>
+                                b.ATTIVAZIONEMAB.ANNULLATO == false && b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                                b.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
+                                b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                _dtDatiParametri >= b.DATAINIZIOMAB &&
+                                _dtDatiParametri <= b.DATAFINEMAB).Max(b => b.IDMAB))
+                    .OrderByDescending(a => a.IDMAB)
+                    .ToList();
+
+            if (lmab?.Any() ?? false)
+            {
+                #region Percentuale MAB
+                var mab = lmab.First();
+                var lpmab =
+                    mab.PERCENTUALEMAB.Where(
+                        a =>
+                            a.ANNULLATO == false && a.IDUFFICIO == _trasferimento.IDUFFICIO &&
+                            a.IDLIVELLO == _livello.IDLIVELLO &&
+                            _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                            _dtDatiParametri <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                        .ToList();
+
+                if (lpmab?.Any() ?? false)
+                {
+                    var pmab = lpmab.First();
+
+                    if (_ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Dirigente ||
+                        _ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Responsabile)
+                    {
+                        _percentualeMAB = pmab.PERCENTUALERESPONSABILE;
+                    }
+                    else
+                    {
+                        _percentualeMAB = pmab.PERCENTUALE;
+                    }
+
+
+
+                }
+                #endregion
+
+                this.PrelevaCanoneMab(mab);
+                this.PrelevaAnticipoAnnualeMab(mab);
+                this.PrelevaPagatoCondiviso(mab);
+            }
+
+        }
+
+        private void CalcolaMab()
+        {
+            this.PrelevaDatiMab();
+
+            _importoMABMaxMensile = _percentualeMAB * _indennitaPersonale;
+
+            if (_canoneMab > 0)
+            {
+                _canoneInEuro = _canoneMab * _tassoCambio;
+                if (_importoMABMaxMensile > _canoneMab)
+                {
+                    _importoMABMensile = _canoneMab;
+                }
+                else
+                {
+                    _importoMABMensile = _importoMABMaxMensile;
+                }
+            }
+
+
+
         }
 
         private void RuoloDipendente_Ufficio()
@@ -596,10 +784,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         }
 
-
-
-
-
         private void CalcolaPrimaSistemazione()
         {
             RIDUZIONI riduzioniPS = new RIDUZIONI();
@@ -690,7 +874,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             }
 
         }
-
 
         private void CalcolaContributoOmniComprensivoPartenza()
         {
