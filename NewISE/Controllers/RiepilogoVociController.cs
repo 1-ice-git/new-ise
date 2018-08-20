@@ -176,7 +176,7 @@ namespace NewISE.Controllers
                                     a.ANNULLATO == false && a.ELABORATO == true &&
                                     (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
                                     a.ELABINDENNITA.Any(b => b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
-                                    a.ELABMAB.IDMAGABITAZIONE == mab.IDMAGABITAZIONE ||
+                                    a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDMAGABITAZIONE == mab.IDMAGABITAZIONE) ||
                                     a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
                                     a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO)
                                 .OrderBy(a => a.ANNORIFERIMENTO)
@@ -246,7 +246,7 @@ namespace NewISE.Controllers
                                     var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                     var tv = teorico.VOCI.TIPOVOCE;
                                     //var uf = tr.UFFICI;
-                                    
+
 
                                     lrvm = (from e in lTeorici
                                             select new RiepiloVociModel()

@@ -87,9 +87,9 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             dip = t.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI;
                         }
-                        else if (t.ELABMAB?.IDELABMAB > 0)
+                        else if (t.ELABMAB?.Any(a => a.ANNULLATO == false) ?? false)
                         {
-                            dip = t.ELABMAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                            dip = t.ELABMAB.First(a => a.ANNULLATO == false).MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
                         }
                         if (!lElencoDipCalcolati.Contains(dip))
                         {
@@ -362,10 +362,10 @@ namespace NewISE.Models.DBModel.dtObj
                         .INDENNITA.TRASFERIMENTO.DIPENDENTI;
 
             }
-            else if (teorico?.IDELABMAB > 0)
+            else if (teorico.ELABMAB?.Any(a => a.ANNULLATO == false) ?? false)
             {
                 dip = new DIPENDENTI();
-                dip = teorico.ELABMAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                dip = teorico.ELABMAB.First(a => a.ANNULLATO == false).MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
 
             }
             else if (teorico?.IDELABTRASPEFFETTI > 0)
@@ -421,10 +421,10 @@ namespace NewISE.Models.DBModel.dtObj
                         lDip.Add(dip);
                     }
                 }
-                else if (teorico?.IDELABMAB > 0)
+                else if (teorico.ELABMAB?.Any(a => a.ANNULLATO == false) ?? false)
                 {
                     dip = new DIPENDENTI();
-                    dip = teorico.ELABMAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                    dip = teorico.ELABMAB.First(a => a.ANNULLATO == false).MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
                     if (!lDip.Contains(dip))
                     {
                         lDip.Add(dip);

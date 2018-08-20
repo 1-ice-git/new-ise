@@ -691,17 +691,24 @@ namespace NewISE.Models.dtObj
                 var item = db.Entry<PERCENTUALEMAB>(pm);
 
                 var lmab = db.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                            a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == pm.IDUFFICIO &&
-                                            a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI
-                                                .LIVELLIDIPENDENTI.Any(
-                                                    b =>
-                                                        b.ANNULLATO == false &&
-                                                        b.DATAFINEVALIDITA >= pm.DATAINIZIOVALIDITA &&
-                                                        b.DATAINIZIOVALIDITA <= pm.DATAFINEVALIDITA &&
-                                                        b.IDLIVELLO == pm.IDLIVELLO) &&
-                                            a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
-                                            a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
-                    .OrderBy(a => a.DATAINIZIOMAB)
+                                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == pm.IDUFFICIO &&
+                                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI
+                                                 .LIVELLIDIPENDENTI.Any(
+                                                     b =>
+                                                         b.ANNULLATO == false &&
+                                                         b.DATAFINEVALIDITA >= pm.DATAINIZIOVALIDITA &&
+                                                         b.DATAINIZIOVALIDITA <= pm.DATAFINEVALIDITA &&
+                                                         b.IDLIVELLO == pm.IDLIVELLO) &&
+                                             a.PERIODOMAB.Any(
+                                                 b =>
+                                                     b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                     b.ATTIVAZIONEMAB.ANNULLATO == false &&
+                                                     b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                                                     b.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
+                                                     b.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
+                                                     b.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
+                    )
+                    .OrderBy(a => a.IDMAB)
                     .ToList();
 
 
@@ -756,22 +763,16 @@ namespace NewISE.Models.dtObj
                 var ma = db.MAGGIORAZIONIANNUALI.Find(idMagAnnuali);
                 var item = db.Entry<MAGGIORAZIONIANNUALI>(ma);
 
-
-                //var lmab =
-                //    db.MAGGIORAZIONEABITAZIONE.Where(
-                //        a =>
-                //            a.INDENNITA.TRASFERIMENTO.IDUFFICIO == ma.IDUFFICIO &&
-                //            a.MAB.Where(
-                //                b =>
-                //                    b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                //                    b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA && b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA)
-                //                .Any()).OrderBy(a => a.IDMAGABITAZIONE).ToList();
-
                 var lmab =
                     db.MAB.Where(
                         a =>
                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                            a.DATAFINEMAB >= ma.DATAINIZIOVALIDITA && a.DATAINIZIOMAB <= ma.DATAFINEVALIDITA &&
+                            a.PERIODOMAB.Any(
+                                b =>
+                                    b.DATAFINEMAB >= ma.DATAINIZIOVALIDITA && b.DATAINIZIOMAB <= ma.DATAFINEVALIDITA &&
+                                    b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                    b.ATTIVAZIONEMAB.ANNULLATO == false && b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                                    b.ATTIVAZIONEMAB.ATTIVAZIONE == true) &&
                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == ma.IDUFFICIO)
                         .OrderBy(a => a.IDMAB)
                         .ToList();
