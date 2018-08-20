@@ -21,6 +21,7 @@ namespace NewISE.EF
             this.CANONEMAB = new HashSet<CANONEMAB>();
             this.MAB1 = new HashSet<MAB>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
+            this.PERIODOMAB = new HashSet<PERIODOMAB>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
         }
@@ -29,8 +30,6 @@ namespace NewISE.EF
         public decimal IDMAGABITAZIONE { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
         public decimal IDSTATORECORD { get; set; }
-        public System.DateTime DATAINIZIOMAB { get; set; }
-        public System.DateTime DATAFINEMAB { get; set; }
         public bool RINUNCIAMAB { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public Nullable<decimal> FK_IDMAB { get; set; }
@@ -45,6 +44,8 @@ namespace NewISE.EF
         public virtual MAB MAB2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERIODOMAB> PERIODOMAB { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

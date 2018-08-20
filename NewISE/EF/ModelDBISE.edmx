@@ -981,8 +981,6 @@
           <Property Name="IDMAGABITAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIOMAB" Type="date" Nullable="false" />
-          <Property Name="DATAFINEMAB" Type="date" Nullable="false" />
           <Property Name="RINUNCIAMAB" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="FK_IDMAB" Type="number" Precision="38" Scale="0" />
@@ -1248,6 +1246,19 @@
           <Property Name="PERCENTUALEFIGLI" Type="number" Precision="11" Scale="8" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PERIODOMAB">
+          <Key>
+            <PropertyRef Name="IDPERIODOMAB" />
+          </Key>
+          <Property Name="IDPERIODOMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIOMAB" Type="date" Nullable="false" />
+          <Property Name="DATAFINEMAB" Type="date" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="FK_IDPERIODOMAB" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="PMF_F">
           <Key>
@@ -1928,6 +1939,20 @@
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Principal>
             <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AMAB_PMAB">
+          <End Role="ATTIVAZIONEMAB" Type="Self.ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERIODOMAB" Type="Self.PERIODOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="PERIODOMAB">
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -3750,6 +3775,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAB_PMAB">
+          <End Role="MAB" Type="Self.MAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERIODOMAB" Type="Self.PERIODOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAB">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="PERIODOMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MAE_E">
           <End Role="MESEANNOELABORAZIONE" Type="Self.MESEANNOELABORAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4140,6 +4179,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_PMAB_PMAB">
+          <End Role="PERIODOMAB" Type="Self.PERIODOMAB" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERIODOMAB1" Type="Self.PERIODOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODOMAB">
+              <PropertyRef Name="IDPERIODOMAB" />
+            </Principal>
+            <Dependent Role="PERIODOMAB1">
+              <PropertyRef Name="FK_IDPERIODOMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_PMF_PMF_F">
           <End Role="PERCENTUALEMAGFIGLI" Type="Self.PERCENTUALEMAGFIGLI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4500,6 +4553,20 @@
               <PropertyRef Name="IDSTATORECORD" />
             </Principal>
             <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_SR_PMAB">
+          <End Role="STATORECORD" Type="Self.STATORECORD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERIODOMAB" Type="Self.PERIODOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Principal>
+            <Dependent Role="PERIODOMAB">
               <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
@@ -5573,6 +5640,7 @@
           <EntitySet Name="PERCENTUALEMAB" EntityType="Self.PERCENTUALEMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="Self.PERCENTUALEMAGCONIUGE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="Self.PERCENTUALEMAGFIGLI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERIODOMAB" EntityType="Self.PERIODOMAB" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PMF_F" EntityType="Self.PMF_F" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PRIMASITEMAZIONE" EntityType="Self.PRIMASITEMAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="PROVVIDENZESCOLASTICHE" EntityType="Self.PROVVIDENZESCOLASTICHE" Schema="ISESIM" store:Type="Tables" />
@@ -5689,6 +5757,10 @@
           <AssociationSet Name="R_AMAB_PCMAB" Association="Self.R_AMAB_PCMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_AMAB_PMAB" Association="Self.R_AMAB_PMAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="PERIODOMAB" EntitySet="PERIODOMAB" />
           </AssociationSet>
           <AssociationSet Name="R_AMAB_VMAB" Association="Self.R_AMAB_VMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
@@ -6210,6 +6282,10 @@
             <End Role="MAB" EntitySet="MAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_MAB_PMAB" Association="Self.R_MAB_PMAB">
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="PERIODOMAB" EntitySet="PERIODOMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_MAE_E" Association="Self.R_MAE_E">
             <End Role="MESEANNOELABORAZIONE" EntitySet="MESEANNOELABORAZIONE" />
             <End Role="ELABORAZIONI" EntitySet="ELABORAZIONI" />
@@ -6322,6 +6398,10 @@
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
             <End Role="MAB_PMAB" EntitySet="MAB_PMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_PMAB_PMAB" Association="Self.R_PMAB_PMAB">
+            <End Role="PERIODOMAB" EntitySet="PERIODOMAB" />
+            <End Role="PERIODOMAB1" EntitySet="PERIODOMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_PMF_PMF_F" Association="Self.R_PMF_PMF_F">
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
             <End Role="PMF_F" EntitySet="PMF_F" />
@@ -6425,6 +6505,10 @@
           <AssociationSet Name="R_SR_PCMAB" Association="Self.R_SR_PCMAB">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_SR_PMAB" Association="Self.R_SR_PMAB">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
+            <End Role="PERIODOMAB" EntitySet="PERIODOMAB" />
           </AssociationSet>
           <AssociationSet Name="R_SR_RMF" Association="Self.R_SR_RMF">
             <End Role="STATORECORD" EntitySet="STATORECORD" />
@@ -6777,6 +6861,7 @@
           <EntitySet Name="PERCENTUALEMAB" EntityType="DBISE.PERCENTUALEMAB" />
           <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="DBISE.PERCENTUALEMAGCONIUGE" />
           <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="DBISE.PERCENTUALEMAGFIGLI" />
+          <EntitySet Name="PERIODOMAB" EntityType="DBISE.PERIODOMAB" />
           <EntitySet Name="PRIMASITEMAZIONE" EntityType="DBISE.PRIMASITEMAZIONE" />
           <EntitySet Name="PROVVIDENZESCOLASTICHE" EntityType="DBISE.PROVVIDENZESCOLASTICHE" />
           <EntitySet Name="REGOLECALCOLO" EntityType="DBISE.REGOLECALCOLO" />
@@ -6883,6 +6968,10 @@
           <AssociationSet Name="R_AMAB_PCMAB" Association="DBISE.R_AMAB_PCMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_AMAB_PMAB" Association="DBISE.R_AMAB_PMAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="PERIODOMAB" EntitySet="PERIODOMAB" />
           </AssociationSet>
           <AssociationSet Name="R_T_AMAB" Association="DBISE.R_T_AMAB">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -7260,6 +7349,10 @@
             <End Role="MAB" EntitySet="MAB" />
             <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_MAB_PMAB" Association="DBISE.R_MAB_PMAB">
+            <End Role="MAB" EntitySet="MAB" />
+            <End Role="PERIODOMAB" EntitySet="PERIODOMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_MAGABI_MAB" Association="DBISE.R_MAGABI_MAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="MAB" EntitySet="MAB" />
@@ -7343,6 +7436,14 @@
           <AssociationSet Name="R_TF_MF" Association="DBISE.R_TF_MF">
             <End Role="TIPOLOGIAFIGLIO" EntitySet="TIPOLOGIAFIGLIO" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="R_PMAB_PMAB" Association="DBISE.R_PMAB_PMAB">
+            <End Role="PERIODOMAB" EntitySet="PERIODOMAB" />
+            <End Role="PERIODOMAB1" EntitySet="PERIODOMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_SR_PMAB" Association="DBISE.R_SR_PMAB">
+            <End Role="STATORECORD" EntitySet="STATORECORD" />
+            <End Role="PERIODOMAB" EntitySet="PERIODOMAB" />
           </AssociationSet>
           <AssociationSet Name="R_TRASF_PRIMASIST" Association="DBISE.R_TRASF_PRIMASIST">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -7780,6 +7881,7 @@
           <NavigationProperty Name="MAB" Relationship="DBISE.R_AMAB_MAB" FromRole="ATTIVAZIONEMAB" ToRole="MAB" />
           <NavigationProperty Name="MODIFICHE_MAB" Relationship="DBISE.R_AMAB_MAMAB" FromRole="ATTIVAZIONEMAB" ToRole="MODIFICHE_MAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISE.R_AMAB_PCMAB" FromRole="ATTIVAZIONEMAB" ToRole="PAGATOCONDIVISOMAB" />
+          <NavigationProperty Name="PERIODOMAB" Relationship="DBISE.R_AMAB_PMAB" FromRole="ATTIVAZIONEMAB" ToRole="PERIODOMAB" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_AMAB" FromRole="ATTIVAZIONEMAB" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.AMAB_DOC" FromRole="ATTIVAZIONEMAB" ToRole="DOCUMENTI" />
         </EntityType>
@@ -8547,8 +8649,6 @@
           <Property Name="IDMAGABITAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOMAB" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEMAB" Type="DateTime" Nullable="false" />
           <Property Name="RINUNCIAMAB" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDMAB" Type="Decimal" Precision="38" Scale="0" />
@@ -8558,6 +8658,7 @@
           <NavigationProperty Name="MAB1" Relationship="DBISE.R_MAB_MAB" FromRole="MAB" ToRole="MAB1" />
           <NavigationProperty Name="MAB2" Relationship="DBISE.R_MAB_MAB" FromRole="MAB1" ToRole="MAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISE.R_MAB_PCMAB" FromRole="MAB" ToRole="PAGATOCONDIVISOMAB" />
+          <NavigationProperty Name="PERIODOMAB" Relationship="DBISE.R_MAB_PMAB" FromRole="MAB" ToRole="PERIODOMAB" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAGABI_MAB" FromRole="MAB" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_MAB" FromRole="MAB" ToRole="STATORECORD" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISE.MAB_MA" FromRole="MAB" ToRole="MAGGIORAZIONIANNUALI" />
@@ -8849,6 +8950,24 @@
           <NavigationProperty Name="TIPOLOGIAFIGLIO" Relationship="DBISE.R_TF_MF" FromRole="PERCENTUALEMAGFIGLI" ToRole="TIPOLOGIAFIGLIO" />
           <NavigationProperty Name="FIGLI" Relationship="DBISE.PMF_F" FromRole="PERCENTUALEMAGFIGLI" ToRole="FIGLI" />
         </EntityType>
+        <EntityType Name="PERIODOMAB">
+          <Key>
+            <PropertyRef Name="IDPERIODOMAB" />
+          </Key>
+          <Property Name="IDPERIODOMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOMAB" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEMAB" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="FK_IDPERIODOMAB" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_PMAB" FromRole="PERIODOMAB" ToRole="ATTIVAZIONEMAB" />
+          <NavigationProperty Name="MAB" Relationship="DBISE.R_MAB_PMAB" FromRole="PERIODOMAB" ToRole="MAB" />
+          <NavigationProperty Name="PERIODOMAB1" Relationship="DBISE.R_PMAB_PMAB" FromRole="PERIODOMAB" ToRole="PERIODOMAB1" />
+          <NavigationProperty Name="PERIODOMAB2" Relationship="DBISE.R_PMAB_PMAB" FromRole="PERIODOMAB1" ToRole="PERIODOMAB" />
+          <NavigationProperty Name="STATORECORD" Relationship="DBISE.R_SR_PMAB" FromRole="PERIODOMAB" ToRole="STATORECORD" />
+        </EntityType>
         <EntityType Name="PRIMASITEMAZIONE">
           <Key>
             <PropertyRef Name="IDPRIMASISTEMAZIONE" />
@@ -9029,6 +9148,7 @@
           <NavigationProperty Name="MAB" Relationship="DBISE.R_SR_MAB" FromRole="STATORECORD" ToRole="MAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISE.R_SR_PCMAB" FromRole="STATORECORD" ToRole="PAGATOCONDIVISOMAB" />
           <NavigationProperty Name="PENSIONE" Relationship="DBISE.R_SR_P" FromRole="STATORECORD" ToRole="PENSIONE" />
+          <NavigationProperty Name="PERIODOMAB" Relationship="DBISE.R_SR_PMAB" FromRole="STATORECORD" ToRole="PERIODOMAB" />
           <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_SR_RMF" FromRole="STATORECORD" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI" />
         </EntityType>
         <EntityType Name="STATOTRASFERIMENTO">
@@ -9584,6 +9704,20 @@
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Principal>
             <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AMAB_PMAB">
+          <End Type="DBISE.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.PERIODOMAB" Role="PERIODOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="PERIODOMAB">
               <PropertyRef Name="IDATTIVAZIONEMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -10898,6 +11032,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAB_PMAB">
+          <End Type="DBISE.MAB" Role="MAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.PERIODOMAB" Role="PERIODOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAB">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="PERIODOMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MAGABI_MAB">
           <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -11189,6 +11337,34 @@
             </Principal>
             <Dependent Role="PERCENTUALEMAGFIGLI">
               <PropertyRef Name="IDTIPOLOGIAFIGLIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_PMAB_PMAB">
+          <End Type="DBISE.PERIODOMAB" Role="PERIODOMAB" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.PERIODOMAB" Role="PERIODOMAB1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODOMAB">
+              <PropertyRef Name="IDPERIODOMAB" />
+            </Principal>
+            <Dependent Role="PERIODOMAB1">
+              <PropertyRef Name="FK_IDPERIODOMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_SR_PMAB">
+          <End Type="DBISE.STATORECORD" Role="STATORECORD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.PERIODOMAB" Role="PERIODOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATORECORD">
+              <PropertyRef Name="IDSTATORECORD" />
+            </Principal>
+            <Dependent Role="PERIODOMAB">
+              <PropertyRef Name="IDSTATORECORD" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -12492,8 +12668,6 @@
                 <ScalarProperty Name="FK_IDMAB" ColumnName="FK_IDMAB" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="RINUNCIAMAB" ColumnName="RINUNCIAMAB" />
-                <ScalarProperty Name="DATAFINEMAB" ColumnName="DATAFINEMAB" />
-                <ScalarProperty Name="DATAINIZIOMAB" ColumnName="DATAINIZIOMAB" />
                 <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
                 <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
                 <ScalarProperty Name="IDMAGABITAZIONE" ColumnName="IDMAGABITAZIONE" />
@@ -12748,6 +12922,20 @@
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
                 <ScalarProperty Name="IDPERCMAGFIGLI" ColumnName="IDPERCMAGFIGLI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERIODOMAB">
+            <EntityTypeMapping TypeName="DBISE.PERIODOMAB">
+              <MappingFragment StoreEntitySet="PERIODOMAB">
+                <ScalarProperty Name="FK_IDPERIODOMAB" ColumnName="FK_IDPERIODOMAB" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINEMAB" ColumnName="DATAFINEMAB" />
+                <ScalarProperty Name="DATAINIZIOMAB" ColumnName="DATAINIZIOMAB" />
+                <ScalarProperty Name="IDSTATORECORD" ColumnName="IDSTATORECORD" />
+                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDPERIODOMAB" ColumnName="IDPERIODOMAB" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
