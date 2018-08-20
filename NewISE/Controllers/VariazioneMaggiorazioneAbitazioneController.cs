@@ -67,13 +67,15 @@ namespace NewISE.Controllers
                                 mabvm.idAttivazioneMAB = mabm.idAttivazioneMAB;
                                 mabvm.idMAB = mabm.idMAB;
 
+                                var pm = dtvma.GetPeriodoMABModel(mabm.idMAB);
+
                                 //CANONEMAB cm = dtvma.GetUltimoCanoneMAB_var(mabm);
 
                                 //mabvm.importo_canone = cm.IMPORTOCANONE;
 
                                 //MAB mab = dtvma.GetUltimaMAB(idTrasferimento);
-                                mabvm.dataInizioMAB = mabm.dataInizioMAB;
-                                mabvm.dataFineMAB = mabm.dataFineMAB;
+                                mabvm.dataInizioMAB = pm.dataInizioMAB;
+                                mabvm.dataFineMAB = pm.dataFineMAB;
 
                                 mabvm.anticipoAnnuale = dtvma.AnticipoAnnualeMAB(mabm.idMAB,db);
 
@@ -712,12 +714,15 @@ namespace NewISE.Controllers
                             if (mab.IDMAB > 0)
                             {
                                 mabvm.idMAB = mab.IDMAB;
+
                                 //mam.dataPartenza = t.dataPartenza;
                                 mabvm.idTrasferimento = mab.IDMAGABITAZIONE;
                                 mabvm.idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
 
-                                mabvm.dataInizioMAB = mab.DATAINIZIOMAB;
-                                mabvm.dataFineMAB = mab.DATAFINEMAB;
+                                var pm = dtvma.GetPeriodoMABModel(mab.IDMAB);
+
+                                mabvm.dataInizioMAB = pm.dataInizioMAB;
+                                mabvm.dataFineMAB = pm.dataFineMAB;
                                 mabvm.rinunciaMAB = mab.RINUNCIAMAB;
                                 mabvm.anticipoAnnuale = dtvma.AnticipoAnnualeMAB(idMAB, db);
 

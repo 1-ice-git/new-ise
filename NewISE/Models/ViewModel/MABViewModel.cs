@@ -17,6 +17,7 @@ namespace NewISE.Models.ViewModel
         public decimal id_Valuta { get; set; }
         public decimal idMagAnnuali { get; set; }
         public decimal idTrasferimento { get; set; }
+        public decimal idPeriodoMAB { get; set; }
         //public decimal idAttivazioneMAB { get; set; }
         //public decimal idMAB { get; set; }
 
@@ -37,12 +38,12 @@ namespace NewISE.Models.ViewModel
 
         public bool annualita { get; set; }
 
-        //[Display(Name = "Data Inizio")]
-        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        //public DateTime dataInizioMAB { get; set; }
-        //[Display(Name = "Data Fine")]
-        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        //public DateTime dataFineMAB { get; set; }
+        [Display(Name = "Data Inizio")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime dataInizioMAB { get; set; }
+        [Display(Name = "Data Fine")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime dataFineMAB { get; set; }
 
     }
 }

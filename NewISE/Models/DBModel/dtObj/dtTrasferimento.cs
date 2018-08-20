@@ -2340,21 +2340,23 @@ namespace NewISE.Models.DBModel.dtObj
                     var m = db.MAB.Find(mm.idMAB);
                     #endregion
 
-                    #region allinea date MAB e riassocia percMAB e magg annuali
+                    #region allinea date PERIODO MAB e riassocia percMAB e magg annuali
                     var lmann = m.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
                     foreach (var mann in lmann)
                     {
                         m.MAGGIORAZIONIANNUALI.Remove(mann);
                     }
 
-                    if (m.DATAINIZIOMAB != t.DATAPARTENZA)
+                    var pmm = dtma.GetPeriodoMABPartenza(mm.idMAB);
+
+                    if (pmm.dataInizioMAB != t.DATAPARTENZA)
                     {
-                        m.DATAINIZIOMAB = t.DATAPARTENZA;
+                        pmm.dataInizioMAB = t.DATAPARTENZA;
                         if (db.SaveChanges() <= 0)
                         {
-                            throw new Exception("Errore di correzione data inizio maggiorazione abitazione su MAB da " + m.DATAINIZIOMAB + " a " + t.DATAPARTENZA);
+                            throw new Exception("Errore di correzione data inizio maggiorazione abitazione su PERIODOMAB da " + pmm.dataInizioMAB + " a " + t.DATAPARTENZA);
                         }
-                        mm.dataInizioMAB = m.DATAINIZIOMAB;
+                        //mm.dataInizioMAB = m.DATAINIZIOMAB;
 
                         //elimina le associazioni percentualeMAB variazioniMAB
                         var lpm = m.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
@@ -2365,13 +2367,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                         var idMAB = m.IDMAB;
 
-
-                        var lpmab = dtma.GetListaPercentualeMAB(mm, tm, db);
+                        var lpmab = dtma.GetListaPercentualeMAB(pmm, tm, db);
                         foreach (var pmab in lpmab)
                         {
                             dtma.Associa_MAB_PercentualeMAB(mm.idMAB, pmab.IDPERCMAB, db);
                         }
-
 
                         //riassocia maggiorazioni annuali
                         var mam = dtma.GetMaggiorazioneAnnuale(mm, db);

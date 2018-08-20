@@ -20,18 +20,6 @@ namespace NewISE.Models.DBModel
         public decimal idStatoRecord { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data Inizio")]
-        public DateTime dataInizioMAB { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data Fine")]
-        public DateTime dataFineMAB { get; set; }
-
-        [Required]
         [DefaultValue(false)]
         [Display(Name = "Rinuncia Anticipi")]
         public bool rinunciaMAB { get; set; }

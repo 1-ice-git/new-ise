@@ -5608,6 +5608,7 @@
     <Compile Include="Models\DBModel\ElaborazioniModel.cs" />
     <Compile Include="Models\DBModel\EvoluzioneIndennitaModel.cs" />
     <Compile Include="Models\DBModel\IndennitaServizioModel.cs" />
+    <Compile Include="Models\DBModel\PeriodoMABModel.cs" />
     <Compile Include="Models\DBModel\MeseAnnoElaborazioneModel.cs" />
     <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />

@@ -47,6 +47,7 @@ namespace NewISE.Controllers
             MABViewModel mavm = new MABViewModel();
             MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
             MABModel mabm = new MABModel();
+            PeriodoMABModel pmabm = new PeriodoMABModel();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -81,7 +82,10 @@ namespace NewISE.Controllers
 
                             mabm = dtma.GetMABPartenza(idTrasferimento);
 
+                            pmabm = dtma.GetPeriodoMABPartenza(mabm.idMAB);
+
                             mavm.idMAB = mabm.idMAB;
+                            mavm.idPeriodoMAB = pmabm.idPeriodoMAB;
 
                             mavm.rinunciaMAB = mabm.rinunciaMAB;
                             //rmm = dtma.GetRinunciaMAB(mam);
@@ -92,8 +96,8 @@ namespace NewISE.Controllers
 
                             ANTICIPOANNUALEMAB aa = dtma.GetAnticipoAnnualeMABPartenza(mabm);
                             mavm.importo_canone = cm.IMPORTOCANONE;
-                            mavm.dataInizioMAB = mabm.dataInizioMAB;
-                            mavm.dataFineMAB = mabm.dataFineMAB;
+                            mavm.dataInizioMAB = pmabm.dataInizioMAB;
+                            mavm.dataFineMAB = pmabm.dataFineMAB;
                             if (aa.IDANTICIPOANNUALEMAB > 0)
                             {
                                 mavm.anticipoAnnuale = aa.ANTICIPOANNUALE;
@@ -701,6 +705,8 @@ namespace NewISE.Controllers
 
                                 var ma = dtma.GetMABPartenza(t.idTrasferimento);
 
+                                var pma = dtma.GetPeriodoMABPartenza(ma.idMAB);
+
                                 //var vmam = dtma.GetVariazioniMABPartenza(ma.IDTRASFERIMENTO);
 
                                 CANONEMAB cm = dtma.GetCanoneMABPartenza(ma);
@@ -708,8 +714,8 @@ namespace NewISE.Controllers
                                 var aa = dtma.GetAnticipoAnnualeMABPartenza(ma);
 
                                 mam.importo_canone = cm.IMPORTOCANONE;
-                                mam.dataInizioMAB = ma.dataInizioMAB;
-                                mam.dataFineMAB = ma.dataFineMAB;
+                                mam.dataInizioMAB = pma.dataInizioMAB;
+                                mam.dataFineMAB = pma.dataFineMAB;
                                 mam.anticipoAnnuale = aa.ANTICIPOANNUALE;
                                 mam.id_Valuta = cm.IDVALUTA;
 
@@ -754,8 +760,8 @@ namespace NewISE.Controllers
                                     mam.canone_pagato = pc.PAGATO;
                                 }
 
-                                mam.ut_dataFineMAB = ma.dataFineMAB;
-                                if (ma.dataFineMAB == Utility.DataFineStop())
+                                mam.ut_dataFineMAB = pma.dataFineMAB;
+                                if (pma.dataFineMAB == Utility.DataFineStop())
                                 {
                                     mam.ut_dataFineMAB = null;
                                 }
@@ -778,100 +784,100 @@ namespace NewISE.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ConfermaNuovaMAB(MABViewModel mvm, decimal idTrasferimento)
-        {
-            MABViewModel mam = new MABViewModel();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult ConfermaNuovaMAB(MABViewModel mvm, decimal idTrasferimento)
+        //{
+        //    MABViewModel mam = new MABViewModel();
 
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
-                        {
-                            dtma.InserisciMAB(mvm, idTrasferimento);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("", ex.Message);
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            try
+        //            {
+        //                using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+        //                {
+        //                    dtma.InserisciMAB(mvm, idTrasferimento);
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                ModelState.AddModelError("", ex.Message);
 
-                        List<SelectListItem> lValute = new List<SelectListItem>();
+        //                List<SelectListItem> lValute = new List<SelectListItem>();
 
-                        var r = new List<SelectListItem>();
+        //                var r = new List<SelectListItem>();
 
-                        using (ModelDBISE db = new ModelDBISE())
-                        {
-                            using (dtValute dtv = new dtValute())
-                            {
-                                var lv = dtv.GetElencoValute(db);
+        //                using (ModelDBISE db = new ModelDBISE())
+        //                {
+        //                    using (dtValute dtv = new dtValute())
+        //                    {
+        //                        var lv = dtv.GetElencoValute(db);
 
-                                if (lv != null && lv.Count > 0)
-                                {
-                                    r = (from v in lv
-                                         select new SelectListItem()
-                                         {
-                                             Text = v.DESCRIZIONEVALUTA,
-                                             Value = v.IDVALUTA.ToString()
-                                         }).ToList();
+        //                        if (lv != null && lv.Count > 0)
+        //                        {
+        //                            r = (from v in lv
+        //                                 select new SelectListItem()
+        //                                 {
+        //                                     Text = v.DESCRIZIONEVALUTA,
+        //                                     Value = v.IDVALUTA.ToString()
+        //                                 }).ToList();
 
-                                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
-                                }
+        //                            r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+        //                        }
 
-                                lValute = r;
-                                ViewBag.lValute = lValute;
-                                ViewData.Add("idTrasferimento", idTrasferimento);
+        //                        lValute = r;
+        //                        ViewBag.lValute = lValute;
+        //                        ViewData.Add("idTrasferimento", idTrasferimento);
 
-                                return PartialView("NuovaMAB", mvm);
+        //                        return PartialView("NuovaMAB", mvm);
 
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    List<SelectListItem> lValute = new List<SelectListItem>();
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            List<SelectListItem> lValute = new List<SelectListItem>();
 
-                    var r = new List<SelectListItem>();
+        //            var r = new List<SelectListItem>();
 
-                    using (ModelDBISE db = new ModelDBISE())
-                    {
-                        using (dtValute dtv = new dtValute())
-                        {
-                            var lv = dtv.GetElencoValute(db);
+        //            using (ModelDBISE db = new ModelDBISE())
+        //            {
+        //                using (dtValute dtv = new dtValute())
+        //                {
+        //                    var lv = dtv.GetElencoValute(db);
 
-                            if (lv != null && lv.Count > 0)
-                            {
-                                r = (from v in lv
-                                     select new SelectListItem()
-                                     {
-                                         Text = v.DESCRIZIONEVALUTA,
-                                         Value = v.IDVALUTA.ToString()
-                                     }).ToList();
+        //                    if (lv != null && lv.Count > 0)
+        //                    {
+        //                        r = (from v in lv
+        //                             select new SelectListItem()
+        //                             {
+        //                                 Text = v.DESCRIZIONEVALUTA,
+        //                                 Value = v.IDVALUTA.ToString()
+        //                             }).ToList();
 
-                                r.Insert(0, new SelectListItem() { Text = "", Value = "" });
-                            }
+        //                        r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+        //                    }
 
-                            lValute = r;
-                            ViewBag.lValute = lValute;
+        //                    lValute = r;
+        //                    ViewBag.lValute = lValute;
 
-                            ViewData.Add("idTrasferimento", idTrasferimento);
+        //                    ViewData.Add("idTrasferimento", idTrasferimento);
 
-                            return PartialView("NuovaMAB", mvm);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
+        //                    return PartialView("NuovaMAB", mvm);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+        //    }
 
-            return RedirectToAction("GestioneMAB", new { idTrasferimento = idTrasferimento });
-        }
+        //    return RedirectToAction("GestioneMAB", new { idTrasferimento = idTrasferimento });
+        //}
 
 
         [HttpPost]
