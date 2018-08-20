@@ -18,12 +18,12 @@ namespace NewISE.EF
         public TEORICI()
         {
             this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
+            this.ELABMAB = new HashSet<ELABMAB>();
         }
     
         public decimal IDTEORICI { get; set; }
         public decimal IDTIPOMOVIMENTO { get; set; }
         public decimal IDVOCI { get; set; }
-        public Nullable<decimal> IDELABMAB { get; set; }
         public Nullable<decimal> IDELABTRASPEFFETTI { get; set; }
         public decimal IDMESEANNOELAB { get; set; }
         public decimal MESERIFERIMENTO { get; set; }
@@ -40,7 +40,6 @@ namespace NewISE.EF
     
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
-        public virtual ELABMAB ELABMAB { get; set; }
         public virtual ELABTRASPEFFETTI ELABTRASPEFFETTI { get; set; }
         public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
         public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
@@ -49,5 +48,7 @@ namespace NewISE.EF
         public virtual VOCI VOCI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABMAB> ELABMAB { get; set; }
     }
 }

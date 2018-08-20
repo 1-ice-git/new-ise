@@ -286,6 +286,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             this.CalcolaElaborazioneMensile(idDip, idMeseAnnoElaborato, db);
                             this.CalcolaConguagli(idDip, idMeseAnnoElaborato, db);
+
                         }
                     }
 
@@ -1816,23 +1817,6 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                 #endregion
-
-                //var lTrasferimenti =
-                //    dipendente.TRASFERIMENTO.Where(
-                //        a =>
-                //            (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
-                //             a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
-                //            Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year, a.DATARIENTRO.Month)) >=
-                //            Convert.ToDecimal(string.Concat(dataElaborazioneCorrente.Year,
-                //                dataElaborazioneCorrente.Month)) &&
-                //            Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year, a.DATAPARTENZA.Month)) <=
-                //            Convert.ToDecimal(string.Concat(dataElaborazioneCorrente.Year,
-                //                dataElaborazioneCorrente.Month)))
-                //        .OrderBy(a => a.DATAPARTENZA)
-                //        .ToList();
-
-
-
                 var lTrasferimenti =
                     dipendente.TRASFERIMENTO
                         .Where(a => (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
@@ -1860,6 +1844,8 @@ namespace NewISE.Models.DBModel.dtObj
                             this.InsIndennitaMensile(trasferimento, meseAnnoElaborazione, db);
 
                             this.InsTrasportoEffetti(trasferimento, meseAnnoElaborazione, db);
+
+                            this.InsMab(trasferimento, meseAnnoElaborazione, db);
                         }
 
 
@@ -1873,6 +1859,97 @@ namespace NewISE.Models.DBModel.dtObj
 
                 throw ex;
             }
+
+
+        }
+
+        public void InsMab(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
+        {
+
+            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+            var indennita = trasferimento.INDENNITA;
+            var maggiorazioniAbitazione = indennita.MAGGIORAZIONEABITAZIONE;
+
+            DateTime dataInizioTrasferimento = trasferimento.DATAPARTENZA;
+            DateTime dataFineTrasferimento = trasferimento.DATARIENTRO;
+
+
+            DateTime dataInizioElaborazione =
+                Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" + meseAnnoElaborazione.ANNO);
+            DateTime dataFineElaborazione = Utility.GetDtFineMese(dataInizioElaborazione);
+
+            if (dataFineElaborazione > dataFineTrasferimento)
+            {
+                dataFineElaborazione = dataFineTrasferimento;
+            }
+
+            if (dataInizioTrasferimento <= dataInizioElaborazione)
+            {
+                var lmab =
+                    maggiorazioniAbitazione.MAB.Where(
+                        a =>
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            a.ATTIVAZIONEMAB.ANNULLATO == false && a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                            a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
+                            a.IDMAB == a.PERIODOMAB.Where(
+                                b =>
+                                    b.DATAFINEMAB >= dataInizioElaborazione && b.DATAINIZIOMAB <= dataFineElaborazione &&
+                                    b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                    b.ATTIVAZIONEMAB.ANNULLATO == false && b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                                    b.ATTIVAZIONEMAB.ATTIVAZIONE == true).Max(b => b.IDMAB)).ToList();
+                if (lmab?.Any() ?? false)
+                {
+                    var mab = lmab.First();
+                    if (mab.RINUNCIAMAB == false)
+                    {
+                        var lanticipoAnnuale =
+                            mab.ANTICIPOANNUALEMAB.Where(
+                                a =>
+                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                    a.ATTIVAZIONEMAB.ANNULLATO == false && a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                                    a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+                                .OrderByDescending(a => a.IDANTICIPOANNUALEMAB)
+                                .ToList();
+                        if (lanticipoAnnuale?.Any() ?? false)
+                        {
+                            var aamab = lanticipoAnnuale.First();
+
+                            if (aamab.ANTICIPOANNUALE)
+                            {
+                                dataFineElaborazione = dataFineElaborazione.AddMonths(12);
+                            }
+                            else
+                            {
+                                dataFineElaborazione = dataInizioElaborazione.AddMonths(6);
+                            }
+
+                            if (dataFineElaborazione > dataFineTrasferimento)
+                            {
+                                dataFineElaborazione = dataFineTrasferimento;
+                            }
+
+                        }
+
+                        bool verificaElaborazionePeriodo =
+                            maggiorazioniAbitazione.ELABMAB.Any(
+                                a =>
+                                    a.ANNULLATO == false && a.DAL <= dataFineElaborazione &&
+                                    a.AL >= dataInizioElaborazione && a.TEORICI.Any(b => b.ANNULLATO == false && b.ELABORATO == true));
+
+
+
+
+                    }
+
+
+
+
+                }
+            }
+
+
+
 
 
         }
@@ -2482,9 +2559,6 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
-
-
-
 
         private void ConguaglioIndennita(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
@@ -3213,8 +3287,6 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-
-
         private void InsIndennitaMensile(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
             var indennita = trasferimento.INDENNITA;
@@ -3689,8 +3761,6 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                         }
-
-
 
                     }
                 }

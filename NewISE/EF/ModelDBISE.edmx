@@ -642,6 +642,8 @@
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDELABMAB" Type="number" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PROGRESSIVO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABORAZIONI">
           <Key>
@@ -675,6 +677,14 @@
           </Key>
           <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMAB_T">
+          <Key>
+            <PropertyRef Name="IDELABMAB" />
+            <PropertyRef Name="IDTEORICI" />
+          </Key>
+          <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="EMAILSECONDARIEDIP">
           <Key>
@@ -1460,7 +1470,6 @@
           <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABTRASPEFFETTI" Type="number" Precision="38" Scale="0" />
           <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESERIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -3131,16 +3140,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EMAB_T">
-          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="0..1">
+        <Association Name="R_EMAB_EMABT">
+          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <End Role="EMAB_T" Type="Self.EMAB_T" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ELABMAB">
               <PropertyRef Name="IDELABMAB" />
             </Principal>
-            <Dependent Role="TEORICI">
+            <Dependent Role="EMAB_T">
               <PropertyRef Name="IDELABMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -4669,6 +4678,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_T_EMABT">
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EMAB_T" Type="Self.EMAB_T" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+            </Principal>
+            <Dependent Role="EMAB_T">
+              <PropertyRef Name="IDTEORICI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_FC">
           <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5582,6 +5605,7 @@
           <EntitySet Name="ELABORAZIONI" EntityType="Self.ELABORAZIONI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ELABTRASPEFFETTI" EntityType="Self.ELABTRASPEFFETTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="EMAB_ALIQ" EntityType="Self.EMAB_ALIQ" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="EMAB_T" EntityType="Self.EMAB_T" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="EMAILSECONDARIEDIP" EntityType="Self.EMAILSECONDARIEDIP" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="F_FP" EntityType="Self.F_FP" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="F_FTV" EntityType="Self.F_FTV" Schema="ISESIM" store:Type="Tables" />
@@ -6098,9 +6122,9 @@
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="EMAB_ALIQ" EntitySet="EMAB_ALIQ" />
           </AssociationSet>
-          <AssociationSet Name="R_EMAB_T" Association="Self.R_EMAB_T">
+          <AssociationSet Name="R_EMAB_EMABT" Association="Self.R_EMAB_EMABT">
             <End Role="ELABMAB" EntitySet="ELABMAB" />
-            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="EMAB_T" EntitySet="EMAB_T" />
           </AssociationSet>
           <AssociationSet Name="R_ETE_T" Association="Self.R_ETE_T">
             <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
@@ -6537,6 +6561,10 @@
           <AssociationSet Name="R_T_EIT" Association="Self.R_T_EIT">
             <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="ELABIND_TEORICI" EntitySet="ELABIND_TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_EMABT" Association="Self.R_T_EMABT">
+            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="EMAB_T" EntitySet="EMAB_T" />
           </AssociationSet>
           <AssociationSet Name="R_T_FC" Association="Self.R_T_FC">
             <End Role="TEORICI" EntitySet="TEORICI" />
@@ -7237,10 +7265,6 @@
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="ELABMAB1" EntitySet="ELABMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_EMAB_T" Association="DBISE.R_EMAB_T">
-            <End Role="ELABMAB" EntitySet="ELABMAB" />
-            <End Role="TEORICI" EntitySet="TEORICI" />
-          </AssociationSet>
           <AssociationSet Name="R_MAGABI_EMAB" Association="DBISE.R_MAGABI_EMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
@@ -7656,6 +7680,10 @@
           <AssociationSet Name="EMAB_ALIQ" Association="DBISE.EMAB_ALIQ">
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
+          </AssociationSet>
+          <AssociationSet Name="EMAB_T" Association="DBISE.EMAB_T">
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="F_FP" Association="DBISE.F_FP">
             <End Role="FIGLI" EntitySet="FIGLI" />
@@ -8367,13 +8395,15 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EMAB_EDF" FromRole="ELABMAB" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="ELABMAB1" Relationship="DBISE.R_EMAB_EMAB" FromRole="ELABMAB" ToRole="ELABMAB1" />
           <NavigationProperty Name="ELABMAB2" Relationship="DBISE.R_EMAB_EMAB" FromRole="ELABMAB1" ToRole="ELABMAB" />
-          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EMAB_T" FromRole="ELABMAB" ToRole="TEORICI" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAGABI_EMAB" FromRole="ELABMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.RELATIONSHIP8" FromRole="ELABMAB" ToRole="LIVELLI" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.EMAB_ALIQ" FromRole="ELABMAB" ToRole="ALIQUOTECONTRIBUTIVE" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.EMAB_T" FromRole="ELABMAB" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="ELABORAZIONI">
           <Key>
@@ -9166,7 +9196,6 @@
           <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABTRASPEFFETTI" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="MESERIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
@@ -9182,7 +9211,6 @@
           <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_T" FromRole="TEORICI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
-          <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_EMAB_T" FromRole="TEORICI" ToRole="ELABMAB" />
           <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISE.R_ETE_T" FromRole="TEORICI" ToRole="ELABTRASPEFFETTI" />
           <NavigationProperty Name="FLUSSICEDOLINO" Relationship="DBISE.R_T_FC" FromRole="TEORICI" ToRole="FLUSSICEDOLINO" />
           <NavigationProperty Name="MESEANNOELABORAZIONE" Relationship="DBISE.R_MAE_T" FromRole="TEORICI" ToRole="MESEANNOELABORAZIONE" />
@@ -9190,6 +9218,7 @@
           <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISE.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
           <NavigationProperty Name="VOCI" Relationship="DBISE.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.ELABIND_TEORICI" FromRole="TEORICI" ToRole="ELABINDENNITA" />
+          <NavigationProperty Name="ELABMAB" Relationship="DBISE.EMAB_T" FromRole="TEORICI" ToRole="ELABMAB" />
         </EntityType>
         <EntityType Name="TEPARTENZA">
           <Key>
@@ -10642,20 +10671,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EMAB_T">
-          <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABMAB">
-              <PropertyRef Name="IDELABMAB" />
-            </Principal>
-            <Dependent Role="TEORICI">
-              <PropertyRef Name="IDELABMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_MAGABI_EMAB">
           <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -11850,6 +11865,10 @@
           <End Type="DBISE.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
           <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="*" />
         </Association>
+        <Association Name="EMAB_T">
+          <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="*" />
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
+        </Association>
         <Association Name="F_FP">
           <End Type="DBISE.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISE.FIGLIPASSAPORTO" Role="FIGLIPASSAPORTO" Multiplicity="*" />
@@ -12420,6 +12439,8 @@
           <EntitySetMapping Name="ELABMAB">
             <EntityTypeMapping TypeName="DBISE.ELABMAB">
               <MappingFragment StoreEntitySet="ELABMAB">
+                <ScalarProperty Name="PROGRESSIVO" ColumnName="PROGRESSIVO" />
+                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="FK_IDELABMAB" ColumnName="FK_IDELABMAB" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
@@ -13115,7 +13136,6 @@
                 <ScalarProperty Name="MESERIFERIMENTO" ColumnName="MESERIFERIMENTO" />
                 <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
                 <ScalarProperty Name="IDELABTRASPEFFETTI" ColumnName="IDELABTRASPEFFETTI" />
-                <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
                 <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
                 <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
                 <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
@@ -13568,6 +13588,14 @@
             </EndProperty>
             <EndProperty Name="ALIQUOTECONTRIBUTIVE">
               <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="EMAB_T" TypeName="DBISE.EMAB_T" StoreEntitySet="EMAB_T">
+            <EndProperty Name="TEORICI">
+              <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
+            </EndProperty>
+            <EndProperty Name="ELABMAB">
+              <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="F_FP" TypeName="DBISE.F_FP" StoreEntitySet="F_FP">
