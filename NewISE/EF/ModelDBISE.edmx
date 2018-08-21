@@ -1253,7 +1253,7 @@
           <Key>
             <PropertyRef Name="IDPERIODOMAB" />
           </Key>
-          <Property Name="IDPERIODOMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERIODOMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDSTATORECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -8983,7 +8983,7 @@
           <Key>
             <PropertyRef Name="IDPERIODOMAB" />
           </Key>
-          <Property Name="IDPERIODOMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDPERIODOMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
