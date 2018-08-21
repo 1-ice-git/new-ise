@@ -2332,7 +2332,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region legge MAB
-                    var mm = dtma.GetMABPartenza(t.IDTRASFERIMENTO);
+                    var mm = dtma.GetMABPartenza(t.IDTRASFERIMENTO, db);
                     if (!(mm.idMAB > 0))
                     {
                         throw new Exception("MAB non trovata.");
@@ -2347,17 +2347,18 @@ namespace NewISE.Models.DBModel.dtObj
                         m.MAGGIORAZIONIANNUALI.Remove(mann);
                     }
 
-                    var lpm = m.PERIODOMAB.Where(
-                            a =>
-                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
-                            .OrderByDescending(a => a.IDATTIVAZIONEMAB)
-                            .ToList();
+                    var pm = dtma.GetPeriodoMABPartenza(m.IDMAB, db);
+                    var pmm = dtma.GetPeriodoMABModelPartenza(m.IDMAB, db);
 
-                    if (lpm?.Any() ?? false)
+                    //var lpm = m.PERIODOMAB.Where(
+                    //        a =>
+                    //            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                    //            a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                    //        .OrderByDescending(a => a.IDATTIVAZIONEMAB)
+                    //        .ToList();
+
+                    if (pm.IDPERIODOMAB>0)
                     {
-                        var pm = lpm.First();
-
                         if (pm.DATAINIZIOMAB != t.DATAPARTENZA)
                         {
                             pm.DATAINIZIOMAB = t.DATAPARTENZA;
@@ -2376,7 +2377,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             //var idMAB = m.IDMAB;
 
-                            var lpmab = dtma.GetListaPercentualeMAB(pm, tm, db);
+                            var lpmab = dtma.GetListaPercentualeMAB(pmm, tm, db);
                             foreach (var pmab in lpmab)
                             {
                                 dtma.Associa_PerMAB_PercentualeMAB(pm.IDPERIODOMAB, pmab.IDPERCMAB, db);

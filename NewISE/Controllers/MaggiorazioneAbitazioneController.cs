@@ -80,9 +80,9 @@ namespace NewISE.Controllers
                             }
                             mavm.idAttivazioneMAB = amm.idAttivazioneMAB;
 
-                            mabm = dtma.GetMABPartenza(idTrasferimento);
+                            mabm = dtma.GetMABPartenza(idTrasferimento, db);
 
-                            pmabm = dtma.GetPeriodoMABPartenza(mabm.idMAB);
+                            pmabm = dtma.GetPeriodoMABModelPartenza(mabm.idMAB, db);
 
                             mavm.idMAB = mabm.idMAB;
                             mavm.idPeriodoMAB = pmabm.idPeriodoMAB;
@@ -211,72 +211,75 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    bool soloLettura = false;
-
-                    AttivazioneMABModel amm = dtma.GetAttivazionePartenzaMAB(idTrasferimento);
-
-                    if (amm != null && amm.idAttivazioneMAB > 0)
+                    using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                     {
-                        dtma.VerificaDocumentiPartenza(amm, out siDocCopiaContratto,
-                                                            out siDocCopiaRicevuta,
-                                                            out siDocModulo1,
-                                                            out siDocModulo2,
-                                                            out siDocModulo3,
-                                                            out siDocModulo4,
-                                                            out siDocModulo5,
-                                                            out idDocCopiaContratto,
-                                                            out idDocCopiaRicevuta,
-                                                            out idDocModulo1,
-                                                            out idDocModulo2,
-                                                            out idDocModulo3,
-                                                            out idDocModulo4,
-                                                            out idDocModulo5);
+                        bool soloLettura = false;
 
-                        if (amm.notificaRichiesta)
-                        {
-                            soloLettura = true;
-                        }
+                        AttivazioneMABModel amm = dtma.GetAttivazionePartenzaMAB(idTrasferimento);
 
-                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        if (amm != null && amm.idAttivazioneMAB > 0)
                         {
-                            var t = dtt.GetTrasferimentoById(idTrasferimento);
-                            statoTrasferimento = t.idStatoTrasferimento;
-                            if (statoTrasferimento == EnumStatoTraferimento.Annullato)
+                            dtma.VerificaDocumentiPartenza(amm, out siDocCopiaContratto,
+                                                                out siDocCopiaRicevuta,
+                                                                out siDocModulo1,
+                                                                out siDocModulo2,
+                                                                out siDocModulo3,
+                                                                out siDocModulo4,
+                                                                out siDocModulo5,
+                                                                out idDocCopiaContratto,
+                                                                out idDocCopiaRicevuta,
+                                                                out idDocModulo1,
+                                                                out idDocModulo2,
+                                                                out idDocModulo3,
+                                                                out idDocModulo4,
+                                                                out idDocModulo5);
+
+                            if (amm.notificaRichiesta)
                             {
                                 soloLettura = true;
                             }
-                        }
 
-                        var ma = dtma.GetMABPartenza(idTrasferimento);
-                        //var rmab = dtma.GetRinunciaMAB(ma);
-                        if (ma.rinunciaMAB)
-                        {
-                            chkRinuncia = true;
-                        }
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var t = dtt.GetTrasferimentoById(idTrasferimento);
+                                statoTrasferimento = t.idStatoTrasferimento;
+                                if (statoTrasferimento == EnumStatoTraferimento.Annullato)
+                                {
+                                    soloLettura = true;
+                                }
+                            }
 
+                            var ma = dtma.GetMABPartenza(idTrasferimento, db);
+                            //var rmab = dtma.GetRinunciaMAB(ma);
+                            if (ma.rinunciaMAB)
+                            {
+                                chkRinuncia = true;
+                            }
+
+                        }
+                        decimal NumAttivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
+
+                        ViewData.Add("idTrasferimento", idTrasferimento);
+                        ViewData.Add("siDocCopiaContratto", siDocCopiaContratto);
+                        ViewData.Add("siDocCopiaRicevuta", siDocCopiaRicevuta);
+                        ViewData.Add("siDocModulo1", siDocModulo1);
+                        ViewData.Add("siDocModulo2", siDocModulo2);
+                        ViewData.Add("siDocModulo3", siDocModulo3);
+                        ViewData.Add("siDocModulo4", siDocModulo4);
+                        ViewData.Add("siDocModulo5", siDocModulo5);
+                        ViewData.Add("idDocCopiaContratto", idDocCopiaContratto);
+                        ViewData.Add("idDocCopiaRicevuta", idDocCopiaRicevuta);
+                        ViewData.Add("idDocModulo1", idDocModulo1);
+                        ViewData.Add("idDocModulo2", idDocModulo2);
+                        ViewData.Add("idDocModulo3", idDocModulo3);
+                        ViewData.Add("idDocModulo4", idDocModulo4);
+                        ViewData.Add("idDocModulo5", idDocModulo5);
+                        ViewData.Add("soloLettura", soloLettura);
+                        ViewData.Add("chkRinuncia", chkRinuncia);
+                        ViewData.Add("NumAttivazioni", NumAttivazioni);
                     }
-                    decimal NumAttivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
-
-                    ViewData.Add("idTrasferimento", idTrasferimento);
-                    ViewData.Add("siDocCopiaContratto", siDocCopiaContratto);
-                    ViewData.Add("siDocCopiaRicevuta", siDocCopiaRicevuta);
-                    ViewData.Add("siDocModulo1", siDocModulo1);
-                    ViewData.Add("siDocModulo2", siDocModulo2);
-                    ViewData.Add("siDocModulo3", siDocModulo3);
-                    ViewData.Add("siDocModulo4", siDocModulo4);
-                    ViewData.Add("siDocModulo5", siDocModulo5);
-                    ViewData.Add("idDocCopiaContratto", idDocCopiaContratto);
-                    ViewData.Add("idDocCopiaRicevuta", idDocCopiaRicevuta);
-                    ViewData.Add("idDocModulo1", idDocModulo1);
-                    ViewData.Add("idDocModulo2", idDocModulo2);
-                    ViewData.Add("idDocModulo3", idDocModulo3);
-                    ViewData.Add("idDocModulo4", idDocModulo4);
-                    ViewData.Add("idDocModulo5", idDocModulo5);
-                    ViewData.Add("soloLettura", soloLettura);
-                    ViewData.Add("chkRinuncia", chkRinuncia);
-                    ViewData.Add("NumAttivazioni", NumAttivazioni);
                 }
 
             }
@@ -299,68 +302,81 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                     {
-                        bool amministratore = Utility.Amministratore();
-
-                        string disabledNotificaRichiesta = "disabled";
-                        string hiddenNotificaRichiesta = "";
-                        string disabledAttivaRichiesta = "disabled";
-                        string hiddenAttivaRichiesta = "hidden";
-                        string disabledAnnullaRichiesta = "disabled";
-                        string hiddenAnnullaRichiesta = "hidden";
-                        decimal num_attivazioni = 0;
-                        bool esisteMod1 = false;
-
-                        EnumStatoTraferimento statoTrasferimento = 0;
-
-                
-                        amm = dtma.GetAttivazionePartenzaMAB(idTrasferimento);
-                        num_attivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
-                        mam = dtma.GetMABPartenza(idTrasferimento);
-                        //vmam = dtma.GetVariazioniMABPartenza(idTrasferimento);
-                        //rmab = dtma.GetRinunciaMAB(mam);
-
-                        var ldocModulo1 = dtma.GetDocumentiMABbyTipoDoc(amm.idAttivazioneMAB, (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione);
-                        if (ldocModulo1.Count > 0)
+                        using (dtTrasferimento dtt = new dtTrasferimento())
                         {
-                            esisteMod1 = true;
-                        }
-                
-                        var idAttivazioneMAB = amm.idAttivazioneMAB;
+                            bool amministratore = Utility.Amministratore();
 
-                        bool esisteMAB = mam.idMAB > 0 ? true : false;
-                        //bool esisteVMAB = vmam.idVariazioniMAB > 0 ? true : false;
+                            string disabledNotificaRichiesta = "disabled";
+                            string hiddenNotificaRichiesta = "";
+                            string disabledAttivaRichiesta = "disabled";
+                            string hiddenAttivaRichiesta = "hidden";
+                            string disabledAnnullaRichiesta = "disabled";
+                            string hiddenAnnullaRichiesta = "hidden";
+                            decimal num_attivazioni = 0;
+                            bool esisteMod1 = false;
 
-                        bool notificaRichiesta = amm.notificaRichiesta;
-                        bool attivaRichiesta = amm.Attivazione;
+                            EnumStatoTraferimento statoTrasferimento = 0;
 
-                
-                        var t = dtt.GetTrasferimentoById(idTrasferimento);
-                        statoTrasferimento = t.idStatoTrasferimento;
-                
 
-                        //se non esiste nessuma MAB non esegue nessun controllo
-                        if (esisteMAB)
-                        {
-                            //se amministratore vedo i pulsanti altrimenti solo notifica
-                            if (amministratore)
+                            amm = dtma.GetAttivazionePartenzaMAB(idTrasferimento);
+                            num_attivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
+                            mam = dtma.GetMABPartenza(idTrasferimento, db);
+                            //vmam = dtma.GetVariazioniMABPartenza(idTrasferimento);
+                            //rmab = dtma.GetRinunciaMAB(mam);
+
+                            var ldocModulo1 = dtma.GetDocumentiMABbyTipoDoc(amm.idAttivazioneMAB, (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione);
+                            if (ldocModulo1.Count > 0)
                             {
-                                hiddenAttivaRichiesta = "";
-                                hiddenAnnullaRichiesta = "";
+                                esisteMod1 = true;
+                            }
 
-                                if (num_attivazioni == 0)
+                            var idAttivazioneMAB = amm.idAttivazioneMAB;
+
+                            bool esisteMAB = mam.idMAB > 0 ? true : false;
+                            //bool esisteVMAB = vmam.idVariazioniMAB > 0 ? true : false;
+
+                            bool notificaRichiesta = amm.notificaRichiesta;
+                            bool attivaRichiesta = amm.Attivazione;
+
+
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
+                            statoTrasferimento = t.idStatoTrasferimento;
+
+
+                            //se non esiste nessuma MAB non esegue nessun controllo
+                            if (esisteMAB)
+                            {
+                                //se amministratore vedo i pulsanti altrimenti solo notifica
+                                if (amministratore)
                                 {
-                                    if (notificaRichiesta && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                                    hiddenAttivaRichiesta = "";
+                                    hiddenAnnullaRichiesta = "";
+
+                                    if (num_attivazioni == 0)
                                     {
-                                        disabledAttivaRichiesta = "";
-                                        disabledAnnullaRichiesta = "";
+                                        if (notificaRichiesta && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                                        {
+                                            disabledAttivaRichiesta = "";
+                                            disabledAnnullaRichiesta = "";
+                                        }
+                                        if (notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                                        {
+                                            if (esisteMod1)
+                                            {
+                                                disabledNotificaRichiesta = "";
+                                            }
+                                        }
                                     }
-                                    if (notificaRichiesta == false && attivaRichiesta == false  && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                                }
+                                else
+                                {
+                                    if (num_attivazioni == 0)
                                     {
-                                        if (esisteMod1)
+                                        if (notificaRichiesta == false && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Annullato)
                                         {
                                             disabledNotificaRichiesta = "";
                                         }
@@ -369,43 +385,33 @@ namespace NewISE.Controllers
                             }
                             else
                             {
-                                if (num_attivazioni == 0)
+                                if (amministratore)
                                 {
-                                    if (notificaRichiesta == false && attivaRichiesta == false && esisteMod1 && statoTrasferimento != EnumStatoTraferimento.Annullato)
-                                    {
-                                        disabledNotificaRichiesta = "";
-                                    }
+                                    hiddenAttivaRichiesta = "";
+                                    hiddenAnnullaRichiesta = "";
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (amministratore)
+                            //gestione pulsanti in caso di rinuncia
+                            if (notificaRichiesta && attivaRichiesta == false && mam.rinunciaMAB && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
-                                hiddenAttivaRichiesta = "";
-                                hiddenAnnullaRichiesta = "";
+                                disabledAttivaRichiesta = "";
+                                disabledAnnullaRichiesta = "";
                             }
-                        }
-                        //gestione pulsanti in caso di rinuncia
-                        if (notificaRichiesta && attivaRichiesta == false && mam.rinunciaMAB && statoTrasferimento != EnumStatoTraferimento.Annullato)
-                        {
-                            disabledAttivaRichiesta = "";
-                            disabledAnnullaRichiesta = "";
-                        }
-                        if (mam.rinunciaMAB && notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Annullato)
-                        {
-                            disabledNotificaRichiesta = "";
-                        }
+                            if (mam.rinunciaMAB && notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            {
+                                disabledNotificaRichiesta = "";
+                            }
 
-                        ViewData.Add("idTrasferimento", idTrasferimento);
-                        ViewData.Add("idAttivazioneMAB", idAttivazioneMAB);
-                        ViewData.Add("disabledAnnullaRichiesta", disabledAnnullaRichiesta);
-                        ViewData.Add("disabledAttivaRichiesta", disabledAttivaRichiesta);
-                        ViewData.Add("disabledNotificaRichiesta", disabledNotificaRichiesta);
-                        ViewData.Add("hiddenAnnullaRichiesta", hiddenAnnullaRichiesta);
-                        ViewData.Add("hiddenAttivaRichiesta", hiddenAttivaRichiesta);
-                        ViewData.Add("hiddenNotificaRichiesta", hiddenNotificaRichiesta);
-                        ViewData.Add("amministratore", amministratore);
+                            ViewData.Add("idTrasferimento", idTrasferimento);
+                            ViewData.Add("idAttivazioneMAB", idAttivazioneMAB);
+                            ViewData.Add("disabledAnnullaRichiesta", disabledAnnullaRichiesta);
+                            ViewData.Add("disabledAttivaRichiesta", disabledAttivaRichiesta);
+                            ViewData.Add("disabledNotificaRichiesta", disabledNotificaRichiesta);
+                            ViewData.Add("hiddenAnnullaRichiesta", hiddenAnnullaRichiesta);
+                            ViewData.Add("hiddenAttivaRichiesta", hiddenAttivaRichiesta);
+                            ViewData.Add("hiddenNotificaRichiesta", hiddenNotificaRichiesta);
+                            ViewData.Add("amministratore", amministratore);
+                        }
                     }
                 }
 
@@ -703,9 +709,9 @@ namespace NewISE.Controllers
                                 var m = db.MAB.Find(idMAB);
                                 var t = dtt.GetTrasferimentoById(m.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO);
 
-                                var ma = dtma.GetMABPartenza(t.idTrasferimento);
+                                var ma = dtma.GetMABPartenza(t.idTrasferimento, db);
 
-                                var pma = dtma.GetPeriodoMABPartenza(ma.idMAB);
+                                var pmm = dtma.GetPeriodoMABModelPartenza(ma.idMAB, db);
 
                                 //var vmam = dtma.GetVariazioniMABPartenza(ma.IDTRASFERIMENTO);
 
@@ -714,8 +720,8 @@ namespace NewISE.Controllers
                                 var aa = dtma.GetAnticipoAnnualeMABPartenza(ma);
 
                                 mam.importo_canone = cm.IMPORTOCANONE;
-                                mam.dataInizioMAB = pma.dataInizioMAB;
-                                mam.dataFineMAB = pma.dataFineMAB;
+                                mam.dataInizioMAB = pmm.dataInizioMAB;
+                                mam.dataFineMAB = pmm.dataFineMAB;
                                 mam.anticipoAnnuale = aa.ANTICIPOANNUALE;
                                 mam.id_Valuta = cm.IDVALUTA;
 
@@ -760,8 +766,8 @@ namespace NewISE.Controllers
                                     mam.canone_pagato = pc.PAGATO;
                                 }
 
-                                mam.ut_dataFineMAB = pma.dataFineMAB;
-                                if (pma.dataFineMAB == Utility.DataFineStop())
+                                mam.ut_dataFineMAB = pmm.dataFineMAB;
+                                if (pmm.dataFineMAB == Utility.DataFineStop())
                                 {
                                     mam.ut_dataFineMAB = null;
                                 }
@@ -1024,7 +1030,7 @@ namespace NewISE.Controllers
                         {
                             var t = dtt.GetTrasferimentoById(idTrasferimento);
 
-                            mabm = dtmab.GetMABPartenza(idTrasferimento);
+                            mabm = dtmab.GetMABPartenza(idTrasferimento, db);
 
                             //rmabm = dtmab.GetRinunciaMAB(mam);
 
