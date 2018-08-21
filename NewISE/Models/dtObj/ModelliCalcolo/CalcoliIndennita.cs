@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using NewISE.Models.DBModel;
 
@@ -412,12 +413,22 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     .OrderByDescending(a => a.IDMAB)
                     .ToList();
 
+            //var lmab = _indennita.MAGGIORAZIONEABITAZIONE.MAB.Where(a=>a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false && a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true).order
+
             if (lmab?.Any() ?? false)
             {
                 #region Percentuale MAB
                 var mab = lmab.First();
+                var perMab =
+                    mab.PERIODOMAB.Where(
+                        a =>
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
+                            a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+                        .OrderByDescending(a => a.IDPERIODOMAB)
+                        .First();
+
                 var lpmab =
-                    mab.PERCENTUALEMAB.Where(
+                    perMab.PERCENTUALEMAB.Where(
                         a =>
                             a.ANNULLATO == false && a.IDUFFICIO == _trasferimento.IDUFFICIO &&
                             a.IDLIVELLO == _livello.IDLIVELLO &&

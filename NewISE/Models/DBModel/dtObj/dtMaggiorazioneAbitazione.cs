@@ -8,7 +8,7 @@ using Newtonsoft.Json.Schema;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
-
+using System.Data.Linq;
 using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.ModelRest;
@@ -149,13 +149,13 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<PERCENTUALEMAB> GetListaPercentualeMAB(PeriodoMABModel pmm, TrasferimentoModel trm, ModelDBISE db)
+        public List<PERCENTUALEMAB> GetListaPercentualeMAB(PERIODOMAB pm, TrasferimentoModel trm, ModelDBISE db)
         {
             try
             {
 
 
-                PERCENTUALEMAB p = new PERCENTUALEMAB();
+                //PERCENTUALEMAB p = new PERCENTUALEMAB();
                 List<PERCENTUALEMAB> plAll = new List<PERCENTUALEMAB>();
                 //List<PERCENTUALEMAB> pl = new List<PERCENTUALEMAB>();
 
@@ -166,7 +166,11 @@ namespace NewISE.Models.DBModel.dtObj
                 UFFICI u = t.UFFICI;
                 DIPENDENTI d = t.DIPENDENTI;
 
-                var livelli = d.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= pmm.dataInizioMAB && a.DATAINIZIOVALIDITA <= pmm.dataFineMAB).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                var livelli =
+                    d.LIVELLIDIPENDENTI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= pm.DATAINIZIOMAB &&
+                            a.DATAINIZIOVALIDITA <= pm.DATAFINEMAB).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                 foreach (var l in livelli)
                 {
@@ -563,7 +567,7 @@ namespace NewISE.Models.DBModel.dtObj
                             mm = new MABModel()
                             {
                                 idMAB = m.IDMAB,
-                                idMagAbitazione=m.IDMAGABITAZIONE,
+                                idMagAbitazione = m.IDMAGABITAZIONE,
                                 idAttivazioneMAB = m.IDATTIVAZIONEMAB,
                                 dataAggiornamento = m.DATAAGGIORNAMENTO,
                                 rinunciaMAB = m.RINUNCIAMAB,
@@ -592,7 +596,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public PeriodoMABModel GetPeriodoMABPartenza(decimal idMab)
+        public PeriodoMABModel GetPeriodoMABPartenzaModel(decimal idMab)
         {
             try
             {
@@ -601,7 +605,14 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var mab = db.MAB.Find(idMab);
-                    var pml = mab.PERIODOMAB.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
+                    var pml =
+                        mab.PERIODOMAB.Where(
+                            a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                            .OrderBy(a => a.IDATTIVAZIONEMAB)
+                            .ToList();
+
                     if (pml?.Any() ?? false)
                     {
                         var pm = pml.First();
@@ -632,7 +643,7 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
- 
+
         public MAGGIORAZIONEABITAZIONE GetMaggiorazioneAbitazioneByID(decimal idMagAbitazione)
         {
             try
@@ -685,7 +696,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var ma = db.MAB.Find(idMab);
 
-                    var pcmabl = ma.PAGATOCONDIVISOMAB.Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
+                    var pcmabl = ma.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
                     if (pcmabl?.Any() ?? false)
                     {
                         var pcmab = pcmabl.First();
@@ -871,16 +882,19 @@ namespace NewISE.Models.DBModel.dtObj
                                     tm = dtt.GetTrasferimentoById(am.TRASFERIMENTO.IDTRASFERIMENTO);
                                 }
 
-                                this.RimuoviAssociazione_MAB_PercentualeMAB(mm.idMAB, db);
+                                //this.RimuoviAssociazione_MAB_PercentualeMAB(mm.idMAB, db);
 
                                 var pmm = GetPeriodoMABPartenza(mm.idMAB);
+
+                                this.RimuoviAssociazione_PerMAB_PercentualeMAB(pmm.idPeriodoMAB, db);
 
                                 var lista_perc = this.GetListaPercentualeMAB(pmm, tm, db);
                                 if (lista_perc?.Any() ?? false)
                                 {
                                     foreach (var perc in lista_perc)
                                     {
-                                        this.Associa_MAB_PercentualeMAB(mm.idMAB, perc.IDPERCMAB, db);
+                                        this.Associa_PerMAB_PercentualeMAB(pmm.idPeriodoMAB, perc.IDPERCMAB, db);
+
                                     }
                                 }
                                 #endregion
@@ -1194,7 +1208,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region PERIODOMAB
-                    
+
                     var pmab_old = GetPeriodoMABPartenza(mab_old.idMAB);
 
                     if (pmab_old.idPeriodoMAB > 0)
@@ -2262,20 +2276,51 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void RimuoviAssociazione_MAB_PercentualeMAB(decimal idMAB, ModelDBISE db)
+        public void RimuoviAssociazione_PerMAB_PercentualeMAB(decimal idPerMab, ModelDBISE db)
         {
-            var ma = db.MAB.Find(idMAB);
-            var lpcann = ma.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+            var pmab = db.PERIODOMAB.Find(idPerMab);
+            var lpcann = pmab.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
             if (lpcann?.Any() ?? false)
             {
                 foreach (var pcann in lpcann)
                 {
-                    ma.PERCENTUALEMAB.Remove(pcann);
+                    pmab.PERCENTUALEMAB.Remove(pcann);
                 }
 
                 db.SaveChanges();
             }
         }
+
+        //public void RimuoviAssociazione_MAB_PercentualeMAB(decimal idMAB, ModelDBISE db)
+        //{
+        //    var ma = db.MAB.Find(idMAB);
+        //    var lpmab =
+        //        ma.PERIODOMAB.Where(
+        //            a =>
+        //                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
+        //                a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+        //            .OrderByDescending(a => a.IDPERIODOMAB)
+        //            .ToList();
+
+        //    if (lpmab?.Any() ?? false)
+        //    {
+        //        var pmab = lpmab.First();
+
+        //        var lpcann = pmab.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+        //        if (lpcann?.Any() ?? false)
+        //        {
+        //            foreach (var pcann in lpcann)
+        //            {
+        //                pmab.PERCENTUALEMAB.Remove(pcann);
+        //            }
+
+        //            db.SaveChanges();
+        //        }
+        //    }
+
+
+
+        //}
 
 
         public void RimuoviAssociazioneMAB_MaggiorazioniAnnuali(decimal idMAB, ModelDBISE db)
@@ -2377,28 +2422,59 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void Associa_MAB_PercentualeMAB(decimal idMAB, decimal idPercMAB, ModelDBISE db)
+        public void Associa_PerMAB_PercentualeMAB(decimal idPerMAB, decimal idPercMAB, ModelDBISE db)
         {
-            try
-            {
-                var mab = db.MAB.Find(idMAB);
-                var item = db.Entry<MAB>(mab);
-                item.State = System.Data.Entity.EntityState.Modified;
-                item.Collection(a => a.PERCENTUALEMAB).Load();
-                var pmab = db.PERCENTUALEMAB.Find(idPercMAB);
-                mab.PERCENTUALEMAB.Add(pmab);
+            var perMab = db.PERIODOMAB.Find(idPerMAB);
 
-                if (db.SaveChanges() <= 0)
-                {
-                    throw new Exception(string.Format("Impossibile associare MAB a PercentualeMAB."));
-                }
-            }
-            catch (Exception ex)
-            {
+            var item = db.Entry<PERIODOMAB>(perMab);
+            item.State = System.Data.Entity.EntityState.Modified;
+            item.Collection(a => a.PERCENTUALEMAB).Load();
+            var pmab = db.PERCENTUALEMAB.Find(idPercMAB);
+            perMab.PERCENTUALEMAB.Add(pmab);
 
-                throw ex;
+            if (db.SaveChanges() <= 0)
+            {
+                throw new Exception(string.Format("Impossibile associare il periodo MAB a PercentualeMAB."));
             }
+
+
         }
+
+        //public void Associa_MAB_PercentualeMAB(decimal idMAB, decimal idPercMAB, ModelDBISE db)
+        //{
+        //    try
+        //    {
+        //        var mab = db.MAB.Find(idMAB);
+        //        var lperMab =
+        //            mab.PERIODOMAB.Where(
+        //                a =>
+        //                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
+        //                    a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+        //                .OrderByDescending(a => a.IDPERIODOMAB)
+        //                .First();
+
+        //        if (lperMab?.Any() ?? false)
+        //        {
+        //            var item = db.Entry<PERIODOMAB>(mab);
+        //            item.State = System.Data.Entity.EntityState.Modified;
+        //            item.Collection(a => a.PERCENTUALEMAB).Load();
+        //            var pmab = db.PERCENTUALEMAB.Find(idPercMAB);
+        //            mab.PERCENTUALEMAB.Add(pmab);
+
+        //            if (db.SaveChanges() <= 0)
+        //            {
+        //                throw new Exception(string.Format("Impossibile associare MAB a PercentualeMAB."));
+        //            }
+        //        }
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
 
         public void Associa_TFR_CanoneMAB(decimal idTFR, decimal idCanoneMAB, ModelDBISE db)
         {

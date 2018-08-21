@@ -2347,42 +2347,54 @@ namespace NewISE.Models.DBModel.dtObj
                         m.MAGGIORAZIONIANNUALI.Remove(mann);
                     }
 
-                    var pmm = dtma.GetPeriodoMABPartenza(mm.idMAB);
+                    var lpm = m.PERIODOMAB.Where(
+                            a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                            .OrderByDescending(a => a.IDATTIVAZIONEMAB)
+                            .ToList();
 
-                    if (pmm.dataInizioMAB != t.DATAPARTENZA)
+                    if (lpm?.Any() ?? false)
                     {
-                        pmm.dataInizioMAB = t.DATAPARTENZA;
-                        if (db.SaveChanges() <= 0)
-                        {
-                            throw new Exception("Errore di correzione data inizio maggiorazione abitazione su PERIODOMAB da " + pmm.dataInizioMAB + " a " + t.DATAPARTENZA);
-                        }
-                        //mm.dataInizioMAB = m.DATAINIZIOMAB;
+                        var pm = lpm.First();
 
-                        //elimina le associazioni percentualeMAB variazioniMAB
-                        var lpm = m.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
-                        foreach (var pm in lpm)
+                        if (pm.DATAINIZIOMAB != t.DATAPARTENZA)
                         {
-                            m.PERCENTUALEMAB.Remove(pm);
-                        }
-
-                        var idMAB = m.IDMAB;
-
-                        var lpmab = dtma.GetListaPercentualeMAB(pmm, tm, db);
-                        foreach (var pmab in lpmab)
-                        {
-                            dtma.Associa_MAB_PercentualeMAB(mm.idMAB, pmab.IDPERCMAB, db);
-                        }
-
-                        //riassocia maggiorazioni annuali
-                        var mam = dtma.GetMaggiorazioneAnnuale(mm, db);
-                        if (mam.idMagAnnuali > 0)
-                        {
-                            if (mam.annualita)
+                            pm.DATAINIZIOMAB = t.DATAPARTENZA;
+                            if (db.SaveChanges() <= 0)
                             {
-                                dtma.Associa_MAB_MaggiorazioniAnnuali(mm.idMAB, mam.idMagAnnuali, db);
+                                throw new Exception("Errore di correzione data inizio maggiorazione abitazione su PERIODOMAB da " + pmm.dataInizioMAB + " a " + t.DATAPARTENZA);
+                            }
+                            //mm.dataInizioMAB = m.DATAINIZIOMAB;
+
+                            //elimina le associazioni percentualeMAB variazioniMAB
+                            var lpercMab = pm.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var percMab in lpercMab)
+                            {
+                                pm.PERCENTUALEMAB.Remove(percMab);
+                            }
+
+                            //var idMAB = m.IDMAB;
+
+                            var lpmab = dtma.GetListaPercentualeMAB(pm, tm, db);
+                            foreach (var pmab in lpmab)
+                            {
+                                dtma.Associa_PerMAB_PercentualeMAB(pm.IDPERIODOMAB, pmab.IDPERCMAB, db);
+                            }
+
+                            //riassocia maggiorazioni annuali
+                            var mam = dtma.GetMaggiorazioneAnnuale(mm, db);
+                            if (mam.idMagAnnuali > 0)
+                            {
+                                if (mam.annualita)
+                                {
+                                    dtma.Associa_MAB_MaggiorazioniAnnuali(mm.idMAB, mam.idMagAnnuali, db);
+                                }
                             }
                         }
                     }
+
+
                     #endregion
 
                     #region allinea date PagatoCondivisoMAB e riassocia perc condiviso MAB

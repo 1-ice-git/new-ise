@@ -690,46 +690,53 @@ namespace NewISE.Models.dtObj
                 var pm = db.PERCENTUALEMAB.Find(idPerceMAB);
                 var item = db.Entry<PERCENTUALEMAB>(pm);
 
-                var lmab = db.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == pm.IDUFFICIO &&
-                                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI
-                                                 .LIVELLIDIPENDENTI.Any(
-                                                     b =>
-                                                         b.ANNULLATO == false &&
-                                                         b.DATAFINEVALIDITA >= pm.DATAINIZIOVALIDITA &&
-                                                         b.DATAINIZIOVALIDITA <= pm.DATAFINEVALIDITA &&
-                                                         b.IDLIVELLO == pm.IDLIVELLO) &&
-                                             a.PERIODOMAB.Any(
-                                                 b =>
-                                                     b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                                     b.ATTIVAZIONEMAB.ANNULLATO == false &&
-                                                     b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                                                     b.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
-                                                     b.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
-                                                     b.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
-                    )
-                    .OrderBy(a => a.IDMAB)
-                    .ToList();
+                //var lmab = db.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                //                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == pm.IDUFFICIO &&
+                //                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI
+                //                                 .LIVELLIDIPENDENTI.Any(
+                //                                     b =>
+                //                                         b.ANNULLATO == false &&
+                //                                         b.DATAFINEVALIDITA >= pm.DATAINIZIOVALIDITA &&
+                //                                         b.DATAINIZIOVALIDITA <= pm.DATAFINEVALIDITA &&
+                //                                         b.IDLIVELLO == pm.IDLIVELLO) &&
+                //                             a.PERIODOMAB.Any(
+                //                                 b =>
+                //                                     b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                //                                     b.ATTIVAZIONEMAB.ANNULLATO == false &&
+                //                                     b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                //                                     b.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
+                //                                     b.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
+                //                                     b.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
+                //    )
+                //    .OrderBy(a => a.IDMAB)
+                //    .ToList();
+
+                var lPerMab =
+                    db.PERIODOMAB.Where(
+                        a =>
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo && a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
+                            a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOMAB).ToList();
 
 
-                if (lmab?.Any() ?? false)
+                if (lPerMab?.Any() ?? false)
                 {
                     item.State = EntityState.Modified;
-                    item.Collection(a => a.MAB).Load();
+                    item.Collection(a => a.PERIODOMAB).Load();
 
-                    foreach (var mab in lmab)
+                    foreach (var perMab in lPerMab)
                     {
                         var nConta =
-                            pm.MAB.Count(
+                            pm.PERIODOMAB.Count(
                                 a =>
                                     a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                    a.IDMAB == mab.IDMAB);
+                                    a.IDPERIODOMAB == perMab.IDPERIODOMAB);
 
                         if (nConta <= 0)
                         {
-                            pm.MAB.Add(mab);
+                            pm.PERIODOMAB.Add(perMab);
 
-                            var t = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                            var t = perMab.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);

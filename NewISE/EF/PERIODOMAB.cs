@@ -18,6 +18,7 @@ namespace NewISE.EF
         public PERIODOMAB()
         {
             this.PERIODOMAB1 = new HashSet<PERIODOMAB>();
+            this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
         }
     
         public decimal IDPERIODOMAB { get; set; }
@@ -35,5 +36,7 @@ namespace NewISE.EF
         public virtual ICollection<PERIODOMAB> PERIODOMAB1 { get; set; }
         public virtual PERIODOMAB PERIODOMAB2 { get; set; }
         public virtual STATORECORD STATORECORD { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
     }
 }
