@@ -2332,7 +2332,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region legge MAB
-                    var mm = dtma.GetMABPartenza(t.IDTRASFERIMENTO);
+                    var mm = dtma.GetMABPartenza(t.IDTRASFERIMENTO, db);
                     if (!(mm.idMAB > 0))
                     {
                         throw new Exception("MAB non trovata.");
@@ -2347,7 +2347,7 @@ namespace NewISE.Models.DBModel.dtObj
                         m.MAGGIORAZIONIANNUALI.Remove(mann);
                     }
 
-                    var pmm = dtma.GetPeriodoMABPartenza(mm.idMAB);
+                    var pmm = dtma.GetPeriodoMABPartenza(mm.idMAB, db);
 
                     if (pmm.dataInizioMAB != t.DATAPARTENZA)
                     {

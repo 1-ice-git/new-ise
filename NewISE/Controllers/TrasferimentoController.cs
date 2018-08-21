@@ -2233,40 +2233,43 @@ namespace NewISE.Controllers
                 {
                     throw new Exception("Il trasferimento non risulta valorizzato.");
                 }
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
-                    if (trm != null && trm.HasValue())
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                        TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+                        if (trm != null && trm.HasValue())
                         {
-                            using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                            if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                             {
-                                trm.RuoloUfficio = dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento, DateTime.Now).RuoloUfficio;
-                                trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
-                            }
-                            using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
-                            {
-                                MABModel mam = dtma.GetMABPartenza(idTrasferimento);
+                                using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                                {
+                                    trm.RuoloUfficio = dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento, DateTime.Now).RuoloUfficio;
+                                    trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                                }
+                                using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                                {
+                                    MABModel mam = dtma.GetMABPartenza(idTrasferimento, db);
 
-                                if (mam.idMAB.ToString() != null)
-                                {
-                                    return Json(new { idMAB = mam.idMAB.ToString() });
+                                    if (mam.idMAB.ToString() != null)
+                                    {
+                                        return Json(new { idMAB = mam.idMAB.ToString() });
+                                    }
+                                    else
+                                    {
+                                        return Json(new { idMAB = 0 });
+                                    }
                                 }
-                                else
-                                {
-                                    return Json(new { idMAB = 0 });
-                                }
+                            }
+                            else
+                            {
+                                return Json(new { idMAB = 0 });
                             }
                         }
                         else
                         {
                             return Json(new { idMAB = 0 });
                         }
-                    }
-                    else
-                    {
-                        return Json(new { idMAB = 0 });
                     }
                 }
             }

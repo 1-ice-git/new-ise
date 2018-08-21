@@ -2621,7 +2621,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 //        {
                                 //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga CANONE MAB.", "CANONEMAB", db, idTrasferimento, new_canoneMAB.IDCANONE);
                                 //            var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, mvm.id_Valuta, dtIni, dtFin, db);
-
                                 //            if (ltfr?.Any() ?? false)
                                 //            {
                                 //                foreach (var tfr in ltfr)
@@ -2633,8 +2632,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 //    }
                                 //    else
                                 //    {
-
-
                                 //        RimuoviAssociazioneCanoneMAB_TFR_var(canoneMAB.IDCANONE, db);
                                 //        var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, mvm.id_Valuta, dtIni, dtFin, db);
 
