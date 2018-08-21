@@ -4,6 +4,7 @@ using Microsoft.Owin;
 using Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.Google;
 
 [assembly: OwinStartup(typeof(NewISE.App_Start.Startup))]
 
@@ -52,7 +53,12 @@ namespace NewISE.App_Start
 
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "1036085941142-p1a8qcvrk7s2pnbt6e05sl5ebmg8ip11.apps.googleusercontent.com",
+                ClientSecret = "uk6bdKhKPv1lwEYoLrmCI37Q",
+
+            });
         }
     }
 }
