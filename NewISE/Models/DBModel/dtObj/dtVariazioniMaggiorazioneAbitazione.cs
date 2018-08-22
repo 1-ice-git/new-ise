@@ -2621,7 +2621,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 //        {
                                 //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga CANONE MAB.", "CANONEMAB", db, idTrasferimento, new_canoneMAB.IDCANONE);
                                 //            var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, mvm.id_Valuta, dtIni, dtFin, db);
-
                                 //            if (ltfr?.Any() ?? false)
                                 //            {
                                 //                foreach (var tfr in ltfr)
@@ -2633,8 +2632,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 //    }
                                 //    else
                                 //    {
-
-
                                 //        RimuoviAssociazioneCanoneMAB_TFR_var(canoneMAB.IDCANONE, db);
                                 //        var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, mvm.id_Valuta, dtIni, dtFin, db);
 
@@ -2953,21 +2950,21 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void Associa_MAB_PercenualeMAB_var(decimal idMAB, decimal idPercMAB, ModelDBISE db)
+        public void Associa_perMAB_PercenualeMAB_var(decimal idPeriodoMAB, decimal idPercMAB, ModelDBISE db)
         {
             try
             {
-                var mab = db.MAB.Find(idMAB);
-                var item = db.Entry<MAB>(mab);
+                var pm = db.PERIODOMAB.Find(idPeriodoMAB);
+                var item = db.Entry<PERIODOMAB>(pm);
                 item.State = System.Data.Entity.EntityState.Modified;
                 item.Collection(a => a.PERCENTUALEMAB).Load();
                 var p = db.PERCENTUALEMAB.Find(idPercMAB);
-                mab.PERCENTUALEMAB.Add(p);
+                pm.PERCENTUALEMAB.Add(p);
                 int i = db.SaveChanges();
 
                 if (i <= 0)
                 {
-                    throw new Exception(string.Format("Impossibile associare MAB a PercentualeMAB."));
+                    throw new Exception(string.Format("Impossibile associare PERIODOMAB a PercentualeMAB."));
                 }
             }
             catch (Exception ex)
