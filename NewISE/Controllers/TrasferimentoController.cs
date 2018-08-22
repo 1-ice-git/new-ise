@@ -2249,7 +2249,7 @@ namespace NewISE.Controllers
                                 }
                                 using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                                 {
-                                    MABModel mam = dtma.GetMABPartenza(idTrasferimento, db);
+                                    MABModel mam = dtma.GetMABModelPartenza(idTrasferimento, db);
 
                                     if (mam.idMAB.ToString() != null)
                                     {

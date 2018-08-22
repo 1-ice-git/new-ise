@@ -13,7 +13,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public ValuteModel GetValuta(decimal idValuta, ModelDBISE db)
+        public ValuteModel GetValutaModel(decimal idValuta, ModelDBISE db)
         {
             ValuteModel vm = new ValuteModel();
 
