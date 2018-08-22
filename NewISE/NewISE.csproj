@@ -4902,6 +4902,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VariazioneProvvScolColori.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamFasciaKmController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamPercAnticipoTeController.cs" />
