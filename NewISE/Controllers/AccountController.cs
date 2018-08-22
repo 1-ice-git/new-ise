@@ -23,11 +23,158 @@ using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using System.Net;
 using Microsoft.Owin;
+using NewISE.App_Start;
+using NewISE.EF;
 
 namespace NewISE.Controllers
 {
     public class AccountController : Controller
     {
+
+
+        #region Login Google
+
+        private IdentityConfig.ApplicationSignInManager _signInManager;
+        private IdentityConfig.ApplicationUserManager _userManager;
+
+
+        public IdentityConfig.ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<IdentityConfig.ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        {
+            var loginInfo =
+                await
+                    Microsoft.Owin.Security.AuthenticationManagerExtensions.GetExternalLoginInfoAsync(
+                        HttpContext.GetOwinContext().Authentication);
+
+            if (loginInfo == null)
+            {
+                RedirectToAction("", "");
+            }
+
+            var signInResult = await this.SignInManager.ExternalSignInAsync(loginInfo, false);
+
+            if (signInResult == Microsoft.AspNet.Identity.Owin.SignInStatus.Success)
+            {
+                return Redirect(GetRedirectUrl(returnUrl));
+            }
+
+            if (signInResult == Microsoft.AspNet.Identity.Owin.SignInStatus.RequiresVerification)
+            {
+                // ...
+            }
+            //var a = HttpContext.GetOwinContext().Authentication;
+
+            //ClaimsPrincipal currentClaimsPrincipal = ClaimsPrincipal.Current;
+
+            //AccountModel ac = new AccountModel();
+
+            //if (currentClaimsPrincipal.Identity.IsAuthenticated)
+            //{
+            //    foreach (Claim claim in currentClaimsPrincipal.Claims)
+            //    {
+            //        if (claim.Type == ClaimTypes.NameIdentifier)
+            //        {
+            //            ac.idUtenteAutorizzato = Convert.ToDecimal(claim.Value);
+            //        }
+            //        else if (claim.Type == ClaimTypes.Name)
+            //        {
+            //            ac.nome = claim.Value;
+            //        }
+            //        else if (claim.Type == ClaimTypes.Surname)
+            //        {
+            //            ac.cognome = claim.Value;
+            //        }
+            //        else if (claim.Type == ClaimTypes.GivenName)
+            //        {
+            //            ac.utente = claim.Value;
+            //        }
+            //        else if (claim.Type == ClaimTypes.Email)
+            //        {
+            //            ac.eMail = claim.Value;
+            //        }
+            //        else if (claim.Type == ClaimTypes.Role)
+            //        {
+            //            ac.idRuoloUtente = Convert.ToDecimal(claim.Value);
+            //        }
+            //    }
+
+            //    if (ac.idRuoloUtente > 0)
+            //    {
+            //        using (ModelDBISE db = new ModelDBISE())
+            //        {
+            //            RUOLOACCESSO ruolo = db.RUOLOACCESSO.Find(ac.idRuoloUtente);
+            //            if (ruolo != null)
+            //            {
+            //                ac.RuoloAccesso = new RuoloAccesoModel()
+            //                {
+            //                    idRuoloAccesso = ruolo.IDRUOLOACCESSO,
+            //                    descRuoloAccesso = ruolo.DESCRUOLO
+            //                };
+            //            }
+
+            //            UTENTIAUTORIZZATI ua = db.UTENTIAUTORIZZATI.Find(ac.idUtenteAutorizzato);
+            //            DIPENDENTI d = ua.DIPENDENTI;
+
+            //            if (d?.IDDIPENDENTE > 0)
+            //            {
+            //                ac.idDipendente = d.IDDIPENDENTE;
+
+            //                DipendentiModel dm = new DipendentiModel()
+            //                {
+            //                    idDipendente = d.IDDIPENDENTE,
+            //                    matricola = d.MATRICOLA,
+            //                    nome = d.NOME,
+            //                    cognome = d.COGNOME,
+            //                    dataAssunzione = d.DATAASSUNZIONE,
+            //                    dataCessazione = d.DATACESSAZIONE,
+            //                    indirizzo = d.INDIRIZZO,
+            //                    cap = d.CAP,
+            //                    citta = d.CITTA,
+            //                    provincia = d.PROVINCIA,
+            //                    email = d.EMAIL,
+            //                    telefono = d.TELEFONO,
+            //                    fax = d.FAX,
+            //                    abilitato = d.ABILITATO,
+            //                    dataInizioRicalcoli = d.DATAINIZIORICALCOLI
+            //                };
+
+            //                ac.Dipendenti = dm;
+            //            }
+
+
+            //        }
+            //    }
+            //}
+
+
+            return null;
+        }
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
         private IAuthenticationManager Authentication
         {
             get { return HttpContext.GetOwinContext().Authentication; }
@@ -54,8 +201,19 @@ namespace NewISE.Controllers
             return View(account);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void LoginGoogle(string ReturnUrl)
+        {
 
 
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = ReturnUrl }) };
+
+            HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
+
+
+        }
 
 
 
@@ -541,35 +699,7 @@ namespace NewISE.Controllers
 
         //
         // GET: /Account/ExternalLoginCallback
-        [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
-        {
-            //var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            //if (loginInfo == null)
-            //{
-            //    return RedirectToAction("Login");
-            //}
 
-            //// Sign in the user with this external login provider if the user already has a login
-            //var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-            //switch (result)
-            //{
-            //    case SignInStatus.Success:
-            //        return RedirectToLocal(returnUrl);
-            //    case SignInStatus.LockedOut:
-            //        return View("Lockout");
-            //    case SignInStatus.RequiresVerification:
-            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-            //    case SignInStatus.Failure:
-            //    default:
-            //        // If the user does not have an account, then prompt the user to create an account
-            //        //ViewBag.ReturnUrl = returnUrl;
-            //        //ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-            //        //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-            //}
-
-            return null;
-        }
 
 
 

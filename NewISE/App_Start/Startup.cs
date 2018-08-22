@@ -68,19 +68,20 @@ namespace NewISE.App_Start
 
             var googleAutOptiom = new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "1036085941142-p1a8qcvrk7s2pnbt6e05sl5ebmg8ip11.apps.googleusercontent.com",
-                ClientSecret = "uk6bdKhKPv1lwEYoLrmCI37Q",
-                CallbackPath = new PathString("/Account/ExternalLoginCallback"),
-                Provider = new GoogleOAuth2AuthenticationProvider()
-                {
-                    OnAuthenticated = new Func<GoogleOAuth2AuthenticatedContext, Task>(context =>
-                    {
-                        var profileUrl = context.User["image"]["url"].ToString();
-                        context.Identity.AddClaim(new Claim(ClaimTypes.Uri, profileUrl));
-                        return Task.FromResult(0);
-                    })
+                ClientId = "108843374092-73iepmnlehpr859t60fmcaffd1vgasgm.apps.googleusercontent.com",
+                ClientSecret = "CUQa7l15OwZz12Wr2TVHCww9",
+                //CallbackPath = new PathString("/Account/ExternalLoginCallback"),
+                //Provider = new GoogleOAuth2AuthenticationProvider()
+                //{
+                //    OnAuthenticated = new Func<GoogleOAuth2AuthenticatedContext, Task>(context =>
+                //    {
+                //        var profileUrl = context.User["image"]["url"].ToString();
+                //        context.Identity.AddClaim(new Claim(ClaimTypes.Uri, profileUrl));
+                //        return Task.FromResult(0);
+                //    })
 
-                },
+                //},
+
             };
 
             googleAutOptiom.Scope.Add("email");
