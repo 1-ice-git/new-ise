@@ -567,6 +567,8 @@ namespace NewISE.Controllers
             //        //ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
             //        //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             //}
+
+            return null;
         }
 
 

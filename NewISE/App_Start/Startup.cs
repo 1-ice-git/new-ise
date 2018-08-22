@@ -79,10 +79,12 @@ namespace NewISE.App_Start
                         context.Identity.AddClaim(new Claim(ClaimTypes.Uri, profileUrl));
                         return Task.FromResult(0);
                     })
+
                 },
             };
 
             googleAutOptiom.Scope.Add("email");
+            googleAutOptiom.Scope.Add("profile");
 
             app.UseGoogleAuthentication(googleAutOptiom);
 
