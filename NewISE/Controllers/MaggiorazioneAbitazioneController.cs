@@ -46,8 +46,12 @@ namespace NewISE.Controllers
             List<MABViewModel> mavml = new List<MABViewModel>();
             MABViewModel mavm = new MABViewModel();
             MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
-            MABModel mabm = new MABModel();
-            PeriodoMABModel pmabm = new PeriodoMABModel();
+            MAB mab = new MAB();
+            PERIODOMAB pmab = new PERIODOMAB();
+            ATTIVAZIONEMAB am = new ATTIVAZIONEMAB();
+            AttivazioneMABModel amm = new AttivazioneMABModel();
+            ANTICIPOANNUALEMAB aa = new ANTICIPOANNUALEMAB();
+            CANONEMAB cm = new CANONEMAB();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -63,11 +67,6 @@ namespace NewISE.Controllers
 
                         using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                         {
-                            ATTIVAZIONEMAB am = new ATTIVAZIONEMAB();
-                            AttivazioneMABModel amm = new AttivazioneMABModel();
-                            AnticipoAnnualeMABModel aam = new AnticipoAnnualeMABModel();
-                            //RinunciaMABModel rmm = new RinunciaMABModel();
-                            //TRASFERIMENTO t = new TRASFERIMENTO();
 
                             amm = dtma.GetAttivazionePartenzaMAB(idTrasferimento);
 
@@ -80,46 +79,37 @@ namespace NewISE.Controllers
                             }
                             mavm.idAttivazioneMAB = amm.idAttivazioneMAB;
 
-                            mabm = dtma.GetMABPartenza(idTrasferimento, db);
+                            mab = dtma.GetMABPartenza(idTrasferimento, db);
 
-                            pmabm = dtma.GetPeriodoMABModelPartenza(mabm.idMAB, db);
+                            pmab = dtma.GetPeriodoMABPartenza(mab.IDMAB, db);
 
-                            mavm.idMAB = mabm.idMAB;
-                            mavm.idPeriodoMAB = pmabm.idPeriodoMAB;
+                            mavm.idMAB = mab.IDMAB;
+                            mavm.idPeriodoMAB = pmab.IDPERIODOMAB;
 
-                            mavm.rinunciaMAB = mabm.rinunciaMAB;
-                            //rmm = dtma.GetRinunciaMAB(mam);
+                            mavm.rinunciaMAB = mab.RINUNCIAMAB;
 
-                            //vmam = dtma.GetVariazioniMABPartenza(idTrasferimento);
+                            cm = dtma.GetCanoneMABPartenza(mab, db);
 
-                            CANONEMAB cm = dtma.GetCanoneMABPartenza(mabm);
-
-                            ANTICIPOANNUALEMAB aa = dtma.GetAnticipoAnnualeMABPartenza(mabm);
+                            aa = dtma.GetAnticipoAnnualeMABPartenza(mab, db);
                             mavm.importo_canone = cm.IMPORTOCANONE;
-                            mavm.dataInizioMAB = pmabm.dataInizioMAB;
-                            mavm.dataFineMAB = pmabm.dataFineMAB;
+                            mavm.dataInizioMAB = pmab.DATAINIZIOMAB;
+                            mavm.dataFineMAB = pmab.DATAFINEMAB;
                             if (aa.IDANTICIPOANNUALEMAB > 0)
                             {
                                 mavm.anticipoAnnuale = aa.ANTICIPOANNUALE;
                             }
                             else
                             {
-                                //MaggiorazioniAnnualiModel ma = dtma.GetMaggiorazioneAnnuale(mabm, db);
-                                //if(ma.idMagAnnuali>0)
-                                //{
-                                //    mavm.anticipoAnnuale = true;
-                                //}else
-                                //{
                                 mavm.anticipoAnnuale = false;
-                                //}
-                                aam = dtma.CreaAnticipoAnnualePartenza(mavm, db);
+
+                                aa = dtma.CreaAnticipoAnnualePartenza(mavm, db);
                             }
 
                             mavm.id_Valuta = cm.IDVALUTA;
 
                             using (dtValute dtv = new dtValute())
                             {
-                                var v = dtv.GetValuta(mavm.id_Valuta, db);
+                                var v = dtv.GetValutaModel(mavm.id_Valuta, db);
                                 mavm.descrizioneValuta = v.descrizioneValuta;
                             }
 
@@ -143,7 +133,7 @@ namespace NewISE.Controllers
                                 soloLettura = true;
                             }
 
-                            if (mabm.rinunciaMAB)
+                            if (mab.RINUNCIAMAB)
                             {
                                 soloLettura = true;
                             }
@@ -151,7 +141,7 @@ namespace NewISE.Controllers
                             ViewData.Add("soloLettura", soloLettura);
                             ViewData.Add("siDati", siDati);
                             ViewData.Add("idAttivazioneMAB", amm.idAttivazioneMAB);
-                            ViewData.Add("idMAB", mabm.idMAB);
+                            ViewData.Add("idMAB", mab.IDMAB);
                             ViewData.Add("idTrasferimento", idTrasferimento);
                         }
                     }
@@ -253,7 +243,7 @@ namespace NewISE.Controllers
 
                             var ma = dtma.GetMABPartenza(idTrasferimento, db);
                             //var rmab = dtma.GetRinunciaMAB(ma);
-                            if (ma.rinunciaMAB)
+                            if (ma.RINUNCIAMAB)
                             {
                                 chkRinuncia = true;
                             }
@@ -295,7 +285,7 @@ namespace NewISE.Controllers
         public ActionResult GestionePulsantiMAB(decimal idTrasferimento)
         {
             AttivazioneMABModel amm = new AttivazioneMABModel();
-            MABModel mam = new MABModel();
+            MAB ma = new MAB();
             ANTICIPOANNUALEMAB aa = new ANTICIPOANNUALEMAB(); 
             //VariazioniMABModel vmam = new VariazioniMABModel();
             //RinunciaMABModel rmab = new RinunciaMABModel();
@@ -324,9 +314,7 @@ namespace NewISE.Controllers
 
                             amm = dtma.GetAttivazionePartenzaMAB(idTrasferimento);
                             num_attivazioni = dtma.GetNumAttivazioniMAB(idTrasferimento);
-                            mam = dtma.GetMABPartenza(idTrasferimento, db);
-                            //vmam = dtma.GetVariazioniMABPartenza(idTrasferimento);
-                            //rmab = dtma.GetRinunciaMAB(mam);
+                            ma = dtma.GetMABPartenza(idTrasferimento, db);
 
                             var ldocModulo1 = dtma.GetDocumentiMABbyTipoDoc(amm.idAttivazioneMAB, (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione);
                             if (ldocModulo1.Count > 0)
@@ -336,7 +324,7 @@ namespace NewISE.Controllers
 
                             var idAttivazioneMAB = amm.idAttivazioneMAB;
 
-                            bool esisteMAB = mam.idMAB > 0 ? true : false;
+                            bool esisteMAB = ma.IDMAB > 0 ? true : false;
                             //bool esisteVMAB = vmam.idVariazioniMAB > 0 ? true : false;
 
                             bool notificaRichiesta = amm.notificaRichiesta;
@@ -392,12 +380,12 @@ namespace NewISE.Controllers
                                 }
                             }
                             //gestione pulsanti in caso di rinuncia
-                            if (notificaRichiesta && attivaRichiesta == false && mam.rinunciaMAB && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            if (notificaRichiesta && attivaRichiesta == false && ma.RINUNCIAMAB && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledAttivaRichiesta = "";
                                 disabledAnnullaRichiesta = "";
                             }
-                            if (mam.rinunciaMAB && notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            if (ma.RINUNCIAMAB && notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledNotificaRichiesta = "";
                             }
@@ -709,15 +697,13 @@ namespace NewISE.Controllers
                                 var m = db.MAB.Find(idMAB);
                                 var t = dtt.GetTrasferimentoById(m.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO);
 
-                                var ma = dtma.GetMABPartenza(t.idTrasferimento, db);
+                                var mab = dtma.GetMABPartenza(t.idTrasferimento, db);
 
-                                var pmm = dtma.GetPeriodoMABModelPartenza(ma.idMAB, db);
+                                var pmm = dtma.GetPeriodoMABModelPartenza(mab.IDMAB, db);
 
-                                //var vmam = dtma.GetVariazioniMABPartenza(ma.IDTRASFERIMENTO);
+                                CANONEMAB cm = dtma.GetCanoneMABPartenza(mab, db);
 
-                                CANONEMAB cm = dtma.GetCanoneMABPartenza(ma);
-
-                                var aa = dtma.GetAnticipoAnnualeMABPartenza(ma);
+                                var aa = dtma.GetAnticipoAnnualeMABPartenza(mab, db);
 
                                 mam.importo_canone = cm.IMPORTOCANONE;
                                 mam.dataInizioMAB = pmm.dataInizioMAB;
@@ -725,7 +711,7 @@ namespace NewISE.Controllers
                                 mam.anticipoAnnuale = aa.ANTICIPOANNUALE;
                                 mam.id_Valuta = cm.IDVALUTA;
 
-                                var vm = dtv.GetValuta(mam.id_Valuta, db);
+                                var vm = dtv.GetValutaModel(mam.id_Valuta, db);
                                 mam.descrizioneValuta = vm.descrizioneValuta;
 
                                 var lv = dtv.GetElencoValute(db);
@@ -751,10 +737,10 @@ namespace NewISE.Controllers
                                 mam.idAttivazioneMAB = amab.idAttivazioneMAB;
 
                                 mam.idMagAnnuali = 0;
-                                var mann = dtma.GetMaggiorazioneAnnuale(ma, db);
-                                if (mann.idMagAnnuali > 0)
+                                var mann = dtma.GetMaggiorazioneAnnuale(mab, db);
+                                if (mann.IDMAGANNUALI > 0)
                                 {
-                                    mam.idMagAnnuali = mann.idMagAnnuali;
+                                    mam.idMagAnnuali = mann.IDMAGANNUALI;
                                 }
 
                                 var lpc = dtma.GetListPagatoCondivisoMABPartenza(mam);
@@ -1030,9 +1016,7 @@ namespace NewISE.Controllers
                         {
                             var t = dtt.GetTrasferimentoById(idTrasferimento);
 
-                            mabm = dtmab.GetMABPartenza(idTrasferimento, db);
-
-                            //rmabm = dtmab.GetRinunciaMAB(mam);
+                            mabm = dtmab.GetMABModelPartenza(idTrasferimento, db);
 
                             var amm = dtmab.GetAttivazionePartenzaMAB(idTrasferimento);
 

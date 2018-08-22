@@ -2332,64 +2332,56 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region legge MAB
-                    var mm = dtma.GetMABPartenza(t.IDTRASFERIMENTO, db);
-                    if (!(mm.idMAB > 0))
+                    var mab = dtma.GetMABPartenza(t.IDTRASFERIMENTO, db);
+                    if (!(mab.IDMAB > 0))
                     {
                         throw new Exception("MAB non trovata.");
                     }
-                    var m = db.MAB.Find(mm.idMAB);
                     #endregion
 
                     #region allinea date PERIODO MAB e riassocia percMAB e magg annuali
-                    var lmann = m.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
+                    var lmann = mab.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
                     foreach (var mann in lmann)
                     {
-                        m.MAGGIORAZIONIANNUALI.Remove(mann);
+                        mab.MAGGIORAZIONIANNUALI.Remove(mann);
                     }
 
-                    var pm = dtma.GetPeriodoMABPartenza(m.IDMAB, db);
-                    var pmm = dtma.GetPeriodoMABModelPartenza(m.IDMAB, db);
+                    var pmab = dtma.GetPeriodoMABPartenza(mab.IDMAB, db);
+                    var pmabm = dtma.GetPeriodoMABModelPartenza(mab.IDMAB, db);
 
-                    //var lpm = m.PERIODOMAB.Where(
-                    //        a =>
-                    //            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                    //            a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
-                    //        .OrderByDescending(a => a.IDATTIVAZIONEMAB)
-                    //        .ToList();
-
-                    if (pm.IDPERIODOMAB>0)
+                    if (pmab.IDPERIODOMAB>0)
                     {
-                        if (pm.DATAINIZIOMAB != t.DATAPARTENZA)
+                        if (pmab.DATAINIZIOMAB != t.DATAPARTENZA)
                         {
-                            pm.DATAINIZIOMAB = t.DATAPARTENZA;
+                            pmab.DATAINIZIOMAB = t.DATAPARTENZA;
                             if (db.SaveChanges() <= 0)
                             {
-                                throw new Exception("Errore di correzione data inizio maggiorazione abitazione su PERIODOMAB da " + pmm.dataInizioMAB + " a " + t.DATAPARTENZA);
+                                throw new Exception("Errore di correzione data inizio maggiorazione abitazione su PERIODOMAB da " + pmab.DATAINIZIOMAB + " a " + t.DATAPARTENZA);
                             }
                             //mm.dataInizioMAB = m.DATAINIZIOMAB;
 
                             //elimina le associazioni percentualeMAB variazioniMAB
-                            var lpercMab = pm.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+                            var lpercMab = pmab.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
                             foreach (var percMab in lpercMab)
                             {
-                                pm.PERCENTUALEMAB.Remove(percMab);
+                                pmab.PERCENTUALEMAB.Remove(percMab);
                             }
 
                             //var idMAB = m.IDMAB;
 
-                            var lpmab = dtma.GetListaPercentualeMAB(pmm, tm, db);
-                            foreach (var pmab in lpmab)
+                            var lpmab = dtma.GetListaPercentualeMAB(pmabm, tm, db);
+                            foreach (var pm in lpmab)
                             {
-                                dtma.Associa_PerMAB_PercentualeMAB(pm.IDPERIODOMAB, pmab.IDPERCMAB, db);
+                                dtma.Associa_PerMAB_PercentualeMAB(pmab.IDPERIODOMAB, pm.IDPERCMAB, db);
                             }
 
                             //riassocia maggiorazioni annuali
-                            var mam = dtma.GetMaggiorazioneAnnuale(mm, db);
-                            if (mam.idMagAnnuali > 0)
+                            var mam = dtma.GetMaggiorazioneAnnuale(mab, db);
+                            if (mam.IDMAGANNUALI > 0)
                             {
-                                if (mam.annualita)
+                                if (mam.ANNUALITA)
                                 {
-                                    dtma.Associa_MAB_MaggiorazioniAnnuali(mm.idMAB, mam.idMagAnnuali, db);
+                                    dtma.Associa_MAB_MaggiorazioniAnnuali(mab.IDMAB, mam.IDMAGANNUALI, db);
                                 }
                             }
                         }
@@ -2399,7 +2391,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region allinea date PagatoCondivisoMAB e riassocia perc condiviso MAB
-                    var lpcma = m.PAGATOCONDIVISOMAB.Where(a =>
+                    var lpcma = mab.PAGATOCONDIVISOMAB.Where(a =>
                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                     if (lpcma?.Any() ?? false)
                     {
@@ -2430,7 +2422,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
 
                     #region allinea date CanoneMAB e riassocia TFR
-                    var lcma = m.CANONEMAB.Where(a =>
+                    var lcma = mab.CANONEMAB.Where(a =>
                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                     if (lcma?.Any() ?? false)
                     {
