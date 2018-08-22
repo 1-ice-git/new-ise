@@ -748,25 +748,22 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public PAGATOCONDIVISOMAB GetPagatoCondivisoMABPartenza(decimal idMab)
+        public PAGATOCONDIVISOMAB GetPagatoCondivisoMABPartenza(decimal idMab, ModelDBISE db)
         {
             try
             {
                 PAGATOCONDIVISOMAB pcmab = new PAGATOCONDIVISOMAB();
 
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var ma = db.MAB.Find(idMab);
+                var ma = db.MAB.Find(idMab);
 
-                    var pcmabl = ma.PAGATOCONDIVISOMAB.Where(a => 
-                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
-                            .OrderBy(a => a.IDPAGATOCONDIVISO)
-                            .ToList();
-                    if (pcmabl?.Any() ?? false)
-                    {
-                        pcmab = pcmabl.First();
-                    }
+                var pcmabl = ma.PAGATOCONDIVISOMAB.Where(a => 
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                        .OrderBy(a => a.IDPAGATOCONDIVISO)
+                        .ToList();
+                if (pcmabl?.Any() ?? false)
+                {
+                    pcmab = pcmabl.First();
                 }
 
                 return pcmab;
@@ -955,7 +952,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 #region aggiorna associazioni eventuale pagato condiviso
                                 var ma = this.GetMABPartenza(am.TRASFERIMENTO.IDTRASFERIMENTO, db);
                                 var lpc = am.PAGATOCONDIVISOMAB.OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
-                                PAGATOCONDIVISOMAB pc = this.GetPagatoCondivisoMABPartenza(mab.IDMAB);
+                                PAGATOCONDIVISOMAB pc = this.GetPagatoCondivisoMABPartenza(mab.IDMAB, db);
                                 this.RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, db);
 
                                 if (pc.CONDIVISO)
@@ -1369,7 +1366,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #region PagatoCondivisoMAB
                     //var mam = this.GetMABPartenza(am_Old.IDTRASFERIMENTO);
-                    var pcmabm_old = this.GetPagatoCondivisoMABPartenza(mab_old.IDMAB);
+                    var pcmabm_old = this.GetPagatoCondivisoMABPartenza(mab_old.IDMAB, db);
                     if (pcmabm_old.IDPAGATOCONDIVISO > 0)
                     {
                         PAGATOCONDIVISOMAB pcmab_new = new PAGATOCONDIVISOMAB()
@@ -1601,7 +1598,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (mab.RINUNCIAMAB)
                                 {
                                     //pagato condiviso MAB
-                                    var pcmpartenza = this.GetPagatoCondivisoMABPartenza(mab.IDMAB);
+                                    var pcmpartenza = this.GetPagatoCondivisoMABPartenza(mab.IDMAB, db);
 
                                     var pc = db.PAGATOCONDIVISOMAB.Find(pcmpartenza.IDPAGATOCONDIVISO);
                                     if (pc.PAGATO || pc.CONDIVISO)
