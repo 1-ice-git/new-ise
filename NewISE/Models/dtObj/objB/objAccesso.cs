@@ -10,17 +10,17 @@ namespace NewISE.Models.dtObj.objB
             GC.SuppressFinalize(this);
         }
 
-        public void Accesso(decimal idUtenteLoggato)
+        public void Accesso(decimal idDipendente)
         {
-            
+
             using (dtAccesso dta = new dtAccesso())
             {
                 try
                 {
-                    
+
                     var am = new AccessoModel()
                     {
-                        idUtenteLoggato = idUtenteLoggato,
+                        idDipendente = idDipendente,
                         dataAccesso = DateTime.Now,
                         guid = Guid.NewGuid()
                     };
@@ -29,7 +29,7 @@ namespace NewISE.Models.dtObj.objB
                 }
                 catch (Exception ex)
                 {
-                    
+
                 }
             }
         }

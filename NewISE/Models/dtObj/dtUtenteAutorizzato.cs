@@ -27,7 +27,7 @@ namespace NewISE.Models.dtObj
             //Effettuo una ricerca della matricola che voglio autorizzare per capire se già risulta autorizzata precedentemente.
             var luamAttivoOld = dip.UTENTIAUTORIZZATI;
 
-            if (!luamAttivoOld?.Any() ?? false)
+            if (luamAttivoOld == null || luamAttivoOld.IDDIPENDENTE <= 0)
             {
                 UTENTIAUTORIZZATI ua = new UTENTIAUTORIZZATI()
                 {
@@ -36,7 +36,7 @@ namespace NewISE.Models.dtObj
                     UTENTE = dip.MATRICOLA.ToString()
                 };
 
-                dip.UTENTIAUTORIZZATI.Add(ua);
+                db.UTENTIAUTORIZZATI.Add(ua);
 
                 int i = db.SaveChanges();
 

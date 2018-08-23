@@ -19,7 +19,7 @@ namespace NewISE.Models.dtObj
                 {
                     var la = new LOGATTIVITA()
                     {
-                        IDUTENTELOGGATO = lam.idUtenteLoggato,
+                        IDDIPENDENTE = lam.idDipendente,
                         IDTRASFERIMENTO = lam.idTrasferimento,
                         IDATTIVITACRUD = lam.idAttivitaCrud,
                         DATAOPERAZIONE = lam.dataOperazione,
@@ -45,7 +45,7 @@ namespace NewISE.Models.dtObj
             {
                 var la = new LOGATTIVITA()
                 {
-                    IDUTENTELOGGATO = lam.idUtenteLoggato,
+                    IDDIPENDENTE = lam.idDipendente,
                     IDTRASFERIMENTO = lam.idTrasferimento,
                     IDATTIVITACRUD = lam.idAttivitaCrud,
                     DATAOPERAZIONE = lam.dataOperazione,
@@ -70,7 +70,7 @@ namespace NewISE.Models.dtObj
             {
                 var la = new LOGATTIVITA()
                 {
-                    IDUTENTELOGGATO = lam.idUtenteLoggato,
+                    IDDIPENDENTE = lam.idDipendente,
                     IDTRASFERIMENTO = lam.idTrasferimento,
                     IDATTIVITACRUD = lam.idAttivitaCrud,
                     DATAOPERAZIONE = lam.dataOperazione,

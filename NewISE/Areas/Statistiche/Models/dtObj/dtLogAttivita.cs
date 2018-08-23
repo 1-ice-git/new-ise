@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Statistiche.Models.dtObj
 {
@@ -30,7 +31,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                             select new LogAttivitaModel()
                             {
                                 idLog = e.IDLOG,
-                                idUtenteLoggato = e.IDUTENTELOGGATO,
+                                idDipendente = e.IDDIPENDENTE,
                                 idTrasferimento = e.IDTRASFERIMENTO,
                                 idAttivitaCrud = e.IDATTIVITACRUD,
                                 dataOperazione = e.DATAOPERAZIONE,
@@ -39,9 +40,9 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                 idTabellaCoinvolta = e.IDTABELLACOINVOLTA,
                                 utenteAutorizzato = new UtenteAutorizzatoModel()
                                 {
-                                   //idRuoloUtente = e.UTENTIAUTORIZZATI.IDRUOLOUTENTE,
-                                   idUtenteAutorizzato = e.UTENTIAUTORIZZATI.IDUTENTEAUTORIZZATO,
-                                   matricola = e.UTENTIAUTORIZZATI.UTENTE
+                                    idRuoloUtente = (EnumRuoloAccesso)e.UTENTIAUTORIZZATI.IDRUOLOUTENTE,
+                                    idDipendente = e.UTENTIAUTORIZZATI.IDDIPENDENTE,
+                                    matricola = e.UTENTIAUTORIZZATI.UTENTE
 
                                 }
 

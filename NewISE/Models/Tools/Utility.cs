@@ -100,7 +100,7 @@ namespace NewISE.Models.Tools
                 {
                     if (claim.Type == ClaimTypes.NameIdentifier)
                     {
-                        ac.idUtenteAutorizzato = Convert.ToDecimal(claim.Value);
+                        ac.idDipendente = Convert.ToDecimal(claim.Value);
                     }
                     else if (claim.Type == ClaimTypes.Name)
                     {
@@ -138,7 +138,7 @@ namespace NewISE.Models.Tools
                             };
                         }
 
-                        UTENTIAUTORIZZATI ua = db.UTENTIAUTORIZZATI.Find(ac.idUtenteAutorizzato);
+                        UTENTIAUTORIZZATI ua = db.UTENTIAUTORIZZATI.Find(ac.idDipendente);
                         DIPENDENTI d = ua.DIPENDENTI;
 
                         if (d?.IDDIPENDENTE > 0)
@@ -181,7 +181,7 @@ namespace NewISE.Models.Tools
             {
                 LogAttivitaModel lam = new LogAttivitaModel();
 
-                lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
+                lam.idDipendente = Utility.UtenteAutorizzato().idDipendente;
                 if (idTrasferimento > 0)
                 {
                     lam.idTrasferimento = idTrasferimento;
@@ -206,7 +206,7 @@ namespace NewISE.Models.Tools
             {
                 LogAttivitaModel lam = new LogAttivitaModel();
 
-                lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
+                lam.idDipendente = Utility.UtenteAutorizzato().idDipendente;
                 if (idTrasferimento > 0)
                 {
                     lam.idTrasferimento = idTrasferimento;

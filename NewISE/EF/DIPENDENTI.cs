@@ -21,7 +21,6 @@ namespace NewISE.EF
             this.ELABORAZIONI = new HashSet<ELABORAZIONI>();
             this.EMAILSECONDARIEDIP = new HashSet<EMAILSECONDARIEDIP>();
             this.NOTIFICHE = new HashSet<NOTIFICHE>();
-            this.UTENTIAUTORIZZATI = new HashSet<UTENTIAUTORIZZATI>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
@@ -41,6 +40,7 @@ namespace NewISE.EF
         public string FAX { get; set; }
         public bool ABILITATO { get; set; }
         public System.DateTime DATAINIZIORICALCOLI { get; set; }
+        public bool NOSISTEMA { get; set; }
     
         public virtual CDCGEPE CDCGEPE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -51,8 +51,7 @@ namespace NewISE.EF
         public virtual ICollection<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NOTIFICHE> NOTIFICHE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
+        public virtual UTENTIAUTORIZZATI UTENTIAUTORIZZATI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

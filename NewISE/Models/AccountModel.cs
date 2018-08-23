@@ -11,7 +11,7 @@ namespace NewISE.Models
     public class AccountModel
     {
         [Key]
-        public decimal idUtenteAutorizzato { get; set; }
+        public decimal idDipendente { get; set; }
         [StringLength(50, ErrorMessage = "Il campo utente accetta un massimo di 50 caratteri.")]
         [DataType(DataType.Text)]
         [Display(AutoGenerateField = false, AutoGenerateFilter = false, Description = "Username dell'utente.", Name = "Username")]
@@ -35,8 +35,7 @@ namespace NewISE.Models
         public string eMail { get; set; }
         [Required(ErrorMessage = "Il ruolo è richiesto.")]
         public decimal idRuoloUtente { get; set; }
-        [Required(ErrorMessage = "Il dipendente è richiesto.")]
-        public decimal idDipendente { get; set; }
+
 
 
         [DataType(DataType.Text)]

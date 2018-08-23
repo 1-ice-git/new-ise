@@ -10,9 +10,9 @@
             <PropertyRef Name="IDACCESSO" />
           </Key>
           <Property Name="IDACCESSO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDUTENTELOGGATO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAACCESSO" Type="date" Nullable="false" />
           <Property Name="GUID" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="ADF_C">
           <Key>
@@ -494,6 +494,7 @@
           <Property Name="FAX" Type="varchar2" MaxLength="30" />
           <Property Name="ABILITATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="date" Nullable="false" />
+          <Property Name="NOSISTEMA" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="DOC_ATEP">
           <Key>
@@ -975,13 +976,13 @@
             <PropertyRef Name="IDLOG" />
           </Key>
           <Property Name="IDLOG" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDUTENTELOGGATO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="clob" Nullable="false" />
           <Property Name="TABELLACOINVOLTA" Type="varchar2" MaxLength="60" />
           <Property Name="IDTABELLACOINVOLTA" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MAB">
           <Key>
@@ -1686,12 +1687,12 @@
         </EntityType>
         <EntityType Name="UTENTIAUTORIZZATI">
           <Key>
-            <PropertyRef Name="IDUTENTEAUTORIZZATO" />
+            <PropertyRef Name="IDDIPENDENTE" />
           </Key>
-          <Property Name="IDUTENTEAUTORIZZATO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRUOLOUTENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" />
           <Property Name="UTENTE" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="PSW" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="VALUTAUFFICIO">
           <Key>
@@ -2891,10 +2892,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_D_UA">
-          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="0..1">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="UTENTIAUTORIZZATI" Type="Self.UTENTIAUTORIZZATI" Multiplicity="*" />
+          <End Role="UTENTIAUTORIZZATI" Type="Self.UTENTIAUTORIZZATI" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="DIPENDENTI">
               <PropertyRef Name="IDDIPENDENTE" />
@@ -5435,16 +5436,16 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_UL_C">
-          <End Role="UTENTIAUTORIZZATI" Type="Self.UTENTIAUTORIZZATI" Multiplicity="1">
+          <End Role="UTENTIAUTORIZZATI" Type="Self.UTENTIAUTORIZZATI" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="ACCESSI" Type="Self.ACCESSI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UTENTIAUTORIZZATI">
-              <PropertyRef Name="IDUTENTEAUTORIZZATO" />
+              <PropertyRef Name="IDDIPENDENTE" />
             </Principal>
             <Dependent Role="ACCESSI">
-              <PropertyRef Name="IDUTENTELOGGATO" />
+              <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5455,10 +5456,10 @@
           <End Role="LOGATTIVITA" Type="Self.LOGATTIVITA" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UTENTIAUTORIZZATI">
-              <PropertyRef Name="IDUTENTEAUTORIZZATO" />
+              <PropertyRef Name="IDDIPENDENTE" />
             </Principal>
             <Dependent Role="LOGATTIVITA">
-              <PropertyRef Name="IDUTENTELOGGATO" />
+              <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7807,9 +7808,9 @@
             <PropertyRef Name="IDACCESSO" />
           </Key>
           <Property Name="IDACCESSO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDUTENTELOGGATO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAACCESSO" Type="DateTime" Nullable="false" />
           <Property Name="GUID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_UL_C" FromRole="ACCESSI" ToRole="UTENTIAUTORIZZATI" />
         </EntityType>
         <EntityType Name="ALIQUOTECONTRIBUTIVE">
@@ -8237,6 +8238,7 @@
           <Property Name="FAX" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="ABILITATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
+          <Property Name="NOSISTEMA" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CDCGEPE" Relationship="DBISE.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
           <NavigationProperty Name="DESTINATARI" Relationship="DBISE.R_DIP_DEST" FromRole="DIPENDENTI" ToRole="DESTINATARI" />
           <NavigationProperty Name="ELABORAZIONI" Relationship="DBISE.R_D_E" FromRole="DIPENDENTI" ToRole="ELABORAZIONI" />
@@ -8660,13 +8662,13 @@
             <PropertyRef Name="IDLOG" />
           </Key>
           <Property Name="IDLOG" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDUTENTELOGGATO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITACRUD" Relationship="DBISE.R_AC_LA" FromRole="LOGATTIVITA" ToRole="ATTIVITACRUD" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_LA" FromRole="LOGATTIVITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_UL_LA" FromRole="LOGATTIVITA" ToRole="UTENTIAUTORIZZATI" />
@@ -9455,12 +9457,12 @@
         </EntityType>
         <EntityType Name="UTENTIAUTORIZZATI">
           <Key>
-            <PropertyRef Name="IDUTENTEAUTORIZZATO" />
+            <PropertyRef Name="IDDIPENDENTE" />
           </Key>
-          <Property Name="IDUTENTEAUTORIZZATO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDRUOLOUTENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="UTENTE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PSW" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ACCESSI" Relationship="DBISE.R_UL_C" FromRole="UTENTIAUTORIZZATI" ToRole="ACCESSI" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_D_UA" FromRole="UTENTIAUTORIZZATI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISE.R_UL_LA" FromRole="UTENTIAUTORIZZATI" ToRole="LOGATTIVITA" />
@@ -9514,16 +9516,16 @@
           <NavigationProperty Name="TIPOVOCE" Relationship="DBISE.R_TV_V" FromRole="VOCI" ToRole="TIPOVOCE" />
         </EntityType>
         <Association Name="R_UL_C">
-          <End Type="DBISE.UTENTIAUTORIZZATI" Role="UTENTIAUTORIZZATI" Multiplicity="1">
+          <End Type="DBISE.UTENTIAUTORIZZATI" Role="UTENTIAUTORIZZATI" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.ACCESSI" Role="ACCESSI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UTENTIAUTORIZZATI">
-              <PropertyRef Name="IDUTENTEAUTORIZZATO" />
+              <PropertyRef Name="IDDIPENDENTE" />
             </Principal>
             <Dependent Role="ACCESSI">
-              <PropertyRef Name="IDUTENTELOGGATO" />
+              <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10380,10 +10382,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_D_UA">
-          <End Type="DBISE.DIPENDENTI" Role="DIPENDENTI" Multiplicity="0..1">
+          <End Type="DBISE.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="DBISE.UTENTIAUTORIZZATI" Role="UTENTIAUTORIZZATI" Multiplicity="*" />
+          <End Type="DBISE.UTENTIAUTORIZZATI" Role="UTENTIAUTORIZZATI" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="DIPENDENTI">
               <PropertyRef Name="IDDIPENDENTE" />
@@ -11012,10 +11014,10 @@
           <End Type="DBISE.LOGATTIVITA" Role="LOGATTIVITA" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UTENTIAUTORIZZATI">
-              <PropertyRef Name="IDUTENTEAUTORIZZATO" />
+              <PropertyRef Name="IDDIPENDENTE" />
             </Principal>
             <Dependent Role="LOGATTIVITA">
-              <PropertyRef Name="IDUTENTELOGGATO" />
+              <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11994,9 +11996,9 @@
           <EntitySetMapping Name="ACCESSI">
             <EntityTypeMapping TypeName="DBISE.ACCESSI">
               <MappingFragment StoreEntitySet="ACCESSI">
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="GUID" ColumnName="GUID" />
                 <ScalarProperty Name="DATAACCESSO" ColumnName="DATAACCESSO" />
-                <ScalarProperty Name="IDUTENTELOGGATO" ColumnName="IDUTENTELOGGATO" />
                 <ScalarProperty Name="IDACCESSO" ColumnName="IDACCESSO" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -12327,6 +12329,7 @@
           <EntitySetMapping Name="DIPENDENTI">
             <EntityTypeMapping TypeName="DBISE.DIPENDENTI">
               <MappingFragment StoreEntitySet="DIPENDENTI">
+                <ScalarProperty Name="NOSISTEMA" ColumnName="NOSISTEMA" />
                 <ScalarProperty Name="DATAINIZIORICALCOLI" ColumnName="DATAINIZIORICALCOLI" />
                 <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
                 <ScalarProperty Name="FAX" ColumnName="FAX" />
@@ -12672,13 +12675,13 @@
           <EntitySetMapping Name="LOGATTIVITA">
             <EntityTypeMapping TypeName="DBISE.LOGATTIVITA">
               <MappingFragment StoreEntitySet="LOGATTIVITA">
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="IDTABELLACOINVOLTA" ColumnName="IDTABELLACOINVOLTA" />
                 <ScalarProperty Name="TABELLACOINVOLTA" ColumnName="TABELLACOINVOLTA" />
                 <ScalarProperty Name="DESCATTIVITASVOLTA" ColumnName="DESCATTIVITASVOLTA" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="IDATTIVITACRUD" ColumnName="IDATTIVITACRUD" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDUTENTELOGGATO" ColumnName="IDUTENTELOGGATO" />
                 <ScalarProperty Name="IDLOG" ColumnName="IDLOG" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -13334,10 +13337,10 @@
           <EntitySetMapping Name="UTENTIAUTORIZZATI">
             <EntityTypeMapping TypeName="DBISE.UTENTIAUTORIZZATI">
               <MappingFragment StoreEntitySet="UTENTIAUTORIZZATI">
+                <ScalarProperty Name="PSW" ColumnName="PSW" />
                 <ScalarProperty Name="UTENTE" ColumnName="UTENTE" />
-                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="IDRUOLOUTENTE" ColumnName="IDRUOLOUTENTE" />
-                <ScalarProperty Name="IDUTENTEAUTORIZZATO" ColumnName="IDUTENTEAUTORIZZATO" />
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,13 +1,6 @@
 ﻿{
   "s_admin": [
     {
-      "username": "yoravas",
-      "password": "aspnet",
-      "nome": "Mauro",
-      "cognome": "Arduini",
-      "email": "mauro.arduini@ritspa.it"
-    },
-    {
       "username": "fantomas",
       "password": "ise",
       "nome": "Daniele",
@@ -20,34 +13,6 @@
       "nome": "Andrea",
       "cognome": "Gull",
       "email": "a.gull@infordata.net"
-    },
-    {
-      "username": "rick",
-      "password": "ise",
-      "nome": "Jean",
-      "cognome": "Ravelo",
-      "email": "j.ravelomanantsoa@infordata.net"
-    },
-    {
-      "username": "9993",
-      "password": "ise",
-      "nome": "Jean",
-      "cognome": "Ravelo",
-      "email": "j.ravelomanantsoa@infordata.net"
-    },
-    {
-      "username": "2763",
-      "password": "ise",
-      "nome": "Daniela",
-      "cognome": "Velardi",
-      "email": "mauro.arduini@ritspa.it"
-    },
-    {
-      "username": "2942",
-      "password": "ise",
-      "nome": "Gabriella",
-      "cognome": "Musumeci",
-      "email": "mauro.arduini@ritspa.it"
     },
     {
       "username": "3272",

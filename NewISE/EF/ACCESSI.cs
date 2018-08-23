@@ -15,9 +15,9 @@ namespace NewISE.EF
     public partial class ACCESSI
     {
         public decimal IDACCESSO { get; set; }
-        public decimal IDUTENTELOGGATO { get; set; }
         public System.DateTime DATAACCESSO { get; set; }
         public string GUID { get; set; }
+        public Nullable<decimal> IDDIPENDENTE { get; set; }
     
         public virtual UTENTIAUTORIZZATI UTENTIAUTORIZZATI { get; set; }
     }

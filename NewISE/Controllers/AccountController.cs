@@ -34,20 +34,34 @@ namespace NewISE.Controllers
 
         #region Login Google
 
-        private IdentityConfig.ApplicationSignInManager _signInManager;
-        private IdentityConfig.ApplicationUserManager _userManager;
+        //private IdentityConfig.ApplicationSignInManager _signInManager;
+        //private IdentityConfig.ApplicationUserManager _userManager;
 
 
-        public IdentityConfig.ApplicationSignInManager SignInManager
+        //public IdentityConfig.ApplicationSignInManager SignInManager
+        //{
+        //    get
+        //    {
+        //        return _signInManager ?? HttpContext.GetOwinContext().Get<IdentityConfig.ApplicationSignInManager>();
+        //    }
+        //    private set
+        //    {
+        //        _signInManager = value;
+        //    }
+        //}
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void LoginGoogle(string ReturnUrl)
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<IdentityConfig.ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
+
+
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = ReturnUrl }) };
+
+            HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
+
+
         }
 
         [AllowAnonymous]
@@ -60,106 +74,47 @@ namespace NewISE.Controllers
 
             if (loginInfo == null)
             {
-                RedirectToAction("", "");
+                RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
             }
 
-            var signInResult = await this.SignInManager.ExternalSignInAsync(loginInfo, false);
-
-            if (signInResult == Microsoft.AspNet.Identity.Owin.SignInStatus.Success)
+            if (loginInfo.ExternalIdentity.IsAuthenticated)
             {
-                return Redirect(GetRedirectUrl(returnUrl));
+                string email = loginInfo.Email;
+
+                bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
+
+                if (test)
+                {
+                    RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
+                }
+                else
+                {
+                    using (ModelDBISE db = new ModelDBISE())
+                    {
+                        var ldip = db.DIPENDENTI.Where(a => a.EMAIL == email);
+                        if (ldip?.Any() ?? false)
+                        {
+                            var dip = ldip.First();
+                            var utenteAutorizzato = dip.UTENTIAUTORIZZATI;
+
+
+
+
+
+
+                        }
+
+
+                    }
+
+
+
+
+                }
+
             }
 
-            if (signInResult == Microsoft.AspNet.Identity.Owin.SignInStatus.RequiresVerification)
-            {
-                // ...
-            }
-            //var a = HttpContext.GetOwinContext().Authentication;
-
-            //ClaimsPrincipal currentClaimsPrincipal = ClaimsPrincipal.Current;
-
-            //AccountModel ac = new AccountModel();
-
-            //if (currentClaimsPrincipal.Identity.IsAuthenticated)
-            //{
-            //    foreach (Claim claim in currentClaimsPrincipal.Claims)
-            //    {
-            //        if (claim.Type == ClaimTypes.NameIdentifier)
-            //        {
-            //            ac.idUtenteAutorizzato = Convert.ToDecimal(claim.Value);
-            //        }
-            //        else if (claim.Type == ClaimTypes.Name)
-            //        {
-            //            ac.nome = claim.Value;
-            //        }
-            //        else if (claim.Type == ClaimTypes.Surname)
-            //        {
-            //            ac.cognome = claim.Value;
-            //        }
-            //        else if (claim.Type == ClaimTypes.GivenName)
-            //        {
-            //            ac.utente = claim.Value;
-            //        }
-            //        else if (claim.Type == ClaimTypes.Email)
-            //        {
-            //            ac.eMail = claim.Value;
-            //        }
-            //        else if (claim.Type == ClaimTypes.Role)
-            //        {
-            //            ac.idRuoloUtente = Convert.ToDecimal(claim.Value);
-            //        }
-            //    }
-
-            //    if (ac.idRuoloUtente > 0)
-            //    {
-            //        using (ModelDBISE db = new ModelDBISE())
-            //        {
-            //            RUOLOACCESSO ruolo = db.RUOLOACCESSO.Find(ac.idRuoloUtente);
-            //            if (ruolo != null)
-            //            {
-            //                ac.RuoloAccesso = new RuoloAccesoModel()
-            //                {
-            //                    idRuoloAccesso = ruolo.IDRUOLOACCESSO,
-            //                    descRuoloAccesso = ruolo.DESCRUOLO
-            //                };
-            //            }
-
-            //            UTENTIAUTORIZZATI ua = db.UTENTIAUTORIZZATI.Find(ac.idUtenteAutorizzato);
-            //            DIPENDENTI d = ua.DIPENDENTI;
-
-            //            if (d?.IDDIPENDENTE > 0)
-            //            {
-            //                ac.idDipendente = d.IDDIPENDENTE;
-
-            //                DipendentiModel dm = new DipendentiModel()
-            //                {
-            //                    idDipendente = d.IDDIPENDENTE,
-            //                    matricola = d.MATRICOLA,
-            //                    nome = d.NOME,
-            //                    cognome = d.COGNOME,
-            //                    dataAssunzione = d.DATAASSUNZIONE,
-            //                    dataCessazione = d.DATACESSAZIONE,
-            //                    indirizzo = d.INDIRIZZO,
-            //                    cap = d.CAP,
-            //                    citta = d.CITTA,
-            //                    provincia = d.PROVINCIA,
-            //                    email = d.EMAIL,
-            //                    telefono = d.TELEFONO,
-            //                    fax = d.FAX,
-            //                    abilitato = d.ABILITATO,
-            //                    dataInizioRicalcoli = d.DATAINIZIORICALCOLI
-            //                };
-
-            //                ac.Dipendenti = dm;
-            //            }
-
-
-            //        }
-            //    }
-            //}
-
-
-            return null;
+            return Redirect(GetRedirectUrl(returnUrl));
         }
 
 
@@ -183,7 +138,6 @@ namespace NewISE.Controllers
         private string GetRedirectUrl(string returnUrl)
         {
             if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
-
             {
                 return Url.Action("Index", "Home");
             }
@@ -201,20 +155,6 @@ namespace NewISE.Controllers
             return View(account);
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public void LoginGoogle(string ReturnUrl)
-        {
-
-
-            var properties = new AuthenticationProperties { RedirectUri = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = ReturnUrl }) };
-
-            HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
-
-
-        }
-
 
 
         [AllowAnonymous]
@@ -222,10 +162,10 @@ namespace NewISE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(loginModel account, string returnUrl)
         {
-            RetDipendenteJson rj = new RetDipendenteJson();
+            //RetDipendenteJson rj = new RetDipendenteJson();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-            sAdmin sad = new sAdmin();
-            sUtenteNormale utentiNormali = new sUtenteNormale();
+            //sAdmin sad = new sAdmin();
+            //sUtenteNormale utentiNormali = new sUtenteNormale();
 
             try
             {
@@ -236,205 +176,168 @@ namespace NewISE.Controllers
                     return View(account);
                 }
 
-                using (Config cfg = new Config())
-                {
-                    sad = cfg.SuperAmministratore();
-                    if (sad.s_admin.Count > 0)
-                    {
-                        var lutsa = sad.s_admin.Where(a => a.username == account.username);
+                //using (Config cfg = new Config())
+                //{
+                //    sad = cfg.SuperAmministratore();
+                //    if (sad.s_admin.Count > 0)
+                //    {
+                //        var lutsa = sad.s_admin.Where(a => a.username == account.username);
 
-                        if (lutsa.Count() > 0)
-                        {
-                            var utsa = lutsa.First();
+                //        if (lutsa.Count() > 0)
+                //        {
+                //            var utsa = lutsa.First();
 
-                            if (utsa != null)
-                            {
-                                if (utsa.username == account.username)
-                                {
-                                    if (utsa.password == account.password)
-                                    {
-                                        using (dtAccount dta = new dtAccount())
-                                        {
-                                            if (dta.VerificaAccesso(account.username))
-                                            {
-                                                UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+                //            if (utsa != null)
+                //            {
+                //                if (utsa.username == account.username)
+                //                {
+                //                    if (utsa.password == account.password)
+                //                    {
+                //                        using (dtAccount dta = new dtAccount())
+                //                        {
+                //                            if (dta.VerificaAccesso(account.username))
+                //                            {
+                //                                UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
 
-                                                uam = dta.PrelevaUtenteLoggato(account.username);
-                                                using (dtDipendenti dtd = new dtDipendenti())
-                                                {
-                                                    if (uam.idDipendente.HasValue)
-                                                    {
-                                                        uam.Dipendenti = dtd.GetDipendenteByID(uam.idDipendente.Value);
-                                                    }
-                                                }
+                //                                uam = dta.PrelevaUtenteLoggato(account.username);
+                //                                using (dtDipendenti dtd = new dtDipendenti())
+                //                                {
+                //                                    if (uam.HasValue())
+                //                                    {
+                //                                        uam.Dipendenti = dtd.GetDipendenteByID(uam.idDipendente);
+                //                                    }
+                //                                }
 
-                                                Claim[] identityClaims;
+                //                                Claim[] identityClaims;
 
-                                                if (uam.idDipendente.HasValue)
-                                                {
-                                                    identityClaims = new Claim[]
-                                                    {
-                                                        new Claim(ClaimTypes.NameIdentifier,
-                                                            uam.idUtenteAutorizzato.ToString()),
-                                                        new Claim(ClaimTypes.Role,
-                                                            Convert.ToString((decimal) uam.idRuoloUtente)),
-                                                        new Claim(ClaimTypes.GivenName, utsa.username),
-                                                        new Claim(ClaimTypes.Name, utsa.nome),
-                                                        new Claim(ClaimTypes.Surname, utsa.cognome),
-                                                        new Claim(ClaimTypes.PostalCode, uam.Dipendenti.cap),
-                                                        new Claim(ClaimTypes.Country, uam.Dipendenti.citta),
-                                                        new Claim(ClaimTypes.StateOrProvince, uam.Dipendenti.provincia),
-                                                        new Claim(ClaimTypes.StreetAddress, uam.Dipendenti.indirizzo),
-                                                        new Claim(ClaimTypes.Email, utsa.email),
-                                                    };
-                                                }
-                                                else
-                                                {
-                                                    identityClaims = new Claim[]
-                                                    {
-                                                        new Claim(ClaimTypes.NameIdentifier,
-                                                            uam.idUtenteAutorizzato.ToString()),
-                                                        new Claim(ClaimTypes.Role,
-                                                            Convert.ToString((decimal) uam.idRuoloUtente)),
-                                                        new Claim(ClaimTypes.GivenName, utsa.username),
-                                                        new Claim(ClaimTypes.Name, utsa.nome),
-                                                        new Claim(ClaimTypes.Surname, utsa.cognome),
-                                                        new Claim(ClaimTypes.PostalCode, ""),
-                                                        new Claim(ClaimTypes.Country, ""),
-                                                        new Claim(ClaimTypes.StateOrProvince, ""),
-                                                        new Claim(ClaimTypes.StreetAddress, ""),
-                                                        new Claim(ClaimTypes.Email, utsa.email),
-                                                    };
-                                                }
+                //                                if (uam.HasValue())
+                //                                {
+                //                                    identityClaims = new Claim[]
+                //                                    {
+                //                                        new Claim(ClaimTypes.NameIdentifier,
+                //                                            uam.idDipendente.ToString()),
+                //                                        new Claim(ClaimTypes.Role,
+                //                                            Convert.ToString((decimal) uam.idRuoloUtente)),
+                //                                        new Claim(ClaimTypes.GivenName, utsa.username),
+                //                                        new Claim(ClaimTypes.Name, utsa.nome),
+                //                                        new Claim(ClaimTypes.Surname, utsa.cognome),
+                //                                        new Claim(ClaimTypes.PostalCode, uam.Dipendenti.cap),
+                //                                        new Claim(ClaimTypes.Country, uam.Dipendenti.citta),
+                //                                        new Claim(ClaimTypes.StateOrProvince, uam.Dipendenti.provincia),
+                //                                        new Claim(ClaimTypes.StreetAddress, uam.Dipendenti.indirizzo),
+                //                                        new Claim(ClaimTypes.Email, utsa.email),
+                //                                    };
+                //                                }
+                //                                else
+                //                                {
+                //                                    identityClaims = new Claim[]
+                //                                    {
+                //                                        new Claim(ClaimTypes.NameIdentifier,
+                //                                            uam.idDipendente.ToString()),
+                //                                        new Claim(ClaimTypes.Role,
+                //                                            Convert.ToString((decimal) uam.idRuoloUtente)),
+                //                                        new Claim(ClaimTypes.GivenName, utsa.username),
+                //                                        new Claim(ClaimTypes.Name, utsa.nome),
+                //                                        new Claim(ClaimTypes.Surname, utsa.cognome),
+                //                                        new Claim(ClaimTypes.PostalCode, ""),
+                //                                        new Claim(ClaimTypes.Country, ""),
+                //                                        new Claim(ClaimTypes.StateOrProvince, ""),
+                //                                        new Claim(ClaimTypes.StreetAddress, ""),
+                //                                        new Claim(ClaimTypes.Email, utsa.email),
+                //                                    };
+                //                                }
 
 
-                                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
-                                                    DefaultAuthenticationTypes.ApplicationCookie,
-                                                    ClaimTypes.NameIdentifier, ClaimTypes.Role);
+                //                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                //                                    DefaultAuthenticationTypes.ApplicationCookie,
+                //                                    ClaimTypes.NameIdentifier, ClaimTypes.Role);
 
-                                                Authentication.SignIn(new AuthenticationProperties
-                                                {
-                                                    IsPersistent = account.ricordati
-                                                }, identity);
+                //                                Authentication.SignIn(new AuthenticationProperties
+                //                                {
+                //                                    IsPersistent = account.ricordati
+                //                                }, identity);
 
-                                                using (objAccesso accesso = new objAccesso())
-                                                {
-                                                    accesso.Accesso(uam.idUtenteAutorizzato);
-                                                }
+                //                                using (objAccesso accesso = new objAccesso())
+                //                                {
+                //                                    accesso.Accesso(uam.idDipendente);
+                //                                }
 
-                                                //"/Home/Home"
-                                                return Redirect(GetRedirectUrl(returnUrl));
-                                            }
-                                            else
-                                            {
-                                                ViewBag.ModelStateCount = 1;
-                                                ModelState.AddModelError("",
-                                                    "Le credenziali del super amministratore sono errate.");
-                                                return View(account);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        ViewBag.ModelStateCount = 1;
-                                        ModelState.AddModelError("",
-                                            "Le credenziali del super amministratore sono errate.");
-                                        return View(account);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                //                                //"/Home/Home"
+                //                                return Redirect(GetRedirectUrl(returnUrl));
+                //                            }
+                //                            else
+                //                            {
+                //                                ViewBag.ModelStateCount = 1;
+                //                                ModelState.AddModelError("",
+                //                                    "Le credenziali del super amministratore sono errate.");
+                //                                return View(account);
+                //                            }
+                //                        }
+                //                    }
+                //                    else
+                //                    {
+                //                        ViewBag.ModelStateCount = 1;
+                //                        ModelState.AddModelError("",
+                //                            "Le credenziali del super amministratore sono errate.");
+                //                        return View(account);
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
 
-                }
+                //}
 
                 bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
-
-                if (test)
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtDipendenti dtdip = new dtDipendenti())
+                    if (test)
                     {
-                        using (dtAccount dta = new dtAccount())
+
+                        if (db.UTENTIAUTORIZZATI?.Any(a => a.UTENTE == account.username && a.PSW == account.password) ?? false)
                         {
-                            UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+                            var ua =
+                                db.UTENTIAUTORIZZATI.Where(
+                                    a => a.UTENTE == account.username && a.PSW == account.password).First();
 
-                            if (dta.VerificaAccesso(account.username, out uam))
+                            var dip = ua.DIPENDENTI;
+
+                            if (dip.ABILITATO == true)
                             {
-                                DipendentiModel dipm = new DipendentiModel();
-
-                                dipm = dtdip.GetDipendenteByID(uam.idDipendente.Value);
-
-                                using (Config cfg = new Config())
+                                Claim[] identityClaims;
+                                identityClaims = new Claim[]
                                 {
-                                    utentiNormali = cfg.UtentiNormali();
+                                    new Claim(ClaimTypes.NameIdentifier,
+                                        ua.IDDIPENDENTE.ToString()),
+                                    new Claim(ClaimTypes.Role,
+                                        Convert.ToString((decimal) ua.IDRUOLOUTENTE)),
+                                    new Claim(ClaimTypes.GivenName, account.username),
+                                    new Claim(ClaimTypes.Name, dip.NOME),
+                                    new Claim(ClaimTypes.Surname, dip.COGNOME),
+                                    new Claim(ClaimTypes.PostalCode, dip.CAP),
+                                    new Claim(ClaimTypes.Country, dip.CITTA),
+                                    new Claim(ClaimTypes.StateOrProvince, dip.PROVINCIA),
+                                    new Claim(ClaimTypes.StreetAddress, dip.INDIRIZZO),
+                                    new Claim(ClaimTypes.Email, dip.EMAIL),
+                                };
 
-                                    var lutsa = utentiNormali.s_utente.Where(a => a.username == account.username);
+                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                                    DefaultAuthenticationTypes.ApplicationCookie,
+                                    ClaimTypes.NameIdentifier, ClaimTypes.Role);
 
-                                    if (lutsa.Count() > 0)
-                                    {
-                                        var utsa = lutsa.First();
+                                Authentication.SignIn(new AuthenticationProperties
+                                {
+                                    IsPersistent = account.ricordati
+                                }, identity);
 
-                                        if (utsa.username == account.username)
-                                        {
-                                            if (utsa.password == account.password)
-                                            {
-                                                Claim[] identityClaims;
-                                                identityClaims = new Claim[]
-                                                {
-                                                    new Claim(ClaimTypes.NameIdentifier,
-                                                        uam.idUtenteAutorizzato.ToString()),
-                                                    new Claim(ClaimTypes.Role,
-                                                        Convert.ToString((decimal) uam.idRuoloUtente)),
-                                                    new Claim(ClaimTypes.GivenName, utsa.username),
-                                                    new Claim(ClaimTypes.Name, utsa.nome),
-                                                    new Claim(ClaimTypes.Surname, utsa.cognome),
-                                                    new Claim(ClaimTypes.PostalCode, dipm.cap),
-                                                    new Claim(ClaimTypes.Country, dipm.citta),
-                                                    new Claim(ClaimTypes.StateOrProvince, dipm.provincia),
-                                                    new Claim(ClaimTypes.StreetAddress, dipm.indirizzo),
-                                                    new Claim(ClaimTypes.Email, utsa.email),
-                                                };
-
-                                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
-                                                    DefaultAuthenticationTypes.ApplicationCookie,
-                                                    ClaimTypes.NameIdentifier, ClaimTypes.Role);
-
-                                                Authentication.SignIn(new AuthenticationProperties
-                                                {
-                                                    IsPersistent = account.ricordati
-                                                }, identity);
-
-                                                using (objAccesso accesso = new objAccesso())
-                                                {
-                                                    accesso.Accesso(uam.idUtenteAutorizzato);
-                                                }
-
-                                                //"/Home/Home"
-                                                return Redirect(GetRedirectUrl(returnUrl));
-                                            }
-                                            else
-                                            {
-                                                ViewBag.ModelStateCount = 1;
-                                                ModelState.AddModelError("", "Le credenziali sono errate.");
-                                                return View(account);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            ViewBag.ModelStateCount = 1;
-                                            ModelState.AddModelError("", "Le credenziali sono errate.");
-                                            return View(account);
-                                        }
-
-
-                                    }
-                                    else
-                                    {
-                                        ViewBag.ModelStateCount = 1;
-                                        ModelState.AddModelError("", "Le credenziali sono errate.");
-                                        return View(account);
-                                    }
+                                using (objAccesso accesso = new objAccesso())
+                                {
+                                    accesso.Accesso(ua.IDDIPENDENTE);
                                 }
+
+                                //"/Home/Home"
+                                return Redirect(GetRedirectUrl(returnUrl));
+
                             }
                             else
                             {
@@ -444,44 +347,46 @@ namespace NewISE.Controllers
                             }
 
                         }
-
-
-
+                        else
+                        {
+                            ViewBag.ModelStateCount = 1;
+                            ModelState.AddModelError("", "L'utente non è autorizzato per l'accesso.");
+                            return View(account);
+                        }
 
                     }
-                }
-                else
-                {
-                    var client = new RestSharp.RestClient("http://128.1.50.97:82");
-                    var req = new RestSharp.RestRequest("api/login", RestSharp.Method.POST);
-                    req.RequestFormat = RestSharp.DataFormat.Json;
-                    req.AddParameter("username", account.username);
-                    req.AddParameter("password", account.password);
-
-                    RestSharp.IRestResponse<RetDipendenteJson> resp = client.Execute<RetDipendenteJson>(req);
-
-                    RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
-
-                    RetDipendenteJson retDip = deserial.Deserialize<RetDipendenteJson>(resp);
-
-                    if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+                    else
                     {
-                        if (retDip.success == true)
+                        var client = new RestSharp.RestClient("http://balau.ice.it:82");
+                        var req = new RestSharp.RestRequest("api/login", RestSharp.Method.POST);
+                        req.RequestFormat = RestSharp.DataFormat.Json;
+                        req.AddParameter("username", account.username);
+                        req.AddParameter("password", account.password);
+
+                        RestSharp.IRestResponse<RetDipendenteJson> resp = client.Execute<RetDipendenteJson>(req);
+
+                        RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
+
+                        RetDipendenteJson retDip = deserial.Deserialize<RetDipendenteJson>(resp);
+
+                        if (resp.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            if (retDip.items != null)
+                            if (retDip.success == true)
                             {
-                                using (dtAccount dta = new dtAccount())
+                                if (retDip.items != null)
                                 {
-                                    if (dta.VerificaAccesso(account.username))
-                                    {
-                                        UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
 
-                                        uam = dta.PrelevaUtenteLoggato(account.username);
+                                    var ua =
+                                        db.UTENTIAUTORIZZATI.Where(
+                                            a => a.UTENTE == account.username).First();
 
-                                        Claim[] identityClaims = new Claim[]
+                                    var dip = ua.DIPENDENTI;
+
+
+                                    Claim[] identityClaims = new Claim[]
                                         {
-                                        new Claim(ClaimTypes.NameIdentifier, uam.idUtenteAutorizzato.ToString()),
-                                        new Claim(ClaimTypes.Role, Convert.ToString((decimal) uam.idRuoloUtente)),
+                                        new Claim(ClaimTypes.NameIdentifier, dip.IDDIPENDENTE.ToString()),
+                                        new Claim(ClaimTypes.Role, Convert.ToString((decimal) ua.IDRUOLOUTENTE)),
                                         new Claim(ClaimTypes.GivenName, retDip.items.matricola),
                                         new Claim(ClaimTypes.Name, retDip.items.nome),
                                         new Claim(ClaimTypes.Surname, retDip.items.cognome),
@@ -492,30 +397,30 @@ namespace NewISE.Controllers
                                         new Claim(ClaimTypes.Email, retDip.items.email),
                                         };
 
-                                        ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
-                                            DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier,
-                                            ClaimTypes.Role);
+                                    ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                                        DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier,
+                                        ClaimTypes.Role);
 
-                                        Authentication.SignIn(new AuthenticationProperties
-                                        {
-                                            IsPersistent = account.ricordati
-                                        }, identity);
-
-                                        using (objAccesso accesso = new objAccesso())
-                                        {
-                                            accesso.Accesso(uam.idUtenteAutorizzato);
-                                        }
-
-                                        //"/Home/Home"
-                                        return Redirect(GetRedirectUrl(returnUrl));
-                                    }
-                                    else
+                                    Authentication.SignIn(new AuthenticationProperties
                                     {
-                                        ViewBag.ModelStateCount = 1;
-                                        ModelState.AddModelError("", "Le credenziali sono errate.");
-                                        return View(account);
+                                        IsPersistent = account.ricordati
+                                    }, identity);
+
+                                    using (objAccesso accesso = new objAccesso())
+                                    {
+                                        accesso.Accesso(ua.IDDIPENDENTE);
                                     }
+
+                                    //"/Home/Home"
+                                    return Redirect(GetRedirectUrl(returnUrl));
                                 }
+                                else
+                                {
+                                    ViewBag.ModelStateCount = 1;
+                                    ModelState.AddModelError("", retDip.message);
+                                    return View(account);
+                                }
+
                             }
                             else
                             {
@@ -527,15 +432,199 @@ namespace NewISE.Controllers
                         else
                         {
                             ViewBag.ModelStateCount = 1;
-                            ModelState.AddModelError("", retDip.message);
+                            ModelState.AddModelError("", resp.StatusDescription);
                             return View(account);
                         }
                     }
-                    else
-                    {
-                        throw new Exception(resp.StatusDescription);
-                    }
                 }
+
+
+                //if (test)
+                //{
+                //    using (dtDipendenti dtdip = new dtDipendenti())
+                //    {
+                //        using (dtAccount dta = new dtAccount())
+                //        {
+                //            UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+
+                //            if (dta.VerificaAccesso(account.username, out uam))
+                //            {
+                //                DipendentiModel dipm = new DipendentiModel();
+
+                //                dipm = dtdip.GetDipendenteByID(uam.idDipendente);
+
+                //                using (Config cfg = new Config())
+                //                {
+                //                    utentiNormali = cfg.UtentiNormali();
+
+                //                    var lutsa = utentiNormali.s_utente.Where(a => a.username == account.username);
+
+                //                    if (lutsa.Count() > 0)
+                //                    {
+                //                        var utsa = lutsa.First();
+
+                //                        if (utsa.username == account.username)
+                //                        {
+                //                            if (utsa.password == account.password)
+                //                            {
+                //                                Claim[] identityClaims;
+                //                                identityClaims = new Claim[]
+                //                                {
+                //                                    new Claim(ClaimTypes.NameIdentifier,
+                //                                        uam.idDipendente.ToString()),
+                //                                    new Claim(ClaimTypes.Role,
+                //                                        Convert.ToString((decimal) uam.idRuoloUtente)),
+                //                                    new Claim(ClaimTypes.GivenName, utsa.username),
+                //                                    new Claim(ClaimTypes.Name, utsa.nome),
+                //                                    new Claim(ClaimTypes.Surname, utsa.cognome),
+                //                                    new Claim(ClaimTypes.PostalCode, dipm.cap),
+                //                                    new Claim(ClaimTypes.Country, dipm.citta),
+                //                                    new Claim(ClaimTypes.StateOrProvince, dipm.provincia),
+                //                                    new Claim(ClaimTypes.StreetAddress, dipm.indirizzo),
+                //                                    new Claim(ClaimTypes.Email, utsa.email),
+                //                                };
+
+                //                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                //                                    DefaultAuthenticationTypes.ApplicationCookie,
+                //                                    ClaimTypes.NameIdentifier, ClaimTypes.Role);
+
+                //                                Authentication.SignIn(new AuthenticationProperties
+                //                                {
+                //                                    IsPersistent = account.ricordati
+                //                                }, identity);
+
+                //                                using (objAccesso accesso = new objAccesso())
+                //                                {
+                //                                    accesso.Accesso(uam.idDipendente);
+                //                                }
+
+                //                                //"/Home/Home"
+                //                                return Redirect(GetRedirectUrl(returnUrl));
+                //                            }
+                //                            else
+                //                            {
+                //                                ViewBag.ModelStateCount = 1;
+                //                                ModelState.AddModelError("", "Le credenziali sono errate.");
+                //                                return View(account);
+                //                            }
+                //                        }
+                //                        else
+                //                        {
+                //                            ViewBag.ModelStateCount = 1;
+                //                            ModelState.AddModelError("", "Le credenziali sono errate.");
+                //                            return View(account);
+                //                        }
+
+
+                //                    }
+                //                    else
+                //                    {
+                //                        ViewBag.ModelStateCount = 1;
+                //                        ModelState.AddModelError("", "Le credenziali sono errate.");
+                //                        return View(account);
+                //                    }
+                //                }
+                //            }
+                //            else
+                //            {
+                //                ViewBag.ModelStateCount = 1;
+                //                ModelState.AddModelError("", "L'utente non è autorizzato per l'accesso.");
+                //                return View(account);
+                //            }
+
+                //        }
+
+
+
+
+                //    }
+                //}
+                //else
+                //{
+                //    var client = new RestSharp.RestClient("http://balau.ice.it:82");
+                //    var req = new RestSharp.RestRequest("api/login", RestSharp.Method.POST);
+                //    req.RequestFormat = RestSharp.DataFormat.Json;
+                //    req.AddParameter("username", account.username);
+                //    req.AddParameter("password", account.password);
+
+                //    RestSharp.IRestResponse<RetDipendenteJson> resp = client.Execute<RetDipendenteJson>(req);
+
+                //    RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
+
+                //    RetDipendenteJson retDip = deserial.Deserialize<RetDipendenteJson>(resp);
+
+                //    if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+                //    {
+                //        if (retDip.success == true)
+                //        {
+                //            if (retDip.items != null)
+                //            {
+                //                using (dtAccount dta = new dtAccount())
+                //                {
+                //                    if (dta.VerificaAccesso(account.username))
+                //                    {
+                //                        UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+
+                //                        uam = dta.PrelevaUtenteLoggato(account.username);
+
+                //                        Claim[] identityClaims = new Claim[]
+                //                        {
+                //                        new Claim(ClaimTypes.NameIdentifier, uam.idDipendente.ToString()),
+                //                        new Claim(ClaimTypes.Role, Convert.ToString((decimal) uam.idRuoloUtente)),
+                //                        new Claim(ClaimTypes.GivenName, retDip.items.matricola),
+                //                        new Claim(ClaimTypes.Name, retDip.items.nome),
+                //                        new Claim(ClaimTypes.Surname, retDip.items.cognome),
+                //                        new Claim(ClaimTypes.PostalCode, retDip.items.cap),
+                //                        new Claim(ClaimTypes.Country, retDip.items.citta),
+                //                        new Claim(ClaimTypes.StateOrProvince, retDip.items.provincia),
+                //                        new Claim(ClaimTypes.StreetAddress, retDip.items.indirizzo),
+                //                        new Claim(ClaimTypes.Email, retDip.items.email),
+                //                        };
+
+                //                        ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                //                            DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier,
+                //                            ClaimTypes.Role);
+
+                //                        Authentication.SignIn(new AuthenticationProperties
+                //                        {
+                //                            IsPersistent = account.ricordati
+                //                        }, identity);
+
+                //                        using (objAccesso accesso = new objAccesso())
+                //                        {
+                //                            accesso.Accesso(uam.idDipendente);
+                //                        }
+
+                //                        //"/Home/Home"
+                //                        return Redirect(GetRedirectUrl(returnUrl));
+                //                    }
+                //                    else
+                //                    {
+                //                        ViewBag.ModelStateCount = 1;
+                //                        ModelState.AddModelError("", "Le credenziali sono errate.");
+                //                        return View(account);
+                //                    }
+                //                }
+                //            }
+                //            else
+                //            {
+                //                ViewBag.ModelStateCount = 1;
+                //                ModelState.AddModelError("", retDip.message);
+                //                return View(account);
+                //            }
+                //        }
+                //        else
+                //        {
+                //            ViewBag.ModelStateCount = 1;
+                //            ModelState.AddModelError("", retDip.message);
+                //            return View(account);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        throw new Exception(resp.StatusDescription);
+                //    }
+                //}
 
             }
             catch (Exception ex)

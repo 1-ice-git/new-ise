@@ -2491,8 +2491,8 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             idDipendente = (decimal)d.IDDIPENDENTE,
                             idRouloUtente = idRuoloUtente,
-                            idUtenteAutorizzato = d.IDUTENTEAUTORIZZATO,
-                            Utente = d.UTENTE
+                            Utente = d.UTENTE,
+                            psw = d.PSW
                         }).ToList();
 
                 foreach (var ut in uaut)

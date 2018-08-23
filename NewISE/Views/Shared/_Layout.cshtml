@@ -20,7 +20,7 @@
 
         ac = Utility.UtenteAutorizzato();
 
-        if (ac != null && ac.idUtenteAutorizzato > 0)
+        if (ac != null && ac.idDipendente > 0)
         {
             nominativo = ac.nominativo + " (" + ac.utente + ")";
             descRuoloAccesso = ac.RuoloAccesso.descRuoloAccesso;

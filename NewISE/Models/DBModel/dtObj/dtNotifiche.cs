@@ -78,8 +78,8 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             idDipendente = (decimal)d.IDDIPENDENTE,
                             idRouloUtente = idRuoloUtente,
-                            idUtenteAutorizzato = d.IDUTENTEAUTORIZZATO,
-                            Utente = d.UTENTE
+                            Utente = d.UTENTE,
+                            psw = d.PSW
                         }).ToList();
 
                 foreach (var ut in uaut)
@@ -139,8 +139,7 @@ namespace NewISE.Models.DBModel.dtObj
                     db.DIPENDENTI.Where(
                         a =>
                             a.ABILITATO == true &&
-                            a.UTENTIAUTORIZZATI.Where(
-                                b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente).Any() &&
+                            a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente &&
                             a.TRASFERIMENTO.Where(
                                 c =>
                                     (c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
@@ -174,11 +173,10 @@ namespace NewISE.Models.DBModel.dtObj
                 else if ((EnumRuoloAccesso)idRuoloAccesso == EnumRuoloAccesso.Amministratore)
                 {
                     var ld =
-                    db.DIPENDENTI.Where(
-                        a =>
-                            a.ABILITATO == true &&
-                            a.UTENTIAUTORIZZATI.Where(
-                                b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).Any()).ToList();
+                        db.DIPENDENTI.Where(
+                            a =>
+                                a.ABILITATO == true &&
+                                a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).ToList();
 
                     if (ld?.Any() ?? false)
                     {
@@ -508,8 +506,8 @@ namespace NewISE.Models.DBModel.dtObj
                            {
                                idDipendente = (decimal)e.IDDIPENDENTE,
                                idRouloUtente = e.IDRUOLOUTENTE,
-                               idUtenteAutorizzato = e.IDUTENTEAUTORIZZATO,
-                               Utente = e.UTENTE
+                               Utente = e.UTENTE,
+                               psw = e.PSW
                            }).ToList().FirstOrDefault();
                 }
                 else
@@ -520,8 +518,8 @@ namespace NewISE.Models.DBModel.dtObj
                            {
                                idDipendente = (decimal)e.IDDIPENDENTE,
                                idRouloUtente = e.IDRUOLOUTENTE,
-                               idUtenteAutorizzato = e.IDUTENTEAUTORIZZATO,
-                               Utente = e.UTENTE
+                               Utente = e.UTENTE,
+                               psw = e.PSW
                            }).ToList().FirstOrDefault();
                 }
             }
@@ -587,8 +585,7 @@ namespace NewISE.Models.DBModel.dtObj
                     db.DIPENDENTI.Where(
                         a =>
                             a.ABILITATO == true &&
-                            a.UTENTIAUTORIZZATI.Where(
-                                b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente).Any() &&
+                            a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente &&
                             a.TRASFERIMENTO.Where(
                                 c =>
                                     (c.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
@@ -622,11 +619,10 @@ namespace NewISE.Models.DBModel.dtObj
                 else if ((EnumRuoloAccesso)idRuoloAccesso == EnumRuoloAccesso.Amministratore)
                 {
                     var ld =
-                    db.DIPENDENTI.Where(
-                        a =>
-                            a.ABILITATO == true &&
-                            a.UTENTIAUTORIZZATI.Where(
-                                b => b.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).Any()).ToList();
+                        db.DIPENDENTI.Where(
+                            a =>
+                                a.ABILITATO == true &&
+                                a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).ToList();
 
                     if (ld?.Any() ?? false)
                     {

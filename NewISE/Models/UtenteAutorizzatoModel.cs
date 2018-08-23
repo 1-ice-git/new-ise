@@ -12,7 +12,8 @@ namespace NewISE.Models
     public class UtenteAutorizzatoModel
     {
         [Key]
-        public decimal idUtenteAutorizzato { get; set; }
+        public decimal idDipendente { get; set; }
+
         [Required(ErrorMessage = "il ruolo utente è richiesto.")]
         public EnumRuoloAccesso idRuoloUtente { get; set; }
         [Required(ErrorMessage = "L'utente è richiesto.")]
@@ -21,10 +22,22 @@ namespace NewISE.Models
         [Display(Name = "Utente")]
         public string matricola { get; set; }
 
-        public decimal? idDipendente { get; set; }
+        public string psw { get; set; }
 
         public RuoloAccesoModel ruoloAccesso { get; set; }
 
         public DipendentiModel Dipendenti { get; set; }
+
+        public bool HasValue()
+        {
+            if (idDipendente > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

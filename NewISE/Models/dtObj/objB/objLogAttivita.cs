@@ -26,15 +26,15 @@ namespace NewISE.Models.dtObj.objB
             AccountModel ac = new AccountModel();
             LogAttivitaModel lam = new LogAttivitaModel();
 
-            using (dtLogAttivita dtl=new dtLogAttivita())
+            using (dtLogAttivita dtl = new dtLogAttivita())
             {
                 try
                 {
                     ac = Utility.UtenteAutorizzato();
 
-                    if (ac != null && ac.idUtenteAutorizzato > 0)
+                    if (ac != null && ac.idDipendente > 0)
                     {
-                        lam.idUtenteLoggato = ac.idUtenteAutorizzato;
+                        lam.idDipendente = ac.idDipendente;
                         lam.idTrasferimento = idTrasferimento;
                         lam.idAttivitaCrud = (decimal)attivita;
                         lam.dataOperazione = DateTime.Now;
@@ -52,7 +52,7 @@ namespace NewISE.Models.dtObj.objB
                 }
             }
 
-            
+
 
 
 
