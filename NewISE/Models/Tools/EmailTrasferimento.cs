@@ -44,7 +44,7 @@ namespace NewISE.Models.Tools
                 if (t?.IDTRASFERIMENTO > 0)
                 {
                     DIPENDENTI dip = t.DIPENDENTI;
-                    UFFICI uff = t.UFFICI;
+                    //UFFICI uff = t.UFFICI;
 
                     using (GestioneEmail gmail = new GestioneEmail())
                     {
@@ -114,7 +114,7 @@ namespace NewISE.Models.Tools
                 if (t?.IDTRASFERIMENTO > 0)
                 {
                     DIPENDENTI dip = t.DIPENDENTI;
-                    UFFICI uff = t.UFFICI;
+                    //UFFICI uff = t.UFFICI;
 
                     using (GestioneEmail gmail = new GestioneEmail())
                     {
@@ -180,10 +180,10 @@ namespace NewISE.Models.Tools
                     mittente.EmailMittente = am.eMail;
                 }
 
-                var tr = db.TRASFERIMENTO.Find(idTrasferimento);
-                DIPENDENTI d = tr.DIPENDENTI;
+                //var tr = db.TRASFERIMENTO.Find(idTrasferimento);
+                //DIPENDENTI d = tr.DIPENDENTI;
 
-                UFFICI u = tr.UFFICI;
+                //UFFICI u = tr.UFFICI;
 
                 using (GestioneEmail gmail = new GestioneEmail())
                 {

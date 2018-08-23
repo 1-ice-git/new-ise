@@ -8,6 +8,7 @@ using NewISE.Interfacce.Modelli;
 using System.IO;
 using System.Net;
 using System.Net.Mime;
+using NewISE.EF;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
 
@@ -31,14 +32,58 @@ namespace NewISE.Models.Tools
                 AccountModel am = new AccountModel();
                 am = Utility.UtenteAutorizzato();
 
+                List<AccountModel> lacm = new List<AccountModel>();
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var ldip =
+                        db.DIPENDENTI.Where(
+                            a =>
+                                a.ABILITATO == true && (a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == 1 ||
+                                a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == 2))
+                            .OrderBy(a => a.COGNOME)
+                            .ThenBy(a => a.NOME)
+                            .ToList();
+                    if (ldip?.Any() ?? false)
+                    {
+                        foreach (var dip in ldip)
+                        {
+                            AccountModel acm = new AccountModel()
+                            {
+                                idDipendente = dip.IDDIPENDENTE,
+                                idRuoloUtente = dip.UTENTIAUTORIZZATI.IDRUOLOUTENTE,
+                                cognome = dip.COGNOME,
+                                nome = dip.NOME,
+                                eMail = dip.EMAIL,
+                                password = dip.UTENTIAUTORIZZATI.PSW,
+                                utente = dip.UTENTIAUTORIZZATI.UTENTE
+
+                            };
+
+                            lacm.Add(acm);
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+
+
+
                 if (test)
                 {
                     msgMail.destinatario.Clear();
-                    msgMail.destinatario.Add(new Destinatario()
+
+                    foreach (var acm in lacm)
                     {
-                        Nominativo = am.nominativo,
-                        EmailDestinatario = am.eMail
-                    });
+                        msgMail.destinatario.Add(new Destinatario()
+                        {
+                            Nominativo = acm.cognome + " " + acm.nome,
+                            EmailDestinatario = acm.eMail
+                        });
+                    }
 
                     msgMail.cc.Clear();
                 }
@@ -85,18 +130,18 @@ namespace NewISE.Models.Tools
                     }
                 }
 
-                using (Config.Config cfg = new Config.Config())
-                {
-                    sAdmin sad = new sAdmin();
-                    sad = cfg.SuperAmministratore();
-                    if (sad.s_admin.Count > 0)
-                    {
-                        foreach (var sa in sad.s_admin)
-                        {
-                            messaggio.Bcc.Add(new MailAddress(sa.email, sa.nominativo));
-                        }
-                    }
-                }
+                //using (Config.Config cfg = new Config.Config())
+                //{
+                //    sAdmin sad = new sAdmin();
+                //    sad = cfg.SuperAmministratore();
+                //    if (sad.s_admin.Count > 0)
+                //    {
+                //        foreach (var sa in sad.s_admin)
+                //        {
+                //            messaggio.Bcc.Add(new MailAddress(sa.email, sa.nominativo));
+                //        }
+                //    }
+                //}
 
                 //messaggio.Bcc.Add("mauro.arduini@ritspa.it");
 
