@@ -17,12 +17,18 @@ namespace NewISE.Models.DBModel
 
         public decimal IDMAB { get; set; }
 
+        [Display(Name = "Data Inizio")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataInizioValidita { get; set; }
 
+        [Display(Name = "Data Fine")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataFineValidita { get; set; }
 
         [Display(Name = "Canone")]
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal ImportoCanone { get; set; }
+
 
         public DateTime DataAggiornamento { get; set; }
 

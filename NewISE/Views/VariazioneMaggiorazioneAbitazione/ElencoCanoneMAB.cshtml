@@ -1,0 +1,203 @@
+﻿@using NewISE.Models.Tools
+@model IEnumerable<NewISE.Models.ViewModel.CanoneMABViewModel >
+
+@{
+    decimal idMab = Convert.ToDecimal(ViewData["idMab"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool idTrasferimento = Convert.ToBoolean(ViewData["idTrasferimento"]);
+}
+
+@Html.Hidden("hdIdImportoCanone")
+
+<p style="margin-top: 5px; padding-left:15px;">
+
+    @if (solaLettura)
+    {
+        <button class="btn btn-default disabled">Nuovo canone</button>
+    }
+    else
+    {
+        @Ajax.ActionLink("Nuovo canone", "NuovoImportoCanone", "VariazioneMaggiorazioneAbitazione", new { idMab = idMab }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+    }
+
+</p>
+<div style="padding-left:15px; padding-right:10px;">
+    <table id="TabCanoni" cellspacing="0">
+        <thead>
+            <tr>
+
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.DataInizioValidita )
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.DataFineValidita)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.ImportoCanone )
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.DataInizioValidita)
+                    </td>
+                    @if (item.DataFineValidita != Utility.DataFineStop())
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.DataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                    <td class="text-right">
+                        @Html.DisplayFor(modelItem => item.ImportoCanone)
+                    </td>
+                    <td class="text-center">
+                        @if (solaLettura)
+                        {
+                            <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                        }
+                        else
+                        {
+                            <a href="#" onclick="ModelEliminaCanone(@item.idCanone, '@item.ImportoCanone')" id="linkEliminaCanone">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Canone" />
+                            </a>
+
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<p style="padding-left: 15px;">
+    @Ajax.ActionLink("Torna indietro", "GestioneMAB_var", "VariazioneMaggiorazionaAbitazione", new { idMab = idMab }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</p>
+
+<div class="modal fade" id="ModalEliminaCanoneModal" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaCanoneModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewPensione">
+                    <label>Eliminare l&rsquo;importo del canone selezionato (<span id="spanImportoCanone">0,00</span>)?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btSalvaCanone" type="button" class="btn btn-info" onclick="EliminaCanone();">Salva</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#TabCanoni').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "ordering": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+
+    });
+
+    function ModelEliminaCanone(idCanone, importoCanone) {
+        //debugger;
+        $('#hdIdImportoCanone').val(idImportoCanone);
+        $("#spanImportoCanone").text(number_format(importoCanone.replace(',', '.'), 2, ',', '.'));
+
+        $('#ModalEliminaCanoneModal').modal().show();
+    }
+
+    function EliminaCanone() {
+        //debugger;
+        var idCanone = $('#hdIdImportoCanone').val();
+        var idMab = parseInt('@idMab');
+        var idTrasferimento = parseInt('@idTrasferimento');
+        //var idAttivazioneMagFam = parseInt('idAttivazioneMagFam');
+
+        var rotta = "/VariazioneMaggiorazioneAbitazione/EliminaCanoneMAB";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idPensione: idPensioneConiuge,
+                idConiuge: idConiuge
+                //idAttivazioneMagFam: idAttivazioneMagFam
+            },
+            dataType: 'html',
+            async: true,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#tabConiuge").empty();
+                $("#tabConiuge").html(result);
+
+            },
+            complete: function () {
+
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+</script>

@@ -44,7 +44,7 @@ namespace NewISE.Controllers
                 {
                     using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
                     {
-                        bool soloLettura = false;
+                        bool soloLettura = true;
                         bool siDati = false;
                         EnumStatoTraferimento statoTrasferimento = 0;
 
@@ -67,15 +67,19 @@ namespace NewISE.Controllers
                                 mabvm.idAttivazioneMAB = mabm.idAttivazioneMAB;
                                 mabvm.idMAB = mabm.idMAB;
 
-                                var pm = dtvma.GetPeriodoMABModel(mabm.idMAB);
+                                var pmm = dtvma.GetPeriodoMABModel(mabm.idMAB);
 
                                 //CANONEMAB cm = dtvma.GetUltimoCanoneMAB_var(mabm);
 
                                 //mabvm.importo_canone = cm.IMPORTOCANONE;
 
                                 //MAB mab = dtvma.GetUltimaMAB(idTrasferimento);
-                                mabvm.dataInizioMAB = pm.dataInizioMAB;
-                                mabvm.dataFineMAB = pm.dataFineMAB;
+                                mabvm.dataInizioMAB = pmm.dataInizioMAB;
+                                mabvm.dataFineMAB = pmm.dataFineMAB;
+                                if (mabvm.dataFineMAB<Utility.DataFineStop())
+                                {
+                                    soloLettura = false;
+                                }
 
                                 mabvm.anticipoAnnuale = dtvma.AnticipoAnnualeMAB(mabm.idMAB,db);
 
@@ -134,6 +138,211 @@ namespace NewISE.Controllers
 
             return PartialView(lmabvm);
         }
+
+        public ActionResult ElencoCanoneMAB(decimal idTrasferimento, decimal idMab)
+        {
+            List<CanoneMABViewModel> lcmabvm = new List<CanoneMABViewModel>();
+            CanoneMABViewModel cmabvm = new CanoneMABViewModel();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
+                    {
+                        bool soloLettura = true;
+                        bool siDati = false;
+                        EnumStatoTraferimento statoTrasferimento = 0;
+
+                        var mab = dtvma.GetMAB_ByID_var(idMab, db);
+
+                        CANONEMAB canonePartenza = new CANONEMAB();
+                        using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                        {
+                            canonePartenza = dtma.GetCanoneMABPartenza(mab, db);
+                        }
+
+                        //AttivazioneMABModel amabm = dtvma.GetUltimaAttivazioneMABmodel(idTrasferimento);
+
+                        //if (amabm != null && amabm.idAttivazioneMAB > 0)
+                        //{
+                        //    if (amabm.notificaRichiesta && amabm.Attivazione == false)
+                        //    {
+                        //        soloLettura = true;
+                        //    }
+
+                        List<CanoneMABModel> lcmabm = dtvma.GetCanoneMABModel(idMab,db);
+
+                        if (lcmabm?.Any() ?? false)
+                        {
+                            foreach (var cmabm in lcmabm)
+                            {
+                                cmabvm.canonePartenza = false;
+
+                                if(cmabm.idCanone==canonePartenza.IDCANONE)
+                                {
+                                    cmabvm.canonePartenza = true;
+                                }
+
+                                cmabvm.idCanone = cmabm.idCanone;
+                                cmabvm.IDMAB = cmabm.IDMAB;
+
+                                cmabvm.DataInizioValidita = cmabm.DataInizioValidita;
+                                cmabvm.DataFineValidita = cmabm.DataFineValidita;
+                                //if (mabvm.dataFineMAB < Utility.DataFineStop())
+                                //{
+                                //    soloLettura = false;
+                                //}
+
+                                //mabvm.anticipoAnnuale = dtvma.AnticipoAnnualeMAB(mabm.idMAB, db);
+
+                                //if (cm.IDCANONE > 0)
+                                //{
+                                //    using (dtValute dtv = new dtValute())
+                                //    {
+                                //        var v = dtv.GetValuta(cm.IDVALUTA);
+
+                                //        mabvm.descrizioneValuta = v.descrizioneValuta;
+                                //        mabvm.id_Valuta = v.idValuta;
+                                //    }
+                                //}
+
+                                //var lpc = dtvma.GetListPagatoCondivisoMAB_var(mabvm);
+
+                                //if (lpc.Count() > 0)
+                                //{
+                                //    var pc = lpc.First();
+                                //    mabvm.canone_pagato = pc.PAGATO;
+                                //    mabvm.canone_condiviso = pc.CONDIVISO;
+                                //}
+
+                                lcmabvm.Add(cmabvm);
+
+                                siDati = true;
+                            }
+                        }
+
+                        //}
+
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
+                            statoTrasferimento = t.idStatoTrasferimento;
+                            if (statoTrasferimento == EnumStatoTraferimento.Annullato ||
+                                statoTrasferimento == EnumStatoTraferimento.Terminato)
+                            {
+                                soloLettura = true;
+                            }
+                            ViewData.Add("idTrasfermento", t.idTrasferimento);
+                        }
+
+                        ViewData.Add("soloLettura", soloLettura);
+                        //ViewData.Add("siDati", siDati);
+                        ViewData.Add("idMab", idMab);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(lcmabvm);
+        }
+
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciImportoCanone(CanoneMABViewModel cmabvm, decimal idMab)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (ModelDBISE db = new ModelDBISE())
+                    {
+                        db.Database.BeginTransaction();
+                        try
+                        {
+                            using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
+                            {
+                                CanoneMABModel cmabm = new CanoneMABModel();
+
+                                //dtamf.VerificaPensioniAttiveInLavorazione(out pm, pcm, idConiuge, db);
+
+                                try
+                                {
+                                    dtvma.VerificaDataInizioCanoneMAB(idMab, cmabvm.DataInizioValidita);
+                                }
+                                catch (Exception ex)
+                                {
+                                    ModelState.AddModelError("", ex.Message);
+                                    return PartialView("NuovoImportoCanone", cmabvm);
+                                }
+                                cmabvm.DataAggiornamento = DateTime.Now;
+                                cmabvm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+
+                                var MagAbitaz = db.MAB.Find(idMab).MAGGIORAZIONEABITAZIONE;
+
+                                ATTIVAZIONEMAB attmab_aperta = new ATTIVAZIONEMAB();
+
+                                var attmab_rif = cmabvm.IDAttivazioneMAB;
+                                var attmab = dtvma.GetAttivazioneAperta(MagAbitaz.IDMAGABITAZIONE);
+
+                                // se non esiste attivazione aperta la creo altrimenti la uso
+                                if (attmab.IDATTIVAZIONEMAB == 0)
+                                {
+                                    ATTIVAZIONEMAB new_amab = dtvma.CreaAttivazione(MagAbitaz.IDMAGABITAZIONE, db);
+                                    attmab_aperta = new_amab;
+                                }
+                                else
+                                {
+                                    attmab_aperta = attmab;
+                                }
+
+                                decimal idTrasf = attmab_aperta.IDTRASFERIMENTO;
+                                DateTime dataRientro = db.TRASFERIMENTO.Find(idTrasf).DATARIENTRO;
+
+                                //controlla data inserita superiore a dataRientro
+                                if (cmabm.DataInizioValidita > dataRientro)
+                                {
+                                    cmabm.DataInizioValidita = dataRientro;
+                                }
+
+                                if (cmabvm.chkAggiornaTutti == false)
+                                {
+                                    //dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
+                                }
+                                else
+                                {
+                                    //inserisce periodo e annulla i periodi successivi (fino al primo buco temporale o fino a dataRientro)
+                                    //dtp.SetNuovoImportoPensioneVariazione_AggiornaTutti(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
+                                }
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo pensione coniuge (" + idMab + ")", "PENSIONI", db, idTrasf, cmabm.idCanone);
+                            }
+                            
+                            db.Database.CurrentTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            db.Database.CurrentTransaction.Rollback();
+                            throw ex;
+                        }
+                    }
+                }
+                else
+                {
+                    return PartialView("NuovoImportoCanone", cmabvm);
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return RedirectToAction("ElencoCanoneMAB", new { idMab = idMab });
+        }
+
 
         public ActionResult GestioneMAB_var(decimal idTrasferimento)
         {
@@ -719,10 +928,23 @@ namespace NewISE.Controllers
                                 mabvm.idTrasferimento = mab.IDMAGABITAZIONE;
                                 mabvm.idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
 
-                                var pm = dtvma.GetPeriodoMABModel(mab.IDMAB);
+                                var pmm = dtvma.GetPeriodoMABModel(mab.IDMAB);
 
-                                mabvm.dataInizioMAB = pm.dataInizioMAB;
-                                mabvm.dataFineMAB = pm.dataFineMAB;
+                                PeriodoMABModel pm_partenza = new PeriodoMABModel();
+                                using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                                {
+                                    pm_partenza = dtma.GetPeriodoMABModelPartenza(mab.IDMAB, db);
+                                }
+
+                                bool periodo_partenza = false;
+                                if(pmm.idPeriodoMAB==pm_partenza.idPeriodoMAB)
+                                {
+                                    periodo_partenza = true;
+                                }
+                                mabvm.periodopartenza = periodo_partenza;
+
+                                mabvm.dataInizioMAB = pmm.dataInizioMAB;
+                                mabvm.dataFineMAB = pmm.dataFineMAB;
                                 mabvm.rinunciaMAB = mab.RINUNCIAMAB;
                                 mabvm.anticipoAnnuale = dtvma.AnticipoAnnualeMAB(idMAB, db);
 

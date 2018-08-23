@@ -11,7 +11,7 @@ namespace NewISE.Models.ViewModel
     {
 
 
-        [Display(Name = "Importo")]
+        [Display(Name = "Canone")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal importo_canone { get; set; }
         public decimal id_Valuta { get; set; }
@@ -33,7 +33,7 @@ namespace NewISE.Models.ViewModel
         public bool canone_condiviso { get; set; }
         [Display(Name = "Pagato")]
         public bool canone_pagato { get; set; }
-        [Display(Name = "Anticipo Annuale")]
+        [Display(Name = "Tipo Anticipo")]
         public bool anticipoAnnuale { get; set; }
 
         public bool annualita { get; set; }
@@ -44,6 +44,8 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Data Fine")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dataFineMAB { get; set; }
+
+        public bool periodopartenza { get; set; }
 
     }
 }
