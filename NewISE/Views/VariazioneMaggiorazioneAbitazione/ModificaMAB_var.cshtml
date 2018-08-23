@@ -73,16 +73,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(Model => Model.dataInizioMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
-                        <div class="col-xs-2">
-                            @Html.TextBoxFor(Model => Model.dataInizioMAB, "{0:dd/MM/yyyy}", new {@class = "form-control col-xs-3" })
+                    @if (Model.periodopartenza)
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(Model => Model.dataInizioMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
+                            <div class="col-xs-2">
+                                @Html.TextBoxFor(Model => Model.dataInizioMAB, "{0:dd/MM/yyyy}", new { disabled = "disabled", @class = "form-control col-xs-3" })
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(Model => Model.dataInizioMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
+                            <div class="col-xs-2">
+                                @Html.TextBoxFor(Model => Model.dataInizioMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-3" })
+                            </div>
+                        </div>
+                    }
                     <div class="form-group">
                         @Html.LabelFor(Model => Model.dataFineMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="col-xs-2">
-                            @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new {@class = "form-control col-xs-3" })
+                            @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-3" })
                         </div>
                     </div>
                 </div>

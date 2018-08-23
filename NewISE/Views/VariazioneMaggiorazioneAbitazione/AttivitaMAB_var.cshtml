@@ -12,20 +12,16 @@
     bool siDati = Convert.ToBoolean(ViewData["siDati"]);
 }
 
-
 <div >
     <div style="padding-top: 10px;padding-bottom:10px">
-        @if (soloLettura == false)
-        {
-            @*if (idMAB > 0)
-            {
-                @Ajax.ActionLink("Modifica", "ModificaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idMAB = idMAB }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica Maggiorazione Abitazione", @id = "linkEditMAB_var" })
-            }
-            else
-            {*@
-                @Ajax.ActionLink("Nuova", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
-            //}
-        }
+    @if (soloLettura == true)
+    {
+        <button href="#" class="btn btn-default disabled" disabled="disabled">Nuova</button>
+    }
+    else
+    {
+        @Ajax.ActionLink("Nuova", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new {@class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
+    }
     </div>
     <table id="tabMAB" class="table table-striped">
         <thead>
@@ -33,12 +29,6 @@
                 <th>
                     Tipo Anticipo
                 </th>
-                @*<th class="text-center">
-                    @Html.DisplayNameFor(model => model.descrizioneValuta )
-                </th>*@
-                @*<th class="text-center">
-                    @Html.DisplayNameFor(model => model.importo_canone)
-                </th>*@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizioMAB )
                 </th>
@@ -47,11 +37,9 @@
                 </th>
                 <th class="text-center">
                     Canone
-                  @*  @Html.DisplayNameFor(model => model.canone_condiviso)*@
                 </th>
                 <th class="text-center">
-                     Pagato Condiviso
-                    @*@Html.DisplayNameFor(model => model.canone_pagato)*@
+                    Pagato Condiviso
                 </th>
                 <th></th>
             </tr>
@@ -77,32 +65,24 @@
                             <span class="text-uppercase"></span>
                         }
                     </td>
-                    @*<td style="text-align: center">
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.descrizioneValuta)</span>
-                    </td>*@
-                    @*<td style="text-align: center">
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.importo_canone)</span>
-                    </td>*@
                     <td style="text-align: center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizioMAB)</span>
                     </td>
                     <td style="text-align: center">
-                        @if (item.dataFineMAB != Utility.DataFineStop())
-                        {
-                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
-                        }
+                    @if (item.dataFineMAB != Utility.DataFineStop())
+                    {
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
+                    }
                     </td>
                     <td style="text-align: center">
-                        <a href="#" onclick="CanoneMAB(@item.idMAB);" id="linkCanoneMAB">
+                        <a href="#" onclick="CanoneMAB(@idTrasferimento,@item.idMAB);" id="linkCanoneMAB">
                             <img src='~/Immagini/Simbolo semplice Euro Green.png' width='17' title="Periodi Canone" />
                         </a>
-                   @*     <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_condiviso)</span>*@
                     </td>
                     <td style="text-align: center">
                         <a href="#" onclick="PagatoCondivisoMAB(@item.idMAB);" id="linkPagatoCondivisoMAB">
                             <img src='~/Immagini/group-icon.png' width='20' title="Periodi Pagato Condiviso" />
                         </a>
-                    @*     <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_pagato)</span>*@
                     </td>
                     <td style="text-align: center">
                         <a href="#" onclick="ModificaMAB_var(@item.idMAB); ">

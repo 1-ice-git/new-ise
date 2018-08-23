@@ -873,31 +873,79 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public MABModel GetMABModelByID(decimal idMAB)
+        public ATTIVAZIONEMAB CreaAttivazione(decimal idTrasferimento, ModelDBISE db)
+        {
+            ATTIVAZIONEMAB new_amab = new ATTIVAZIONEMAB()
+            {
+                IDTRASFERIMENTO = idTrasferimento,
+                NOTIFICARICHIESTA = false,
+                DATANOTIFICARICHIESTA = null,
+                ATTIVAZIONE = false,
+                DATAATTIVAZIONE = null,
+                ANNULLATO = false,
+                DATAVARIAZIONE = DateTime.Now,
+                DATAAGGIORNAMENTO = DateTime.Now,
+            };
+            db.ATTIVAZIONEMAB.Add(new_amab);
+
+            if (db.SaveChanges() <= 0)
+            {
+                throw new Exception(string.Format("Non è stato possibile creare una nuova attivazione per la Maggiorazione Abitazione."));
+            }
+            return new_amab;
+        }
+
+
+        public ATTIVAZIONEMAB GetAttivazioneAperta(decimal idTrasferimento)
+        {
+            using (var db = new ModelDBISE())
+            {
+                ATTIVAZIONEMAB attmab = new ATTIVAZIONEMAB();
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                attmab = t.ATTIVAZIONEMAB.Where(x => x.ANNULLATO == false && x.NOTIFICARICHIESTA==false).OrderByDescending(x => x.IDATTIVAZIONEMAB).First();
+                return attmab;
+            }
+        }
+
+        public void VerificaDataInizioCanoneMAB(decimal idMab, DateTime dataInizioCanone)
+        {
+            //bool ret = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.MAB.Find(idMab).MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+
+                if (dataInizioCanone < t.DATAPARTENZA)
+                {
+                    throw new Exception(string.Format("La data d'inizio validità per il canone non può essere inferiore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                }
+            }
+
+
+        }
+
+        public MABModel GetMABModelByID(decimal idMAB, ModelDBISE db)
         {
             try
             {
                 MABModel mabm = new MABModel();
 
-                using (ModelDBISE db = new ModelDBISE())
+                var mab = db.MAB.Find(idMAB);
+
+                if (mab.IDMAB>0)
                 {
-
-                    var mab = db.MAB.Find(idMAB);
-
-                    if (mab.IDMAB>0)
+                    mabm = new MABModel()
                     {
-                        mabm = new MABModel()
-                        {
-                            idMAB = mab.IDMAB,
-                            idMagAbitazione = mab.IDMAGABITAZIONE,
-                            idAttivazioneMAB = mab.IDATTIVAZIONEMAB,
-                            idStatoRecord = mab.IDSTATORECORD,
+                        idMAB = mab.IDMAB,
+                        idMagAbitazione = mab.IDMAGABITAZIONE,
+                        idAttivazioneMAB = mab.IDATTIVAZIONEMAB,
+                        idStatoRecord = mab.IDSTATORECORD,
                            
-                            rinunciaMAB = mab.RINUNCIAMAB,
-                            dataAggiornamento = mab.DATAAGGIORNAMENTO,
-                            FK_idMAB = mab.FK_IDMAB
-                        };
-                    }
+                        rinunciaMAB = mab.RINUNCIAMAB,
+                        dataAggiornamento = mab.DATAAGGIORNAMENTO,
+                        FK_idMAB = mab.FK_IDMAB
+                    };
                 }
 
                 return mabm;
@@ -2974,6 +3022,88 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public List<CanoneMABModel> GetCanoneMABModel(decimal idMab, ModelDBISE db)
+        {
+            try
+            {
+                List<CanoneMABModel> lcmm = new List<CanoneMABModel>();
+
+                var mab = db.MAB.Find(idMab);
+
+                var lcm =
+                        mab.CANONEMAB.Where(
+                            a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
+
+                if (lcm?.Any() ?? false)
+                {
+                    foreach (var cm in lcm)
+                    {
+                        var cmm = new CanoneMABModel()
+                        {
+                            idCanone=cm.IDCANONE,
+                            IDMAB = cm.IDMAB,
+                            IDAttivazioneMAB = cm.IDATTIVAZIONEMAB,
+                            idValuta=cm.IDVALUTA,
+                            DataInizioValidita = cm.DATAINIZIOVALIDITA,
+                            DataFineValidita = cm.DATAFINEVALIDITA,
+                            ImportoCanone=cm.IMPORTOCANONE,
+                            DataAggiornamento = cm.DATAAGGIORNAMENTO,
+                            idStatoRecord = cm.IDSTATORECORD,
+                            FK_IDCanone = cm.FK_IDCANONE
+                        };
+                        lcmm.Add(cmm);
+                    }
+                }
+                else
+                {
+                    throw new Exception(string.Format("nessun Canone MAB trovato."));
+                }
+
+
+                return lcmm;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<CANONEMAB> GetCanoneMAB(decimal idMab, ModelDBISE db)
+        {
+            try
+            {
+                List<CANONEMAB> lcm = new List<CANONEMAB>();
+
+                var mab = db.MAB.Find(idMab);
+
+                var lcmab =
+                        mab.CANONEMAB.Where(
+                            a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
+
+                if (lcmab?.Any() ?? false)
+                {
+                    lcm = lcmab;
+                }
+                else
+                {
+                    throw new Exception(string.Format("nessun Canone MAB trovato."));
+                }
+                return lcm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #region get documenti
         //        public List<DOCUMENTI> GetDocumentiMAB_var(decimal idAttivazioneMAB, ModelDBISE db)

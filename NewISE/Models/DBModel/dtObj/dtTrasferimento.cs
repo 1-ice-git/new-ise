@@ -1865,6 +1865,7 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
+
         public TrasferimentoModel GetTrasferimentoByIdSosp(decimal idSospensione)
         {
             TrasferimentoModel tm = new TrasferimentoModel();
