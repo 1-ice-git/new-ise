@@ -5820,6 +5820,7 @@
     <Compile Include="Models\ViewModel\ElencoTitoliViaggioModel.cs" />
     <Compile Include="Models\ViewModel\LiquidazioneMensileViewModel.cs" />
     <Compile Include="Models\ViewModel\LiquidazioniDiretteViewModel.cs" />
+    <Compile Include="Models\ViewModel\CanoneMABViewModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfFigliModel.cs" />
@@ -5828,7 +5829,8 @@
     <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneDocumentiModel.cs" />
     <Compile Include="Models\ViewModel\MABViewModel.cs" />
-    <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel - Copy.cs" />
+    <Compile Include="Models\ViewModel\VariazioneMABModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Dataset\DSIndennitaBase.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6127,6 +6129,7 @@
     <Content Include="Views\VariazionePassaporto\ElaborazionePassaporti.cshtml" />
     <Content Include="Views\VariazionePassaporto\PassaportoCompletato.cshtml" />
     <Content Include="Views\VariazionePassaporto\ElencoPassaporto_Completato.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoCanoneMAB.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

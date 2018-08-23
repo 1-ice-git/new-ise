@@ -456,6 +456,39 @@ function ModificaMAB_var(idMAB) {
     });
 }
 
+function CanoneMAB(idTrasferimento, idMAB) {
+    //debugger;
+    var rotta = "/VariazioneMaggiorazioneAbitazione/ElencoCanoneMAB";
+
+    $.ajax({
+        type: "POST",
+        url: rotta,
+        data: {
+            idMAB: idMAB,
+            idTrasferimento: idTrasferimento
+        },
+        dataType: 'html',
+        beforeSend: function () {
+            //debugger;
+            //VerificaAutenticazione();
+        },
+        success: function (result) {
+            //debugger;
+            $("#divMaggiorazioneAbitazione_var").empty();
+            $("#divMaggiorazioneAbitazione_var").html(result);
+        },
+        complete: function () {
+
+        },
+        error: function (jqXHR, textStatus, errorThrow) {
+            //debugger;
+            var msg = errorThrow.err;
+            ErroreElaborazioneAjax(msg);
+        }
+
+    });
+}
+
 function MessaggioAnnullaRichiestaMAB_var() {
     //debugger;
     var rotta = "/VariazioneMaggiorazioneAbitazione/MessaggioAnnullaMAB_var";
