@@ -32,7 +32,7 @@
                     @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
                     @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
                     @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-                    <button>login</button>
+                    <button id="btLogin" class="button">login</button>
 
                     @*<div style="margin-top: 5px;">
                             <label>Ricordati di me</label>@Html.EditorFor(model => model.ricordati)
@@ -43,17 +43,14 @@
                     </p>
                 </form>
                 <div>
-                    @using (Html.BeginForm("LoginGoogle", "Account", new { ReturnUrl = @returnUrl }))
-                    {
+                    <form id="LoginGoogle" , action="/Account/LoginGoogle" method="post" novalidate="novalidate">
                         @Html.AntiForgeryToken()
-                        <div id="socialLoginList">
-                            <p>
-
-                                <button type="submit" class="btn btn-default" id="btLoginGogole" name="provider" value="Google" title="Login con utenza Google">Google</button>
-
-                            </p>
+                        <div>
+                            <input type="hidden" value="@returnUrl" name="ReturnUrl" />
+                            <button class="link" id="btLoginGogole" value="Accedi con Google" title="Login con utenza Google">Accedi con Google</button>
                         </div>
-                    }
+
+                    </form>
                 </div>
             </div>
 
@@ -73,10 +70,15 @@
                 $("#Alert").css("show");
             }
 
-            $("form").submit(function () {
-                if ($("form").valid()) {
+            $("#frmLogin").submit(function () {
+                if ($("#frmLogin").valid()) {
                     Blocca();
                 }
+
+            });
+
+            $("#LoginGoogle").submit(function () {
+                Blocca();
 
             });
 

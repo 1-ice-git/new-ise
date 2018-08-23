@@ -22,6 +22,7 @@ using NewISE.Models.dtObj.objB;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using System.Net;
+using System.Web.Razor.Parser.SyntaxTree;
 using Microsoft.Owin;
 using NewISE.App_Start;
 using NewISE.EF;
@@ -74,47 +75,115 @@ namespace NewISE.Controllers
 
             if (loginInfo == null)
             {
-                RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
+                return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
             }
 
             if (loginInfo.ExternalIdentity.IsAuthenticated)
             {
                 string email = loginInfo.Email;
 
-                bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
-
-                if (test)
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
-                }
-                else
-                {
-                    using (ModelDBISE db = new ModelDBISE())
+                    if (db.DIPENDENTI?.Any(a => a.ABILITATO == true && a.EMAIL == email) ?? false)
                     {
-                        var ldip = db.DIPENDENTI.Where(a => a.EMAIL == email);
-                        if (ldip?.Any() ?? false)
+                        var dip = db.DIPENDENTI.First(a => a.ABILITATO == true && a.EMAIL == email);
+                        var ua = dip.UTENTIAUTORIZZATI;
+
+                        //IEnumerable<Claim> identityClaims = loginInfo.ExternalIdentity.Claims;
+
+                        //foreach (var clm in identityClaims)
+                        //{
+                        //    if (clm.Type == ClaimTypes.NameIdentifier)
+                        //    {
+                        //        //clm.Value = ua.IDDIPENDENTE.ToString();
+                        //        var a = clm.Value;
+                        //    }
+                        //}
+
+
+                        Claim[] identityClaims;
+                        identityClaims = new Claim[]
                         {
-                            var dip = ldip.First();
-                            var utenteAutorizzato = dip.UTENTIAUTORIZZATI;
+                                    new Claim(ClaimTypes.NameIdentifier,
+                                        ua.IDDIPENDENTE.ToString()),
+                                    new Claim(ClaimTypes.Role,
+                                        Convert.ToString((decimal) ua.IDRUOLOUTENTE)),
+                                    new Claim(ClaimTypes.GivenName, ua.UTENTE),
+                                    new Claim(ClaimTypes.Name, dip.NOME),
+                                    new Claim(ClaimTypes.Surname, dip.COGNOME),
+                                    new Claim(ClaimTypes.PostalCode, dip.CAP),
+                                    new Claim(ClaimTypes.Country, dip.CITTA),
+                                    new Claim(ClaimTypes.StateOrProvince, dip.PROVINCIA),
+                                    new Claim(ClaimTypes.StreetAddress, dip.INDIRIZZO),
+                                    new Claim(ClaimTypes.Email, dip.EMAIL),
+                        };
 
+                        ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                            DefaultAuthenticationTypes.ApplicationCookie,
+                            ClaimTypes.NameIdentifier, ClaimTypes.Role);
 
+                        Authentication.SignIn(new AuthenticationProperties
+                        {
+                            IsPersistent = false
+                        }, identity);
 
-
-
-
+                        using (objAccesso accesso = new objAccesso())
+                        {
+                            accesso.Accesso(ua.IDDIPENDENTE);
                         }
 
+                        //"/Home/Home"
+                        return Redirect(GetRedirectUrl(returnUrl));
 
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
                     }
 
 
-
-
                 }
 
+
+
+                //bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
+
+                //if (test)
+                //{
+                //    RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
+                //}
+                //else
+                //{
+                //    using (ModelDBISE db = new ModelDBISE())
+                //    {
+                //        var ldip = db.DIPENDENTI.Where(a => a.EMAIL == email);
+                //        if (ldip?.Any() ?? false)
+                //        {
+                //            var dip = ldip.First();
+                //            var ua = dip.UTENTIAUTORIZZATI;
+
+
+
+
+
+
+                //        }
+
+
+                //    }
+
+
+
+
+                //}
+
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
             }
 
-            return Redirect(GetRedirectUrl(returnUrl));
+            //return Redirect(GetRedirectUrl(returnUrl));
         }
 
 
