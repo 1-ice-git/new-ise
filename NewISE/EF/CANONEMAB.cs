@@ -31,6 +31,7 @@ namespace NewISE.EF
         public decimal IMPORTOCANONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public Nullable<decimal> FK_IDCANONE { get; set; }
+        public bool NASCONDI { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

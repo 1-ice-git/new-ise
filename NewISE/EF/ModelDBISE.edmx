@@ -355,6 +355,7 @@
           <Property Name="IMPORTOCANONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="FK_IDCANONE" Type="number" Precision="38" Scale="0" />
+          <Property Name="NASCONDI" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
@@ -1118,6 +1119,7 @@
           <Property Name="PAGATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="FK_IDPAGATOCONDIVISO" Type="number" Precision="38" Scale="0" />
+          <Property Name="NASCONDI" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="PAGCOND_PERCCOND">
           <Key>
@@ -8105,6 +8107,7 @@
           <Property Name="IMPORTOCANONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDCANONE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_CMAB" FromRole="CANONEMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANONEMAB1" Relationship="DBISE.R_CMAB_CMAB" FromRole="CANONEMAB" ToRole="CANONEMAB1" />
           <NavigationProperty Name="CANONEMAB2" Relationship="DBISE.R_CMAB_CMAB" FromRole="CANONEMAB1" ToRole="CANONEMAB" />
@@ -8830,6 +8833,7 @@
           <Property Name="PAGATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDPAGATOCONDIVISO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="MAB" Relationship="DBISE.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB1" Relationship="DBISE.R_PCMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="PAGATOCONDIVISOMAB1" />
@@ -12228,6 +12232,7 @@
           <EntitySetMapping Name="CANONEMAB">
             <EntityTypeMapping TypeName="DBISE.CANONEMAB">
               <MappingFragment StoreEntitySet="CANONEMAB">
+                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="FK_IDCANONE" ColumnName="FK_IDCANONE" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="IMPORTOCANONE" ColumnName="IMPORTOCANONE" />
@@ -12811,6 +12816,7 @@
           <EntitySetMapping Name="PAGATOCONDIVISOMAB">
             <EntityTypeMapping TypeName="DBISE.PAGATOCONDIVISOMAB">
               <MappingFragment StoreEntitySet="PAGATOCONDIVISOMAB">
+                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="FK_IDPAGATOCONDIVISO" ColumnName="FK_IDPAGATOCONDIVISO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="PAGATO" ColumnName="PAGATO" />
