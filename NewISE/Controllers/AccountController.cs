@@ -68,6 +68,8 @@ namespace NewISE.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            string msgGoogle = "L'utenza non risulta abilitata.";
+
             var loginInfo =
                 await
                     Microsoft.Owin.Security.AuthenticationManagerExtensions.GetExternalLoginInfoAsync(
@@ -88,18 +90,6 @@ namespace NewISE.Controllers
                     {
                         var dip = db.DIPENDENTI.First(a => a.ABILITATO == true && a.EMAIL == email);
                         var ua = dip.UTENTIAUTORIZZATI;
-
-                        //IEnumerable<Claim> identityClaims = loginInfo.ExternalIdentity.Claims;
-
-                        //foreach (var clm in identityClaims)
-                        //{
-                        //    if (clm.Type == ClaimTypes.NameIdentifier)
-                        //    {
-                        //        //clm.Value = ua.IDDIPENDENTE.ToString();
-                        //        var a = clm.Value;
-                        //    }
-                        //}
-
 
                         Claim[] identityClaims;
                         identityClaims = new Claim[]
@@ -138,49 +128,17 @@ namespace NewISE.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
+                        return RedirectToAction("Login", "Account", new { returnUrl = returnUrl, msgGoogle = msgGoogle });
                     }
 
 
                 }
 
-
-
-                //bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
-
-                //if (test)
-                //{
-                //    RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
-                //}
-                //else
-                //{
-                //    using (ModelDBISE db = new ModelDBISE())
-                //    {
-                //        var ldip = db.DIPENDENTI.Where(a => a.EMAIL == email);
-                //        if (ldip?.Any() ?? false)
-                //        {
-                //            var dip = ldip.First();
-                //            var ua = dip.UTENTIAUTORIZZATI;
-
-
-
-
-
-
-                //        }
-
-
-                //    }
-
-
-
-
-                //}
-
             }
             else
             {
-                return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
+
+                return RedirectToAction("Login", "Account", new { returnUrl = returnUrl, msgGoogle = msgGoogle });
             }
 
             //return Redirect(GetRedirectUrl(returnUrl));
@@ -216,11 +174,15 @@ namespace NewISE.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl, string msgGoogle = "")
         {
             loginModel account = new loginModel();
             ViewBag.RetunUrl = returnUrl;
-
+            if (msgGoogle != string.Empty)
+            {
+                ViewBag.ModelStateCount = 1;
+            }
+            ViewData["msgGoogle"] = msgGoogle;
             return View(account);
         }
 
