@@ -233,9 +233,9 @@ namespace NewISE.Controllers
                             {
                                 soloLettura = true;
                             }
-                            ViewData.Add("idTrasfermento", t.idTrasferimento);
+                           
                         }
-
+                        ViewData.Add("idTrasferimento", idTrasferimento);
                         ViewData.Add("soloLettura", soloLettura);
                         //ViewData.Add("siDati", siDati);
                         ViewData.Add("idMab", idMab);
@@ -251,10 +251,17 @@ namespace NewISE.Controllers
             return PartialView(lcmabvm);
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult NuovoImportoCanone(decimal idMab, decimal idTrasferimento)
+        {
+            ViewData.Add("idMab", idMab);
+            ViewData.Add("idTrasferimento", idTrasferimento);
+            return PartialView();
+        }
 
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciImportoCanone(CanoneMABViewModel cmabvm, decimal idMab)
+        public ActionResult InserisciImportoCanone(CanoneMABModel cmabm, decimal idMab, decimal idTrasferimento)
         {
             try
             {
@@ -267,33 +274,33 @@ namespace NewISE.Controllers
                         {
                             using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
                             {
-                                CanoneMABModel cmabm = new CanoneMABModel();
-
-                                //dtamf.VerificaPensioniAttiveInLavorazione(out pm, pcm, idConiuge, db);
 
                                 try
                                 {
-                                    dtvma.VerificaDataInizioCanoneMAB(idMab, cmabvm.DataInizioValidita);
+                                    dtvma.VerificaDataInizioCanoneMAB(idMab, cmabm.DataInizioValidita);
                                 }
                                 catch (Exception ex)
                                 {
                                     ModelState.AddModelError("", ex.Message);
-                                    return PartialView("NuovoImportoCanone", cmabvm);
-                                }
-                                cmabvm.DataAggiornamento = DateTime.Now;
-                                cmabvm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                                    ViewData.Add("idMab", idMab);
+                                    ViewData.Add("idTrasferimento", idTrasferimento);
 
-                                var MagAbitaz = db.MAB.Find(idMab).MAGGIORAZIONEABITAZIONE;
+                                    return PartialView("NuovoImportoCanone", cmabm);
+                                }
+                                cmabm.DataAggiornamento = DateTime.Now;
+                                cmabm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+
+
 
                                 ATTIVAZIONEMAB attmab_aperta = new ATTIVAZIONEMAB();
 
-                                var attmab_rif = cmabvm.IDAttivazioneMAB;
-                                var attmab = dtvma.GetAttivazioneAperta(MagAbitaz.IDMAGABITAZIONE);
+                                var attmab_rif = cmabm.IDAttivazioneMAB;
+                                var attmab = dtvma.GetAttivazioneAperta(idTrasferimento);
 
                                 // se non esiste attivazione aperta la creo altrimenti la uso
                                 if (attmab.IDATTIVAZIONEMAB == 0)
                                 {
-                                    ATTIVAZIONEMAB new_amab = dtvma.CreaAttivazione(MagAbitaz.IDMAGABITAZIONE, db);
+                                    ATTIVAZIONEMAB new_amab = dtvma.CreaAttivazione(idTrasferimento, db);
                                     attmab_aperta = new_amab;
                                 }
                                 else
@@ -301,8 +308,7 @@ namespace NewISE.Controllers
                                     attmab_aperta = attmab;
                                 }
 
-                                decimal idTrasf = attmab_aperta.IDTRASFERIMENTO;
-                                DateTime dataRientro = db.TRASFERIMENTO.Find(idTrasf).DATARIENTRO;
+                                DateTime dataRientro = db.TRASFERIMENTO.Find(idTrasferimento).DATARIENTRO;
 
                                 //controlla data inserita superiore a dataRientro
                                 if (cmabm.DataInizioValidita > dataRientro)
@@ -310,9 +316,9 @@ namespace NewISE.Controllers
                                     cmabm.DataInizioValidita = dataRientro;
                                 }
 
-                                if (cmabvm.chkAggiornaTutti == false)
+                                if (cmabm.chkAggiornaTutti == false)
                                 {
-                                    //dtp.SetNuovoImportoPensioneVariazione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
+                                    dtvma.SetNuovoImportoCanoneMAB(cmabm, idMab, attmab_aperta.IDATTIVAZIONEMAB, dataRientro, db);
                                 }
                                 else
                                 {

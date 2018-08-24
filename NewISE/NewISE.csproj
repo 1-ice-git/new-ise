@@ -6135,6 +6135,7 @@
     <Content Include="Views\VariazionePassaporto\PassaportoCompletato.cshtml" />
     <Content Include="Views\VariazionePassaporto\ElencoPassaporto_Completato.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoCanoneMAB.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoImportoCanone.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

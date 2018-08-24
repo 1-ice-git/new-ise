@@ -29,7 +29,6 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal ImportoCanone { get; set; }
 
-
         public DateTime DataAggiornamento { get; set; }
 
         public decimal idStatoRecord { get; set; }
@@ -44,6 +43,9 @@ namespace NewISE.Models.DBModel
         public TFRModel TFR;
 
         public decimal idValuta { get; set; }
+
+        [Display(Name = "Aggiorna Tutto")]
+        public bool chkAggiornaTutti { get; set; }
 
     }
 }

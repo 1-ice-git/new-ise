@@ -474,8 +474,8 @@ function CanoneMAB(idTrasferimento, idMAB) {
         },
         success: function (result) {
             //debugger;
-            $("#divMaggiorazioneAbitazione_var").empty();
-            $("#divMaggiorazioneAbitazione_var").html(result);
+            $("#tabAttivitaMAB_var").empty();
+            $("#tabAttivitaMAB_var").html(result);
         },
         complete: function () {
 
