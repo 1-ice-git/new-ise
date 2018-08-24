@@ -323,9 +323,9 @@ namespace NewISE.Controllers
                                 else
                                 {
                                     //inserisce periodo e annulla i periodi successivi (fino al primo buco temporale o fino a dataRientro)
-                                    //dtp.SetNuovoImportoPensioneVariazione_AggiornaTutti(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, dataRientro, db);
+                                    dtvma.SetNuovoImportoCanone_AggiornaTutti(cmabm, idMab, attmab_aperta.IDATTIVAZIONEMAB, dataRientro, db);
                                 }
-                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo pensione coniuge (" + idMab + ")", "PENSIONI", db, idTrasf, cmabm.idCanone);
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo canone MAB (" + idMab + ")", "CANONEMAB", db, idTrasferimento, cmabm.idCanone);
                             }
                             
                             db.Database.CurrentTransaction.Commit();
@@ -339,14 +339,14 @@ namespace NewISE.Controllers
                 }
                 else
                 {
-                    return PartialView("NuovoImportoCanone", cmabvm);
+                    return PartialView("NuovoImportoCanone", cmabm);
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            return RedirectToAction("ElencoCanoneMAB", new { idMab = idMab });
+            return RedirectToAction("ElencoCanoneMAB", new {idTrasferimento=idTrasferimento, idMab = idMab });
         }
 
 

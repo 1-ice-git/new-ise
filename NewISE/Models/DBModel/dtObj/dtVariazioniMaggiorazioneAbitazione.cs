@@ -933,191 +933,291 @@ namespace NewISE.Models.DBModel.dtObj
                         a =>
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                             a.NASCONDI == false &&
-                            a.DATAINIZIO <= dtIni)
-                    .OrderByDescending(a => a.DATAINIZIO)
+                            a.DATAINIZIOVALIDITA <= dtIni)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                     .ToList();
 
 
-            if (lpc?.Any() ?? false)
+            if (lcmab?.Any() ?? false)
             {
-                lpcm = (from e in lpc
-                        select new PensioneConiugeModel()
+                lcmabm = (from e in lcmab
+                        select new CanoneMABModel()
                         {
-                            idPensioneConiuge = e.IDPENSIONE,
-                            importoPensione = e.IMPORTOPENSIONE,
-                            dataInizioValidita = e.DATAINIZIO,
-                            dataFineValidita = e.DATAFINE,
-                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                            idCanone = e.IDCANONE,
+                            IDMAB=e.IDMAB,
+                            IDAttivazioneMAB=e.IDATTIVAZIONEMAB,
+                            idValuta=e.IDVALUTA,
+                            ImportoCanone = e.IMPORTOCANONE,
+                            DataInizioValidita = e.DATAINIZIOVALIDITA,
+                            DataFineValidita = e.DATAFINEVALIDITA,
+                            DataAggiornamento = e.DATAAGGIORNAMENTO,
                             idStatoRecord = e.IDSTATORECORD,
-                            FK_idPensione = e.FK_IDPENSIONE,
+                            FK_IDCanone = e.FK_IDCANONE,
                             nascondi = e.NASCONDI
                         }).ToList();
             }
 
-            return lpcm;
+            return lcmabm;
+        }
+
+        private IList<CanoneMABModel> PrelevaMovimentiCanoneMABSuccessivi(decimal idMab, DateTime dtIni, ModelDBISE db)
+        {
+            List<CanoneMABModel> lcmabm = new List<CanoneMABModel>();
+
+            var lcmab =
+                db.MAB.Find(idMab)
+                    .CANONEMAB.Where(
+                        a =>
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.NASCONDI == false &&
+                            a.DATAINIZIOVALIDITA > dtIni)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+
+            if (lcmab?.Any() ?? false)
+            {
+                lcmabm = (from e in lcmab
+                        select new CanoneMABModel()
+                        {
+                            idCanone = e.IDCANONE,
+                            IDMAB = e.IDMAB,
+                            IDAttivazioneMAB = e.IDATTIVAZIONEMAB,
+                            idValuta = e.IDVALUTA,
+                            ImportoCanone = e.IMPORTOCANONE,
+                            DataInizioValidita = e.DATAINIZIOVALIDITA,
+                            DataFineValidita = e.DATAFINEVALIDITA,
+                            DataAggiornamento = e.DATAAGGIORNAMENTO,
+                            idStatoRecord = e.IDSTATORECORD,
+                            FK_IDCanone = e.FK_IDCANONE,
+                            nascondi = e.NASCONDI
+                        }).ToList();
+            }
+
+            return lcmabm;
+        }
+
+        public void SetCanoneMAB(ref CanoneMABModel cmabm, ModelDBISE db)
+        {
+            try
+            {
+                var mab = db.MAB.Find(cmabm.IDMAB);
+                var item = db.Entry<MAB>(mab);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.CANONEMAB).Load();
+                CANONEMAB cmab = new CANONEMAB()
+                {
+                    IDMAB=mab.IDMAB,
+                    IDATTIVAZIONEMAB=cmabm.IDAttivazioneMAB,
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                    IDVALUTA=cmabm.idValuta,
+                    IMPORTOCANONE = cmabm.ImportoCanone,
+                    DATAINIZIOVALIDITA = cmabm.DataInizioValidita,
+                    DATAFINEVALIDITA = cmabm.DataFineValidita,
+                    DATAAGGIORNAMENTO = cmabm.DataAggiornamento,
+                };
+
+                mab.CANONEMAB.Add(cmab);
+
+                int i = db.SaveChanges();
+
+                if (i > 0)
+                {
+                    cmabm.idCanone = cmab.IDCANONE;
+
+                    decimal idTrasferimento = cmab.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un importo canone", "CANONEMAB", db, idTrasferimento, cmab.IDCANONE);
+
+                    //this.AssociaPensioneAttivazioneMagFam(idAttivazioneMagFam, pc.IDPENSIONE, db);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
-        public void SetNuovoImportoCanoneMAB(CanoneMABModel pcm, decimal idMab, decimal idAttivazioneMAB, DateTime dataRientro, ModelDBISE db)
+        public void SetNuovoImportoCanoneMAB(CanoneMABModel cmabm, decimal idMab, decimal idAttivazioneMAB, DateTime dataRientro, ModelDBISE db)
         {
 
-            CanoneMABModel cmabPrecedente = new CanoneMABModel();
-            CanoneMABModel cmabSuccessivo = new CanoneMABModel();
-            CanoneMABModel cmabLav = new CanoneMABModel();
-            List<CanoneMABModel> lcmabPrecedenti = new List<CanoneMABModel>();
-            List<CanoneMABModel> lcmabSuccessivi = new List<CanoneMABModel>();
+            CanoneMABModel cmabmPrecedente = new CanoneMABModel();
+            CanoneMABModel cmabmSuccessivo = new CanoneMABModel();
+            CanoneMABModel cmabmLav = new CanoneMABModel();
+            List<CanoneMABModel> lcmabmPrecedenti = new List<CanoneMABModel>();
+            List<CanoneMABModel> lcmabmSuccessivi = new List<CanoneMABModel>();
 
             try
             {
 
-                lcmabPrecedenti =
-                    PrelevaMovimentiPensionePrecedentiVariazione(idConiuge, pcm.dataInizioValidita, db).ToList();
+                lcmabmPrecedenti = 
+                    PrelevaMovimentiCanoneMABPrecedenti(idMab, cmabm.DataInizioValidita, db).ToList();
 
-                lcmabSuccessivi =
-                    PrelevaMovimentiPensioneSuccessiviVariazione(idConiuge, pcm.dataInizioValidita, db).ToList();
+                lcmabmSuccessivi =
+                    PrelevaMovimentiCanoneMABSuccessivi(idMab, cmabm.DataInizioValidita, db).ToList();
 
-                if (lpcmPrecedenti.Count == 0)
+                if (lcmabmPrecedenti.Count == 0)
                 {
-                    if (lpcmSuccessivi.Count == 0)
+                    if (lcmabmSuccessivi.Count == 0)
                     {
                         #region creo record
-                        pcmLav = new PensioneConiugeModel()
+                        cmabmLav = new CanoneMABModel()
                         {
-
-                            importoPensione = pcm.importoPensione,
-                            dataInizioValidita = pcm.dataInizioValidita,
-                            dataFineValidita = dataRientro,
-                            dataAggiornamento = DateTime.Now,
+                            IDMAB = cmabm.IDMAB,
+                            IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                            idValuta = cmabm.idValuta,
+                            ImportoCanone = cmabm.ImportoCanone,
+                            DataInizioValidita = cmabm.DataInizioValidita,
+                            DataFineValidita = cmabm.DataFineValidita,
+                            DataAggiornamento = DateTime.Now,
                             idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                            FK_idPensione = pcm.FK_idPensione,
-                            nascondi = pcm.nascondi
+                            FK_IDCanone = cmabm.FK_IDCanone,
+                            nascondi = cmabm.nascondi
                         };
-                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        SetCanoneMAB(ref cmabmLav, db);
                         #endregion
                     }
                     else
                     {
-                        pcmSuccessivo = lpcmSuccessivi.First();
+                        cmabmSuccessivo = lcmabmSuccessivi.First();
 
                         #region creo record
-                        pcmLav = new PensioneConiugeModel()
+                        cmabmLav = new CanoneMABModel()
                         {
-                            importoPensione = pcm.importoPensione,
-                            dataInizioValidita = pcm.dataInizioValidita,
-                            dataFineValidita = pcmSuccessivo.dataInizioValidita.AddDays(-1),
-                            dataAggiornamento = DateTime.Now,
+                            IDMAB = cmabm.IDMAB,
+                            IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                            idValuta = cmabm.idValuta,
+                            ImportoCanone = cmabm.ImportoCanone,
+                            DataInizioValidita = cmabm.DataInizioValidita,
+                            DataFineValidita = cmabmSuccessivo.DataInizioValidita.AddDays(-1),
+                            DataAggiornamento = DateTime.Now,
                             idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                            FK_idPensione = pcm.FK_idPensione,
-                            nascondi = pcm.nascondi
+                            FK_IDCanone = cmabm.FK_IDCanone,
+                            nascondi = cmabm.nascondi
                         };
-                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        SetCanoneMAB(ref cmabmLav, db);
                         #endregion
                     }
                 }
                 else
                 {
-                    pcmPrecedente = lpcmPrecedenti.First();
+                    cmabmPrecedente = lcmabmPrecedenti.First();
 
-                    if (lpcmSuccessivi.Count == 0)
+                    if (lcmabmSuccessivi.Count == 0)
                     {
-                        if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita)
+                        if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
                         {
-                            if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
                             {
                                 #region edit record
-                                var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
-                                pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
-                                pcPrecedente.DATAFINE = dataRientro;
-                                pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
+                                cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
+                                cmabPrecedente.DATAFINEVALIDITA = dataRientro;
+                                cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
                                 if (db.SaveChanges() <= 0)
                                 {
-                                    throw new Exception("Errore durante l'inserimento della pensione.");
+                                    throw new Exception("Errore durante l'inserimento del canone.");
                                 }
                                 #endregion
                             }
                             else
                             {
                                 #region replico record e lo nascondo
-                                pcmPrecedente.NascondiRecord(db);
+                                cmabmPrecedente.NascondiRecord(db);
 
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-
-                                    importoPensione = pcmPrecedente.importoPensione,
-                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabmPrecedente.IDMAB,
+                                    IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
+                                    idValuta = cmabmPrecedente.idValuta,
+                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                    DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcmPrecedente.FK_idPensione,
+                                    FK_IDCanone = cmabmPrecedente.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
 
                                 #region creo record
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcm.importoPensione,
-                                    dataInizioValidita = pcm.dataInizioValidita,
-                                    dataFineValidita = dataRientro,
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabm.IDMAB,
+                                    IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                    idValuta = cmabm.idValuta,
+                                    ImportoCanone = cmabm.ImportoCanone,
+                                    DataInizioValidita = cmabm.DataInizioValidita,
+                                    DataFineValidita = dataRientro,
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcm.FK_idPensione,
+                                    FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
                             }
 
                         }
                         else
                         {
-                            if (pcmPrecedente.dataFineValidita == dataRientro)
+                            if (cmabmPrecedente.DataFineValidita == dataRientro)
                             {
                                 #region replico record e lo nascondo
-                                pcmPrecedente.NascondiRecord(db);
+                                cmabmPrecedente.NascondiRecord(db);
 
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcmPrecedente.importoPensione,
-                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabmPrecedente.IDMAB,
+                                    IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
+                                    idValuta = cmabmPrecedente.idValuta,
+                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                    DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcmPrecedente.FK_idPensione,
+                                    FK_IDCanone = cmabmPrecedente.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
 
                                 #region creo record
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcm.importoPensione,
-                                    dataInizioValidita = pcm.dataInizioValidita,
-                                    dataFineValidita = dataRientro,
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabm.IDMAB,
+                                    IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                    idValuta = cmabm.idValuta,
+                                    ImportoCanone = cmabm.ImportoCanone,
+                                    DataInizioValidita = cmabm.DataInizioValidita,
+                                    DataFineValidita = dataRientro,
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcm.FK_idPensione,
+                                    FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
                             }
                             else
                             {
                                 #region creo record
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcm.importoPensione,
-                                    dataInizioValidita = pcm.dataInizioValidita,
-                                    dataFineValidita = dataRientro,
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabm.IDMAB,
+                                    IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                    idValuta = cmabm.idValuta,
+                                    ImportoCanone = cmabm.ImportoCanone,
+                                    DataInizioValidita = cmabm.DataInizioValidita,
+                                    DataFineValidita = dataRientro,
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcm.FK_idPensione,
+                                    FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
                             }
                         }
@@ -1125,13 +1225,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                     else
                     {
-                        if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita &&
-                            pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                        if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita &&
+                            cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
                         {
                             #region edit record
-                            var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
-                            pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
-                            pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                            var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
+                            cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
+                            cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
                             if (db.SaveChanges() <= 0)
                             {
                                 throw new Exception("Errore durante l'inserimento della pensione.");
@@ -1140,70 +1240,82 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            pcmSuccessivo = lpcmSuccessivi.First();
+                            cmabmSuccessivo = lcmabmSuccessivi.First();
 
                             //controllo periodo attiguo
-                            if (pcmPrecedente.dataFineValidita == pcmSuccessivo.dataInizioValidita.AddDays(-1))
+                            if (cmabmPrecedente.DataFineValidita == cmabmSuccessivo.DataInizioValidita.AddDays(-1))
                             {
                                 #region replico record e lo nascondo
-                                pcmPrecedente.NascondiRecord(db);
+                                cmabmPrecedente.NascondiRecord(db);
 
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcmPrecedente.importoPensione,
-                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabmPrecedente.IDMAB,
+                                    IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
+                                    idValuta = cmabmPrecedente.idValuta,
+                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                    DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcmPrecedente.FK_idPensione,
+                                    FK_IDCanone = cmabmPrecedente.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
 
                                 #region creo record
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcm.importoPensione,
-                                    dataInizioValidita = pcm.dataInizioValidita,
-                                    dataFineValidita = pcmSuccessivo.dataInizioValidita.AddDays(-1),
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabm.IDMAB,
+                                    IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                    idValuta = cmabm.idValuta,
+                                    ImportoCanone = cmabm.ImportoCanone,
+                                    DataInizioValidita = cmabm.DataInizioValidita,
+                                    DataFineValidita = cmabmSuccessivo.DataInizioValidita.AddDays(-1),
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcm.FK_idPensione,
+                                    FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
                             }
                             else
                             {
-                                pcmPrecedente.NascondiRecord(db);
+                                cmabmPrecedente.NascondiRecord(db);
                                 #region replico record
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcmPrecedente.importoPensione,
-                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabmPrecedente.IDMAB,
+                                    IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
+                                    idValuta = cmabmPrecedente.idValuta,
+                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                    DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcm.FK_idPensione,
+                                    FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
 
                                 #region creo record
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcm.importoPensione,
-                                    dataInizioValidita = pcm.dataInizioValidita,
-                                    dataFineValidita = pcmPrecedente.dataFineValidita,
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB = cmabm.IDMAB,
+                                    IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                    idValuta = cmabm.idValuta,
+                                    ImportoCanone = cmabm.ImportoCanone,
+                                    DataInizioValidita = cmabm.DataInizioValidita,
+                                    DataFineValidita = cmabmPrecedente.DataFineValidita,
+                                    DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcm.FK_idPensione,
+                                    FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
                             }
                         }
@@ -1220,254 +1332,277 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void SetNuovoImportoPensioneVariazione_AggiornaTutti(PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam, DateTime dataRientro, ModelDBISE db)
+        public void SetNuovoImportoCanone_AggiornaTutti(CanoneMABModel cmabm, decimal idMab, decimal idAttivazioneMAB, DateTime dataRientro, ModelDBISE db)
         {
 
-            PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
-            PensioneConiugeModel pcmSuccessivo = new PensioneConiugeModel();
-            PensioneConiugeModel pcmLav = new PensioneConiugeModel();
-            List<PensioneConiugeModel> lpcmPrecedenti = new List<PensioneConiugeModel>();
-            List<PensioneConiugeModel> lpcmSuccessivi = new List<PensioneConiugeModel>();
+            CanoneMABModel cmabmPrecedente = new CanoneMABModel();
+            CanoneMABModel cmabmSuccessivo = new CanoneMABModel();
+            CanoneMABModel cmabmLav = new CanoneMABModel();
+            List<CanoneMABModel> lcmabmPrecedenti = new List<CanoneMABModel>();
+            List<CanoneMABModel> lcmabmSuccessivi = new List<CanoneMABModel>();
 
             try
             {
 
-                lpcmPrecedenti =
-                    PrelevaMovimentiPensionePrecedentiVariazione(idConiuge, pcm.dataInizioValidita, db).ToList();
+                lcmabmPrecedenti =
+                    PrelevaMovimentiCanoneMABPrecedenti(idMab, cmabm.DataInizioValidita, db).ToList();
 
-                lpcmSuccessivi =
-                    PrelevaMovimentiPensioneSuccessiviVariazione(idConiuge, pcm.dataInizioValidita, db).ToList();
+                lcmabmSuccessivi =
+                    PrelevaMovimentiCanoneMABSuccessivi(idMab, cmabm.DataInizioValidita, db).ToList();
 
-                if (lpcmPrecedenti.Count == 0)
+                if (lcmabmPrecedenti.Count == 0)
                 {
-                    if (lpcmSuccessivi.Count == 0)
+                    if (lcmabmSuccessivi.Count == 0)
                     {
                         #region creo record (periodo dataIniInput - dataRientro)
-                        pcmLav = new PensioneConiugeModel()
+                        cmabmLav = new CanoneMABModel()
                         {
-
-                            importoPensione = pcm.importoPensione,
-                            dataInizioValidita = pcm.dataInizioValidita,
-                            dataFineValidita = dataRientro,
-                            dataAggiornamento = DateTime.Now,
+                            IDMAB= idMab,
+                            IDAttivazioneMAB= cmabm.IDAttivazioneMAB,
                             idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                            FK_idPensione = pcm.FK_idPensione,
-                            nascondi = pcm.nascondi
+                            idValuta= cmabm.idValuta,
+                            ImportoCanone = cmabm.ImportoCanone,
+                            DataInizioValidita = cmabm.DataInizioValidita,
+                            DataFineValidita = dataRientro,
+                            DataAggiornamento = DateTime.Now,
+                            FK_IDCanone = cmabm.FK_IDCanone,
+                            nascondi = cmabm.nascondi
                         };
-                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        SetCanoneMAB(ref cmabmLav, db);
                         #endregion
                     }
                     else
                     {
-                        pcmSuccessivo = lpcmSuccessivi.First();
+                        cmabmSuccessivo = lcmabmSuccessivi.First();
 
                         #region annullo tutti record fino al primo buco temporale o dataRientro
                         var cont = 1;
                         //nascondo in ogni caso il primo successivo
-                        pcmSuccessivo.NascondiRecord(db);
-                        var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                        cmabmSuccessivo.NascondiRecord(db);
+                        var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
                         //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                        foreach (var pcmSucc in lpcmSuccessivi)
+                        foreach (var cmabmSucc in lcmabmSuccessivi)
                         {
-                            if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                            if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
                             {
-                                dataFineCorrente = pcmSucc.dataFineValidita;
-                                pcmSucc.NascondiRecord(db);
+                                dataFineCorrente = cmabmSucc.DataFineValidita;
+                                cmabmSucc.NascondiRecord(db);
                             }
                             cont++;
                         }
                         #endregion
 
                         #region creo record
-                        pcmLav = new PensioneConiugeModel()
+                        cmabmLav = new CanoneMABModel()
                         {
-                            importoPensione = pcm.importoPensione,
-                            dataInizioValidita = pcm.dataInizioValidita,
-                            dataFineValidita = dataFineCorrente,
-                            dataAggiornamento = DateTime.Now,
+                            IDMAB=cmabm.IDMAB,
+                            IDAttivazioneMAB=cmabm.IDAttivazioneMAB,
                             idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                            FK_idPensione = pcm.FK_idPensione,
-                            nascondi = pcm.nascondi
+                            idValuta=cmabm.idValuta,
+                            ImportoCanone = cmabm.ImportoCanone,
+                            DataInizioValidita = cmabm.DataInizioValidita,
+                            DataFineValidita = dataFineCorrente,
+                            DataAggiornamento = DateTime.Now,
+                            FK_IDCanone = cmabm.FK_IDCanone,
+                            nascondi = cmabm.nascondi
                         };
-                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                        SetCanoneMAB(ref cmabmLav, db);
                         #endregion
                     }
                 }
                 else
                 {
-                    pcmPrecedente = lpcmPrecedenti.First();
+                    cmabmPrecedente = lcmabmPrecedenti.First();
 
-                    if (lpcmSuccessivi.Count == 0)
+                    if (lcmabmSuccessivi.Count == 0)
                     { ////
-                        if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita)
+                        if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
                         {
-                            if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
                             {
                                 #region edit record
-                                var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
-                                pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
-                                pcPrecedente.DATAFINE = dataRientro;
-                                pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
+                                cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
+                                cmabPrecedente.DATAFINEVALIDITA = dataRientro;
+                                cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
                                 if (db.SaveChanges() <= 0)
                                 {
-                                    throw new Exception("Errore durante l'inserimento della pensione.");
+                                    throw new Exception("Errore durante l'inserimento del canone MAB.");
                                 }
                                 #endregion
                             }
                             else
                             {
-                                pcmPrecedente.NascondiRecord(db);
+                                cmabmPrecedente.NascondiRecord(db);
 
                                 #region replico creo record con periodo dataini - dataIniInput-1
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcmPrecedente.importoPensione,
-                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                    dataFineValidita = dataRientro,
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB=cmabm.IDMAB,
+                                    IDAttivazioneMAB=cmabm.IDAttivazioneMAB,
+                                    idValuta=cmabm.idValuta,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcm.FK_idPensione,
+                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                    DataFineValidita = dataRientro,
+                                    DataAggiornamento = DateTime.Now,
+                                    FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
                             }
                         }
                         else
                         {
                             #region replico creo record con periodo dataini - dataIniInput-1
-                            pcmLav = new PensioneConiugeModel()
+                            cmabmLav = new CanoneMABModel()
                             {
-                                importoPensione = pcmPrecedente.importoPensione,
-                                dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
-                                dataAggiornamento = DateTime.Now,
+                                IDMAB = cmabmPrecedente.IDMAB,
+                                IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
+                                idValuta = cmabmPrecedente.idValuta,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                FK_idPensione = pcm.FK_idPensione,
+                                ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                DataFineValidita = cmabmPrecedente.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                FK_IDCanone = cmabmPrecedente.FK_IDCanone,
                                 nascondi = false
                             };
-                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            SetCanoneMAB(ref cmabmLav, db);
                             #endregion
 
                             #region creo record 
-                            pcmLav = new PensioneConiugeModel()
+                            cmabmLav = new CanoneMABModel()
                             {
-                                importoPensione = pcm.importoPensione,
-                                dataInizioValidita = pcm.dataInizioValidita,
-                                dataFineValidita = dataRientro,
-                                dataAggiornamento = DateTime.Now,
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabm.idValuta,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                FK_idPensione = pcm.FK_idPensione,
+                                ImportoCanone = cmabm.ImportoCanone,
+                                DataInizioValidita = cmabm.DataInizioValidita,
+                                DataFineValidita = dataRientro,
+                                DataAggiornamento = DateTime.Now,
+                                FK_IDCanone = cmabm.FK_IDCanone,
                                 nascondi = false
                             };
-                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            SetCanoneMAB(ref cmabmLav, db);
                             #endregion
                         }
                     }
                     else
                     {
-                        pcmSuccessivo = lpcmSuccessivi.First();
+                        cmabmSuccessivo = lcmabmSuccessivi.First();
 
-                        if (pcmPrecedente.dataInizioValidita == pcm.dataInizioValidita)
+                        if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
                         {
                             #region annullo i record successivi fino al primo buco temporale o dataRientro
                             var cont = 1;
                             //nascondo in ogni caso il primo successivo
-                            pcmSuccessivo.NascondiRecord(db);
-                            var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                            cmabmSuccessivo.NascondiRecord(db);
+                            var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
                             //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                            foreach (var pcmSucc in lpcmSuccessivi)
+                            foreach (var cmabmSucc in lcmabmSuccessivi)
                             {
-                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
                                 {
-                                    dataFineCorrente = pcmSucc.dataFineValidita;
-                                    pcmSucc.NascondiRecord(db);
+                                    dataFineCorrente = cmabmSucc.DataFineValidita;
+                                    cmabmSucc.NascondiRecord(db);
                                 }
                                 cont++;
                             }
                             #endregion
-                            if (pcmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
                             {
 
                                 #region edit record
-                                var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
-                                pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
-                                pcPrecedente.DATAFINE = dataFineCorrente.Value;
-                                pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
+                                cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
+                                cmabPrecedente.DATAFINEVALIDITA = dataFineCorrente;
+                                cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
                                 if (db.SaveChanges() <= 0)
                                 {
-                                    throw new Exception("Errore durante l'inserimento della pensione.");
+                                    throw new Exception("Errore durante l'inserimento del canone.");
                                 }
                                 #endregion
                             }
                             else
                             {
-                                pcmPrecedente.NascondiRecord(db);
+                                cmabmPrecedente.NascondiRecord(db);
 
                                 #region replico creo record con periodo dataini - dataFineCorrente
-                                pcmLav = new PensioneConiugeModel()
+                                cmabmLav = new CanoneMABModel()
                                 {
-                                    importoPensione = pcmPrecedente.importoPensione,
-                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                    dataFineValidita = dataFineCorrente,
-                                    dataAggiornamento = DateTime.Now,
+                                    IDMAB=cmabmPrecedente.IDMAB,
+                                    IDAttivazioneMAB=cmabmPrecedente.IDAttivazioneMAB,
+                                    idValuta=cmabmPrecedente.idValuta,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcm.FK_idPensione,
+                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                    DataFineValidita = dataFineCorrente,
+                                    DataAggiornamento = DateTime.Now,
+                                    FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
                                 };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                SetCanoneMAB(ref cmabmLav, db);
                                 #endregion
                             }
                         }
                         else
                         {
 
-                            pcmPrecedente.NascondiRecord(db);
+                            cmabmPrecedente.NascondiRecord(db);
 
                             #region replico creo record con periodo dataini - dataIniInput-1
-                            pcmLav = new PensioneConiugeModel()
+                            cmabmLav = new CanoneMABModel()
                             {
-                                importoPensione = pcmPrecedente.importoPensione,
-                                dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
-                                dataAggiornamento = DateTime.Now,
+                                IDMAB = cmabmPrecedente.IDMAB,
+                                IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
+                                idValuta = cmabmPrecedente.idValuta,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                FK_idPensione = pcm.FK_idPensione,
+                                ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                FK_IDCanone = cmabm.FK_IDCanone,
                                 nascondi = false
                             };
-                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            SetCanoneMAB(ref cmabmLav, db);
                             #endregion
 
                             #region annullo i record successivi fino al primo buco temporale o dataRientro
                             var cont = 1;
                             //nascondo in ogni caso il primo successivo
-                            pcmSuccessivo.NascondiRecord(db);
-                            var dataFineCorrente = pcmSuccessivo.dataFineValidita;
+                            cmabmSuccessivo.NascondiRecord(db);
+                            var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
                             //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                            foreach (var pcmSucc in lpcmSuccessivi)
+                            foreach (var cmabmSucc in lcmabmSuccessivi)
                             {
-                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
                                 {
-                                    dataFineCorrente = pcmSucc.dataFineValidita;
-                                    pcmSucc.NascondiRecord(db);
+                                    dataFineCorrente = cmabmSucc.DataFineValidita;
+                                    cmabmSucc.NascondiRecord(db);
                                 }
                                 cont++;
                             }
                             #endregion
 
                             #region creo record
-                            pcmLav = new PensioneConiugeModel()
+                            cmabmLav = new CanoneMABModel()
                             {
-                                importoPensione = pcm.importoPensione,
-                                dataInizioValidita = pcm.dataInizioValidita,
-                                dataFineValidita = dataFineCorrente,
-                                dataAggiornamento = DateTime.Now,
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabm.idValuta,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                FK_idPensione = pcm.FK_idPensione,
+                                ImportoCanone = cmabm.ImportoCanone,
+                                DataInizioValidita = cmabm.DataInizioValidita,
+                                DataFineValidita = dataFineCorrente,
+                                DataAggiornamento = DateTime.Now,
+                                FK_IDCanone = cmabm.FK_IDCanone,
                                 nascondi = false
                             };
 
-                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                            SetCanoneMAB(ref cmabmLav, db);
                             #endregion
                         }
                     }
