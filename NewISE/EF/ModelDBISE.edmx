@@ -642,7 +642,6 @@
           <Property Name="ANNUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="FK_IDELABMAB" Type="number" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PROGRESSIVO" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -3112,20 +3111,6 @@
             </Principal>
             <Dependent Role="ELABDATIFIGLI">
               <PropertyRef Name="IDELABMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_EMAB_EMAB">
-          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELABMAB1" Type="Self.ELABMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABMAB">
-              <PropertyRef Name="IDELABMAB" />
-            </Principal>
-            <Dependent Role="ELABMAB1">
-              <PropertyRef Name="FK_IDELABMAB" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6117,10 +6102,6 @@
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="ELABDATIFIGLI" EntitySet="ELABDATIFIGLI" />
           </AssociationSet>
-          <AssociationSet Name="R_EMAB_EMAB" Association="Self.R_EMAB_EMAB">
-            <End Role="ELABMAB" EntitySet="ELABMAB" />
-            <End Role="ELABMAB1" EntitySet="ELABMAB" />
-          </AssociationSet>
           <AssociationSet Name="R_EMAB_EMABALIQ" Association="Self.R_EMAB_EMABALIQ">
             <End Role="ELABMAB" EntitySet="ELABMAB" />
             <End Role="EMAB_ALIQ" EntitySet="EMAB_ALIQ" />
@@ -7264,10 +7245,6 @@
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_EMAB_EMAB" Association="DBISE.R_EMAB_EMAB">
-            <End Role="ELABMAB" EntitySet="ELABMAB" />
-            <End Role="ELABMAB1" EntitySet="ELABMAB" />
-          </AssociationSet>
           <AssociationSet Name="R_MAGABI_EMAB" Association="DBISE.R_MAGABI_EMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
@@ -8398,13 +8375,10 @@
           <Property Name="ANNUALE" Type="Boolean" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="FK_IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EMAB_EDF" FromRole="ELABMAB" ToRole="ELABDATIFIGLI" />
-          <NavigationProperty Name="ELABMAB1" Relationship="DBISE.R_EMAB_EMAB" FromRole="ELABMAB" ToRole="ELABMAB1" />
-          <NavigationProperty Name="ELABMAB2" Relationship="DBISE.R_EMAB_EMAB" FromRole="ELABMAB1" ToRole="ELABMAB" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_MAGABI_EMAB" FromRole="ELABMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.RELATIONSHIP8" FromRole="ELABMAB" ToRole="LIVELLI" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.EMAB_ALIQ" FromRole="ELABMAB" ToRole="ALIQUOTECONTRIBUTIVE" />
@@ -10663,20 +10637,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EMAB_EMAB">
-          <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ELABMAB" Role="ELABMAB1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABMAB">
-              <PropertyRef Name="IDELABMAB" />
-            </Principal>
-            <Dependent Role="ELABMAB1">
-              <PropertyRef Name="FK_IDELABMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_MAGABI_EMAB">
           <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -12450,7 +12410,6 @@
                 <ScalarProperty Name="PROGRESSIVO" ColumnName="PROGRESSIVO" />
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
-                <ScalarProperty Name="FK_IDELABMAB" ColumnName="FK_IDELABMAB" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="ANNUALE" ColumnName="ANNUALE" />

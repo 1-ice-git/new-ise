@@ -18,7 +18,6 @@ namespace NewISE.EF
         public ELABMAB()
         {
             this.ELABDATIFIGLI = new HashSet<ELABDATIFIGLI>();
-            this.ELABMAB1 = new HashSet<ELABMAB>();
             this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
             this.TEORICI = new HashSet<TEORICI>();
         }
@@ -38,16 +37,12 @@ namespace NewISE.EF
         public bool ANNUALE { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public Nullable<decimal> FK_IDELABMAB { get; set; }
         public decimal IDLIVELLO { get; set; }
         public decimal GIORNI { get; set; }
         public decimal PROGRESSIVO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABMAB> ELABMAB1 { get; set; }
-        public virtual ELABMAB ELABMAB2 { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
