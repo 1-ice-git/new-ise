@@ -301,6 +301,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                         xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                         xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                    
 
                                         eim.Add(xx);
                                 }
@@ -709,7 +710,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.IndennitaPersonale = ci.IndennitaPersonale;
                                     xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
                                     xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
-                                    xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
+                                    xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
@@ -938,7 +939,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     xx.dataInizioValidita = dv;
                                     xx.dataFineValidita = dvSucc;
-                                    
+                                    xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
                                     xx.IndennitaPrimoSegretario = ci.IndennitaPrimoSegretario;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     eim.Add(xx);
@@ -1407,7 +1408,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.IndennitaPersonale = ci.IndennitaPersonale;
                                     xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
                                     xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
-                                    xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
+                                    xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
@@ -1504,7 +1505,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.IndennitaPersonale = ci.IndennitaPersonale;
                                     xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
                                     xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
-                                    xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
+                                    xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
@@ -1600,7 +1601,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.IndennitaPersonale = ci.IndennitaPersonale;
                                     xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
                                     xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
-                                    xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
+                                    xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
@@ -1701,7 +1702,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.IndennitaPersonale = ci.IndennitaPersonale;
                                     xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
                                     xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
-                                    xx.percentualeMaggiorazioniFligli = ci.PercentualeMaggiorazioneFigli;
+                                    xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
