@@ -107,20 +107,40 @@
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.Common.dll</HintPath>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebDesign, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WebDesign.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WebForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
@@ -136,7 +156,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="ReportViewerForMvc, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ReportViewerForMvc.1.1.1\lib\net45\ReportViewerForMvc.dll</HintPath>
+      <HintPath>..\packages\ReportViewerForMvc14.140.1000.523\lib\net45\ReportViewerForMvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -1044,12 +1064,6 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.wijmo-open.1.5.0.css" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.wijmo-open.1.5.0.min.js" />
     <Content Include="Content\NuovoTrasferimento.css" />
-    <Content Include="DSIndennitaServizio.xsc">
-      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
-    </Content>
-    <Content Include="DSIndennitaServizio.xss">
-      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
-    </Content>
     <Content Include="EF\ModelDBISE.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
@@ -4287,17 +4301,6 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet1.xsc">
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </Content>
-    <Content Include="AAAA.xsc">
-      <DependentUpon>AAAA.xsd</DependentUpon>
-    </Content>
-    <None Include="AAAA.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>AAAA.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="AAAA.xss">
-      <DependentUpon>AAAA.xsd</DependentUpon>
-    </Content>
     <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggiorazioneAbitazione.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamTFR\NuovoTFR.cshtml" />
@@ -4592,9 +4595,6 @@
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpContributoAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpUsoAbitazione.cshtml" />
     <Content Include="Models\Config\s_admin\s_utente.json" />
-    <Content Include="DataSet.xsc">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </Content>
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpSpeseDiverse.cshtml" />
     <Content Include="Content\DatiConfig\Data_Inizio_Base.json" />
     <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita2.cshtml" />
@@ -4651,14 +4651,6 @@
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\RptStoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\StoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\SpeseDiverse\RptSpeseDiverse.cshtml" />
-    <None Include="DataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="DataSet.xss">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </Content>
     <Content Include="FormulariMaster\FormularioMF\formulario 1.pdf" />
     <Content Include="FormulariMaster\FormularioMF\formulario 2.pdf" />
     <Content Include="FormulariMaster\FormularioMF\formulario 3.pdf" />
@@ -4683,35 +4675,8 @@
     <Content Include="EF\ModelDBISE.edmx.diagram">
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Content>
-    <None Include="DSIndennitaServizio.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DSIndennitaServizio.Designer.cs</LastGenOutput>
-    </None>
     <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
-    <Content Include="DataSet20.xsc">
-      <DependentUpon>DataSet20.xsd</DependentUpon>
-    </Content>
-    <None Include="DataSet20.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet20.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="DataSet20.xss">
-      <DependentUpon>DataSet20.xsd</DependentUpon>
-    </Content>
-    <Content Include="DataSet21.xsc">
-      <DependentUpon>DataSet21.xsd</DependentUpon>
-    </Content>
-    <None Include="DataSet21.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet21.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="DataSet21.xss">
-      <DependentUpon>DataSet21.xsd</DependentUpon>
-    </Content>
     <None Include="Properties\PublishProfiles\Mauro.pubxml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <Content Include="Scripts\ckeditor\.github\ISSUE_TEMPLATE" />
@@ -4877,11 +4842,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AAAA.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AAAA.xsd</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\msgEmail.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -4924,11 +4884,6 @@
     <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
-    <Compile Include="DSIndennitaServizio.Designer.cs">
-      <DependentUpon>DSIndennitaServizio.xsd</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Include="EF\ACCESSI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -5573,21 +5528,6 @@
     <Compile Include="Controllers\TrasferimentoController.cs" />
     <Compile Include="Controllers\UtenzeDipendentiController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioniFamiliariController.cs" />
-    <Compile Include="DataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DataSet20.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet20.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DataSet21.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet21.xsd</DependentUpon>
-    </Compile>
     <Compile Include="DBComuniItalia\Cm.cs" />
     <Compile Include="DBComuniItalia\Comuni.cs" />
     <Compile Include="DBComuniItalia\Provincia.cs" />
@@ -6191,117 +6131,117 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>VariazioneProvvScolColori.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report12.rdlc">
+    <Content Include="Areas\Statistiche\RPT\Report12.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report19.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\Report19.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report30.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\Report30.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report7.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\Report7.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\Report9.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCostiCoAn.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptConsuntivoCostiCoAn.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptDislocazioneDip.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptDislocazioneDip.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpIndEstera.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptOpIndEstera.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContrAbitaz.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptOpContrAbitaz.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpUsoAbitazione.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptOpUsoAbitazione.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpMaggAbitaz.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptOpMaggAbitaz.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptSpeseAvvicendamento.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptSpeseAvvicendamento.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpSpeseDiverse.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptOpSpeseDiverse.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptSpeseDiverse.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptSpeseDiverse.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpCanoneAnticipato.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptOpCanoneAnticipato.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report36.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\Report36.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc">
+    </Content>
+    <Content Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptContributoOmnicomprensivoRientro.rdlc">
+    </Content>
+    <Content Include="Report\RptContributoOmnicomprensivoRientro.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptContributoOmnicomprensivoTrasferimento.rdlc">
+    </Content>
+    <Content Include="Report\RptContributoOmnicomprensivoTrasferimento.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitadiRichiamo.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitadiRichiamo.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitadiRichiamoLorda.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitadiRichiamoLorda.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitadiRichiamoNetta.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitadiRichiamoNetta.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitadiSistemazioneLorda.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitadiSistemazioneLorda.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitadiSistemazioneNetta.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitadiSistemazioneNetta.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitaPersonale.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitaPersonale.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitaPrimaSistemazione.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitaPrimaSistemazione.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitaServizio.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitaServizio.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptMaggiorazioneAbitazione.rdlc">
+    </Content>
+    <Content Include="Report\RptMaggiorazioneAbitazione.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptMaggiorazioniConiuge.rdlc">
+    </Content>
+    <Content Include="Report\RptMaggiorazioniConiuge.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptMaggiorazioniFamiliari.rdlc">
+    </Content>
+    <Content Include="Report\RptMaggiorazioniFamiliari.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptMaggiorazioniFigli.rdlc">
+    </Content>
+    <Content Include="Report\RptMaggiorazioniFigli.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptRiepilogoVoci.rdlc">
+    </Content>
+    <Content Include="Report\RptRiepilogoVoci.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\RptIndennitaBase.rdlc">
+    </Content>
+    <Content Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Content>
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
   <PropertyGroup>
