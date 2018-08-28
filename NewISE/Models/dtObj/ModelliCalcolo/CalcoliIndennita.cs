@@ -470,7 +470,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         {
             this.PrelevaDatiMab();
 
-            _importoMABMaxMensile = _percentualeMAB * _indennitaPersonale;
+            _importoMABMaxMensile = (_percentualeMAB / 100) * _indennitaPersonale;
 
             if (_canoneMab > 0)
             {
@@ -494,8 +494,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             {
                 if (PagatoMab)
                 {
-                    _importoMABMaxMensile = (_importoMABMaxMensile * _percentualeCondivisione) + _importoMABMaxMensile;
-                    _importoMABMensile = (_importoMABMensile * _percentualeCondivisione) + _importoMABMensile;
+                    _importoMABMaxMensile = (_importoMABMaxMensile * (_percentualeCondivisione / 100)) + _importoMABMaxMensile;
+                    _importoMABMensile = (_importoMABMensile * (_percentualeCondivisione / 100)) + _importoMABMensile;
                 }
                 else
                 {
