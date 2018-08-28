@@ -35,8 +35,8 @@ namespace NewISE.Models.DBModel
         public decimal PercentualeMaggConiuge { get; set; }
 
         [Display(Name = "Perc. Magg. Figli")]
-        public decimal percentualeMaggiorazioniFligli { get; set; }
-
+        public decimal PercentualeMaggiorazioniFigli { get; set; }
+        
         [Display(Name = "Maggiorazioni Coniuge")]
         public decimal MaggiorazioneConiuge { get; set; }
 
