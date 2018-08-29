@@ -238,8 +238,8 @@ namespace NewISE.Models.DBModel.dtObj
                 List<PERCENTUALECONDIVISIONE> lpc = new List<PERCENTUALECONDIVISIONE>();
 
                 lpc = db.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false &&
-                                                        a.DATAINIZIOVALIDITA <= dataIni &&
-                                                        a.DATAFINEVALIDITA >= dataFin).ToList();
+                                                        a.DATAINIZIOVALIDITA <= dataFin &&
+                                                        a.DATAFINEVALIDITA >= dataIni).ToList();
                 return lpc;
             }
             catch (Exception ex)
@@ -439,10 +439,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var am = db.ATTIVAZIONEMAB.Find(m.IDATTIVAZIONEMAB);
 
-                var cmabl = am.CANONEMAB.Where(a => 
-                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                var cmabl = am.CANONEMAB.Where(a =>
+                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                         a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
-                    .OrderBy(a=>a.DATAINIZIOVALIDITA)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
                     .ToList();
 
                 if (cmabl?.Any() ?? false)
@@ -466,7 +466,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var mab = db.MAB.Find(m.IDMAB);
 
-                var aal = mab.ANTICIPOANNUALEMAB.Where(a => 
+                var aal = mab.ANTICIPOANNUALEMAB.Where(a =>
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
                         .ToList();
@@ -573,7 +573,7 @@ namespace NewISE.Models.DBModel.dtObj
                     mm = new MABModel()
                     {
                         idMAB = m.IDMAB,
-                        idMagAbitazione=m.IDMAGABITAZIONE,
+                        idMagAbitazione = m.IDMAGABITAZIONE,
                         idAttivazioneMAB = m.IDATTIVAZIONEMAB,
                         dataAggiornamento = m.DATAAGGIORNAMENTO,
                         rinunciaMAB = m.RINUNCIAMAB,
@@ -655,7 +655,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizioMAB = pm.DATAINIZIOMAB,
                         dataFineMAB = pm.DATAFINEMAB,
                         dataAggiornamento = pm.DATAAGGIORNAMENTO,
-                        idStatoRecord=pm.IDSTATORECORD,
+                        idStatoRecord = pm.IDSTATORECORD,
                         FK_idPeriodoMAB = pm.FK_IDPERIODOMAB
                     };
                 }
@@ -690,7 +690,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (perml?.Any() ?? false)
                 {
-                    pm = perml.First();                    
+                    pm = perml.First();
                 }
                 else
                 {
@@ -756,7 +756,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var ma = db.MAB.Find(idMab);
 
-                var pcmabl = ma.PAGATOCONDIVISOMAB.Where(a => 
+                var pcmabl = ma.PAGATOCONDIVISOMAB.Where(a =>
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
                         .OrderBy(a => a.IDPAGATOCONDIVISO)
@@ -1612,7 +1612,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
 
                                     //Anticipo Annuale MAB
-                                    var aapartenza = GetAnticipoAnnualeMABPartenza(mab,db);
+                                    var aapartenza = GetAnticipoAnnualeMABPartenza(mab, db);
                                     aa = db.ANTICIPOANNUALEMAB.Find(aapartenza.IDANTICIPOANNUALEMAB);
                                     if (aa.ANTICIPOANNUALE)
                                     {
@@ -2251,7 +2251,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var pmm = GetPeriodoMABModelPartenza(mab.IDMAB, db);
 
                     RimuoviAssociazione_PerMAB_PercentualeMAB(pmm.idPeriodoMAB, db);
-                  
+
                     var lista_perc = this.GetListaPercentualeMAB(pmm, tm, db);
                     if (lista_perc?.Any() ?? false)
                     {
@@ -2901,6 +2901,7 @@ namespace NewISE.Models.DBModel.dtObj
             lpc = GetListaPercentualeCondivisione(pcmabm.DataInizioValidita, pcmabm.DataFineValidita, db);
             foreach (var pc in lpc)
             {
+                
                 Associa_PagatoCondivisoMAB_PercentualeCondivisione(pcmabm.idPagatoCondiviso, pc.IDPERCCOND, db);
             }
 

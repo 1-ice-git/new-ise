@@ -6,24 +6,24 @@
     decimal idPrimaSistemazione = Convert.ToDecimal(ViewData["idPrimaSistemazione"]);
 }
 
-    <div class="row" style="height:220px">
-        <div class="col-xs-12">
-            <div id="divAttivitaAnticipi">
-            </div>
+<div class="row" style="height:220px">
+    <div class="col-xs-12">
+        <div id="divAttivitaAnticipi">
         </div>
     </div>
+</div>
 
-    <div class="row" style="margin-right:15px">
-        <hr />
-        <div class="col-xs-4">
-            <div id="divRinunciaAnticipi">
-            </div>
-        </div>
-        <div class="col-xs-8">
-            <div id="divAttivazioneAnticipi">
-            </div>
+<div class="row" style="margin-right:15px">
+    <hr />
+    <div class="col-xs-4">
+        <div id="divRinunciaAnticipi">
         </div>
     </div>
+    <div class="col-xs-8">
+        <div id="divAttivazioneAnticipi">
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="ModalNotificaRichiestaAnticipi" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaAnticipiLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
@@ -325,7 +325,7 @@
                     $("#divImportoPercepito").hide();
                 },
                 success: function (result) {
-                    debugger;
+                    //debugger;
                     if (result.err == "") {
 
                         $("#ValImportoPercepito").autoNumeric('set', result.importoPercepito);
@@ -397,7 +397,7 @@
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idAttivitaAnticipi: idAttivitaAnticipi},
+            data: { idAttivitaAnticipi: idAttivitaAnticipi },
             dataType: 'json',
             async: false,
             beforeSend: function () {

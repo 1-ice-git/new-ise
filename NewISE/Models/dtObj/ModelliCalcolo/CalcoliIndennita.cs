@@ -74,6 +74,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private bool _anticipoAnnualeMAB = false;
         private bool _condivisioneMAB = false;
         private bool _pagatoMAB = false;
+        private decimal _percentualeCondivisione = 0;
         private decimal _canoneInEuro = 0;
         private decimal _importoMABMaxMensile = 0;
         private decimal _importoMABMensile = 0;
@@ -176,6 +177,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public bool CondivisioneMAB => _condivisioneMAB;
         [ReadOnly(true)]
         public bool PagatoMab => _pagatoMAB;
+        [ReadOnly(true)]
+        public decimal PercentualeCondivisione => _percentualeCondivisione;
         [ReadOnly(true)]
         public decimal CanoneMABEuro => _canoneInEuro;
         [ReadOnly(true)]
@@ -467,18 +470,36 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         {
             this.PrelevaDatiMab();
 
-            _importoMABMaxMensile = _percentualeMAB * _indennitaPersonale;
+            _importoMABMaxMensile = (_percentualeMAB / 100) * _indennitaPersonale;
 
             if (_canoneMab > 0)
             {
                 _canoneInEuro = _canoneMab * _tassoCambio;
-                if (_importoMABMaxMensile > _canoneMab)
+
+                if (_importoMABMaxMensile > _canoneInEuro)
                 {
-                    _importoMABMensile = _canoneMab;
+                    _importoMABMensile = _canoneInEuro;
                 }
                 else
                 {
                     _importoMABMensile = _importoMABMaxMensile;
+                }
+            }
+            else
+            {
+                _importoMABMensile = _importoMABMaxMensile;
+            }
+
+            if (_condivisioneMAB)
+            {
+                if (PagatoMab)
+                {
+                    _importoMABMaxMensile = (_importoMABMaxMensile * (_percentualeCondivisione / 100)) + _importoMABMaxMensile;
+                    _importoMABMensile = (_importoMABMensile * (_percentualeCondivisione / 100)) + _importoMABMensile;
+                }
+                else
+                {
+                    _importoMABMensile = 0;
                 }
             }
 

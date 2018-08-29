@@ -259,7 +259,8 @@ namespace NewISE.Models.Enumeratori
     public enum EnumVociContabili
     {
         Ind_Sede_Estera = 8,
-        Ind_Prima_Sist_IPS = 10
+        Ind_Prima_Sist_IPS = 10,
+        MAB = 11
 
     }
 
