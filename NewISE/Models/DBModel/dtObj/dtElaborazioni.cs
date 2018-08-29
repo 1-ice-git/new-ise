@@ -110,10 +110,10 @@ namespace NewISE.Models.DBModel.dtObj
                                                           b.DATAPARTENZA.Month.ToString()
                                                               .PadLeft(2, Convert.ToChar("0"))) <=
                                         annoMese &&
-                                        (Convert.ToDecimal(b.DATARIENTRO.Year.ToString() +
+                                        Convert.ToDecimal(b.DATARIENTRO.Year.ToString() +
                                                            b.DATARIENTRO.Month.ToString()
                                                                .PadLeft(2, Convert.ToChar("0"))) >=
-                                         annoMese) ||
+                                         annoMese &&
                                         Convert.ToDecimal(a.DATAINIZIORICALCOLI.Year.ToString() +
                                                           a.DATAINIZIORICALCOLI.Month.ToString()
                                                               .PadLeft(2, Convert.ToChar("0"))) <= annoMese))
@@ -617,6 +617,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                     throw ex;
                 }
+
+            }
+            else if (t.ELABMAB?.Any() ?? false)
+            {
 
             }
 
@@ -1689,9 +1693,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     Convert.ToDecimal(b.DATAPARTENZA.Year.ToString() +
                                                       b.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0"))) <=
                                     annoMese &&
-                                    (Convert.ToDecimal(b.DATARIENTRO.Year.ToString() +
+                                    Convert.ToDecimal(b.DATARIENTRO.Year.ToString() +
                                                        b.DATARIENTRO.Month.ToString().PadLeft(2, Convert.ToChar("0"))) >=
-                                     annoMese) ||
+                                     annoMese &&
                                     Convert.ToDecimal(a.DATAINIZIORICALCOLI.Year.ToString() +
                                                       a.DATAINIZIORICALCOLI.Month.ToString()
                                                           .PadLeft(2, Convert.ToChar("0"))) <= annoMese))
@@ -2373,51 +2377,57 @@ namespace NewISE.Models.DBModel.dtObj
                                             foreach (var pc in lpc)
                                             {
                                                 DateTime dtVar = new DateTime();
-
-                                                if (pc.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                if (pc.CONDIVISO == true)
                                                 {
-                                                    dtVar = dataIniCiclo;
-                                                }
-                                                else
-                                                {
-                                                    dtVar = pc.DATAINIZIOVALIDITA;
-                                                }
-
-                                                if (!lDateVariazioni.Contains(dtVar))
-                                                {
-                                                    lDateVariazioni.Add(dtVar);
-                                                }
-
-                                                var lpercCond =
-                                                    pc.PERCENTUALECONDIVISIONE.Where(
-                                                        a =>
-                                                            a.ANNULLATO == false &&
-                                                            a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA &&
-                                                            a.DATAINIZIOVALIDITA <= pc.DATAFINEVALIDITA)
-                                                        .OrderBy(a => a.DATAINIZIOVALIDITA)
-                                                        .ToList();
-
-                                                if (lpercCond?.Any() ?? false)
-                                                {
-                                                    foreach (var percCond in lpercCond)
+                                                    if (pc.DATAINIZIOVALIDITA < dataIniCiclo)
                                                     {
-                                                        DateTime dtVarPC = new DateTime();
+                                                        dtVar = dataIniCiclo;
+                                                    }
+                                                    else
+                                                    {
+                                                        dtVar = pc.DATAINIZIOVALIDITA;
+                                                    }
 
-                                                        if (percCond.DATAINIZIOVALIDITA < dataIniCiclo)
-                                                        {
-                                                            dtVarPC = dataIniCiclo;
-                                                        }
-                                                        else
-                                                        {
-                                                            dtVarPC = percCond.DATAINIZIOVALIDITA;
-                                                        }
+                                                    if (!lDateVariazioni.Contains(dtVar))
+                                                    {
+                                                        lDateVariazioni.Add(dtVar);
+                                                    }
+                                                    if (pc.CONDIVISO == true && pc.PAGATO == true)
+                                                    {
+                                                        var lpercCond =
+                                                        pc.PERCENTUALECONDIVISIONE.Where(
+                                                            a =>
+                                                                a.ANNULLATO == false &&
+                                                                a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA &&
+                                                                a.DATAINIZIOVALIDITA <= pc.DATAFINEVALIDITA)
+                                                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                                            .ToList();
 
-                                                        if (!lDateVariazioni.Contains(dtVarPC))
+                                                        if (lpercCond?.Any() ?? false)
                                                         {
-                                                            lDateVariazioni.Add(dtVarPC);
+                                                            foreach (var percCond in lpercCond)
+                                                            {
+                                                                DateTime dtVarPC = new DateTime();
+
+                                                                if (percCond.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                                {
+                                                                    dtVarPC = dataIniCiclo;
+                                                                }
+                                                                else
+                                                                {
+                                                                    dtVarPC = percCond.DATAINIZIOVALIDITA;
+                                                                }
+
+                                                                if (!lDateVariazioni.Contains(dtVarPC))
+                                                                {
+                                                                    lDateVariazioni.Add(dtVarPC);
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
+
+
                                             }
                                         }
 
