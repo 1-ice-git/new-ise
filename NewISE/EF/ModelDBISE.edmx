@@ -1091,7 +1091,6 @@
           <Property Name="CTB_TIPO_MOVIMENTO" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="CTB_DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="CTB_COAN" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="CTB_DT_DECORRENZA" Type="date" Nullable="false" />
           <Property Name="CTB_DT_RIFERIMENTO" Type="date" Nullable="false" />
           <Property Name="CTB_DT_OPERAZIONE" Type="date" Nullable="false" />
           <Property Name="CTB_DT_CONTABILE" Type="date" />
@@ -8779,7 +8778,6 @@
           <Property Name="CTB_TIPO_MOVIMENTO" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="CTB_DESCRIZIONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CTB_COAN" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CTB_DT_DECORRENZA" Type="DateTime" Nullable="false" />
           <Property Name="CTB_DT_RIFERIMENTO" Type="DateTime" Nullable="false" />
           <Property Name="CTB_DT_OPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="CTB_DT_CONTABILE" Type="DateTime" />
@@ -12759,7 +12757,6 @@
                 <ScalarProperty Name="CTB_DT_CONTABILE" ColumnName="CTB_DT_CONTABILE" />
                 <ScalarProperty Name="CTB_DT_OPERAZIONE" ColumnName="CTB_DT_OPERAZIONE" />
                 <ScalarProperty Name="CTB_DT_RIFERIMENTO" ColumnName="CTB_DT_RIFERIMENTO" />
-                <ScalarProperty Name="CTB_DT_DECORRENZA" ColumnName="CTB_DT_DECORRENZA" />
                 <ScalarProperty Name="CTB_COAN" ColumnName="CTB_COAN" />
                 <ScalarProperty Name="CTB_DESCRIZIONE" ColumnName="CTB_DESCRIZIONE" />
                 <ScalarProperty Name="CTB_TIPO_MOVIMENTO" ColumnName="CTB_TIPO_MOVIMENTO" />

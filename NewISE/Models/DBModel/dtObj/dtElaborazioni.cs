@@ -481,7 +481,31 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
+        /// <summary>
+        /// Verifica la presenza di un elaborazione inviata per il periodo di riferimento passato.
+        /// </summary>
+        /// <param name="magFam"></param>
+        /// <param name="dataIni"></param>
+        /// <param name="dataFine"></param>
+        /// <returns></returns>
+        private bool VeririficaElaborazioneMAB(MAGGIORAZIONEABITAZIONE magFam, DateTime dataIni, DateTime dataFine)
+        {
+            bool ret = false;
 
+            ret = magFam.ELABMAB.Any(
+                a =>
+                    a.ANNULLATO == false && a.AL >= dataIni && a.DAL <= dataFine &&
+                    a.TEORICI.Any(
+                        b =>
+                            b.ANNULLATO == false && b.ELABORATO == true &&
+                            b.ANNORIFERIMENTO == dataIni.Year &&
+                            b.MESERIFERIMENTO == dataIni.Month));
+
+
+            return ret;
+
+
+        }
         private void InviaFlussiMensiliCedolino(TEORICI t, ModelDBISE db)
         {
             FLUSSICEDOLINO fc = new FLUSSICEDOLINO()
@@ -537,66 +561,52 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
-                    string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
-                    decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
-
-                    //var lteoriciIndennitaOld =
-                    //    db.TEORICI.Where(
-                    //        a =>
-                    //            a.ANNULLATO == false && a.VOCI.FLAGDIRETTO == false &&
-                    //            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                    //            a.IDMESEANNOELAB == t.IDMESEANNOELAB &&
-                    //            a.ELABORATO == false &&
-                    //            a.ANNORIFERIMENTO == t.ANNORIFERIMENTO &&
-                    //            a.MESERIFERIMENTO == t.MESERIFERIMENTO &&
-                    //            a.GIORNI == t.GIORNI &&
-                    //            a.IDELABIND == t.IDELABIND)
-                    //        .OrderBy(a => a.ANNORIFERIMENTO)
-                    //        .ThenBy(a => a.MESERIFERIMENTO)
-                    //        .ToList();
-
-                    //if (lteoriciIndennitaOld?.Any() ?? false)
-                    //{
-                    //    foreach (var tiOld in lteoriciIndennitaOld)
-                    //    {
-                    //        tiOld.ANNULLATO = true;
-                    //    }
-
-                    //    int j = db.SaveChanges();
-
-                    //    if (j <= 0)
-                    //    {
-                    //        throw new Exception("Non è stato possibile annullare il calcolo dell'elaborazione precedente per le informazioni di indennità.");
-                    //    }
-                    //}
-
-
-                    numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
-                    OA oa = new OA()
+                    if (t.IMPORTO > 0)
                     {
-                        IDTEORICI = t.IDTEORICI,
-                        CTB_ID_RECORD = idOA,
-                        CTB_MATRICOLA = (short)dip.MATRICOLA,
-                        CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
-                        CTB_COD_SEDE = ufficio.CODICEUFFICIO,
-                        CTB_TIPO_VOCE = tipoVoce,
-                        CTB_TIPO_MOVIMENTO = tipoMovimento,
-                        CTB_DESCRIZIONE = voce.DESCRIZIONE + " - Mese Corr.",
-                        CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
-                        CTB_DT_DECORRENZA = trasferimento.DATAPARTENZA,
-                        CTB_DT_RIFERIMENTO = trasferimento.DATAPARTENZA,
-                        CTB_DT_OPERAZIONE = DateTime.Now,
-                        CTB_NUM_DOC = numeroDoc,
-                        CTB_NUM_DOC_RIF = null,
-                        CTB_IMPORTO = t.IMPORTO,
-                        CTB_IMPORTO_RIF = 0,
-                        CTB_OPER_99 = operazione99.ToString()
-                    };
+                        string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
 
-                    db.OA.Add(oa);
-                    int i = db.SaveChanges();
+                        decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
 
-                    if (i > 0)
+                        numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
+                        OA oa = new OA()
+                        {
+                            IDTEORICI = t.IDTEORICI,
+                            CTB_ID_RECORD = idOA,
+                            CTB_MATRICOLA = (short)dip.MATRICOLA,
+                            CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
+                            CTB_COD_SEDE = ufficio.CODICEUFFICIO,
+                            CTB_TIPO_VOCE = tipoVoce,
+                            CTB_TIPO_MOVIMENTO = tipoMovimento,
+                            CTB_DESCRIZIONE = voce.DESCRIZIONE + " - Mese Corr.",
+                            CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
+                            CTB_DT_RIFERIMENTO = Convert.ToDateTime("01/" + t.MESERIFERIMENTO.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + t.ANNORIFERIMENTO),
+                            CTB_DT_OPERAZIONE = DateTime.Now,
+                            CTB_NUM_DOC = numeroDoc,
+                            CTB_NUM_DOC_RIF = null,
+                            CTB_IMPORTO = t.IMPORTO,
+                            CTB_IMPORTO_RIF = 0,
+                            CTB_OPER_99 = operazione99.ToString()
+                        };
+
+                        db.OA.Add(oa);
+                        int i = db.SaveChanges();
+
+                        if (i > 0)
+                        {
+                            t.ELABORATO = true;
+                            int j = db.SaveChanges();
+
+                            if (j <= 0)
+                            {
+                                throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Impossibile inserire le informazioni in oracle application.");
+                        }
+                    }
+                    else
                     {
                         t.ELABORATO = true;
                         int j = db.SaveChanges();
@@ -606,10 +616,7 @@ namespace NewISE.Models.DBModel.dtObj
                             throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
                         }
                     }
-                    else
-                    {
-                        throw new Exception("Impossibile inserire le informazioni in oracle application.");
-                    }
+
 
                 }
                 catch (Exception ex)
@@ -619,10 +626,100 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
             }
+            #endregion
+            #region MAB
             else if (t.ELABMAB?.Any() ?? false)
             {
+                var emab = t.ELABMAB.Last(
+                    a =>
+                        a.ANNULLATO == false &&
+                        a.PROGRESSIVO == t.ELABMAB.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO));
+
+                var indennita = emab.MAGGIORAZIONEABITAZIONE.INDENNITA;
+                var trasferimento = indennita.TRASFERIMENTO;
+                var dip = trasferimento.DIPENDENTI;
+                var livello = emab.LIVELLI;
+                var ufficio = trasferimento.UFFICI;
+                var voce = t.VOCI;
+                char delimitatore = Convert.ToChar("-");
+                string tipoMovimento = "M";
+                string numeroDoc = string.Empty;
+
+                try
+                {
+                    if (t.IMPORTO > 0)
+                    {
+                        string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
+
+                        decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
+
+                        numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
+
+                        OA oa = new OA()
+                        {
+                            IDTEORICI = t.IDTEORICI,
+                            CTB_ID_RECORD = idOA,
+                            CTB_MATRICOLA = (short)dip.MATRICOLA,
+                            CTB_QUALIFICA = livello.LIVELLO == "D" ? "D" : "I",
+                            CTB_COD_SEDE = ufficio.CODICEUFFICIO,
+                            CTB_TIPO_VOCE = tipoVoce,
+                            CTB_TIPO_MOVIMENTO = tipoMovimento,
+                            CTB_DESCRIZIONE = voce.DESCRIZIONE + " - Mese Corr.",
+                            CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
+                            CTB_DT_RIFERIMENTO = Convert.ToDateTime("01/" + t.MESERIFERIMENTO.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + t.ANNORIFERIMENTO),
+                            CTB_DT_OPERAZIONE = DateTime.Now,
+                            CTB_NUM_DOC = numeroDoc,
+                            CTB_NUM_DOC_RIF = null,
+                            CTB_IMPORTO = t.IMPORTO,
+                            CTB_IMPORTO_RIF = 0,
+                            CTB_OPER_99 = operazione99.ToString()
+                        };
+
+                        db.OA.Add(oa);
+                        int i = db.SaveChanges();
+
+                        if (i > 0)
+                        {
+                            t.ELABORATO = true;
+                            int j = db.SaveChanges();
+
+                            if (j <= 0)
+                            {
+                                throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Impossibile inserire le informazioni in oracle application.");
+                        }
+                    }
+                    else
+                    {
+                        t.ELABORATO = true;
+                        int j = db.SaveChanges();
+
+                        if (j <= 0)
+                        {
+                            throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+
+
+
+
 
             }
+
+
+
+
 
             #endregion
 
@@ -754,7 +851,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 CTB_TIPO_MOVIMENTO = tipoMovimento,
                                 CTB_DESCRIZIONE = voce.DESCRIZIONE + anticipoSaldoUnicaSoluzione,
                                 CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
-                                CTB_DT_DECORRENZA = trasferimento.DATAPARTENZA,
                                 CTB_DT_RIFERIMENTO = trasferimento.DATAPARTENZA,
                                 CTB_DT_OPERAZIONE = DateTime.Now,
                                 CTB_NUM_DOC = numeroDoc,
@@ -825,6 +921,8 @@ namespace NewISE.Models.DBModel.dtObj
                     #region Contabilità
                     #region Indennità personale
                     lLm.AddRange(this.PlmIndennitaPersonale(mae, db));
+                    #endregion
+                    #region MAB
                     lLm.AddRange(this.PlmMAB(mae, db));
                     #endregion
                     #endregion
@@ -1942,6 +2040,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (aamab.ANTICIPOANNUALE)
                             {
+
+                                var teoricofirstElab = db.TEORICI.Where(a => a.ANNULLATO == false && a.ELABORATO == true && a.IDVOCI == (decimal)EnumVociContabili.MAB && a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità).OrderBy(a => a)
+
+                                //bool verificaElaborazioneMese =
+                                //    this.VeririficaElaborazioneMAB(maggiorazioniAbitazione, mab.,
+                                //        dataFineElaborazione);
+
                                 dataFineElaborazione = dataInizioElaborazione.AddMonths(12).AddDays(-1);
                             }
                             else
@@ -2044,15 +2149,21 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     #endregion
 
+                                    //bool verificaElaborazioneMese =
+                                    //    maggiorazioniAbitazione.ELABMAB.Any(
+                                    //        a =>
+                                    //            a.ANNULLATO == false && a.AL >= dataIniCiclo && a.DAL <= dataFineCiclo &&
+                                    //            a.TEORICI.Any(
+                                    //                b =>
+                                    //                    b.ANNULLATO == false && b.ELABORATO == true &&
+                                    //                    b.ANNORIFERIMENTO == dataIniCiclo.Year &&
+                                    //                    b.MESERIFERIMENTO == dataIniCiclo.Month));
+
+
                                     bool verificaElaborazioneMese =
-                                        maggiorazioniAbitazione.ELABMAB.Any(
-                                            a =>
-                                                a.ANNULLATO == false && a.AL >= dataIniCiclo && a.DAL <= dataFineCiclo &&
-                                                a.TEORICI.Any(
-                                                    b =>
-                                                        b.ANNULLATO == false && b.ELABORATO == true &&
-                                                        b.ANNORIFERIMENTO == dataIniCiclo.Year &&
-                                                        b.MESERIFERIMENTO == dataIniCiclo.Month));
+                                        this.VeririficaElaborazioneMAB(maggiorazioniAbitazione, dataIniCiclo,
+                                            dataFineCiclo);
+
 
                                     if (verificaElaborazioneMese)
                                     {
@@ -2616,7 +2727,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                  a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                                                  a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                                  a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
-                                                 a.DIRETTO == false &&
+                                                 a.DIRETTO == false && a.IMPORTO > 0 &&
                                                  a.ELABMAB.Any(b => b.ANNULLATO == false))
                 .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
                 .ToList();
@@ -2701,7 +2812,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                  a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                                                  a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                                  a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
-                                                 a.DIRETTO == false &&
+                                                 a.DIRETTO == false && a.IMPORTO > 0 &&
                                                  a.ELABINDENNITA.Any(b => b.ANNULLATO == false))
                 .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
                 .ToList();
@@ -2786,7 +2897,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a.ELABTRASPEFFETTI.ANNULLATO == false && a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
                         a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
                         a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
-                        a.DIRETTO == false)
+                        a.DIRETTO == false && a.IMPORTO > 0)
                     .OrderBy(a => a.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI.NOME)
                     .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
@@ -2871,8 +2982,8 @@ namespace NewISE.Models.DBModel.dtObj
                         (a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
-                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
-                         a.DIRETTO == false))
+                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS) &&
+                         a.DIRETTO == false && a.IMPORTO > 0)
                     .OrderBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.NOME)
                     .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)

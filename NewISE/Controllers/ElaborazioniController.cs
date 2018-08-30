@@ -12,6 +12,7 @@ using NewISE.Models.Tools;
 using NewISE.Models;
 using NewISE.Models.ViewModel;
 using NewISE.Models.DBModel;
+using NewISE.Models.Enumeratori;
 using RestSharp;
 
 namespace NewISE.Controllers
@@ -448,7 +449,7 @@ namespace NewISE.Controllers
 
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
-        public JsonResult InviaFlussiMensili(decimal idAnnoMeseElaborato, List<decimal> Teorici)
+        public JsonResult InviaFlussiMensili(decimal idAnnoMeseElaborato)
         {
             List<DIPENDENTI> lDip = new List<DIPENDENTI>();
 
@@ -462,8 +463,84 @@ namespace NewISE.Controllers
                     {
                         try
                         {
+                            List<decimal> lTeorici = new List<decimal>();
 
-                            foreach (decimal teorico in Teorici)
+
+                            #region Lettura dati Prima sistemazione
+                            List<decimal> lt1 = (from t in db.TEORICI
+                                                 where t.ANNULLATO == false &&
+                                                       t.IDMESEANNOELAB == idAnnoMeseElaborato &&
+                                                       t.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                                                       (t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380 ||
+                                                        t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
+                                                        t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
+                                                        t.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS) &&
+                                                       t.DIRETTO == false
+                                                 select t.IDTEORICI).ToList();
+
+                            if (lt1?.Any() ?? false)
+                            {
+                                lTeorici.AddRange(lt1);
+                            }
+                            #endregion
+
+                            #region Lettura dati indennità sede estera
+                            List<decimal> lt2 = (from t in db.TEORICI
+                                                 where t.ANNULLATO == false && t.INSERIMENTOMANUALE == false &&
+                                                       t.IDMESEANNOELAB == idAnnoMeseElaborato &&
+                                                       t.ELABINDENNITA.Any(b => b.ANNULLATO == false) &&
+                                                       t.DIRETTO == false &&
+                                                       t.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                                       t.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera
+                                                 select t.IDTEORICI).ToList();
+
+
+                            if (lt2?.Any() ?? false)
+                            {
+                                lTeorici.AddRange(lt2);
+                            }
+                            #endregion
+
+
+                            #region Lettura dei dati trasporto effetti
+                            List<decimal> lt3 = (from t in db.TEORICI
+                                                 where t.ANNULLATO == false && t.INSERIMENTOMANUALE == false &&
+                                                       t.IDMESEANNOELAB == idAnnoMeseElaborato &&
+                                                       t.ELABTRASPEFFETTI.ANNULLATO == false &&
+                                                       t.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                                       t.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
+                                                       t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                                                       t.DIRETTO == false
+                                                 select t.IDTEORICI).ToList();
+
+
+                            if (lt3?.Any() ?? false)
+                            {
+                                lTeorici.AddRange(lt3);
+                            }
+                            #endregion
+
+                            #region Lettura dei dati MAB
+                            List<decimal> lt4 = (from a in db.TEORICI
+                                                 where a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
+                                                       a.IDMESEANNOELAB == idAnnoMeseElaborato &&
+                                                       a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                                       a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                                                       a.DIRETTO == false &&
+                                                       a.ELABMAB.Any(b => b.ANNULLATO == false)
+                                                 select a.IDTEORICI).ToList();
+
+                            if (lt4?.Any() ?? false)
+                            {
+                                lTeorici.AddRange(lt4);
+                            }
+                            #endregion
+
+                            lTeorici = lTeorici.OrderBy(a => a).ToList();
+
+
+
+                            foreach (decimal teorico in lTeorici)
                             {
                                 var dip = dte.EstrapolaDipendenteDaTeorico(teorico, db);
 
@@ -473,7 +550,7 @@ namespace NewISE.Controllers
                                 }
                             }
 
-                            lDip = dte.EstrapolaDipendentiDaTeorici(Teorici, db).ToList();
+                            lDip = dte.EstrapolaDipendentiDaTeorici(lTeorici, db).ToList();
 
                             foreach (var dip in lDip)
                             {

@@ -23,7 +23,6 @@ namespace NewISE.EF
         public string CTB_TIPO_MOVIMENTO { get; set; }
         public string CTB_DESCRIZIONE { get; set; }
         public string CTB_COAN { get; set; }
-        public System.DateTime CTB_DT_DECORRENZA { get; set; }
         public System.DateTime CTB_DT_RIFERIMENTO { get; set; }
         public System.DateTime CTB_DT_OPERAZIONE { get; set; }
         public Nullable<System.DateTime> CTB_DT_CONTABILE { get; set; }
