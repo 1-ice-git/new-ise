@@ -160,7 +160,7 @@
             url: rotta,
             data: { lDipendenti: lDip, idAnnoMeseElab: valore },
             dataType: 'json',
-            traditional: true,
+            async: false,
             beforeSend: function () {
                 //debugger;
                 //VerificaAutenticazione();
@@ -171,12 +171,13 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    if (result.gpFlussoMensile == true) {
+                    if (result.gpMeseChiuso == true) {
                         $("#btInvioFm").attr("disabled", "disabled");
                         $("#btCalcola").attr("disabled", "disabled");
                         $("#btInvioFD").attr("disabled", "disabled");
                     } else {
-                        if (result.gpCalcola == true) {
+                        $("#btInvioFm").removeAttr('disabled');
+                        if (result.gpDaCalcolare == false) {
                             $("#btCalcola").removeAttr('disabled');
                             //$("#btInvioFm").attr("disabled", "disabled");
                         } else {

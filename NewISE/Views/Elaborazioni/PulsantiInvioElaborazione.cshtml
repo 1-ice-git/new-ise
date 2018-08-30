@@ -79,7 +79,7 @@
             url: rotta,
             data: { idAnnoMeseElab: valore },
             dataType: 'json',
-            traditional: true,
+            async: false,
             beforeSend: function () {
                 //debugger;
                 //VerificaAutenticazione();
@@ -190,8 +190,9 @@
                         if (result.err == "") {
                             InfoElaborazioneAjax(result.msg);
                             DatiLiquidazioniMensili(idAnnoMeseElaborato);
-                            GesionePulsanteCalcola();
                             DipendentiDaElaborare(idAnnoMeseElaborato);
+                            GesionePulsanteCalcola();
+
                         } else {
                             ErroreElaborazioneAjax(result.err);
                         }

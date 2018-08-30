@@ -323,8 +323,8 @@ namespace NewISE.Controllers
         [HttpPost]
         public JsonResult GestionePulsanteCalcola(List<decimal> lDipendenti, decimal idAnnoMeseElab)
         {
-            bool gpCalcola = false;
-            bool gpFlussoMensile = false;
+            bool gpDaCalcolare = false;
+            bool gpMeseChiuso = false;
 
             try
             {
@@ -335,20 +335,20 @@ namespace NewISE.Controllers
 
                         if (lDipendenti?.Any() ?? false)
                         {
-                            gpCalcola = !dte.VerificaElaborazioneDipendenti(lDipendenti, idAnnoMeseElab, db);
+                            gpDaCalcolare = dte.VerificaElaborazioneDipendenti(lDipendenti, idAnnoMeseElab, db);
                         }
 
-                        gpFlussoMensile = dte.VerificaChiusuraPeriodoElab(idAnnoMeseElab, db);
+                        gpMeseChiuso = dte.VerificaChiusuraPeriodoElab(idAnnoMeseElab, db);
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                return Json(new { gpCalcola = gpCalcola, gpFlussoMensile = gpFlussoMensile, err = ex.Message });
+                return Json(new { gpDaCalcolare = gpDaCalcolare, gpMeseChiuso = gpMeseChiuso, err = ex.Message });
             }
 
-            return Json(new { gpCalcola = gpCalcola, gpFlussoMensile = gpFlussoMensile, err = "" });
+            return Json(new { gpDaCalcolare = gpDaCalcolare, gpMeseChiuso = gpMeseChiuso, err = "" });
         }
 
 

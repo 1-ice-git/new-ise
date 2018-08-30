@@ -78,7 +78,7 @@
             DatiLiquidazioniMensili(valore);
             PulsantiInvioElaborazione(valore);
             GesionePulsanteCalcola();
-            GestionePulsanteInviaFlussiMensili();
+            //GestionePulsanteInviaFlussiMensili();
             VerificaChiusuraMese(valore);
             //VerificaDipendentiInvioFlussiMensili(valore);
         }
@@ -93,7 +93,7 @@
             url: rotta,
             data: { idMeseAnnoElab: idMeseAnnoElab },
             dataType: 'json',
-            traditional: true,
+            async: false,
             beforeSend: function () {
                 //debugger;
                 //VerificaAutenticazione();
@@ -164,7 +164,7 @@
             url: rotta,
             data: { idAnnoMeseElab: valore },
             dataType: 'json',
-            traditional: true,
+            async: false,
             beforeSend: function () {
 
             },
@@ -196,17 +196,17 @@
     }
 
     function ValorizzazioneIniziale() {
-
+        //debugger;
         var valore = $("#mesiAnniElaborati").val();
         DipendentiDaElaborare(valore);
         DatiLiquidazioniDirette(valore);
         DatiLiquidazioniMensili(valore);
         PulsantiInvioElaborazione(valore);
         GesionePulsanteCalcola();
-        GestionePulsanteInviaFlussiMensili();
+        //GestionePulsanteInviaFlussiMensili();
         VerificaChiusuraMese(valore);
         //debugger;
-        VerificaDipendentiInvioFlussiMensili(valore);
+        //VerificaDipendentiInvioFlussiMensili(valore);
     }
 
 
