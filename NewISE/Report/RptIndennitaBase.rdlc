@@ -502,6 +502,11 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="myString">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
   </ReportParameters>
   <EmbeddedImages>
     <EmbeddedImage Name="logo_ITA_rgb1">

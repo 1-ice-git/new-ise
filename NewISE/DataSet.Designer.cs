@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace NewISE.Views.Dataset {
+namespace NewISE {
     
     
     /// <summary>
@@ -20,17 +20,17 @@ namespace NewISE.Views.Dataset {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("DSRiepilogoVoci")]
+    [global::System.Xml.Serialization.XmlRootAttribute("DataSet")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class DSRiepilogoVoci : global::System.Data.DataSet {
+    public partial class DataSet : global::System.Data.DataSet {
         
-        private TEORICIDataTable tableTEORICI;
+        private INDENNITABASEDataTable tableINDENNITABASE;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public DSRiepilogoVoci() {
+        public DataSet() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace NewISE.Views.Dataset {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected DSRiepilogoVoci(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected DataSet(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -54,8 +54,8 @@ namespace NewISE.Views.Dataset {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["TEORICI"] != null)) {
-                    base.Tables.Add(new TEORICIDataTable(ds.Tables["TEORICI"]));
+                if ((ds.Tables["INDENNITABASE"] != null)) {
+                    base.Tables.Add(new INDENNITABASEDataTable(ds.Tables["INDENNITABASE"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Views.Dataset {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public TEORICIDataTable TEORICI {
+        public INDENNITABASEDataTable INDENNITABASE {
             get {
-                return this.tableTEORICI;
+                return this.tableINDENNITABASE;
             }
         }
         
@@ -127,7 +127,7 @@ namespace NewISE.Views.Dataset {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            DSRiepilogoVoci cln = ((DSRiepilogoVoci)(base.Clone()));
+            DataSet cln = ((DataSet)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -152,8 +152,8 @@ namespace NewISE.Views.Dataset {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["TEORICI"] != null)) {
-                    base.Tables.Add(new TEORICIDataTable(ds.Tables["TEORICI"]));
+                if ((ds.Tables["INDENNITABASE"] != null)) {
+                    base.Tables.Add(new INDENNITABASEDataTable(ds.Tables["INDENNITABASE"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Views.Dataset {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableTEORICI = ((TEORICIDataTable)(base.Tables["TEORICI"]));
+            this.tableINDENNITABASE = ((INDENNITABASEDataTable)(base.Tables["INDENNITABASE"]));
             if ((initTable == true)) {
-                if ((this.tableTEORICI != null)) {
-                    this.tableTEORICI.InitVars();
+                if ((this.tableINDENNITABASE != null)) {
+                    this.tableINDENNITABASE.InitVars();
                 }
             }
         }
@@ -199,18 +199,18 @@ namespace NewISE.Views.Dataset {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "DSRiepilogoVoci";
+            this.DataSetName = "DataSet";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/DSRiepilogoVoci.xsd";
+            this.Namespace = "http://tempuri.org/DataSet.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableTEORICI = new TEORICIDataTable();
-            base.Tables.Add(this.tableTEORICI);
+            this.tableINDENNITABASE = new INDENNITABASEDataTable();
+            base.Tables.Add(this.tableINDENNITABASE);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeTEORICI() {
+        private bool ShouldSerializeINDENNITABASE() {
             return false;
         }
         
@@ -225,7 +225,7 @@ namespace NewISE.Views.Dataset {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            DSRiepilogoVoci ds = new DSRiepilogoVoci();
+            DataSet ds = new DataSet();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -270,51 +270,35 @@ namespace NewISE.Views.Dataset {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void TEORICIRowChangeEventHandler(object sender, TEORICIRowChangeEvent e);
+        public delegate void INDENNITABASERowChangeEventHandler(object sender, INDENNITABASERowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class TEORICIDataTable : global::System.Data.TypedTableBase<TEORICIRow> {
+        public partial class INDENNITABASEDataTable : global::System.Data.TypedTableBase<INDENNITABASERow> {
             
-            private global::System.Data.DataColumn columnIDTEORICI;
+            private global::System.Data.DataColumn columnIDINDENNITABASE;
             
-            private global::System.Data.DataColumn columnIDINDSISTLORDA;
+            private global::System.Data.DataColumn columnIDLIVELLO;
             
-            private global::System.Data.DataColumn columnIDTIPOMOVIMENTO;
+            private global::System.Data.DataColumn columnDATAINIZIOVALIDITA;
             
-            private global::System.Data.DataColumn columnIDVOCI;
+            private global::System.Data.DataColumn columnDATAFINEVALIDITA;
             
-            private global::System.Data.DataColumn columnIDELABIND;
+            private global::System.Data.DataColumn columnVALORE;
             
-            private global::System.Data.DataColumn columnIDELABMAB;
+            private global::System.Data.DataColumn columnVALORERESP;
             
-            private global::System.Data.DataColumn columnIDELABTRASPEFFETTI;
-            
-            private global::System.Data.DataColumn columnIDMESEANNOELAB;
-            
-            private global::System.Data.DataColumn columnMESERIFERIMENTO;
-            
-            private global::System.Data.DataColumn columnANNORIFERIMENTO;
-            
-            private global::System.Data.DataColumn columnALIQUOTAFISCALE;
-            
-            private global::System.Data.DataColumn columnGIORNI;
-            
-            private global::System.Data.DataColumn columnDATAOPERAZIONE;
-            
-            private global::System.Data.DataColumn columnINSERIMENTOMANUALE;
+            private global::System.Data.DataColumn columnDATAAGGIORNAMENTO;
             
             private global::System.Data.DataColumn columnANNULLATO;
             
-            private global::System.Data.DataColumn columnIMPORTO;
-            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TEORICIDataTable() {
-                this.TableName = "TEORICI";
+            public INDENNITABASEDataTable() {
+                this.TableName = "INDENNITABASE";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -322,7 +306,7 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal TEORICIDataTable(global::System.Data.DataTable table) {
+            internal INDENNITABASEDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -339,120 +323,64 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected TEORICIDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected INDENNITABASEDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDTEORICIColumn {
+            public global::System.Data.DataColumn IDINDENNITABASEColumn {
                 get {
-                    return this.columnIDTEORICI;
+                    return this.columnIDINDENNITABASE;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDINDSISTLORDAColumn {
+            public global::System.Data.DataColumn IDLIVELLOColumn {
                 get {
-                    return this.columnIDINDSISTLORDA;
+                    return this.columnIDLIVELLO;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDTIPOMOVIMENTOColumn {
+            public global::System.Data.DataColumn DATAINIZIOVALIDITAColumn {
                 get {
-                    return this.columnIDTIPOMOVIMENTO;
+                    return this.columnDATAINIZIOVALIDITA;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDVOCIColumn {
+            public global::System.Data.DataColumn DATAFINEVALIDITAColumn {
                 get {
-                    return this.columnIDVOCI;
+                    return this.columnDATAFINEVALIDITA;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDELABINDColumn {
+            public global::System.Data.DataColumn VALOREColumn {
                 get {
-                    return this.columnIDELABIND;
+                    return this.columnVALORE;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDELABMABColumn {
+            public global::System.Data.DataColumn VALORERESPColumn {
                 get {
-                    return this.columnIDELABMAB;
+                    return this.columnVALORERESP;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDELABTRASPEFFETTIColumn {
+            public global::System.Data.DataColumn DATAAGGIORNAMENTOColumn {
                 get {
-                    return this.columnIDELABTRASPEFFETTI;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDMESEANNOELABColumn {
-                get {
-                    return this.columnIDMESEANNOELAB;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn MESERIFERIMENTOColumn {
-                get {
-                    return this.columnMESERIFERIMENTO;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ANNORIFERIMENTOColumn {
-                get {
-                    return this.columnANNORIFERIMENTO;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ALIQUOTAFISCALEColumn {
-                get {
-                    return this.columnALIQUOTAFISCALE;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn GIORNIColumn {
-                get {
-                    return this.columnGIORNI;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DATAOPERAZIONEColumn {
-                get {
-                    return this.columnDATAOPERAZIONE;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn INSERIMENTOMANUALEColumn {
-                get {
-                    return this.columnINSERIMENTOMANUALE;
+                    return this.columnDATAAGGIORNAMENTO;
                 }
             }
             
@@ -461,14 +389,6 @@ namespace NewISE.Views.Dataset {
             public global::System.Data.DataColumn ANNULLATOColumn {
                 get {
                     return this.columnANNULLATO;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IMPORTOColumn {
-                get {
-                    return this.columnIMPORTO;
                 }
             }
             
@@ -483,83 +403,59 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TEORICIRow this[int index] {
+            public INDENNITABASERow this[int index] {
                 get {
-                    return ((TEORICIRow)(this.Rows[index]));
+                    return ((INDENNITABASERow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event TEORICIRowChangeEventHandler TEORICIRowChanging;
+            public event INDENNITABASERowChangeEventHandler INDENNITABASERowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event TEORICIRowChangeEventHandler TEORICIRowChanged;
+            public event INDENNITABASERowChangeEventHandler INDENNITABASERowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event TEORICIRowChangeEventHandler TEORICIRowDeleting;
+            public event INDENNITABASERowChangeEventHandler INDENNITABASERowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event TEORICIRowChangeEventHandler TEORICIRowDeleted;
+            public event INDENNITABASERowChangeEventHandler INDENNITABASERowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddTEORICIRow(TEORICIRow row) {
+            public void AddINDENNITABASERow(INDENNITABASERow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TEORICIRow AddTEORICIRow(
-                        decimal IDTEORICI, 
-                        decimal IDINDSISTLORDA, 
-                        decimal IDTIPOMOVIMENTO, 
-                        decimal IDVOCI, 
-                        decimal IDELABIND, 
-                        decimal IDELABMAB, 
-                        decimal IDELABTRASPEFFETTI, 
-                        decimal IDMESEANNOELAB, 
-                        decimal MESERIFERIMENTO, 
-                        decimal ANNORIFERIMENTO, 
-                        decimal ALIQUOTAFISCALE, 
-                        decimal GIORNI, 
-                        System.DateTime DATAOPERAZIONE, 
-                        short INSERIMENTOMANUALE, 
-                        short ANNULLATO, 
-                        decimal IMPORTO) {
-                TEORICIRow rowTEORICIRow = ((TEORICIRow)(this.NewRow()));
+            public INDENNITABASERow AddINDENNITABASERow(decimal IDINDENNITABASE, decimal IDLIVELLO, System.DateTime DATAINIZIOVALIDITA, System.DateTime DATAFINEVALIDITA, decimal VALORE, decimal VALORERESP, System.DateTime DATAAGGIORNAMENTO, short ANNULLATO) {
+                INDENNITABASERow rowINDENNITABASERow = ((INDENNITABASERow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        IDTEORICI,
-                        IDINDSISTLORDA,
-                        IDTIPOMOVIMENTO,
-                        IDVOCI,
-                        IDELABIND,
-                        IDELABMAB,
-                        IDELABTRASPEFFETTI,
-                        IDMESEANNOELAB,
-                        MESERIFERIMENTO,
-                        ANNORIFERIMENTO,
-                        ALIQUOTAFISCALE,
-                        GIORNI,
-                        DATAOPERAZIONE,
-                        INSERIMENTOMANUALE,
-                        ANNULLATO,
-                        IMPORTO};
-                rowTEORICIRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowTEORICIRow);
-                return rowTEORICIRow;
+                        IDINDENNITABASE,
+                        IDLIVELLO,
+                        DATAINIZIOVALIDITA,
+                        DATAFINEVALIDITA,
+                        VALORE,
+                        VALORERESP,
+                        DATAAGGIORNAMENTO,
+                        ANNULLATO};
+                rowINDENNITABASERow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowINDENNITABASERow);
+                return rowINDENNITABASERow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TEORICIRow FindByIDTEORICI(decimal IDTEORICI) {
-                return ((TEORICIRow)(this.Rows.Find(new object[] {
-                            IDTEORICI})));
+            public INDENNITABASERow FindByIDINDENNITABASE(decimal IDINDENNITABASE) {
+                return ((INDENNITABASERow)(this.Rows.Find(new object[] {
+                            IDINDENNITABASE})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                TEORICIDataTable cln = ((TEORICIDataTable)(base.Clone()));
+                INDENNITABASEDataTable cln = ((INDENNITABASEDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -567,106 +463,78 @@ namespace NewISE.Views.Dataset {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new TEORICIDataTable();
+                return new INDENNITABASEDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnIDTEORICI = base.Columns["IDTEORICI"];
-                this.columnIDINDSISTLORDA = base.Columns["IDINDSISTLORDA"];
-                this.columnIDTIPOMOVIMENTO = base.Columns["IDTIPOMOVIMENTO"];
-                this.columnIDVOCI = base.Columns["IDVOCI"];
-                this.columnIDELABIND = base.Columns["IDELABIND"];
-                this.columnIDELABMAB = base.Columns["IDELABMAB"];
-                this.columnIDELABTRASPEFFETTI = base.Columns["IDELABTRASPEFFETTI"];
-                this.columnIDMESEANNOELAB = base.Columns["IDMESEANNOELAB"];
-                this.columnMESERIFERIMENTO = base.Columns["MESERIFERIMENTO"];
-                this.columnANNORIFERIMENTO = base.Columns["ANNORIFERIMENTO"];
-                this.columnALIQUOTAFISCALE = base.Columns["ALIQUOTAFISCALE"];
-                this.columnGIORNI = base.Columns["GIORNI"];
-                this.columnDATAOPERAZIONE = base.Columns["DATAOPERAZIONE"];
-                this.columnINSERIMENTOMANUALE = base.Columns["INSERIMENTOMANUALE"];
+                this.columnIDINDENNITABASE = base.Columns["IDINDENNITABASE"];
+                this.columnIDLIVELLO = base.Columns["IDLIVELLO"];
+                this.columnDATAINIZIOVALIDITA = base.Columns["DATAINIZIOVALIDITA"];
+                this.columnDATAFINEVALIDITA = base.Columns["DATAFINEVALIDITA"];
+                this.columnVALORE = base.Columns["VALORE"];
+                this.columnVALORERESP = base.Columns["VALORERESP"];
+                this.columnDATAAGGIORNAMENTO = base.Columns["DATAAGGIORNAMENTO"];
                 this.columnANNULLATO = base.Columns["ANNULLATO"];
-                this.columnIMPORTO = base.Columns["IMPORTO"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnIDTEORICI = new global::System.Data.DataColumn("IDTEORICI", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDTEORICI);
-                this.columnIDINDSISTLORDA = new global::System.Data.DataColumn("IDINDSISTLORDA", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDINDSISTLORDA);
-                this.columnIDTIPOMOVIMENTO = new global::System.Data.DataColumn("IDTIPOMOVIMENTO", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDTIPOMOVIMENTO);
-                this.columnIDVOCI = new global::System.Data.DataColumn("IDVOCI", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDVOCI);
-                this.columnIDELABIND = new global::System.Data.DataColumn("IDELABIND", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDELABIND);
-                this.columnIDELABMAB = new global::System.Data.DataColumn("IDELABMAB", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDELABMAB);
-                this.columnIDELABTRASPEFFETTI = new global::System.Data.DataColumn("IDELABTRASPEFFETTI", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDELABTRASPEFFETTI);
-                this.columnIDMESEANNOELAB = new global::System.Data.DataColumn("IDMESEANNOELAB", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDMESEANNOELAB);
-                this.columnMESERIFERIMENTO = new global::System.Data.DataColumn("MESERIFERIMENTO", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnMESERIFERIMENTO);
-                this.columnANNORIFERIMENTO = new global::System.Data.DataColumn("ANNORIFERIMENTO", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnANNORIFERIMENTO);
-                this.columnALIQUOTAFISCALE = new global::System.Data.DataColumn("ALIQUOTAFISCALE", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnALIQUOTAFISCALE);
-                this.columnGIORNI = new global::System.Data.DataColumn("GIORNI", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnGIORNI);
-                this.columnDATAOPERAZIONE = new global::System.Data.DataColumn("DATAOPERAZIONE", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDATAOPERAZIONE);
-                this.columnINSERIMENTOMANUALE = new global::System.Data.DataColumn("INSERIMENTOMANUALE", typeof(short), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnINSERIMENTOMANUALE);
+                this.columnIDINDENNITABASE = new global::System.Data.DataColumn("IDINDENNITABASE", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDINDENNITABASE);
+                this.columnIDLIVELLO = new global::System.Data.DataColumn("IDLIVELLO", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDLIVELLO);
+                this.columnDATAINIZIOVALIDITA = new global::System.Data.DataColumn("DATAINIZIOVALIDITA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDATAINIZIOVALIDITA);
+                this.columnDATAFINEVALIDITA = new global::System.Data.DataColumn("DATAFINEVALIDITA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDATAFINEVALIDITA);
+                this.columnVALORE = new global::System.Data.DataColumn("VALORE", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVALORE);
+                this.columnVALORERESP = new global::System.Data.DataColumn("VALORERESP", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVALORERESP);
+                this.columnDATAAGGIORNAMENTO = new global::System.Data.DataColumn("DATAAGGIORNAMENTO", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDATAAGGIORNAMENTO);
                 this.columnANNULLATO = new global::System.Data.DataColumn("ANNULLATO", typeof(short), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnANNULLATO);
-                this.columnIMPORTO = new global::System.Data.DataColumn("IMPORTO", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIMPORTO);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnIDTEORICI}, true));
-                this.columnIDTEORICI.AllowDBNull = false;
-                this.columnIDTEORICI.Unique = true;
-                this.columnIDTIPOMOVIMENTO.AllowDBNull = false;
-                this.columnIDVOCI.AllowDBNull = false;
-                this.columnIDMESEANNOELAB.AllowDBNull = false;
-                this.columnMESERIFERIMENTO.AllowDBNull = false;
-                this.columnANNORIFERIMENTO.AllowDBNull = false;
-                this.columnALIQUOTAFISCALE.AllowDBNull = false;
-                this.columnGIORNI.AllowDBNull = false;
-                this.columnDATAOPERAZIONE.AllowDBNull = false;
-                this.columnINSERIMENTOMANUALE.AllowDBNull = false;
+                                this.columnIDINDENNITABASE}, true));
+                this.columnIDINDENNITABASE.AllowDBNull = false;
+                this.columnIDINDENNITABASE.Unique = true;
+                this.columnIDLIVELLO.AllowDBNull = false;
+                this.columnDATAINIZIOVALIDITA.AllowDBNull = false;
+                this.columnDATAFINEVALIDITA.AllowDBNull = false;
+                this.columnVALORE.AllowDBNull = false;
+                this.columnVALORERESP.AllowDBNull = false;
+                this.columnDATAAGGIORNAMENTO.AllowDBNull = false;
                 this.columnANNULLATO.AllowDBNull = false;
-                this.columnIMPORTO.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TEORICIRow NewTEORICIRow() {
-                return ((TEORICIRow)(this.NewRow()));
+            public INDENNITABASERow NewINDENNITABASERow() {
+                return ((INDENNITABASERow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new TEORICIRow(builder);
+                return new INDENNITABASERow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(TEORICIRow);
+                return typeof(INDENNITABASERow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.TEORICIRowChanged != null)) {
-                    this.TEORICIRowChanged(this, new TEORICIRowChangeEvent(((TEORICIRow)(e.Row)), e.Action));
+                if ((this.INDENNITABASERowChanged != null)) {
+                    this.INDENNITABASERowChanged(this, new INDENNITABASERowChangeEvent(((INDENNITABASERow)(e.Row)), e.Action));
                 }
             }
             
@@ -674,8 +542,8 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.TEORICIRowChanging != null)) {
-                    this.TEORICIRowChanging(this, new TEORICIRowChangeEvent(((TEORICIRow)(e.Row)), e.Action));
+                if ((this.INDENNITABASERowChanging != null)) {
+                    this.INDENNITABASERowChanging(this, new INDENNITABASERowChangeEvent(((INDENNITABASERow)(e.Row)), e.Action));
                 }
             }
             
@@ -683,8 +551,8 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.TEORICIRowDeleted != null)) {
-                    this.TEORICIRowDeleted(this, new TEORICIRowChangeEvent(((TEORICIRow)(e.Row)), e.Action));
+                if ((this.INDENNITABASERowDeleted != null)) {
+                    this.INDENNITABASERowDeleted(this, new INDENNITABASERowChangeEvent(((INDENNITABASERow)(e.Row)), e.Action));
                 }
             }
             
@@ -692,14 +560,14 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.TEORICIRowDeleting != null)) {
-                    this.TEORICIRowDeleting(this, new TEORICIRowChangeEvent(((TEORICIRow)(e.Row)), e.Action));
+                if ((this.INDENNITABASERowDeleting != null)) {
+                    this.INDENNITABASERowDeleting(this, new INDENNITABASERowChangeEvent(((INDENNITABASERow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveTEORICIRow(TEORICIRow row) {
+            public void RemoveINDENNITABASERow(INDENNITABASERow row) {
                 this.Rows.Remove(row);
             }
             
@@ -708,7 +576,7 @@ namespace NewISE.Views.Dataset {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                DSRiepilogoVoci ds = new DSRiepilogoVoci();
+                DataSet ds = new DataSet();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -726,7 +594,7 @@ namespace NewISE.Views.Dataset {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "TEORICIDataTable";
+                attribute2.FixedValue = "INDENNITABASEDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -770,188 +638,91 @@ namespace NewISE.Views.Dataset {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class TEORICIRow : global::System.Data.DataRow {
+        public partial class INDENNITABASERow : global::System.Data.DataRow {
             
-            private TEORICIDataTable tableTEORICI;
+            private INDENNITABASEDataTable tableINDENNITABASE;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal TEORICIRow(global::System.Data.DataRowBuilder rb) : 
+            internal INDENNITABASERow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableTEORICI = ((TEORICIDataTable)(this.Table));
+                this.tableINDENNITABASE = ((INDENNITABASEDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IDTEORICI {
+            public decimal IDINDENNITABASE {
                 get {
-                    return ((decimal)(this[this.tableTEORICI.IDTEORICIColumn]));
+                    return ((decimal)(this[this.tableINDENNITABASE.IDINDENNITABASEColumn]));
                 }
                 set {
-                    this[this.tableTEORICI.IDTEORICIColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IDINDSISTLORDA {
-                get {
-                    try {
-                        return ((decimal)(this[this.tableTEORICI.IDINDSISTLORDAColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IDINDSISTLORDA\' nella tabella \'TEORICI\' è DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableTEORICI.IDINDSISTLORDAColumn] = value;
+                    this[this.tableINDENNITABASE.IDINDENNITABASEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IDTIPOMOVIMENTO {
+            public decimal IDLIVELLO {
                 get {
-                    return ((decimal)(this[this.tableTEORICI.IDTIPOMOVIMENTOColumn]));
+                    return ((decimal)(this[this.tableINDENNITABASE.IDLIVELLOColumn]));
                 }
                 set {
-                    this[this.tableTEORICI.IDTIPOMOVIMENTOColumn] = value;
+                    this[this.tableINDENNITABASE.IDLIVELLOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IDVOCI {
+            public System.DateTime DATAINIZIOVALIDITA {
                 get {
-                    return ((decimal)(this[this.tableTEORICI.IDVOCIColumn]));
+                    return ((global::System.DateTime)(this[this.tableINDENNITABASE.DATAINIZIOVALIDITAColumn]));
                 }
                 set {
-                    this[this.tableTEORICI.IDVOCIColumn] = value;
+                    this[this.tableINDENNITABASE.DATAINIZIOVALIDITAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IDELABIND {
+            public System.DateTime DATAFINEVALIDITA {
                 get {
-                    try {
-                        return ((decimal)(this[this.tableTEORICI.IDELABINDColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IDELABIND\' nella tabella \'TEORICI\' è DBNull.", e);
-                    }
+                    return ((global::System.DateTime)(this[this.tableINDENNITABASE.DATAFINEVALIDITAColumn]));
                 }
                 set {
-                    this[this.tableTEORICI.IDELABINDColumn] = value;
+                    this[this.tableINDENNITABASE.DATAFINEVALIDITAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IDELABMAB {
+            public decimal VALORE {
                 get {
-                    try {
-                        return ((decimal)(this[this.tableTEORICI.IDELABMABColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IDELABMAB\' nella tabella \'TEORICI\' è DBNull.", e);
-                    }
+                    return ((decimal)(this[this.tableINDENNITABASE.VALOREColumn]));
                 }
                 set {
-                    this[this.tableTEORICI.IDELABMABColumn] = value;
+                    this[this.tableINDENNITABASE.VALOREColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IDELABTRASPEFFETTI {
+            public decimal VALORERESP {
                 get {
-                    try {
-                        return ((decimal)(this[this.tableTEORICI.IDELABTRASPEFFETTIColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IDELABTRASPEFFETTI\' nella tabella \'TEORICI\' è DBNull.", e);
-                    }
+                    return ((decimal)(this[this.tableINDENNITABASE.VALORERESPColumn]));
                 }
                 set {
-                    this[this.tableTEORICI.IDELABTRASPEFFETTIColumn] = value;
+                    this[this.tableINDENNITABASE.VALORERESPColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IDMESEANNOELAB {
+            public System.DateTime DATAAGGIORNAMENTO {
                 get {
-                    return ((decimal)(this[this.tableTEORICI.IDMESEANNOELABColumn]));
+                    return ((global::System.DateTime)(this[this.tableINDENNITABASE.DATAAGGIORNAMENTOColumn]));
                 }
                 set {
-                    this[this.tableTEORICI.IDMESEANNOELABColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal MESERIFERIMENTO {
-                get {
-                    return ((decimal)(this[this.tableTEORICI.MESERIFERIMENTOColumn]));
-                }
-                set {
-                    this[this.tableTEORICI.MESERIFERIMENTOColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal ANNORIFERIMENTO {
-                get {
-                    return ((decimal)(this[this.tableTEORICI.ANNORIFERIMENTOColumn]));
-                }
-                set {
-                    this[this.tableTEORICI.ANNORIFERIMENTOColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal ALIQUOTAFISCALE {
-                get {
-                    return ((decimal)(this[this.tableTEORICI.ALIQUOTAFISCALEColumn]));
-                }
-                set {
-                    this[this.tableTEORICI.ALIQUOTAFISCALEColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal GIORNI {
-                get {
-                    return ((decimal)(this[this.tableTEORICI.GIORNIColumn]));
-                }
-                set {
-                    this[this.tableTEORICI.GIORNIColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATAOPERAZIONE {
-                get {
-                    return ((global::System.DateTime)(this[this.tableTEORICI.DATAOPERAZIONEColumn]));
-                }
-                set {
-                    this[this.tableTEORICI.DATAOPERAZIONEColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short INSERIMENTOMANUALE {
-                get {
-                    return ((short)(this[this.tableTEORICI.INSERIMENTOMANUALEColumn]));
-                }
-                set {
-                    this[this.tableTEORICI.INSERIMENTOMANUALEColumn] = value;
+                    this[this.tableINDENNITABASE.DATAAGGIORNAMENTOColumn] = value;
                 }
             }
             
@@ -959,70 +730,11 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public short ANNULLATO {
                 get {
-                    return ((short)(this[this.tableTEORICI.ANNULLATOColumn]));
+                    return ((short)(this[this.tableINDENNITABASE.ANNULLATOColumn]));
                 }
                 set {
-                    this[this.tableTEORICI.ANNULLATOColumn] = value;
+                    this[this.tableINDENNITABASE.ANNULLATOColumn] = value;
                 }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal IMPORTO {
-                get {
-                    return ((decimal)(this[this.tableTEORICI.IMPORTOColumn]));
-                }
-                set {
-                    this[this.tableTEORICI.IMPORTOColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIDINDSISTLORDANull() {
-                return this.IsNull(this.tableTEORICI.IDINDSISTLORDAColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIDINDSISTLORDANull() {
-                this[this.tableTEORICI.IDINDSISTLORDAColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIDELABINDNull() {
-                return this.IsNull(this.tableTEORICI.IDELABINDColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIDELABINDNull() {
-                this[this.tableTEORICI.IDELABINDColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIDELABMABNull() {
-                return this.IsNull(this.tableTEORICI.IDELABMABColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIDELABMABNull() {
-                this[this.tableTEORICI.IDELABMABColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIDELABTRASPEFFETTINull() {
-                return this.IsNull(this.tableTEORICI.IDELABTRASPEFFETTIColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIDELABTRASPEFFETTINull() {
-                this[this.tableTEORICI.IDELABTRASPEFFETTIColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1030,22 +742,22 @@ namespace NewISE.Views.Dataset {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class TEORICIRowChangeEvent : global::System.EventArgs {
+        public class INDENNITABASERowChangeEvent : global::System.EventArgs {
             
-            private TEORICIRow eventRow;
+            private INDENNITABASERow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TEORICIRowChangeEvent(TEORICIRow row, global::System.Data.DataRowAction action) {
+            public INDENNITABASERowChangeEvent(INDENNITABASERow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public TEORICIRow Row {
+            public INDENNITABASERow Row {
                 get {
                     return this.eventRow;
                 }
@@ -1061,7 +773,7 @@ namespace NewISE.Views.Dataset {
         }
     }
 }
-namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
+namespace NewISE.DataSetTableAdapters {
     
     
     /// <summary>
@@ -1073,7 +785,7 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class TEORICITableAdapter : global::System.ComponentModel.Component {
+    public partial class INDENNITABASETableAdapter : global::System.ComponentModel.Component {
         
         private global::Oracle.ManagedDataAccess.Client.OracleDataAdapter _adapter;
         
@@ -1087,7 +799,7 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public TEORICITableAdapter() {
+        public INDENNITABASETableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -1184,152 +896,89 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
             this._adapter = new global::Oracle.ManagedDataAccess.Client.OracleDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "TEORICI";
-            tableMapping.ColumnMappings.Add("IDTEORICI", "IDTEORICI");
-            tableMapping.ColumnMappings.Add("IDINDSISTLORDA", "IDINDSISTLORDA");
-            tableMapping.ColumnMappings.Add("IDTIPOMOVIMENTO", "IDTIPOMOVIMENTO");
-            tableMapping.ColumnMappings.Add("IDVOCI", "IDVOCI");
-            tableMapping.ColumnMappings.Add("IDELABIND", "IDELABIND");
-            tableMapping.ColumnMappings.Add("IDELABMAB", "IDELABMAB");
-            tableMapping.ColumnMappings.Add("IDELABTRASPEFFETTI", "IDELABTRASPEFFETTI");
-            tableMapping.ColumnMappings.Add("IDMESEANNOELAB", "IDMESEANNOELAB");
-            tableMapping.ColumnMappings.Add("MESERIFERIMENTO", "MESERIFERIMENTO");
-            tableMapping.ColumnMappings.Add("ANNORIFERIMENTO", "ANNORIFERIMENTO");
-            tableMapping.ColumnMappings.Add("ALIQUOTAFISCALE", "ALIQUOTAFISCALE");
-            tableMapping.ColumnMappings.Add("GIORNI", "GIORNI");
-            tableMapping.ColumnMappings.Add("DATAOPERAZIONE", "DATAOPERAZIONE");
-            tableMapping.ColumnMappings.Add("INSERIMENTOMANUALE", "INSERIMENTOMANUALE");
+            tableMapping.DataSetTable = "INDENNITABASE";
+            tableMapping.ColumnMappings.Add("IDINDENNITABASE", "IDINDENNITABASE");
+            tableMapping.ColumnMappings.Add("IDLIVELLO", "IDLIVELLO");
+            tableMapping.ColumnMappings.Add("DATAINIZIOVALIDITA", "DATAINIZIOVALIDITA");
+            tableMapping.ColumnMappings.Add("DATAFINEVALIDITA", "DATAFINEVALIDITA");
+            tableMapping.ColumnMappings.Add("VALORE", "VALORE");
+            tableMapping.ColumnMappings.Add("VALORERESP", "VALORERESP");
+            tableMapping.ColumnMappings.Add("DATAAGGIORNAMENTO", "DATAAGGIORNAMENTO");
             tableMapping.ColumnMappings.Add("ANNULLATO", "ANNULLATO");
-            tableMapping.ColumnMappings.Add("IMPORTO", "IMPORTO");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM \"ISESIM\".\"TEORICI\" WHERE ((\"IDTEORICI\" = :Original_IDTEORICI))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM \"ISESIM\".\"INDENNITABASE\" WHERE ((\"IDINDENNITABASE\" = :Original_IDINDE" +
+                "NNITABASE))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             global::Oracle.ManagedDataAccess.Client.OracleParameter param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "Original_IDTEORICI";
+            param.ParameterName = "Original_IDINDENNITABASE";
             param.DbType = global::System.Data.DbType.Decimal;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "IDTEORICI";
+            param.SourceColumn = "IDINDENNITABASE";
             param.SourceVersion = global::System.Data.DataRowVersion.Original;
             this._adapter.DeleteCommand.Parameters.Add(param);
             this._adapter.InsertCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO ""ISESIM"".""TEORICI"" (""IDTEORICI"", ""IDINDSISTLORDA"", ""IDTIPOMOVIMENTO"", ""IDVOCI"", ""IDELABIND"", ""IDELABMAB"", ""IDELABTRASPEFFETTI"", ""IDMESEANNOELAB"", ""MESERIFERIMENTO"", ""ANNORIFERIMENTO"", ""ALIQUOTAFISCALE"", ""GIORNI"", ""DATAOPERAZIONE"", ""INSERIMENTOMANUALE"", ""ANNULLATO"", ""IMPORTO"") VALUES (:IDTEORICI, :IDINDSISTLORDA, :IDTIPOMOVIMENTO, :IDVOCI, :IDELABIND, :IDELABMAB, :IDELABTRASPEFFETTI, :IDMESEANNOELAB, :MESERIFERIMENTO, :ANNORIFERIMENTO, :ALIQUOTAFISCALE, :GIORNI, :DATAOPERAZIONE, :INSERIMENTOMANUALE, :ANNULLATO, :IMPORTO)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO ""ISESIM"".""INDENNITABASE"" (""IDINDENNITABASE"", ""IDLIVELLO"", ""DATAINIZIOVALIDITA"", ""DATAFINEVALIDITA"", ""VALORE"", ""VALORERESP"", ""DATAAGGIORNAMENTO"", ""ANNULLATO"") VALUES (:IDINDENNITABASE, :IDLIVELLO, :DATAINIZIOVALIDITA, :DATAFINEVALIDITA, :VALORE, :VALORERESP, :DATAAGGIORNAMENTO, :ANNULLATO)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDTEORICI";
+            param.ParameterName = "IDINDENNITABASE";
             param.DbType = global::System.Data.DbType.Decimal;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "IDTEORICI";
+            param.SourceColumn = "IDINDENNITABASE";
             this._adapter.InsertCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDINDSISTLORDA";
+            param.ParameterName = "IDLIVELLO";
             param.DbType = global::System.Data.DbType.Decimal;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "IDINDSISTLORDA";
+            param.SourceColumn = "IDLIVELLO";
             this._adapter.InsertCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDTIPOMOVIMENTO";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDTIPOMOVIMENTO";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDVOCI";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDVOCI";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDELABIND";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDELABIND";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDELABMAB";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDELABMAB";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDELABTRASPEFFETTI";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDELABTRASPEFFETTI";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDMESEANNOELAB";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDMESEANNOELAB";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "MESERIFERIMENTO";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "MESERIFERIMENTO";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "ANNORIFERIMENTO";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "ANNORIFERIMENTO";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "ALIQUOTAFISCALE";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "ALIQUOTAFISCALE";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "GIORNI";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "GIORNI";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "DATAOPERAZIONE";
+            param.ParameterName = "DATAINIZIOVALIDITA";
             param.DbType = global::System.Data.DbType.Date;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Date;
             param.Size = 7;
             param.IsNullable = true;
-            param.SourceColumn = "DATAOPERAZIONE";
+            param.SourceColumn = "DATAINIZIOVALIDITA";
             this._adapter.InsertCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "INSERIMENTOMANUALE";
-            param.DbType = global::System.Data.DbType.Int16;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Int16;
+            param.ParameterName = "DATAFINEVALIDITA";
+            param.DbType = global::System.Data.DbType.Date;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Date;
+            param.Size = 7;
+            param.IsNullable = true;
+            param.SourceColumn = "DATAFINEVALIDITA";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
+            param.ParameterName = "VALORE";
+            param.DbType = global::System.Data.DbType.Decimal;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "INSERIMENTOMANUALE";
+            param.SourceColumn = "VALORE";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
+            param.ParameterName = "VALORERESP";
+            param.DbType = global::System.Data.DbType.Decimal;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
+            param.Size = 22;
+            param.IsNullable = true;
+            param.SourceColumn = "VALORERESP";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
+            param.ParameterName = "DATAAGGIORNAMENTO";
+            param.DbType = global::System.Data.DbType.Date;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Date;
+            param.Size = 7;
+            param.IsNullable = true;
+            param.SourceColumn = "DATAAGGIORNAMENTO";
             this._adapter.InsertCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
             param.ParameterName = "ANNULLATO";
@@ -1338,130 +987,66 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
             param.Size = 22;
             param.IsNullable = true;
             param.SourceColumn = "ANNULLATO";
-            this._adapter.InsertCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IMPORTO";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IMPORTO";
             this._adapter.InsertCommand.Parameters.Add(param);
             this._adapter.UpdateCommand = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE ""ISESIM"".""TEORICI"" SET ""IDTEORICI"" = :IDTEORICI, ""IDINDSISTLORDA"" = :IDINDSISTLORDA, ""IDTIPOMOVIMENTO"" = :IDTIPOMOVIMENTO, ""IDVOCI"" = :IDVOCI, ""IDELABIND"" = :IDELABIND, ""IDELABMAB"" = :IDELABMAB, ""IDELABTRASPEFFETTI"" = :IDELABTRASPEFFETTI, ""IDMESEANNOELAB"" = :IDMESEANNOELAB, ""MESERIFERIMENTO"" = :MESERIFERIMENTO, ""ANNORIFERIMENTO"" = :ANNORIFERIMENTO, ""ALIQUOTAFISCALE"" = :ALIQUOTAFISCALE, ""GIORNI"" = :GIORNI, ""DATAOPERAZIONE"" = :DATAOPERAZIONE, ""INSERIMENTOMANUALE"" = :INSERIMENTOMANUALE, ""ANNULLATO"" = :ANNULLATO, ""IMPORTO"" = :IMPORTO WHERE ((""IDTEORICI"" = :Original_IDTEORICI))";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE ""ISESIM"".""INDENNITABASE"" SET ""IDINDENNITABASE"" = :IDINDENNITABASE, ""IDLIVELLO"" = :IDLIVELLO, ""DATAINIZIOVALIDITA"" = :DATAINIZIOVALIDITA, ""DATAFINEVALIDITA"" = :DATAFINEVALIDITA, ""VALORE"" = :VALORE, ""VALORERESP"" = :VALORERESP, ""DATAAGGIORNAMENTO"" = :DATAAGGIORNAMENTO, ""ANNULLATO"" = :ANNULLATO WHERE ((""IDINDENNITABASE"" = :Original_IDINDENNITABASE))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDTEORICI";
+            param.ParameterName = "IDINDENNITABASE";
             param.DbType = global::System.Data.DbType.Decimal;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "IDTEORICI";
+            param.SourceColumn = "IDINDENNITABASE";
             this._adapter.UpdateCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDINDSISTLORDA";
+            param.ParameterName = "IDLIVELLO";
             param.DbType = global::System.Data.DbType.Decimal;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "IDINDSISTLORDA";
+            param.SourceColumn = "IDLIVELLO";
             this._adapter.UpdateCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDTIPOMOVIMENTO";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDTIPOMOVIMENTO";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDVOCI";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDVOCI";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDELABIND";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDELABIND";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDELABMAB";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDELABMAB";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDELABTRASPEFFETTI";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDELABTRASPEFFETTI";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IDMESEANNOELAB";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDMESEANNOELAB";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "MESERIFERIMENTO";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "MESERIFERIMENTO";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "ANNORIFERIMENTO";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "ANNORIFERIMENTO";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "ALIQUOTAFISCALE";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "ALIQUOTAFISCALE";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "GIORNI";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "GIORNI";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "DATAOPERAZIONE";
+            param.ParameterName = "DATAINIZIOVALIDITA";
             param.DbType = global::System.Data.DbType.Date;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Date;
             param.Size = 7;
             param.IsNullable = true;
-            param.SourceColumn = "DATAOPERAZIONE";
+            param.SourceColumn = "DATAINIZIOVALIDITA";
             this._adapter.UpdateCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "INSERIMENTOMANUALE";
-            param.DbType = global::System.Data.DbType.Int16;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Int16;
+            param.ParameterName = "DATAFINEVALIDITA";
+            param.DbType = global::System.Data.DbType.Date;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Date;
+            param.Size = 7;
+            param.IsNullable = true;
+            param.SourceColumn = "DATAFINEVALIDITA";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
+            param.ParameterName = "VALORE";
+            param.DbType = global::System.Data.DbType.Decimal;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "INSERIMENTOMANUALE";
+            param.SourceColumn = "VALORE";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
+            param.ParameterName = "VALORERESP";
+            param.DbType = global::System.Data.DbType.Decimal;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
+            param.Size = 22;
+            param.IsNullable = true;
+            param.SourceColumn = "VALORERESP";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
+            param.ParameterName = "DATAAGGIORNAMENTO";
+            param.DbType = global::System.Data.DbType.Date;
+            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Date;
+            param.Size = 7;
+            param.IsNullable = true;
+            param.SourceColumn = "DATAAGGIORNAMENTO";
             this._adapter.UpdateCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
             param.ParameterName = "ANNULLATO";
@@ -1472,20 +1057,12 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
             param.SourceColumn = "ANNULLATO";
             this._adapter.UpdateCommand.Parameters.Add(param);
             param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "IMPORTO";
+            param.ParameterName = "Original_IDINDENNITABASE";
             param.DbType = global::System.Data.DbType.Decimal;
             param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
             param.Size = 22;
             param.IsNullable = true;
-            param.SourceColumn = "IMPORTO";
-            this._adapter.UpdateCommand.Parameters.Add(param);
-            param = new global::Oracle.ManagedDataAccess.Client.OracleParameter();
-            param.ParameterName = "Original_IDTEORICI";
-            param.DbType = global::System.Data.DbType.Decimal;
-            param.OracleDbTypeEx = global::Oracle.ManagedDataAccess.Client.OracleDbType.Decimal;
-            param.Size = 22;
-            param.IsNullable = true;
-            param.SourceColumn = "IDTEORICI";
+            param.SourceColumn = "IDINDENNITABASE";
             param.SourceVersion = global::System.Data.DataRowVersion.Original;
             this._adapter.UpdateCommand.Parameters.Add(param);
         }
@@ -1503,10 +1080,8 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
             this._commandCollection = new global::Oracle.ManagedDataAccess.Client.OracleCommand[1];
             this._commandCollection[0] = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT IDTEORICI, IDINDSISTLORDA, IDTIPOMOVIMENTO, IDVOCI, IDELABIND, IDELABMAB, " +
-                "IDELABTRASPEFFETTI, IDMESEANNOELAB, MESERIFERIMENTO, ANNORIFERIMENTO, ALIQUOTAFI" +
-                "SCALE, GIORNI, DATAOPERAZIONE, INSERIMENTOMANUALE, ANNULLATO, IMPORTO FROM ISESI" +
-                "M.TEORICI";
+            this._commandCollection[0].CommandText = "SELECT IDINDENNITABASE, IDLIVELLO, DATAINIZIOVALIDITA, DATAFINEVALIDITA, VALORE, " +
+                "VALORERESP, DATAAGGIORNAMENTO, ANNULLATO FROM ISESIM.INDENNITABASE";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1514,7 +1089,7 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(DSRiepilogoVoci.TEORICIDataTable dataTable) {
+        public virtual int Fill(DataSet.INDENNITABASEDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -1527,9 +1102,9 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual DSRiepilogoVoci.TEORICIDataTable GetData() {
+        public virtual DataSet.INDENNITABASEDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            DSRiepilogoVoci.TEORICIDataTable dataTable = new DSRiepilogoVoci.TEORICIDataTable();
+            DataSet.INDENNITABASEDataTable dataTable = new DataSet.INDENNITABASEDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -1537,15 +1112,15 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(DSRiepilogoVoci.TEORICIDataTable dataTable) {
+        public virtual int Update(DataSet.INDENNITABASEDataTable dataTable) {
             return this.Adapter.Update(dataTable);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(DSRiepilogoVoci dataSet) {
-            return this.Adapter.Update(dataSet, "TEORICI");
+        public virtual int Update(DataSet dataSet) {
+            return this.Adapter.Update(dataSet, "INDENNITABASE");
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1567,8 +1142,8 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(decimal Original_IDTEORICI) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((decimal)(Original_IDTEORICI));
+        public virtual int Delete(decimal Original_IDINDENNITABASE) {
+            this.Adapter.DeleteCommand.Parameters[0].Value = ((decimal)(Original_IDINDENNITABASE));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1589,59 +1164,15 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(
-                    decimal IDTEORICI, 
-                    global::System.Nullable<decimal> IDINDSISTLORDA, 
-                    decimal IDTIPOMOVIMENTO, 
-                    decimal IDVOCI, 
-                    global::System.Nullable<decimal> IDELABIND, 
-                    global::System.Nullable<decimal> IDELABMAB, 
-                    global::System.Nullable<decimal> IDELABTRASPEFFETTI, 
-                    decimal IDMESEANNOELAB, 
-                    decimal MESERIFERIMENTO, 
-                    decimal ANNORIFERIMENTO, 
-                    decimal ALIQUOTAFISCALE, 
-                    decimal GIORNI, 
-                    System.DateTime DATAOPERAZIONE, 
-                    short INSERIMENTOMANUALE, 
-                    short ANNULLATO, 
-                    decimal IMPORTO) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((decimal)(IDTEORICI));
-            if ((IDINDSISTLORDA.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((decimal)(IDINDSISTLORDA.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            this.Adapter.InsertCommand.Parameters[2].Value = ((decimal)(IDTIPOMOVIMENTO));
-            this.Adapter.InsertCommand.Parameters[3].Value = ((decimal)(IDVOCI));
-            if ((IDELABIND.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((decimal)(IDELABIND.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((IDELABMAB.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[5].Value = ((decimal)(IDELABMAB.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((IDELABTRASPEFFETTI.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[6].Value = ((decimal)(IDELABTRASPEFFETTI.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            this.Adapter.InsertCommand.Parameters[7].Value = ((decimal)(IDMESEANNOELAB));
-            this.Adapter.InsertCommand.Parameters[8].Value = ((decimal)(MESERIFERIMENTO));
-            this.Adapter.InsertCommand.Parameters[9].Value = ((decimal)(ANNORIFERIMENTO));
-            this.Adapter.InsertCommand.Parameters[10].Value = ((decimal)(ALIQUOTAFISCALE));
-            this.Adapter.InsertCommand.Parameters[11].Value = ((decimal)(GIORNI));
-            this.Adapter.InsertCommand.Parameters[12].Value = ((System.DateTime)(DATAOPERAZIONE));
-            this.Adapter.InsertCommand.Parameters[13].Value = ((short)(INSERIMENTOMANUALE));
-            this.Adapter.InsertCommand.Parameters[14].Value = ((short)(ANNULLATO));
-            this.Adapter.InsertCommand.Parameters[15].Value = ((decimal)(IMPORTO));
+        public virtual int Insert(decimal IDINDENNITABASE, decimal IDLIVELLO, System.DateTime DATAINIZIOVALIDITA, System.DateTime DATAFINEVALIDITA, decimal VALORE, decimal VALORERESP, System.DateTime DATAAGGIORNAMENTO, short ANNULLATO) {
+            this.Adapter.InsertCommand.Parameters[0].Value = ((decimal)(IDINDENNITABASE));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((decimal)(IDLIVELLO));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((System.DateTime)(DATAINIZIOVALIDITA));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((System.DateTime)(DATAFINEVALIDITA));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((decimal)(VALORE));
+            this.Adapter.InsertCommand.Parameters[5].Value = ((decimal)(VALORERESP));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((System.DateTime)(DATAAGGIORNAMENTO));
+            this.Adapter.InsertCommand.Parameters[7].Value = ((short)(ANNULLATO));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1662,61 +1193,16 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(
-                    decimal IDTEORICI, 
-                    global::System.Nullable<decimal> IDINDSISTLORDA, 
-                    decimal IDTIPOMOVIMENTO, 
-                    decimal IDVOCI, 
-                    global::System.Nullable<decimal> IDELABIND, 
-                    global::System.Nullable<decimal> IDELABMAB, 
-                    global::System.Nullable<decimal> IDELABTRASPEFFETTI, 
-                    decimal IDMESEANNOELAB, 
-                    decimal MESERIFERIMENTO, 
-                    decimal ANNORIFERIMENTO, 
-                    decimal ALIQUOTAFISCALE, 
-                    decimal GIORNI, 
-                    System.DateTime DATAOPERAZIONE, 
-                    short INSERIMENTOMANUALE, 
-                    short ANNULLATO, 
-                    decimal IMPORTO, 
-                    decimal Original_IDTEORICI) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((decimal)(IDTEORICI));
-            if ((IDINDSISTLORDA.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((decimal)(IDINDSISTLORDA.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            this.Adapter.UpdateCommand.Parameters[2].Value = ((decimal)(IDTIPOMOVIMENTO));
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((decimal)(IDVOCI));
-            if ((IDELABIND.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((decimal)(IDELABIND.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((IDELABMAB.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[5].Value = ((decimal)(IDELABMAB.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((IDELABTRASPEFFETTI.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((decimal)(IDELABTRASPEFFETTI.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((decimal)(IDMESEANNOELAB));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((decimal)(MESERIFERIMENTO));
-            this.Adapter.UpdateCommand.Parameters[9].Value = ((decimal)(ANNORIFERIMENTO));
-            this.Adapter.UpdateCommand.Parameters[10].Value = ((decimal)(ALIQUOTAFISCALE));
-            this.Adapter.UpdateCommand.Parameters[11].Value = ((decimal)(GIORNI));
-            this.Adapter.UpdateCommand.Parameters[12].Value = ((System.DateTime)(DATAOPERAZIONE));
-            this.Adapter.UpdateCommand.Parameters[13].Value = ((short)(INSERIMENTOMANUALE));
-            this.Adapter.UpdateCommand.Parameters[14].Value = ((short)(ANNULLATO));
-            this.Adapter.UpdateCommand.Parameters[15].Value = ((decimal)(IMPORTO));
-            this.Adapter.UpdateCommand.Parameters[16].Value = ((decimal)(Original_IDTEORICI));
+        public virtual int Update(decimal IDINDENNITABASE, decimal IDLIVELLO, System.DateTime DATAINIZIOVALIDITA, System.DateTime DATAFINEVALIDITA, decimal VALORE, decimal VALORERESP, System.DateTime DATAAGGIORNAMENTO, short ANNULLATO, decimal Original_IDINDENNITABASE) {
+            this.Adapter.UpdateCommand.Parameters[0].Value = ((decimal)(IDINDENNITABASE));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((decimal)(IDLIVELLO));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((System.DateTime)(DATAINIZIOVALIDITA));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((System.DateTime)(DATAFINEVALIDITA));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((decimal)(VALORE));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((decimal)(VALORERESP));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((System.DateTime)(DATAAGGIORNAMENTO));
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((short)(ANNULLATO));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((decimal)(Original_IDINDENNITABASE));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1737,24 +1223,8 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(
-                    global::System.Nullable<decimal> IDINDSISTLORDA, 
-                    decimal IDTIPOMOVIMENTO, 
-                    decimal IDVOCI, 
-                    global::System.Nullable<decimal> IDELABIND, 
-                    global::System.Nullable<decimal> IDELABMAB, 
-                    global::System.Nullable<decimal> IDELABTRASPEFFETTI, 
-                    decimal IDMESEANNOELAB, 
-                    decimal MESERIFERIMENTO, 
-                    decimal ANNORIFERIMENTO, 
-                    decimal ALIQUOTAFISCALE, 
-                    decimal GIORNI, 
-                    System.DateTime DATAOPERAZIONE, 
-                    short INSERIMENTOMANUALE, 
-                    short ANNULLATO, 
-                    decimal IMPORTO, 
-                    decimal Original_IDTEORICI) {
-            return this.Update(Original_IDTEORICI, IDINDSISTLORDA, IDTIPOMOVIMENTO, IDVOCI, IDELABIND, IDELABMAB, IDELABTRASPEFFETTI, IDMESEANNOELAB, MESERIFERIMENTO, ANNORIFERIMENTO, ALIQUOTAFISCALE, GIORNI, DATAOPERAZIONE, INSERIMENTOMANUALE, ANNULLATO, IMPORTO, Original_IDTEORICI);
+        public virtual int Update(decimal IDLIVELLO, System.DateTime DATAINIZIOVALIDITA, System.DateTime DATAFINEVALIDITA, decimal VALORE, decimal VALORERESP, System.DateTime DATAAGGIORNAMENTO, short ANNULLATO, decimal Original_IDINDENNITABASE) {
+            return this.Update(Original_IDINDENNITABASE, IDLIVELLO, DATAINIZIOVALIDITA, DATAFINEVALIDITA, VALORE, VALORERESP, DATAAGGIORNAMENTO, ANNULLATO, Original_IDINDENNITABASE);
         }
     }
     
@@ -1770,7 +1240,7 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         
         private UpdateOrderOption _updateOrder;
         
-        private TEORICITableAdapter _tEORICITableAdapter;
+        private INDENNITABASETableAdapter _iNDENNITABASETableAdapter;
         
         private bool _backupDataSetBeforeUpdate;
         
@@ -1792,12 +1262,12 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
             "a", "System.Drawing.Design.UITypeEditor")]
-        public TEORICITableAdapter TEORICITableAdapter {
+        public INDENNITABASETableAdapter INDENNITABASETableAdapter {
             get {
-                return this._tEORICITableAdapter;
+                return this._iNDENNITABASETableAdapter;
             }
             set {
-                this._tEORICITableAdapter = value;
+                this._iNDENNITABASETableAdapter = value;
             }
         }
         
@@ -1820,9 +1290,9 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
                 if ((this._connection != null)) {
                     return this._connection;
                 }
-                if (((this._tEORICITableAdapter != null) 
-                            && (this._tEORICITableAdapter.Connection != null))) {
-                    return this._tEORICITableAdapter.Connection;
+                if (((this._iNDENNITABASETableAdapter != null) 
+                            && (this._iNDENNITABASETableAdapter.Connection != null))) {
+                    return this._iNDENNITABASETableAdapter.Connection;
                 }
                 return null;
             }
@@ -1837,7 +1307,7 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         public int TableAdapterInstanceCount {
             get {
                 int count = 0;
-                if ((this._tEORICITableAdapter != null)) {
+                if ((this._iNDENNITABASETableAdapter != null)) {
                     count = (count + 1);
                 }
                 return count;
@@ -1849,14 +1319,14 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateUpdatedRows(DSRiepilogoVoci dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateUpdatedRows(DataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._tEORICITableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.TEORICI.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
+            if ((this._iNDENNITABASETableAdapter != null)) {
+                global::System.Data.DataRow[] updatedRows = dataSet.INDENNITABASE.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
                 if (((updatedRows != null) 
                             && (0 < updatedRows.Length))) {
-                    result = (result + this._tEORICITableAdapter.Update(updatedRows));
+                    result = (result + this._iNDENNITABASETableAdapter.Update(updatedRows));
                     allChangedRows.AddRange(updatedRows);
                 }
             }
@@ -1868,13 +1338,13 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateInsertedRows(DSRiepilogoVoci dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateInsertedRows(DataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._tEORICITableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.TEORICI.Select(null, null, global::System.Data.DataViewRowState.Added);
+            if ((this._iNDENNITABASETableAdapter != null)) {
+                global::System.Data.DataRow[] addedRows = dataSet.INDENNITABASE.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
                             && (0 < addedRows.Length))) {
-                    result = (result + this._tEORICITableAdapter.Update(addedRows));
+                    result = (result + this._iNDENNITABASETableAdapter.Update(addedRows));
                     allAddedRows.AddRange(addedRows);
                 }
             }
@@ -1886,13 +1356,13 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateDeletedRows(DSRiepilogoVoci dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
+        private int UpdateDeletedRows(DataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
-            if ((this._tEORICITableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.TEORICI.Select(null, null, global::System.Data.DataViewRowState.Deleted);
+            if ((this._iNDENNITABASETableAdapter != null)) {
+                global::System.Data.DataRow[] deletedRows = dataSet.INDENNITABASE.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
-                    result = (result + this._tEORICITableAdapter.Update(deletedRows));
+                    result = (result + this._iNDENNITABASETableAdapter.Update(deletedRows));
                     allChangedRows.AddRange(deletedRows);
                 }
             }
@@ -1928,15 +1398,15 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public virtual int UpdateAll(DSRiepilogoVoci dataSet) {
+        public virtual int UpdateAll(DataSet dataSet) {
             if ((dataSet == null)) {
                 throw new global::System.ArgumentNullException("dataSet");
             }
             if ((dataSet.HasChanges() == false)) {
                 return 0;
             }
-            if (((this._tEORICITableAdapter != null) 
-                        && (this.MatchTableAdapterConnection(this._tEORICITableAdapter.Connection) == false))) {
+            if (((this._iNDENNITABASETableAdapter != null) 
+                        && (this.MatchTableAdapterConnection(this._iNDENNITABASETableAdapter.Connection) == false))) {
                 throw new global::System.ArgumentException("Tutti gli oggetti TableAdapter gestiti da TableAdapterManager devono utilizzare l" +
                         "a stessa stringa di connessione.");
             }
@@ -1973,13 +1443,13 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
             try {
                 // ---- Prepare for update -----------
                 //
-                if ((this._tEORICITableAdapter != null)) {
-                    revertConnections.Add(this._tEORICITableAdapter, this._tEORICITableAdapter.Connection);
-                    this._tEORICITableAdapter.Connection = ((global::Oracle.ManagedDataAccess.Client.OracleConnection)(workConnection));
-                    this._tEORICITableAdapter.Transaction = ((global::Oracle.ManagedDataAccess.Client.OracleTransaction)(workTransaction));
-                    if (this._tEORICITableAdapter.Adapter.AcceptChangesDuringUpdate) {
-                        this._tEORICITableAdapter.Adapter.AcceptChangesDuringUpdate = false;
-                        adaptersWithAcceptChangesDuringUpdate.Add(this._tEORICITableAdapter.Adapter);
+                if ((this._iNDENNITABASETableAdapter != null)) {
+                    revertConnections.Add(this._iNDENNITABASETableAdapter, this._iNDENNITABASETableAdapter.Connection);
+                    this._iNDENNITABASETableAdapter.Connection = ((global::Oracle.ManagedDataAccess.Client.OracleConnection)(workConnection));
+                    this._iNDENNITABASETableAdapter.Transaction = ((global::Oracle.ManagedDataAccess.Client.OracleTransaction)(workTransaction));
+                    if (this._iNDENNITABASETableAdapter.Adapter.AcceptChangesDuringUpdate) {
+                        this._iNDENNITABASETableAdapter.Adapter.AcceptChangesDuringUpdate = false;
+                        adaptersWithAcceptChangesDuringUpdate.Add(this._iNDENNITABASETableAdapter.Adapter);
                     }
                 }
                 // 
@@ -2040,9 +1510,9 @@ namespace NewISE.Views.Dataset.DSRiepilogoVociTableAdapters {
                 if (workConnOpened) {
                     workConnection.Close();
                 }
-                if ((this._tEORICITableAdapter != null)) {
-                    this._tEORICITableAdapter.Connection = ((global::Oracle.ManagedDataAccess.Client.OracleConnection)(revertConnections[this._tEORICITableAdapter]));
-                    this._tEORICITableAdapter.Transaction = null;
+                if ((this._iNDENNITABASETableAdapter != null)) {
+                    this._iNDENNITABASETableAdapter.Connection = ((global::Oracle.ManagedDataAccess.Client.OracleConnection)(revertConnections[this._iNDENNITABASETableAdapter]));
+                    this._iNDENNITABASETableAdapter.Transaction = null;
                 }
                 if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
                     global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];

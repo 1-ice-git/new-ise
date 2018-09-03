@@ -348,6 +348,14 @@
     <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Query>
+        <DataSourceName />
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
   <ReportParameters>
     <ReportParameter Name="Nominativo">
       <DataType>String</DataType>

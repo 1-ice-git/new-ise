@@ -479,6 +479,10 @@ namespace NewISE.Controllers
 
                             if (lDateVariazioni?.Any() ?? false)
                             {
+                                string[] myString = new string[100];
+                                string[] myString2 = new string[100];
+
+
                                 for (int j = 0; j < lDateVariazioni.Count; j++)
                                 {
                                     DateTime dv = lDateVariazioni[j];
@@ -487,7 +491,7 @@ namespace NewISE.Controllers
                                     {
                                         DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
-                                       
+
 
                                         using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                         {
@@ -500,12 +504,12 @@ namespace NewISE.Controllers
                                             //xx.valore = pd.VALORE;
                                             //xx.valoreResponsabile = pd.VALORERESP;
 
-                                            xx.dataInizioValidita = dv;
-                                            xx.dataFineValidita = dvSucc;
-                                            xx.IndennitaBase = ci.IndennitaDiBase;
-                                            xx.PercentualeDisagio = ci.PercentualeDisagio;
-                                            xx.CoefficienteSede = ci.CoefficienteDiSede;
-                                            xx.IndennitaServizio = ci.IndennitaDiServizio;
+                                            //xx.dataInizioValidita = dv;
+                                            //xx.dataFineValidita = dvSucc;
+                                            //xx.IndennitaBase = ci.IndennitaDiBase;
+                                            //xx.PercentualeDisagio = ci.PercentualeDisagio;
+                                            //xx.CoefficienteSede = ci.CoefficienteDiSede;
+                                            //xx.IndennitaServizio = ci.IndennitaDiServizio;
 
                                             //eim.Add(xx);
 
@@ -515,10 +519,13 @@ namespace NewISE.Controllers
                                             var CoefficienteSede = ci.CoefficienteDiSede;
                                             var IndennitaServizio = ci.IndennitaDiServizio;
 
-                                            String myString = Convert.ToString(IndennitaBase).ToString();
-                                            char[] characters = myString.ToCharArray();
+                                            //String myString = Convert.ToString(IndennitaBase).ToString();
+                                            //char[] characters = myString.ToCharArray();
 
-                                            
+                                                myString[j] = ci.IndennitaDiBase.ToString();
+                                                myString2[j] = ci.IndennitaDiServizio.ToString();
+                                        }
+
                                             ReportViewer reportViewer = new ReportViewer();
 
                                             reportViewer.ProcessingMode = ProcessingMode.Local;
@@ -542,8 +549,9 @@ namespace NewISE.Controllers
                                                 new ReportParameter ("Livello",Livello),
                                                 new ReportParameter ("Decorrenza",Decorrenza),
                                                 new ReportParameter ("Ufficio",Ufficio),
-                                                new ReportParameter ("DataInizioValidita",DataInizioValidita),
-                                                new ReportParameter ("myString",myString)
+                                                //new ReportParameter ("DataInizioValidita",DataInizioValidita),
+                                                new ReportParameter ("myString",myString),
+                                                new ReportParameter ("myString2",myString2)
 
 
 
@@ -552,7 +560,7 @@ namespace NewISE.Controllers
                                             reportViewer.LocalReport.SetParameters(parameterValues);
                                             ViewBag.ReportViewer = reportViewer;
 
-                                        }
+                                        
                                     }
                                 }
                             }
