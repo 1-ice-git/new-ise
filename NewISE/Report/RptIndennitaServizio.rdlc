@@ -372,7 +372,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Join(Parameters!myString.Value)</Value>
+                <Value>=Join(Parameters!myString.Value, vbCrLf)</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -380,10 +380,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox21</rd:DefaultName>
-        <Top>8.78099cm</Top>
+        <Top>8.76363cm</Top>
         <Left>1.08162cm</Left>
         <Height>0.6cm</Height>
-        <Width>14.30042cm</Width>
+        <Width>2.69555cm</Width>
         <ZIndex>10</ZIndex>
         <Style>
           <Border>
@@ -402,7 +402,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Join(Parameters!myString2.Value)</Value>
+                <Value>=Join(Parameters!myString2.Value, vbCrLf)</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -415,6 +415,36 @@
         <Height>0.6cm</Height>
         <Width>14.30042cm</Width>
         <ZIndex>11</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox70">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Test</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox70</rd:DefaultName>
+        <Top>8.09308cm</Top>
+        <Left>1.08162cm</Left>
+        <Height>0.6cm</Height>
+        <Width>2.5cm</Width>
+        <ZIndex>12</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
