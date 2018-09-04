@@ -370,7 +370,6 @@ namespace NewISE.Models.Tools
             return Convert.ToDateTime(giorno + "/" + data.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + data.Year.ToString());
         }
 
-
         public static DateTime GetDtFineMeseCorrente()
         {
             string giorno = "01";
@@ -455,8 +454,15 @@ namespace NewISE.Models.Tools
             return result;
 
         }
-
-
+        /// <summary>
+        /// Converte la data nel formato decimale anno mese.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static decimal DataAnnoMese(DateTime data)
+        {
+            return Convert.ToDecimal(data.Year.ToString() + data.Month.ToString().PadLeft(2, Convert.ToChar("0")));
+        }
 
 
 

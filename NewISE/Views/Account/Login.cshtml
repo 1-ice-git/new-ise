@@ -49,7 +49,7 @@
                     </p>
                 </form>
                 <div>
-                    <form id="LoginGoogle" , action="/Account/LoginGoogle" method="post" novalidate="novalidate">
+                    <form id="LoginGoogle" action="/Account/LoginGoogle" method="post" novalidate="novalidate">
                         @Html.AntiForgeryToken()
                         <div>
                             <input type="hidden" value="@returnUrl" name="ReturnUrl" />

@@ -66,7 +66,7 @@ namespace NewISE.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        public async Task<ActionResult> ExternalLoginCallback(string ReturnUrl)
         {
             string msgGoogle = "L'utenza non risulta abilitata.";
 
@@ -77,7 +77,7 @@ namespace NewISE.Controllers
 
             if (loginInfo == null)
             {
-                return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
+                return RedirectToAction("Login", "Account", new { returnUrl = ReturnUrl });
             }
 
             if (loginInfo.ExternalIdentity.IsAuthenticated)
@@ -123,12 +123,12 @@ namespace NewISE.Controllers
                         }
 
                         //"/Home/Home"
-                        return Redirect(GetRedirectUrl(returnUrl));
+                        return Redirect(GetRedirectUrl(ReturnUrl));
 
                     }
                     else
                     {
-                        return RedirectToAction("Login", "Account", new { returnUrl = returnUrl, msgGoogle = msgGoogle });
+                        return RedirectToAction("Login", "Account", new { returnUrl = ReturnUrl, msgGoogle = msgGoogle });
                     }
 
 
@@ -138,7 +138,7 @@ namespace NewISE.Controllers
             else
             {
 
-                return RedirectToAction("Login", "Account", new { returnUrl = returnUrl, msgGoogle = msgGoogle });
+                return RedirectToAction("Login", "Account", new { returnUrl = ReturnUrl, msgGoogle = msgGoogle });
             }
 
             //return Redirect(GetRedirectUrl(returnUrl));

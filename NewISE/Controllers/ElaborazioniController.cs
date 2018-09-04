@@ -538,26 +538,45 @@ namespace NewISE.Controllers
 
                             lTeorici = lTeorici.OrderBy(a => a).ToList();
 
+                            List<ElencoDipendentiDaCalcolareModel> ledcm = new List<ElencoDipendentiDaCalcolareModel>();
 
-
-                            foreach (decimal teorico in lTeorici)
+                            ledcm = dte.PrelevaDipendentiDaElaborare(idAnnoMeseElaborato).ToList();
+                            if (ledcm?.Any() ?? false)
                             {
-                                var dip = dte.EstrapolaDipendenteDaTeorico(teorico, db);
+                                lDip = dte.EstrapolaDipendentiDaTeorici(lTeorici, db).ToList();
 
-                                if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElaborato) ?? false)
+                                foreach (var edcm in ledcm)
                                 {
-                                    dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
+                                    if (!lDip?.Any(a => a.IDDIPENDENTE == edcm.idDipendente) ?? false)
+                                    {
+                                        throw new Exception("Prima di inviare i flussi è necessario effettuare l'elaborazione di tutti i dipendenti interessati al calcolo mensile.");
+                                    }
+
                                 }
+
+                                foreach (decimal teorico in lTeorici)
+                                {
+                                    var dip = dte.EstrapolaDipendenteDaTeorico(teorico, db);
+
+
+                                    if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElaborato) ?? false)
+                                    {
+                                        dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
+                                    }
+                                }
+
+
+
+                                foreach (var dip in lDip)
+                                {
+                                    dte.SetPeriodoElaborazioniDipendente(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
+                                }
+
+                                dte.ChiudiPeridoElaborazione(idAnnoMeseElaborato, db);
+
                             }
 
-                            lDip = dte.EstrapolaDipendentiDaTeorici(lTeorici, db).ToList();
 
-                            foreach (var dip in lDip)
-                            {
-                                dte.SetPeriodoElaborazioniDipendente(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
-                            }
-
-                            dte.ChiudiPeridoElaborazione(idAnnoMeseElaborato, db);
 
 
                             db.Database.CurrentTransaction.Commit();
