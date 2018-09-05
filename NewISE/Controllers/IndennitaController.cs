@@ -181,11 +181,13 @@ namespace NewISE.Controllers
 
         }
 
-        DSIndennitaBase ds = new DSIndennitaBase();
+        DataSetIndennitaBase ds = new DataSetIndennitaBase();
         public ActionResult RptIndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             List<LivelloDipendenteModel> ldm = new List<LivelloDipendenteModel>();
+            List<RptIndennitaBaseModel> rpt = new List<RptIndennitaBaseModel>();
+
 
             try
             {
@@ -236,34 +238,126 @@ namespace NewISE.Controllers
                                 string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                                 string Ufficio = tm.Ufficio.descUfficio;
 
-                                //libm = (from e in ll
-                                //        select new IndennitaBaseModel()
-                                //        {
-                                //            idIndennitaBase = e.IDINDENNITABASE,
-                                //            idLivello = e.IDLIVELLO,
-                                //            dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                //            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                //            valore = valore,
-                                //            //valoreResponsabile = e.VALORERESP,
-                                //            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                //            Livello = new LivelloModel()
-                                //            {
-                                //                idLivello = e.LIVELLI.IDLIVELLO,
-                                //                DescLivello = e.LIVELLI.LIVELLO
-                                //            },
-                                //        }).ToList();
+                                libm = (from e in ll
+                                        select new IndennitaBaseModel()
+                                        {
+                                            idIndennitaBase = e.IDINDENNITABASE,
+                                            idLivello = e.IDLIVELLO,
+                                            dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                            valore = valore,
+                                            //valoreResponsabile = e.VALORERESP,
+                                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                            Livello = new LivelloModel()
+                                            {
+                                                idLivello = e.LIVELLI.IDLIVELLO,
+                                                DescLivello = e.LIVELLI.LIVELLO
+                                            },
+                                        }).ToList();
+
+                                
+
+                                var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                                var indennita = trasferimento.INDENNITA;
+
+                                List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                                var ll1 =
+                                    db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
+                                    .Where(a => a.ANNULLATO == false)
+                                    .OrderBy(a => a.IDLIVELLO)
+                                    .ThenBy(a => a.DATAINIZIOVALIDITA)
+                                    .ThenBy(a => a.DATAFINEVALIDITA)
+                                    .ToList();
 
 
-                                // ****************************************************************************
+                                using (dtTrasferimento dttrasf = new dtTrasferimento())
+                                {
+                                    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                                    {
+                                        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
+                                        dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+                                        
+                                    }
+                                }
 
-                                // set param values, not really doing anything except showing up in the report,
-                                // after the fact.
-                                //string paraStartDate = Convert.ToDateTime("1/1/2009").ToShortDateString();
-                                //string paraEndDate = Convert.ToDateTime("12/1/2009").ToShortDateString();
-                                //ReportParameter[] param = new ReportParameter[2];
-                                //param[0] = new ReportParameter("paraStartDate", paraStartDate, false);
-                                //param[1] = new ReportParameter("paraEndDate", paraEndDate, false);
-                                //this.reportViewer.LocalReport.SetParameters(param);
+                                string[] indennitaBase = new string[100];
+                                string[] dataInizioValidita = new string[100];
+                                string[] dataFineValidita = new string[100];
+
+                                foreach (var ib in ll1)
+                                {
+                                    DateTime dtVar = new DateTime();
+
+                                    if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                    {
+                                        dtVar = trasferimento.DATAPARTENZA;
+                                    }
+                                    else
+                                    {
+                                        dtVar = ib.DATAINIZIOVALIDITA;
+                                    }
+
+
+                                    if (!lDateVariazioni.Contains(dtVar))
+                                    {
+                                        lDateVariazioni.Add(dtVar);
+                                        lDateVariazioni.Sort();
+                                    }
+                                }
+
+                                lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                                if (lDateVariazioni?.Any() ?? false)
+                                {
+                                    for (int j = 0; j < lDateVariazioni.Count; j++)
+                                    {
+                                        DateTime dv = lDateVariazioni[j];
+
+                                        if (dv < Utility.DataFineStop())
+                                        {
+                                            DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                            {
+                                                //IndennitaBaseModel xx = new IndennitaBaseModel();
+                                                RptIndennitaBaseModel rpts = new RptIndennitaBaseModel()
+                                                {
+                                                    IndennitaBase = ci.IndennitaDiBase,
+                                                    DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                    DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString()
+                                                    
+                                                };
+
+                                                rpt.Add(rpts);
+
+                                                //xx.dataInizioValidita = dv;
+                                                //xx.dataFineValidita = dvSucc;
+                                                //xx.valore = ci.IndennitaDiBase;
+
+                                                //var DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString();
+                                                //var DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString();
+
+                                                //var IndennitaBase = ci.IndennitaDiBase;
+                                                //var test = ci.IndennitaDiBase.ToString();
+                                                //var PercentualeDisagio = ci.PercentualeDisagio;
+                                                //var CoefficienteSede = ci.CoefficienteDiSede;
+                                                //var IndennitaServizio = ci.IndennitaDiServizio;
+
+                                                ////string myString2 = Convert.ToString(IndennitaBase).ToString();
+                                                ////char[] characters = myString2.ToArray();
+
+                                                //indennitaBase[j] = ci.IndennitaDiBase.ToString("0.00");
+                                                //dataInizioValidita[j] = Convert.ToDateTime(dv).ToShortDateString();
+                                                //dataFineValidita[j] = Convert.ToDateTime(dvSucc).ToShortDateString();
+
+
+
+                                            }
+                                        }
+                                    }
+                                }
+
 
                                 ReportViewer reportViewer = new ReportViewer();
 
@@ -272,27 +366,26 @@ namespace NewISE.Controllers
                                 reportViewer.Width = Unit.Percentage(100);
                                 reportViewer.Height = Unit.Percentage(100);
 
+                                var datasource = new ReportDataSource("DataSetIndennitaBase");
 
-                                //var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
-                                
                                 reportViewer.Visible = true;
                                 reportViewer.ProcessingMode = ProcessingMode.Local;
-                                //reportViewer.LocalReport.ReportPath = @"~/Report/RptIndennitaBase.rdlc";
+
                                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaBase.rdlc";
                                 reportViewer.LocalReport.DataSources.Clear();
-                                //reportViewer.LocalReport.DataSources.Add(datasource);
-                                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
+                                reportViewer.LocalReport.DataSources.Add(datasource);
+                                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitaBase", rpt));
                                 reportViewer.LocalReport.Refresh();
 
-                                ReportParameter[] parameterValues = new ReportParameter[]
-                                {
-                                    new ReportParameter ("Nominativo",Nominativo),
-                                    new ReportParameter ("Ruolo",Ruolo),
-                                    new ReportParameter ("Livello",Livello),
-                                    new ReportParameter ("Decorrenza",Decorrenza),
-                                    new ReportParameter ("Ufficio",Ufficio)
-                                    
-                                };
+                                List<ReportParameter> parameterValues = new List<ReportParameter>();
+                                    parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                    parameterValues.Add(new ReportParameter("Ruolo", Ruolo));
+                                    parameterValues.Add(new ReportParameter("Livello", Livello));
+                                    parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                    parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+                                    //parameterValues.Add(new ReportParameter("indennitaBase", indennitaBase));
+                                    //parameterValues.Add(new ReportParameter("dataInizioValidita", dataInizioValidita));
+                                    //parameterValues.Add(new ReportParameter("dataFineValidita", dataFineValidita));
 
                                 reportViewer.LocalReport.SetParameters(parameterValues);
                                 ViewBag.ReportViewer = reportViewer;
@@ -301,6 +394,9 @@ namespace NewISE.Controllers
 
                         }
                     }
+
+                    
+
                 }
             }
 
@@ -481,6 +577,11 @@ namespace NewISE.Controllers
                             {
                                 string[] myString = new string[100];
                                 string[] myString2 = new string[100];
+                                string[] percentualeDisagio = new string[100];
+                                string[] CoefficienteDiSede = new string[100];
+
+                                string[] dataInizioValidita = new string[100];
+                                string[] dataFineValidita = new string[100];
 
 
                                 for (int j = 0; j < lDateVariazioni.Count; j++)
@@ -519,11 +620,19 @@ namespace NewISE.Controllers
                                             var CoefficienteSede = ci.CoefficienteDiSede;
                                             var IndennitaServizio = ci.IndennitaDiServizio;
 
+                                            //string[] array = new[] { "aaa", "bbb", "ccc" };
+                                            //DataSet dataSet = array.ToDataSet();
+
                                             //String myString = Convert.ToString(IndennitaBase).ToString();
                                             //char[] characters = myString.ToCharArray();
 
-                                                myString[j] = ci.IndennitaDiBase.ToString();
-                                                myString2[j] = ci.IndennitaDiServizio.ToString();
+                                                myString[j] = ci.IndennitaDiBase.ToString("0.00");
+                                                myString2[j] = ci.IndennitaDiServizio.ToString("F");
+                                                percentualeDisagio[j]  = ci.PercentualeDisagio.ToString("F");
+                                                CoefficienteDiSede[j] = ci.CoefficienteDiSede.ToString("0.00000");
+
+                                                dataInizioValidita[j] = Convert.ToDateTime(dv).ToShortDateString();
+                                                dataFineValidita[j] = Convert.ToDateTime(dvSucc).ToShortDateString();
                                         }
 
                                             ReportViewer reportViewer = new ReportViewer();
@@ -551,7 +660,11 @@ namespace NewISE.Controllers
                                                 new ReportParameter ("Ufficio",Ufficio),
                                                 //new ReportParameter ("DataInizioValidita",DataInizioValidita),
                                                 new ReportParameter ("myString",myString),
-                                                new ReportParameter ("myString2",myString2)
+                                                new ReportParameter ("myString2",myString2),
+                                                new ReportParameter ("percentualeDisagio",percentualeDisagio),
+                                                new ReportParameter ("CoefficienteDiSede",CoefficienteDiSede),
+                                                new ReportParameter ("dataInizioValidita",dataInizioValidita),
+                                                new ReportParameter ("dataFineValidita",dataFineValidita)
 
 
 

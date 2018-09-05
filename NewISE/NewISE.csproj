@@ -5559,6 +5559,7 @@
     <Compile Include="Models\DBModel\PeriodoMABModel.cs" />
     <Compile Include="Models\DBModel\MeseAnnoElaborazioneModel.cs" />
     <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
+    <Compile Include="Models\DBModel\RptIndennitaBaseModel.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
@@ -5774,6 +5775,11 @@
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel - Copy.cs" />
     <Compile Include="Models\ViewModel\VariazioneMABModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Dataset\DataSetIndennitaBase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetIndennitaBase.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dataset\DSIndennitaBase.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5992,6 +5998,17 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniPrecedenti.cshtml" />
     <Content Include="Views\Dataset\DSIndennitaBase.xsc">
       <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetIndennitaBase.xsc">
+      <DependentUpon>DataSetIndennitaBase.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetIndennitaBase.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetIndennitaBase.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetIndennitaBase.xss">
+      <DependentUpon>DataSetIndennitaBase.xsd</DependentUpon>
     </Content>
     <None Include="Views\Dataset\DSIndennitaBase.xsd">
       <SubType>Designer</SubType>
