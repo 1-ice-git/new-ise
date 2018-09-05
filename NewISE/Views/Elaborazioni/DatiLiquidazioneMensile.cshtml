@@ -1,8 +1,12 @@
 ﻿@using NewISE.Models.Enumeratori
 @model IEnumerable<NewISE.Models.ViewModel.LiquidazioneMensileViewModel>
 
+@{
+    decimal idAnnoMeseElaborato = (decimal)ViewData["idAnnoMeseElaborato"];
+}
 
 
+<div id="dialogRpt"></div>
 
 <div class="row">
     <div class="col-xs-12">
@@ -208,6 +212,78 @@
         ],
         //"order": [[0,"desc"],[2, "desc"]]
     });
+
+    //debugger;
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+
+    $("#dialogRpt").dialog({
+        autoOpen: false,
+        show: {
+            //effect: "blind",
+            //duration: 1000
+        },
+        hide: {
+            //effect: "explode",
+            //duration: 1000
+        },
+        close: function (event, ui) {
+            $('.container').removeClass("NoOverflow");
+        },
+        height: windowHeight, width: windowWidth
+
+
+    });
+
+    $("#btLiquidazioniMensili").on("click", function () {
+        //debugger;
+        $('.container').addClass("NoOverflow");
+
+        $("#dialogRpt").dialog("open");
+        $("#dialogRpt").css("background-color", "#ffffff");
+
+        var rotta = "/Elaborazioni/ReportLiquidazioniMensili";
+
+        var idAnnoMeseElaborato = @idAnnoMeseElaborato;
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#dialogRpt").empty();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#dialogRpt").html(result);
+
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    });
+
+
+
+
+
+
 </script>
 
 

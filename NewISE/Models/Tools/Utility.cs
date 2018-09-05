@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Helpers;
+using NewISE.Models.dtObj.ModelliCalcolo;
 
 
 namespace NewISE.Models.Tools
@@ -465,8 +466,16 @@ namespace NewISE.Models.Tools
         {
             return Convert.ToDecimal(data.Year.ToString() + data.Month.ToString().PadLeft(2, Convert.ToChar("0")));
         }
-
-
+        /// <summary>
+        /// Riporta in formato string il mese anno, es: Gennaio 2018
+        /// </summary>
+        /// <param name="mese"></param>
+        /// <param name="anno"></param>
+        /// <returns></returns>
+        public static string MeseAnnoTesto(int mese, int anno)
+        {
+            return (((EnumDescrizioneMesi)mese).ToString() + " " + anno.ToString()).ToString();
+        }
 
     }
 

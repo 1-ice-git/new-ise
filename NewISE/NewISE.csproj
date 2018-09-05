@@ -5774,6 +5774,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsLiquidazioniMensili.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Report\Elaborazioni\Modell\LiquidazioneMensileElabRpt.cs" />
     <Compile Include="Views\Dataset\DSIndennitaBase.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -6073,6 +6074,7 @@
     <Content Include="Views\VariazionePassaporto\ElencoPassaporto_Completato.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoCanoneMAB.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoImportoCanone.cshtml" />
+    <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6238,9 +6240,7 @@
     <Content Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
   <PropertyGroup>

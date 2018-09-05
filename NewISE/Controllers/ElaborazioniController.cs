@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.UI.WebControls;
+using Microsoft.Reporting.WebForms;
 using NewISE.EF;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.DBModel.dtObj;
@@ -14,6 +16,8 @@ using NewISE.Models.ViewModel;
 using NewISE.Models.DBModel;
 using NewISE.Models.Enumeratori;
 using RestSharp;
+using NewISE.Report.Elaborazioni.Modell;
+using RestSharp.Extensions;
 
 namespace NewISE.Controllers
 {
@@ -284,6 +288,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+            ViewData["idAnnoMeseElaborato"] = idAnnoMeseElaborato;
 
             return PartialView(lLm);
         }
@@ -597,6 +602,92 @@ namespace NewISE.Controllers
 
             return Json(new { msg = "I flussi mensili sono stati inviati.", err = "" });
         }
+
+        [HttpPost]
+        public ActionResult ReportLiquidazioniMensili(decimal idAnnoMeseElaborato)
+        {
+            //ViewData["annoMeseElab"] = annoMeseElab;
+
+
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+
+                var annoMeseElab = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElaborato);
+
+
+                ReportViewer reportViewer = new ReportViewer();
+
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                reportViewer.SizeToReportContent = true;
+                reportViewer.Width = Unit.Percentage(100);
+                reportViewer.Height = Unit.Percentage(100);
+
+
+                //var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
+
+                reportViewer.Visible = true;
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/Elaborazioni/rptLiquidazioniMensili.rdlc";
+                reportViewer.LocalReport.DataSources.Clear();
+                //reportViewer.LocalReport.DataSources.Add(datasource);
+                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
+                reportViewer.LocalReport.Refresh();
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                                    {
+                                    new ReportParameter ("parAnnoMeseElab", ("Mese/Anno elaborazione: " +  Utility.MeseAnnoTesto((int)annoMeseElab.MESE, (int)annoMeseElab.ANNO)).ToString())
+
+                                    };
+
+                List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+                List<LiquidazioneMensileElabRpt> lrptds = new List<LiquidazioneMensileElabRpt>();
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
+                }
+
+                if (lLm?.Any() ?? false)
+                {
+                    foreach (var lm in lLm)
+                    {
+                        LiquidazioneMensileElabRpt rptds = new LiquidazioneMensileElabRpt()
+                        {
+                            IdTeorici = lm.idTeorici,
+                            DescrizioneVoce = lm.Voci.descrizione,
+                            Nominativo = lm.Nominativo,
+                            DataRiferimento = Utility.MeseAnnoTesto((int)lm.meseRiferimento, (int)lm.annoRiferimento),
+                            Movimento = lm.TipoMovimento.DescMovimento,
+                            Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
+                            Voce = lm.Voci.codiceVoce,
+                            Inserimento = lm.tipoInserimento.ToString(),
+                            Importo = lm.Importo,
+                            Inviato = lm.Elaborato
+                        };
+
+                        lrptds.Add(rptds);
+                    }
+                }
+                reportViewer.LocalReport.SetParameters(parameterValues);
+
+                ReportDataSource _rsource = new ReportDataSource("DataSet1", lrptds);
+
+                reportViewer.LocalReport.DataSources.Add(_rsource);
+
+                reportViewer.LocalReport.Refresh();
+
+                ViewBag.ReportViewer = reportViewer;
+            }
+
+
+
+            return PartialView();
+
+        }
+
+
+
 
     }
 }
