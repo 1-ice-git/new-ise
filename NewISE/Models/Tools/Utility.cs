@@ -124,6 +124,8 @@ namespace NewISE.Models.Tools
                     }
                 }
 
+
+
                 if (ac.idRuoloUtente > 0)
                 {
                     using (ModelDBISE db = new ModelDBISE())

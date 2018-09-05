@@ -1,9 +1,22 @@
 ﻿@model IEnumerable<NewISE.Models.ViewModel.LiquidazioniDiretteViewModel>
 <div class="row">
     <div class="col-xs-12">
-        <div class="text-center" style="border-top-style: solid; max-height: 30px;">
-            <label class="text-info" style="font-size: 14px;">Liquidazioni dirette</label>
+        <div class="row">
+
+            <div class="col-xs-1">
+                <a id="btLiquidazioniDirette" class="btn btn-small btn-success" href="#" title="Stampa delle liquidazioni dirette inviate">
+                    <i class="fa fa-2x fa-print"></i>
+                </a>
+            </div>
+            <div class="col-xs-11">
+                <div class="text-center">
+                    <label class="text-info" style="font-size: 14px;">Liquidazioni dirette</label>
+                </div>
+            </div>
+
+
         </div>
+
         <table id="TabLiquidazioniDiretteInviate" cellspacing="0" class="table DimensioneFontTable">
             <thead>
                 <tr>
@@ -28,7 +41,7 @@
 
             <tbody>
                 @foreach (var item in Model)
-                {
+            {
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Nominativo)

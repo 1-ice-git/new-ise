@@ -52,13 +52,11 @@ namespace NewISE.Controllers
         //}
 
         [AllowAnonymous]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public void LoginGoogle(string ReturnUrl)
+        public void LoginGoogle(string returnUrl)
         {
 
 
-            var properties = new AuthenticationProperties { RedirectUri = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = ReturnUrl }) };
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }) };
 
             HttpContext.GetOwinContext().Authentication.Challenge(properties, "Google");
 
@@ -176,6 +174,7 @@ namespace NewISE.Controllers
         [HttpGet]
         public ActionResult Login(string returnUrl, string msgGoogle = "")
         {
+
             loginModel account = new loginModel();
             ViewBag.RetunUrl = returnUrl;
             if (msgGoogle != string.Empty)

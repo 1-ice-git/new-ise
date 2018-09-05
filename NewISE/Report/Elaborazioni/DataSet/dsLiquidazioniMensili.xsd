@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsLiquidazioniMensili" targetNamespace="http://tempuri.org/dsLiquidazioniMensili.xsd" xmlns:mstns="http://tempuri.org/dsLiquidazioniMensili.xsd" xmlns="http://tempuri.org/dsLiquidazioniMensili.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsLiquidazioniMensili" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsLiquidazioniMensili" msprop:Generator_UserDSName="dsLiquidazioniMensili">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dtLiquidazioniMensili" msprop:Generator_TableClassName="dtLiquidazioniMensiliDataTable" msprop:Generator_TableVarName="tabledtLiquidazioniMensili" msprop:Generator_TablePropName="dtLiquidazioniMensili" msprop:Generator_RowDeletingName="dtLiquidazioniMensiliRowDeleting" msprop:Generator_RowChangingName="dtLiquidazioniMensiliRowChanging" msprop:Generator_RowEvHandlerName="dtLiquidazioniMensiliRowChangeEventHandler" msprop:Generator_RowDeletedName="dtLiquidazioniMensiliRowDeleted" msprop:Generator_UserTableName="dtLiquidazioniMensili" msprop:Generator_RowChangedName="dtLiquidazioniMensiliRowChanged" msprop:Generator_RowEvArgName="dtLiquidazioniMensiliRowChangeEvent" msprop:Generator_RowClassName="dtLiquidazioniMensiliRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IdTeorici" msprop:Generator_ColumnVarNameInTable="columnIdTeorici" msprop:Generator_ColumnPropNameInRow="IdTeorici" msprop:Generator_ColumnPropNameInTable="IdTeoriciColumn" msprop:Generator_UserColumnName="IdTeorici" type="xs:decimal" />
+              <xs:element name="DescrizioneVoce" msprop:Generator_ColumnVarNameInTable="columnDescrizioneVoce" msprop:Generator_ColumnPropNameInRow="DescrizioneVoce" msprop:Generator_ColumnPropNameInTable="DescrizioneVoceColumn" msprop:Generator_UserColumnName="DescrizioneVoce" type="xs:string" />
+              <xs:element name="Voce" msprop:Generator_ColumnVarNameInTable="columnVoce" msprop:Generator_ColumnPropNameInRow="Voce" msprop:Generator_ColumnPropNameInTable="VoceColumn" msprop:Generator_UserColumnName="Voce" type="xs:string" />
+              <xs:element name="Movimento" msprop:Generator_ColumnVarNameInTable="columnMovimento" msprop:Generator_ColumnPropNameInRow="Movimento" msprop:Generator_ColumnPropNameInTable="MovimentoColumn" msprop:Generator_UserColumnName="Movimento" type="xs:string" />
+              <xs:element name="Inserimento" msprop:Generator_ColumnVarNameInTable="columnInserimento" msprop:Generator_ColumnPropNameInRow="Inserimento" msprop:Generator_ColumnPropNameInTable="InserimentoColumn" msprop:Generator_UserColumnName="Inserimento" type="xs:string" />
+              <xs:element name="Liquidazione" msprop:Generator_ColumnVarNameInTable="columnLiquidazione" msprop:Generator_ColumnPropNameInRow="Liquidazione" msprop:Generator_ColumnPropNameInTable="LiquidazioneColumn" msprop:Generator_UserColumnName="Liquidazione" type="xs:string" />
+              <xs:element name="DataRiferimento" msprop:Generator_ColumnVarNameInTable="columnDataRiferimento" msprop:Generator_ColumnPropNameInRow="DataRiferimento" msprop:Generator_ColumnPropNameInTable="DataRiferimentoColumn" msprop:Generator_UserColumnName="DataRiferimento" type="xs:decimal" />
+              <xs:element name="Importo" msprop:Generator_ColumnVarNameInTable="columnImporto" msprop:Generator_ColumnPropNameInRow="Importo" msprop:Generator_ColumnPropNameInTable="ImportoColumn" msprop:Generator_UserColumnName="Importo" type="xs:decimal" />
+              <xs:element name="Inviato" msprop:Generator_ColumnVarNameInTable="columnInviato" msprop:Generator_ColumnPropNameInRow="Inviato" msprop:Generator_ColumnPropNameInTable="InviatoColumn" msprop:Generator_UserColumnName="Inviato" type="xs:boolean" default="false" />
+              <xs:element name="Nominativo" msprop:Generator_ColumnVarNameInTable="columnNominativo" msprop:Generator_ColumnPropNameInRow="Nominativo" msprop:Generator_ColumnPropNameInTable="NominativoColumn" msprop:Generator_UserColumnName="Nominativo" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:dtLiquidazioniMensili" />
+      <xs:field xpath="mstns:IdTeorici" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

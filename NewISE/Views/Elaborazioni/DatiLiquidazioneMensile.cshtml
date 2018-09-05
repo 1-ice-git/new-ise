@@ -6,6 +6,19 @@
 
 <div class="row">
     <div class="col-xs-12">
+        <div class="row">
+
+            <div class="col-xs-1">
+                <a id="btLiquidazioniMensili" class="btn btn-small btn-success" href="#" title="Stampa delle liquidazioni mensili">
+                    <i class="fa fa-2x fa-print"></i>
+                </a>
+            </div>
+            <div class="col-xs-11">
+                <div class="text-center">
+                    <label class="text-info" style="font-size: 14px;">Liquidazioni mensili</label>
+                </div>
+            </div>
+        </div>
         <table id="TabLiquidazioniMensili" cellspacing="0" class="table DimensioneFontTable">
             <thead>
                 <tr>
@@ -38,9 +51,9 @@
             </thead>
             <tbody>
                 @foreach (var item in Model)
+            {
+                if (item.Elaborato == false)
                 {
-                    if (item.Elaborato == false)
-                    {
                         <tr>
                             <td>
                                 @Html.HiddenFor(modelItem => item.idTeorici)
