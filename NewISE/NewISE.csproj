@@ -5559,6 +5559,7 @@
     <Compile Include="Models\DBModel\PeriodoMABModel.cs" />
     <Compile Include="Models\DBModel\MeseAnnoElaborazioneModel.cs" />
     <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
+    <Compile Include="Models\DBModel\RptAnticipoIndennitàdiSistemazione_Lorda.cs" />
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoRientroModel.cs" />
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\RptIndennitaBaseModel.cs" />
@@ -5778,6 +5779,11 @@
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel - Copy.cs" />
     <Compile Include="Models\ViewModel\VariazioneMABModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -6022,6 +6028,17 @@
     </Content>
     <Content Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.xsc">
       <DependentUpon>DataSetContributoOmnicomprensivoRientro.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xsc">
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetAnticipoIndennitàdiSistemazioneLorda.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xss">
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
     </Content>
     <None Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.xsd">
       <SubType>Designer</SubType>
@@ -6303,6 +6320,7 @@
     <Content Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
   <PropertyGroup>
