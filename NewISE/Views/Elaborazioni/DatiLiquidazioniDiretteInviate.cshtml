@@ -1,4 +1,11 @@
 ﻿@model IEnumerable<NewISE.Models.ViewModel.LiquidazioniDiretteViewModel>
+
+@{
+    decimal idAnnoMeseElaborato = (decimal)ViewData["idAnnoMeseElaborato"];
+}
+
+<div id="dialogRptLiqDiretteInviate"></div>
+
 <div class="row">
     <div class="col-xs-12">
         <div class="row">
@@ -101,7 +108,7 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "scrollY": 150,
+        "scrollY": 110,
         "scrollCollapse": true,
         "autoWidth": false,
         "fixedHeader": {
@@ -116,6 +123,102 @@
         //        }
         //],
         //"order": [[0,"desc"],[2, "desc"]]
+
+    });
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+
+    $("#dialogRptLiqDiretteInviate").dialog({
+        autoOpen: false,
+        show: {
+            //effect: "blind",
+            //duration: 1000
+        },
+        hide: {
+            //effect: "explode",
+            //duration: 1000
+        },
+        close: function (event, ui) {
+            $('.container').removeClass("NoOverflow");
+        },
+        height: windowHeight, width: windowWidth
+
+
+    });
+
+    $("#btLiquidazioniDirette").on("click", function () {
+        //debugger;
+
+        var rottaVer = "/Elaborazioni/VerificaPresenzaDatiLiquidazioneDiretta";
+
+        var idAnnoMeseElaborato = @idAnnoMeseElaborato;
+
+        $.ajax({
+            type: "POST",
+            url: rottaVer,
+            data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Elab: true },
+            async: false,
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "") {
+                    ErroreElaborazioneAjax(result.err);
+                } else {
+                    if (result.verDati) {
+
+                        $('.container').addClass("NoOverflow");
+
+                        $("#dialogRptLiqDiretteInviate").dialog("open");
+                        $("#dialogRptLiqDiretteInviate").css("background-color", "#ffffff");
+
+                        var rotta = "/Elaborazioni/ReportLiquidazioniDirette";
+
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Elab: true },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                $("#dialogRptLiqDiretteInviate").empty();
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                $("#dialogRptLiqDiretteInviate").html(result);
+
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                ErroreElaborazioneAjax(msg);
+                            }
+
+                        });
+                    } else {
+                        InfoElaborazioneAjax("Non sono presenti dati per effettuare la stampa.");
+                    }
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
 
     });
 

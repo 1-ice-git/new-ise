@@ -1,8 +1,24 @@
 ﻿@model IEnumerable<NewISE.Models.ViewModel.LiquidazioniDiretteViewModel>
+
+@{
+    decimal idAnnoMeseElaborato = (decimal)ViewData["idAnnoMeseElaborato"];
+}
+
+<div id="dialogRptLiqDiretteDaInviare"></div>
+
 <div class="row">
     <div class="col-xs-12">
-        <div class="text-center">
-            <label class="text-info" style="font-size: 14px;">Liquidazioni dirette</label>
+        <div class="row">
+            <div class="col-xs-1">
+                <a id="btLiquidazioniDiretteDaInviare" class="btn btn-small btn-success" href="#" title="Stampa delle liquidazioni dirette da inviare">
+                    <i class="fa fa-2x fa-print"></i>
+                </a>
+            </div>
+            <div class="col-xs-11">
+                <div class="text-center">
+                    <label class="text-info" style="font-size: 14px;">Liquidazioni dirette</label>
+                </div>
+            </div>
         </div>
         <table id="TabLiquidazioniDiretteDaInviare" cellspacing="0" class="table DimensioneFontTable tabElaborazioniDirette">
             <thead>
@@ -97,7 +113,7 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "scrollY": 150,
+        "scrollY": 110,
         "scrollCollapse": true,
         "columnDefs": [
                 {
@@ -107,5 +123,103 @@
                 }
         ],
         //"order": [[0,"desc"],[2, "desc"]]
+    });
+
+
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+
+    $("#dialogRptLiqDiretteDaInviare").dialog({
+        autoOpen: false,
+        show: {
+            //effect: "blind",
+            //duration: 1000
+        },
+        hide: {
+            //effect: "explode",
+            //duration: 1000
+        },
+        close: function (event, ui) {
+            $('.container').removeClass("NoOverflow");
+        },
+        height: windowHeight, width: windowWidth
+
+
+    });
+
+    $("#btLiquidazioniDiretteDaInviare").on("click", function () {
+        //debugger;
+
+        var rottaVer = "/Elaborazioni/VerificaPresenzaDatiLiquidazioneDiretta";
+
+        var idAnnoMeseElaborato = @idAnnoMeseElaborato;
+
+        $.ajax({
+            type: "POST",
+            url: rottaVer,
+            data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Elab: false },
+            async: false,
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "") {
+                    ErroreElaborazioneAjax(result.err);
+                } else {
+                    if (result.verDati) {
+
+                        $('.container').addClass("NoOverflow");
+
+                        $("#dialogRptLiqDiretteDaInviare").dialog("open");
+                        $("#dialogRptLiqDiretteDaInviare").css("background-color", "#ffffff");
+
+                        var rotta = "/Elaborazioni/ReportLiquidazioniDirette";
+
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Elab: false },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                $("#dialogRptLiqDiretteDaInviare").empty();
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                $("#dialogRptLiqDiretteDaInviare").html(result);
+
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                ErroreElaborazioneAjax(msg);
+                            }
+
+                        });
+                    } else {
+                        InfoElaborazioneAjax("Non sono presenti dati per effettuare la stampa.");
+                    }
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
     });
 </script>

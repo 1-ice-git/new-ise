@@ -1032,7 +1032,17 @@ namespace NewISE.Models.DBModel.dtObj
                             codiceVoce = t.VOCI.CODICEVOCE,
                             descrizione =
                                 t.VOCI.DESCRIZIONE + " (" + t.ELABINDSISTEMAZIONE.PERCANTSALDOUNISOL.ToString() + "% - " + tipoOperazione + ")",
-                            flagDiretto = t.DIRETTO
+                            flagDiretto = t.DIRETTO,
+                            TipoLiquidazione = new TipoLiquidazioneModel()
+                            {
+                                idTipoLiquidazione = t.VOCI.IDTIPOLIQUIDAZIONE,
+                                descrizione = t.VOCI.TIPOLIQUIDAZIONE.DESCRIZIONE,
+                            },
+                            TipoVoce = new TipoVoceModel()
+                            {
+                                idTipoVoce = t.VOCI.IDTIPOVOCE,
+                                descrizione = t.VOCI.TIPOVOCE.DESCRIZIONE
+                            }
                         },
                         Data = t.DATAOPERAZIONE,
                         Importo = t.IMPORTO,

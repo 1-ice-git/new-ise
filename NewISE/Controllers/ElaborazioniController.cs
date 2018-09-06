@@ -245,6 +245,8 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+            ViewData["idAnnoMeseElaborato"] = idAnnoMeseElaborato;
+
             return PartialView(lLd);
         }
 
@@ -265,6 +267,8 @@ namespace NewISE.Controllers
 
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
+
+            ViewData["idAnnoMeseElaborato"] = idAnnoMeseElaborato;
 
             return PartialView(lLd);
         }
@@ -604,82 +608,206 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "1 ,2")]
+        public JsonResult VerificaPresenzaDatiLiquidazioneDiretta(decimal idAnnoMeseElaborato, bool Elab = false)
+        {
+            List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
+
+            bool verDati = false;
+
+            try
+            {
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).Where(a => a.Elaborato == Elab).ToList();
+
+                    if (lLd?.Any() ?? false)
+                    {
+                        verDati = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { verDati = verDati, err = ex.Message });
+            }
+
+            return Json(new { verDati = verDati, err = "" });
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "1 ,2")]
+        public ActionResult ReportLiquidazioniDirette(decimal idAnnoMeseElaborato, bool Elab = false)
+        {
+            List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
+            string Elaborato = "Liquidazioni dirette da elaborare";
+
+            try
+            {
+                if (Elab)
+                {
+                    Elaborato = "Liquidazioni dirette elaborate";
+                }
+
+
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    lLd = dte.PrelevaLiquidazioniDirette(idAnnoMeseElaborato).Where(a => a.Elaborato == Elab).ToList();
+                }
+
+                if (lLd?.Any() ?? false)
+                {
+                    using (ModelDBISE db = new ModelDBISE())
+                    {
+                        var annoMeseElab = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElaborato);
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        reportViewer.Visible = true;
+
+
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/Elaborazioni/rptLiquidazioniDirette.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        reportViewer.LocalReport.Refresh();
+
+                        ReportParameter[] parameterValues = new ReportParameter[]
+                        {
+                            new ReportParameter("rptParMeseAnnoElab", ("Mese/Anno elaborazione: " + Utility.MeseAnnoTesto((int) annoMeseElab.MESE, (int) annoMeseElab.ANNO)).ToString()),
+                            new ReportParameter("rptParElaborato", Elaborato),
+                        };
+
+                        List<LiquidazioniDiretteRpt> lldrpt = new List<LiquidazioniDiretteRpt>();
+
+                        foreach (var ld in lLd)
+                        {
+                            LiquidazioniDiretteRpt ldrpt = new LiquidazioniDiretteRpt()
+                            {
+                                IdTeorico = ld.idTeorici,
+                                Nominativo = ld.Nominativo,
+                                DescrizioneVoce = ld.Voci.descrizione,
+                                CodiceVoce = ld.Voci.codiceVoce,
+                                Importo = ld.Importo,
+                                Data = ld.Data,
+                            };
+
+                            lldrpt.Add(ldrpt);
+                        }
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+
+                        ReportDataSource _rsource = new ReportDataSource("DataSet1", lldrpt);
+
+                        reportViewer.LocalReport.DataSources.Add(_rsource);
+
+                        reportViewer.LocalReport.Refresh();
+
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView();
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "1 ,2")]
         public ActionResult ReportLiquidazioniMensili(decimal idAnnoMeseElaborato)
         {
             //ViewData["annoMeseElab"] = annoMeseElab;
 
 
-
-            using (ModelDBISE db = new ModelDBISE())
+            try
             {
-
-                var annoMeseElab = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElaborato);
-
-
-                ReportViewer reportViewer = new ReportViewer();
-
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                reportViewer.SizeToReportContent = true;
-                reportViewer.Width = Unit.Percentage(100);
-                reportViewer.Height = Unit.Percentage(100);
-
-
-                //var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
-
-                reportViewer.Visible = true;
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/Elaborazioni/rptLiquidazioniMensili.rdlc";
-                reportViewer.LocalReport.DataSources.Clear();
-                //reportViewer.LocalReport.DataSources.Add(datasource);
-                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
-                reportViewer.LocalReport.Refresh();
-
-                ReportParameter[] parameterValues = new ReportParameter[]
-                                    {
-                                    new ReportParameter ("parAnnoMeseElab", ("Mese/Anno elaborazione: " +  Utility.MeseAnnoTesto((int)annoMeseElab.MESE, (int)annoMeseElab.ANNO)).ToString())
-
-                                    };
-
-                List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
-                List<LiquidazioneMensileElabRpt> lrptds = new List<LiquidazioneMensileElabRpt>();
-                using (dtElaborazioni dte = new dtElaborazioni())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
-                }
 
-                if (lLm?.Any() ?? false)
-                {
-                    foreach (var lm in lLm)
+                    var annoMeseElab = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElaborato);
+
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    reportViewer.Visible = true;
+
+
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/Elaborazioni/rptLiquidazioniMensili.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    reportViewer.LocalReport.Refresh();
+
+                    ReportParameter[] parameterValues = new ReportParameter[]
                     {
-                        LiquidazioneMensileElabRpt rptds = new LiquidazioneMensileElabRpt()
-                        {
-                            IdTeorici = lm.idTeorici,
-                            DescrizioneVoce = lm.Voci.descrizione,
-                            Nominativo = lm.Nominativo,
-                            DataRiferimento = Utility.MeseAnnoTesto((int)lm.meseRiferimento, (int)lm.annoRiferimento),
-                            Movimento = lm.TipoMovimento.DescMovimento,
-                            Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
-                            Voce = lm.Voci.codiceVoce,
-                            Inserimento = lm.tipoInserimento.ToString(),
-                            Importo = lm.Importo,
-                            Inviato = lm.Elaborato
-                        };
+                    new ReportParameter("parAnnoMeseElab",
+                        ("Mese/Anno elaborazione: " +
+                         Utility.MeseAnnoTesto((int) annoMeseElab.MESE, (int) annoMeseElab.ANNO)).ToString())
 
-                        lrptds.Add(rptds);
+                    };
+
+                    List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+                    List<LiquidazioneMensileElabRpt> lrptds = new List<LiquidazioneMensileElabRpt>();
+
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
                     }
+
+                    if (lLm?.Any() ?? false)
+                    {
+                        foreach (var lm in lLm)
+                        {
+                            LiquidazioneMensileElabRpt rptds = new LiquidazioneMensileElabRpt()
+                            {
+                                IdTeorici = lm.idTeorici,
+                                DescrizioneVoce = lm.Voci.descrizione,
+                                Nominativo = lm.Nominativo,
+                                DataRiferimento = Utility.MeseAnnoTesto((int)lm.meseRiferimento, (int)lm.annoRiferimento),
+                                Movimento = lm.TipoMovimento.DescMovimento,
+                                Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
+                                Voce = lm.Voci.codiceVoce,
+                                Inserimento = lm.tipoInserimento.ToString(),
+                                Importo = lm.Importo,
+                                Inviato = lm.Elaborato
+                            };
+
+                            lrptds.Add(rptds);
+                        }
+                    }
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+
+                    ReportDataSource _rsource = new ReportDataSource("DataSet1", lrptds);
+
+                    reportViewer.LocalReport.DataSources.Add(_rsource);
+
+                    reportViewer.LocalReport.Refresh();
+
+                    ViewBag.ReportViewer = reportViewer;
                 }
-                reportViewer.LocalReport.SetParameters(parameterValues);
-
-                ReportDataSource _rsource = new ReportDataSource("DataSet1", lrptds);
-
-                reportViewer.LocalReport.DataSources.Add(_rsource);
-
-                reportViewer.LocalReport.Refresh();
-
-                ViewBag.ReportViewer = reportViewer;
             }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
 
+            }
 
 
             return PartialView();

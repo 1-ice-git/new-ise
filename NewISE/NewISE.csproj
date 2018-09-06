@@ -4686,6 +4686,17 @@
     <Content Include="Report\Elaborazioni\DataSet\dsLiquidazioniMensili.xsc">
       <DependentUpon>dsLiquidazioniMensili.xsd</DependentUpon>
     </Content>
+    <Content Include="Report\Elaborazioni\DataSet\dsLiquidazioniDirette.xsc">
+      <DependentUpon>dsLiquidazioniDirette.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\Elaborazioni\DataSet\dsLiquidazioniDirette.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsLiquidazioniDirette.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\Elaborazioni\DataSet\dsLiquidazioniDirette.xss">
+      <DependentUpon>dsLiquidazioniDirette.xsd</DependentUpon>
+    </Content>
     <None Include="Report\Elaborazioni\DataSet\dsLiquidazioniMensili.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -5769,11 +5780,17 @@
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel - Copy.cs" />
     <Compile Include="Models\ViewModel\VariazioneMABModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\Elaborazioni\DataSet\dsLiquidazioniDirette.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsLiquidazioniDirette.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Report\Elaborazioni\DataSet\dsLiquidazioniMensili.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsLiquidazioniMensili.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Report\Elaborazioni\Modell\LiquidazioniDiretteRpt.cs" />
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioneMensileElabRpt.cs" />
     <Compile Include="Views\Dataset\DSIndennitaBase.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6075,6 +6092,7 @@
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoCanoneMAB.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoImportoCanone.cshtml" />
     <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml" />
+    <Content Include="Views\Elaborazioni\ReportLiquidazioniDirette.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6240,7 +6258,12 @@
     <Content Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc" />
+    <Content Include="Report\Elaborazioni\rptLiquidazioniDirette.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
   <PropertyGroup>
