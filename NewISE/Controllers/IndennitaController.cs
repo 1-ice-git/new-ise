@@ -1760,11 +1760,14 @@ namespace NewISE.Controllers
         }
         public ActionResult RptIndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
+            List<RptIndSistemazioneLordaModel> rpt = new List<RptIndSistemazioneLordaModel>();
+
 
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
@@ -1780,38 +1783,136 @@ namespace NewISE.Controllers
                         string Livello = liv1.Livello.DescLivello;
                         string Ufficio = tm.Ufficio.descUfficio;
 
-                        ReportViewer reportViewer = new ReportViewer();
+                        var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                        var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
 
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
 
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
 
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
+                        #region Variazioni Indennità di Sistemazione
 
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                        var ll =
+                            db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
+                            .Where(a => a.ANNULLATO == false)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                        foreach (var ib in ll)
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                            DateTime dtVar = new DateTime();
 
-                        };
+                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = ib.DATAINIZIOVALIDITA;
+                            }
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
 
-                    }
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
+                            }
+                        }
+
+                        #endregion
+
+                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                        if (lDateVariazioni?.Any() ?? false)
+                        {
+                            for (int j = 0; j < lDateVariazioni.Count; j++)
+                            {
+                                DateTime dv = lDateVariazioni[j];
+
+                                if (dv < Utility.DataFineStop())
+                                {
+                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    {
+                                            RptIndSistemazioneLordaModel rpts = new RptIndSistemazioneLordaModel()
+                                            {
+
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                IndennitaPersonale = ci.IndennitaPersonale,
+                                                CoefficenteMaggiorazione = ci.CoefficienteIndennitaSistemazione,
+                                                IndSistemazioneLorda = ci.IndennitaSistemazioneLorda
+
+                                            };
+
+                                            rpt.Add(rpts);
+
+                                        }
+
+                                }
+                            }
+                        }
+
+
+                            //ReportViewer reportViewer = new ReportViewer();
+
+                            //reportViewer.ProcessingMode = ProcessingMode.Local;
+                            //reportViewer.SizeToReportContent = true;
+                            //reportViewer.Width = Unit.Percentage(100);
+                            //reportViewer.Height = Unit.Percentage(100);
+
+                            ////var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                            //reportViewer.Visible = true;
+                            //reportViewer.ProcessingMode = ProcessingMode.Local;
+                            //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
+                            //reportViewer.LocalReport.DataSources.Clear();
+                            ////reportViewer.LocalReport.DataSources.Add(datasource);
+
+                            //reportViewer.LocalReport.Refresh();
+                            //reportViewer.ShowReportBody = true;
+
+                            //ReportParameter[] parameterValues = new ReportParameter[]
+                            //{
+                            //    new ReportParameter ("Nominativo",Nominativo),
+                            //    new ReportParameter ("Livello",Livello),
+                            //    new ReportParameter ("Decorrenza",Decorrenza),
+                            //    new ReportParameter ("Ufficio",Ufficio)
+
+                            //};
+
+                            //reportViewer.LocalReport.SetParameters(parameterValues);
+                            //ViewBag.ReportViewer = reportViewer;
+
+                            ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            var datasource = new ReportDataSource("DataSetIndennitàdiSistemazioneLorda");
+
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitàdiSistemazioneLorda", rpt));
+                            reportViewer.LocalReport.Refresh();
+
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
+
+                        }
                 }
-
+                }
 
             }
             catch (Exception ex)
