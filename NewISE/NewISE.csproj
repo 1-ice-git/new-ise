@@ -5818,7 +5818,6 @@
     </Compile>
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioniDiretteRpt.cs" />
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioneMensileElabRpt.cs" />
-
     <Compile Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -6442,16 +6441,13 @@
     <Content Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-<<<<<<< HEAD
     <Content Include="Report\Elaborazioni\rptLiquidazioniDirette.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-=======
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
->>>>>>> DF_indennità
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
   <PropertyGroup>
