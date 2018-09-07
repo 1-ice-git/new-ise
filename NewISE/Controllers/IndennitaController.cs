@@ -2963,6 +2963,7 @@ namespace NewISE.Controllers
                                                 IndennitaRichiamo = ci.IndennitaRichiamoLordo,
                                                 AnticipoContrOmniComprensivoRientro = ci.AnticipoContributoOmnicomprensivoPartenza,
                                                 SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza
+                                                                                               
                                             };
 
                                             rpt.Add(rpts);
