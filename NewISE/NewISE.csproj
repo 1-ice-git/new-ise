@@ -5563,6 +5563,7 @@
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoRientroModel.cs" />
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\RptIndennitaBaseModel.cs" />
+    <Compile Include="Models\DBModel\RptIndennitaPersonaleModel.cs" />
     <Compile Include="Models\DBModel\RptIndennitaServizioModel.cs" />
     <Compile Include="Models\DBModel\RptIndennitàRichiamoLordaModel.cs" />
     <Compile Include="Models\DBModel\RptIndSistemazioneLordaModel.cs" />
@@ -5802,6 +5803,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetIndennitaBase.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetIndennitaPersonale.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetIndennitaPersonale.xsd</DependentUpon>
     </Compile>
     <Compile Include="Views\Dataset\DataSetIndennitaServizio.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6093,6 +6099,17 @@
     </Content>
     <Content Include="Views\Dataset\DataSetIndennitaServizio.xsc">
       <DependentUpon>DataSetIndennitaServizio.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetIndennitaPersonale.xsc">
+      <DependentUpon>DataSetIndennitaPersonale.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetIndennitaPersonale.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetIndennitaPersonale.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetIndennitaPersonale.xss">
+      <DependentUpon>DataSetIndennitaPersonale.xsd</DependentUpon>
     </Content>
     <None Include="Views\Dataset\DataSetIndennitaServizio.xsd">
       <SubType>Designer</SubType>
