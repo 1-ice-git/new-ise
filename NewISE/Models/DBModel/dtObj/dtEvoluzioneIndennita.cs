@@ -478,7 +478,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #endregion
 
-
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                     if (lDateVariazioni?.Any() ?? false)
@@ -745,7 +744,6 @@ namespace NewISE.Models.DBModel.dtObj
                     var indennita = trasferimento.INDENNITA;
 
                     List<DateTime> lDateVariazioni = new List<DateTime>();
-                    
 
                     #region Variazioni percentuale maggiorazione figli
 
@@ -951,7 +949,6 @@ namespace NewISE.Models.DBModel.dtObj
                 throw;
             }
         }
-
         public IList<EvoluzioneIndennitaModel> GetMaggiorazioniConiugeEvoluzione(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -1735,11 +1732,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
 
                     var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-
-
-
                     List<DateTime> lDateVariazioni = new List<DateTime>();
-
 
                     #region Variazioni Richiamo
 
