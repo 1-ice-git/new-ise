@@ -5806,7 +5806,6 @@
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel - Copy.cs" />
     <Compile Include="Models\ViewModel\VariazioneMABModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-<<<<<<< HEAD
     <Compile Include="Report\Elaborazioni\DataSet\dsLiquidazioniDirette.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5819,7 +5818,7 @@
     </Compile>
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioniDiretteRpt.cs" />
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioneMensileElabRpt.cs" />
-=======
+
     <Compile Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5870,7 +5869,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetMaggiorazioniFigli.xsd</DependentUpon>
     </Compile>
->>>>>>> DF_indennità
     <Compile Include="Views\Dataset\DSIndennitaBase.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
