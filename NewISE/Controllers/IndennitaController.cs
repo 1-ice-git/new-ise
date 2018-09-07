@@ -181,15 +181,15 @@ namespace NewISE.Controllers
 
         }
 
-        DSIndennitaBase ds = new DSIndennitaBase();
+        DataSetIndennitaBase ds = new DataSetIndennitaBase();
         public ActionResult RptIndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             List<LivelloDipendenteModel> ldm = new List<LivelloDipendenteModel>();
+            List<RptIndennitaBaseModel> rpt = new List<RptIndennitaBaseModel>();
 
             try
             {
-
                 using (ModelDBISE db = new ModelDBISE())
                 {
 
@@ -236,34 +236,126 @@ namespace NewISE.Controllers
                                 string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                                 string Ufficio = tm.Ufficio.descUfficio;
 
-                                //libm = (from e in ll
-                                //        select new IndennitaBaseModel()
-                                //        {
-                                //            idIndennitaBase = e.IDINDENNITABASE,
-                                //            idLivello = e.IDLIVELLO,
-                                //            dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                //            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                //            valore = valore,
-                                //            //valoreResponsabile = e.VALORERESP,
-                                //            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                //            Livello = new LivelloModel()
-                                //            {
-                                //                idLivello = e.LIVELLI.IDLIVELLO,
-                                //                DescLivello = e.LIVELLI.LIVELLO
-                                //            },
-                                //        }).ToList();
+                                libm = (from e in ll
+                                        select new IndennitaBaseModel()
+                                        {
+                                            idIndennitaBase = e.IDINDENNITABASE,
+                                            idLivello = e.IDLIVELLO,
+                                            dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
+                                            valore = valore,
+                                            //valoreResponsabile = e.VALORERESP,
+                                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                            Livello = new LivelloModel()
+                                            {
+                                                idLivello = e.LIVELLI.IDLIVELLO,
+                                                DescLivello = e.LIVELLI.LIVELLO
+                                            },
+                                        }).ToList();
+
+                                
+
+                                var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                                var indennita = trasferimento.INDENNITA;
+
+                                List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                                var ll1 =
+                                    db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
+                                    .Where(a => a.ANNULLATO == false)
+                                    .OrderBy(a => a.IDLIVELLO)
+                                    .ThenBy(a => a.DATAINIZIOVALIDITA)
+                                    .ThenBy(a => a.DATAFINEVALIDITA)
+                                    .ToList();
 
 
-                                // ****************************************************************************
+                                using (dtTrasferimento dttrasf = new dtTrasferimento())
+                                {
+                                    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                                    {
+                                        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
+                                        dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
+                                        
+                                    }
+                                }
 
-                                // set param values, not really doing anything except showing up in the report,
-                                // after the fact.
-                                //string paraStartDate = Convert.ToDateTime("1/1/2009").ToShortDateString();
-                                //string paraEndDate = Convert.ToDateTime("12/1/2009").ToShortDateString();
-                                //ReportParameter[] param = new ReportParameter[2];
-                                //param[0] = new ReportParameter("paraStartDate", paraStartDate, false);
-                                //param[1] = new ReportParameter("paraEndDate", paraEndDate, false);
-                                //this.reportViewer.LocalReport.SetParameters(param);
+                                string[] indennitaBase = new string[100];
+                                string[] dataInizioValidita = new string[100];
+                                string[] dataFineValidita = new string[100];
+
+                                foreach (var ib in ll1)
+                                {
+                                    DateTime dtVar = new DateTime();
+
+                                    if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                    {
+                                        dtVar = trasferimento.DATAPARTENZA;
+                                    }
+                                    else
+                                    {
+                                        dtVar = ib.DATAINIZIOVALIDITA;
+                                    }
+
+
+                                    if (!lDateVariazioni.Contains(dtVar))
+                                    {
+                                        lDateVariazioni.Add(dtVar);
+                                        lDateVariazioni.Sort();
+                                    }
+                                }
+
+                                lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                                if (lDateVariazioni?.Any() ?? false)
+                                {
+                                    for (int j = 0; j < lDateVariazioni.Count; j++)
+                                    {
+                                        DateTime dv = lDateVariazioni[j];
+
+                                        if (dv < Utility.DataFineStop())
+                                        {
+                                            DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                            {
+                                                //IndennitaBaseModel xx = new IndennitaBaseModel();
+                                                RptIndennitaBaseModel rpts = new RptIndennitaBaseModel()
+                                                {
+                                                    IndennitaBase = ci.IndennitaDiBase,
+                                                    DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                    DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString()
+                                                    
+                                                };
+
+                                                rpt.Add(rpts);
+
+                                                //xx.dataInizioValidita = dv;
+                                                //xx.dataFineValidita = dvSucc;
+                                                //xx.valore = ci.IndennitaDiBase;
+
+                                                //var DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString();
+                                                //var DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString();
+
+                                                //var IndennitaBase = ci.IndennitaDiBase;
+                                                //var test = ci.IndennitaDiBase.ToString();
+                                                //var PercentualeDisagio = ci.PercentualeDisagio;
+                                                //var CoefficienteSede = ci.CoefficienteDiSede;
+                                                //var IndennitaServizio = ci.IndennitaDiServizio;
+
+                                                ////string myString2 = Convert.ToString(IndennitaBase).ToString();
+                                                ////char[] characters = myString2.ToArray();
+
+                                                //indennitaBase[j] = ci.IndennitaDiBase.ToString("0.00");
+                                                //dataInizioValidita[j] = Convert.ToDateTime(dv).ToShortDateString();
+                                                //dataFineValidita[j] = Convert.ToDateTime(dvSucc).ToShortDateString();
+
+
+
+                                            }
+                                        }
+                                    }
+                                }
+
 
                                 ReportViewer reportViewer = new ReportViewer();
 
@@ -272,27 +364,26 @@ namespace NewISE.Controllers
                                 reportViewer.Width = Unit.Percentage(100);
                                 reportViewer.Height = Unit.Percentage(100);
 
+                                var datasource = new ReportDataSource("DataSetIndennitaBase");
 
-                                //var datasource = new ReportDataSource("DSIndennitaBase", ll.ToList());
-                                
                                 reportViewer.Visible = true;
                                 reportViewer.ProcessingMode = ProcessingMode.Local;
-                                //reportViewer.LocalReport.ReportPath = @"~/Report/RptIndennitaBase.rdlc";
+
                                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaBase.rdlc";
                                 reportViewer.LocalReport.DataSources.Clear();
-                                //reportViewer.LocalReport.DataSources.Add(datasource);
-                                //reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DSIndennitaBase", ds.Tables[0]));
+                                reportViewer.LocalReport.DataSources.Add(datasource);
+                                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitaBase", rpt));
                                 reportViewer.LocalReport.Refresh();
 
-                                ReportParameter[] parameterValues = new ReportParameter[]
-                                {
-                                    new ReportParameter ("Nominativo",Nominativo),
-                                    new ReportParameter ("Ruolo",Ruolo),
-                                    new ReportParameter ("Livello",Livello),
-                                    new ReportParameter ("Decorrenza",Decorrenza),
-                                    new ReportParameter ("Ufficio",Ufficio)
-                                    
-                                };
+                                List<ReportParameter> parameterValues = new List<ReportParameter>();
+                                    parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                    parameterValues.Add(new ReportParameter("Ruolo", Ruolo));
+                                    parameterValues.Add(new ReportParameter("Livello", Livello));
+                                    parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                    parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+                                    //parameterValues.Add(new ReportParameter("indennitaBase", indennitaBase));
+                                    //parameterValues.Add(new ReportParameter("dataInizioValidita", dataInizioValidita));
+                                    //parameterValues.Add(new ReportParameter("dataFineValidita", dataFineValidita));
 
                                 reportViewer.LocalReport.SetParameters(parameterValues);
                                 ViewBag.ReportViewer = reportViewer;
@@ -301,6 +392,9 @@ namespace NewISE.Controllers
 
                         }
                     }
+
+                    
+
                 }
             }
 
@@ -339,12 +433,16 @@ namespace NewISE.Controllers
             }
 
         }
-        
+
+        DataSetIndennitaServizio DataSetIndennitaServizio = new DataSetIndennitaServizio();
         public ActionResult RptIndennitaServizio(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
 
-           
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<LivelloDipendenteModel> ldm = new List<LivelloDipendenteModel>();
+            List<RptIndennitaServizioModel> rpt = new List<RptIndennitaServizioModel>();
+
 
             try
             {
@@ -365,14 +463,7 @@ namespace NewISE.Controllers
                             string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                             string Livello = liv1.Livello.DescLivello;
                             string Ufficio = tm.Ufficio.descUfficio;
-
-                            //using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
-                            //{
-                            //    //eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
-                            //    var eim = dtei.GetIndennitaEvoluzione(idTrasferimento);
-
-                            //}
-
+                            
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                             var indennita = trasferimento.INDENNITA;
 
@@ -486,73 +577,56 @@ namespace NewISE.Controllers
                                     if (dv < Utility.DataFineStop())
                                     {
                                         DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-
-                                       
-
+                                        
                                         using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                         {
-                                            EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-
-                                            // Inserire le date di variazione delle Indennità
-
-                                            //xx.dataInizioValidita = pd.DATAINIZIOVALIDITA;
-                                            //xx.dataFineValidita = pd.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? pd.DATAFINEVALIDITA : new EvoluzioneIndennitaModel().dataFineValidita;
-                                            //xx.valore = pd.VALORE;
-                                            //xx.valoreResponsabile = pd.VALORERESP;
-
-                                            xx.dataInizioValidita = dv;
-                                            xx.dataFineValidita = dvSucc;
-                                            xx.IndennitaBase = ci.IndennitaDiBase;
-                                            xx.PercentualeDisagio = ci.PercentualeDisagio;
-                                            xx.CoefficienteSede = ci.CoefficienteDiSede;
-                                            xx.IndennitaServizio = ci.IndennitaDiServizio;
-
-                                            //eim.Add(xx);
-
-                                            var DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString();
-                                            var IndennitaBase = ci.IndennitaDiBase;
-                                            var PercentualeDisagio = ci.PercentualeDisagio;
-                                            var CoefficienteSede = ci.CoefficienteDiSede;
-                                            var IndennitaServizio = ci.IndennitaDiServizio;
-
-                                            String myString = Convert.ToString(IndennitaBase).ToString();
-                                            char[] characters = myString.ToCharArray();
-
                                             
-                                            ReportViewer reportViewer = new ReportViewer();
-
-                                            reportViewer.ProcessingMode = ProcessingMode.Local;
-                                            reportViewer.SizeToReportContent = true;
-                                            reportViewer.Width = Unit.Percentage(100);
-                                            reportViewer.Height = Unit.Percentage(100);
-
-                                            //var datasource = new ReportDataSource("DSIndennitaServizio", characters);
-                                            reportViewer.Visible = true;
-                                            reportViewer.ProcessingMode = ProcessingMode.Local;
-                                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
-                                            reportViewer.LocalReport.DataSources.Clear();
-                                            //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                                            reportViewer.LocalReport.Refresh();
-                                            reportViewer.ShowReportBody = true;
-
-                                            ReportParameter[] parameterValues = new ReportParameter[]
+                                            RptIndennitaServizioModel rpts = new RptIndennitaServizioModel()
                                             {
-                                                new ReportParameter ("Nominativo",Nominativo),
-                                                new ReportParameter ("Livello",Livello),
-                                                new ReportParameter ("Decorrenza",Decorrenza),
-                                                new ReportParameter ("Ufficio",Ufficio),
-                                                new ReportParameter ("DataInizioValidita",DataInizioValidita),
-                                                new ReportParameter ("myString",myString)
-
-
+                                                
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                IndennitaBase = ci.IndennitaDiBase,
+                                                CoefficenteSede = ci.CoefficienteDiSede,
+                                                PercentualeDisagio =ci.PercentualeDisagio,
+                                                IndennitaServizio =ci.IndennitaDiServizio
 
                                             };
 
-                                            reportViewer.LocalReport.SetParameters(parameterValues);
-                                            ViewBag.ReportViewer = reportViewer;
-
+                                            rpt.Add(rpts);
+                                            
                                         }
+
+                                        
+
+                                        ReportViewer reportViewer = new ReportViewer();
+
+                                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                                        reportViewer.SizeToReportContent = true;
+                                        reportViewer.Width = Unit.Percentage(100);
+                                        reportViewer.Height = Unit.Percentage(100);
+
+                                        var datasource = new ReportDataSource("DataSetIndennitaServizio");
+
+                                        reportViewer.Visible = true;
+                                        reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
+                                        reportViewer.LocalReport.DataSources.Clear();
+                                        reportViewer.LocalReport.DataSources.Add(datasource);
+                                        reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitaServizio", rpt));
+                                        reportViewer.LocalReport.Refresh();
+
+                                        List<ReportParameter> parameterValues = new List<ReportParameter>();
+                                        parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                        parameterValues.Add(new ReportParameter("Livello", Livello));
+                                        parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                        parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+                                        reportViewer.LocalReport.SetParameters(parameterValues);
+                                        ViewBag.ReportViewer = reportViewer;
+
+
                                     }
                                 }
                             }
@@ -574,14 +648,12 @@ namespace NewISE.Controllers
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
 
-
             try
             {
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
-                    //eim = dtei.GetMaggiorazioniFamiliariEvoluzione(idTrasferimento).ToList();
                     eim = dtei.GetMaggiorazioniConiugeEvoluzione(idTrasferimento).ToList();
-                    
+
                 }
 
                 ViewBag.idTrasferimento = idTrasferimento;
@@ -595,6 +667,275 @@ namespace NewISE.Controllers
             }
 
             
+        }
+        public ActionResult RptMaggiorazioniConiuge(decimal idTrasferimento)
+        {
+            List<RptMaggiorazioniConiuge> rpt = new List<RptMaggiorazioniConiuge>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                        {
+                            ViewBag.idTrasferimento = idTrasferimento;
+
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
+
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                            #region Variazioni percentuale maggiorazione Coniuge
+
+                            var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
+
+                            var lattivazioneMF =
+                                mf.ATTIVAZIONIMAGFAM.Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true &&
+                                        a.ATTIVAZIONEMAGFAM == true)
+                                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+
+                            if (lattivazioneMF?.Any() ?? false)
+                            {
+                                #region Coniuge e Pensioni
+
+                                var lc =
+                                    mf.CONIUGE.Where(
+                                        a =>
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                                if (lc?.Any() ?? false)
+                                {
+                                    foreach (var coniuge in lc)
+                                    {
+                                        var lpmc =
+                                            coniuge.PERCENTUALEMAGCONIUGE.Where(
+                                                a =>
+                                                    a.ANNULLATO == false &&
+                                                    a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE)
+                                                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                                        if (lpmc?.Any() ?? false)
+                                        {
+                                            foreach (var pmc in lpmc)
+                                            {
+                                                DateTime dtVar = new DateTime();
+
+                                                if (pmc.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                                {
+                                                    dtVar = trasferimento.DATAPARTENZA;
+                                                }
+                                                else
+                                                {
+                                                    dtVar = pmc.DATAINIZIOVALIDITA;
+                                                }
+
+                                                if (!lDateVariazioni.Contains(dtVar))
+                                                {
+                                                    lDateVariazioni.Add(dtVar);
+                                                }
+                                            }
+                                        }
+
+                                        var lpensioni =
+                                            coniuge.PENSIONE.Where(
+                                                a =>
+                                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                                    .OrderBy(a => a.DATAINIZIO).ToList();
+
+
+                                        if (lpensioni?.Any() ?? false)
+                                        {
+                                            foreach (var pensioni in lpensioni)
+                                            {
+                                                DateTime dtVar = new DateTime();
+
+                                                if (pensioni.DATAINIZIO < trasferimento.DATAPARTENZA)
+                                                {
+                                                    dtVar = trasferimento.DATAPARTENZA;
+                                                }
+                                                else
+                                                {
+                                                    dtVar = pensioni.DATAINIZIO;
+                                                }
+
+                                                if (!lDateVariazioni.Contains(dtVar))
+                                                {
+                                                    lDateVariazioni.Add(dtVar);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                #endregion
+
+                                //#region Figli
+
+                                //var lf =
+                                //    mf.FIGLI.Where(
+                                //        a =>
+                                //            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                                //        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                //if (lf?.Any() ?? false)
+                                //{
+                                //    foreach (var f in lf)
+                                //    {
+                                //        var lpmf =
+                                //            f.PERCENTUALEMAGFIGLI.Where(
+                                //                a =>
+                                //                    a.ANNULLATO == false)
+                                //                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                //        //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                //        if (lpmf?.Any() ?? false)
+                                //        {
+                                //            foreach (var pmf in lpmf)
+                                //            {
+                                //                DateTime dtVar = new DateTime();
+
+                                //                if (pmf.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                //                {
+                                //                    dtVar = trasferimento.DATAPARTENZA;
+                                //                }
+                                //                else
+                                //                {
+                                //                    dtVar = pmf.DATAINIZIOVALIDITA;
+                                //                }
+
+                                //                if (!lDateVariazioni.Contains(dtVar))
+                                //                {
+                                //                    lDateVariazioni.Add(dtVar);
+                                //                }
+                                //            }
+                                //        }
+                                //    }
+                                //}
+
+
+
+
+
+
+
+                                //#endregion
+                            }
+
+                            #endregion
+
+                            var lib = db.INDENNITAPRIMOSEGRETARIO.ToList();
+
+                            foreach (var pd in lib)
+                            {
+                                DateTime dtVar = new DateTime();
+
+                                if (pd.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = pd.DATAINIZIOVALIDITA;
+                                }
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                    lDateVariazioni.Sort();
+                                }
+                            }
+
+                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                            if (lDateVariazioni?.Any() ?? false)
+                            {
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
+
+                                    if (dv < Utility.DataFineStop())
+                                    {
+                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+
+                                            RptMaggiorazioniConiuge rpts = new RptMaggiorazioniConiuge()
+                                            {
+
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                IndennitaServizio = ci.IndennitaDiServizio,
+                                                PercentualeMaggiorazioniConiuge = ci.PercentualeMaggiorazioneConiuge,
+                                                MaggiorazioniConiuge =ci.MaggiorazioneConiuge
+
+                                                
+                                            };
+
+                                            rpt.Add(rpts);
+
+                                        }
+
+                                    }
+                                }
+                            }
+
+
+                            ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            var datasource = new ReportDataSource("DataSetMaggiorazioniConiuge");
+
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniConiuge.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetMaggiorazioniConiuge", rpt));
+                            reportViewer.LocalReport.Refresh();
+
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
+
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("RptContributoOmnicomprensivoRientro");
         }
 
         #endregion
@@ -646,29 +987,6 @@ namespace NewISE.Controllers
                     eim = dtei.GetMaggiorazioniFamiliariEvoluzione(idTrasferimento).ToList();
 
                 }
-
-
-                //using (dtTrasferimento dtt = new dtTrasferimento())
-                //{
-                //    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-                //    using (dtRuoloUfficio dtru = new dtRuoloUfficio())
-                //    {
-                //        tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                //        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-                //        ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
-
-                //    }
-
-                    
-
-                //    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
-                //    {
-                //        dit.indennitaBase = ci.IndennitaDiBase;
-                //        dit.indennitaServizio = ci.IndennitaDiServizio;
-                //        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
-                //        dit.indennitaPersonale = ci.IndennitaPersonale;
-                //    }
-                //}
                 ViewBag.idTrasferimento = idTrasferimento;
 
 
@@ -682,123 +1000,267 @@ namespace NewISE.Controllers
         }
         public ActionResult RptMaggiorazioniFigli(decimal idTrasferimento)
         {
+            List<RptMaggiorazioniFigli> rpt = new List<RptMaggiorazioniFigli>();
 
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        ViewBag.idTrasferimento = idTrasferimento;
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
-
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
-
-                        ReportViewer reportViewer = new ReportViewer();
-
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
-
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFigli.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
-
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                        };
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                            var indennita = trasferimento.INDENNITA;
+
+                            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                            #region Variazioni percentuale maggiorazione figli
+
+                            var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
+
+                            var lattivazioneMF =
+                                mf.ATTIVAZIONIMAGFAM.Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true &&
+                                        a.ATTIVAZIONEMAGFAM == true)
+                                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+
+                            if (lattivazioneMF?.Any() ?? false)
+                            {
+                                //#region Coniuge e Pensioni
+
+                                //var lc =
+                                //    mf.CONIUGE.Where(
+                                //        a =>
+                                //            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                                //            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                //    //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                //if (lc?.Any() ?? false)
+                                //{
+                                //    foreach (var coniuge in lc)
+                                //    {
+                                //        var lpmc =
+                                //            coniuge.PERCENTUALEMAGCONIUGE.Where(
+                                //                a =>
+                                //                    a.ANNULLATO == false &&
+                                //                    a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE)
+                                //                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                //        //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                //        if (lpmc?.Any() ?? false)
+                                //        {
+                                //            foreach (var pmc in lpmc)
+                                //            {
+                                //                DateTime dtVar = new DateTime();
+
+                                //                if (pmc.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                //                {
+                                //                    dtVar = trasferimento.DATAPARTENZA;
+                                //                }
+                                //                else
+                                //                {
+                                //                    dtVar = pmc.DATAINIZIOVALIDITA;
+                                //                }
+
+                                //                if (!lDateVariazioni.Contains(dtVar))
+                                //                {
+                                //                    lDateVariazioni.Add(dtVar);
+                                //                }
+                                //            }
+                                //        }
+
+                                //        var lpensioni =
+                                //            coniuge.PENSIONE.Where(
+                                //                a =>
+                                //                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                //                    .OrderBy(a => a.DATAINIZIO).ToList();
+                                //        //.OrderByDescending(a => a.DATAINIZIO).ToList();
+
+                                //        if (lpensioni?.Any() ?? false)
+                                //        {
+                                //            foreach (var pensioni in lpensioni)
+                                //            {
+                                //                DateTime dtVar = new DateTime();
+
+                                //                if (pensioni.DATAINIZIO < trasferimento.DATAPARTENZA)
+                                //                {
+                                //                    dtVar = trasferimento.DATAPARTENZA;
+                                //                }
+                                //                else
+                                //                {
+                                //                    dtVar = pensioni.DATAINIZIO;
+                                //                }
+
+                                //                if (!lDateVariazioni.Contains(dtVar))
+                                //                {
+                                //                    lDateVariazioni.Add(dtVar);
+                                //                }
+                                //            }
+                                //        }
+                                //    }
+                                //}
+
+                                //#endregion
+
+                                #region Figli
+
+                                var lf =
+                                    mf.FIGLI.Where(
+                                        a =>
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                if (lf?.Any() ?? false)
+                                {
+                                    foreach (var f in lf)
+                                    {
+                                        var lpmf =
+                                            f.PERCENTUALEMAGFIGLI.Where(
+                                                a =>
+                                                    a.ANNULLATO == false)
+                                                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                        //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                        if (lpmf?.Any() ?? false)
+                                        {
+                                            foreach (var pmf in lpmf)
+                                            {
+                                                DateTime dtVar = new DateTime();
+
+                                                if (pmf.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                                {
+                                                    dtVar = trasferimento.DATAPARTENZA;
+                                                }
+                                                else
+                                                {
+                                                    dtVar = pmf.DATAINIZIOVALIDITA;
+                                                }
+
+                                                if (!lDateVariazioni.Contains(dtVar))
+                                                {
+                                                    lDateVariazioni.Add(dtVar);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+
+
+
+
+
+
+                                #endregion
+                            }
+
+                            #endregion
+
+                            var lib = db.INDENNITAPRIMOSEGRETARIO.ToList();
+
+                            foreach (var pd in lib)
+                            {
+                                DateTime dtVar = new DateTime();
+
+                                if (pd.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = pd.DATAINIZIOVALIDITA;
+                                }
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                    lDateVariazioni.Sort();
+                                }
+                            }
+
+                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                            if (lDateVariazioni?.Any() ?? false)
+                            {
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
+
+                                    if (dv < Utility.DataFineStop())
+                                    {
+                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+                                            
+                                            RptMaggiorazioniFigli rpts = new RptMaggiorazioniFigli()
+                                            {
+                                                
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                IndennitaPrimoSegretario = ci.IndennitaPrimoSegretario,
+                                                PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli,
+                                                MaggiorazioniFigli =ci.MaggiorazioneFigli
+
+                                            };
+                                            rpt.Add(rpts);
+                                        }
+
+                                    }
+                                }
+                            }
+
+                                ReportViewer reportViewer = new ReportViewer();
+
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+                                reportViewer.SizeToReportContent = true;
+                                reportViewer.Width = Unit.Percentage(100);
+                                reportViewer.Height = Unit.Percentage(100);
+
+                                var datasource = new ReportDataSource("DataSetMaggiorazioniFigli");
+
+                                reportViewer.Visible = true;
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFigli.rdlc";
+                                reportViewer.LocalReport.DataSources.Clear();
+                                reportViewer.LocalReport.DataSources.Add(datasource);
+                                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetMaggiorazioniFigli", rpt));
+                                reportViewer.LocalReport.Refresh();
+
+                                List<ReportParameter> parameterValues = new List<ReportParameter>();
+                                parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                parameterValues.Add(new ReportParameter("Livello", Livello));
+                                parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+                                reportViewer.LocalReport.SetParameters(parameterValues);
+                                ViewBag.ReportViewer = reportViewer;
+                            
+                        }
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             return PartialView("RptMaggiorazioniFigli");
-        }
-        public ActionResult RptMaggiorazioniConiuge(decimal idTrasferimento)
-        {
-
-            try
-            {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
-                    {
-                        ViewBag.idTrasferimento = idTrasferimento;
-
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
-
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
-
-                        ReportViewer reportViewer = new ReportViewer();
-
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
-
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniConiuge.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
-
-                        ReportParameter[] parameterValues = new ReportParameter[]
-                        {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
-
-                        };
-
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-            return PartialView("RptMaggiorazioniConiuge");
         }
         public ActionResult RptMaggiorazioniFamiliari(decimal idTrasferimento)
         {
@@ -890,62 +1352,280 @@ namespace NewISE.Controllers
         }
         public ActionResult RptIndennitaPersonale(decimal idTrasferimento)
         {
+            List<RptIndennitaPersonaleModel> rpt = new List<RptIndennitaPersonaleModel>();
 
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
-                    {
-
-                        ViewBag.idTrasferimento = idTrasferimento;
-
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
-
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
-
-                        
-
-
-                        ReportViewer reportViewer = new ReportViewer();
-
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
-
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPersonale.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
-
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                            var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        };
+                            using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                            {
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
-                    }
+                                ViewBag.idTrasferimento = idTrasferimento;
+
+                                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                                var liv1 = liv.First();
+
+                                string Nominativo = tm.Dipendente.Nominativo;
+                                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                                string Livello = liv1.Livello.DescLivello;
+                                string Ufficio = tm.Ufficio.descUfficio;
+
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                            var indennita = trasferimento.INDENNITA;
+
+                            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                            #region Variazioni maggiorazioni figli
+
+                            var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
+
+                            var lattivazioneMF =
+                                mf.ATTIVAZIONIMAGFAM.Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true &&
+                                        a.ATTIVAZIONEMAGFAM == true)
+                                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+
+                            if (lattivazioneMF?.Any() ?? false)
+                            {
+                                //#region Coniuge e Pensioni
+
+                                var lc =
+                                    mf.CONIUGE.Where(
+                                        a =>
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                if (lc?.Any() ?? false)
+                                {
+                                    foreach (var coniuge in lc)
+                                    {
+                                        var lpmc =
+                                            coniuge.PERCENTUALEMAGCONIUGE.Where(
+                                                a =>
+                                                    a.ANNULLATO == false &&
+                                                    a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE)
+                                                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                        //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                        if (lpmc?.Any() ?? false)
+                                        {
+                                            foreach (var pmc in lpmc)
+                                            {
+                                                DateTime dtVar = new DateTime();
+
+                                                if (pmc.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                                {
+                                                    dtVar = trasferimento.DATAPARTENZA;
+                                                }
+                                                else
+                                                {
+                                                    dtVar = pmc.DATAINIZIOVALIDITA;
+                                                }
+
+                                                if (!lDateVariazioni.Contains(dtVar))
+                                                {
+                                                    lDateVariazioni.Add(dtVar);
+                                                }
+                                            }
+                                        }
+
+                                        var lpensioni =
+                                            coniuge.PENSIONE.Where(
+                                                a =>
+                                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                                    .OrderBy(a => a.DATAINIZIO).ToList();
+                                        //.OrderByDescending(a => a.DATAINIZIO).ToList();
+
+                                        if (lpensioni?.Any() ?? false)
+                                        {
+                                            foreach (var pensioni in lpensioni)
+                                            {
+                                                DateTime dtVar = new DateTime();
+
+                                                if (pensioni.DATAINIZIO < trasferimento.DATAPARTENZA)
+                                                {
+                                                    dtVar = trasferimento.DATAPARTENZA;
+                                                }
+                                                else
+                                                {
+                                                    dtVar = pensioni.DATAINIZIO;
+                                                }
+
+                                                if (!lDateVariazioni.Contains(dtVar))
+                                                {
+                                                    lDateVariazioni.Add(dtVar);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                //#endregion
+
+                                #region Figli
+
+                                var lf =
+                                    mf.FIGLI.Where(
+                                        a =>
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                if (lf?.Any() ?? false)
+                                {
+                                    foreach (var f in lf)
+                                    {
+                                        var lpmf =
+                                            f.PERCENTUALEMAGFIGLI.Where(
+                                                a =>
+                                                    a.ANNULLATO == false)
+                                                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                        //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                        if (lpmf?.Any() ?? false)
+                                        {
+                                            foreach (var pmf in lpmf)
+                                            {
+                                                DateTime dtVar = new DateTime();
+
+                                                if (pmf.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                                {
+                                                    dtVar = trasferimento.DATAPARTENZA;
+                                                }
+                                                else
+                                                {
+                                                    dtVar = pmf.DATAINIZIOVALIDITA;
+                                                }
+
+                                                if (!lDateVariazioni.Contains(dtVar))
+                                                {
+                                                    lDateVariazioni.Add(dtVar);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+
+
+
+
+
+
+                                #endregion
+                            }
+
+                            #endregion
+
+                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                            if (lDateVariazioni?.Any() ?? false)
+                            {
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
+
+                                    if (dv < Utility.DataFineStop())
+                                    {
+                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+                                            RptIndennitaPersonaleModel rpts = new RptIndennitaPersonaleModel()
+                                            {
+                                                
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                IndennitaBase = ci.IndennitaDiBase,
+                                                IndennitaServizio = ci.IndennitaDiServizio,
+                                                MaggiorazioneConiuge = ci.MaggiorazioneConiuge,
+                                                MaggiorazioneFigli = ci.MaggiorazioneFigli,
+                                                IndennitaPersonale = ci.IndennitaPersonale
+
+                                            };
+
+                                            rpt.Add(rpts);
+
+
+
+                                        }
+
+
+
+                                    }
+                                }
+                            }
+
+
+                            ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            var datasource = new ReportDataSource("DataSetIndennitaPersonale");
+
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPersonale.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitaPersonale", rpt));
+                            reportViewer.LocalReport.Refresh();
+
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
+
+
+
+                            //ReportViewer reportViewer = new ReportViewer();
+
+                            //reportViewer.ProcessingMode = ProcessingMode.Local;
+                            //reportViewer.SizeToReportContent = true;
+                            //reportViewer.Width = Unit.Percentage(100);
+                            //reportViewer.Height = Unit.Percentage(100);
+
+                            ////var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                            //reportViewer.Visible = true;
+                            //reportViewer.ProcessingMode = ProcessingMode.Local;
+                            //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaPersonale.rdlc";
+                            //reportViewer.LocalReport.DataSources.Clear();
+                            ////reportViewer.LocalReport.DataSources.Add(datasource);
+
+                            //reportViewer.LocalReport.Refresh();
+                            //reportViewer.ShowReportBody = true;
+
+                            //ReportParameter[] parameterValues = new ReportParameter[]
+                            //{
+                            //    new ReportParameter ("Nominativo",Nominativo),
+                            //    new ReportParameter ("Livello",Livello),
+                            //    new ReportParameter ("Decorrenza",Decorrenza),
+                            //    new ReportParameter ("Ufficio",Ufficio)
+
+                            //};
+
+                            //reportViewer.LocalReport.SetParameters(parameterValues);
+                            //ViewBag.ReportViewer = reportViewer;
+
+                        }
+                        }
+
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -1312,58 +1992,131 @@ namespace NewISE.Controllers
         }
         public ActionResult RptIndennitadiRichiamoLorda(decimal idTrasferimento)
         {
+            List<RptIndennitàRichiamoLordaModel> rpt = new List<RptIndennitàRichiamoLordaModel>();
 
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        ViewBag.idTrasferimento = idTrasferimento;
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
-
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
-
-                        ReportViewer reportViewer = new ReportViewer();
-
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
-
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiRichiamoLorda.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
-
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                        };
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
 
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                            #region Variazioni Richiamo
+
+
+                            var ll = db.COEFFICIENTEINDRICHIAMO.ToList();
+
+                            foreach (var ib in ll)
+                            {
+                                DateTime dtVar = new DateTime();
+
+                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = ib.DATAINIZIOVALIDITA;
+                                }
+
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                    lDateVariazioni.Sort();
+                                }
+                            }
+
+                            #endregion
+
+                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                            if (lDateVariazioni?.Any() ?? false)
+                            {
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
+
+                                    if (dv < Utility.DataFineStop())
+                                    {
+                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+
+                                            RptIndennitàRichiamoLordaModel rpts = new RptIndennitàRichiamoLordaModel()
+                                            {
+                                              
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                IndennitaBase = ci.IndennitaDiBase,
+                                                MaggiorazioneConiuge =ci.MaggiorazioneConiuge,
+                                                MaggiorazioneFigli =ci.MaggiorazioneFigli,
+                                                IndennitaRichiamo = ci.IndennitaRichiamoLordo
+
+                                            };
+
+                                            rpt.Add(rpts);
+
+                                        }
+
+                                    }
+                                }
+                            }
+
+
+
+                            ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            var datasource = new ReportDataSource("DataSetIndennitàRichiamo");
+
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiRichiamoLorda.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitàRichiamo", rpt));
+                            reportViewer.LocalReport.Refresh();
+
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
+
+                            
+
+                        }
                     }
                 }
-
 
             }
             catch (Exception ex)
@@ -1491,58 +2244,164 @@ namespace NewISE.Controllers
         public ActionResult RptAnticipoIndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
 
+            List<RptAnticipoIndennitàdiSistemazione_Lorda> rpt = new List<RptAnticipoIndennitàdiSistemazione_Lorda>();
+
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        ViewBag.idTrasferimento = idTrasferimento;
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
-
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
-
-                        ReportViewer reportViewer = new ReportViewer();
-
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
-
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptAnticipoIndennitadiSistemazioneLorda.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
-
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                        };
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
 
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                            var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
+
+                            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+
+                            #region Variazioni Indennità di Sistemazione
+
+                            var ll =
+                                db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
+                                .Where(a => a.ANNULLATO == false)
+                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                            foreach (var ib in ll)
+                            {
+                                DateTime dtVar = new DateTime();
+
+                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = ib.DATAINIZIOVALIDITA;
+                                }
+
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                    lDateVariazioni.Sort();
+                                }
+                            }
+
+                            #endregion
+
+                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                            if (lDateVariazioni?.Any() ?? false)
+                            {
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
+
+                                    if (dv < Utility.DataFineStop())
+                                    {
+                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+
+                                            RptAnticipoIndennitàdiSistemazione_Lorda rpts = new RptAnticipoIndennitàdiSistemazione_Lorda()
+                                            {
+                                                
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                IndennitaServizio = ci.IndennitaDiServizio,
+                                                CoefficenteMaggiorazione =ci.CoefficienteIndennitaSistemazione,
+                                                AnticipoIndSistemazioneLorda = ci.IndennitaSistemazioneAnticipabileLorda
+
+                                            };
+
+                                            rpt.Add(rpts);
+                                            
+                                        }
+
+                                    }
+                                }
+                            }
+
+
+
+
+                            //ReportViewer reportViewer = new ReportViewer();
+
+                            //reportViewer.ProcessingMode = ProcessingMode.Local;
+                            //reportViewer.SizeToReportContent = true;
+                            //reportViewer.Width = Unit.Percentage(100);
+                            //reportViewer.Height = Unit.Percentage(100);
+
+                            ////var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                            //reportViewer.Visible = true;
+                            //reportViewer.ProcessingMode = ProcessingMode.Local;
+                            //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptAnticipoIndennitadiSistemazioneLorda.rdlc";
+                            //reportViewer.LocalReport.DataSources.Clear();
+                            ////reportViewer.LocalReport.DataSources.Add(datasource);
+
+                            //reportViewer.LocalReport.Refresh();
+                            //reportViewer.ShowReportBody = true;
+
+                            //ReportParameter[] parameterValues = new ReportParameter[]
+                            //{
+                            //    new ReportParameter ("Nominativo",Nominativo),
+                            //    new ReportParameter ("Livello",Livello),
+                            //    new ReportParameter ("Decorrenza",Decorrenza),
+                            //    new ReportParameter ("Ufficio",Ufficio)
+
+                            //};
+
+                            //reportViewer.LocalReport.SetParameters(parameterValues);
+                            //ViewBag.ReportViewer = reportViewer;
+
+                            ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            var datasource = new ReportDataSource("DataSetAnticipoIndennitàdiSistemazioneLorda");
+
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptAnticipoIndennitadiSistemazioneLorda.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetAnticipoIndennitàdiSistemazioneLorda", rpt));
+                            reportViewer.LocalReport.Refresh();
+
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
+                                parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                parameterValues.Add(new ReportParameter("Livello", Livello));
+                                parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
+
+
+                        }
                     }
+
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -1580,11 +2439,14 @@ namespace NewISE.Controllers
         }
         public ActionResult RptIndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
+            List<RptIndSistemazioneLordaModel> rpt = new List<RptIndSistemazioneLordaModel>();
+
 
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
@@ -1600,38 +2462,136 @@ namespace NewISE.Controllers
                         string Livello = liv1.Livello.DescLivello;
                         string Ufficio = tm.Ufficio.descUfficio;
 
-                        ReportViewer reportViewer = new ReportViewer();
+                        var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                        var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
 
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
 
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
 
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
+                        #region Variazioni Indennità di Sistemazione
 
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                        var ll =
+                            db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
+                            .Where(a => a.ANNULLATO == false)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                        foreach (var ib in ll)
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                            DateTime dtVar = new DateTime();
 
-                        };
+                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = ib.DATAINIZIOVALIDITA;
+                            }
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
 
-                    }
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
+                            }
+                        }
+
+                        #endregion
+
+                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                        if (lDateVariazioni?.Any() ?? false)
+                        {
+                            for (int j = 0; j < lDateVariazioni.Count; j++)
+                            {
+                                DateTime dv = lDateVariazioni[j];
+
+                                if (dv < Utility.DataFineStop())
+                                {
+                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    {
+                                            RptIndSistemazioneLordaModel rpts = new RptIndSistemazioneLordaModel()
+                                            {
+
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                IndennitaPersonale = ci.IndennitaPersonale,
+                                                CoefficenteMaggiorazione = ci.CoefficienteIndennitaSistemazione,
+                                                IndSistemazioneLorda = ci.IndennitaSistemazioneLorda
+
+                                            };
+
+                                            rpt.Add(rpts);
+
+                                        }
+
+                                }
+                            }
+                        }
+
+
+                            //ReportViewer reportViewer = new ReportViewer();
+
+                            //reportViewer.ProcessingMode = ProcessingMode.Local;
+                            //reportViewer.SizeToReportContent = true;
+                            //reportViewer.Width = Unit.Percentage(100);
+                            //reportViewer.Height = Unit.Percentage(100);
+
+                            ////var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                            //reportViewer.Visible = true;
+                            //reportViewer.ProcessingMode = ProcessingMode.Local;
+                            //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
+                            //reportViewer.LocalReport.DataSources.Clear();
+                            ////reportViewer.LocalReport.DataSources.Add(datasource);
+
+                            //reportViewer.LocalReport.Refresh();
+                            //reportViewer.ShowReportBody = true;
+
+                            //ReportParameter[] parameterValues = new ReportParameter[]
+                            //{
+                            //    new ReportParameter ("Nominativo",Nominativo),
+                            //    new ReportParameter ("Livello",Livello),
+                            //    new ReportParameter ("Decorrenza",Decorrenza),
+                            //    new ReportParameter ("Ufficio",Ufficio)
+
+                            //};
+
+                            //reportViewer.LocalReport.SetParameters(parameterValues);
+                            //ViewBag.ReportViewer = reportViewer;
+
+                            ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            var datasource = new ReportDataSource("DataSetIndennitàdiSistemazioneLorda");
+
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitàdiSistemazioneLorda", rpt));
+                            reportViewer.LocalReport.Refresh();
+
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
+
+                        }
                 }
-
+                }
 
             }
             catch (Exception ex)
@@ -1754,11 +2714,14 @@ namespace NewISE.Controllers
         }
         public ActionResult RptContributoOmnicomprensivoTrasferimento(decimal idTrasferimento)
         {
+            List<RptContributoOmnicomprensivoTrasferimentoModel> rpt = new List<RptContributoOmnicomprensivoTrasferimentoModel>();
 
             try
             {
+                using (ModelDBISE db = new ModelDBISE())
+                {
 
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
@@ -1774,38 +2737,111 @@ namespace NewISE.Controllers
                         string Livello = liv1.Livello.DescLivello;
                         string Ufficio = tm.Ufficio.descUfficio;
 
-                        ReportViewer reportViewer = new ReportViewer();
 
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
+                        var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptContributoOmnicomprensivoTrasferimento.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
 
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
 
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                        #region Variazioni Percentuale Fascia Km
+
+                        var ll =
+                            db.PERCENTUALEFKM
+                            .Where(a => a.ANNULLATO == false)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                        foreach (var ib in ll)
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                            DateTime dtVar = new DateTime();
 
-                        };
+                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = ib.DATAINIZIOVALIDITA;
+                            }
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
 
-                    }
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
+                            }
+                        }
+
+                        #endregion
+
+                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                        if (lDateVariazioni?.Any() ?? false)
+                        {
+                            for (int j = 0; j < lDateVariazioni.Count; j++)
+                            {
+                                DateTime dv = lDateVariazioni[j];
+
+                                if (dv < Utility.DataFineStop())
+                                {
+                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                        
+
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+
+                                            RptContributoOmnicomprensivoTrasferimentoModel rpts = new RptContributoOmnicomprensivoTrasferimentoModel()
+                                            
+                                            {
+
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda,
+                                                AnticipoContrOmniComprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza,
+                                                SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza
+
+                                            };
+
+                                            rpt.Add(rpts);
+
+                                        }
+
+                                    }
+                            }
+                        }
+                        
+                            ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            var datasource = new ReportDataSource("DataSetContributoOmnicomprensivoTrasferimento");
+
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptContributoOmnicomprensivoTrasferimento.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetContributoOmnicomprensivoTrasferimento", rpt));
+                            reportViewer.LocalReport.Refresh();
+
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
+
+                        }
                 }
-
+                }
 
             }
             catch (Exception ex)
@@ -1844,25 +2880,99 @@ namespace NewISE.Controllers
         }
         public ActionResult RptContributoOmnicomprensivoRientro(decimal idTrasferimento)
         {
+            List<RptContributoOmnicomprensivoRientroModel> rpt = new List<RptContributoOmnicomprensivoRientroModel>();
 
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        ViewBag.idTrasferimento = idTrasferimento;
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                        {
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
+
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
+
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+
+
+                            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+
+                            #region Variazioni Percentuale Fascia Km
+
+                            var ll =
+                                db.PERCENTUALEFKM
+                                .Where(a => a.ANNULLATO == false)
+                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                            foreach (var ib in ll)
+                            {
+                                DateTime dtVar = new DateTime();
+
+                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                {
+                                    dtVar = trasferimento.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dtVar = ib.DATAINIZIOVALIDITA;
+                                }
+
+
+                                if (!lDateVariazioni.Contains(dtVar))
+                                {
+                                    lDateVariazioni.Add(dtVar);
+                                    lDateVariazioni.Sort();
+                                }
+                            }
+
+                            #endregion
+
+                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                            if (lDateVariazioni?.Any() ?? false)
+                            {
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
+
+                                    if (dv < Utility.DataFineStop())
+                                    {
+                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+
+                                            RptContributoOmnicomprensivoRientroModel rpts = new RptContributoOmnicomprensivoRientroModel()
+                                            {
+                                            
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                IndennitaRichiamo = ci.IndennitaRichiamoLordo,
+                                                AnticipoContrOmniComprensivoRientro = ci.AnticipoContributoOmnicomprensivoPartenza,
+                                                SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza
+                                            };
+
+                                            rpt.Add(rpts);
+                                        
+                                        }
+
+                                    }
+                                }
+                            }
+                        
 
                         ReportViewer reportViewer = new ReportViewer();
 
@@ -1871,31 +2981,30 @@ namespace NewISE.Controllers
                         reportViewer.Width = Unit.Percentage(100);
                         reportViewer.Height = Unit.Percentage(100);
 
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                        var datasource = new ReportDataSource("DataSetContributoOmnicomprensivoRientro");
+
                         reportViewer.Visible = true;
                         reportViewer.ProcessingMode = ProcessingMode.Local;
+
                         reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptContributoOmnicomprensivoRientro.rdlc";
                         reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
-
+                        reportViewer.LocalReport.DataSources.Add(datasource);
+                        reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetContributoOmnicomprensivoRientro", rpt));
                         reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
 
-                        ReportParameter[] parameterValues = new ReportParameter[]
-                        {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                        List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
 
-                        };
 
                         reportViewer.LocalReport.SetParameters(parameterValues);
                         ViewBag.ReportViewer = reportViewer;
 
                     }
                 }
-
+                }
 
             }
             catch (Exception ex)

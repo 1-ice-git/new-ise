@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewISE</RootNamespace>
     <AssemblyName>NewISE</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44317</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
@@ -119,8 +119,8 @@
       <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.WebForms.DLL</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
@@ -4655,6 +4655,17 @@
     <Content Include="EF\ModelDBISE.edmx.diagram">
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Content>
+    <Content Include="DataSet.xsc">
+      <DependentUpon>DataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DataSet.xss">
+      <DependentUpon>DataSet.xsd</DependentUpon>
+    </Content>
     <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
     <None Include="Properties\PublishProfiles\Mauro.pubxml" />
@@ -4886,6 +4897,11 @@
     <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
+    <Compile Include="DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="EF\ACCESSI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -5565,6 +5581,16 @@
     <Compile Include="Models\DBModel\PeriodoMABModel.cs" />
     <Compile Include="Models\DBModel\MeseAnnoElaborazioneModel.cs" />
     <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
+    <Compile Include="Models\DBModel\RptAnticipoIndennitàdiSistemazione_Lorda.cs" />
+    <Compile Include="Models\DBModel\RptContributoOmnicomprensivoRientroModel.cs" />
+    <Compile Include="Models\DBModel\RptContributoOmnicomprensivoTrasferimentoModel.cs" />
+    <Compile Include="Models\DBModel\RptIndennitaBaseModel.cs" />
+    <Compile Include="Models\DBModel\RptIndennitaPersonaleModel.cs" />
+    <Compile Include="Models\DBModel\RptIndennitaServizioModel.cs" />
+    <Compile Include="Models\DBModel\RptIndennitàRichiamoLordaModel.cs" />
+    <Compile Include="Models\DBModel\RptIndSistemazioneLordaModel.cs" />
+    <Compile Include="Models\DBModel\RptMaggiorazioniConiuge.cs" />
+    <Compile Include="Models\DBModel\RptMaggiorazioniFigli.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
@@ -5780,6 +5806,7 @@
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel - Copy.cs" />
     <Compile Include="Models\ViewModel\VariazioneMABModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
     <Compile Include="Report\Elaborazioni\DataSet\dsLiquidazioniDirette.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5792,6 +5819,58 @@
     </Compile>
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioniDiretteRpt.cs" />
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioneMensileElabRpt.cs" />
+=======
+    <Compile Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetContributoOmnicomprensivoRientro.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetContributoOmnicomprensivoTrasferimento.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetContributoOmnicomprensivoTrasferimento.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetIndennitaBase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetIndennitaBase.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetIndennitaPersonale.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetIndennitaPersonale.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetIndennitaServizio.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetIndennitaServizio.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetIndennitàdiSistemazioneLorda.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetIndennitàRichiamo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetIndennitàRichiamo.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetMaggiorazioniConiuge.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetMaggiorazioniConiuge.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetMaggiorazioniFigli.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetMaggiorazioniFigli.xsd</DependentUpon>
+    </Compile>
+>>>>>>> DF_indennità
     <Compile Include="Views\Dataset\DSIndennitaBase.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -6011,6 +6090,116 @@
     <Content Include="Views\Dataset\DSIndennitaBase.xsc">
       <DependentUpon>DSIndennitaBase.xsd</DependentUpon>
     </Content>
+    <Content Include="Views\Dataset\DataSetIndennitaBase.xsc">
+      <DependentUpon>DataSetIndennitaBase.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.xsc">
+      <DependentUpon>DataSetContributoOmnicomprensivoRientro.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xsc">
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetAnticipoIndennitàdiSistemazioneLorda.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xss">
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetContributoOmnicomprensivoRientro.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.xss">
+      <DependentUpon>DataSetContributoOmnicomprensivoRientro.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetContributoOmnicomprensivoTrasferimento.xsc">
+      <DependentUpon>DataSetContributoOmnicomprensivoTrasferimento.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetContributoOmnicomprensivoTrasferimento.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetContributoOmnicomprensivoTrasferimento.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetContributoOmnicomprensivoTrasferimento.xss">
+      <DependentUpon>DataSetContributoOmnicomprensivoTrasferimento.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetIndennitaBase.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetIndennitaBase.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetIndennitaBase.xss">
+      <DependentUpon>DataSetIndennitaBase.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetIndennitaServizio.xsc">
+      <DependentUpon>DataSetIndennitaServizio.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetIndennitaPersonale.xsc">
+      <DependentUpon>DataSetIndennitaPersonale.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetIndennitaPersonale.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetIndennitaPersonale.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetIndennitaPersonale.xss">
+      <DependentUpon>DataSetIndennitaPersonale.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetIndennitaServizio.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetIndennitaServizio.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetIndennitaServizio.xss">
+      <DependentUpon>DataSetIndennitaServizio.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetIndennitàdiSistemazioneLorda.xsc">
+      <DependentUpon>DataSetIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetIndennitàdiSistemazioneLorda.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetIndennitàdiSistemazioneLorda.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetIndennitàdiSistemazioneLorda.xss">
+      <DependentUpon>DataSetIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetMaggiorazioniConiuge.xsc">
+      <DependentUpon>DataSetMaggiorazioniConiuge.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetIndennitàRichiamo.xsc">
+      <DependentUpon>DataSetIndennitàRichiamo.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetIndennitàRichiamo.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetIndennitàRichiamo.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetIndennitàRichiamo.xss">
+      <DependentUpon>DataSetIndennitàRichiamo.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetMaggiorazioniConiuge.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetMaggiorazioniConiuge.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetMaggiorazioniConiuge.xss">
+      <DependentUpon>DataSetMaggiorazioniConiuge.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetMaggiorazioniFigli.xsc">
+      <DependentUpon>DataSetMaggiorazioniFigli.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetMaggiorazioniFigli.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetMaggiorazioniFigli.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetMaggiorazioniFigli.xss">
+      <DependentUpon>DataSetMaggiorazioniFigli.xsd</DependentUpon>
+    </Content>
     <None Include="Views\Dataset\DSIndennitaBase.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -6207,9 +6396,6 @@
     <Content Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Report\RptContributoOmnicomprensivoRientro.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -6258,12 +6444,16 @@
     <Content Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+<<<<<<< HEAD
     <Content Include="Report\Elaborazioni\rptLiquidazioniDirette.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+=======
+    <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
+>>>>>>> DF_indennità
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
   <PropertyGroup>
