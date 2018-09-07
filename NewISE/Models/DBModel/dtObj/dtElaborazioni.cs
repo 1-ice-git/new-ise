@@ -3246,6 +3246,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     db.SaveChanges();
                                 }
                             }
+                            else
+                            {
+                                //inserire gestione saldo trasporto effetti.
+
+                            }
 
 
 
