@@ -1636,7 +1636,6 @@ namespace NewISE.Controllers
         #endregion
 
         #region Maggiorazione Abitazione + Report di Stampa
-
         public ActionResult MaggiorazioneAbitazione(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -1669,6 +1668,8 @@ namespace NewISE.Controllers
                         dit.indennitaServizio = ci.IndennitaDiServizio;
                         dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
                         dit.indennitaPersonale = ci.IndennitaPersonale;
+                        
+                        
                     }
                 }
                 ViewBag.idTrasferimento = idTrasferimento;
@@ -1687,54 +1688,55 @@ namespace NewISE.Controllers
 
             try
             {
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
-                    {
-                        ViewBag.idTrasferimento = idTrasferimento;
-
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
-
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
-
-                        ReportViewer reportViewer = new ReportViewer();
-
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
-
-                        //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                        reportViewer.LocalReport.Refresh();
-                        reportViewer.ShowReportBody = true;
-
-                        ReportParameter[] parameterValues = new ReportParameter[]
+                        using (dtTrasferimento dtt = new dtTrasferimento())
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
-                            new ReportParameter ("Livello",Livello),
-                            new ReportParameter ("Decorrenza",Decorrenza),
-                            new ReportParameter ("Ufficio",Ufficio)
+                            var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        };
+                            using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                            {
+                                ViewBag.idTrasferimento = idTrasferimento;
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
-                    }
-                }
+                                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                                var liv1 = liv.First();
 
+                                string Nominativo = tm.Dipendente.Nominativo;
+                                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                                string Livello = liv1.Livello.DescLivello;
+                                string Ufficio = tm.Ufficio.descUfficio;
+
+                                ReportViewer reportViewer = new ReportViewer();
+
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+                                reportViewer.SizeToReportContent = true;
+                                reportViewer.Width = Unit.Percentage(100);
+                                reportViewer.Height = Unit.Percentage(100);
+
+                                //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                                reportViewer.Visible = true;
+                                reportViewer.ProcessingMode = ProcessingMode.Local;
+                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
+                                reportViewer.LocalReport.DataSources.Clear();
+                                //reportViewer.LocalReport.DataSources.Add(datasource);
+
+                                reportViewer.LocalReport.Refresh();
+                                reportViewer.ShowReportBody = true;
+
+                                ReportParameter[] parameterValues = new ReportParameter[]
+                                {
+                                    new ReportParameter ("Nominativo",Nominativo),
+                                    new ReportParameter ("Livello",Livello),
+                                    new ReportParameter ("Decorrenza",Decorrenza),
+                                    new ReportParameter ("Ufficio",Ufficio)
+
+                                };
+
+                                reportViewer.LocalReport.SetParameters(parameterValues);
+                                ViewBag.ReportViewer = reportViewer;
+                            }
+                        }
+               }
             }
             catch (Exception ex)
             {
@@ -2271,7 +2273,6 @@ namespace NewISE.Controllers
                             var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
 
                             List<DateTime> lDateVariazioni = new List<DateTime>();
-
 
                             #region Variazioni Indennità di Sistemazione
 

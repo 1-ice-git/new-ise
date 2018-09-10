@@ -64,6 +64,14 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Saldo Contr.Omnicomprensivo Partenza")]
         public decimal SaldoContributoOmnicomprensivoPartenza { get; set; }
 
+        [Display(Name = "Canone di locazione in valuta")]
+        public decimal CanoneLocazioneinValuta { get; set; }
+
+        [Display(Name = "Canone di locazione in Euro")]
+        public decimal CanoneLocazioneinEuro { get; set; }
+
+        [Display(Name = "Tasso fisso di ragguaglio")]
+        public decimal TassoFissoRagguaglio { get; set; }
 
 
         [Display(Name = "Data Test")]

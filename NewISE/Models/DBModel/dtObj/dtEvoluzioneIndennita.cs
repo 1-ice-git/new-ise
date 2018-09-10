@@ -1178,143 +1178,121 @@ namespace NewISE.Models.DBModel.dtObj
                     var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                     var indennita = trasferimento.INDENNITA;
 
-                    List<DateTime> lDateVariazioni = new List<DateTime>();
-
-                    #region Variazioni di indennità di base
-
-                    var ll =
-                        db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
-                        .Where(a => a.ANNULLATO == false)
-                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                    foreach (var ib in ll)
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        DateTime dtVar = new DateTime();
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                        //var xx = db.TRASFERIMENTO.Find(idTrasferimento).DIPENDENTI.LIVELLIDIPENDENTI;
+                        var lmab = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+
+
+                        using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
                         {
-                            dtVar = trasferimento.DATAPARTENZA;
-                        }
-                        else
-                        {
-                            dtVar = ib.DATAINIZIOVALIDITA;
-                        }
-
-
-                        if (!lDateVariazioni.Contains(dtVar))
-                        {
-                            lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
-                        }
-                    }
-
-                    #endregion
-
-                    #region Variazioni del coefficiente di sede
-
-                    var lrd =
-                        db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.COEFFICIENTESEDE
-                        .Where(a => a.ANNULLATO == false)
-                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-                    foreach (var cs in lrd)
-                    {
-                        DateTime dtVar = new DateTime();
-
-                        if (cs.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                        {
-                            dtVar = trasferimento.DATAPARTENZA;
-                        }
-                        else
-                        {
-                            dtVar = cs.DATAINIZIOVALIDITA;
-                        }
-
-                        if (!lDateVariazioni.Contains(dtVar))
-                        {
-                            lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
-                        }
-                    }
-
-                    #endregion
-
-                    #region Variazioni percentuale di disagio
-
-                    var perc =
-                        db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.PERCENTUALEDISAGIO
-                        .Where(a => a.ANNULLATO == false)
-                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                    foreach (var pd in perc)
-                    {
-                        DateTime dtVar = new DateTime();
-
-                        if (pd.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                        {
-                            dtVar = trasferimento.DATAPARTENZA;
-                        }
-                        else
-                        {
-                            dtVar = pd.DATAINIZIOVALIDITA;
-                        }
-
-                        if (!lDateVariazioni.Contains(dtVar))
-                        {
-                            lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
-                        }
-                    }
-
-
-
-
-
-
-                    #endregion
-
-
-                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                    if (lDateVariazioni?.Any() ?? false)
-                    {
-                        for (int j = 0; j < lDateVariazioni.Count; j++)
-                        {
-                            DateTime dv = lDateVariazioni[j];
-
-                            if (dv < Utility.DataFineStop())
+                            using (dtVariazioniMaggiorazioneAbitazione dtvmab = new dtVariazioniMaggiorazioneAbitazione())
                             {
-                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-
-                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                using (dtTFR dttfr = new dtTFR())
                                 {
-                                    EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
 
-                                    xx.dataInizioValidita = dv;
-                                    xx.dataFineValidita = dvSucc;
-                                    xx.IndennitaBase = ci.IndennitaDiBase;
-                                    xx.PercentualeDisagio = ci.PercentualeDisagio;
-                                    xx.CoefficienteSede = ci.CoefficienteDiSede;
-                                    xx.IndennitaServizio = ci.IndennitaDiServizio;
-                                    xx.IndennitaPersonale = ci.IndennitaPersonale;
-                                    xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
-                                    xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
-                                    xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
-                                    xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                    foreach (var mab in lmab)
+                                {
 
-                                    
+                                    var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                        .OrderByDescending(a => a.IDPERIODOMAB).First();
 
-                                    eim.Add(xx);
+                                    var pmm = dtvmab.GetPeriodoMABModel(mab.IDMAB);
+                                    var lperc = dtmab.GetListaPercentualeMAB(pmm, tm, db);
+
+                                    var lcanonemab = mab.CANONEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                        .OrderByDescending(a => a.IDCANONE).ToList();
+
+                                        foreach (var ib in lperc)
+                                        {
+                                            DateTime dtVar = new DateTime();
+
+                                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                            {
+                                                dtVar = trasferimento.DATAPARTENZA;
+                                            }
+                                            else
+                                            {
+                                                dtVar = ib.DATAINIZIOVALIDITA;
+                                            }
+
+
+                                            if (!lDateVariazioni.Contains(dtVar))
+                                            {
+                                                lDateVariazioni.Add(dtVar);
+                                                lDateVariazioni.Sort();
+                                            }
+                                        }
+
+
+                                        foreach (var canonemab in lcanonemab)
+                                        {
+                                            var listatfr = dttfr.GetListaTfrByValuta_RangeDate(tm, canonemab.IDVALUTA, canonemab.DATAINIZIOVALIDITA, canonemab.DATAFINEVALIDITA, db);
+
+                                            foreach (var ib in listatfr)
+                                            {
+                                                DateTime dtVar = new DateTime();
+
+                                                if (ib.dataInizioValidita < trasferimento.DATAPARTENZA)
+                                                {
+                                                    dtVar = trasferimento.DATAPARTENZA;
+                                                }
+                                                else
+                                                {
+                                                    dtVar = ib.dataFineValidita.Value;
+                                                }
+
+
+                                                if (!lDateVariazioni.Contains(dtVar))
+                                                {
+                                                    lDateVariazioni.Add(dtVar);
+                                                    lDateVariazioni.Sort();
+                                                }
+                                            }
+
+                                        }
+
+
+                                    }
+                                lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                                    if (lDateVariazioni?.Any() ?? false)
+                                    {
+                                        for (int j = 0; j < lDateVariazioni.Count; j++)
+                                        {
+                                            DateTime dv = lDateVariazioni[j];
+
+                                            if (dv < Utility.DataFineStop())
+                                            {
+                                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                                {
+                                                    EvoluzioneIndennitaModel yy = new EvoluzioneIndennitaModel();
+
+                                                        yy.dataInizioValidita = dv;
+                                                        yy.dataFineValidita = dvSucc;
+                                                        yy.CanoneLocazioneinValuta = ci.CanoneMAB;
+                                                        yy.CanoneLocazioneinEuro = ci.CanoneMABEuro;
+                                                        yy.TassoFissoRagguaglio = ci.TassoCambio;
+
+                                                        eim.Add(yy);
+
+                                                }
+                                            }
+                                        }
+                                    }
+
                                 }
-
-
-
                             }
                         }
                     }
 
+                    
                 }
 
                 return eim;
