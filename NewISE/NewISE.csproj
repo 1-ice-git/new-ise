@@ -5589,6 +5589,7 @@
     <Compile Include="Models\DBModel\RptIndennitaServizioModel.cs" />
     <Compile Include="Models\DBModel\RptIndennitàRichiamoLordaModel.cs" />
     <Compile Include="Models\DBModel\RptIndSistemazioneLordaModel.cs" />
+    <Compile Include="Models\DBModel\RptMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\RptMaggiorazioniConiuge.cs" />
     <Compile Include="Models\DBModel\RptMaggiorazioniFigli.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
@@ -5857,6 +5858,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetIndennitàRichiamo.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dataset\DataSetMaggiorazioneAbitazione.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetMaggiorazioneAbitazione.xsd</DependentUpon>
     </Compile>
     <Compile Include="Views\Dataset\DataSetMaggiorazioniConiuge.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6177,6 +6183,17 @@
     </None>
     <Content Include="Views\Dataset\DataSetIndennitàRichiamo.xss">
       <DependentUpon>DataSetIndennitàRichiamo.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetMaggiorazioneAbitazione.xsc">
+      <DependentUpon>DataSetMaggiorazioneAbitazione.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetMaggiorazioneAbitazione.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetMaggiorazioneAbitazione.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Dataset\DataSetMaggiorazioneAbitazione.xss">
+      <DependentUpon>DataSetMaggiorazioneAbitazione.xsd</DependentUpon>
     </Content>
     <None Include="Views\Dataset\DataSetMaggiorazioniConiuge.xsd">
       <SubType>Designer</SubType>
