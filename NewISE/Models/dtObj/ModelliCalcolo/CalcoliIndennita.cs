@@ -61,6 +61,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _percentualeAnticipoTERientro = 0;
         private decimal _percentualeSaldoTERientro = 0;
         private decimal _saldoContributoOmnicomprensivoRientro = 0;
+        private decimal _totaleContributoOmnicomprensivo = 0;
 
         private decimal _coefficenteIndennitaRichiamo = 0;
         private decimal _indennitaRichiamoLordo = 0;
@@ -144,7 +145,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal PercentualeSaldoTEPartenza => _percentualeSaldoTEPartenza;
         [ReadOnly(true)]
         public decimal SaldoContributoOmnicomprensivoPartenza => _saldoContributoOmnicomprensivoPartenza;
-
+        [ReadOnly(true)]
+        public decimal TotaleContributoOmnicomprensivo => _totaleContributoOmnicomprensivo;
 
 
 
@@ -308,11 +310,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 this.CalcolaMab();
 
 
-
-
-
-
-
             }
             catch (Exception ex)
             {
@@ -399,21 +396,30 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private void PrelevaDatiMab()
         {
 
+            //var magAbitazione = _indennita.MAGGIORAZIONEABITAZIONE;
+
+            //var lmab = magAbitazione.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+
+            //var lmabp =
+            //    lmab.Where(
+            //        a =>
+            //            a.PERIODOMAB.Any(
+            //                b =>
+            //                    b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+            //                    _dtDatiParametri >= b.DATAINIZIOMAB && _dtDatiParametri <= b.DATAFINEMAB)).ToList();
+
+
+
 
             var lmab =
                 _indennita.MAGGIORAZIONEABITAZIONE.MAB.Where(
                     a =>
-                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
-                        a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
-                        a.IDMAB ==
-                        a.PERIODOMAB.Where(
+                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                        a.PERIODOMAB.Any(
                             b =>
-                                b.ATTIVAZIONEMAB.ANNULLATO == false && b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                                b.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
                                 b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                 _dtDatiParametri >= b.DATAINIZIOMAB &&
-                                _dtDatiParametri <= b.DATAFINEMAB).Max(b => b.IDMAB))
-                    .OrderByDescending(a => a.IDMAB)
+                                _dtDatiParametri <= b.DATAFINEMAB))
                     .ToList();
 
             //var lmab = _indennita.MAGGIORAZIONEABITAZIONE.MAB.Where(a=>a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false && a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true).order
@@ -897,12 +903,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                 }
 
-
-
-
-
-
-
             }
 
         }
@@ -936,11 +936,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     _percentualeAnticipoTEPartenza = pa.PERCENTUALE;
                     _percentualeSaldoTEPartenza = 100 - _percentualeAnticipoTEPartenza;
 
-                    _anticipoContributoOmnicomprensivoPartenza = Math.Round((_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
-                                                                  (_percentualeAnticipoTEPartenza / 100)), 8);
+                    _totaleContributoOmnicomprensivo = Math.Round(_indennitaSistemazione * (_percentualeFKMPartenza / 100), 8);
 
-                    _saldoContributoOmnicomprensivoPartenza = Math.Round((_indennitaSistemazione * (_percentualeFKMPartenza / 100) *
-                                                                  (_percentualeSaldoTEPartenza / 100)), 8);
+                    _anticipoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivo * (_percentualeAnticipoTEPartenza / 100), 8);
+
+                    _saldoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivo * (_percentualeSaldoTEPartenza / 100), 8);
 
                 }
 

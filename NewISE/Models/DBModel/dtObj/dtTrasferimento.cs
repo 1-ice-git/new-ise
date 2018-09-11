@@ -1141,6 +1141,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 dit.indennitaServizio = ci.IndennitaDiServizio;
                                 dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
                                 dit.indennitaPersonale = ci.IndennitaPersonale;
+                                dit.primaSitemazione = ci.IndennitaSistemazioneLorda;
+                                dit.contributoOmnicomprensivo = ci.TotaleContributoOmnicomprensivo;
+                                dit.mabMensile = ci.ImportoMABMaxMensile;
                             }
                         }
                     }
@@ -2350,7 +2353,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var pmab = dtma.GetPeriodoMABPartenza(mab.IDMAB, db);
                     var pmabm = dtma.GetPeriodoMABModelPartenza(mab.IDMAB, db);
 
-                    if (pmab.IDPERIODOMAB>0)
+                    if (pmab.IDPERIODOMAB > 0)
                     {
                         if (pmab.DATAINIZIOMAB != t.DATAPARTENZA)
                         {
