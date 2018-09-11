@@ -5806,10 +5806,6 @@
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel - Copy.cs" />
     <Compile Include="Models\ViewModel\VariazioneMABModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-<<<<<<< HEAD
-=======
-
->>>>>>> 69bbeb8a8f6e4785aa6bbf4c4e2ed4e7377593f6
     <Compile Include="Report\Elaborazioni\DataSet\dsLiquidazioniDirette.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -6445,10 +6441,6 @@
     <Content Include="Report\RptIndennitaBase.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-<<<<<<< HEAD
-=======
-
->>>>>>> 69bbeb8a8f6e4785aa6bbf4c4e2ed4e7377593f6
     <Content Include="Report\Elaborazioni\rptLiquidazioniDirette.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
