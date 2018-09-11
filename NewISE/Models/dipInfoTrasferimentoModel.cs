@@ -19,7 +19,7 @@ namespace NewISE.Models
         public UfficiModel UfficioDestinazione { get; set; }
 
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        
+
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         //[DisplayFormat(ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-mm-yyyy}")]
         public DateTime? Decorrenza { get; set; }
@@ -33,21 +33,29 @@ namespace NewISE.Models
         public decimal indennitaBase { get; set; }
 
         [Display(Name = "Indennità di Servizio")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal indennitaServizio { get; set; }
 
         [Display(Name = "Maggiorazione Familiari")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal maggiorazioniFamiliari { get; set; }
 
         [Display(Name = "Indennità Personale")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal indennitaPersonale { get; set; }
 
         [Display(Name = "Coefficiente Indennità Sistemazione")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal coefficienteIndennitàSistemazione { get; set; }
-
+        [Display(Name = "Ant./Saldo sitemazione")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        public decimal primaSitemazione { get; set; }
+        [Display(Name = "Contr. omni...")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        public decimal contributoOmnicomprensivo { get; set; }
+        [Display(Name = "M.AB. mesnile")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        public decimal mabMensile { get; set; }
 
         [Display(Name = "CDC Destinazione")]
         public string CDCDestinazione

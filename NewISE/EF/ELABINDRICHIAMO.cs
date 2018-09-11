@@ -34,6 +34,7 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
         public Nullable<decimal> FK_IDELABINDRICHIAMO { get; set; }
         public decimal IDLIVELLO { get; set; }
+        public bool CONGUAGLIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
