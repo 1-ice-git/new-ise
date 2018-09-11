@@ -1196,7 +1196,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
 
                                     foreach (var mab in lmab)
-                                {
+                                    {
 
                                     var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                         .OrderByDescending(a => a.IDPERIODOMAB).First();

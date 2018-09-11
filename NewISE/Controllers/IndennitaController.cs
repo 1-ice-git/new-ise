@@ -1685,14 +1685,23 @@ namespace NewISE.Controllers
         }
         public ActionResult RptMaggiorazioneAbitazione(decimal idTrasferimento)
         {
+            List<RptMaggiorazioneAbitazione> rpt = new List<RptMaggiorazioneAbitazione>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var indennita = trasferimento.INDENNITA;
+
                         using (dtTrasferimento dtt = new dtTrasferimento())
                         {
                             var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                            List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                            //var xx = db.TRASFERIMENTO.Find(idTrasferimento).DIPENDENTI.LIVELLIDIPENDENTI;
+                            var lmab = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
 
                             using (dtLivelliDipendente dld = new dtLivelliDipendente())
                             {
@@ -1706,35 +1715,166 @@ namespace NewISE.Controllers
                                 string Livello = liv1.Livello.DescLivello;
                                 string Ufficio = tm.Ufficio.descUfficio;
 
-                                ReportViewer reportViewer = new ReportViewer();
-
-                                reportViewer.ProcessingMode = ProcessingMode.Local;
-                                reportViewer.SizeToReportContent = true;
-                                reportViewer.Width = Unit.Percentage(100);
-                                reportViewer.Height = Unit.Percentage(100);
-
-                                //var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                                reportViewer.Visible = true;
-                                reportViewer.ProcessingMode = ProcessingMode.Local;
-                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
-                                reportViewer.LocalReport.DataSources.Clear();
-                                //reportViewer.LocalReport.DataSources.Add(datasource);
-
-                                reportViewer.LocalReport.Refresh();
-                                reportViewer.ShowReportBody = true;
-
-                                ReportParameter[] parameterValues = new ReportParameter[]
+                                using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
                                 {
-                                    new ReportParameter ("Nominativo",Nominativo),
-                                    new ReportParameter ("Livello",Livello),
-                                    new ReportParameter ("Decorrenza",Decorrenza),
-                                    new ReportParameter ("Ufficio",Ufficio)
+                                    using (dtVariazioniMaggiorazioneAbitazione dtvmab = new dtVariazioniMaggiorazioneAbitazione())
+                                    {
+                                            using (dtTFR dttfr = new dtTFR())
+                                            {
 
-                                };
+                                                foreach (var mab in lmab)
+                                                {
 
-                                reportViewer.LocalReport.SetParameters(parameterValues);
-                                ViewBag.ReportViewer = reportViewer;
-                            }
+                                                    var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                                        .OrderByDescending(a => a.IDPERIODOMAB).First();
+
+                                                    var pmm = dtvmab.GetPeriodoMABModel(mab.IDMAB);
+                                                    var lperc = dtmab.GetListaPercentualeMAB(pmm, tm, db);
+
+                                                    var lcanonemab = mab.CANONEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                                        .OrderByDescending(a => a.IDCANONE).ToList();
+
+                                                    foreach (var ib in lperc)
+                                                    {
+                                                        DateTime dtVar = new DateTime();
+
+                                                        if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                                        {
+                                                            dtVar = trasferimento.DATAPARTENZA;
+                                                        }
+                                                        else
+                                                        {
+                                                            dtVar = ib.DATAINIZIOVALIDITA;
+                                                        }
+
+
+                                                        if (!lDateVariazioni.Contains(dtVar))
+                                                        {
+                                                            lDateVariazioni.Add(dtVar);
+                                                            lDateVariazioni.Sort();
+                                                        }
+                                                    }
+
+
+                                                    foreach (var canonemab in lcanonemab)
+                                                    {
+                                                        var listatfr = dttfr.GetListaTfrByValuta_RangeDate(tm, canonemab.IDVALUTA, canonemab.DATAINIZIOVALIDITA, canonemab.DATAFINEVALIDITA, db);
+
+                                                        foreach (var ib in listatfr)
+                                                        {
+                                                            DateTime dtVar = new DateTime();
+
+                                                            if (ib.dataInizioValidita < trasferimento.DATAPARTENZA)
+                                                            {
+                                                                dtVar = trasferimento.DATAPARTENZA;
+                                                            }
+                                                            else
+                                                            {
+                                                                dtVar = ib.dataFineValidita.Value;
+                                                            }
+
+
+                                                            if (!lDateVariazioni.Contains(dtVar))
+                                                            {
+                                                                lDateVariazioni.Add(dtVar);
+                                                                lDateVariazioni.Sort();
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+
+                                                lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                                                if (lDateVariazioni?.Any() ?? false)
+                                                {
+                                                    for (int j = 0; j < lDateVariazioni.Count; j++)
+                                                    {
+                                                        DateTime dv = lDateVariazioni[j];
+
+                                                        if (dv < Utility.DataFineStop())
+                                                        {
+                                                            DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                                            {   
+                                                                RptMaggiorazioneAbitazione rpts = new RptMaggiorazioneAbitazione()
+                                                                {
+                                                                    
+                                                                    DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                                    DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                                    CanoneLocazioneinValuta = ci.CanoneMAB,
+                                                                    CanoneLocazioneinEuro = ci.CanoneMABEuro,
+                                                                    TassoFissoRagguaglio = ci.TassoCambio
+                                                                };
+                                                                rpt.Add(rpts);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                    }
+
+                                    }
+                                }
+
+                                    ReportViewer reportViewer = new ReportViewer();
+
+                                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                                    reportViewer.SizeToReportContent = true;
+                                    reportViewer.Width = Unit.Percentage(100);
+                                    reportViewer.Height = Unit.Percentage(100);
+
+                                    var datasource = new ReportDataSource("DataSetMaggiorazioneAbitazione");
+
+                                    reportViewer.Visible = true;
+                                    reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
+                                    reportViewer.LocalReport.DataSources.Clear();
+                                    reportViewer.LocalReport.DataSources.Add(datasource);
+                                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetMaggiorazioneAbitazione", rpt));
+                                    reportViewer.LocalReport.Refresh();
+
+                                    List<ReportParameter> parameterValues = new List<ReportParameter>();
+                                    parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                    parameterValues.Add(new ReportParameter("Livello", Livello));
+                                    parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                    parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+                                    reportViewer.LocalReport.SetParameters(parameterValues);
+                                    ViewBag.ReportViewer = reportViewer;
+
+
+
+                                    //ReportViewer reportViewer = new ReportViewer();
+
+                                    //reportViewer.ProcessingMode = ProcessingMode.Local;
+                                    //reportViewer.SizeToReportContent = true;
+                                    //reportViewer.Width = Unit.Percentage(100);
+                                    //reportViewer.Height = Unit.Percentage(100);
+
+                                    ////var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
+                                    //reportViewer.Visible = true;
+                                    //reportViewer.ProcessingMode = ProcessingMode.Local;
+                                    //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
+                                    //reportViewer.LocalReport.DataSources.Clear();
+                                    ////reportViewer.LocalReport.DataSources.Add(datasource);
+
+                                    //reportViewer.LocalReport.Refresh();
+                                    //reportViewer.ShowReportBody = true;
+
+                                    //ReportParameter[] parameterValues = new ReportParameter[]
+                                    //{
+                                    //    new ReportParameter ("Nominativo",Nominativo),
+                                    //    new ReportParameter ("Livello",Livello),
+                                    //    new ReportParameter ("Decorrenza",Decorrenza),
+                                    //    new ReportParameter ("Ufficio",Ufficio)
+
+                                    //};
+
+                                    //reportViewer.LocalReport.SetParameters(parameterValues);
+                                    //ViewBag.ReportViewer = reportViewer;
+                        }
                         }
                }
             }
@@ -3018,10 +3158,6 @@ namespace NewISE.Controllers
         }
 
         #endregion
-            
-        
-        
-        
         
          
     }
