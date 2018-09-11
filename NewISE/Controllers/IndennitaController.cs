@@ -28,6 +28,8 @@ namespace NewISE.Controllers
         {
             return View();
         }  
+
+
         public ActionResult GestioneIndennita(decimal idTrasferimento)
         {
             try
