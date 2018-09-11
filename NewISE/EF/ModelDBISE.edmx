@@ -600,6 +600,7 @@
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="FK_IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABINDSISTEMAZIONE">
           <Key>
@@ -8321,6 +8322,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDELABINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIR_EDF" FromRole="ELABINDRICHIAMO" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="ELABINDRICHIAMO1" Relationship="DBISE.R_EIR_EIR" FromRole="ELABINDRICHIAMO" ToRole="ELABINDRICHIAMO1" />
           <NavigationProperty Name="ELABINDRICHIAMO2" Relationship="DBISE.R_EIR_EIR" FromRole="ELABINDRICHIAMO1" ToRole="ELABINDRICHIAMO" />
@@ -12364,6 +12366,7 @@
           <EntitySetMapping Name="ELABINDRICHIAMO">
             <EntityTypeMapping TypeName="DBISE.ELABINDRICHIAMO">
               <MappingFragment StoreEntitySet="ELABINDRICHIAMO">
+                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="FK_IDELABINDRICHIAMO" ColumnName="FK_IDELABINDRICHIAMO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
