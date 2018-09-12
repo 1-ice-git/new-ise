@@ -67,140 +67,243 @@
         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Contributo Omnicomprensivo Rientro</a></li>
         
     </ul>*@
+    
+    
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                <span class="glyphicon glyphicon-folder-close">
+                                </span>&nbsp;&nbsp;Indennità mensili
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        
+                        <div class="list-group">
+                            <div class="list-group">
+
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Indennità di Base Estera", "IndennitaBase", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Indennità di Servizio", "IndennitaServizio", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Maggiorazioni Coniuge", "MaggiorazioniConiuge", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Maggiorazioni Figli", "MaggiorazioniFigli", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Indennità Personale", "IndennitaPersonale", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Maggiorazione Abitazione", "MaggiorazioneAbitazione", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                <span class="glyphicon glyphicon-file">
+                                </span>&nbsp;&nbsp;Indennità una tantum
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse">
+                        @*<div class="list-group">
+
+                            <div class="list-group">
+                                <a href="#" class="list-group-item" onclick="">Anticipo Indennità di Sistemazione Lorda</a>
+                                <a href="#" class="list-group-item" onclick="">Indennità di Sistemazione Lorda</a>
+                                <a href="#" class="list-group-item" onclick="">Indennità di Sistemazione Netta (Anticipo o Saldo)</a>
+                                <a href="#" class="list-group-item" onclick="">Indennità di Richiamo Lorda</a>
+                                <a href="#" class="list-group-item" onclick="">Indennità di Richiamo Netta</a>
+                                <a href="#" class="list-group-item" onclick="">Contributo Omnicomprensivo Trasferimento</a>
+                                <a href="#" class="list-group-item" onclick="">Contributo Omnicomprensivo Rientro</a>
+                            </div>
+
+                        </div>*@
+
+                        <div class="list-group">
+                            <div class="list-group">
+
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Anticipo Indennità di Sistemazione Lorda", "AnticipoIndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Indennità di Sistemazione Lorda", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Indennità di Sistemazione Netta (Anticipo o Saldo)", "IndennitadiSistemazioneNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Indennità di Richiamo Lorda", "IndennitadiRichiamoLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Indennità di Richiamo Netta", "IndennitadiRichiamoNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Contributo Omnicomprensivo Trasferimento", "ContributoOmnicomprensivoTrasferimento", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                                <div class="list-group-item">
+                                    @Ajax.ActionLink("Contributo Omnicomprensivo Rientro", "ContributoOmnicomprensivoRientro", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
+                            </div>
+                        </div>
 
 
 
-    <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>
-                        Indennità Mensili
-                    </th>
+                    </div>
+                </div>
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>
 
-                        @Ajax.ActionLink("Indennità di Base Estera", "IndennitaBase", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" } )
-                    </th>
 
-                </tr>
-                <tr>
-                    <th>
+            </div>
 
-                        @Ajax.ActionLink("Indennità di Servizio", "IndennitaServizio", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
 
-                </tr>
-                <tr>
-                    <th>
 
-                        @*@Ajax.ActionLink("Maggiorazioni Coniuge", "MaggiorazioniFamiliari", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })*@
-                        @Ajax.ActionLink("Maggiorazioni Coniuge", "MaggiorazioniConiuge", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
 
-                </tr>
-                <tr>
-                    <th>
+    @*<table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Indennità Mensili
+                </th>
 
-                        @*@Ajax.ActionLink("Maggiorazioni Figli", "MaggiorazioniFamiliari", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })*@
-                        @Ajax.ActionLink("Maggiorazioni Figli", "MaggiorazioniFigli", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
 
-                </tr>
+                    @Ajax.ActionLink("Indennità di Base Estera", "IndennitaBase", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                @*<tr>
+            </tr>
+            <tr>
+                <th>
+
+                    @Ajax.ActionLink("Indennità di Servizio", "IndennitaServizio", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
+
+            </tr>
+            <tr>
+                <th>*@
+
+                    @*@Ajax.ActionLink("Maggiorazioni Coniuge", "MaggiorazioniFamiliari", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })*@
+                    @*@Ajax.ActionLink("Maggiorazioni Coniuge", "MaggiorazioniConiuge", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })*@
+                @*</th>
+
+            </tr>
+            <tr>
+                <th>*@
+
+                    @*@Ajax.ActionLink("Maggiorazioni Figli", "MaggiorazioniFamiliari", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })*@
+                    @*@Ajax.ActionLink("Maggiorazioni Figli", "MaggiorazioniFigli", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
+
+            </tr>*@
+
+            @*<tr>
                     <th>
 
                         @Ajax.ActionLink("Maggiorazioni Familiari (Totale)", "MaggiorazioniFamiliari", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                     </th>
 
                 </tr>*@
-                <tr>
-                    <th>
+            @*<tr>
+                <th>
 
-                        @Ajax.ActionLink("Indennità Personale", "IndennitaPersonale", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+                    @Ajax.ActionLink("Indennità Personale", "IndennitaPersonale", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                </tr>
-                <tr>
-                    <th>
+            </tr>
+            <tr>
+                <th>
 
-                        @Ajax.ActionLink("Maggiorazione Abitazione", "MaggiorazioneAbitazione", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+                    @Ajax.ActionLink("Maggiorazione Abitazione", "MaggiorazioneAbitazione", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                </tr>
+            </tr>
 
-            </tbody>
+        </tbody>*@
 
-            <thead>
-                <tr>
-                    <th>
-                        Indennità una Tantum
-                    </th>
+        @*<thead>
+            <tr>
+                <th>
+                    Indennità una Tantum
+                </th>
 
-                </tr>
-            </thead>
-            <tbody>
+            </tr>
+        </thead>
+        <tbody>
 
-                <tr>
-                    <th>
+            <tr>
+                <th>
 
-                        @Ajax.ActionLink("Anticipo Indennità di Sistemazione Lorda", "AnticipoIndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+                    @Ajax.ActionLink("Anticipo Indennità di Sistemazione Lorda", "AnticipoIndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                </tr>
-                <tr>
-                    <th>
+            </tr>
+            <tr>
+                <th>
 
-                        @Ajax.ActionLink("Indennità di Sistemazione Lorda", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+                    @Ajax.ActionLink("Indennità di Sistemazione Lorda", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                </tr>
-                <tr>
-                    <th>
+            </tr>
+            <tr>
+                <th>
 
-                        @Ajax.ActionLink("Indennità di Sistemazione Netta (Anticipo o Saldo)", "IndennitadiSistemazioneNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+                    @Ajax.ActionLink("Indennità di Sistemazione Netta (Anticipo o Saldo)", "IndennitadiSistemazioneNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                </tr>
-                @*<tr>
+            </tr>
+            <tr>
                     <th>
 
                         @Ajax.ActionLink("Indennità Prima Sistemazione", "IndennitaPrimaSistemazione", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                     </th>
 
-                </tr>*@
-                <tr>
-                    <th>
-
-                        @Ajax.ActionLink("Indennità di Richiamo Lorda", "IndennitadiRichiamoLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
-
                 </tr>
-                <tr>
-                    <th>
+            <tr>
+                <th>
 
-                        @Ajax.ActionLink("Indennità di Richiamo Netta", "IndennitadiRichiamoNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+                    @Ajax.ActionLink("Indennità di Richiamo Lorda", "IndennitadiRichiamoLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                </tr>
-                <tr>
-                    <th>
+            </tr>
+            <tr>
+                <th>
 
-                        @Ajax.ActionLink("Contributo Omnicomprensivo Trasferimento", "ContributoOmnicomprensivoTrasferimento", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+                    @Ajax.ActionLink("Indennità di Richiamo Netta", "IndennitadiRichiamoNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                </tr>
-                <tr>
-                    <th>
+            </tr>
+            <tr>
+                <th>
 
-                        @Ajax.ActionLink("Contributo Omnicomprensivo Rientro", "ContributoOmnicomprensivoRientro", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    </th>
+                    @Ajax.ActionLink("Contributo Omnicomprensivo Trasferimento", "ContributoOmnicomprensivoTrasferimento", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
 
-                </tr>
+            </tr>
+            <tr>
+                <th>
 
-            </tbody>
-        </table>
+                    @Ajax.ActionLink("Contributo Omnicomprensivo Rientro", "ContributoOmnicomprensivoRientro", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                </th>
+
+            </tr>
+
+        </tbody>
+    </table>*@
+
+   
