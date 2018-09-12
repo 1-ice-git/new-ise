@@ -323,8 +323,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             var lpcMab =
                 mab.PAGATOCONDIVISOMAB.Where(
                     a =>
-                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
-                        a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
+                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                         _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                         _dtDatiParametri <= a.DATAFINEVALIDITA)
                     .OrderByDescending(a => a.DATAINIZIOVALIDITA)
@@ -342,8 +341,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             var lAntAnnMab =
                 mab.ANTICIPOANNUALEMAB.Where(
                     a =>
-                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
-                        a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
                     .OrderByDescending(a => a.IDANTICIPOANNUALEMAB)
                     .ToList();
             if (lAntAnnMab?.Any() ?? false)
@@ -376,8 +374,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             var lcmab =
                 mab.CANONEMAB.Where(
                     a =>
-                        a.ATTIVAZIONEMAB.ANNULLATO == false && a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                        a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                         _dtDatiParametri >= a.DATAINIZIOVALIDITA && _dtDatiParametri <= a.DATAFINEVALIDITA)
                     .OrderByDescending(a => a.DATAINIZIOVALIDITA)
@@ -431,8 +427,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 var perMab =
                     mab.PERIODOMAB.Where(
                         a =>
-                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.ATTIVAZIONEMAB.ANNULLATO == false &&
-                            a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true && a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
                         .OrderByDescending(a => a.IDPERIODOMAB)
                         .First();
 
@@ -443,7 +438,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                             a.IDLIVELLO == _livello.IDLIVELLO &&
                             _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                             _dtDatiParametri <= a.DATAFINEVALIDITA)
-                        .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                         .ToList();
 
                 if (lpmab?.Any() ?? false)
