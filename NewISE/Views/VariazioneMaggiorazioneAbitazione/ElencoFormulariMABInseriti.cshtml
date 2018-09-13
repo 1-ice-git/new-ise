@@ -1,0 +1,71 @@
+﻿@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+}
+
+<div class="row">
+    <div class="col-xs-3">
+        <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px;">
+            <button class="btn btn-default btn-sm" onclick="DownloadFormularioMAB_var();">
+                <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                Download formulario
+            </button>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            @if (solaLettura)
+            {
+                <button class="btn btn-default btn-sm disabled" disabled="disabled">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                    Inserisci formulario
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-default btn-sm" onclick="NuovoFormularioMAB();">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                    Inserisci formulario
+                </button>
+            }
+        </div>
+    </div>
+    <div id="divCombo" class="col-xs-6">
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            @Html.Label("Data Attivazione", htmlAttributes: new { @class = "control-label" })
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazione", @class = "form-control select2 select2-select", @onchange = "FiltraElencoFormularioMAB();" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divTabElencoFormulariMAB_Var">
+            @Html.Action("TabFormulariMABInseriti", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento })
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function DownloadFormularioMAB_var() {
+        $('#ModalDownloadFormularioMAB_var').modal().show();
+    }
+
+    $("#idAttivazione").select2({
+        placeholder: "Seleziona la data attivazione",
+        allowClear: true,
+        language: "it",
+        width: '250',
+        allowClear: false
+    });
+
+    //$("#ModalNuovoFormularioMAB_Var").on("hidden.bs.modal", function () {
+    //    //debugger;
+    //    ElencoFormulariMABInseriti();
+    //});
+
+</script>
+
+

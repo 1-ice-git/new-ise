@@ -3876,10 +3876,25 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
 
                                 }
-                                #endregion
+                            #endregion
+
+                            #region cerca pensioni coniuge attive nascoste e le annulla
+                            lp = amf.PENSIONE.Where(a =>
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                        a.NASCONDI).ToList();
+
+                            foreach (var p in lp)
+                            {
+                                p.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (pensione coniuge).");
+                                }
+                            }
+                            #endregion
 
                             #region calendario
-                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
                                     dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
                                 }

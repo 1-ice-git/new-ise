@@ -1,4 +1,5 @@
-﻿using NewISE.EF;
+﻿using NewISE.Models.DBModel.dtObj;
+using NewISE.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +22,9 @@ namespace NewISE.Models.DBModel
         public decimal IDMAB { get; set; }
 
         [Display(Name = "Data Inizio")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode =true)]
+        [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
+        [DataType(DataType.Date)]
         public DateTime DataInizioValidita { get; set; }
 
         [Display(Name = "Data Fine")]
@@ -30,6 +33,8 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "Canone")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "L'importo canone è richiesto.")]
+        //[CustomValidation(typeof(dtVariazioniMaggiorazioneAbitazione), "VerificaImportoCanoneMAB")]
         public decimal ImportoCanone { get; set; }
 
         public DateTime DataAggiornamento { get; set; }

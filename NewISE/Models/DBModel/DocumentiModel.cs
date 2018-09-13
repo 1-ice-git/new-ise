@@ -11,8 +11,6 @@ using NewISE.Models.Enumeratori;
 namespace NewISE.Models.DBModel
 {
 
-
-
     public class DocumentiModel
     {
         [Key]
@@ -46,7 +44,6 @@ namespace NewISE.Models.DBModel
         [Required]
         public bool Modificato { get; set; }
 
-
         [Required(ErrorMessage = "Il Documento è richiesto.")]
         [DataType(DataType.Upload)]
         [Display(AutoGenerateField = true, AutoGenerateFilter = false, Name = "Documento")]
@@ -54,8 +51,6 @@ namespace NewISE.Models.DBModel
         public HttpPostedFileBase file { get; set; }
 
         public TrasferimentoModel Trasferimento { get; set; }
-
-
 
         public bool HasValue()
         {

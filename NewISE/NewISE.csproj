@@ -1066,6 +1066,7 @@
     <Content Include="Immagini\39.gif" />
     <Content Include="Immagini\euro-add-black.png" />
     <Content Include="Immagini\euro-stop-black.png" />
+    <Content Include="Immagini\Google_logo.jpg" />
     <Content Include="Immagini\group-icon.png" />
     <Content Include="Immagini\locked-black-padlock-security_54500.png" />
     <Content Include="Immagini\new-icon.png" />
@@ -4870,6 +4871,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TitoliViaggioColori.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\VariazioneMABColori.designer.cs">
+      <DependentUpon>VariazioneMABColori.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_GlobalResources\VariazioneMagFamColori.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5756,6 +5762,7 @@
     <Compile Include="Models\Tools\EmailCredenziali.cs" />
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
+    <Compile Include="Models\ViewModel\PagatoCondivisoMABViewModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
     <Compile Include="Models\ViewModel\AnticipiViewModel.cs" />
     <Compile Include="Models\ViewModel\ElaborazioniViewModel.cs" />
@@ -6025,7 +6032,6 @@
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\AttivitaMAB_var.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\DocumentoMAB_var.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoDocumentiFormularioMAB_var.cshtml" />
-    <Content Include="Views\VariazioneMaggiorazioneAbitazione\FormulariMAB_var.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\GestionePulsantiMAB_var.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\MessaggioAnnullaMAB_var.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\ModificaMAB_var.cshtml" />
@@ -6294,8 +6300,12 @@
     <Content Include="Views\VariazionePassaporto\ElencoPassaporto_Completato.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoCanoneMAB.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoImportoCanone.cshtml" />
-    <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml" />
-    <Content Include="Views\Elaborazioni\ReportLiquidazioniDirette.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoPagatoCondivisoMAB.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoPagatoCondiviso.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\ElencoFormulariMABInseriti.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\TabFormulariMABInseriti.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoFormularioMAB_TipoDoc.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoFormularioMAB_Doc.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6349,6 +6359,10 @@
     <Content Include="App_GlobalResources\VariazioneProvvScolColori.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>VariazioneProvvScolColori.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\VariazioneMABColori.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>VariazioneMABColori.designer.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Statistiche\RPT\Report12.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

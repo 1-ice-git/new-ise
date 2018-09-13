@@ -1730,7 +1730,7 @@ namespace NewISE.Controllers
                                                     var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                                         .OrderByDescending(a => a.IDPERIODOMAB).First();
 
-                                                    var pmm = dtvmab.GetPeriodoMABModel(mab.IDMAB);
+                                                    var pmm = dtvmab.GetPeriodoMABModel(mab.IDMAB, db);
                                                     var lperc = dtmab.GetListaPercentualeMAB(pmm, tm, db);
 
                                                     var lcanonemab = mab.CANONEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)

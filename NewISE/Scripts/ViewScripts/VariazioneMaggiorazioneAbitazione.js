@@ -29,39 +29,6 @@
     });
 }
 
-function FormulariMAB_var(idTrasferimento) {
-    //debugger;
-    var rotta = "/VariazioneMaggiorazioneAbitazione/FormulariMAB_var";
-    var idTrasferimento = parseInt(idTrasferimento);
-
-    $.ajax({
-        type: "POST",
-        url: rotta,
-        data: { idTrasferimento: idTrasferimento },
-        dataType: 'html',
-        beforeSend: function () {
-            //debugger;
-            VerificaAutenticazione();
-        },
-        success: function (result) {
-            //debugger;
-            $("#tabFormulariMAB_var").empty();
-            $("#tabFormulariMAB_var").html(result);
-            Sblocca();
-        },
-
-        complete: function () {
-        },
-
-        error: function (jqXHR, textStatus, errorThrow) {
-            //debugger;
-            var msg = errorThrow.err;
-            ErroreElaborazioneAjax(msg);
-        }
-
-    });
-}
-
 function AttivitaMAB_var(idTrasferimento) {
     //debugger;
     var rotta = "/VariazioneMaggiorazioneAbitazione/AttivitaMAB_var";
@@ -167,8 +134,8 @@ function CloseTimeModalMAB_var(idTrasferimento) {
 
 function CloseModalFileMAB_var(idTrasferimento) {
     //debugger;
-    $('#inviaDocMABModal_var').modal('hide');
-    setTimeout(FormulariMAB_var(idTrasferimento), 1000);
+    $('#ModalNuovoFormularioMAB_Doc').modal('hide');
+    setTimeout(ElencoFormulariMABInseriti(idTrasferimento), 1000);
 }
 
 function ValidazioneMAB_var(idTrasferimento) {
@@ -204,12 +171,12 @@ function ValidazioneMAB_var(idTrasferimento) {
     return ret;
 }
 
-function SalvaDocumentoMAB_var(idTrasferimento, idTipoDocumento) {
-
+function SalvaDocumentoMAB_var(idTrasferimento, idTipoDocumento)
+{
     //debugger;
     var datiForm = new FormData();
     var rotta = "/VariazioneMaggiorazioneAbitazione/InserisciDocumentoMAB_var";
-
+    
     //var idTrasferimento = parseInt($("#idTrasferimento").val());
     //var idTipoDocumento = parseInt('@idTipoDocumento');
     var file = $("#file")[0].files[0];
@@ -219,6 +186,7 @@ function SalvaDocumentoMAB_var(idTrasferimento, idTipoDocumento) {
         datiForm.append("idTrasferimento", idTrasferimento);
         datiForm.append("idTipoDocumento", idTipoDocumento);
         datiForm.append("file", file);
+
 
         $.ajax({
             url: rotta,
@@ -267,10 +235,8 @@ function SalvaDocumentoMAB_var(idTrasferimento, idTipoDocumento) {
         });
     }
     else {
-        $("#btUploadDocMAB_var").removeAttr("disabled");
-        $("#btUploadDocMAB_var").removeClass("disabled");
-        $("#btAnnullaDocMAB_var").removeAttr("disabled");
-        $("#btAnnullaDocMAB_var").removeClass("disabled");
+        $("#spantxtError").html("Selezionare documento.");
+        $("#spanNomeFile").html("");
     }
 
 }
@@ -300,9 +266,8 @@ function ConfermaNotificaRichiestaMAB_var() {
             if (result.err == "") {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB_var(idTrasferimento);
-                FormulariMAB_var(idTrasferimento);
+                ElencoFormulariMABInseriti(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
-                GestioneAttivitaTrasferimento_var();
             } else {
                 ErroreElaborazioneAjax(result.err);
             }
@@ -340,9 +305,8 @@ function ConfermaAnnullaRichiestaMAB_var() {
             if (result.err == "") {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB_var(idTrasferimento);
-                FormulariMAB_var(idTrasferimento);
+                ElencoFormulariMABInseriti(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
-                //GestioneAttivitaTrasferimento();
             } else {
                 ErroreElaborazioneAjax(result.err);
             }
@@ -378,9 +342,8 @@ function ConfermaAttivaRichiestaMAB_var() {
             if (result.err == "") {
                 //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB_var(idTrasferimento);
-                FormulariMAB_var(idTrasferimento);
+                ElencoFormulariMABInseriti(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
-                //GestioneAttivitaTrasferimento();
             } else {
                 ErroreElaborazioneAjax(result.err);
             }
@@ -411,8 +374,8 @@ function NuovaMAB_var(idTrasferimento) {
         },
         success: function (result) {
             //debugger;
-            $("#divMAB").empty();
-            $("#divMAB").html(result);
+            $("#tabAttivitaMAB_var").empty();
+            $("#tabAttivitaMAB_var").html(result);
         },
         complete: function () {
 
@@ -441,8 +404,8 @@ function ModificaMAB_var(idMAB) {
         },
         success: function (result) {
             //debugger;
-            $("#divMaggiorazioneAbitazione_var").empty();
-            $("#divMaggiorazioneAbitazione_var").html(result);
+            $("#tabAttivitaMAB_var").empty();
+            $("#tabAttivitaMAB_var").html(result);
         },
         complete: function () {
 
@@ -459,6 +422,39 @@ function ModificaMAB_var(idMAB) {
 function CanoneMAB(idTrasferimento, idMAB) {
     //debugger;
     var rotta = "/VariazioneMaggiorazioneAbitazione/ElencoCanoneMAB";
+
+    $.ajax({
+        type: "POST",
+        url: rotta,
+        data: {
+            idMAB: idMAB,
+            idTrasferimento: idTrasferimento
+        },
+        dataType: 'html',
+        beforeSend: function () {
+            //debugger;
+            //VerificaAutenticazione();
+        },
+        success: function (result) {
+            //debugger;
+            $("#tabAttivitaMAB_var").empty();
+            $("#tabAttivitaMAB_var").html(result);
+        },
+        complete: function () {
+
+        },
+        error: function (jqXHR, textStatus, errorThrow) {
+            //debugger;
+            var msg = errorThrow.err;
+            ErroreElaborazioneAjax(msg);
+        }
+
+    });
+}
+
+function PagatoCondivisoMAB(idTrasferimento, idMAB) {
+    //debugger;
+    var rotta = "/VariazioneMaggiorazioneAbitazione/ElencoPagatoCondivisoMAB";
 
     $.ajax({
         type: "POST",
@@ -516,3 +512,275 @@ function MessaggioAnnullaRichiestaMAB_var() {
         }
     });
 }
+
+function AggiornaElencoCanoneMAB(idTrasferimento, idMAB) {
+    CanoneMAB(idTrasferimento, idMAB) 
+}
+
+function AggiornaElencoPagatoCondivisoMAB(idTrasferimento, idMAB) {
+    PagatoCondivisoMAB(idTrasferimento, idMAB)
+}
+
+function ConfermaAnnullaModificheCanoneMAB() {
+    //debugger;
+    var rotta = "/VariazioneMaggiorazioneAbitazione/ConfermaAnnullaModificheCanoneMAB";
+    var idMAB = parseInt($('#hdIdMAB').val());
+    var idTrasferimento = parseInt($('#hdIdTrasferimento').val());
+
+    $.ajax({
+        type: "POST",
+        url: rotta,
+
+        data: {
+            idMAB: idMAB
+        },
+        dataType: 'json',
+        beforeSend: function () {
+            //debugger;
+            VerificaAutenticazione();
+        },
+        success: function (result) {
+            //debugger;
+            if (result.err == "") {
+                $('#AnnullaModificheCanoneMABModal').modal('hide');
+                AggiornaElencoCanoneMAB(idTrasferimento, idMAB);
+                GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
+            } else {
+                ErroreElaborazioneAjax(result.err);
+            }
+        },
+        complete: function () {
+            //debugger;
+        },
+        error: function (jqXHR, textStatus, errorThrow) {
+            //debugger;
+            var msg = errorThrow.err;
+            ErroreElaborazioneAjax(msg);
+        }
+    });
+}
+
+function ConfermaAnnullaModifichePagatoCondivisoMAB() {
+    //debugger;
+    var rotta = "/VariazioneMaggiorazioneAbitazione/ConfermaAnnullaModifichePagatoCondivisoMAB";
+    var idMAB = parseInt($('#hdIdMAB').val());
+    var idTrasferimento = parseInt($('#hdIdTrasferimento').val());
+
+    $.ajax({
+        type: "POST",
+        url: rotta,
+
+        data: {
+            idMAB: idMAB
+        },
+        dataType: 'json',
+        beforeSend: function () {
+            //debugger;
+            VerificaAutenticazione();
+        },
+        success: function (result) {
+            //debugger;
+            if (result.err == "") {
+                $('#AnnullaModifichePagatoCondivisoMABModal').modal('hide');
+                AggiornaElencoPagatoCondivisoMAB(idTrasferimento, idMAB);
+                GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
+            } else {
+                ErroreElaborazioneAjax(result.err);
+            }
+        },
+        complete: function () {
+            //debugger;
+        },
+        error: function (jqXHR, textStatus, errorThrow) {
+            //debugger;
+            var msg = errorThrow.err;
+            ErroreElaborazioneAjax(msg);
+        }
+    });
+}
+
+function ElencoFormulariMABInseriti(idTrasferimento) {
+    var rotta = "/VariazioneMaggiorazioneAbitazione/ElencoFormulariMABInseriti";
+    var idMagFam = parseInt('@idMagFam');
+    //var idTrasferimento = parseInt($('#hdIdTrasferimento').val());
+
+    $.ajax({
+        type: "POST",
+        url: rotta,
+        data: { idTrasferimento: idTrasferimento },
+        dataType: 'html',
+        beforeSend: function () {
+            //debugger;
+            //VerificaAutenticazione();
+        },
+        success: function (result) {
+            //debugger;
+            $("#tabFormulariMAB_var").empty();
+            $("#tabFormulariMAB_var").html(result);
+        },
+        complete: function () {
+            GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
+        },
+        error: function (jqXHR, textStatus, errorThrow) {
+            //debugger;
+            var msg = errorThrow.err;
+            AlertDialog(msg);
+        }
+
+    });
+}
+
+function NuovoFormularioMAB() {
+    //debugger;
+    var rotta = "/VariazioneMaggiorazioneAbitazione/NuovoFormularioMAB_TipoDoc";
+    var idTrasferimento = parseInt($('#hdIdTrasferimento').val());
+
+    $.ajax({
+        url: rotta,
+        type: "POST", //Le info testuali saranno passate in POST
+        data: { idTrasferimento: idTrasferimento },
+        dataType: 'html',
+        async: false,
+        beforeSend: function () {
+            //debugger;
+            VerificaAutenticazione();
+            //$('#inviaDocModal').modal('show');
+            //Blocca();
+            $('#ModalNuovoFormularioMAB_TipoDoc').modal('show');
+        },
+        success: function (result) {
+            //debugger;
+            $("#divViewNuovoFormularioMAB_TipoDoc").empty();
+            $("#divViewNuovoFormularioMAB_TipoDoc").html(result);
+        },
+        error: function (error) {
+            //debugger;
+            //Sblocca();
+            var msg = error.responseText;
+            ErroreElaborazioneAjax(msg);
+        }
+    });
+}
+
+function TabElencoFormulariMAB() {
+    //debugger;
+    var rotta = "/VariazioneMaggiorazioneAbitazione/TabFormulariMABInseriti";
+    var idTrasferimento = parseInt($('#hdIdTrasferimento').val());
+
+    $.ajax({
+        url: rotta,
+        type: "POST", //Le info testuali saranno passate in POST
+        data: { idTrasferimento: idTrasferimento },
+        dataType: 'html',
+        async: false,
+        beforeSend: function () {
+            //debugger;
+            VerificaAutenticazione();
+            //$('#inviaDocModal').modal('show');
+            Blocca();
+        },
+        success: function (result) {
+            //debugger;
+            $("#divTabElencoFormulariMAB_Var").empty();
+            $("#divTabElencoFormulariMAB_Var").html(result);
+
+        },
+        error: function (error) {
+            //debugger;
+            Sblocca();
+            var msg = error.responseText;
+            ErroreElaborazioneAjax(msg);
+        }
+    });
+}
+
+function FiltraElencoFormularioMAB() {
+    //debugger;
+    var idAttivazione =  parseInt($("#idAttivazione").val());
+
+    if (idAttivazione > 0) {
+
+        var rotta = "/VariazioneMaggiorazioneAbitazione/FiltraTabFormulariMABInseriti";
+        var idTrasferimento = parseInt($('#hdIdTrasferimento').val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento, idAttivazione: idAttivazione },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divTabElencoFormulariMAB_Var").empty();
+                $("#divTabElencoFormulariMAB_Var").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+    else
+    {
+        TabElencoFormulariMAB();
+    }
+}
+
+function ConfermaAnnullaModificheMAB() {
+    //debugger;
+    var rotta = "/VariazioneMaggiorazioneAbitazione/ConfermaAnnullaModificheMAB";
+    var idMAB = parseInt($("#hiAnnullaModMAB").val());
+    var idTrasferimento = parseInt($('#hdIdTrasferimento').val());
+
+    $.ajax({
+        url: rotta,
+        type: "POST", //Le info testuali saranno passate in POST
+        data: {
+            idMAB: idMAB
+            //idMaggiorazioniFamiliari: idMaggiorazioniFamiliari,
+            //solaLettura: solaLettura,
+            //check_nuovo_coniuge: check_nuovo_coniuge
+        },
+        dataType: 'json',
+        async: false,
+        beforeSend: function () {
+            //debugger;
+            VerificaAutenticazione();
+            Blocca();
+        },
+        success: function (result) {
+            //debugger;
+            if (result.errore === "") {
+                $('#AnnullaModificheMABModal').modal('hide');
+                AttivitaMAB_var(idTrasferimento);
+                GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
+                
+            } else {
+                ErroreElaborazioneAjax(result.msg);
+            }
+            //$("#tabFamiliari").empty();
+            //$("#tabFamiliari").html(result);
+
+        },
+        complete: function () {
+            //PulsantiNotificaAttivaMagFam();
+            Sblocca();
+        },
+        error: function (error) {
+            //debugger;
+            Sblocca();
+            var msg = error.responseText;
+            ErroreElaborazioneAjax(msg);
+        }
+    });
+
+}
+

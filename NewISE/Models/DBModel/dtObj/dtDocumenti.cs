@@ -557,6 +557,22 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
+        public List<TIPODOCUMENTI> GetElencoTipoDocumentiMAB(ModelDBISE db)
+        {
+
+                List<TIPODOCUMENTI> ltd = db.TIPODOCUMENTI.Where(a =>
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione)
+                                .OrderBy(a=>a.IDTIPODOCUMENTO)
+                                .ToList();
+            return ltd;
+        }
+
         /// <summary>
         /// Verifica la presenza della lettera di trasferimento. Può esistere solo una lettera di trasferimento.
         /// </summary>
@@ -1235,7 +1251,10 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
                     case EnumTipoDoc.Clausole_Contratto_Alloggio:
                     case EnumTipoDoc.Copia_Contratto_Locazione:
-                        //t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
+                    case EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione:
+                    case EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione:
+                    case EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione:
+                        t = d.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
                         //t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
@@ -1252,7 +1271,6 @@ namespace NewISE.Models.DBModel.dtObj
                         t = d.ATTIVAZIONIPROVSCOLASTICHE.First().PROVVIDENZESCOLASTICHE.TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Documento_Identita:
-
                         switch (chiamante)
                         {
                             case EnumChiamante.Maggiorazioni_Familiari:
@@ -1279,7 +1297,6 @@ namespace NewISE.Models.DBModel.dtObj
                     default:
                         t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
                         break;
-
                 }
 
 
@@ -1293,7 +1310,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + ((EnumTipoDoc)d.IDTIPODOCUMENTO).ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, d.IDDOCUMENTO);
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + (GetDescrizioneTipoDocumento((EnumTipoDoc)d.IDTIPODOCUMENTO,db)).ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, d.IDDOCUMENTO);
                     }
                 }
 
@@ -1385,6 +1402,210 @@ namespace NewISE.Models.DBModel.dtObj
             return ldm;
 
         }
+
+        public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniAbitazioneVariazione(decimal idTrasferimento)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+
+            using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                    var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idTrasferimento).OrderBy(a => a.idAttivazioneMAB).ToList(); 
+
+                    var statoTrasf = t.IDSTATOTRASFERIMENTO;
+
+                    var i = 1;
+                    var coloresfondo = "";
+                    var coloretesto = "";
+
+                    if (lamabm?.Any() ?? false)
+                    {
+                        foreach (var amabm in lamabm)
+                        {
+                            var amab = db.ATTIVAZIONEMAB.Find(amabm.idAttivazioneMAB);
+
+                            var ld =
+                                amab.DOCUMENTI.Where(
+                                    a => (
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione
+                                        ) && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                    .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                            bool modificabile = false;
+                            if (amab.NOTIFICARICHIESTA == false &&
+                                amab.ATTIVAZIONE == false &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                                statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                            {
+                                modificabile = true;
+                                coloresfondo = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Sfondo;
+                                coloretesto = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Testo;
+                            }
+                            else
+                            {
+                                if (amab.NOTIFICARICHIESTA == true &&
+                                    amab.ATTIVAZIONE == false &&
+                                    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                                    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                                {
+                                    coloresfondo = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Sfondo;
+                                    coloretesto = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Testo;
+                                }
+                                else
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        coloresfondo = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_SfondoDispari;
+                                    }
+                                    else
+                                    {
+                                        coloresfondo = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_SfondoPari;
+                                    }
+                                    coloretesto = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_Testo;
+                                }
+                            }
+                            foreach (var doc in ld)
+                            {
+                                var vdm = new VariazioneDocumentiModel()
+                                {
+                                    dataInserimento = doc.DATAINSERIMENTO,
+                                    estensione = doc.ESTENSIONE,
+                                    idDocumenti = doc.IDDOCUMENTO,
+                                    nomeDocumento = doc.NOMEDOCUMENTO,
+                                    Modificabile = modificabile,
+                                    IdAttivazione = amab.IDATTIVAZIONEMAB,
+                                    DataAggiornamento = amab.DATAAGGIORNAMENTO,
+                                    ColoreSfondo = coloresfondo,
+                                    ColoreTesto = coloretesto,
+                                    progressivo = i,
+                                    tipoDocumento = (EnumTipoDoc)doc.IDTIPODOCUMENTO,
+                                    DescrizioneTipoDocumento = GetDescrizioneTipoDocumento((EnumTipoDoc)doc.IDTIPODOCUMENTO, db)                                  
+                                };
+                                ldm.Add(vdm);
+                            }
+
+                            i++;
+
+                        }
+                    }
+                }
+            }
+
+            return ldm;
+
+        }
+
+        public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniAbitazioneVariazioneByIdAttivazione(decimal idTrasferimento, decimal idAttivazione)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+
+            using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                    var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idTrasferimento).OrderBy(a=>a.idAttivazioneMAB).ToList();
+
+                    var statoTrasf = t.IDSTATOTRASFERIMENTO;
+
+                    var i = 1;
+                    var coloresfondo = "";
+                    var coloretesto = "";
+
+                    if (lamabm?.Any() ?? false)
+                    {
+                        foreach (var amabm in lamabm)
+                        {
+                            if (amabm.idAttivazioneMAB == idAttivazione)
+                            {
+                                var amab = db.ATTIVAZIONEMAB.Find(amabm.idAttivazioneMAB);
+
+                                var ld =
+                                    amab.DOCUMENTI.Where(
+                                        a => (
+                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione
+                                            ) && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                        .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                                bool modificabile = false;
+                                if (amab.NOTIFICARICHIESTA == false &&
+                                    amab.ATTIVAZIONE == false &&
+                                    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                                    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                                {
+                                    modificabile = true;
+                                    coloresfondo = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Sfondo;
+                                    coloretesto = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Testo;
+                                }
+                                else
+                                {
+                                    if (amab.NOTIFICARICHIESTA == true &&
+                                        amab.ATTIVAZIONE == false &&
+                                        statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                                        statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                                    {
+                                        coloresfondo = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Sfondo;
+                                        coloretesto = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Testo;
+                                    }
+                                    else
+                                    {
+                                        if (i % 2 == 0)
+                                        {
+                                            coloresfondo = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_SfondoDispari;
+                                        }
+                                        else
+                                        {
+                                            coloresfondo = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_SfondoPari;
+                                        }
+                                        coloretesto = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_Testo;
+                                    }
+                                }
+                                foreach (var doc in ld)
+                                {
+                                    var vdm = new VariazioneDocumentiModel()
+                                    {
+                                        dataInserimento = doc.DATAINSERIMENTO,
+                                        estensione = doc.ESTENSIONE,
+                                        idDocumenti = doc.IDDOCUMENTO,
+                                        nomeDocumento = doc.NOMEDOCUMENTO,
+                                        Modificabile = modificabile,
+                                        IdAttivazione = amab.IDATTIVAZIONEMAB,
+                                        DataAggiornamento = amab.DATAAGGIORNAMENTO,
+                                        ColoreSfondo = coloresfondo,
+                                        ColoreTesto = coloretesto,
+                                        progressivo = i,
+                                        tipoDocumento = (EnumTipoDoc)doc.IDTIPODOCUMENTO,
+                                        DescrizioneTipoDocumento = GetDescrizioneTipoDocumento((EnumTipoDoc)doc.IDTIPODOCUMENTO, db)
+                                    };
+                                    ldm.Add(vdm);
+                                }
+                            }
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return ldm;
+
+        }
+
 
         public IList<VariazioneDocumentiModel> GetFormulariProvvidenzeScolasticheVariazione(decimal idTrasfProvScolastiche)
         {
@@ -1562,6 +1783,24 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
             return dm;
+        }
+
+        public string GetDescrizioneTipoDocumento(EnumTipoDoc TipoDocumento, ModelDBISE db)
+        {
+            TIPODOCUMENTI td = new TIPODOCUMENTI();
+            string descrizioneTipoDoc;
+
+            td = db.TIPODOCUMENTI.Find((decimal)TipoDocumento);
+
+            if (td != null && td.IDTIPODOCUMENTO > 0)
+            {
+                descrizioneTipoDoc = td.DESCRIZIONE;
+            }else
+            {
+                throw new Exception(string.Format("Nessuna corrispondenza trovata nella descrizione del tipo documento ({0}).",TipoDocumento.ToString()));
+            }
+
+            return descrizioneTipoDoc;
         }
 
         public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniFamiliariVariazioneByIdAttivazione(decimal idMaggiorazioniFamiliari, decimal idAttivazione)

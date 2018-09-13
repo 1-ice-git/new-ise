@@ -7,8 +7,6 @@
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
 @{
-   // decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-    //decimal idMAB = Convert.ToDecimal(ViewData["idMAB"]);
     var errori = ViewData.ModelState;
     var dataFine = Convert.ToDateTime(Model.dataFineMAB);
 }
@@ -19,7 +17,7 @@
     }
 </style>
 
-@using (@Ajax.BeginForm("ConfermaModificaMAB_var", "VariazioneMaggiorazioneAbitazione", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formModMAB_var" }))
+@using (Ajax.BeginForm("ConfermaModificaMAB_var", "VariazioneMaggiorazioneAbitazione", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabAttivitaMAB_var", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formModMAB_var" }))
 {
     @Html.AntiForgeryToken()
     <div class="row" style="padding-left: 15px;padding-right:15px">
@@ -30,8 +28,8 @@
             @*@Html.Hidden("dataPartenza", Model.dataPartenza)*@
             @Html.Hidden("idMagAnnuali", Model.idMagAnnuali)
             @Html.Hidden("dataFineMAB", Model.dataFineMAB)
-            @Html.Hidden("dataInizioMAB", Model.dataInizioMAB)
-            @Html.Hidden("ut_dataFineMAB", Model.ut_dataFineMAB)
+            @*@Html.Hidden("dataInizioMAB", Model.dataInizioMAB)*@
+            @Html.Hidden("ut_dataInizioMAB", Model.ut_dataInizioMAB)
             @Html.Hidden("idMAB", Model.idMAB)
             <div class="row">
                 <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
@@ -42,43 +40,68 @@
 
                                 @if (Model.annualita)
                                 {
-                                    if (Model.anticipoAnnuale)
+                                    if (Model.annualita_modificabile)
                                     {
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false") Semestrale</label>
-                                        </div>
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { @checked = true }) Annuale</label>
-                                        </div>
+                                        if (Model.anticipoAnnuale)
+                                        {
+                                            <div class="col-xs-2">
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false") Semestrale</label>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { @checked = true }) Annuale</label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-2">
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true") Annuale</label>
+                                            </div>
+                                        }
                                     }
                                     else
                                     {
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
-                                        </div>
-                                        <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true") Annuale</label>
-                                        </div>
+                                        if (Model.anticipoAnnuale)
+                                        {
+                                            <div class="col-xs-2">
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false", new { disabled = "disabled" }) Semestrale</label>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { @checked = true, disabled = "disabled"}) Annuale</label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xs-2">
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false", new { @checked = true, disabled = "disabled" }) Semestrale</label>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { disabled = "disabled" }) Annuale</label>
+                                            </div>
+                                        }
                                     }
-                                }else
+                                }
+                                else
                                 {
                                     <div class="col-xs-2">
                                         <label>@Html.RadioButton("chk", true, new { @checked = true, disabled = "disabled" }) Semestrale</label>
                                     </div>
                                     <div class="col-xs-2">
                                         <label>@Html.RadioButton("chk", false, new { disabled = "disabled" }) Annuale</label>
-                                        @Html.Hidden("AnticipoAnnuale", Model.anticipoAnnuale)
                                     </div>
                                 }
+                                @Html.Hidden("AnticipoAnnuale", Model.anticipoAnnuale)
                             </div>
                         </div>
                     </div>
-                    @if (Model.periodopartenza)
+                    @if (Model.modificabile)
                     {
                         <div class="form-group">
                             @Html.LabelFor(Model => Model.dataInizioMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
                             <div class="col-xs-2">
-                                @Html.TextBoxFor(Model => Model.dataInizioMAB, "{0:dd/MM/yyyy}", new { disabled = "disabled", @class = "form-control col-xs-3" })
+                                @Html.TextBoxFor(Model => Model.dataInizioMAB, "{0:dd/MM/yyyy}", new { Value = String.Format("{0:dd/MM/yyyy}", Model.dataInizioMAB), @class = "form-control col-xs-3" })
                             </div>
                         </div>
                     }
@@ -87,12 +110,13 @@
                         <div class="form-group">
                             @Html.LabelFor(Model => Model.dataInizioMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
                             <div class="col-xs-2">
-                                @Html.TextBoxFor(Model => Model.dataInizioMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-3" })
+                                @Html.TextBoxFor(Model => Model.dataInizioMAB, "{0:dd/MM/yyyy}", new { Value = String.Format("{0:dd/MM/yyyy}", Model.dataInizioMAB), @readonly = "readonly", @class = "form-control col-xs-3" })
                             </div>
                         </div>
                     }
+
                     <div class="form-group">
-                        @Html.LabelFor(Model => Model.dataFineMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
+                        @Html.LabelFor(Model => Model.ut_dataFineMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="col-xs-2">
                             @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-3" })
                         </div>
@@ -130,7 +154,7 @@
 }
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "AttivitaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = Model.idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "AttivitaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = Model.idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabAttivitaMAB_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -154,12 +178,6 @@
         changeYear: true,
     });
 
-    $('#dataFineMAB').datepicker({
-        showAnim: "slide",
-        changeMonth: true,
-        changeYear: true,
-    });
-
     $('#ut_dataFineMAB').datepicker({
         showAnim: "slide",
         changeMonth: true,
@@ -167,7 +185,7 @@
     });
 
 
-    $('#formAddMAB_var').submit(function () {
+    $('#formModMAB_var').submit(function () {
         //debugger;
         var form = $(this);
         if (!form.valid()) {

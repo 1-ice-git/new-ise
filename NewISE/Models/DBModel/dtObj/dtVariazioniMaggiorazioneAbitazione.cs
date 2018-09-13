@@ -28,28 +28,255 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        //        public static ValidationResult VerificaDataInizio_var(string v, ValidationContext context)
+        #region Funzioni di validazione custom
+        //public static ValidationResult VerificaDataInizioValiditaCanoneMAB(string v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
+
+        //    var cmabm = context.ObjectInstance as CanoneMABModel;
+
+        //    if (cmabm != null)
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
         //        {
-        //            ValidationResult vr = ValidationResult.Success;
-        //            var ma = context.ObjectInstance as MaggiorazioneAbitazioneModel;
-        //            if (ma != null)
+
+        //            var mab = db.MAB.Find(cmabm.IDMAB);
+        //            var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).ToList().First();
+        //            if (cmabm.DataInizioValidita<pmab.DATAINIZIOMAB)
         //            {
-        //                //if (ma.dataInizioMAB < ma.dataPartenza)
-        //                //{
-        //                //    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", ma.dataPartenza.ToShortDateString()));
-        //                //}
-        //                //else
-        //                //{
-        //                //    vr = ValidationResult.Success;
-        //                //}
+        //                vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità minore della Data Inizio Validità MAB ({0}).", pmab.DATAINIZIOMAB.ToShortDateString()));
         //            }
-        //            else
-        //            {
-        //                vr = new ValidationResult("La data di inizio validità è richiesta.");
-        //            }
-        //            return vr;
+                   
         //        }
 
+        //    }
+        //    else
+        //    {
+        //        vr = new ValidationResult("La Data Inizio Validità è richiesta.");
+        //    }
+
+        //    return vr;
+        //}
+
+        public static ValidationResult VerificaDataInizioValiditaCanoneMABUtente(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var cmabvm = context.ObjectInstance as CanoneMABViewModel;
+
+            if (cmabvm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    var mab = db.MAB.Find(cmabvm.IDMAB);
+                    var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).ToList().First();
+                    if (cmabvm.ut_dataInizioValidita < pmab.DATAINIZIOMAB)
+                    {
+                        vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità minore della Data Inizio Validità MAB ({0}).", pmab.DATAINIZIOMAB.ToShortDateString()));
+                    }
+
+                }
+
+            }
+            else
+            {
+                vr = new ValidationResult("La Data Inizio Validità è richiesta.");
+            }
+
+            return vr;
+        }
+
+        #endregion
+
+
+        public void VerificaDataInizioValiditaCanoneMAB_Utente(decimal idMab, DateTime ?data, ModelDBISE db)
+        {
+            if (data == null)
+            {
+                throw new Exception("La Data Inizio Validità è obbligatoria.");
+            }
+
+            var mab = db.MAB.Find(idMab);
+            var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).ToList().First();
+            if (data < pmab.DATAINIZIOMAB)
+            {
+               throw new Exception(string.Format("Impossibile inserire la Data Inizio Validità minore della Data Inizio Validità MAB ({0}).", pmab.DATAINIZIOMAB.ToShortDateString()));
+            }
+            if (data > pmab.DATAFINEMAB)
+            {
+                throw new Exception(string.Format("Impossibile inserire la Data Inizio Validità maggiore della Data Fine Vallidita MAB ({0}).", pmab.DATAFINEMAB.ToShortDateString()));
+            }
+        }
+
+        //public void VerificaDataFineMAB_Utente(decimal idMab, DateTime? data, ModelDBISE db)
+        //{
+        //    if (data == null)
+        //    {
+        //        throw new Exception("La Data Fine Validità è obbligatoria.");
+        //    }
+
+        //    var mab = db.MAB.Find(idMab);
+        //    var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).ToList().First();
+        //    if (data <= pmab.DATAINIZIOMAB)
+        //    {
+        //        throw new Exception(string.Format("La Data Fine MAB deve essere maggiore della Data Inizio MAB ({0}).", pmab.DATAINIZIOMAB.ToShortDateString()));
+        //    }
+        //}
+
+        public void VerificaDateMAB_Utente(MABViewModel mvm, decimal idTrasferimento, DateTime? dataini, DateTime? datafin, bool inserimentoMAB, ModelDBISE db)
+        //public void VerificaDateMAB_Utente(MABViewModel mvm, ModelDBISE db)
+        {
+            //check dataini NULL
+            if (dataini == null)
+            {
+                throw new Exception("La Data Inizio Validità è obbligatoria.");
+            }
+            
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+            
+            //check datafin> rientro
+            if (datafin > t.DATARIENTRO)
+            {
+                throw new Exception(string.Format("La Data Fine MAB deve essere minore della Data Rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+            }
+
+            var ultimaMabAttiva = GetUltimaMABAttiva(idTrasferimento);
+            if (ultimaMabAttiva.IDMAB > 0)
+            {
+                var ultimoPeriodo = GetPeriodoMAB(ultimaMabAttiva.IDMAB, db);
+                var periodoPrec = GetPeriodoMABPrecedente(ultimaMabAttiva.IDMAB, db);
+
+                //check dataini<=datafineMAB precedente
+                if (periodoPrec.IDPERIODOMAB > 0)
+                {
+                    if (dataini <= periodoPrec.DATAFINEMAB)
+                    {
+                        throw new Exception(string.Format("La Data Inizio MAB deve essere maggiore della Data Fine validita della MAB precedente ({0}).", periodoPrec.DATAFINEMAB.ToShortDateString()));
+                    }
+                }
+                else
+                {
+                    if (dataini < ultimoPeriodo.DATAFINEMAB)
+                    {
+                        throw new Exception(string.Format("La Data Inizio MAB non può essere inferiore della Data Fine validita della MAB precedente ({0}).", ultimoPeriodo.DATAFINEMAB.ToShortDateString()));
+                    }
+                }
+            }
+            else
+            {
+                if (dataini < t.DATAPARTENZA)
+                {
+                    throw new Exception(string.Format("La Data Inizio MAB non può essere inferiore della Data Partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                }
+            }
+
+            //check dataini>datafin
+            if (dataini != null && datafin != null)
+            {
+                if (dataini >= datafin)
+                {
+                    throw new Exception(string.Format("La Data Fine validità deve essere maggiore della Data Inizio validita ({0}).", dataini.Value.ToShortDateString()));
+                }
+            }
+
+            //check dataini>=datarientro
+            if (dataini >= t.DATARIENTRO)
+            {
+                throw new Exception(string.Format("La Data Inizio validità deve essere inferiore della Data Rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+            }
+
+            //se sto in modifica la data fine deve essere obbligatoria (solo se la mab è attiva)
+            if (inserimentoMAB == false)
+            {
+
+                var mab = db.MAB.Find(mvm.idMAB);
+                var att = GetAttivazioneById(mab.IDATTIVAZIONEMAB, db);
+
+                if (inserimentoMAB == false && datafin == null && att.ATTIVAZIONE)
+                {
+                    throw new Exception("La Data Fine Validità è obbligatoria.");
+                }
+            }
+
+        }
+
+
+        public void VerificaDataInizioValiditaPagatoCondivisoMAB_Utente(decimal idMab, DateTime? data, ModelDBISE db)
+        {
+            if (data == null)
+            {
+                throw new Exception("La Data Inizio Validità è obbligatoria.");
+            }
+            var mab = db.MAB.Find(idMab);
+            var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).ToList().First();
+            if (data < pmab.DATAINIZIOMAB)
+            {
+                throw new Exception(string.Format("Impossibile inserire la Data Inizio Validità minore della Data Inizio Validità MAB ({0}).", pmab.DATAINIZIOMAB.ToShortDateString()));
+            }
+            if (data > pmab.DATAFINEMAB)
+            {
+                throw new Exception(string.Format("Impossibile inserire la Data Inizio Validità maggiore della Data Fine Validità MAB ({0}).", pmab.DATAFINEMAB.ToShortDateString()));
+            }
+        }
+
+        public void VerificaVariazioniPagatoCondivisoMAB(PagatoCondivisoMABViewModel pcmvm, ModelDBISE db)
+        {
+            PagatoCondivisoMABModel pcprec = PrelevaMovimentiPagatoCondivisoMABPrecedenti(pcmvm.idMAB, pcmvm.ut_dataInizioValidita.Value, db).ToList().First();
+
+            PAGATOCONDIVISOMAB pcAttiguoPrec = PrelevaMovimentoPagatoCondivisoMABAttiguoPrecedente(pcmvm.idMAB, pcmvm.ut_dataInizioValidita.Value, db);
+
+            IList<PagatoCondivisoMABModel> pcsucc = PrelevaMovimentiPagatoCondivisoMABSuccessivi(pcmvm.idMAB, pcmvm.ut_dataInizioValidita.Value, db).ToList();
+
+            string datafinestring = pcprec.DataFineValidita == Utility.DataFineStop() ? "--/--/----" : pcprec.DataFineValidita.ToShortDateString();
+            string datafineAttiguostring = pcAttiguoPrec.DATAFINEVALIDITA == Utility.DataFineStop() ? "--/--/----" : pcAttiguoPrec.DATAFINEVALIDITA.ToShortDateString();
+
+            string periodo = pcprec.DataInizioValidita.ToShortDateString() + " - " + datafinestring;
+            string periodoAttiguo = pcAttiguoPrec.DATAINIZIOVALIDITA.ToShortDateString() + " - " + datafineAttiguostring;
+
+            if (pcmvm.chkAggiornaTutti) 
+            {
+                if (pcsucc.Count() == 1)
+                {
+                    if (pcprec.Pagato == pcmvm.Pagato && pcprec.Condiviso == pcmvm.Condiviso)
+                    {
+                        if (pcprec.DataInizioValidita == pcmvm.ut_dataInizioValidita)
+                        {
+                            throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle già impostate per lo stesso periodo ({0}).", periodo));
+                        }
+                        else
+                        {
+                            throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle del periodo precedente attiguo ({0}).", periodo));
+                        }
+                    }
+                }else
+                {
+                    if(pcAttiguoPrec.IDPAGATOCONDIVISO>0)
+                    {
+                        if (pcAttiguoPrec.PAGATO == pcmvm.Pagato && pcAttiguoPrec.CONDIVISO == pcmvm.Condiviso)
+                        {
+                            throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle già impostate per il perido precednte ({0}).", periodoAttiguo));
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                if (pcprec.Pagato == pcmvm.Pagato && pcprec.Condiviso == pcmvm.Condiviso)
+                {
+                    if (pcprec.DataInizioValidita == pcmvm.ut_dataInizioValidita)
+                    {
+                        throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle già impostate per lo stesso periodo ({0}).",periodo));
+                    }
+                    else
+                    {
+                        throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle del periodo precedente attiguo ({0}).",periodo));
+                    }
+                }
+            }
+        }
 
         public MAGGIORAZIONIANNUALI GetMaggiorazioneAnnuale_var(MABViewModel mvm, ModelDBISE db)
         {
@@ -64,7 +291,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var t = db.TRASFERIMENTO.Find(mvm.idTrasferimento);
                 var u = t.UFFICI;
-                //um.descUfficio = u.DESCRIZIONEUFFICIO;
 
                 mal = u.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false &&
                                                         a.DATAINIZIOVALIDITA <= mvm.dataInizioMAB &&
@@ -74,18 +300,6 @@ namespace NewISE.Models.DBModel.dtObj
                 if (mal?.Any() ?? false)
                 {
                     ma = mal.First();
-
-                    //mam = new MaggiorazioniAnnualiModel()
-                    //{
-                    //    annualita = ma.ANNUALITA,
-                    //    idUfficio = ma.IDUFFICIO,
-                    //    idMagAnnuali = ma.IDMAGANNUALI,
-                    //    dataInizioValidita = ma.DATAINIZIOVALIDITA,
-                    //    dataFineValidita = ma.DATAFINEVALIDITA,
-                    //    annullato = ma.ANNULLATO,
-                    //    dataAggiornamento = ma.DATAAGGIORNAMENTO,
-                    //    DescrizioneUfficio = um
-                    //};
                 }
 
                 return ma;
@@ -188,24 +402,21 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public ATTIVAZIONEMAB GetUltimaAttivazioneMAB(decimal idTrasferimento)
+        public ATTIVAZIONEMAB GetUltimaAttivazioneMAB(decimal idTrasferimento, ModelDBISE db)
         {
             try
             {
                 ATTIVAZIONEMAB am = new ATTIVAZIONEMAB();
 
-                using (ModelDBISE db = new ModelDBISE())
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var aml = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
+
+                if (aml?.Any() ?? false)
                 {
-                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
-
-                    var aml = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
-
-                    if (aml?.Any() ?? false)
-                    {
-                        am = aml.First();
-                    }
-
+                    am = aml.First();
                 }
+
 
                 return am;
             }
@@ -214,63 +425,188 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+        public List<ATTIVAZIONEMAB> GetElencoAttivazioniMABAttive(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+                List<ATTIVAZIONEMAB> lam = new List<ATTIVAZIONEMAB>();
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                lam = t.ATTIVAZIONEMAB
+                                .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA && a.ATTIVAZIONE)
+                                .OrderByDescending(a => a.IDATTIVAZIONEMAB)
+                                .ToList();
 
 
-        //public List<VARIAZIONIMAB> GetVariazioniMAB(decimal idTrasferimento)
-        //{
-        //    try
-        //    {
-        //        List<VARIAZIONIMAB> vmabl = new List<VARIAZIONIMAB>();
 
-        //        using (ModelDBISE db = new ModelDBISE())
-        //        {
-        //            var t = db.TRASFERIMENTO.Find(idTrasferimento);
-        //            var amabl = t.MAGGIORAZIONEABITAZIONE.ToList();
+                return lam;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-        //            if (amabl?.Any() ?? false)
-        //            {
-        //                var amab = amabl.First();
+   
 
-        //                vmabl = amab.VARIAZIONIMAB
-        //                            .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
-        //                            .OrderByDescending(a => a.IDVARIAZIONIMAB).ToList();
-        //                if (vmabl.Count() == 0)
-        //                {
-        //                    //var vmab = vmabl.First();
+        public List<ATTIVAZIONEMAB> GetElencoAttivazioniMAB(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+                List<ATTIVAZIONEMAB> lam = new List<ATTIVAZIONEMAB>();
 
-        //                    //vmam = new VariazioniMABModel()
-        //                    //{
-        //                    //    idVariazioniMAB = vmab.IDVARIAZIONIMAB,
-        //                    //    idMAB = vmab.IDMAB,
-        //                    //    idAttivazioneMAB = vmab.IDATTIVAZIONEMAB,
-        //                    //    DataInizioMAB = vmab.DATAINIZIOMAB,
-        //                    //    DataFineMAB = vmab.DATAFINEMAB,
-        //                    //    AnticipoAnnuale = vmab.ANTICIPOANNUALE,
-        //                    //    DataAggiornamento = vmab.DATAAGGIORNAMENTO,
-        //                    //    idStatoRecord = vmab.IDSTATORECORD,
-        //                    //    fk_IDVariazioniMAB = vmab.FK_IDVARIAZIONIMAB
-        //                    //};
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-        //                    //}
-        //                    //else
-        //                    //{
-        //                    throw new Exception(string.Format("nessuna variazione MAB trovata."));
-        //                }
-        //            }
-        //            else
-        //            {
-        //                throw new Exception(string.Format("nessuna Maggiorazione Abitazione trovata."));
-        //            }
-        //        }
+                lam = t.ATTIVAZIONEMAB
+                                .Where(a => a.ANNULLATO == false)
+                                .OrderByDescending(a => a.IDATTIVAZIONEMAB)
+                                .ToList();
 
-        //        return vmabl;
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+
+                return lam;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<MAB> GetElencoMAB(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+                List<MAB> lmab = new List<MAB>();
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                lmab = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB
+                                .Where(a => 
+                                    a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato &&
+                                    a.RINUNCIAMAB==false)
+                                .OrderByDescending(a => a.IDMAB)
+                                .ToList();
+
+
+
+                return lmab;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public ATTIVAZIONEMAB CheckAttivazioneMAB(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+                ATTIVAZIONEMAB att = new ATTIVAZIONEMAB();
+
+                ATTIVAZIONEMAB amab = GetUltimaAttivazioneMAB(idTrasferimento, db);
+                att = amab;
+                if (amab.ATTIVAZIONE && amab.NOTIFICARICHIESTA)
+                {
+                    var att_aperta = GetAttivazioneAperta(idTrasferimento, db);
+                    if (att_aperta.IDATTIVAZIONEMAB > 0)
+                    {
+                        att = att_aperta;
+                    }
+                    else
+                    {
+                        var att_new = CreaAttivazione(idTrasferimento, db);
+                        att = att_new;
+                    }
+                }
+                return att;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ValuteModel GetValutaUfficioModel(decimal idMab)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                using (dtValute dtv = new dtValute())
+                {
+
+                    ValuteModel vm = new ValuteModel();
+
+                    var mab = db.MAB.Find(idMab);
+
+                    var pmab = GetPeriodoMABModel(idMab, db);
+
+                    var u = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.UFFICI;
+                    var vul = db.VALUTAUFFICIO.Where(a => a.ANNULLATO == false &&
+                                    a.IDUFFICIO == u.IDUFFICIO &&
+                                    a.DATAINIZIOVALIDITA <= pmab.dataInizioMAB &&
+                                    a.DATAFINEVALIDITA >= pmab.dataFineMAB)
+                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                    .ToList();
+
+
+
+                    if (vul?.Any() ?? false)
+                    {
+                        var vu = vul.First();
+
+                        vm = dtv.GetValuta(vu.IDVALUTA);
+                        if (vm.idValuta <= 0)
+                        {
+                            throw new Exception("Valuta non trovata.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Valuta Ufficio non trovata.");
+                    }
+
+
+                    return vm;
+                }
+            }
+        }
+
+        public ValuteModel GetUltimaValutaInseritaModel(decimal idMab)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                using (dtValute dtv = new dtValute())
+                {
+
+                    ValuteModel vm = new ValuteModel();
+
+                    var mab = db.MAB.Find(idMab);
+
+                    var lcmab = mab.CANONEMAB.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato &&
+                                                        a.NASCONDI==false)
+                                    .OrderByDescending(a => a.IDCANONE)
+                                    .ToList();
+
+                    if (lcmab?.Any() ?? false)
+                    {
+                        var cmab = lcmab.First();
+
+                        vm = dtv.GetValuta(cmab.IDVALUTA);
+                        if (vm.idValuta <= 0)
+                        {
+                            throw new Exception("Valuta Canone non trovata.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Nessuna canone trovato.");
+                    }
+
+
+                    return vm;
+                }
+            }
+        }
 
 
         public MAB GetUltimaMAB(decimal idTrasferimento)
@@ -282,42 +618,53 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                    var amabl = t.ATTIVAZIONEMAB.Where(a=>a.ANNULLATO==false).OrderByDescending(a=>a.IDATTIVAZIONEMAB).ToList();
+                    var mabl = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(a=> a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                            a.RINUNCIAMAB==false).OrderByDescending(a=>a.IDMAB).ToList();
 
-                    if (amabl?.Any() ?? false)
+                    if (mabl?.Any() ?? false)
                     {
-                        var amab = amabl.First();
+                        mab = mabl.First();
 
-                        var mabl = amab.MAB
-                                    .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
-                                    .OrderByDescending(a => a.IDMAB).ToList();
-                        if (mabl?.Any() ?? false)
-                        {
-                            mab = mabl.First();
-
-                            //mab = new MABModel()
-                            //{
-                            //    idMAB = mab.IDMAB,
-                            //    idMagAbitazione=mab.IDMAGABITAZIONE,
-                            //    idAttivazioneMAB = mab.IDATTIVAZIONEMAB,
-                            //    dataInizioMAB = mab.DATAINIZIOMAB,
-                            //    dataFineMAB = mab.DATAFINEMAB,
-                            //    rinunciaMAB = mab.RINUNCIAMAB,
-                            //    dataAggiornamento = mab.DATAAGGIORNAMENTO,
-                            //    idStatoRecord = mab.IDSTATORECORD,
-                            //    FK_idMAB = mab.FK_IDMAB
-                            //};
-
-                        }
-                        else
-                        {
-                            throw new Exception(string.Format("Nessuna MAB trovata."));
-                        }
                     }
                     else
                     {
-                        throw new Exception(string.Format("nessuna Attivazione MAB trovata."));
+                        throw new Exception(string.Format("Nessuna MAB trovata."));
                     }
+                }
+
+                return mab;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public MAB GetUltimaMABAttiva(decimal idTrasferimento)
+        {
+            try
+            {
+                MAB mab = new MAB();
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var mabl = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB
+                                .Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                            a.RINUNCIAMAB==false)
+                                .OrderByDescending(a => a.IDATTIVAZIONEMAB)
+                                .ToList();
+
+                    if (mabl?.Any() ?? false)
+                    {
+                        mab = mabl.First();
+
+                    }
+                    //else
+                    //{
+                    //    throw new Exception(string.Format("Nessuna MAB trovata."));
+                    //}
                 }
 
                 return mab;
@@ -351,6 +698,30 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+        public ANTICIPOANNUALEMAB GetAnticipoAnnualeMAB(decimal idMAB, ModelDBISE db)
+        {
+            try
+            {
+                ANTICIPOANNUALEMAB aamab = new ANTICIPOANNUALEMAB();
+
+                var mab = GetMAB_ByID_var(idMAB, db);
+                var aamabl = mab.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDANTICIPOANNUALEMAB).ToList();
+
+                if (aamabl?.Any() ?? false)
+                {
+                    return aamabl.First();
+                }
+                else
+                {
+                    return aamab;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public decimal VerificaEsistenzaDocumentoMAB_var(decimal idTrasferimento, EnumTipoDoc TipoDocumento)
         {
@@ -363,8 +734,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    bool esiste = false;
-
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                     var aml = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
@@ -379,8 +748,6 @@ namespace NewISE.Models.DBModel.dtObj
                             if (dl.Count() == 1)
                             {
                                 var d = dl.First();
-
-                                esiste = true;
 
                                 idDoc = d.IDDOCUMENTO;
                             }
@@ -420,7 +787,7 @@ namespace NewISE.Models.DBModel.dtObj
                     if (amab.IDATTIVAZIONEMAB > 0)
                     {
 
-                        var vmabl = amab.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                        var vmabl = amab.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.RINUNCIAMAB == false).ToList();
                         if (vmabl?.Any() ?? false)
                         {
                             esisteMAB = true;
@@ -428,6 +795,46 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     return esisteMAB;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+        public bool VerificaSeNuovaMAB(decimal idAttivazioneMAB)
+        {
+            try
+            {
+                ATTIVAZIONEMAB am = new ATTIVAZIONEMAB();
+
+                bool nuovaMAB = false;
+
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+
+                    if (amab.IDATTIVAZIONEMAB > 0)
+                    {
+
+                        var mabl = amab.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.RINUNCIAMAB == false).OrderByDescending(a=>a.IDMAB).ToList();
+                        if (mabl?.Any() ?? false)
+                        {
+                            var mab = mabl.First();
+                            decimal conta_periodi_mab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList().Count();
+                            if(conta_periodi_mab==1)
+                            {
+                                nuovaMAB = true;
+                            }
+                        }
+                    }
+
+                    return nuovaMAB;
                 }
 
             }
@@ -472,6 +879,15 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+
+        public void VerificaImportoCanoneMAB(decimal importoCanoneMAB, ModelDBISE db)
+        {
+            if (importoCanoneMAB<=0)
+            {
+                throw new Exception(string.Format("il canone MAB inserito ({0}) non è valido.", importoCanoneMAB.ToString()));
+            }
+        }
+
         public bool VerificaCanoneMAB(decimal idAttivazioneMAB)
         {
             try
@@ -496,6 +912,41 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     return esisteCanoneMAB;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+        public bool VerificaPeriodoMAB(decimal idAttivazioneMAB)
+        {
+            try
+            {
+                ATTIVAZIONEMAB am = new ATTIVAZIONEMAB();
+
+                bool esistePeriodoMAB = false;
+
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+
+                    if (amab.IDATTIVAZIONEMAB > 0)
+                    {
+
+                        var pmabl = amab.PERIODOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                        if (pmabl?.Any() ?? false)
+                        {
+                            esistePeriodoMAB = true;
+                        }
+                    }
+
+                    return esistePeriodoMAB;
                 }
 
             }
@@ -544,7 +995,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var am = db.ATTIVAZIONEMAB.Find(am_curr.IDATTIVAZIONEMAB);
                     if (am.IDATTIVAZIONEMAB > 0)
                     {
-                        var docl = am.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                        var docl = am.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
 
                         if (docl?.Any() ?? false)
                         {
@@ -655,10 +1106,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw new Exception(string.Format("Non è stato possibile creare una nuova attivazione per la maggiorazione abitazione."));
             }
-            else
-            {
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione maggiorazione abitazione.", "ATTIVITAZIONEMAB", db, new_am.IDTRASFERIMENTO, new_am.IDATTIVAZIONEMAB);
-            }
+
+            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione maggiorazione abitazione.", "ATTIVITAZIONEMAB", db, new_am.IDTRASFERIMENTO, new_am.IDATTIVAZIONEMAB);
 
             return new_am;
         }
@@ -697,52 +1146,6 @@ namespace NewISE.Models.DBModel.dtObj
 
         //    return new_mam;
         //}
-       
-
-
-        //public VariazioniMABModel CreaVariazioniMAB(decimal idAttivazione, decimal idMAB, ModelDBISE db)
-        //{
-        //    VariazioniMABModel new_vmabm = new VariazioniMABModel();
-
-        //    var att = db.ATTIVAZIONEMAB.Find(idAttivazione);
-        //    var t = att.TRASFERIMENTO;
-
-        //    VARIAZIONIMAB new_vmab = new VARIAZIONIMAB()
-        //    {
-        //        IDMAB = idMAB,
-        //        IDATTIVAZIONEMAB = idAttivazione,
-        //        DATAINIZIOMAB = t.DATAPARTENZA,
-        //        DATAFINEMAB = t.DATARIENTRO,
-        //        ANTICIPOANNUALE = false,
-        //        DATAAGGIORNAMENTO = DateTime.Now,
-        //        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-        //        FK_IDVARIAZIONIMAB = null
-        //    };
-        //    db.VARIAZIONIMAB.Add(new_vmab);
-
-        //    if (db.SaveChanges() <= 0)
-        //    {
-        //        throw new Exception(string.Format("Non è stato possibile creare una variazione per la maggiorazione abitazione."));
-        //    }
-        //    else
-        //    {
-        //        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova variazione maggiorazione abitazione.", "MAGGIORAZIONEABITAZIONE", db, t.IDTRASFERIMENTO, new_vmab.IDVARIAZIONIMAB);
-        //        new_vmabm = new VariazioniMABModel()
-        //        {
-        //            idVariazioniMAB = new_vmab.IDVARIAZIONIMAB,
-        //            idMAB = new_vmab.IDMAB,
-        //            idAttivazioneMAB = new_vmab.IDATTIVAZIONEMAB,
-        //            DataInizioMAB = new_vmab.DATAINIZIOMAB,
-        //            DataFineMAB = new_vmab.DATAFINEMAB,
-        //            AnticipoAnnuale = new_vmab.ANTICIPOANNUALE,
-        //            DataAggiornamento = new_vmab.DATAAGGIORNAMENTO,
-        //            idStatoRecord = new_vmab.IDSTATORECORD,
-        //            fk_IDVariazioniMAB = new_vmab.FK_IDVARIAZIONIMAB
-        //        };
-        //    }
-
-        //    return new_vmabm;
-        //}
 
         public MABModel GetUltimaMABModel(decimal idTrasferimento)
         {
@@ -755,7 +1158,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                     var mabl = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB
-                                .Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
+                                .Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB == false)
                                 .OrderByDescending(x => x.IDMAB).ToList();
 
                     if (mabl?.Any() ?? false)
@@ -784,12 +1187,141 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+
+
+
+        public bool VerificaVariazioniMAB(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var ma = t.INDENNITA.MAGGIORAZIONEABITAZIONE;
+
+                var mabl = ma.MAB.Where(a =>
+                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                        a.RINUNCIAMAB == false).ToList();
+
+                if (mabl?.Any() ?? false)
+                {
+                    foreach (var mab in mabl)
+                    {
+                        var idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
+
+                        //VERIFICA MAB
+                        bool esisteMAB = (mab.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione ||
+                                            mab.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare) ? true : false;
+
+                        //verifica Periodo MAB
+                        var lPeriodoMAB = mab.PERIODOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+
+
+                        //verifica Pagato Condiviso MAB
+                        var lPagatoCondivisoMAB = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+
+                        //verifica Canone MAB
+                        var lCanoneMAB = mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+
+
+                        if (esisteMAB || lPeriodoMAB.Count() > 0 || lPagatoCondivisoMAB.Count() > 0 || lCanoneMAB.Count() > 0)
+                        {
+                            MABModel mabInLavm = new MABModel()
+                            {
+                                idMAB = mab.IDMAB,
+                                idMagAbitazione = mab.IDMAGABITAZIONE,
+                                idAttivazioneMAB = mab.IDATTIVAZIONEMAB,
+                                idStatoRecord = mab.IDSTATORECORD,
+                                rinunciaMAB = mab.RINUNCIAMAB,
+                                dataAggiornamento = mab.DATAAGGIORNAMENTO,
+                                FK_idMAB = mab.FK_IDMAB
+                            };
+
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        public List<MABModel> GetMABNonAttiveModel(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+                List<MABModel> lmabInLavm = new List<MABModel>();
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var ma = t.INDENNITA.MAGGIORAZIONEABITAZIONE;
+
+                var mabl = ma.MAB.Where(a =>
+                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                        a.RINUNCIAMAB == false).ToList();
+
+                if (mabl?.Any() ?? false)
+                {
+                    foreach (var mab in mabl)
+                    {
+                        var idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
+
+                        //VERIFICA MAB
+                        bool esisteMAB = (mab.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione ||
+                                            mab.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare) ? true : false;
+
+                        //verifica Periodo MAB
+                        var lPeriodoMAB = mab.PERIODOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+
+
+                        //verifica Pagato Condiviso MAB
+                        var lPagatoCondivisoMAB = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+
+                        //verifica Canone MAB
+                        var lCanoneMAB = mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+
+
+                        if (esisteMAB || lPeriodoMAB.Count()>0 || lPagatoCondivisoMAB.Count()>0 || lCanoneMAB.Count()>0)
+                        {
+                            MABModel mabInLavm = new MABModel()
+                            {
+                                idMAB = mab.IDMAB,
+                                idMagAbitazione = mab.IDMAGABITAZIONE,
+                                idAttivazioneMAB = mab.IDATTIVAZIONEMAB,
+                                idStatoRecord = mab.IDSTATORECORD,
+                                rinunciaMAB = mab.RINUNCIAMAB,
+                                dataAggiornamento = mab.DATAAGGIORNAMENTO,
+                                FK_idMAB = mab.FK_IDMAB
+                            };
+                            lmabInLavm.Add(mabInLavm);
+
+                            return lmabInLavm;
+                        }
+                    }
+                }
+
+                return lmabInLavm;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public List<MABModel> GetElencoMABModel(decimal idTrasferimento)
         {
             try
             {
                 List<MABModel> lmabm = new List<MABModel>();
-                //MAGGIORAZIONEABITAZIONE ma = new MAGGIORAZIONEABITAZIONE();
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
@@ -798,7 +1330,9 @@ namespace NewISE.Models.DBModel.dtObj
                     //var mal = db.ATTIVAZIONEMAB.Find(amm.idAttivazioneMAB).TRASFERIMENTO.MAGGIORAZIONEABITAZIONE.OrderByDescending(x => x.IDMAB).ToList();
                     var ma = t.INDENNITA.MAGGIORAZIONEABITAZIONE;
 
-                    var mabl = ma.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                    var mabl = ma.MAB.Where(a => 
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.RINUNCIAMAB==false).ToList();
 
                     if (mabl?.Any() ?? false)
                     {
@@ -828,43 +1362,117 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public PeriodoMABModel GetPeriodoMABModel(decimal idMab)
+        public PERIODOMAB GetPeriodoMAB(decimal idMab, ModelDBISE db)
+        {
+            try
+            {
+                PERIODOMAB pm = new PERIODOMAB();
+
+                var m = db.MAB.Find(idMab);
+
+                var pml = m.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).ToList();
+
+                if (pml?.Any() ?? false)
+                {
+                    pm = pml.First();
+                }
+
+                return pm;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public PERIODOMAB GetPeriodoMABPrecedente(decimal idMab, ModelDBISE db)
+        {
+            try
+            {
+                PERIODOMAB pmab_prec = new PERIODOMAB();
+
+                var m = db.MAB.Find(idMab);
+
+                var ma = db.MAGGIORAZIONEABITAZIONE.Find(m.IDMAGABITAZIONE);
+
+                var lmab_prec = ma.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                  a.RINUNCIAMAB==false && 
+                                                 a.IDMAB < idMab).OrderByDescending(a => a.IDMAB).ToList();
+
+                if (lmab_prec?.Any() ?? false)
+                {
+                    var mab_prec = lmab_prec.First();
+
+                    pmab_prec = GetPeriodoMAB(mab_prec.IDMAB, db);
+                }
+
+                return pmab_prec;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public PeriodoMABModel GetPeriodoMABModel(decimal idMab, ModelDBISE db)
         {
             try
             {
                 PeriodoMABModel pmm = new PeriodoMABModel();
-                //MAGGIORAZIONEABITAZIONE ma = new MAGGIORAZIONEABITAZIONE();
 
-                using (ModelDBISE db = new ModelDBISE())
+                var m = db.MAB.Find(idMab);
+
+                var pml = m.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).ToList();
+
+                if (pml?.Any() ?? false)
                 {
-                    //var t = db.TRASFERIMENTO.Find(idMab);
+                    var pm = pml.First();
 
-                    var m = db.MAB.Find(idMab);
-
-                    //var mal = db.ATTIVAZIONEMAB.Find(amm.idAttivazioneMAB).TRASFERIMENTO.MAGGIORAZIONEABITAZIONE.OrderByDescending(x => x.IDMAB).ToList();
-                    //var ma = t.INDENNITA.MAGGIORAZIONEABITAZIONE;
-
-                    var pml = m.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a=>a.IDPERIODOMAB).ToList();
-
-                    if (pml?.Any() ?? false)
+                    pmm = new PeriodoMABModel()
                     {
-                        var pm = pml.First();
-
-                        pmm = new PeriodoMABModel()
-                        {
-                            idPeriodoMAB=pm.IDPERIODOMAB,
-                            idMAB = pm.IDMAB,
-                            idAttivazioneMAB = pm.IDATTIVAZIONEMAB,
-                            idStatoRecord = pm.IDSTATORECORD,
-                            dataInizioMAB = pm.DATAINIZIOMAB,
-                            dataFineMAB = pm.DATAFINEMAB,
-                            dataAggiornamento = pm.DATAAGGIORNAMENTO,
-                            FK_idPeriodoMAB = pm.FK_IDPERIODOMAB
-                        };
-                    }
+                        idPeriodoMAB = pm.IDPERIODOMAB,
+                        idMAB = pm.IDMAB,
+                        idAttivazioneMAB = pm.IDATTIVAZIONEMAB,
+                        idStatoRecord = pm.IDSTATORECORD,
+                        dataInizioMAB = pm.DATAINIZIOMAB,
+                        dataFineMAB = pm.DATAFINEMAB,
+                        dataAggiornamento = pm.DATAAGGIORNAMENTO,
+                        FK_idPeriodoMAB = pm.FK_IDPERIODOMAB
+                    };
                 }
 
                 return pmm;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public PERIODOMAB VerificaEsistenzaMABSuccessiva(decimal idMab, ModelDBISE db)
+        {
+            try
+            {
+                
+                PERIODOMAB pmab_successivo = new PERIODOMAB();
+
+                var m = db.MAB.Find(idMab);
+                var pmab_curr = GetPeriodoMAB(m.IDMAB, db);
+
+                var t = m.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                var lmab = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                foreach(var mab in lmab)
+                {
+                    var pmab = GetPeriodoMAB(mab.IDMAB,db);
+                    if(pmab.DATAINIZIOMAB>pmab_curr.DATAFINEMAB)
+                    {
+                        pmab_successivo = pmab;
+                    }
+                }
+
+                return pmab_successivo;
 
             }
             catch (Exception ex)
@@ -895,23 +1503,68 @@ namespace NewISE.Models.DBModel.dtObj
             return new_amab;
         }
 
-
-        public ATTIVAZIONEMAB GetAttivazioneAperta(decimal idTrasferimento)
+        public IList<AttivazioneMABModel> GetListaAttivazioniMABconDocumentiModel(decimal idTrasferimento)
         {
-            using (var db = new ModelDBISE())
-            {
-                ATTIVAZIONEMAB attmab = new ATTIVAZIONEMAB();
+            List<AttivazioneMABModel> lamabm = new List<AttivazioneMABModel>();
 
+            using (ModelDBISE db = new ModelDBISE())
+            {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                attmab = t.ATTIVAZIONEMAB.Where(x => x.ANNULLATO == false && x.NOTIFICARICHIESTA==false).OrderByDescending(x => x.IDATTIVAZIONEMAB).First();
-                return attmab;
+
+                var lamab = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
+                if (lamab?.Any() ?? false)
+                {
+                    foreach (var e in lamab)
+                    {
+                        var ldoc = e.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.MODIFICATO == false).ToList();
+                        if (ldoc.Count() > 0)
+                        {
+                            var amabm = new AttivazioneMABModel()
+                            {
+                                idAttivazioneMAB = e.IDATTIVAZIONEMAB,
+                                idTrasferimento = e.IDTRASFERIMENTO,
+                                Attivazione = e.ATTIVAZIONE,
+                                dataAttivazione = e.DATAATTIVAZIONE,
+                                notificaRichiesta = e.NOTIFICARICHIESTA,
+                                dataNotificaRichiesta = e.DATANOTIFICARICHIESTA,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                Annullato = e.ANNULLATO,
+                                dataVariazione = e.DATAVARIAZIONE
+                            };
+                            lamabm.Add(amabm);
+                        }
+                    }
+                }
             }
+
+            return lamabm;
+        }
+
+
+
+        public ATTIVAZIONEMAB GetAttivazioneAperta(decimal idTrasferimento, ModelDBISE db)
+        {
+            ATTIVAZIONEMAB attmab = new ATTIVAZIONEMAB();
+
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+            var attmabl = t.ATTIVAZIONEMAB.Where(x => x.ANNULLATO == false && x.NOTIFICARICHIESTA==false).OrderByDescending(x => x.IDATTIVAZIONEMAB).ToList();
+            if(attmabl?.Any()??false)
+            {
+                attmab = attmabl.First();
+            }
+            return attmab;
+        }
+
+        public ATTIVAZIONEMAB GetAttivazioneById(decimal idAttivazione, ModelDBISE db)
+        {
+            ATTIVAZIONEMAB attmab = new ATTIVAZIONEMAB();
+
+            attmab = db.ATTIVAZIONEMAB.Find(idAttivazione);
+            return attmab;
         }
 
         public void VerificaDataInizioCanoneMAB(decimal idMab, DateTime dataInizioCanone)
         {
-            //bool ret = false;
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.MAB.Find(idMab).MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
@@ -997,6 +1650,104 @@ namespace NewISE.Models.DBModel.dtObj
             return lcmabm;
         }
 
+
+        private IList<PagatoCondivisoMABModel> PrelevaMovimentiPagatoCondivisoMABPrecedenti(decimal idMab, DateTime dtIni, ModelDBISE db)
+        {
+            List<PagatoCondivisoMABModel> lpcmabm = new List<PagatoCondivisoMABModel>();
+
+            var lpcmab =
+                db.MAB.Find(idMab)
+                    .PAGATOCONDIVISOMAB.Where(
+                        a =>
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.NASCONDI == false &&
+                            a.DATAINIZIOVALIDITA <= dtIni)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+
+            if (lpcmab?.Any() ?? false)
+            {
+                lpcmabm = (from e in lpcmab
+                          select new PagatoCondivisoMABModel()
+                          {
+                              idPagatoCondiviso = e.IDPAGATOCONDIVISO,
+                              idMAB = e.IDMAB,
+                              idAttivazioneMAB = e.IDATTIVAZIONEMAB,
+                              idStatoRecord = e.IDSTATORECORD,
+                              Condiviso = e.CONDIVISO,
+                              Pagato = e.PAGATO,
+                              DataInizioValidita = e.DATAINIZIOVALIDITA,
+                              DataFineValidita = e.DATAFINEVALIDITA,
+                              DataAggiornamento = e.DATAAGGIORNAMENTO,
+                              fk_IDPagatoCondiviso = e.FK_IDPAGATOCONDIVISO,
+                              Nascondi = e.NASCONDI
+                          }).ToList();
+            }
+
+            return lpcmabm;
+        }
+
+        private PAGATOCONDIVISOMAB PrelevaMovimentoPagatoCondivisoMABAttiguoPrecedente(decimal idMab, DateTime dtIni, ModelDBISE db)
+        {
+            PAGATOCONDIVISOMAB pcmabm = new PAGATOCONDIVISOMAB();
+
+            var lpcmab =
+                db.MAB.Find(idMab)
+                    .PAGATOCONDIVISOMAB.Where(
+                        a =>
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.NASCONDI == false &&
+                            a.DATAINIZIOVALIDITA < dtIni)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+
+            if (lpcmab?.Any() ?? false)
+            {
+                pcmabm = lpcmab.First();
+            }
+
+            return pcmabm;
+        }
+
+        private IList<PagatoCondivisoMABModel> PrelevaMovimentiPagatoCondivisoMABSuccessivi(decimal idMab, DateTime dtIni, ModelDBISE db)
+        {
+            List<PagatoCondivisoMABModel> lpcmabm = new List<PagatoCondivisoMABModel>();
+
+            var lpcmab =
+                db.MAB.Find(idMab)
+                    .PAGATOCONDIVISOMAB.Where(
+                        a =>
+                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            a.NASCONDI == false &&
+                            a.DATAINIZIOVALIDITA > dtIni)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+
+            if (lpcmab?.Any() ?? false)
+            {
+                lpcmabm = (from e in lpcmab
+                          select new PagatoCondivisoMABModel()
+                          {
+                              idPagatoCondiviso = e.IDPAGATOCONDIVISO,
+                              idMAB = e.IDMAB,
+                              idAttivazioneMAB = e.IDATTIVAZIONEMAB,
+                              idStatoRecord = e.IDSTATORECORD,
+                              Condiviso = e.CONDIVISO,
+                              Pagato = e.PAGATO,
+                              DataInizioValidita = e.DATAINIZIOVALIDITA,
+                              DataFineValidita = e.DATAFINEVALIDITA,
+                              DataAggiornamento = e.DATAAGGIORNAMENTO,
+                              fk_IDPagatoCondiviso = e.FK_IDPAGATOCONDIVISO,
+                              Nascondi = e.NASCONDI
+                          }).ToList();
+            }
+
+            return lpcmabm;
+        }
+
         public void SetCanoneMAB(ref CanoneMABModel cmabm, ModelDBISE db)
         {
             try
@@ -1025,10 +1776,82 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     cmabm.idCanone = cmab.IDCANONE;
 
-                    decimal idTrasferimento = cmab.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un importo canone", "CANONEMAB", db, idTrasferimento, cmab.IDCANONE);
+                    #region associa TFR
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        //var t = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                        var t = mab.ATTIVAZIONEMAB.TRASFERIMENTO;
+                        var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
+                        List<TFRModel> ltfrm = new List<TFRModel>();
 
-                    //this.AssociaPensioneAttivazioneMagFam(idAttivazioneMagFam, pc.IDPENSIONE, db);
+                        using (dtTFR dtTfr = new dtTFR())
+                        {
+                            ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmab.IDVALUTA, cmab.DATAINIZIOVALIDITA, cmab.DATAFINEVALIDITA, db);
+                        }
+
+                        foreach (var tfrm in ltfrm)
+                        {
+                            Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmab.IDCANONE, db);
+                        }
+                    }
+                    #endregion
+
+
+                    decimal idTrasferimento = cmab.MAB.ATTIVAZIONEMAB.TRASFERIMENTO.IDTRASFERIMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un importo canone", "CANONEMAB", db, idTrasferimento, cmab.IDCANONE);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void SetPagatoCondivisoMAB(ref PagatoCondivisoMABModel pcmabm, ModelDBISE db)
+        {
+            try
+            {
+                var mab = db.MAB.Find(pcmabm.idMAB);
+                var item = db.Entry<MAB>(mab);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.PAGATOCONDIVISOMAB).Load();
+                PAGATOCONDIVISOMAB pcmab = new PAGATOCONDIVISOMAB()
+                {
+                    IDMAB = mab.IDMAB,
+                    IDATTIVAZIONEMAB = pcmabm.idAttivazioneMAB,
+                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                    PAGATO = pcmabm.Pagato,
+                    CONDIVISO = pcmabm.Condiviso,
+                    DATAINIZIOVALIDITA = pcmabm.DataInizioValidita,
+                    DATAFINEVALIDITA = pcmabm.DataFineValidita,
+                    DATAAGGIORNAMENTO = pcmabm.DataAggiornamento,
+                    FK_IDPAGATOCONDIVISO=pcmabm.fk_IDPagatoCondiviso,
+                    NASCONDI=pcmabm.Nascondi
+                };
+
+                mab.PAGATOCONDIVISOMAB.Add(pcmab);
+
+                int i = db.SaveChanges();
+
+                if (i > 0)
+                {
+                    pcmabm.idPagatoCondiviso = pcmab.IDPAGATOCONDIVISO;
+
+                    #region associa percentuale condivisione
+                    List<PERCENTUALECONDIVISIONE> lperccond = new List<PERCENTUALECONDIVISIONE>();
+
+                    lperccond = GetListaPercentualeCondivisione_var(pcmab.DATAINIZIOVALIDITA, pcmab.DATAFINEVALIDITA, db);
+
+                    foreach (var perccond in lperccond)
+                    {
+                        Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pcmabm.idPagatoCondiviso, perccond.IDPERCCOND, db);
+                    }
+                    #endregion
+
+
+                    decimal idTrasferimento = pcmab.MAB.ATTIVAZIONEMAB.TRASFERIMENTO.IDTRASFERIMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un pagato condiviso", "PAGATOCONDIVISOMAB", db, idTrasferimento, pcmab.IDPAGATOCONDIVISO);
                 }
 
             }
@@ -1039,7 +1862,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void SetNuovoImportoCanoneMAB(CanoneMABModel cmabm, decimal idMab, decimal idAttivazioneMAB, DateTime dataRientro, ModelDBISE db)
+        public void SetNuovoImportoCanoneMAB(CanoneMABModel cmabm, decimal idMab, decimal idAttivazioneMAB, DateTime dataFineValiditaMAB, ModelDBISE db)
         {
 
             CanoneMABModel cmabmPrecedente = new CanoneMABModel();
@@ -1050,221 +1873,160 @@ namespace NewISE.Models.DBModel.dtObj
 
             try
             {
+                lcmabmPrecedenti = PrelevaMovimentiCanoneMABPrecedenti(idMab, cmabm.DataInizioValidita, db).ToList();
 
-                lcmabmPrecedenti = 
-                    PrelevaMovimentiCanoneMABPrecedenti(idMab, cmabm.DataInizioValidita, db).ToList();
+                lcmabmSuccessivi = PrelevaMovimentiCanoneMABSuccessivi(idMab, cmabm.DataInizioValidita, db).ToList();
 
-                lcmabmSuccessivi =
-                    PrelevaMovimentiCanoneMABSuccessivi(idMab, cmabm.DataInizioValidita, db).ToList();
+                cmabmPrecedente = lcmabmPrecedenti.First();
 
-                if (lcmabmPrecedenti.Count == 0)
+                if (lcmabmSuccessivi.Count == 0)
                 {
-                    if (lcmabmSuccessivi.Count == 0)
+                    if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
                     {
-                        #region creo record
-                        cmabmLav = new CanoneMABModel()
+                        if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
                         {
-                            IDMAB = cmabm.IDMAB,
-                            IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
-                            idValuta = cmabm.idValuta,
-                            ImportoCanone = cmabm.ImportoCanone,
-                            DataInizioValidita = cmabm.DataInizioValidita,
-                            DataFineValidita = cmabm.DataFineValidita,
-                            DataAggiornamento = DateTime.Now,
-                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                            FK_IDCanone = cmabm.FK_IDCanone,
-                            nascondi = cmabm.nascondi
-                        };
-                        SetCanoneMAB(ref cmabmLav, db);
+                            #region edit record
+                            var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
+                            cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
+                            cmabPrecedente.DATAFINEVALIDITA = dataFineValiditaMAB;
+                            cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore durante l'inserimento del canone.");
+                            }
+                            #endregion
+                        }
+                        else
+                        {
+                            #region nascondo il record
+                            cmabmPrecedente.NascondiRecord(db);
+                            #endregion
+
+                            #region creo record
+                            cmabmLav = new CanoneMABModel()
+                            {
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabm.idValuta,
+                                ImportoCanone = cmabm.ImportoCanone,
+                                DataInizioValidita = cmabm.DataInizioValidita,
+                                DataFineValidita = dataFineValiditaMAB,
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_IDCanone = cmabm.FK_IDCanone,
+                                nascondi = false
+                            };
+                            SetCanoneMAB(ref cmabmLav, db);
+                            #endregion
+                        }
+
+                    }
+                    else
+                    {
+                        if (cmabmPrecedente.DataFineValidita == dataFineValiditaMAB)
+                        {
+                            #region replico record e lo nascondo
+                            cmabmPrecedente.NascondiRecord(db);
+
+                            cmabmLav = new CanoneMABModel()
+                            {
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabmPrecedente.idValuta,
+                                ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_IDCanone = cmabmPrecedente.FK_IDCanone,
+                                nascondi = false
+                            };
+                            SetCanoneMAB(ref cmabmLav, db);
+                            #endregion
+
+                            #region creo record
+                            cmabmLav = new CanoneMABModel()
+                            {
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabm.idValuta,
+                                ImportoCanone = cmabm.ImportoCanone,
+                                DataInizioValidita = cmabm.DataInizioValidita,
+                                DataFineValidita = dataFineValiditaMAB,
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_IDCanone = cmabm.FK_IDCanone,
+                                nascondi = false
+                            };
+                            SetCanoneMAB(ref cmabmLav, db);
+                            #endregion
+                        }
+                        else
+                        {
+                            #region creo record
+                            cmabmLav = new CanoneMABModel()
+                            {
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabm.idValuta,
+                                ImportoCanone = cmabm.ImportoCanone,
+                                DataInizioValidita = cmabm.DataInizioValidita,
+                                DataFineValidita = dataFineValiditaMAB,
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_IDCanone = cmabm.FK_IDCanone,
+                                nascondi = false
+                            };
+                            SetCanoneMAB(ref cmabmLav, db);
+                            #endregion
+                        }
+                    }
+                }
+
+                else
+                {
+                    if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita &&
+                        cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                    {
+                        #region edit record
+                        var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
+                        cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
+                        cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore durante l'inserimento del canone.");
+                        }
                         #endregion
                     }
                     else
                     {
                         cmabmSuccessivo = lcmabmSuccessivi.First();
 
-                        #region creo record
-                        cmabmLav = new CanoneMABModel()
+                        //controllo periodo attiguo
+                        if (cmabmPrecedente.DataFineValidita == cmabmSuccessivo.DataInizioValidita.AddDays(-1))
                         {
-                            IDMAB = cmabm.IDMAB,
-                            IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
-                            idValuta = cmabm.idValuta,
-                            ImportoCanone = cmabm.ImportoCanone,
-                            DataInizioValidita = cmabm.DataInizioValidita,
-                            DataFineValidita = cmabmSuccessivo.DataInizioValidita.AddDays(-1),
-                            DataAggiornamento = DateTime.Now,
-                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                            FK_IDCanone = cmabm.FK_IDCanone,
-                            nascondi = cmabm.nascondi
-                        };
-                        SetCanoneMAB(ref cmabmLav, db);
-                        #endregion
-                    }
-                }
-                else
-                {
-                    cmabmPrecedente = lcmabmPrecedenti.First();
+                            #region replico record e lo nascondo
+                            cmabmPrecedente.NascondiRecord(db);
 
-                    if (lcmabmSuccessivi.Count == 0)
-                    {
-                        if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
-                        {
-                            if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            cmabmLav = new CanoneMABModel()
                             {
-                                #region edit record
-                                var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
-                                cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
-                                cmabPrecedente.DATAFINEVALIDITA = dataRientro;
-                                cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
-                                if (db.SaveChanges() <= 0)
-                                {
-                                    throw new Exception("Errore durante l'inserimento del canone.");
-                                }
-                                #endregion
-                            }
-                            else
-                            {
-                                #region replico record e lo nascondo
-                                cmabmPrecedente.NascondiRecord(db);
-
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB = cmabmPrecedente.IDMAB,
-                                    IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
-                                    idValuta = cmabmPrecedente.idValuta,
-                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
-                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
-                                    DataAggiornamento = DateTime.Now,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_IDCanone = cmabmPrecedente.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
-
-                                #region creo record
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB = cmabm.IDMAB,
-                                    IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
-                                    idValuta = cmabm.idValuta,
-                                    ImportoCanone = cmabm.ImportoCanone,
-                                    DataInizioValidita = cmabm.DataInizioValidita,
-                                    DataFineValidita = dataRientro,
-                                    DataAggiornamento = DateTime.Now,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_IDCanone = cmabm.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
-                            }
-
-                        }
-                        else
-                        {
-                            if (cmabmPrecedente.DataFineValidita == dataRientro)
-                            {
-                                #region replico record e lo nascondo
-                                cmabmPrecedente.NascondiRecord(db);
-
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB = cmabmPrecedente.IDMAB,
-                                    IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
-                                    idValuta = cmabmPrecedente.idValuta,
-                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
-                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
-                                    DataAggiornamento = DateTime.Now,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_IDCanone = cmabmPrecedente.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
-
-                                #region creo record
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB = cmabm.IDMAB,
-                                    IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
-                                    idValuta = cmabm.idValuta,
-                                    ImportoCanone = cmabm.ImportoCanone,
-                                    DataInizioValidita = cmabm.DataInizioValidita,
-                                    DataFineValidita = dataRientro,
-                                    DataAggiornamento = DateTime.Now,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_IDCanone = cmabm.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
-                            }
-                            else
-                            {
-                                #region creo record
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB = cmabm.IDMAB,
-                                    IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
-                                    idValuta = cmabm.idValuta,
-                                    ImportoCanone = cmabm.ImportoCanone,
-                                    DataInizioValidita = cmabm.DataInizioValidita,
-                                    DataFineValidita = dataRientro,
-                                    DataAggiornamento = DateTime.Now,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_IDCanone = cmabm.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
-                            }
-                        }
-                    }
-
-                    else
-                    {
-                        if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita &&
-                            cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
-                        {
-                            #region edit record
-                            var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
-                            cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
-                            cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
-                            if (db.SaveChanges() <= 0)
-                            {
-                                throw new Exception("Errore durante l'inserimento della pensione.");
-                            }
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabmPrecedente.idValuta,
+                                ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                                DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_IDCanone = cmabmPrecedente.FK_IDCanone,
+                                nascondi = false
+                            };
+                            SetCanoneMAB(ref cmabmLav, db);
                             #endregion
-                        }
-                        else
-                        {
-                            cmabmSuccessivo = lcmabmSuccessivi.First();
 
-                            //controllo periodo attiguo
-                            if (cmabmPrecedente.DataFineValidita == cmabmSuccessivo.DataInizioValidita.AddDays(-1))
+                            if (cmabm.ImportoCanone != cmabmSuccessivo.ImportoCanone)
                             {
-                                #region replico record e lo nascondo
-                                cmabmPrecedente.NascondiRecord(db);
-
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB = cmabmPrecedente.IDMAB,
-                                    IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
-                                    idValuta = cmabmPrecedente.idValuta,
-                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
-                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
-                                    DataAggiornamento = DateTime.Now,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_IDCanone = cmabmPrecedente.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
-
-                                #region creo record
+                                #region se dati variati rispetto a succ creo record da dataini a dataini-1(succ)                                cmabmLav = new CanoneMABModel()
                                 cmabmLav = new CanoneMABModel()
                                 {
                                     IDMAB = cmabm.IDMAB,
@@ -1283,25 +2045,9 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
-                                cmabmPrecedente.NascondiRecord(db);
-                                #region replico record
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB = cmabmPrecedente.IDMAB,
-                                    IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
-                                    idValuta = cmabmPrecedente.idValuta,
-                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
-                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
-                                    DataAggiornamento = DateTime.Now,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_IDCanone = cmabm.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
+                                #region se dati non variati rispetto a succ creo record da dataini a datafine(succ)
+                                cmabmSuccessivo.NascondiRecord(db);
 
-                                #region creo record
                                 cmabmLav = new CanoneMABModel()
                                 {
                                     IDMAB = cmabm.IDMAB,
@@ -1309,7 +2055,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idValuta = cmabm.idValuta,
                                     ImportoCanone = cmabm.ImportoCanone,
                                     DataInizioValidita = cmabm.DataInizioValidita,
-                                    DataFineValidita = cmabmPrecedente.DataFineValidita,
+                                    DataFineValidita = cmabmSuccessivo.DataFineValidita,
                                     DataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                     FK_IDCanone = cmabm.FK_IDCanone,
@@ -1319,20 +2065,53 @@ namespace NewISE.Models.DBModel.dtObj
                                 #endregion
                             }
                         }
+                        else
+                        {
+                            cmabmPrecedente.NascondiRecord(db);
+                            #region replico record
+                            cmabmLav = new CanoneMABModel()
+                            {
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabmPrecedente.idValuta,
+                                ImportoCanone = cmabm.ImportoCanone,
+                                DataInizioValidita = cmabmSuccessivo.DataFineValidita,
+                                DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_IDCanone = cmabm.FK_IDCanone,
+                                nascondi = false
+                            };
+                            SetCanoneMAB(ref cmabmLav, db);
+                            #endregion
+
+                            #region creo record
+                            cmabmLav = new CanoneMABModel()
+                            {
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                                idValuta = cmabm.idValuta,
+                                ImportoCanone = cmabm.ImportoCanone,
+                                DataInizioValidita = cmabm.DataInizioValidita,
+                                DataFineValidita = cmabmPrecedente.DataFineValidita,
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                FK_IDCanone = cmabm.FK_IDCanone,
+                                nascondi = false
+                            };
+                            SetCanoneMAB(ref cmabmLav, db);
+                            #endregion
+                        }
                     }
-
                 }
-
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
         }
 
-
-        public void SetNuovoImportoCanone_AggiornaTutti(CanoneMABModel cmabm, decimal idMab, decimal idAttivazioneMAB, DateTime dataRientro, ModelDBISE db)
+        public void SetNuovoImportoCanone_AggiornaTutti(CanoneMABModel cmabm, decimal idMab, decimal idAttivazioneMAB, DateTime dataFineValiditaMAB, ModelDBISE db)
         {
 
             CanoneMABModel cmabmPrecedente = new CanoneMABModel();
@@ -1344,74 +2123,72 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
 
-                lcmabmPrecedenti =
-                    PrelevaMovimentiCanoneMABPrecedenti(idMab, cmabm.DataInizioValidita, db).ToList();
+                lcmabmPrecedenti = PrelevaMovimentiCanoneMABPrecedenti(idMab, cmabm.DataInizioValidita, db).ToList();
 
-                lcmabmSuccessivi =
-                    PrelevaMovimentiCanoneMABSuccessivi(idMab, cmabm.DataInizioValidita, db).ToList();
+                lcmabmSuccessivi = PrelevaMovimentiCanoneMABSuccessivi(idMab, cmabm.DataInizioValidita, db).ToList();
 
-                if (lcmabmPrecedenti.Count == 0)
-                {
-                    if (lcmabmSuccessivi.Count == 0)
-                    {
-                        #region creo record (periodo dataIniInput - dataRientro)
-                        cmabmLav = new CanoneMABModel()
-                        {
-                            IDMAB= idMab,
-                            IDAttivazioneMAB= cmabm.IDAttivazioneMAB,
-                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                            idValuta= cmabm.idValuta,
-                            ImportoCanone = cmabm.ImportoCanone,
-                            DataInizioValidita = cmabm.DataInizioValidita,
-                            DataFineValidita = dataRientro,
-                            DataAggiornamento = DateTime.Now,
-                            FK_IDCanone = cmabm.FK_IDCanone,
-                            nascondi = cmabm.nascondi
-                        };
-                        SetCanoneMAB(ref cmabmLav, db);
-                        #endregion
-                    }
-                    else
-                    {
-                        cmabmSuccessivo = lcmabmSuccessivi.First();
+                //if (lcmabmPrecedenti.Count == 0)
+                //{
+                //    if (lcmabmSuccessivi.Count == 0)
+                //    {
+                //        #region creo record (periodo dataIniInput - dataRientro)
+                //        cmabmLav = new CanoneMABModel()
+                //        {
+                //            IDMAB= idMab,
+                //            IDAttivazioneMAB= cmabm.IDAttivazioneMAB,
+                //            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                //            idValuta= cmabm.idValuta,
+                //            ImportoCanone = cmabm.ImportoCanone,
+                //            DataInizioValidita = cmabm.DataInizioValidita,
+                //            DataFineValidita = dataFineValiditaMAB,
+                //            DataAggiornamento = DateTime.Now,
+                //            FK_IDCanone = cmabm.FK_IDCanone,
+                //            nascondi = cmabm.nascondi
+                //        };
+                //        SetCanoneMAB(ref cmabmLav, db);
+                //        #endregion
+                //    }
+                //    else
+                //    {
+                //        cmabmSuccessivo = lcmabmSuccessivi.First();
 
-                        #region annullo tutti record fino al primo buco temporale o dataRientro
-                        var cont = 1;
-                        //nascondo in ogni caso il primo successivo
-                        cmabmSuccessivo.NascondiRecord(db);
-                        var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
-                        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                        foreach (var cmabmSucc in lcmabmSuccessivi)
-                        {
-                            if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
-                            {
-                                dataFineCorrente = cmabmSucc.DataFineValidita;
-                                cmabmSucc.NascondiRecord(db);
-                            }
-                            cont++;
-                        }
-                        #endregion
+                //        #region annullo tutti record fino al primo buco temporale o dataRientro
+                //        var cont = 1;
+                //        //nascondo in ogni caso il primo successivo
+                //        cmabmSuccessivo.NascondiRecord(db);
+                //        var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
+                //        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                //        foreach (var cmabmSucc in lcmabmSuccessivi)
+                //        {
+                //            if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
+                //            {
+                //                dataFineCorrente = cmabmSucc.DataFineValidita;
+                //                cmabmSucc.NascondiRecord(db);
+                //            }
+                //            cont++;
+                //        }
+                //        #endregion
 
-                        #region creo record
-                        cmabmLav = new CanoneMABModel()
-                        {
-                            IDMAB=cmabm.IDMAB,
-                            IDAttivazioneMAB=cmabm.IDAttivazioneMAB,
-                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                            idValuta=cmabm.idValuta,
-                            ImportoCanone = cmabm.ImportoCanone,
-                            DataInizioValidita = cmabm.DataInizioValidita,
-                            DataFineValidita = dataFineCorrente,
-                            DataAggiornamento = DateTime.Now,
-                            FK_IDCanone = cmabm.FK_IDCanone,
-                            nascondi = cmabm.nascondi
-                        };
-                        SetCanoneMAB(ref cmabmLav, db);
-                        #endregion
-                    }
-                }
-                else
-                {
+                //        #region creo record
+                //        cmabmLav = new CanoneMABModel()
+                //        {
+                //            IDMAB=cmabm.IDMAB,
+                //            IDAttivazioneMAB=cmabm.IDAttivazioneMAB,
+                //            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                //            idValuta=cmabm.idValuta,
+                //            ImportoCanone = cmabm.ImportoCanone,
+                //            DataInizioValidita = cmabm.DataInizioValidita,
+                //            DataFineValidita = dataFineCorrente,
+                //            DataAggiornamento = DateTime.Now,
+                //            FK_IDCanone = cmabm.FK_IDCanone,
+                //            nascondi = cmabm.nascondi
+                //        };
+                //        SetCanoneMAB(ref cmabmLav, db);
+                //        #endregion
+                //    }
+                //}
+                //else
+                //{
                     cmabmPrecedente = lcmabmPrecedenti.First();
 
                     if (lcmabmSuccessivi.Count == 0)
@@ -1423,7 +2200,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 #region edit record
                                 var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
                                 cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
-                                cmabPrecedente.DATAFINEVALIDITA = dataRientro;
+                                cmabPrecedente.DATAFINEVALIDITA = dataFineValiditaMAB;
                                 cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
                                 if (db.SaveChanges() <= 0)
                                 {
@@ -1442,9 +2219,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     IDAttivazioneMAB=cmabm.IDAttivazioneMAB,
                                     idValuta=cmabm.idValuta,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                    ImportoCanone = cmabm.ImportoCanone,
                                     DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = dataRientro,
+                                    DataFineValidita = dataFineValiditaMAB,
                                     DataAggiornamento = DateTime.Now,
                                     FK_IDCanone = cmabm.FK_IDCanone,
                                     nascondi = false
@@ -1455,16 +2232,18 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
+                            cmabmPrecedente.NascondiRecord(db);
+
                             #region replico creo record con periodo dataini - dataIniInput-1
                             cmabmLav = new CanoneMABModel()
                             {
-                                IDMAB = cmabmPrecedente.IDMAB,
-                                IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
                                 idValuta = cmabmPrecedente.idValuta,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                 ImportoCanone = cmabmPrecedente.ImportoCanone,
                                 DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                DataFineValidita = cmabmPrecedente.DataInizioValidita.AddDays(-1),
+                                DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
                                 DataAggiornamento = DateTime.Now,
                                 FK_IDCanone = cmabmPrecedente.FK_IDCanone,
                                 nascondi = false
@@ -1481,7 +2260,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                 ImportoCanone = cmabm.ImportoCanone,
                                 DataInizioValidita = cmabm.DataInizioValidita,
-                                DataFineValidita = dataRientro,
+                                DataFineValidita = dataFineValiditaMAB,
                                 DataAggiornamento = DateTime.Now,
                                 FK_IDCanone = cmabm.FK_IDCanone,
                                 nascondi = false
@@ -1533,11 +2312,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 #region replico creo record con periodo dataini - dataFineCorrente
                                 cmabmLav = new CanoneMABModel()
                                 {
-                                    IDMAB=cmabmPrecedente.IDMAB,
-                                    IDAttivazioneMAB=cmabmPrecedente.IDAttivazioneMAB,
-                                    idValuta=cmabmPrecedente.idValuta,
+                                    IDMAB=cmabm.IDMAB,
+                                    IDAttivazioneMAB=cmabm.IDAttivazioneMAB,
+                                    idValuta=cmabm.idValuta,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    ImportoCanone = cmabmPrecedente.ImportoCanone,
+                                    ImportoCanone = cmabm.ImportoCanone,
                                     DataInizioValidita = cmabmPrecedente.DataInizioValidita,
                                     DataFineValidita = dataFineCorrente,
                                     DataAggiornamento = DateTime.Now,
@@ -1556,8 +2335,8 @@ namespace NewISE.Models.DBModel.dtObj
                             #region replico creo record con periodo dataini - dataIniInput-1
                             cmabmLav = new CanoneMABModel()
                             {
-                                IDMAB = cmabmPrecedente.IDMAB,
-                                IDAttivazioneMAB = cmabmPrecedente.IDAttivazioneMAB,
+                                IDMAB = cmabm.IDMAB,
+                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
                                 idValuta = cmabmPrecedente.idValuta,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                 ImportoCanone = cmabmPrecedente.ImportoCanone,
@@ -1607,7 +2386,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
 
-                }
+                //}
 
             }
             catch (Exception ex)
@@ -1617,8 +2396,546 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void SetNuovoPagatoCondivisoMAB(PagatoCondivisoMABModel pcmabm, decimal idMab, decimal idAttivazioneMAB, DateTime dataFineValiditaMAB, ModelDBISE db)
+        {
 
+            PagatoCondivisoMABModel pcmabmPrecedente = new PagatoCondivisoMABModel();
+            PagatoCondivisoMABModel pcmabmSuccessivo = new PagatoCondivisoMABModel();
+            PagatoCondivisoMABModel pcmabmLav = new PagatoCondivisoMABModel();
+            List<PagatoCondivisoMABModel> lpcmabmPrecedenti = new List<PagatoCondivisoMABModel>();
+            List<PagatoCondivisoMABModel> lpcmabmSuccessivi = new List<PagatoCondivisoMABModel>();
 
+            try
+            {
+                lpcmabmPrecedenti = PrelevaMovimentiPagatoCondivisoMABPrecedenti(idMab, pcmabm.DataInizioValidita, db).ToList();
+
+                lpcmabmSuccessivi = PrelevaMovimentiPagatoCondivisoMABSuccessivi(idMab, pcmabm.DataInizioValidita, db).ToList();
+
+                pcmabmPrecedente = lpcmabmPrecedenti.First();
+
+                if (lpcmabmSuccessivi.Count == 0)
+                {
+                    if (pcmabmPrecedente.DataInizioValidita == pcmabm.DataInizioValidita)
+                    {
+                        if (pcmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                        {
+                            #region edit record
+                            var pcmabPrecedente = db.PAGATOCONDIVISOMAB.Find(pcmabmPrecedente.idPagatoCondiviso);
+                            pcmabPrecedente.CONDIVISO = pcmabm.Condiviso;
+                            pcmabPrecedente.PAGATO = pcmabm.Pagato;
+                            pcmabPrecedente.DATAFINEVALIDITA = dataFineValiditaMAB;
+                            pcmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore durante l'inserimento di pagato condiviso.");
+                            }
+                            #endregion
+                        }
+                        else
+                        {
+                            #region nascondo il record
+                            pcmabmPrecedente.NascondiRecord(db);
+                            #endregion
+
+                            #region creo record
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Condiviso = pcmabm.Condiviso,
+                                Pagato = pcmabm.Pagato,
+                                DataInizioValidita = pcmabm.DataInizioValidita,
+                                DataFineValidita = dataFineValiditaMAB,
+                                DataAggiornamento = DateTime.Now,
+                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+                        }
+
+                    }
+                    else
+                    {
+                        if (pcmabmPrecedente.DataFineValidita == dataFineValiditaMAB)
+                        {
+                            #region replico record e lo nascondo
+                            pcmabmPrecedente.NascondiRecord(db);
+
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabmPrecedente.Pagato,
+                                Condiviso = pcmabmPrecedente.Condiviso,
+                                DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
+                                DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                fk_IDPagatoCondiviso = pcmabmPrecedente.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+
+                            #region creo record
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabm.Pagato,
+                                Condiviso = pcmabm.Condiviso,
+                                DataInizioValidita = pcmabm.DataInizioValidita,
+                                DataFineValidita = dataFineValiditaMAB,
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+                        }
+                        else
+                        {
+                            #region creo record
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Condiviso = pcmabm.Condiviso,
+                                Pagato = pcmabm.Pagato,
+                                DataInizioValidita = pcmabm.DataInizioValidita,
+                                DataFineValidita = dataFineValiditaMAB,
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+                        }
+                    }
+                }
+
+                else
+                {
+                    if (pcmabmPrecedente.DataInizioValidita == pcmabm.DataInizioValidita &&
+                        pcmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                    {
+                        #region edit record
+                        var pcmabPrecedente = db.PAGATOCONDIVISOMAB.Find(pcmabmPrecedente.idPagatoCondiviso);
+                        pcmabPrecedente.PAGATO = pcmabm.Pagato;
+                        pcmabPrecedente.CONDIVISO = pcmabm.Condiviso;
+                        pcmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore durante l'inserimento di pagato condiviso.");
+                        }
+                        #endregion
+                    }
+                    else
+                    {
+                        pcmabmSuccessivo = lpcmabmSuccessivi.First();
+
+                        //controllo periodo attiguo
+                        if (pcmabmPrecedente.DataFineValidita == pcmabmSuccessivo.DataInizioValidita.AddDays(-1))
+                        {
+                          
+                            #region replico record e lo nascondo
+                            pcmabmPrecedente.NascondiRecord(db);
+
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabmPrecedente.Pagato,
+                                Condiviso = pcmabmPrecedente.Condiviso,
+                                DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
+                                DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                fk_IDPagatoCondiviso = pcmabmPrecedente.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+
+                            if (pcmabm.Pagato != pcmabmSuccessivo.Pagato || pcmabm.Condiviso != pcmabmSuccessivo.Condiviso)
+                            {
+                                #region se dati variati rispetto a succ creo record da dataini a dataini-1(succ)
+                                pcmabmLav = new PagatoCondivisoMABModel()
+                                {
+                                    idMAB = pcmabm.idMAB,
+                                    idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                    Pagato = pcmabm.Pagato,
+                                    Condiviso = pcmabm.Condiviso,
+                                    DataInizioValidita = pcmabm.DataInizioValidita,
+                                    DataFineValidita = pcmabmSuccessivo.DataInizioValidita.AddDays(-1),
+                                    DataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                    Nascondi = false
+                                };
+                                SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                                #endregion
+                            }
+                            else
+                            {
+                                #region se dati non variati rispetto a succ creo record da dataini a datafine(succ)
+
+                                pcmabmSuccessivo.NascondiRecord(db);
+
+                                pcmabmLav = new PagatoCondivisoMABModel()
+                                {
+                                    idMAB = pcmabm.idMAB,
+                                    idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                    Pagato = pcmabm.Pagato,
+                                    Condiviso = pcmabm.Condiviso,
+                                    DataInizioValidita = pcmabm.DataInizioValidita,
+                                    DataFineValidita = pcmabmSuccessivo.DataFineValidita,
+                                    DataAggiornamento = DateTime.Now,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                    Nascondi = false
+                                };
+                                SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                                #endregion
+                            }
+
+                        }
+                        else
+                        {
+                            pcmabmPrecedente.NascondiRecord(db);
+                            #region replico record
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabmPrecedente.Pagato,
+                                Condiviso = pcmabmPrecedente.Condiviso,
+                                DataInizioValidita = pcmabmSuccessivo.DataInizioValidita,
+                                DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+
+                            #region creo record
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabm.Pagato,
+                                Condiviso = pcmabm.Condiviso,
+                                DataInizioValidita = pcmabm.DataInizioValidita,
+                                DataFineValidita = pcmabmPrecedente.DataFineValidita,
+                                DataAggiornamento = DateTime.Now,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void SetNuovoPagatoCondiviso_AggiornaTutti(PagatoCondivisoMABModel pcmabm, decimal idMab, decimal idAttivazioneMAB, DateTime dataFineValiditaMAB, ModelDBISE db)
+        {
+
+            PagatoCondivisoMABModel pcmabmPrecedente = new PagatoCondivisoMABModel();
+            PagatoCondivisoMABModel pcmabmSuccessivo = new PagatoCondivisoMABModel();
+            PagatoCondivisoMABModel pcmabmLav = new PagatoCondivisoMABModel();
+            List<PagatoCondivisoMABModel> lpcmabmPrecedenti = new List<PagatoCondivisoMABModel>();
+            List<PagatoCondivisoMABModel> lpcmabmSuccessivi = new List<PagatoCondivisoMABModel>();
+
+            try
+            {
+
+                lpcmabmPrecedenti = PrelevaMovimentiPagatoCondivisoMABPrecedenti(idMab, pcmabm.DataInizioValidita, db).ToList();
+
+                lpcmabmSuccessivi = PrelevaMovimentiPagatoCondivisoMABSuccessivi(idMab, pcmabm.DataInizioValidita, db).ToList();
+
+                //if (lpcmabmPrecedenti.Count == 0)
+                //{
+                //    if (lpcmabmSuccessivi.Count == 0)
+                //    {
+                //        #region creo record (periodo dataIniInput - dataRientro)
+                //        pcmabmLav = new PagatoCondivisoMABModel()
+                //        {
+                //            idMAB = idMab,
+                //            idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                //            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                //            Pagato = pcmabm.Pagato,
+                //            Condiviso = pcmabm.Condiviso,
+                //            DataInizioValidita = pcmabm.DataInizioValidita,
+                //            DataFineValidita = dataFineValiditaMAB,
+                //            DataAggiornamento = DateTime.Now,
+                //            fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                //            Nascondi = pcmabm.Nascondi
+                //        };
+                //        SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                //        #endregion
+                //    }
+                //    else
+                //    {
+                //        pcmabmSuccessivo = lpcmabmSuccessivi.First();
+
+                //        #region annullo tutti record fino al primo buco temporale o dataRientro
+                //        var cont = 1;
+                //        //nascondo in ogni caso il primo successivo
+                //        pcmabmSuccessivo.NascondiRecord(db);
+                //        var dataFineCorrente = pcmabmSuccessivo.DataFineValidita;
+                //        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                //        foreach (var pcmabmSucc in lpcmabmSuccessivi)
+                //        {
+                //            if (cont > 1 && pcmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
+                //            {
+                //                dataFineCorrente = pcmabmSucc.DataFineValidita;
+                //                pcmabmSucc.NascondiRecord(db);
+                //            }
+                //            cont++;
+                //        }
+                //        #endregion
+
+                //        #region creo record
+                //        pcmabmLav = new PagatoCondivisoMABModel()
+                //        {
+                //            idMAB = pcmabm.idMAB,
+                //            idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                //            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                //            Pagato = pcmabm.Pagato,
+                //            Condiviso = pcmabm.Condiviso,
+                //            DataInizioValidita = pcmabm.DataInizioValidita,
+                //            DataFineValidita = dataFineCorrente,
+                //            DataAggiornamento = DateTime.Now,
+                //            fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                //            Nascondi = pcmabm.Nascondi
+                //        };
+                //        SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                //        #endregion
+                //    }
+                //}
+                //else
+                //{
+                    pcmabmPrecedente = lpcmabmPrecedenti.First();
+
+                    if (lpcmabmSuccessivi.Count == 0)
+                    { ////
+                        if (pcmabmPrecedente.DataInizioValidita == pcmabm.DataInizioValidita)
+                        {
+                            if (pcmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                #region edit record
+                                var pcmabPrecedente = db.PAGATOCONDIVISOMAB.Find(pcmabmPrecedente.idPagatoCondiviso);
+                                pcmabPrecedente.PAGATO = pcmabm.Pagato;
+                                pcmabPrecedente.CONDIVISO = pcmabm.Condiviso;
+                                pcmabPrecedente.DATAFINEVALIDITA = dataFineValiditaMAB;
+                                pcmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante l'inserimento del pagato condiviso MAB.");
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                pcmabmPrecedente.NascondiRecord(db);
+
+                                #region replico creo record con periodo dataini - dataIniInput-1
+                                pcmabmLav = new PagatoCondivisoMABModel()
+                                {
+                                    idMAB = pcmabm.idMAB,
+                                    idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                    Pagato = pcmabm.Pagato,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    Condiviso = pcmabm.Condiviso,
+                                    DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
+                                    DataFineValidita = dataFineValiditaMAB,
+                                    DataAggiornamento = DateTime.Now,
+                                    fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                    Nascondi = false
+                                };
+                                SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                                #endregion
+                            }
+                        }
+                        else
+                        {
+                            pcmabmPrecedente.NascondiRecord(db);
+
+                            #region replico creo record con periodo dataini - dataIniInput-1
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabmPrecedente.Pagato,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                Condiviso = pcmabmPrecedente.Condiviso,
+                                DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
+                                DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                fk_IDPagatoCondiviso = pcmabmPrecedente.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+
+                            #region creo record 
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabm.Pagato,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                Condiviso = pcmabm.Condiviso,
+                                DataInizioValidita = pcmabm.DataInizioValidita,
+                                DataFineValidita = dataFineValiditaMAB,
+                                DataAggiornamento = DateTime.Now,
+                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+                        }
+                    }
+                    else
+                    {
+                        pcmabmSuccessivo = lpcmabmSuccessivi.First();
+
+                        if (pcmabmPrecedente.DataInizioValidita == pcmabm.DataInizioValidita)
+                        {
+                            #region annullo i record successivi fino al primo buco temporale o dataRientro
+                            var cont = 1;
+                            //nascondo in ogni caso il primo successivo
+                            pcmabmSuccessivo.NascondiRecord(db);
+                            var dataFineCorrente = pcmabmSuccessivo.DataFineValidita;
+                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                            foreach (var pcmabmSucc in lpcmabmSuccessivi)
+                            {
+                                if (cont > 1 && pcmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
+                                {
+                                    dataFineCorrente = pcmabmSucc.DataFineValidita;
+                                    pcmabmSucc.NascondiRecord(db);
+                                }
+                                cont++;
+                            }
+                            #endregion
+                            if (pcmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+
+                                #region edit record
+                                var pcmabPrecedente = db.PAGATOCONDIVISOMAB.Find(pcmabmPrecedente.idPagatoCondiviso);
+                                pcmabPrecedente.PAGATO = pcmabm.Pagato;
+                                pcmabPrecedente.CONDIVISO = pcmabm.Condiviso;
+                                pcmabPrecedente.DATAFINEVALIDITA = dataFineCorrente;
+                                pcmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore durante l'inserimento di pagato condiviso.");
+                                }
+                                #endregion
+                            }
+                            else
+                            {
+                                pcmabmPrecedente.NascondiRecord(db);
+
+                                #region replico creo record con periodo dataini - dataFineCorrente
+                                pcmabmLav = new PagatoCondivisoMABModel()
+                                {
+                                    idMAB = pcmabm.idMAB,
+                                    idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                    Pagato = pcmabm.Pagato,
+                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    Condiviso = pcmabm.Condiviso,
+                                    DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
+                                    DataFineValidita = dataFineCorrente,
+                                    DataAggiornamento = DateTime.Now,
+                                    fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                    Nascondi = false
+                                };
+                                SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                                #endregion
+                            }
+                        }
+                        else
+                        {
+
+                            pcmabmPrecedente.NascondiRecord(db);
+
+                            #region replico creo record con periodo dataini - dataIniInput-1
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabmPrecedente.Pagato,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                Condiviso = pcmabmPrecedente.Condiviso,
+                                DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
+                                DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
+                                DataAggiornamento = DateTime.Now,
+                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+
+                            #region annullo i record successivi fino al primo buco temporale o dataRientro
+                            var cont = 1;
+                            //nascondo in ogni caso il primo successivo
+                            pcmabmSuccessivo.NascondiRecord(db);
+                            var dataFineCorrente = pcmabmSuccessivo.DataFineValidita;
+                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                            foreach (var pcmabmSucc in lpcmabmSuccessivi)
+                            {
+                                if (cont > 1 && pcmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
+                                {
+                                    dataFineCorrente = pcmabmSucc.DataFineValidita;
+                                    pcmabmSucc.NascondiRecord(db);
+                                }
+                                cont++;
+                            }
+                            #endregion
+
+                            #region creo record
+                            pcmabmLav = new PagatoCondivisoMABModel()
+                            {
+                                idMAB = pcmabm.idMAB,
+                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                                Pagato = pcmabm.Pagato,
+                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                Condiviso = pcmabm.Condiviso,
+                                DataInizioValidita = pcmabm.DataInizioValidita,
+                                DataFineValidita = dataFineCorrente,
+                                DataAggiornamento = DateTime.Now,
+                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                                Nascondi = false
+                            };
+
+                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                            #endregion
+                        }
+                    }
+
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
 
 
         public MABModel GetMABModelByID(decimal idMAB, ModelDBISE db)
@@ -1694,7 +3011,6 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
-                //PAGATOCONDIVISOMAB pc = new PAGATOCONDIVISOMAB();
                 List<PAGATOCONDIVISOMAB> lpc = new List<PAGATOCONDIVISOMAB>();
 
                 using (ModelDBISE db = new ModelDBISE())
@@ -1811,1086 +3127,978 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
         #region attiva
-        //        public void AttivaRichiestaMAB_var(decimal idAttivazioneMAB)
-        //        {
-        //            using (ModelDBISE db = new ModelDBISE())
-        //            {
-        //                db.Database.BeginTransaction();
+        public void AttivaRichiestaMAB_var(decimal idAttivazioneMAB)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
 
-        //                try
-        //                {
-        //                    var am = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
-        //                    if (am?.IDATTIVAZIONEMAB > 0)
-        //                    {
-        //                        if (am.NOTIFICARICHIESTA == true)
-        //                        {
-        //                            am.ATTIVAZIONE = true;
-        //                            am.DATAATTIVAZIONE = DateTime.Now;
-        //                            am.DATAAGGIORNAMENTO = DateTime.Now;
+                try
+                {
+                    using (dtDipendenti dtd = new dtDipendenti())
+                    {
+                        var am = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+                        if (am?.IDATTIVAZIONEMAB > 0)
+                        {
+                            if (am.NOTIFICARICHIESTA == true)
+                            {
+                                am.ATTIVAZIONE = true;
+                                am.DATAATTIVAZIONE = DateTime.Now;
+                                am.DATAAGGIORNAMENTO = DateTime.Now;
+                                am.DATAVARIAZIONE = DateTime.Now;
 
-        //                            int i = db.SaveChanges();
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore: Impossibile completare l'attivazione maggiorazione abitazione.");
+                                }
+                                var idTrasferimento = am.TRASFERIMENTO.IDTRASFERIMENTO;
 
-        //                            if (i <= 0)
-        //                            {
-        //                                throw new Exception("Errore: Impossibile completare l'attivazione maggiorazione abitazione.");
-        //                            }
-        //                            else
-        //                            {
-        //                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-        //                                    "Attivazione maggiorazione abitazione.", "ATTIVAZIONEMAB", db,
-        //                                    am.TRASFERIMENTO.IDTRASFERIMENTO, am.IDATTIVAZIONEMAB);
-        //                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-        //                                {
-        //                                    dtce.ModificaInCompletatoCalendarioEvento(am.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
-        //                                }
-        //                                using (dtDipendenti dtd = new dtDipendenti())
-        //                                {
-        //                                    using (dtTrasferimento dtt = new dtTrasferimento())
-        //                                    {
-        //                                        using (dtUffici dtu = new dtUffici())
-        //                                        {
-        //                                            var t = dtt.GetTrasferimentoById(am.TRASFERIMENTO.IDTRASFERIMENTO);
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    "Attivazione maggiorazione abitazione.", "ATTIVAZIONEMAB", db,
+                                    idTrasferimento, am.IDATTIVAZIONEMAB);
 
-        //                                            if (t?.idTrasferimento > 0)
-        //                                            {
-        //                                                var dip = dtd.GetDipendenteByID(t.idDipendente);
-        //                                                var uff = dtu.GetUffici(t.idUfficio);
+                                var mab_corrente = am.TRASFERIMENTO.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDMAB).ToList().First();
 
-        //                                                EmailTrasferimento.EmailAttiva(am.TRASFERIMENTO.IDTRASFERIMENTO,
-        //                                                                    Resources.msgEmail.OggettoAttivazioneMaggiorazioneAbitazione,
-        //                                                                    string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioneAbitazione, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
-        //                                                                    db);
-        //                                            }
-        //                                        }
-        //                                    }
-        //                                }
+                                #region imposto lo stato su ATTIVO
+                                var mabl = am.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDMAB).ToList();
+                                foreach (var mab in mabl)
+                                {
+                                    UpdateStatoMAB(mab.IDMAB, EnumStatoRecord.Attivato, db);
+                                }
 
-        //                                //this.EmailAttivaRichiestaMAB(am.IDATTIVAZIONEMAB, db);
+                                var pmabl = am.PERIODOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDPERIODOMAB).ToList();
+                                if (pmabl?.Any() ?? false)
+                                {
+                                    var lpmab_att = am.PERIODOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderBy(a => a.IDPERIODOMAB).ToList();
+                                    foreach (var pmab_att in lpmab_att)
+                                    {
+                                        UpdateStatoPeriodoMAB(pmab_att.IDPERIODOMAB, EnumStatoRecord.Annullato, db);
+                                    }
+                                }
+                                foreach (var pmab in pmabl)
+                                {
+                                    UpdateStatoPeriodoMAB(pmab.IDPERIODOMAB, EnumStatoRecord.Attivato, db);
+                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pmab.DATAINIZIOMAB, db);
+                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pmab.DATAFINEMAB, db);
+                                }
 
-        //                            }
-        //                        }
-        //                    }
+                                var cmabl = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.NASCONDI == false).OrderBy(a => a.IDCANONE).ToList();
+                                foreach (var cmab in cmabl)
+                                {
+                                    UpdateStatoCanoneMAB(cmab.IDCANONE, EnumStatoRecord.Attivato, db);
+                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, cmab.DATAINIZIOVALIDITA, db);
+                            
+                                }
+                                //annullo i record attivi nascosti  (relativi alla mab perche potrbbero avere idattivazione diverso)
+                                cmabl = mab_corrente.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.NASCONDI).OrderBy(a => a.IDCANONE).ToList();
+                                foreach (var cmab in cmabl)
+                                {
+                                    UpdateStatoCanoneMAB(cmab.IDCANONE, EnumStatoRecord.Annullato, db);
+                                }
 
-        //                    db.Database.CurrentTransaction.Commit();
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    db.Database.CurrentTransaction.Rollback();
-        //                    throw ex;
-        //                }
-        //            }
-        //        }
+                                var aal = am.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
+                                foreach (var aa in aal)
+                                {
+                                    UpdateStatoAnticipoAnnualeMAB(aa.IDANTICIPOANNUALEMAB, EnumStatoRecord.Attivato, db);
+                                }
+
+                                var pcmabl = am.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.NASCONDI == false).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
+                                foreach (var pcmab in pcmabl)
+                                {
+                                    UpdateStatoPagatoCondivisoMAB(pcmab.IDPAGATOCONDIVISO, EnumStatoRecord.Attivato, db);
+                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pcmab.DATAINIZIOVALIDITA, db);
+                                }
+                                //annullo i record attivi nascosti (relativi alla mab perche potrbbero avere idattivazione diverso)
+                                pcmabl = mab_corrente.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.NASCONDI).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
+                                foreach (var pcmab in pcmabl)
+                                {
+                                    UpdateStatoPagatoCondivisoMAB(pcmab.IDPAGATOCONDIVISO, EnumStatoRecord.Annullato, db);
+                                }
+
+                                var dmabl = am.DOCUMENTI
+                                            .Where(a => a.MODIFICATO == false &&
+                                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare &&
+                                                        (
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione
+                                                        )
+                                                    )
+                                            .OrderBy(a => a.IDDOCUMENTO).ToList();
+                                foreach (var dmab in dmabl)
+                                {
+                                    this.UpdateStatoDocumentiMAB(dmab.IDDOCUMENTO, EnumStatoRecord.Attivato, db);
+                                }
+                                #endregion
+
+                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                {
+                                    dtce.ModificaInCompletatoCalendarioEvento(am.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
+                                }
+
+                                using (dtTrasferimento dtt = new dtTrasferimento())
+                                {
+                                    using (dtUffici dtu = new dtUffici())
+                                    {
+                                        var t = dtt.GetTrasferimentoById(am.TRASFERIMENTO.IDTRASFERIMENTO);
+
+                                        if (t?.idTrasferimento > 0)
+                                        {
+                                            var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                            var uff = dtu.GetUffici(t.idUfficio);
+
+                                            EmailTrasferimento.EmailAttiva(am.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                Resources.msgEmail.OggettoAttivazioneMaggiorazioneAbitazione,
+                                                                string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioneAbitazione, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                                db);
+                                        }
+                                    }
+                                }
+                                ATTIVAZIONEMAB att_new = CreaAttivazione(idTrasferimento, db);
+                            }
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
         #endregion
 
-        #region email attiva
-        //        private void EmailAttivaRichiestaMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
-        //        {
-        //            //PRIMASITEMAZIONE ps = new PRIMASITEMAZIONE();
-        //            AccountModel am = new AccountModel();
-        //            Mittente mittente = new Mittente();
-        //            Destinatario to = new Destinatario();
-        //            Destinatario cc = new Destinatario();
-        //            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+        public AttivazioneMABModel GetAttivazionePartenzaMABAttiva(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+                ATTIVAZIONEMAB am = new ATTIVAZIONEMAB();
+                AttivazioneMABModel amm = new AttivazioneMABModel();
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var aml = t.ATTIVAZIONEMAB
+                            .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA && a.ATTIVAZIONE)
+                            .OrderBy(a => a.IDATTIVAZIONEMAB)
+                            .ToList();
+
+                if (aml?.Any() ?? false)
+                {
+                    am = aml.First();
+
+                    amm = new AttivazioneMABModel()
+                    {
+                        idAttivazioneMAB = am.IDATTIVAZIONEMAB,
+                        idTrasferimento = am.IDTRASFERIMENTO,
+                        notificaRichiesta = am.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = am.DATANOTIFICARICHIESTA,
+                        Attivazione = am.ATTIVAZIONE,
+                        dataAttivazione = am.DATAATTIVAZIONE,
+                        dataVariazione = am.DATAVARIAZIONE,
+                        dataAggiornamento = am.DATAAGGIORNAMENTO,
+                        Annullato = am.ANNULLATO
+                    };
+
+                }
+
+                return amm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
-        //            try
-        //            {
-        //                am = Utility.UtenteAutorizzato();
-        //                mittente.Nominativo = am.nominativo;
-        //                mittente.EmailMittente = am.eMail;
 
-        //                var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
-
-        //                if (amab?.IDTRASFERIMENTO > 0)
-        //                {
-        //                    TRASFERIMENTO tr = amab.TRASFERIMENTO;
-        //                    DIPENDENTI d = tr.DIPENDENTI;
-        //                    UFFICI u = tr.UFFICI;
-
-        //                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-        //                    {
-        //                        using (GestioneEmail gmail = new GestioneEmail())
-        //                        {
-        //                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
-        //                            {
-
-        //                                cc = new Destinatario()
-        //                                {
-        //                                    Nominativo = am.nominativo,
-        //                                    EmailDestinatario = am.eMail
-        //                                };
-
-        //                                msgMail.mittente = mittente;
-        //                                msgMail.cc.Add(cc);
-
-        //                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-
-        //                                foreach (var uam in luam)
-        //                                {
-        //                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-        //                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
-        //                                    {
-        //                                        to = new Destinatario()
-        //                                        {
-        //                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-        //                                            EmailDestinatario = amministratore.EMAIL
-        //                                        };
-
-        //                                        msgMail.destinatario.Add(to);
-        //                                    }
-
-
-        //                                }
-        //                                msgMail.oggetto = Resources.msgEmail.OggettoAttivazioneMaggiorazioneAbitazione;
-
-        //                                msgMail.corpoMsg =
-        //                                        string.Format(
-        //                                            Resources.msgEmail.MessaggioAttivazioneMaggiorazioneAbitazione,
-        //                                            d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-        //                                            tr.DATAPARTENZA.ToLongDateString(),
-        //                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
-
-        //                                gmail.sendMail(msgMail);
-
-        //                            }
-        //                        }
-
-        //                    }
-        //                }
-
-        //            }
-        //            catch (Exception ex)
-        //            {
-
-        //                throw ex;
-        //            }
-        //        }
-        #endregion
 
         #region annulla notifica
-        //        public void AnnullaRichiestaMAB_var(decimal idAttivazioneMAB, string msg)
-        //        {
-        //            using (ModelDBISE db = new ModelDBISE())
-        //            {
-        //                db.Database.BeginTransaction();
+        public void AnnullaRichiestaMAB_var(decimal idAttivazioneMAB, string msg)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
 
-        //                try
-        //                {
-        //                    var am_Old = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+                try
+                {
+                    var am_Old = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
 
-        //                    if (am_Old?.IDATTIVAZIONEMAB > 0)
-        //                    {
-        //                        if (am_Old.NOTIFICARICHIESTA == true && am_Old.ATTIVAZIONE == false && am_Old.ANNULLATO == false)
-        //                        {
-        //                            am_Old.ANNULLATO = true;
-        //                            am_Old.DATAAGGIORNAMENTO = DateTime.Now;
+                    var t = am_Old.TRASFERIMENTO;
+                    List<PERIODOMAB> pmab_Old_l = new List<PERIODOMAB>();
+                    List<CANONEMAB> old_canone_l = new List<CANONEMAB>();
+                    List<ANTICIPOANNUALEMAB> old_aa_l = new List<ANTICIPOANNUALEMAB>();
+                    List<DOCUMENTI> ld_old = new List<DOCUMENTI>();
+                    List<PAGATOCONDIVISOMAB> old_pc_l = new List<PAGATOCONDIVISOMAB>();
 
-        //                            int i = db.SaveChanges();
+                    
 
-        //                            if (i <= 0)
-        //                            {
-        //                                throw new Exception("Errore - Impossibile annullare la notifica della richiesta maggiorazione abitazione.");
-        //                            }
-        //                            else
-        //                            {
-        //                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-        //                                    "Annullamento della riga per il ciclo di attivazione della richiesta di maggiorazione abitazione",
-        //                                    "ATTIVAZIONEMAB", db, am_Old.TRASFERIMENTO.IDTRASFERIMENTO,
-        //                                    am_Old.IDATTIVAZIONEMAB);
 
-        //                                ATTIVAZIONEMAB am_New = new ATTIVAZIONEMAB()
-        //                                {
-        //                                    IDTRASFERIMENTO = am_Old.IDTRASFERIMENTO,
-        //                                    NOTIFICARICHIESTA = false,
-        //                                    ATTIVAZIONE = false,
-        //                                    DATAAGGIORNAMENTO = DateTime.Now,
-        //                                    ANNULLATO = false
-        //                                };
 
-        //                                db.ATTIVAZIONEMAB.Add(am_New);
+                    if (am_Old?.IDATTIVAZIONEMAB > 0)
+                    {
+                        if (am_Old.NOTIFICARICHIESTA == true && am_Old.ATTIVAZIONE == false && am_Old.ANNULLATO == false)
+                        {
+                            am_Old.ANNULLATO = true;
+                            am_Old.DATAAGGIORNAMENTO = DateTime.Now;
 
-        //                                int j = db.SaveChanges();
 
-        //                                if (j <= 0)
-        //                                {
-        //                                    throw new Exception("Errore - Impossibile creare il nuovo ciclo di attivazione per richiesta maggiorazione abitazione.");
-        //                                }
-        //                                else
-        //                                {
-        //                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-        //                                        "Inserimento di una nuova riga per il ciclo di attivazione relativo alla richiesta maggiorazione abitazione.",
-        //                                        "ATTIVAZIONEMAB", db, am_New.TRASFERIMENTO.IDTRASFERIMENTO,
-        //                                        am_New.IDATTIVAZIONEMAB);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore - Impossibile annullare la notifica della richiesta maggiorazione abitazione.");
+                            }
 
-        //                                    var mab_Old_l =
-        //                                        am_Old.MAGGIORAZIONEABITAZIONE.Where(
-        //                                            a => a.ANNULLATO == false).ToList();
-        //                                    if (mab_Old_l?.Any() ?? false)
-        //                                    {
-        //                                        #region maggiorazione abitazione
-        //                                        var mab_Old =
-        //                                            am_Old.MAGGIORAZIONEABITAZIONE.Where(
-        //                                                a => a.ANNULLATO == false).First();
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                "Annullamento della riga per il ciclo di attivazione della richiesta di maggiorazione abitazione",
+                                "ATTIVAZIONEMAB", db, t.IDTRASFERIMENTO,
+                                am_Old.IDATTIVAZIONEMAB);
 
-        //                                        if (mab_Old != null && mab_Old.IDATTIVAZIONEMAB > 0)
-        //                                        {
-        //                                            MAGGIORAZIONEABITAZIONE mab_New = new MAGGIORAZIONEABITAZIONE()
-        //                                            {
-        //                                                IDATTIVAZIONEMAB = am_New.IDATTIVAZIONEMAB,
-        //                                                DATAINIZIOMAB = mab_Old.DATAINIZIOMAB,
-        //                                                DATAFINEMAB = mab_Old.DATAFINEMAB,
-        //                                                ANTICIPOANNUALE = mab_Old.ANTICIPOANNUALE,
-        //                                                DATAAGGIORNAMENTO = mab_Old.DATAAGGIORNAMENTO,
-        //                                                ANNULLATO = mab_Old.ANNULLATO,
-        //                                                IDTRASFERIMENTO = mab_Old.IDTRASFERIMENTO
-        //                                            };
+                            ATTIVAZIONEMAB am_new = CreaAttivazioneMAB_var(t.IDTRASFERIMENTO,db);
 
-        //                                            db.MAGGIORAZIONEABITAZIONE.Add(mab_New);
-        //                                            mab_Old.ANNULLATO = true;
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                "Inserimento di una nuova riga per il ciclo di attivazione relativo alla richiesta maggiorazione abitazione.",
+                                "ATTIVAZIONEMAB", db, t.IDTRASFERIMENTO,
+                                am_new.IDATTIVAZIONEMAB);
 
-        //                                            int y = db.SaveChanges();
+                            #region MAB
+                            var mab_Old_l =
+                                am_Old.MAB.Where(
+                                    a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
 
-        //                                            if (y <= 0)
-        //                                            {
-        //                                                throw new Exception("Errore - Impossibile inserire il record relativo a richiesta maggiorazione abitazione.");
-        //                                            }
-        //                                            else
-        //                                            {
-        //                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-        //                                                    "Inserimento di una nuova riga per la richiesta maggiorazione abitazione.",
-        //                                                    "MAGGIORAZIONEABITAZIONE", db,
-        //                                                    am_New.TRASFERIMENTO.IDTRASFERIMENTO,
-        //                                                    mab_New.IDMAB);
-        //                                            }
+                            //se esistono mab da annullare duplico anche tutto ciò che è collegato
+                            foreach (var mab_Old in mab_Old_l)
+                            {
+                                MAB mab_New = new MAB()
+                                {
+                                    IDMAGABITAZIONE = mab_Old.IDMAGABITAZIONE,
+                                    IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    RINUNCIAMAB = mab_Old.RINUNCIAMAB,
+                                    FK_IDMAB = mab_Old.FK_IDMAB,
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
+                                };
+                                db.MAB.Add(mab_New);
+                                mab_Old.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
-        //                                            #endregion
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile inserire il record relativo a MAB nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                }
 
-        //                                            var old_canone_l = mab_Old.CANONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDCANONE).ToList();
-        //                                            if (old_canone_l?.Any() ?? false)
-        //                                            {
-        //                                                #region canone
-        //                                                var old_canone = old_canone_l.First();
-        //                                                CANONEMAB canone_new = new CANONEMAB()
-        //                                                {
-        //                                                    IDATTIVAZIONEMAB = am_New.IDATTIVAZIONEMAB,
-        //                                                    IDMAB = mab_New.IDMAB,
-        //                                                    DATAINIZIOVALIDITA = old_canone.DATAINIZIOVALIDITA,
-        //                                                    DATAFINEVALIDITA = old_canone.DATAFINEVALIDITA,
-        //                                                    IMPORTOCANONE = old_canone.IMPORTOCANONE,
-        //                                                    ANNULLATO = old_canone.ANNULLATO,
-        //                                                    DATAAGGIORNAMENTO = old_canone.DATAAGGIORNAMENTO
-        //                                                };
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                    "Inserimento di una nuova riga MAB.",
+                                    "MAB", db,
+                                    t.IDTRASFERIMENTO,
+                                    mab_New.IDMAB);
 
-        //                                                db.CANONEMAB.Add(canone_new);
-        //                                                old_canone.ANNULLATO = true;
+                                #region associa MAB a MaggiorazioniAnnuali
+                                var m_annuali_l = mab_Old.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
+                                if (m_annuali_l?.Any() ?? false)
+                                {
+                                    foreach (var m_annuali in m_annuali_l)
+                                    {
+                                        this.Associa_MAB_MaggiorazioniAnnuali_var(mab_New.IDMAB, m_annuali.IDMAGANNUALI, db);
+                                    }
+                                }
+                                #endregion
 
-        //                                                if (db.SaveChanges() <= 0)
-        //                                                {
-        //                                                    throw new Exception("Errore - Impossibile inserire il record relativo al canone nel ciclo di annullamento della richiesta maggiorazione abitazione.");
-        //                                                }
-        //                                                else
-        //                                                {
-        //                                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-        //                                                        "Inserimento di una nuova riga canone per la richiesta maggiorazione abitazione.",
-        //                                                        "CANONEMAB", db,
-        //                                                        am_New.TRASFERIMENTO.IDTRASFERIMENTO,
-        //                                                        canone_new.IDCANONE);
 
-        //                                                    #region associa MAB a Magg Annuali
-        //                                                    var m_annuali_l = mab_Old.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
-        //                                                    if (m_annuali_l?.Any() ?? false)
-        //                                                    {
-        //                                                        foreach (var m_annuali in m_annuali_l)
-        //                                                        {
-        //                                                            this.Associa_MAB_MaggiorazioniAnnuali_var(mab_New.IDMAB, m_annuali.IDMAGANNUALI, db);
-        //                                                        }
-        //                                                    }
-        //                                                    #endregion
+                                #region PERIODOMAB
+                                pmab_Old_l =
+                                    am_Old.PERIODOMAB.Where(
+                                   a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                foreach (var pmab_Old in pmab_Old_l)
+                                {
+                                    PERIODOMAB pmab_New = new PERIODOMAB()
+                                    {
+                                        IDMAB = mab_New.IDMAB,
+                                        IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        DATAINIZIOMAB = pmab_Old.DATAINIZIOMAB,
+                                        DATAFINEMAB = pmab_Old.DATAFINEMAB,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        FK_IDPERIODOMAB = pmab_Old.FK_IDPERIODOMAB,
+                                    };
+                                    db.PERIODOMAB.Add(pmab_New);
+                                    pmab_Old.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
-        //                                                    #region associa MAB a percentuale MAB
-        //                                                    var percMAB_l = mab_Old.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
-        //                                                    if (percMAB_l?.Any() ?? false)
-        //                                                    {
-        //                                                        foreach (var percMAB in percMAB_l)
-        //                                                        {
-        //                                                            this.Associa_MAB_PercenualeMAB_var(mab_New.IDMAB, percMAB.IDPERCMAB, db);
-        //                                                        }
-        //                                                    }
-        //                                                    #endregion
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore - Impossibile inserire il record relativo a PERIODOMAB nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                    }
 
-        //                                                    #region canone MAB a TFR
-        //                                                    var TFR_l = old_canone.TFR.Where(a => a.ANNULLATO == false).ToList();
-        //                                                    if (TFR_l?.Any() ?? false)
-        //                                                    {
-        //                                                        foreach (var TFR in TFR_l)
-        //                                                        {
-        //                                                            this.Associa_TFR_CanoneMAB_var(TFR.IDTFR, canone_new.IDCANONE, db);
-        //                                                        }
-        //                                                    }
-        //                                                    #endregion
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                        "Inserimento di una nuova riga PERIODOMAB.",
+                                        "PERIODIOMAB", db,
+                                        t.IDTRASFERIMENTO,
+                                        pmab_New.IDPERIODOMAB);
 
-        //                                                }
-        //                                                #endregion
 
-        //                                                #region documenti
-        //                                                var ld_old=this.GetDocumentiMAB_var(idAttivazioneMAB, db);
-        //                                                foreach (var d in ld_old)
-        //                                                {
-        //                                                    DOCUMENTI dNew = new DOCUMENTI()
-        //                                                    {
-        //                                                        IDTIPODOCUMENTO = d.IDTIPODOCUMENTO,
-        //                                                        NOMEDOCUMENTO = d.NOMEDOCUMENTO,
-        //                                                        ESTENSIONE = d.ESTENSIONE,
-        //                                                        FILEDOCUMENTO = d.FILEDOCUMENTO,
-        //                                                        DATAINSERIMENTO = d.DATAINSERIMENTO,
-        //                                                        MODIFICATO = d.MODIFICATO,
-        //                                                        FK_IDDOCUMENTO = d.FK_IDDOCUMENTO
-        //                                                    };
+                                    #region associa PERIODOMAB a percentuale MAB
+                                    var percMAB_l = pmab_Old.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+                                    if (percMAB_l?.Any() ?? false)
+                                    {
+                                        foreach (var percMAB in percMAB_l)
+                                        {
+                                            this.Associa_PERIODOMAB_PercentualeMAB_var(pmab_New.IDPERIODOMAB, percMAB.IDPERCMAB, db);
+                                        }
+                                    }
+                                    #endregion
+                                }
+                                #endregion
 
-        //                                                    am_New.DOCUMENTI.Add(dNew);
-        //                                                    //this.Associa_Documenti_Attivazione(d.IDDOCUMENTO, am_New.IDATTIVAZIONEMAB, db);
-        //                                                }
-        //                                                //if (ld?.Any() ?? false)
-        //                                                //{
-        //                                                //    foreach (var d in ld)
-        //                                                //    {
-        //                                                //        this.Associa_Documenti_Attivazione(d.IDDOCUMENTO, am_New.IDATTIVAZIONEMAB, db);
-        //                                                //    }
-        //                                                //}
-        //                                                #endregion
-        //                                            }
-        //                                        }
+                                #region CANONEMAB
+                                old_canone_l = am_Old.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.NASCONDI == false).OrderBy(a => a.IDCANONE).ToList();
+                                foreach (var old_canone in old_canone_l)
+                                {
+                                    CANONEMAB canone_new = new CANONEMAB()
+                                    {
+                                        IDMAB = mab_New.IDMAB,
+                                        IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        IDVALUTA = old_canone.IDVALUTA,
+                                        DATAINIZIOVALIDITA = old_canone.DATAINIZIOVALIDITA,
+                                        DATAFINEVALIDITA = old_canone.DATAFINEVALIDITA,
+                                        IMPORTOCANONE = old_canone.IMPORTOCANONE,
+                                        DATAAGGIORNAMENTO = old_canone.DATAAGGIORNAMENTO,
+                                        NASCONDI = old_canone.NASCONDI,
+                                        FK_IDCANONE = old_canone.FK_IDCANONE
+                                    };
+                                    db.CANONEMAB.Add(canone_new);
+                                    old_canone.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
-        //                                        EmailTrasferimento.EmailAnnulla(am_New.TRASFERIMENTO.IDTRASFERIMENTO,
-        //                                                                        Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioneAbitazione,
-        //                                                                        msg,
-        //                                                                        db);
-        //                                        //this.EmailAnnullaRichiestaMAB(am_New.IDATTIVAZIONEMAB, db);
-        //                                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-        //                                        {
-        //                                            dtce.AnnullaMessaggioEvento(am_New.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
-        //                                        }
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                    }
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore - Impossibile inserire il record relativo al canoneMAB nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                    }
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                        "Inserimento di una nuova riga canone per la richiesta maggiorazione abitazione.",
+                                        "CANONEMAB", db,
+                                        t.IDTRASFERIMENTO,
+                                        canone_new.IDCANONE);
 
-        //                    db.Database.CurrentTransaction.Commit();
-        //                }
 
-        //                catch (Exception ex)
-        //                {
-        //                    db.Database.CurrentTransaction.Rollback();
-        //                    throw ex;
-        //                }
-        //            }
-        //        }
+                                    #region associa canoneMAB a TFR
+                                    var TFR_l = old_canone.TFR.Where(a => a.ANNULLATO == false).ToList();
+                                    if (TFR_l?.Any() ?? false)
+                                    {
+                                        foreach (var TFR in TFR_l)
+                                        {
+                                            this.Associa_TFR_CanoneMAB_var(TFR.IDTFR, canone_new.IDCANONE, db);
+                                        }
+                                    }
+                                    #endregion
+
+                                }
+                                #endregion
+
+                                #region anticipoannualeMAB
+                                old_aa_l = am_Old.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
+                                foreach (var old_aa in old_aa_l)
+                                {
+                                    ANTICIPOANNUALEMAB aa_new = new ANTICIPOANNUALEMAB()
+                                    {
+                                        IDMAB = mab_New.IDMAB,
+                                        IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        ANTICIPOANNUALE = old_aa.ANTICIPOANNUALE,
+                                        DATAAGGIORNAMENTO = old_aa.DATAAGGIORNAMENTO,
+                                        FK_IDANTICIPOANNUALEMAB = old_aa.FK_IDANTICIPOANNUALEMAB
+                                    };
+                                    db.ANTICIPOANNUALEMAB.Add(aa_new);
+                                    old_aa.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore - Impossibile inserire il record relativo a AnticipoAnnulale nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                    }
+
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                        "Inserimento di una nuova riga AnticipAnnuale per la richiesta maggiorazione abitazione.",
+                                        "ANTICIPOANNUALEMAB", db,
+                                        t.IDTRASFERIMENTO,
+                                        aa_new.IDANTICIPOANNUALEMAB);
+                                }
+                                #endregion
+
+                                #region pagatocondivisoMAB
+                                old_pc_l = am_Old.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.NASCONDI == false).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
+                                foreach (var old_pc in old_pc_l)
+                                {
+                                    PAGATOCONDIVISOMAB pc_new = new PAGATOCONDIVISOMAB()
+                                    {
+                                        IDMAB = mab_New.IDMAB,
+                                        IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        DATAINIZIOVALIDITA = old_pc.DATAINIZIOVALIDITA,
+                                        DATAFINEVALIDITA = old_pc.DATAFINEVALIDITA,
+                                        CONDIVISO = old_pc.CONDIVISO,
+                                        PAGATO = old_pc.PAGATO,
+                                        DATAAGGIORNAMENTO = old_pc.DATAAGGIORNAMENTO,
+                                        NASCONDI = old_pc.NASCONDI,
+                                        FK_IDPAGATOCONDIVISO = old_pc.FK_IDPAGATOCONDIVISO
+                                    };
+                                    db.PAGATOCONDIVISOMAB.Add(pc_new);
+                                    old_pc.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore - Impossibile inserire il record relativo a PagatoCondivisoMAB nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                    }
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                        "Inserimento di una nuova riga canone per la richiesta maggiorazione abitazione.",
+                                        "PAGATOCONDIVISOMAB", db,
+                                        t.IDTRASFERIMENTO,
+                                        pc_new.IDPAGATOCONDIVISO);
+
+
+                                    #region associa PagatoCondivisoMAB a PercentualeCondivisione
+                                    var PercCond_l = old_pc.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
+                                    if (PercCond_l?.Any() ?? false)
+                                    {
+                                        foreach (var PercCond in PercCond_l)
+                                        {
+                                            this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc_new.IDPAGATOCONDIVISO, PercCond.IDPERCCOND, db);
+                                        }
+                                    }
+                                    #endregion
+
+                                }
+                                #endregion
+
+
+
+                            }
+                            #endregion
+
+
+
+                            #region PERIODOMAB
+                            pmab_Old_l =
+                                am_Old.PERIODOMAB.Where(
+                               a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                            foreach (var pmab_Old in pmab_Old_l)
+                            {
+                                PERIODOMAB pmab_New = new PERIODOMAB()
+                                {
+                                    IDMAB = pmab_Old.IDMAB,
+                                    IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    DATAINIZIOMAB = pmab_Old.DATAINIZIOMAB,
+                                    DATAFINEMAB = pmab_Old.DATAFINEMAB,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    FK_IDPERIODOMAB = pmab_Old.FK_IDPERIODOMAB,
+                                };
+                                db.PERIODOMAB.Add(pmab_New);
+                                pmab_Old.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile inserire il record relativo a PERIODOMAB nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                }
+
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                    "Inserimento di una nuova riga PERIODOMAB.",
+                                    "PERIODIOMAB", db,
+                                    t.IDTRASFERIMENTO,
+                                    pmab_New.IDPERIODOMAB);
+
+
+                                #region associa PERIODOMAB a percentuale MAB
+                                var percMAB_l = pmab_Old.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+                                if (percMAB_l?.Any() ?? false)
+                                {
+                                    foreach (var percMAB in percMAB_l)
+                                    {
+                                        this.Associa_PERIODOMAB_PercentualeMAB_var(pmab_New.IDPERIODOMAB, percMAB.IDPERCMAB, db);
+                                    }
+                                }
+                                #endregion
+                            }
+                            #endregion
+
+
+                            #region CANONEMAB
+                            old_canone_l = am_Old.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.NASCONDI==false).OrderBy(a => a.IDCANONE).ToList();
+                            foreach(var old_canone in old_canone_l)
+                            {
+                                CANONEMAB canone_new = new CANONEMAB()
+                                {
+                                    IDMAB = old_canone.IDMAB,
+                                    IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                    IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione,
+                                    IDVALUTA=old_canone.IDVALUTA,
+                                    DATAINIZIOVALIDITA = old_canone.DATAINIZIOVALIDITA,
+                                    DATAFINEVALIDITA = old_canone.DATAFINEVALIDITA,
+                                    IMPORTOCANONE = old_canone.IMPORTOCANONE,
+                                    DATAAGGIORNAMENTO = old_canone.DATAAGGIORNAMENTO,
+                                    NASCONDI=old_canone.NASCONDI,
+                                    FK_IDCANONE=old_canone.FK_IDCANONE
+                                };
+                                db.CANONEMAB.Add(canone_new);
+                                old_canone.IDSTATORECORD=(decimal)EnumStatoRecord.Annullato;
+
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile inserire il record relativo al canoneMAB nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                }
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                    "Inserimento di una nuova riga canone per la richiesta maggiorazione abitazione.",
+                                    "CANONEMAB", db,
+                                    t.IDTRASFERIMENTO,
+                                    canone_new.IDCANONE);
+
+
+                                #region associa canoneMAB a TFR
+                                var TFR_l = old_canone.TFR.Where(a => a.ANNULLATO == false).ToList();
+                                if (TFR_l?.Any() ?? false)
+                                {
+                                    foreach (var TFR in TFR_l)
+                                    {
+                                        this.Associa_TFR_CanoneMAB_var(TFR.IDTFR, canone_new.IDCANONE, db);
+                                    }
+                                }
+                                #endregion
+
+                            }
+                            #endregion
+
+                            #region anticipoannualeMAB
+                            old_aa_l = am_Old.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
+                            foreach (var old_aa in old_aa_l)
+                            {
+                                ANTICIPOANNUALEMAB aa_new = new ANTICIPOANNUALEMAB()
+                                {
+                                    IDMAB = old_aa.IDMAB,
+                                    IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    ANTICIPOANNUALE = old_aa.ANTICIPOANNUALE,
+                                    DATAAGGIORNAMENTO = old_aa.DATAAGGIORNAMENTO,
+                                    FK_IDANTICIPOANNUALEMAB = old_aa.FK_IDANTICIPOANNUALEMAB
+                                };
+                                db.ANTICIPOANNUALEMAB.Add(aa_new);
+                                old_aa.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile inserire il record relativo a AnticipoAnnulale nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                }
+
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                    "Inserimento di una nuova riga AnticipAnnuale per la richiesta maggiorazione abitazione.",
+                                    "ANTICIPOANNUALEMAB", db,
+                                    t.IDTRASFERIMENTO,
+                                    aa_new.IDANTICIPOANNUALEMAB);
+                            }
+                            #endregion
+
+                            #region documenti
+                            ld_old = am_Old.DOCUMENTI.Where(x => x.MODIFICATO == false && 
+                                                                x.IDSTATORECORD==(decimal)EnumStatoRecord.Da_Attivare &&
+                                                                (
+                                                                    x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                                                    x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                                                    x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                                                    x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                                                    x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                                                    x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                                                    x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione
+                                                                )
+                                                                )
+                                                                .ToList();
+
+                            foreach (var d in ld_old)
+                            {
+                                DOCUMENTI dNew = new DOCUMENTI()
+                                {
+                                    IDTIPODOCUMENTO = d.IDTIPODOCUMENTO,
+                                    NOMEDOCUMENTO = d.NOMEDOCUMENTO,
+                                    ESTENSIONE = d.ESTENSIONE,
+                                    FILEDOCUMENTO = d.FILEDOCUMENTO,
+                                    DATAINSERIMENTO = d.DATAINSERIMENTO,
+                                    MODIFICATO = d.MODIFICATO,
+                                    FK_IDDOCUMENTO = d.FK_IDDOCUMENTO,
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
+                                };
+                                am_new.DOCUMENTI.Add(dNew);
+                                d.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile inserire il record relativo a DOCUMENTI nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                }
+
+                            }
+                            #endregion
+
+                            #region pagatocondivisoMAB
+                            old_pc_l = am_Old.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.NASCONDI == false).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
+                            foreach (var old_pc in old_pc_l)
+                            {
+                                PAGATOCONDIVISOMAB pc_new = new PAGATOCONDIVISOMAB()
+                                {
+                                    IDMAB = old_pc.IDMAB,
+                                    IDATTIVAZIONEMAB = am_new.IDATTIVAZIONEMAB,
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                    DATAINIZIOVALIDITA = old_pc.DATAINIZIOVALIDITA,
+                                    DATAFINEVALIDITA = old_pc.DATAFINEVALIDITA,
+                                    CONDIVISO = old_pc.CONDIVISO,
+                                    PAGATO = old_pc.PAGATO,
+                                    DATAAGGIORNAMENTO = old_pc.DATAAGGIORNAMENTO,
+                                    NASCONDI = old_pc.NASCONDI,
+                                    FK_IDPAGATOCONDIVISO = old_pc.FK_IDPAGATOCONDIVISO
+                                };
+                                db.PAGATOCONDIVISOMAB.Add(pc_new);
+                                old_pc.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile inserire il record relativo a PagatoCondivisoMAB nel ciclo di annullamento della richiesta maggiorazione abitazione.");
+                                }
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                    "Inserimento di una nuova riga canone per la richiesta maggiorazione abitazione.",
+                                    "PAGATOCONDIVISOMAB", db,
+                                    t.IDTRASFERIMENTO,
+                                    pc_new.IDPAGATOCONDIVISO);
+
+
+                                #region associa PagatoCondivisoMAB a PercentualeCondivisione
+                                var PercCond_l = old_pc.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
+                                if (PercCond_l?.Any() ?? false)
+                                {
+                                    foreach (var PercCond in PercCond_l)
+                                    {
+                                        this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc_new.IDPAGATOCONDIVISO, PercCond.IDPERCCOND, db);
+                                    }
+                                }
+                                #endregion
+
+                            }
+                            #endregion
+
+                            EmailTrasferimento.EmailAnnulla(t.IDTRASFERIMENTO,
+                                                                Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioneAbitazione,
+                                                                msg,
+                                                                db);
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                            {
+                                dtce.AnnullaMessaggioEvento(t.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
+                            }
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
         #endregion
 
-        #region email annulla notifica
-        //        public void EmailAnnullaRichiestaMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
-        //        {
-        //            AccountModel am = new AccountModel();
-        //            Mittente mittente = new Mittente();
-        //            Destinatario to = new Destinatario();
-        //            Destinatario cc = new Destinatario();
-
-        //            try
-        //            {
-        //                am = Utility.UtenteAutorizzato();
-        //                mittente.Nominativo = am.nominativo;
-        //                mittente.EmailMittente = am.eMail;
-
-        //                var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
-
-        //                if (amab?.IDATTIVAZIONEMAB > 0)
-        //                {
-        //                    TRASFERIMENTO tr = amab.TRASFERIMENTO;
-        //                    DIPENDENTI dip = tr.DIPENDENTI;
-        //                    UFFICI uff = tr.UFFICI;
-
-        //                    using (GestioneEmail gmail = new GestioneEmail())
-        //                    {
-        //                        using (ModelloMsgMail msgMail = new ModelloMsgMail())
-        //                        {
-        //                            cc = new Destinatario()
-        //                            {
-        //                                Nominativo = am.nominativo,
-        //                                EmailDestinatario = am.eMail
-        //                            };
-
-        //                            to = new Destinatario()
-        //                            {
-        //                                Nominativo = dip.NOME + " " + dip.COGNOME,
-        //                                EmailDestinatario = dip.EMAIL,
-        //                            };
-
-        //                            msgMail.mittente = mittente;
-        //                            msgMail.cc.Add(cc);
-        //                            msgMail.destinatario.Add(to);
-
-        //                            msgMail.oggetto =
-        //                            Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioneAbitazione;
-        //                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioneAbitazione, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
-
-        //                            gmail.sendMail(msgMail);
-        //                        }
-        //                    }
-
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-
-        //                throw ex;
-        //            }
-        //        }
-        #endregion
 
         #region notifica 
-        //        public void NotificaRichiestaMAB_var(decimal idAttivazioneMAB)
-        //        {
-        //            try
-        //            {
-        //                using (ModelDBISE db = new ModelDBISE())
-        //                {
-        //                    db.Database.BeginTransaction();
+        public void NotificaRichiestaMAB_var(decimal idAttivazioneMAB)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
 
-        //                    try
-        //                    {
-        //                        var am = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+                    try
+                    {
+                        var am = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
 
-        //                        if (am?.IDATTIVAZIONEMAB > 0)
-        //                        {
-        //                            am.NOTIFICARICHIESTA = true;
-        //                            am.DATANOTIFICARICHIESTA = DateTime.Now;
-        //                            am.DATAAGGIORNAMENTO = DateTime.Now;
+                        if (am?.IDATTIVAZIONEMAB > 0)
+                        {
+                            am.NOTIFICARICHIESTA = true;
+                            am.DATANOTIFICARICHIESTA = DateTime.Now;
+                            am.DATAAGGIORNAMENTO = DateTime.Now;
+                            am.DATAVARIAZIONE = DateTime.Now;
 
-        //                            if (db.SaveChanges() <= 0)
-        //                            {
-        //                                throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione maggiorazione abitazione.");
-        //                            }
-        //                            else
-        //                            {
-        //                                using (dtDipendenti dtd = new dtDipendenti())
-        //                                {
-        //                                    var dip = dtd.GetDipendenteByID(am.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione maggiorazione abitazione.");
+                            }
+                            else
+                            {
+                                #region imposto lo stato su DA_ATTIVARE
+                                var mabl = am.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.IDMAB).ToList();
+                                foreach (var mab in mabl)
+                                {
+                                    UpdateStatoMAB(mab.IDMAB, EnumStatoRecord.Da_Attivare, db);
 
-        //                                    EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazione_Abitazione, 
-        //                                                    am.TRASFERIMENTO.IDTRASFERIMENTO,
-        //                                                    Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioneAbitazione,
-        //                                                    string.Format(Resources.msgEmail.MessaggioNotificaMaggiorazioneAbitazione, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")"),
-        //                                                    db);
-        //                                }
-        //                                //this.EmailNotificaRichiestaMAB(idAttivazioneMAB, db);
+                                }
 
-        //                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-        //                                {
-        //                                    CalendarioEventiModel cem = new CalendarioEventiModel()
-        //                                    {
-        //                                        idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione,
-        //                                        idTrasferimento = am.TRASFERIMENTO.IDTRASFERIMENTO,
-        //                                        DataInizioEvento = DateTime.Now.Date,
-        //                                        DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioneAbitazione)).Date,
-        //                                    };
+                                var pmabl = am.PERIODOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.IDPERIODOMAB).ToList();
+                                foreach (var pmab in pmabl)
+                                {
+                                    UpdateStatoPeriodoMAB(pmab.IDPERIODOMAB, EnumStatoRecord.Da_Attivare, db);
+                                }
 
-        //                                    dtce.InsertCalendarioEvento(ref cem, db);
-        //                                }
-        //                            }
-        //                        }
+                                var cmabl = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.NASCONDI==false).OrderBy(a => a.IDCANONE).ToList();
+                                foreach (var cmab in cmabl)
+                                {
+                                    UpdateStatoCanoneMAB(cmab.IDCANONE, EnumStatoRecord.Da_Attivare, db);
+                                }
 
-        //                        db.Database.CurrentTransaction.Commit();
-        //                    }
-        //                    catch (Exception ex)
-        //                    {
-        //                        db.Database.CurrentTransaction.Rollback();
-        //                        throw ex;
-        //                    }
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                throw ex;
-        //            }
-        //        }
+                                var aal = am.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
+                                foreach (var aa in aal)
+                                {
+                                    UpdateStatoAnticipoAnnualeMAB(aa.IDANTICIPOANNUALEMAB, EnumStatoRecord.Da_Attivare, db);
+                                }
+
+                                var pcmabl = am.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.NASCONDI == false).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
+                                foreach (var pcmab in pcmabl)
+                                {
+                                    UpdateStatoPagatoCondivisoMAB(pcmab.IDPAGATOCONDIVISO, EnumStatoRecord.Da_Attivare, db);
+                                }
+
+                                var dmabl = am.DOCUMENTI
+                                            .Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && 
+                                                            (
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione
+                                                            )
+                                                        )
+                                            .OrderBy(a => a.IDDOCUMENTO).ToList();
+                                foreach (var dmab in dmabl)
+                                {
+                                    this.UpdateStatoDocumentiMAB(dmab.IDDOCUMENTO, EnumStatoRecord.Da_Attivare, db);
+                                }
+                                #endregion
+
+                                //elimina da CANONE e PAGATOCONDIVISO gli eventuali record con nascondi=true e stato=in lavorazione
+                                cmabl = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.NASCONDI == true).ToList();
+                                foreach(var cmab in cmabl)
+                                {
+                                    db.CANONEMAB.Remove(cmab);
+                                    if (db.SaveChanges()<=0)
+                                    {
+                                        throw new Exception("Errore in fase di notifica MAB.");
+                                    }
+                                }
+                                pcmabl = am.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.NASCONDI == true).ToList();
+                                foreach (var pcmab in pcmabl)
+                                {
+                                    db.PAGATOCONDIVISOMAB.Remove(pcmab);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore in fase di notifica MAB.");
+                                    }
+                                }
+
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    var dip = dtd.GetDipendenteByID(am.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE);
+
+                                    EmailTrasferimento.EmailNotifica(EnumChiamante.Maggiorazione_Abitazione,
+                                                    am.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                    Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioneAbitazione,
+                                                    string.Format(Resources.msgEmail.MessaggioNotificaMaggiorazioneAbitazione, dip.cognome + " " + dip.nome + " (" + dip.matricola + ")"),
+                                                    db);
+                                }
+
+                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                {
+                                    CalendarioEventiModel cem = new CalendarioEventiModel()
+                                    {
+                                        idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione,
+                                        idTrasferimento = am.TRASFERIMENTO.IDTRASFERIMENTO,
+                                        DataInizioEvento = DateTime.Now.Date,
+                                        DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioneAbitazione)).Date,
+                                    };
+
+                                    dtce.InsertCalendarioEvento(ref cem, db);
+                                }
+                            }
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
-        #region email notifica
-        //        private void EmailNotificaRichiestaMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
-        //        {
-        //            AccountModel am = new AccountModel();
-        //            Mittente mittente = new Mittente();
-        //            Destinatario to = new Destinatario();
-        //            Destinatario cc = new Destinatario();
-        //            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
-
-
-        //            try
-        //            {
-        //                am = Utility.UtenteAutorizzato();
-        //                mittente.Nominativo = am.nominativo;
-        //                mittente.EmailMittente = am.eMail;
-
-        //                var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
-
-
-        //                if (amab?.IDTRASFERIMENTO > 0)
-        //                {
-        //                    TRASFERIMENTO tr = amab.TRASFERIMENTO;
-        //                    DIPENDENTI d = tr.DIPENDENTI;
-
-        //                    UFFICI u = tr.UFFICI;
-
-        //                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-        //                    {
-        //                        using (GestioneEmail gmail = new GestioneEmail())
-        //                        {
-        //                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
-        //                            {
-
-        //                                cc = new Destinatario()
-        //                                {
-        //                                    Nominativo = am.nominativo,
-        //                                    EmailDestinatario = am.eMail
-        //                                };
-
-        //                                msgMail.mittente = mittente;
-        //                                msgMail.cc.Add(cc);
-
-        //                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-
-        //                                foreach (var uam in luam)
-        //                                {
-        //                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-        //                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
-        //                                    {
-        //                                        to = new Destinatario()
-        //                                        {
-        //                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-        //                                            EmailDestinatario = amministratore.EMAIL
-        //                                        };
-
-        //                                        msgMail.destinatario.Add(to);
-        //                                    }
-
-
-        //                                }
-        //                                msgMail.oggetto = Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioneAbitazione;
-        //                                msgMail.corpoMsg =
-        //                                        string.Format(
-        //                                            Resources.msgEmail.MessaggioNotificaMaggiorazioneAbitazione,
-        //                                            d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-        //                                            tr.DATAPARTENZA.ToLongDateString(),
-        //                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
-
-        //                                gmail.sendMail(msgMail);
-
-        //                            }
-        //                        }
-
-        //                    }
-        //                }
-
-        //            }
-        //            catch (Exception ex)
-        //            {
-
-        //                throw ex;
-        //            }
-        //        }
-        #endregion
-
-        #region set MAB
-        //        public decimal SetMaggiorazioneAbitazione_var(ref MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
-        //        {
-        //            try
-        //            {
-        //                var idAtt = idAttivazioneMAB;
-
-        //                DateTime dtFine;
-
-        //                if (mvm.ut_dataFineMAB == null)
-        //                {
-        //                    dtFine = Utility.DataFineStop();
-        //                }
-        //                else
-        //                {
-        //                    dtFine = mvm.ut_dataFineMAB.Value;
-        //                }
-
-        //                MAGGIORAZIONEABITAZIONE ma = new MAGGIORAZIONEABITAZIONE()
-        //                {
-        //                    IDTRASFERIMENTO = mvm.idTrasferimento,
-        //                    IDATTIVAZIONEMAB = idAttivazioneMAB,
-        //                    DATAINIZIOMAB = mvm.dataInizioMAB,
-        //                    DATAFINEMAB = dtFine,
-        //                    DATAAGGIORNAMENTO = DateTime.Now,
-        //                    ANNULLATO = false,
-        //                    ANTICIPOANNUALE = mvm.AnticipoAnnuale
-        //                };
-
-        //                db.MAGGIORAZIONEABITAZIONE.Add(ma);
-
-        //                if (db.SaveChanges() <= 0)
-        //                {
-        //                    throw new Exception("Non è stato possibile inserire la maggiorazione abitazione.");
-        //                }
-        //                else
-        //                {
-        //                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento della maggiorazione abitazione", "MAGGIORAZIONEABITAZIONE", db,
-        //                        ma.IDTRASFERIMENTO, ma.IDMAB);
-
-        //                    return ma.IDMAB;
-        //                }
-        //            }
-
-        //            catch (Exception ex)
-        //            {
-        //                throw ex;
-        //            }
-        //        }
-        #endregion
-
-        #region update MAB
-        //        public void UpdateMaggiorazioneAbitazione_var(ref MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
-        //        {
-        //            try
-        //            {
-        //                var idAtt = idAttivazioneMAB;
-
-        //                DateTime dtFine;
-
-        //                if (mvm.ut_dataFineMAB == null)
-        //                {
-        //                    dtFine = Utility.DataFineStop();
-        //                }
-        //                else
-        //                {
-        //                    dtFine = mvm.ut_dataFineMAB.Value;
-        //                }
-
-        //                var ma = db.MAGGIORAZIONEABITAZIONE.Find(mvm.idMAB);
-        //                if (ma.IDMAB > 0)
-        //                {
-        //                    ma.DATAINIZIOMAB = mvm.dataInizioMAB;
-        //                    ma.DATAFINEMAB = dtFine;
-        //                    ma.DATAAGGIORNAMENTO = DateTime.Now;
-        //                    ma.ANTICIPOANNUALE = mvm.AnticipoAnnuale;
-        //                    if (db.SaveChanges() <= 0)
-        //                    {
-        //                        throw new Exception("Non è stato possibile aggiornare la maggiorazione abitazione.");
-        //                    }
-        //                    else
-        //                    {
-        //                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica della maggiorazione abitazione", "MAGGIORAZIONEABITAZIONE", db,
-        //                            ma.IDTRASFERIMENTO, ma.IDMAB);
-        //                    }
-
-        //                }
-        //                else
-        //                {
-        //                    throw new Exception("Impossibile aggiornare la maggiorazione abitazione. Record non trovato.");
-        //                }
-
-        //            }
-
-        //            catch (Exception ex)
-        //            {
-        //                throw ex;
-        //            }
-        //        }
-        #endregion
-
-        #region set CANONE
-        //        public CANONEMAB SetCanoneMAB_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
-        //        {
-        //            try
-        //            {
-        //                CANONEMAB cm = new CANONEMAB()
-        //                {
-        //                    IDATTIVAZIONEMAB = mvm.idAttivazioneMAB,
-        //                    IDMAB = mvm.idMAB,
-        //                    DATAINIZIOVALIDITA = mvm.dataInizioMAB,
-        //                    DATAFINEVALIDITA = mvm.dataFineMAB,
-        //                    IMPORTOCANONE = mvm.importo_canone,
-        //                    DATAAGGIORNAMENTO = DateTime.Now,
-        //                    ANNULLATO = false
-        //                };
-
-        //                db.CANONEMAB.Add(cm);
-
-
-        //                if (db.SaveChanges() <= 0)
-        //                {
-        //                    throw new Exception("Non è stato possibile inserire il canone maggiorazione abitazione.");
-        //                }
-        //                else
-        //                {
-        //                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento canone maggiorazione abitazione", "CANONEMAB", db,
-        //                        mvm.idTrasferimento, cm.IDCANONE);
-
-        //                    return cm;
-        //                }
-        //            }
-
-        //            catch (Exception ex)
-        //            {
-        //                throw ex;
-        //            }
-        //        }
-        #endregion
-
-        #region update CANONE
-        //public CANONEMAB UpdateCanoneMAB_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
-        //{
-        //    try
-        //    {
-        //        var lc = db.CANONEMAB.Where(a => a.ANNULLATO == false &&
-        //                                      a.IDATTIVAZIONEMAB == mvm.idAttivazioneMAB &&
-        //                                      a.IDMAB == mvm.idMAB).ToList();
-        //        if (lc?.Any() ?? false)
-        //        {
-        //            var c = lc.First();
-        //            if (c.IDCANONE > 0)
-        //            {
-
-        //                c.DATAINIZIOVALIDITA = mvm.dataInizioMAB;
-        //                c.DATAFINEVALIDITA = mvm.dataFineMAB;
-        //                c.IMPORTOCANONE = mvm.importo_canone;
-        //                c.DATAAGGIORNAMENTO = DateTime.Now;
-        //                if (db.SaveChanges() <= 0)
-        //                {
-        //                    throw new Exception("Non è stato possibile aggiornare il canone maggiorazione abitazione.");
-        //                }
-        //                else
-        //                {
-        //                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Aggiornamento canone maggiorazione abitazione", "CANONEMAB", db,
-        //                        mvm.idTrasferimento, c.IDCANONE);
-        //                    return c;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                throw new Exception("Non è stato possibile aggiornare il canone maggiorazione abitazione. Record non trovato.");
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            throw new Exception("Non è stato possibile aggiornare il canone maggiorazione abitazione. Nessun record non trovato.");
-        //        }
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-        #endregion
-
-        #region set PAGATOCONDIVISO
-        //        public PAGATOCONDIVISOMAB SetPagatoCondivisoMAB_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
-        //        {
-        //            try
-        //            {
-        //                PAGATOCONDIVISOMAB pc = new PAGATOCONDIVISOMAB()
-        //                {
-        //                    IDMAB = mvm.idMAB,
-        //                    IDATTIVAZIONEMAB = mvm.idAttivazioneMAB,
-        //                    DATAINIZIOVALIDITA = mvm.dataInizioMAB,
-        //                    DATAFINEVALIDITA = mvm.dataFineMAB,
-        //                    CONDIVISO = mvm.canone_condiviso,
-        //                    PAGATO = mvm.canone_pagato,
-        //                    DATAAGGIORNAMENTO = DateTime.Now,
-        //                    ANNULLATO = false
-        //                };
-
-        //                db.PAGATOCONDIVISOMAB.Add(pc);
-
-
-        //                if (db.SaveChanges() <= 0)
-        //                {
-        //                    throw new Exception("Non è stato possibile inserire il record relativo a PagatoCondivisoMAB.");
-        //                }
-        //                else
-        //                {
-        //                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento PagatoCondivisoMAB", "PAGATOCONDIVISOMAB", db,
-        //                        mvm.idTrasferimento, pc.IDPAGATOCONDIVISO);
-
-        //                    return pc;
-        //                }
-        //            }
-
-        //            catch (Exception ex)
-        //            {
-        //                throw ex;
-        //            }
-        //        }
-        #endregion
-
-        #region update PAGATOCONDIVISO
-        //        public PAGATOCONDIVISOMAB UpdatePagatoCondivisoMAB_var(MaggiorazioneAbitazioneViewModel mvm, ModelDBISE db)
-        //        {
-        //            try
-        //            {
-        //                PAGATOCONDIVISOMAB pc = new PAGATOCONDIVISOMAB();
-        //                var ma = db.MAGGIORAZIONEABITAZIONE.Find(mvm.idMAB);
-        //                var lpc = ma.PAGATOCONDIVISOMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
-        //                if (lpc?.Any() ?? false)
-        //                {
-        //                    pc = lpc.First();
-
-        //                    pc.DATAINIZIOVALIDITA = mvm.dataInizioMAB;
-        //                    pc.DATAFINEVALIDITA = mvm.dataFineMAB;
-        //                    pc.CONDIVISO = mvm.canone_condiviso;
-        //                    pc.PAGATO = mvm.canone_pagato;
-        //                    pc.DATAAGGIORNAMENTO = DateTime.Now;
-
-        //                    if (db.SaveChanges() <= 0)
-        //                    {
-        //                        throw new Exception("Errore in fase di aggioramento del record relativo a PagatoCondivisoMAB.");
-        //                    }
-        //                    else
-        //                    {
-        //                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica PagatoCondivisoMAB", "PAGATOCONDIVISOMAB", db,
-        //                            mvm.idTrasferimento, pc.IDPAGATOCONDIVISO);
-        //                    }
-
-        //                }
-        //                else
-        //                {
-        //                    // se non esiste lo creo
-        //                    pc = SetPagatoCondivisoMAB_var(mvm, db);
-        //                }
-
-        //                return pc;
-        //            }
-
-        //            catch (Exception ex)
-        //            {
-        //                throw ex;
-        //            }
-        //        }
-        #endregion
-
-        //public void InserisciMAB_var(MaggiorazioneAbitazioneViewModel mvm, decimal idTrasferimento)
-        //{
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        db.Database.BeginTransaction();
-
-        //        try
-        //        {
-        //            using (dtTrasferimento dtt = new dtTrasferimento())
-        //            {
-        //                using (dtTFR dtTFR = new dtTFR())
-        //                {
-        //                    #region legge ATTIVAZIONE MAB
-        //                    ATTIVAZIONEMAB amab = new ATTIVAZIONEMAB();
-        //                    VariazioniMABModel vmabm = new VariazioniMABModel();
-        //                    MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
-        //                    MAGGIORAZIONEABITAZIONE ma = new MAGGIORAZIONEABITAZIONE();
-        //                    TrasferimentoModel tm = new TrasferimentoModel();
-
-        //                    tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-        //                    amab = GetUltimaAttivazioneMAB(idTrasferimento);
-
-        //                    mam = GetUltimaMaggiorazioneAbitazioneModel(idTrasferimento);
-
-        //                    vmabm = GetUltimaVariazioneMAB(idTrasferimento);
-
-        //                    if (amab != null && amab.IDATTIVAZIONEMAB > 0)
-        //                    {
-        //                        if (amab.ATTIVAZIONE && amab.NOTIFICARICHIESTA)
-        //                        {
-        //                            amab = CreaAttivazioneMAB_var(idTrasferimento, db);
-        //                            mam = CreaMaggiorazioneAbitazione(idTrasferimento, db);
-        //                            vmabm = CreaVariazioniMAB(amab.IDATTIVAZIONEMAB, mam.idMAB, db);
-        //                            //associa percentuale MAB
-        //                            var lperc = GetListaPercentualeMAB_var(idTrasferimento, db);
-        //                            foreach (var perc in lperc)
-        //                            {
-        //                                Associa_VariazioniMAB_PercenualeMAB_var(vmabm.idVariazioniMAB, perc.IDPERCMAB, db);
-        //                            }
-        //                        }
-        //                        mvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;
-        //                    }
-        //                    else
-        //                    {
-        //                        throw new Exception(string.Format("Impossibile aggiornare la maggiorazione abitazione."));
-        //                    }
-        //                    #endregion
-
-        //                    mvm.dataAggiornamento = DateTime.Now;
-        //                    mvm.idMAB = mam.idMAB;
-        //                    mvm.idTrasferimento = idTrasferimento;
-
-        //                    //var varMAB_precedente=
-
-        //                    DateTime dtIni = mvm.dataInizioMAB;
-        //                    DateTime dtFin = mvm.ut_dataFineMAB == null ? tm.dataRientro.Value : mvm.ut_dataFineMAB.Value;
-        //                    mvm.dataFineMAB = dtFin;
-
-        //                    #region aggiorna CANONE
-        //                    CANONEMAB canoneMAB = new CANONEMAB();
-        //                    canoneMAB = GetUltimoCanoneMAB_var(mam);
-        //                    if (canoneMAB.IMPORTOCANONE != mvm.importo_canone || canoneMAB.IDVALUTA != mvm.id_Valuta)
-        //                    {
-        //                        if (canoneMAB.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-        //                        {
-        //                            CANONEMAB new_canoneMAB = new CANONEMAB()
-        //                            {
-        //                                IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
-        //                                IDMAB = mam.idMAB,
-        //                                DATAINIZIOVALIDITA = canoneMAB.DATAINIZIOVALIDITA,
-        //                                DATAFINEVALIDITA = canoneMAB.DATAFINEVALIDITA,
-        //                                IMPORTOCANONE = mvm.importo_canone,
-        //                                DATAAGGIORNAMENTO = DateTime.Now,
-        //                                IDVALUTA = mvm.id_Valuta,
-        //                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-        //                                FK_IDCANONE = canoneMAB.IDCANONE
-        //                            };
-        //                            db.CANONEMAB.Add(new_canoneMAB);
-        //                            if (db.SaveChanges() <= 0)
-        //                            {
-        //                                throw new Exception("Errore durante la fase di aggiornamento del canone MAB.");
-        //                            }
-        //                            else
-        //                            {
-        //                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga CANONE MAB.", "CANONEMAB", db, idTrasferimento, new_canoneMAB.IDCANONE);
-        //                                var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, mvm.id_Valuta, dtIni, dtFin, db);
-
-        //                                if (ltfr?.Any() ?? false)
-        //                                {
-        //                                    foreach (var tfr in ltfr)
-        //                                    {
-        //                                        this.Associa_TFR_CanoneMAB_var(tfr.idTFR, new_canoneMAB.IDCANONE, db);
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-
-
-        //                            RimuoviAssociazioneCanoneMAB_TFR_var(canoneMAB.IDCANONE, db);
-        //                            var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, mvm.id_Valuta, dtIni, dtFin, db);
-
-        //                            if (ltfr?.Any() ?? false)
-        //                            {
-        //                                foreach (var tfr in ltfr)
-        //                                {
-        //                                    this.Associa_TFR_CanoneMAB_var(tfr.idTFR, canoneMAB.IDCANONE, db);
-        //                                }
-        //                            }
-        //                            var c = db.CANONEMAB.Find(canoneMAB.IDCANONE);
-        //                            c.IMPORTOCANONE = mvm.importo_canone;
-        //                            c.IDVALUTA = mvm.id_Valuta;
-        //                            if (db.SaveChanges() <= 0)
-        //                            {
-        //                                throw new Exception("Errore durante l'aggiornamento del canone MAB.");
-        //                            }
-        //                        }
-        //                    }
-        //                    //var canone = this.UpdateCanoneMAB_var(mvm, db);
-        //                    #endregion
-
-
-        //                    #region inserisce/aggiorna eventuale pagato condiviso
-        //                    //mam = this.GetMaggiorazioneAbitazioneModel(amm);
-        //                    PAGATOCONDIVISOMAB pc = new PAGATOCONDIVISOMAB();
-        //                    pc = this.GetUltimoPagatoCondivisoMAB(mam.idMAB);
-        //                    if (pc.CONDIVISO != mvm.canone_condiviso || pc.PAGATO != mvm.canone_pagato)
-        //                    {
-        //                        if (pc.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-        //                        {
-        //                            PAGATOCONDIVISOMAB new_pc = new PAGATOCONDIVISOMAB()
-        //                            {
-        //                                IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
-        //                                IDMAB = mam.idMAB,
-        //                                DATAINIZIOVALIDITA = pc.DATAINIZIOVALIDITA,
-        //                                DATAFINEVALIDITA = pc.DATAFINEVALIDITA,
-        //                                PAGATO = mvm.canone_pagato,
-        //                                CONDIVISO = mvm.canone_condiviso,
-        //                                DATAAGGIORNAMENTO = DateTime.Now,
-        //                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-        //                                FK_IDPAGATOCONDIVISO = pc.IDPAGATOCONDIVISO
-        //                            };
-        //                            db.PAGATOCONDIVISOMAB.Add(new_pc);
-        //                            if (db.SaveChanges() <= 0)
-        //                            {
-        //                                throw new Exception("Errore durante la fase di aggiornamento del canone condiviso/pagato.");
-        //                            }
-        //                            else
-        //                            {
-        //                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga PAGATOCONDIVISOMAB.", "PAGATOCONDIVISOMAB", db, idTrasferimento, new_pc.IDPAGATOCONDIVISO);
-        //                                #region associa percentuale condivisione
-        //                                if (mvm.canone_condiviso)
-        //                                {
-        //                                    var lpercCond = GetListaPercentualeCondivisione_var(new_pc.DATAINIZIOVALIDITA, new_pc.DATAFINEVALIDITA, db);
-        //                                    if (lpercCond?.Any() ?? false)
-        //                                    {
-        //                                        //riassocio le percentuali
-        //                                        foreach (var percCond in lpercCond)
-        //                                        {
-        //                                            this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(new_pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
-        //                                        }
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
-        //                                    }
-        //                                }
-        //                                #endregion
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            var p = db.PAGATOCONDIVISOMAB.Find(pc.IDPAGATOCONDIVISO);
-        //                            p.PAGATO = mvm.canone_pagato;
-        //                            p.CONDIVISO = mvm.canone_condiviso;
-        //                            if (db.SaveChanges() <= 0)
-        //                            {
-        //                                throw new Exception("Errore durante l'aggiornamento di Pagato Condiviso MAB.");
-        //                            }
-
-        //                            RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, db);
-
-        //                            if (mvm.canone_condiviso)
-        //                            {
-        //                                #region associa percentuale condivisione
-        //                                var lpercCond = this.GetListaPercentualeCondivisione_var(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
-        //                                if (lpercCond?.Any() ?? false)
-        //                                {
-        //                                    //riassocio le percentuali
-        //                                    foreach (var percCond in lpercCond)
-        //                                    {
-        //                                        this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
-        //                                    }
-        //                                }
-        //                                else
-        //                                {
-        //                                    throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
-        //                                }
-        //                                #endregion
-        //                            }
-        //                        }
-        //                    }
-        //                    #endregion
-        //                }
-        //            }
-
-        //            db.Database.CurrentTransaction.Commit();
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            db.Database.CurrentTransaction.Rollback();
-        //            throw ex;
-        //        }
-        //    }
+        public void InserisciMAB_var(MABViewModel mvm, decimal idTrasferimento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        ATTIVAZIONEMAB amab = new ATTIVAZIONEMAB();
+                        var att = GetAttivazioneAperta(idTrasferimento, db);
+                        if (att.IDATTIVAZIONEMAB > 0)
+                        {
+                            TrasferimentoModel tm = new TrasferimentoModel();
+
+                            tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                            amab = att;
+                            #region MAB
+                            MAB newmab = new MAB()
+                            {
+                                IDMAGABITAZIONE = idTrasferimento,
+                                IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
+                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                RINUNCIAMAB = false,
+                                DATAAGGIORNAMENTO = DateTime.Now,
+                                FK_IDMAB = null
+                            };
+                            db.MAB.Add(newmab);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore in fase di creazione MAB");
+                            }
+                            #endregion
+
+                            mvm.dataInizioMAB = mvm.ut_dataInizioMAB.Value;
+                            mvm.dataFineMAB = (mvm.ut_dataFineMAB == null) ? tm.dataRientro.Value : mvm.ut_dataFineMAB.Value;
+                            mvm.idTrasferimento = idTrasferimento;
+                            mvm.idMAB = newmab.IDMAB;
+                            mvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;
+
+                            #region periodo mab
+                            PERIODOMAB new_pm = new PERIODOMAB()
+                            {
+                                IDMAB = mvm.idMAB,
+                                IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
+                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                DATAINIZIOMAB = mvm.dataInizioMAB,
+                                DATAFINEMAB=mvm.dataFineMAB,
+                                DATAAGGIORNAMENTO=DateTime.Now,
+                                FK_IDPERIODOMAB=null
+                            };
+                            db.PERIODOMAB.Add(new_pm);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore in fase di creazione PERIODOMAB");
+                            }
+                            #endregion
+
+                            #region associo percentualeMAB
+                            using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
+                            {
+                                //dtmab.RimuoviAssociazione_PerMAB_PercentualeMAB(periodoMAB_old.IDPERIODOMAB, db);
+                                //RimuoviAssociazionePeriodoMAB_PercentualeMAB_var(periodoMAB_old.IDPERIODOMAB, db);
+                                var pmm = GetPeriodoMABModel(new_pm.IDMAB, db);
+                                var lpercentualemab = dtmab.GetListaPercentualeMAB(pmm, tm, db);
+                                foreach (var percentualemab in lpercentualemab)
+                                {
+                                    dtmab.Associa_PerMAB_PercentualeMAB(new_pm.IDPERIODOMAB, percentualemab.IDPERCMAB, db);
+                                }
+                            }
+                            #endregion
+
+                            #region anticipo annuale
+                            ANTICIPOANNUALEMAB new_aa = new ANTICIPOANNUALEMAB()
+                            {
+                                IDMAB = mvm.idMAB,
+                                IDATTIVAZIONEMAB = mvm.idAttivazioneMAB,
+                                IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                ANTICIPOANNUALE = mvm.anticipoAnnuale,
+                                DATAAGGIORNAMENTO = DateTime.Now,
+                                FK_IDANTICIPOANNUALEMAB = null
+                            };
+                            db.ANTICIPOANNUALEMAB.Add(new_aa);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore in fase di creazione Anticipo Annuale MAB");
+                            }
+                            #endregion
+
+                            #region associa maggiorazione annuale
+                            var ma = GetMaggiorazioneAnnuale_var(mvm, db);
+                            if (mvm.anticipoAnnuale)
+                            { 
+                                if (ma.IDMAGANNUALI > 0)
+                                {
+                                    Associa_MAB_MaggiorazioniAnnuali_var(newmab.IDMAB, ma.IDMAGANNUALI, db);
+                                }
+                            }
+                            #endregion
+
+                            //mvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;
+                            mvm.dataAggiornamento = DateTime.Now;
+                            //mvm.idMAB = newmab.IDMAB;
+
+                            #region crea CANONE
+                            var ultimaMab = GetUltimaMAB(idTrasferimento);
+                            var vm = GetUltimaValutaInseritaModel(ultimaMab.IDMAB);
+
+                            CanoneMABModel cmabm = new CanoneMABModel();
+                            cmabm.idValuta = vm.idValuta;
+                            cmabm.DataInizioValidita = mvm.dataInizioMAB;
+                            cmabm.DataFineValidita = mvm.dataFineMAB;
+                            cmabm.IDMAB = mvm.idMAB;
+                            cmabm.IDAttivazioneMAB = mvm.idAttivazioneMAB;
+                            cmabm.ImportoCanone = 0;
+                            cmabm.DataAggiornamento = DateTime.Now;
+                            cmabm.nascondi = false;
+                            SetCanoneMAB(ref cmabm, db); //associa anche TFR
+                            #endregion
+
+
+                            #region inserisce/aggiorna eventuale pagato condiviso
+                            //mam = this.GetMaggiorazioneAbitazioneModel(amm);
+                            PagatoCondivisoMABModel pcm = new PagatoCondivisoMABModel();
+                            pcm.idMAB = mvm.idMAB;
+                            pcm.idAttivazioneMAB = mvm.idAttivazioneMAB;
+                            pcm.DataInizioValidita = mvm.dataInizioMAB;
+                            pcm.DataFineValidita = mvm.dataFineMAB;
+                            pcm.Condiviso = false;
+                            pcm.Pagato = false;
+                            pcm.DataAggiornamento = DateTime.Now;
+                            pcm.Nascondi = false;
+                            pcm.fk_IDPagatoCondiviso = null;
+
+                            SetPagatoCondivisoMAB(ref pcm, db); //associa anche percentuale condivisione
+                            #endregion
+                        }
+                        else
+                        {
+                            throw new Exception("Nessuna attivazione in lavorazione trovata.");
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
 
 
 
@@ -2907,131 +4115,131 @@ namespace NewISE.Models.DBModel.dtObj
         //    //{
         //    //    db.Database.BeginTransaction();
 
-        //    //    try
-        //    //    {
-        //    //        #region ATTIVAZIONE MAB
-        //    //        var amm = this.GetAttivazioneMAB_var(idTrasferimento);
-        //    //        if (amm != null && amm.idAttivazioneMAB > 0)
-        //    //        {
-        //    //            mvm.idAttivazioneMAB = amm.idAttivazioneMAB;
-        //    //        }
-        //    //        else
-        //    //        {
-        //    //            var am = this.CreaAttivazioneMAB_var(idTrasferimento, db);
-        //    //            amm = new AttivazioneMABModel()
-        //    //            {
-        //    //                Annullato = am.ANNULLATO,
-        //    //                Attivazione = am.ATTIVAZIONE,
-        //    //                dataAggiornamento = am.DATAAGGIORNAMENTO,
-        //    //                dataAttivazione = am.DATAATTIVAZIONE,
-        //    //                dataNotificaRichiesta = am.DATANOTIFICARICHIESTA,
-        //    //                dataVariazione = am.DATAVARIAZIONE,
-        //    //                idAttivazioneMAB = am.IDATTIVAZIONEMAB,
-        //    //                idTrasferimento = am.IDTRASFERIMENTO,
-        //    //                notificaRichiesta = am.NOTIFICARICHIESTA
-        //    //            };
-        //    //        }
-        //    //        #endregion
+            //    //    try
+            //    //    {
+            //    //        #region ATTIVAZIONE MAB
+            //    //        var amm = this.GetAttivazioneMAB_var(idTrasferimento);
+            //    //        if (amm != null && amm.idAttivazioneMAB > 0)
+            //    //        {
+            //    //            mvm.idAttivazioneMAB = amm.idAttivazioneMAB;
+            //    //        }
+            //    //        else
+            //    //        {
+            //    //            var am = this.CreaAttivazioneMAB_var(idTrasferimento, db);
+            //    //            amm = new AttivazioneMABModel()
+            //    //            {
+            //    //                Annullato = am.ANNULLATO,
+            //    //                Attivazione = am.ATTIVAZIONE,
+            //    //                dataAggiornamento = am.DATAAGGIORNAMENTO,
+            //    //                dataAttivazione = am.DATAATTIVAZIONE,
+            //    //                dataNotificaRichiesta = am.DATANOTIFICARICHIESTA,
+            //    //                dataVariazione = am.DATAVARIAZIONE,
+            //    //                idAttivazioneMAB = am.IDATTIVAZIONEMAB,
+            //    //                idTrasferimento = am.IDTRASFERIMENTO,
+            //    //                notificaRichiesta = am.NOTIFICARICHIESTA
+            //    //            };
+            //    //        }
+            //    //        #endregion
 
-        //    //        mvm.dataAggiornamento = DateTime.Now;
+            //    //        mvm.dataAggiornamento = DateTime.Now;
 
-        //    //        #region nuova MAB
-        //    //        decimal new_idMAB = this.SetMaggiorazioneAbitazione_var(ref mvm, db, amm.idAttivazioneMAB);
-        //    //        #endregion
+            //    //        #region nuova MAB
+            //    //        decimal new_idMAB = this.SetMaggiorazioneAbitazione_var(ref mvm, db, amm.idAttivazioneMAB);
+            //    //        #endregion
 
-        //    //        //DateTime dtIni = mvm.dataInizioMAB;
-        //    //        DateTime dtFin = mvm.ut_dataFineMAB == null ? Utility.DataFineStop() : mvm.ut_dataFineMAB.Value;
-        //    //        //mvm.dataFineMAB = dtFin;
-        //    //        mvm.idMAB = new_idMAB;
+            //    //        //DateTime dtIni = mvm.dataInizioMAB;
+            //    //        DateTime dtFin = mvm.ut_dataFineMAB == null ? Utility.DataFineStop() : mvm.ut_dataFineMAB.Value;
+            //    //        //mvm.dataFineMAB = dtFin;
+            //    //        mvm.idMAB = new_idMAB;
 
-        //    //        #region anticipo annuale
-        //    //        //da fare
-        //    //        //if (mvm.AnticipoAnnuale)
-        //    //        //{
+            //    //        #region anticipo annuale
+            //    //        //da fare
+            //    //        //if (mvm.AnticipoAnnuale)
+            //    //        //{
 
-        //    //        //    var mann = this.GetMaggiorazioneAnnuale_var(mvm, db);
+            //    //        //    var mann = this.GetMaggiorazioneAnnuale_var(mvm, db);
 
-        //    //        //    if (mann.idMagAnnuali > 0)
-        //    //        //    {
-        //    //        //        mvm.AnticipoAnnuale = mann.annualita;
-        //    //        //        //associa MAB a MaggiorazioniAnnuali se esiste
-        //    //        //        this.Associa_MAB_MaggiorazioniAnnuali_var(new_idMAB, mann.idMagAnnuali, db);
-        //    //        //    }
-        //    //        //    else
-        //    //        //    {
-        //    //        //        mvm.AnticipoAnnuale = false;
-        //    //        //    }
+            //    //        //    if (mann.idMagAnnuali > 0)
+            //    //        //    {
+            //    //        //        mvm.AnticipoAnnuale = mann.annualita;
+            //    //        //        //associa MAB a MaggiorazioniAnnuali se esiste
+            //    //        //        this.Associa_MAB_MaggiorazioniAnnuali_var(new_idMAB, mann.idMagAnnuali, db);
+            //    //        //    }
+            //    //        //    else
+            //    //        //    {
+            //    //        //        mvm.AnticipoAnnuale = false;
+            //    //        //    }
 
-        //    //        //}
-        //    //        #endregion
+            //    //        //}
+            //    //        #endregion
 
-        //    //        #region associa MAB a tutte le percentuali MAB trovate
-        //    //        var lista_perc = this.GetListaPercentualeMAB_var(idTrasferimento, db);
-        //    //        if (lista_perc?.Any() ?? false)
-        //    //        {
-        //    //            foreach (var perc in lista_perc)
-        //    //            {
-        //    //                this.Associa_MAB_PercenualeMAB_var(new_idMAB, perc.IDPERCMAB, db);
-        //    //            }
-        //    //        }
-        //    //        #endregion
+            //    //        #region associa MAB a tutte le percentuali MAB trovate
+            //    //        var lista_perc = this.GetListaPercentualeMAB_var(idTrasferimento, db);
+            //    //        if (lista_perc?.Any() ?? false)
+            //    //        {
+            //    //            foreach (var perc in lista_perc)
+            //    //            {
+            //    //                this.Associa_MAB_PercenualeMAB_var(new_idMAB, perc.IDPERCMAB, db);
+            //    //            }
+            //    //        }
+            //    //        #endregion
 
-        //    //        #region inserisci CANONE
-        //    //        CANONEMAB c = this.SetCanoneMAB_var(mvm, db);
-        //    //        #endregion
+            //    //        #region inserisci CANONE
+            //    //        CANONEMAB c = this.SetCanoneMAB_var(mvm, db);
+            //    //        #endregion
 
-        //    //        #region associa canone MAB a TFR
-        //    //        using (dtTFR dtt = new dtTFR())
-        //    //        {
-        //    //            using (dtTrasferimento dttrasf = new dtTrasferimento())
-        //    //            {
-        //    //                var t = dttrasf.GetTrasferimentoById(idTrasferimento);
-        //    //                var ltfr = dtt.GetListaTfrByValuta_RangeDate(t.idUfficio, mvm.id_Valuta, dtIni, dtFin, db);
+            //    //        #region associa canone MAB a TFR
+            //    //        using (dtTFR dtt = new dtTFR())
+            //    //        {
+            //    //            using (dtTrasferimento dttrasf = new dtTrasferimento())
+            //    //            {
+            //    //                var t = dttrasf.GetTrasferimentoById(idTrasferimento);
+            //    //                var ltfr = dtt.GetListaTfrByValuta_RangeDate(t.idUfficio, mvm.id_Valuta, dtIni, dtFin, db);
 
-        //    //                if (ltfr?.Any() ?? false)
-        //    //                {
-        //    //                    foreach (var tfr in ltfr)
-        //    //                    {
-        //    //                        this.Associa_TFR_CanoneMAB_var(tfr.idTFR, c.IDCANONE, db);
-        //    //                    }
-        //    //                }
-        //    //            }
-        //    //        }
-        //    //        #endregion
+            //    //                if (ltfr?.Any() ?? false)
+            //    //                {
+            //    //                    foreach (var tfr in ltfr)
+            //    //                    {
+            //    //                        this.Associa_TFR_CanoneMAB_var(tfr.idTFR, c.IDCANONE, db);
+            //    //                    }
+            //    //                }
+            //    //            }
+            //    //        }
+            //    //        #endregion
 
-        //    //        #region inserisce eventuale pagato condiviso
-        //    //        if (mvm.canone_condiviso)
-        //    //        {
-        //    //            PAGATOCONDIVISOMAB pc = this.SetPagatoCondivisoMAB_var(mvm, db);
+            //    //        #region inserisce eventuale pagato condiviso
+            //    //        if (mvm.canone_condiviso)
+            //    //        {
+            //    //            PAGATOCONDIVISOMAB pc = this.SetPagatoCondivisoMAB_var(mvm, db);
 
-        //    //            #region associa percentuale condivisione
-        //    //            var lpercCond = this.GetListaPercentualeCondivisione_var(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
-        //    //            if (lpercCond?.Any() ?? false)
-        //    //            {
-        //    //                foreach (var percCond in lpercCond)
-        //    //                {
-        //    //                    this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
-        //    //                }
-        //    //            }
-        //    //            else
-        //    //            {
-        //    //                throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
-        //    //            }
-        //    //            #endregion
+            //    //            #region associa percentuale condivisione
+            //    //            var lpercCond = this.GetListaPercentualeCondivisione_var(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
+            //    //            if (lpercCond?.Any() ?? false)
+            //    //            {
+            //    //                foreach (var percCond in lpercCond)
+            //    //                {
+            //    //                    this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+            //    //                }
+            //    //            }
+            //    //            else
+            //    //            {
+            //    //                throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+            //    //            }
+            //    //            #endregion
 
-        //    //        }
-        //    //        #endregion
+            //    //        }
+            //    //        #endregion
 
-        //    //        db.Database.CurrentTransaction.Commit();
+            //    //        db.Database.CurrentTransaction.Commit();
 
-        //    //    }
-        //    //    catch (Exception ex)
-        //    //    {
-        //    //        db.Database.CurrentTransaction.Rollback();
-        //    //        throw ex;
-        //    //    }
-        //    //}
-        //}
+            //    //    }
+            //    //    catch (Exception ex)
+            //    //    {
+            //    //        db.Database.CurrentTransaction.Rollback();
+            //    //        throw ex;
+            //    //    }
+            //    //}
+            //}
 
         public void AggiornaMAB_var(MABViewModel mabvm, decimal idTrasferimento, decimal idMAB)
         {
@@ -3049,214 +4257,457 @@ namespace NewISE.Models.DBModel.dtObj
                             ATTIVAZIONEMAB amab = new ATTIVAZIONEMAB();
                             MABModel mabm = new MABModel();
                             MAB mab = new MAB();
-                            MAB mab_new = new MAB();
                             TrasferimentoModel tm = new TrasferimentoModel();
 
                             tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                            amab = GetUltimaAttivazioneMAB(idTrasferimento);
-
+                            amab = GetAttivazioneAperta(idTrasferimento, db);
 
                             if (amab != null && amab.IDATTIVAZIONEMAB > 0)
                             {
-                                if (amab.ATTIVAZIONE)
-                                {
-                                    amab = CreaAttivazioneMAB_var(idTrasferimento, db);
-
-                                }
-                                mabvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;
+                                mabvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;                                
                             }
                             else
                             {
-                                throw new Exception(string.Format("Impossibile aggiornare la maggiorazione abitazione."));
+                                amab = CreaAttivazioneMAB_var(idTrasferimento, db);
+                                mabvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;
                             }
-                            #endregion
-
-                            #region MAB
-                            //if (mabvm.idStatoRecord != (decimal)EnumStatoRecord.In_Lavorazione)
-                            //{
-                            //    mab_new = ClonaMAB(idMAB, db);
-
-                            //    //riassocia percentuale MAB
-                            //    var lperc = GetListaPercentualeMAB_var(idTrasferimento, db);
-                            //    foreach (var perc in lperc)
-                            //    {
-                            //        Associa_MAB_PercenualeMAB_var(mab_new.IDMAB, perc.IDPERCMAB, db);
-                            //    }
-                            //}
                             #endregion
 
                             mabvm.dataAggiornamento = DateTime.Now;
-                            //mvm.idMAB = idMAB;
-                            //mvm.idTrasferimento = idTrasferimento;
 
                             DateTime dtIni = mabvm.dataInizioMAB;
-                            DateTime dtFin = mabvm.ut_dataFineMAB == null ? tm.dataRientro.Value : mabvm.ut_dataFineMAB.Value;
+                            DateTime dtFin = Utility.DataFineStop();
+                            if (mabvm.ut_dataFineMAB != null)
+                            {
+                                dtFin = mabvm.ut_dataFineMAB.Value;
+                            }
                             mabvm.dataFineMAB = dtFin;
 
-                            #region CANONE
-                            //se ho creato in nuovo idMAB replico la lista canoneMAB
-                            if (mab_new.IDMAB > 0)
+                            mab = db.MAB.Find(idMAB);
+
+                            var periodoMAB_old = GetPeriodoMAB(idMAB, db);
+
+
+                            if (periodoMAB_old.DATAINIZIOMAB != dtIni)
                             {
-                                CANONEMAB canoneMAB = new CANONEMAB();
-                                //lista canoneMAB
-                                var lcanoneMAB = db.MAB.Find(idMAB).CANONEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
 
-                                //replica record con idMAB e idAttivazioneMAB
-                                //if (canoneMAB.IMPORTOCANONE != mvm.importo_canone || canoneMAB.IDVALUTA != mvm.id_Valuta)
-                                //{
-                                //    if (canoneMAB.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-                                //    {
-                                //        CANONEMAB new_canoneMAB = new CANONEMAB()
-                                //        {
-                                //            IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
-                                //            // IDMAB = mam.idMAB,
-                                //            DATAINIZIOVALIDITA = canoneMAB.DATAINIZIOVALIDITA,
-                                //            DATAFINEVALIDITA = canoneMAB.DATAFINEVALIDITA,
-                                //            IMPORTOCANONE = mvm.importo_canone,
-                                //            DATAAGGIORNAMENTO = DateTime.Now,
-                                //            IDVALUTA = mvm.id_Valuta,
-                                //            IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-                                //            FK_IDCANONE = canoneMAB.IDCANONE
-                                //        };
-                                //        db.CANONEMAB.Add(new_canoneMAB);
-                                //        if (db.SaveChanges() <= 0)
-                                //        {
-                                //            throw new Exception("Errore durante la fase di aggiornamento del canone MAB.");
-                                //        }
-                                //        else
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga CANONE MAB.", "CANONEMAB", db, idTrasferimento, new_canoneMAB.IDCANONE);
-                                //            var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, mvm.id_Valuta, dtIni, dtFin, db);
+                                if (periodoMAB_old.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                                {
+                                    #region se in lavorazione aggiorno dataini
 
-                                //            if (ltfr?.Any() ?? false)
-                                //            {
-                                //                foreach (var tfr in ltfr)
-                                //                {
-                                //                    this.Associa_TFR_CanoneMAB_var(tfr.idTFR, new_canoneMAB.IDCANONE, db);
-                                //                }
-                                //            }
-                                //        }
-                                //    }
-                                //    else
-                                //    {
+                                    periodoMAB_old.DATAINIZIOMAB = dtIni;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la fase di aggiornamento data inizio MAB.");
+                                    }
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica riga PERIODO MAB.", "PERIODOMAB", db, idTrasferimento, periodoMAB_old.IDPERIODOMAB);
+                                    #endregion
+
+                                    #region riassocio percentualeMAB
+                                    using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
+                                    {
+                                        dtmab.RimuoviAssociazione_PerMAB_PercentualeMAB(periodoMAB_old.IDPERIODOMAB, db);
+                                        //RimuoviAssociazionePeriodoMAB_PercentualeMAB_var(periodoMAB_old.IDPERIODOMAB, db);
+                                        var pmm = GetPeriodoMABModel(periodoMAB_old.IDMAB, db);
+                                        var lpercentualemab = dtmab.GetListaPercentualeMAB(pmm, tm, db);
+                                        foreach (var percentualemab in lpercentualemab)
+                                        {
+                                            dtmab.Associa_PerMAB_PercentualeMAB(periodoMAB_old.IDPERIODOMAB, percentualemab.IDPERCMAB, db);
+                                        }
+                                    }
+                                    #endregion
+
+                                }
+
+                                #region allineo i periodi di CANONEMAB in base a datainizioMAB e riassocio TFR
+                                //intercetto il periodo dove ricade datainizioMAB
+                                var lcanoneMAB_curr = mab.CANONEMAB
+                                                .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                            a.NASCONDI == false &&
+                                                            a.DATAFINEVALIDITA > dtIni)
+                                                .OrderByDescending(a => a.DATAFINEVALIDITA)
+                                                .ToList();
+
+                                if (lcanoneMAB_curr?.Any() ?? false)
+                                {
+                                    //nascondo il record
+                                    var canoneMAB_curr = lcanoneMAB_curr.First();
+                                    canoneMAB_curr.NASCONDI = true;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la cessazione MAB (allinemento data inizio CANONE).");
+                                    }
+                                    //creo nuovo periodo
+                                    CANONEMAB new_canoneMAB = new CANONEMAB()
+                                    {
+                                        IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
+                                        IDMAB = mab.IDMAB,
+                                        DATAINIZIOVALIDITA = dtIni,
+                                        DATAFINEVALIDITA = canoneMAB_curr.DATAFINEVALIDITA,
+                                        IMPORTOCANONE = canoneMAB_curr.IMPORTOCANONE,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDVALUTA = canoneMAB_curr.IDVALUTA,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        FK_IDCANONE = canoneMAB_curr.FK_IDCANONE,
+                                        NASCONDI = false
+                                    };
+                                    db.CANONEMAB.Add(new_canoneMAB);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la fase di aggiornamento MAB (replica canoneMAB).");
+                                    }
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga CANONE MAB.", "CANONEMAB", db, idTrasferimento, new_canoneMAB.IDCANONE);
+
+                                    //associo TFR
+                                    var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, new_canoneMAB.IDVALUTA, new_canoneMAB.DATAINIZIOVALIDITA, new_canoneMAB.DATAFINEVALIDITA, db);
+
+                                    if (ltfr?.Any() ?? false)
+                                    {
+                                        foreach (var tfr in ltfr)
+                                        {
+                                            Associa_TFR_CanoneMAB_var(tfr.idTFR, new_canoneMAB.IDCANONE, db);
+                                        }
+                                    }
+
+                                    //nascondo tutti i canoni precedenti
+                                    var lperiodicanoneMAB = mab.CANONEMAB.Where(a => 
+                                                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                                                            a.NASCONDI == false &&
+                                                            a.DATAFINEVALIDITA <= dtIni)
+                                                            .ToList();
+                                    foreach (var periodicanoneMAB in lperiodicanoneMAB)
+                                    {
+                                        periodicanoneMAB.NASCONDI = true;
+                                        if (db.SaveChanges() <= 0)
+                                        {
+                                            throw new Exception("Errore durante la cessazione MAB (allinemento data fine CANONE).");
+                                        }
+
+                                    }
+                                }
+                                #endregion
 
 
-                                //        RimuoviAssociazioneCanoneMAB_TFR_var(canoneMAB.IDCANONE, db);
-                                //        var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, mvm.id_Valuta, dtIni, dtFin, db);
+                                #region allineo i periodi PAGATOCONDIVISOMAB e riassocio percentuali
+                                var lpagatocondivisoMAB_curr = mab.PAGATOCONDIVISOMAB
+                                                            .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                            a.NASCONDI == false &&
+                                                            a.DATAFINEVALIDITA > dtIni)
+                                                            .OrderByDescending(a => a.DATAFINEVALIDITA)
+                                                            .ToList();
+                                if (lpagatocondivisoMAB_curr?.Any() ?? false)
+                                {
 
-                                //        if (ltfr?.Any() ?? false)
-                                //        {
-                                //            foreach (var tfr in ltfr)
-                                //            {
-                                //                this.Associa_TFR_CanoneMAB_var(tfr.idTFR, canoneMAB.IDCANONE, db);
-                                //            }
-                                //        }
-                                //        var c = db.CANONEMAB.Find(canoneMAB.IDCANONE);
-                                //        c.IMPORTOCANONE = mvm.importo_canone;
-                                //        c.IDVALUTA = mvm.id_Valuta;
-                                //        if (db.SaveChanges() <= 0)
-                                //        {
-                                //            throw new Exception("Errore durante l'aggiornamento del canone MAB.");
-                                //        }
-                                //    }
-                                //}
-                                ////var canone = this.UpdateCanoneMAB_var(mvm, db);
+                                    //nascondo il record
+                                    var pagatocondivisoMAB_curr = lpagatocondivisoMAB_curr.First();
+                                    pagatocondivisoMAB_curr.NASCONDI = true;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la cessazione MAB (allinemento data inizio PAGATOCONDIVISO).");
+                                    }
+
+                                    PAGATOCONDIVISOMAB new_pagatocondiviso = new PAGATOCONDIVISOMAB()
+                                    {
+                                        IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
+                                        IDMAB = mab.IDMAB,
+                                        DATAINIZIOVALIDITA = dtIni,
+                                        DATAFINEVALIDITA = pagatocondivisoMAB_curr.DATAFINEVALIDITA,
+                                        PAGATO = pagatocondivisoMAB_curr.PAGATO,
+                                        CONDIVISO = pagatocondivisoMAB_curr.CONDIVISO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        FK_IDPAGATOCONDIVISO = pagatocondivisoMAB_curr.FK_IDPAGATOCONDIVISO,
+                                        NASCONDI = false
+                                    };
+                                    db.PAGATOCONDIVISOMAB.Add(new_pagatocondiviso);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la fase di cessazione MAB (allineamento datainizio pagatocondiviso MAB).");
+                                    }
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga PAGATOCONDIVISOMAB.", "PAGATOCONDIVISOMAB", db, idTrasferimento, new_pagatocondiviso.IDPAGATOCONDIVISO);
+
+                                    //nascondo tutti i pagatocondiviso precedenti
+                                    var lperiodipagatocondivisoMAB = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI == false &&
+                                                                                  a.DATAFINEVALIDITA<=dtIni).ToList();
+                                    foreach (var periodipagatocondivisoMAB in lperiodipagatocondivisoMAB)
+                                    {
+                                        periodipagatocondivisoMAB.NASCONDI = true;
+                                        if (db.SaveChanges() <= 0)
+                                        {
+                                            throw new Exception("Errore durante la cessazione MAB (allinemento data inizio PAGATOCONDIVISOMAB).");
+                                        }
+                                    }
+
+
+                                    if (new_pagatocondiviso.CONDIVISO)
+                                    {
+                                        var lpercCond = GetListaPercentualeCondivisione_var(new_pagatocondiviso.DATAINIZIOVALIDITA, new_pagatocondiviso.DATAFINEVALIDITA, db);
+                                        if (lpercCond?.Any() ?? false)
+                                        {
+                                            //riassocio le percentuali
+                                            foreach (var percCond in lpercCond)
+                                            {
+                                                this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(new_pagatocondiviso.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+                                        }
+                                    }
+                                }
+                                #endregion
+                            }
+
+
+                            if (periodoMAB_old.DATAFINEMAB != dtFin)
+                            {
+
+                                if (periodoMAB_old.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                                {
+                                    #region se in lavorazione aggiorno datafine
+
+                                    periodoMAB_old.DATAFINEMAB = dtFin;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la fase di aggiornamento data fine MAB.");
+                                    }
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica riga PERIODO MAB.", "PERIODOMAB", db, idTrasferimento, periodoMAB_old.IDPERIODOMAB);
+                                    #endregion
+
+                                    #region riassocio percentualeMAB
+                                    using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
+                                    {
+                                        dtmab.RimuoviAssociazione_PerMAB_PercentualeMAB(periodoMAB_old.IDPERIODOMAB, db);
+                                        //RimuoviAssociazionePeriodoMAB_PercentualeMAB_var(periodoMAB_old.IDPERIODOMAB, db);
+                                        var pmm = GetPeriodoMABModel(periodoMAB_old.IDMAB, db);
+                                        var lpercentualemab = dtmab.GetListaPercentualeMAB(pmm, tm, db);
+                                        foreach (var percentualemab in lpercentualemab)
+                                        {
+                                            dtmab.Associa_PerMAB_PercentualeMAB(periodoMAB_old.IDPERIODOMAB, percentualemab.IDPERCMAB, db);
+                                        }
+                                    }
+                                    #endregion
+
+                                }
+                                else
+                                {
+                                    #region se non in lavorazione replica PERIODOMAB
+                                    if (periodoMAB_old.IDPERIODOMAB > 0)
+                                    {
+                                        PERIODOMAB new_periodoMAB = new PERIODOMAB()
+                                        {
+                                            IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
+                                            IDMAB = mab.IDMAB,
+                                            DATAINIZIOMAB = periodoMAB_old.DATAINIZIOMAB,
+                                            DATAFINEMAB = dtFin,
+                                            DATAAGGIORNAMENTO = DateTime.Now,
+                                            IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                            FK_IDPERIODOMAB = periodoMAB_old.FK_IDPERIODOMAB
+                                        };
+                                        db.PERIODOMAB.Add(new_periodoMAB);
+                                        if (db.SaveChanges() <= 0)
+                                        {
+                                            throw new Exception("Errore durante la fase di aggiornamento MAB (replica periodoMAB).");
+                                        }
+                                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga PERIODO MAB.", "PERIODOMAB", db, idTrasferimento, new_periodoMAB.IDPERIODOMAB);
+
+                                        periodoMAB_old.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                                        if (db.SaveChanges() <= 0)
+                                        {
+                                            throw new Exception("Errore durante la fase di aggiornamento MAB (annullamento record periodoMAB ).");
+                                        }
+
+                                        #region associo percentualeMAB
+                                        using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
+                                        {
+                                            //dtmab.RimuoviAssociazione_PerMAB_PercentualeMAB(periodoMAB_old.IDPERIODOMAB, db);
+                                            //RimuoviAssociazionePeriodoMAB_PercentualeMAB_var(periodoMAB_old.IDPERIODOMAB, db);
+                                            var pmm = GetPeriodoMABModel(new_periodoMAB.IDMAB, db);
+                                            var lpercentualemab = dtmab.GetListaPercentualeMAB(pmm, tm, db);
+                                            foreach (var percentualemab in lpercentualemab)
+                                            {
+                                                dtmab.Associa_PerMAB_PercentualeMAB(new_periodoMAB.IDPERIODOMAB, percentualemab.IDPERCMAB, db);
+                                            }
+                                        }
+                                        #endregion
+
+                                    }
+                                    #endregion
+                                }
+                                #region allineo i periodi di CANONEMAB in base a datafineMAB e riassocio TFR
+                                //intercetto il periodo dove ricade datafineMAB
+                                var lcanoneMAB_curr = mab.CANONEMAB
+                                                .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                            a.NASCONDI == false &&
+                                                            a.DATAINIZIOVALIDITA <= dtFin)
+                                                .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                                .ToList();
+
+                                if (lcanoneMAB_curr?.Any() ?? false)
+                                {
+                                    //nascondo il record
+                                    var canoneMAB_curr = lcanoneMAB_curr.First();
+                                    canoneMAB_curr.NASCONDI = true;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la cessazione MAB (allinemento data fine CANONE).");
+                                    }
+                                    //creo nuovo periodo
+                                    CANONEMAB new_canoneMAB = new CANONEMAB()
+                                    {
+                                        IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
+                                        IDMAB = mab.IDMAB,
+                                        DATAINIZIOVALIDITA = canoneMAB_curr.DATAINIZIOVALIDITA,
+                                        DATAFINEVALIDITA = dtFin,
+                                        IMPORTOCANONE = canoneMAB_curr.IMPORTOCANONE,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDVALUTA = canoneMAB_curr.IDVALUTA,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        FK_IDCANONE = canoneMAB_curr.FK_IDCANONE,
+                                        NASCONDI = false
+                                    };
+                                    db.CANONEMAB.Add(new_canoneMAB);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la fase di aggiornamento MAB (replica canoneMAB).");
+                                    }
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga CANONE MAB.", "CANONEMAB", db, idTrasferimento, new_canoneMAB.IDCANONE);
+
+                                    //associo TFR
+                                    var ltfr = dtTFR.GetListaTfrByValuta_RangeDate(tm, new_canoneMAB.IDVALUTA, new_canoneMAB.DATAINIZIOVALIDITA, new_canoneMAB.DATAFINEVALIDITA, db);
+
+                                    if (ltfr?.Any() ?? false)
+                                    {
+                                        foreach (var tfr in ltfr)
+                                        {
+                                            Associa_TFR_CanoneMAB_var(tfr.idTFR, new_canoneMAB.IDCANONE, db);
+                                        }
+                                    }
+
+                                    //nascondo tutti i canoni successivi
+                                    var lperiodicanoneMAB = mab.CANONEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI == false &&
+                                                                                  a.DATAINIZIOVALIDITA > dtFin).ToList();
+                                    foreach (var periodicanoneMAB in lperiodicanoneMAB)
+                                    {
+                                        periodicanoneMAB.NASCONDI = true;
+                                        if (db.SaveChanges() <= 0)
+                                        {
+                                            throw new Exception("Errore durante la cessazione MAB (allinemento data fine CANONE).");
+                                        }
+
+                                    }
+                                }
+                                #endregion
+
+                               
+
+
+                                #region allineo i periodi PAGATOCONDIVISOMAB e riassocio percentuali
+                                var lpagatocondivisoMAB_curr = mab.PAGATOCONDIVISOMAB
+                                                            .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                            a.NASCONDI == false &&
+                                                            a.DATAINIZIOVALIDITA <= dtFin)
+                                                            .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                                            .ToList();
+                                if (lpagatocondivisoMAB_curr?.Any() ?? false)
+                                {
+
+                                    //nascondo il record
+                                    var pagatocondivisoMAB_curr = lpagatocondivisoMAB_curr.First();
+                                    pagatocondivisoMAB_curr.NASCONDI = true;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la cessazione MAB (allinemento data fine PAGATOCONDIVISO).");
+                                    }
+
+                                    PAGATOCONDIVISOMAB new_pagatocondiviso = new PAGATOCONDIVISOMAB()
+                                    {
+                                        IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
+                                        IDMAB = mab.IDMAB,
+                                        DATAINIZIOVALIDITA = pagatocondivisoMAB_curr.DATAINIZIOVALIDITA,
+                                        DATAFINEVALIDITA = dtFin,
+                                        PAGATO = pagatocondivisoMAB_curr.PAGATO,
+                                        CONDIVISO = pagatocondivisoMAB_curr.CONDIVISO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        FK_IDPAGATOCONDIVISO = pagatocondivisoMAB_curr.FK_IDPAGATOCONDIVISO,
+                                        NASCONDI = false
+                                    };
+                                    db.PAGATOCONDIVISOMAB.Add(new_pagatocondiviso);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la fase di cessazione MAB (allineamento datafine pagatocondiviso MAB).");
+                                    }
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga PAGATOCONDIVISOMAB.", "PAGATOCONDIVISOMAB", db, idTrasferimento, new_pagatocondiviso.IDPAGATOCONDIVISO);
+
+                                    //nascondo tutti i pagatocondiviso successivi
+                                    var lperiodipagatocondivisoMAB = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI == false &&
+                                                                                  a.DATAINIZIOVALIDITA > dtFin).ToList();
+                                    foreach (var periodipagatocondivisoMAB in lperiodipagatocondivisoMAB)
+                                    {
+                                        periodipagatocondivisoMAB.NASCONDI = true;
+                                        if (db.SaveChanges() <= 0)
+                                        {
+                                            throw new Exception("Errore durante la cessazione MAB (allinemento data fine PAGATOCONDIVISOMAB).");
+                                        }
+                                    }
+
+
+                                    if (new_pagatocondiviso.CONDIVISO)
+                                    {
+                                        var lpercCond = GetListaPercentualeCondivisione_var(new_pagatocondiviso.DATAINIZIOVALIDITA, new_pagatocondiviso.DATAFINEVALIDITA, db);
+                                        if (lpercCond?.Any() ?? false)
+                                        {
+                                            //riassocio le percentuali
+                                            foreach (var percCond in lpercCond)
+                                            {
+                                                this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(new_pagatocondiviso.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+                                        }
+                                    }
+                                }
+                                #endregion
+                            }
+
+                            #region aggiorno anticipo annuale se necessario
+                            var ant_ann = GetAnticipoAnnualeMAB(mabvm.idMAB, db);
+                            if (mabvm.anticipoAnnuale != ant_ann.ANTICIPOANNUALE)
+                            {
+                                if (ant_ann.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                                {
+                                    ant_ann.ANTICIPOANNUALE = mabvm.anticipoAnnuale;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante l'aggiornamento dell'anticipo annuale MAB.");
+                                    }
+                                }
+                                else
+                                {
+                                    var ant_ann_new = new ANTICIPOANNUALEMAB()
+                                    {
+                                        IDMAB=mabvm.idMAB,
+                                        IDATTIVAZIONEMAB=amab.IDATTIVAZIONEMAB,
+                                        IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione,
+                                        ANTICIPOANNUALE= mabvm.anticipoAnnuale,
+                                        DATAAGGIORNAMENTO=DateTime.Now,
+                                        FK_IDANTICIPOANNUALEMAB=ant_ann.IDANTICIPOANNUALEMAB
+                                    };
+                                    db.ANTICIPOANNUALEMAB.Add(ant_ann_new);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante l'aggiornamento dell'anticipo annuale MAB (creazione nuovo record ANTICIPOANNUALEMAB.");
+                                    }
+                                }
+
                             }
                             #endregion
 
-                            #region pagato condiviso
-                            //se ho creato in nuovo idMAB replico la lista pagato condiviso
-                            if (mab_new.IDMAB > 0)
-                            {
-                                ////mam = this.GetMaggiorazioneAbitazioneModel(amm);
-                                //PAGATOCONDIVISOMAB pc = new PAGATOCONDIVISOMAB();
-                                ////pc = this.GetUltimoPagatoCondivisoMAB(mam.idMAB);
-                                //if (pc.CONDIVISO != mvm.canone_condiviso || pc.PAGATO != mvm.canone_pagato)
-                                //{
-                                //    if (pc.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-                                //    {
-                                //        PAGATOCONDIVISOMAB new_pc = new PAGATOCONDIVISOMAB()
-                                //        {
-                                //            IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
-                                //            //IDMAB = mam.idMAB,
-                                //            DATAINIZIOVALIDITA = pc.DATAINIZIOVALIDITA,
-                                //            DATAFINEVALIDITA = pc.DATAFINEVALIDITA,
-                                //            PAGATO = mvm.canone_pagato,
-                                //            CONDIVISO = mvm.canone_condiviso,
-                                //            DATAAGGIORNAMENTO = DateTime.Now,
-                                //            IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-                                //            FK_IDPAGATOCONDIVISO = pc.IDPAGATOCONDIVISO
-                                //        };
-                                //        db.PAGATOCONDIVISOMAB.Add(new_pc);
-                                //        if (db.SaveChanges() <= 0)
-                                //        {
-                                //            throw new Exception("Errore durante la fase di aggiornamento del canone condiviso/pagato.");
-                                //        }
-                                //        else
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga PAGATOCONDIVISOMAB.", "PAGATOCONDIVISOMAB", db, idTrasferimento, new_pc.IDPAGATOCONDIVISO);
-                                //            #region associa percentuale condivisione
-                                //            if (mvm.canone_condiviso)
-                                //            {
-                                //                var lpercCond = GetListaPercentualeCondivisione_var(new_pc.DATAINIZIOVALIDITA, new_pc.DATAFINEVALIDITA, db);
-                                //                if (lpercCond?.Any() ?? false)
-                                //                {
-                                //                    //riassocio le percentuali
-                                //                    foreach (var percCond in lpercCond)
-                                //                    {
-                                //                        this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(new_pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
-                                //                    }
-                                //                }
-                                //                else
-                                //                {
-                                //                    throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
-                                //                }
-                                //            }
-                                //            #endregion
-                                //        }
-                                //    }
-                                //    else
-                                //    {
-                                //        var p = db.PAGATOCONDIVISOMAB.Find(pc.IDPAGATOCONDIVISO);
-                                //        p.PAGATO = mvm.canone_pagato;
-                                //        p.CONDIVISO = mvm.canone_condiviso;
-                                //        if (db.SaveChanges() <= 0)
-                                //        {
-                                //            throw new Exception("Errore durante l'aggiornamento di Pagato Condiviso MAB.");
-                                //        }
-
-                                //        RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, db);
-
-                                //        if (mvm.canone_condiviso)
-                                //        {
-                                //            #region associa percentuale condivisione
-                                //            var lpercCond = this.GetListaPercentualeCondivisione_var(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
-                                //            if (lpercCond?.Any() ?? false)
-                                //            {
-                                //                //riassocio le percentuali
-                                //                foreach (var percCond in lpercCond)
-                                //                {
-                                //                    this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
-                                //                }
-                                //            }
-                                //            else
-                                //            {
-                                //                throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
-                                //            }
-                                //            #endregion
-                                //        }
-                                //    }
-                                //}
-                            }
-                            #endregion
-
-                            #region anticipo annuale
-                            //se ho creato in nuovo idMAB replico anticipo annuale
-                            if (mab_new.IDMAB > 0)
-                            {
-                            }
-                            #endregion
                         }
                     }
 
@@ -3291,7 +4742,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                            amab = GetUltimaAttivazioneMAB(idTrasferimento);
+                            amab = GetUltimaAttivazioneMAB(idTrasferimento, db);
 
 
                             if (amab != null && amab.IDATTIVAZIONEMAB > 0)
@@ -3309,23 +4760,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             #endregion
 
-                            #region MAB
-                            //if (mabvm.idStatoRecord != (decimal)EnumStatoRecord.In_Lavorazione)
-                            //{
-                            //    mab_new = ClonaMAB(idMAB, db);
-
-                            //    //riassocia percentuale MAB
-                            //    var lperc = GetListaPercentualeMAB_var(idTrasferimento, db);
-                            //    foreach (var perc in lperc)
-                            //    {
-                            //        Associa_MAB_PercenualeMAB_var(mab_new.IDMAB, perc.IDPERCMAB, db);
-                            //    }
-                            //}
-                            #endregion
-
                             mabvm.dataAggiornamento = DateTime.Now;
-                            //mvm.idMAB = idMAB;
-                            //mvm.idTrasferimento = idTrasferimento;
 
                             DateTime dtIni = mabvm.dataInizioMAB;
                             DateTime dtFin = mabvm.ut_dataFineMAB == null ? tm.dataRientro.Value : mabvm.ut_dataFineMAB.Value;
@@ -3520,21 +4955,21 @@ namespace NewISE.Models.DBModel.dtObj
         //            }
         //        }
 
-        //        public void RimuoviAssociazioneMAB_PercentualeMAB_var(decimal idMAB, ModelDBISE db)
-        //        {
-        //            var ma = db.MAGGIORAZIONEABITAZIONE.Find(idMAB);
-        //            var lpercMAB = ma.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
-        //            if (lpercMAB?.Any() ?? false)
-        //            {
-        //                foreach (var percMAB in lpercMAB)
-        //                {
-        //                    ma.PERCENTUALEMAB.Remove(percMAB);
-        //                }
+        public void RimuoviAssociazionePeriodoMAB_PercentualeMAB_var(decimal idPeriodoMAB, ModelDBISE db)
+        {
+            var pmab = db.PERIODOMAB.Find(idPeriodoMAB);
+            var lpercMAB = pmab.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+            if (lpercMAB?.Any() ?? false)
+            {
+                foreach (var percMAB in lpercMAB)
+                {
+                    pmab.PERCENTUALEMAB.Remove(percMAB);
+                }
 
-        //                db.SaveChanges();
-        //            }
+                db.SaveChanges();
+            }
 
-        //        }
+        }
         #endregion
 
         public void RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(decimal idPagatoCondiviso, ModelDBISE db)
@@ -3594,30 +5029,53 @@ namespace NewISE.Models.DBModel.dtObj
         //        }
 
 
-        //        public void Associa_MAB_MaggiorazioniAnnuali_var(decimal idMAB, decimal idMaggiorazioniAnnuali, ModelDBISE db)
-        //        {
-        //            try
-        //            {
-        //                var mab = db.MAGGIORAZIONEABITAZIONE.Find(idMAB);
-        //                var item = db.Entry<MAGGIORAZIONEABITAZIONE>(mab);
-        //                item.State = System.Data.Entity.EntityState.Modified;
-        //                //item.Collection(a => a.DOCUMENTI).Load();
-        //                var ma = db.MAGGIORAZIONIANNUALI.Find(idMaggiorazioniAnnuali);
-        //                mab.MAGGIORAZIONIANNUALI.Add(ma);
-        //                int i = db.SaveChanges();
+        public void Associa_MAB_MaggiorazioniAnnuali_var(decimal idMAB, decimal idMaggiorazioniAnnuali, ModelDBISE db)
+        {
+            try
+            {
+                var mab = db.MAB.Find(idMAB);
+                var item = db.Entry<MAB>(mab);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.MAGGIORAZIONIANNUALI).Load();
+                var ma = db.MAGGIORAZIONIANNUALI.Find(idMaggiorazioniAnnuali);
+                mab.MAGGIORAZIONIANNUALI.Add(ma);
+                int i = db.SaveChanges();
 
-        //                if (i <= 0)
-        //                {
-        //                    throw new Exception(string.Format("Impossibile associare MaggiorazioneAbitazione a MaggiorazioniAnnuali."));
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare MAB a MaggiorazioniAnnuali."));
+                }
+            }
+            catch (Exception ex)
+            {
 
-        //                throw ex;
-        //            }
-        //        }
+                throw ex;
+            }
+        }
 
+        public void Associa_PERIODOMAB_PercentualeMAB_var(decimal idPeriodoMAB, decimal idPercMAB, ModelDBISE db)
+        {
+            try
+            {
+                var pmab = db.PERIODOMAB.Find(idPeriodoMAB);
+                var item = db.Entry<PERIODOMAB>(pmab);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.PERCENTUALEMAB).Load();
+                var percmab = db.PERCENTUALEMAB.Find(idPercMAB);
+                pmab.PERCENTUALEMAB.Add(percmab);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare PERIODOMAB a PercentualeMAB."));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
 
         //        public void Associa_Documenti_Attivazione_var(decimal idDocumento, decimal idAttivazioneMAB, ModelDBISE db)
@@ -3730,7 +5188,8 @@ namespace NewISE.Models.DBModel.dtObj
                         mab.CANONEMAB.Where(
                             a =>
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo && 
+                                a.NASCONDI==false)
                             .OrderBy(a => a.DATAINIZIOVALIDITA)
                             .ToList();
 
@@ -3769,6 +5228,60 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public List<PagatoCondivisoMABModel> GetPagatoCondivisoMABModel(decimal idMab, ModelDBISE db)
+        {
+            try
+            {
+                List<PagatoCondivisoMABModel> lpcmabm = new List<PagatoCondivisoMABModel>();
+
+                var mab = db.MAB.Find(idMab);
+
+                var lpcmab =
+                        mab.PAGATOCONDIVISOMAB.Where(
+                            a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo &&
+                                a.NASCONDI == false)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
+
+                if (lpcmab?.Any() ?? false)
+                {
+                    foreach (var pcmab in lpcmab)
+                    {
+                        var pcmabm = new PagatoCondivisoMABModel()
+                        {
+                            idPagatoCondiviso = pcmab.IDPAGATOCONDIVISO,
+                            idMAB = pcmab.IDMAB,
+                            idAttivazioneMAB = pcmab.IDATTIVAZIONEMAB,
+                            idStatoRecord = pcmab.IDSTATORECORD,
+                            DataInizioValidita = pcmab.DATAINIZIOVALIDITA,
+                            DataFineValidita = pcmab.DATAFINEVALIDITA,
+                            Pagato = pcmab.PAGATO,
+                            Condiviso=pcmab.CONDIVISO,
+                            DataAggiornamento = pcmab.DATAAGGIORNAMENTO,
+                            fk_IDPagatoCondiviso = pcmab.FK_IDPAGATOCONDIVISO,
+                            Nascondi= pcmab.NASCONDI
+                        };
+                        lpcmabm.Add(pcmabm);
+                    }
+                }
+                else
+                {
+                    throw new Exception(string.Format("nessun Pagato Condiviso MAB trovato."));
+                }
+
+
+                return lpcmabm;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public List<CANONEMAB> GetCanoneMAB(decimal idMab, ModelDBISE db)
         {
             try
@@ -3801,34 +5314,99 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public CANONEMAB GetUltimoCanoneMABInserito(decimal idMab, ModelDBISE db)
+        {
+            try
+            {
+                CANONEMAB cmab = new CANONEMAB();
+
+                var mab = db.MAB.Find(idMab);
+
+                var lcmab =
+                        mab.CANONEMAB.Where(
+                            a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                            .OrderByDescending(a => a.IDCANONE)
+                            .ToList();
+
+                if (lcmab?.Any() ?? false)
+                {
+                    cmab = lcmab.First();
+                }
+                else
+                {
+                    throw new Exception(string.Format("Nessun Canone MAB trovato."));
+                }
+                return cmab;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public PAGATOCONDIVISOMAB GetUltimoPagatoCondivisoMABInserito(decimal idMab, ModelDBISE db)
+        {
+            try
+            {
+                PAGATOCONDIVISOMAB pcmab = new PAGATOCONDIVISOMAB();
+
+                var mab = db.MAB.Find(idMab);
+
+                var lpcmab =
+                        mab.PAGATOCONDIVISOMAB.Where(
+                            a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
+                            .OrderByDescending(a => a.IDPAGATOCONDIVISO)
+                            .ToList();
+
+                if (lpcmab?.Any() ?? false)
+                {
+                    pcmab = lpcmab.First();
+                }
+                else
+                {
+                    throw new Exception(string.Format("Nessun Pagato Condiviso MAB trovato."));
+                }
+                return pcmab;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         #region get documenti
-        //        public List<DOCUMENTI> GetDocumentiMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
-        //        {
-        //            try
-        //            {
+        public List<DOCUMENTI> GetDocumentiMAB_var(decimal idAttivazioneMAB, ModelDBISE db)
+        {
+            try
+            {
 
 
-        //                DOCUMENTI d = new DOCUMENTI();
-        //                List<DOCUMENTI> dl = new List<DOCUMENTI>();
+                DOCUMENTI d = new DOCUMENTI();
+                List<DOCUMENTI> dl = new List<DOCUMENTI>();
 
-        //                var a = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+                var a = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
 
-        //                dl = a.DOCUMENTI.Where(x => x.MODIFICATO == false &&
-        //                                        (x.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
-        //                                        x.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
-        //                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
-        //                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
-        //                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
-        //                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
-        //                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione)
-        //                                        ).ToList();
-        //                return dl;
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                throw ex;
-        //            }
-        //        }
+                dl = a.DOCUMENTI.Where(x => x.MODIFICATO == false &&
+                                        (x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione)
+                                        ).ToList();
+                return dl;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         //        public List<DOCUMENTI> GetDocumentiMABbyTipoDoc_var(decimal idAttivazioneMAB, decimal idTipoDoc)
         //        {
@@ -3853,6 +5431,398 @@ namespace NewISE.Models.DBModel.dtObj
         //        }
 
         #endregion
+
+        public void UpdateStatoMAB(decimal idMAB, EnumStatoRecord stato, ModelDBISE db)
+        {
+            try
+            {
+                MAB m = db.MAB.Find(idMAB);
+                if (m.IDMAB > 0)
+                {
+                    m.IDSTATORECORD = (decimal)stato;
+                    m.DATAAGGIORNAMENTO = DateTime.Now;
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore in fase di aggiornamento dello statorecord relativo a MAB.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica MAB", "MAB", db,
+                            m.ATTIVAZIONEMAB.IDTRASFERIMENTO, m.IDMAB);
+                    }
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateStatoPeriodoMAB(decimal idPeriodoMAB, EnumStatoRecord stato, ModelDBISE db)
+        {
+            try
+            {
+                PERIODOMAB pm = db.PERIODOMAB.Find(idPeriodoMAB);
+                if (pm.IDPERIODOMAB > 0)
+                {
+                    pm.IDSTATORECORD = (decimal)stato;
+                    pm.DATAAGGIORNAMENTO = DateTime.Now;
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore in fase di aggiornamento dello statorecord relativo a PERIODOMAB.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica PERIODOMAB", "PERIODOMAB", db,
+                            pm.ATTIVAZIONEMAB.IDTRASFERIMENTO, pm.IDPERIODOMAB);
+                    }
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateStatoCanoneMAB(decimal idCanoneMAB, EnumStatoRecord stato, ModelDBISE db)
+        {
+            try
+            {
+                CANONEMAB cm = db.CANONEMAB.Find(idCanoneMAB);
+                if (cm.IDCANONE > 0)
+                {
+                    cm.IDSTATORECORD = (decimal)stato;
+                    cm.DATAAGGIORNAMENTO = DateTime.Now;
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore in fase di aggiornamento dello statorecord relativo a CanoneMAB.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica CanoneMAB", "VARIAZIONIMAB", db,
+                            cm.ATTIVAZIONEMAB.IDTRASFERIMENTO, cm.IDCANONE);
+                    }
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateStatoAnticipoAnnualeMAB(decimal idAnticipoAnnualeMAB, EnumStatoRecord stato, ModelDBISE db)
+        {
+            try
+            {
+                ANTICIPOANNUALEMAB aa = db.ANTICIPOANNUALEMAB.Find(idAnticipoAnnualeMAB);
+                if (aa.IDANTICIPOANNUALEMAB > 0)
+                {
+                    aa.IDSTATORECORD = (decimal)stato;
+                    aa.DATAAGGIORNAMENTO = DateTime.Now;
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore in fase di aggiornamento dello statorecord relativo a AnticipAnnulaleMAB.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica AnticipoAnnualeMAB", "ANTICIPOANNUALE", db,
+                            aa.ATTIVAZIONEMAB.IDTRASFERIMENTO, aa.IDANTICIPOANNUALEMAB);
+                    }
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateStatoPagatoCondivisoMAB(decimal idPagatoCondivisoMAB, EnumStatoRecord stato, ModelDBISE db)
+        {
+            try
+            {
+                PAGATOCONDIVISOMAB pcm = db.PAGATOCONDIVISOMAB.Find(idPagatoCondivisoMAB);
+                if (pcm.IDPAGATOCONDIVISO > 0)
+                {
+                    pcm.IDSTATORECORD = (decimal)stato;
+                    pcm.DATAAGGIORNAMENTO = DateTime.Now;
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore in fase di aggiornamento dello statorecord relativo a PagatoCondivisoMAB.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica CanoneMAB", "VARIAZIONIMAB", db,
+                            pcm.ATTIVAZIONEMAB.IDTRASFERIMENTO, pcm.IDPAGATOCONDIVISO);
+                    }
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UpdateStatoDocumentiMAB(decimal idDocumentoMAB, EnumStatoRecord stato, ModelDBISE db)
+        {
+            try
+            {
+                DOCUMENTI dm = db.DOCUMENTI.Find(idDocumentoMAB);
+                if (dm.IDDOCUMENTO > 0)
+                {
+                    dm.IDSTATORECORD = (decimal)stato;
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore in fase di aggiornamento dello statorecord relativo a Documenti MAB.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica Documenti MAB", "DOCUMENTI", db,
+                            dm.ATTIVAZIONEMAB.First().IDTRASFERIMENTO, dm.IDDOCUMENTO);
+                    }
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void AnnullaModificheCanoneMAB(decimal idMAB)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+                    try
+                    {
+                        var mab = db.MAB.Find(idMAB);
+                        var lcmab = mab.CANONEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                        foreach (var cmab in lcmab)
+                        {
+                            if (cmab.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                //cmab.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                                db.CANONEMAB.Remove(cmab);
+
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di ripristino degli importi canone (cancellazione record in lavorazione)");
+                                }
+                            }
+                            if (cmab.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && cmab.NASCONDI)
+                            {
+                                cmab.NASCONDI = false;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di ripristino degli importi canone (ripristino record attivo)");
+                                }
+                            }
+
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AnnullaModifichePagatoCondivisoMAB(decimal idMAB)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+                    try
+                    {
+                        var mab = db.MAB.Find(idMAB);
+                        var lpcmab = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                        foreach (var pcmab in lpcmab)
+                        {
+                            if (pcmab.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                db.PAGATOCONDIVISOMAB.Remove(pcmab);
+
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di ripristino delle impostazioni condivisione del canone (cancellazione record in lavorazione)");
+                                }
+                            }
+
+                            if (pcmab.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && pcmab.NASCONDI)
+                            {
+                                pcmab.NASCONDI = false;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore in fase di ripristino delle impostazioni di condivisione del canone (ripristino record attivo)");
+                                }
+                            }
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AnnullaModificheMAB(decimal idMAB)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+
+                    try
+                    {
+                        var mab = db.MAB.Find(idMAB);
+                        if (mab != null && mab.IDMAB > 0)
+                        {
+                            //mab
+                            if (mab.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                            {
+                                db.MAB.Remove(mab);
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Impossibile annullare le modifiche MAB.");
+                                }
+                            }
+                            else
+                            {
+                                //periodo MAB
+                                var lpmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                foreach (var pmab in lpmab)
+                                {
+                                    //riattivo eventuale record da cui deriva
+                                    if (pmab.FK_IDPERIODOMAB > 0)
+                                    {
+                                        var pmab_ori = db.PERIODOMAB.Find(pmab.FK_IDPERIODOMAB);
+                                        pmab_ori.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                                        if (db.SaveChanges() <= 0)
+                                        {
+                                            throw new Exception("Impossibile annullare le modifiche al Periodo MAB.");
+                                        }
+                                    }
+                                    db.PERIODOMAB.Remove(pmab);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Impossibile annullare le modifiche al Periodo MAB.");
+                                    }
+                                }
+
+
+
+                                //elimino eventuali modifiche canone
+                                var lcmab = mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                foreach (var cmab in lcmab)
+                                {
+                                    db.CANONEMAB.Remove(cmab);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Impossibile annullare le modifiche al Canone MAB.");
+                                    }
+
+                                    //ripristino canoni nascosti attivi
+                                    var lcmab_attivi = mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                        a.NASCONDI).ToList();
+                                    foreach (var cmab_attivi in lcmab_attivi)
+                                    {
+                                        cmab_attivi.NASCONDI = false;
+                                        if (db.SaveChanges() <= 0)
+                                        {
+                                            throw new Exception(string.Format("Impossibile annullare le modifiche al Canone MAB."));
+                                        }
+                                    }
+
+                                }
+
+                                //elimino eventuali modifiche pagato condiviso
+                                var lpcmab = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                                foreach (var pcmab in lpcmab)
+                                {
+                                    db.PAGATOCONDIVISOMAB.Remove(pcmab);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Impossibile annullare le modifiche a pagato condiviso MAB.");
+                                    }
+                                }
+
+                                //ripristino pagatocondiviso nascosti attivi
+                                var lpcmab_attivi = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                    a.NASCONDI).ToList();
+                                foreach (var pcmab_attivi in lpcmab_attivi)
+                                {
+                                    pcmab_attivi.NASCONDI = false;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception(string.Format("Impossibile annullare le modifiche al Pagato Condiviso MAB."));
+                                    }
+                                }
+                            }
+
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
     }
 }
