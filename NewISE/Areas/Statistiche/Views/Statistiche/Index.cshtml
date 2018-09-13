@@ -26,10 +26,141 @@
     </div>*@
 
 <div style="margin: 15px"></div>
+
+<div class="panel-group" id="accordion">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#Primomenu">
+                    <span class="glyphicon glyphicon-folder-close">
+                    </span>&nbsp;&nbsp;LOG Attivita
+                </a>
+            </h4>
+        </div>
+        <div id="Primomenu" class="panel-collapse collapse">
+            
+                <div class="list-group">
+                    <a href="#" class="list-group-item" onclick="callpartialOpIndEstera();">Log Attività</a>
+                </div>
+           
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#Secondomenu">
+                    <span class="glyphicon glyphicon-file">
+                    </span>Archivio Vecchio ISE
+                </a>
+            </h4>
+        </div>
+        <div id="Secondomenu" class="panel-collapse collapse">
+                <div class="list-group">
+                    <a href="#" class="list-group-item" onclick="callpartialPresenze();">Presenze dei livelli in servizio all'estero</a>
+                    <a href="#" class="list-group-item" onclick="callpartialSpeseAvvicendamento();">Spese diverse</a>
+                    <a href="#" class="list-group-item" onclick="callpartialSpeseAvvicendamento();">Spese avvicendamento</a>
+                    <a href="#" class="list-group-item" onclick="callpartialStoria();">Storia del dipendente</a>
+                    <a href="#" class="list-group-item" onclick="callpartialOpIndEstera();">Operazioni effettuate - Indennità di Sede Estera</a>
+                    <a href="#" class="list-group-item" onclick="callpartialOpContributoAbitazione();">Operazioni Effettuate - Contributo Abitazione</a>
+                    <a href="#" class="list-group-item" onclick="callpartialOpUsoAbitazione();">Operazioni Effettuate - Uso Abitazione</a>
+                    <a href="#" class="list-group-item" onclick="callpartialOpCanoneAnticipato();">Operazioni Effettuate - Canone Anticipato</a>
+                    <a href="#" class="list-group-item" onclick="callpartialOpSpeseDiverse();">Operazioni Effettuate - Spese Diverse</a>
+                    <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazione();">Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</a>
+                </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#Terzomenu">
+                    <span class="glyphicon glyphicon-file">
+                    </span>Nuovo ISE
+                </a>
+            </h4>
+        </div>
+        <div id="Terzomenu" class="panel-collapse collapse">
+            <div class="list-group">
+                <a href="#" class="list-group-item">Conguaglio Maggiorazione Abitazione</a>
+                <a href="#" class="list-group-item">Conguaglio Indennità di Servizio all'Estero</a>
+                <a href="#" class="list-group-item">Consuntivo dei Costi</a>
+                <a href="#" class="list-group-item">Consuntivo dei Costi per codice Co. An.</a>
+                <a href="#" class="list-group-item">Dipendenti all'Estero per Livello</a>
+                <a href="#" class="list-group-item">Dislocazione dei dipendenti all'Estero</a>
+                <a href="#" class="list-group-item">Indennità personale</a>
+                <a href="#" class="list-group-item">Indennità di richiamo</a>
+                <a href="#" class="list-group-item">Indennità di sistemazione (e saldo)</a>
+                <a href="#" class="list-group-item">Riepilogo per Livello</a>
+                <a href="#" class="list-group-item">Riepilogo per Ufficio</a>
+                <a href="#" class="list-group-item">Riepilogo delle operazioni effettuate - Indennità di sede estera</a>
+                <a href="#" class="list-group-item">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
+                <a href="#" class="list-group-item">Storia del Dipendente</a>
+                <a href="#" class="list-group-item">Scheda per il Calcolo della Maggiorazione Abitazione</a>
+                <a href="#" class="list-group-item">Spese diverse</a>
+                <a href="#" class="list-group-item">Sospensioni</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div style="margin: 15px"></div>
+
+<!--
+<div id="accordion">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Collapsible Group Item #1
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Collapsible Group Item #2
+                </button>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Collapsible Group Item #3
+                </button>
+            </h5>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+
 <div class="row">
-
+    
     <div class="col-xs-5">
-
+<!--
         <div id="divMsgUtente" class="DivSfondoBordo border_radius">
             <br /><br />
             <ul>
@@ -77,7 +208,7 @@
                 </li>
             </ul>
         </div>
-
+        -->
 
 
     </div>
