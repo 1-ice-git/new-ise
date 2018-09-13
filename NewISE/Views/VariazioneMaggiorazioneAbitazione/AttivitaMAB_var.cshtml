@@ -12,6 +12,8 @@
     bool siDati = Convert.ToBoolean(ViewData["siDati"]);
 }
 
+@Html.Hidden("hiAnnullaModMAB")
+
 <div >
     <div style="padding-top: 10px;padding-bottom:10px">
     @if (soloLettura == true)
@@ -20,12 +22,14 @@
     }
     else
     {
-        @Ajax.ActionLink("Nuova", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new {@class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
+        @Ajax.ActionLink("Nuova", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabAttivitaMAB_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new {@class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
     }
     </div>
     <table id="tabMAB" class="table table-striped">
         <thead>
             <tr>
+                <th>
+                </th>
                 <th>
                     Tipo Anticipo
                 </th>
@@ -42,12 +46,16 @@
                     Pagato Condiviso
                 </th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>
+                        @item.idMAB
+                    </td>
                     <td>
                         @if (siDati)
                         {
@@ -80,21 +88,42 @@
                         </a>
                     </td>
                     <td style="text-align: center">
-                        <a href="#" onclick="PagatoCondivisoMAB(@item.idMAB);" id="linkPagatoCondivisoMAB">
+                        <a href="#" onclick="PagatoCondivisoMAB(@idTrasferimento,@item.idMAB);" id="linkPagatoCondivisoMAB">
                             <img src='~/Immagini/group-icon.png' width='20' title="Periodi Pagato Condiviso" />
                         </a>
                     </td>
-                    <td style="text-align: center">
-                        <a href="#" onclick="ModificaMAB_var(@item.idMAB); ">
-                            <img width="17" src="~/Immagini/edit.png" title="Modifica" />
-                        </a>
-                    </td>
+
+                    @if (item.modificabile)
+                    {
+                        <td style="text-align: center">
+                            <a href="#" onclick="ModificaMAB_var(@item.idMAB); ">
+                                <img width="17" src="~/Immagini/edit.png" title="Modifica" />
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center"></td>
+                    }
+                    @if (item.annullabile)
+                    {
+                        <td style="text-align: center">
+                            <a href="#" onclick="AnnullaModificheMAB_var(@item.idMAB); ">
+                                <img width="17" src="~/Immagini/undo.png" title="Annulla Modifiche" />
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center"></td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
 
 </div>
+
 
 <script type="text/javascript">
 
@@ -126,11 +155,19 @@
         "lengthChange": false,
         "pageLength": 5,
         "searching": false,
-        "paging": false,
+        "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "bSort": false,
+        "columnDefs":[
+           {
+               "targets": [0],
+               "visible":false,
+           }
+        ],
+        "order": [[0, "asc"]]
     });
+
+    GestionePulsantiNotificaAttivaAnnullaMAB_var(@idTrasferimento);
 
     $('#ImportoCanone').autoNumeric('init',
     {
@@ -138,5 +175,10 @@
         aDec: ',',
         nSep: true
     });
+
+    function AnnullaModificheMAB_var(idMab) {
+        $('#AnnullaModificheMABModal').modal('show');
+        $('#hiAnnullaModMAB').val(idMab);
+    }
 
 </script>

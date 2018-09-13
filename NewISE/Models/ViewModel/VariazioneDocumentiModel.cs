@@ -10,6 +10,8 @@ namespace NewISE.Models.DBModel
     
     public class VariazioneDocumentiModel : DocumentiModel
     {
+        [Required]
+        public decimal ldescrizioneTipoDoc { get; set; }
         public bool Modificabile { get; set; }
         public decimal IdAttivazione { get; set; }
 
@@ -19,8 +21,11 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "Num. Variaz.")]
         public int progressivo { get; set; }
+        public decimal idTipoDocumento { get; set; }
 
         public bool sostituito { get; set; }
+        [Display(Name = "Tipo Documento")]
+        public string DescrizioneTipoDocumento { get; set; }
         public string ev_nomedocumento;
 
 

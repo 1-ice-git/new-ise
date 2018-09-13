@@ -106,8 +106,6 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-
-
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

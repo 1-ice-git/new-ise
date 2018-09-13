@@ -9,8 +9,7 @@ namespace NewISE.Models.ViewModel
 {
     public class MABViewModel : MABModel
     {
-
-
+        
         [Display(Name = "Canone")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal importo_canone { get; set; }
@@ -18,16 +17,17 @@ namespace NewISE.Models.ViewModel
         public decimal idMagAnnuali { get; set; }
         public decimal idTrasferimento { get; set; }
         public decimal idPeriodoMAB { get; set; }
-        //public decimal idAttivazioneMAB { get; set; }
-        //public decimal idMAB { get; set; }
-
-        //public bool rinunciaMAB { get; set; }
 
         [Display(Name = "Valuta")]
         public string descrizioneValuta { get; set; }
+
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Name = "Data Fine")]        
         public DateTime? ut_dataFineMAB { get; set; }
+        [Display(Name = "Data Inizio")]
+        [Required]
+        public DateTime? ut_dataInizioMAB { get; set; }
 
         [Display(Name = "Canone Condiviso")]
         public bool canone_condiviso { get; set; }
@@ -37,6 +37,7 @@ namespace NewISE.Models.ViewModel
         public bool anticipoAnnuale { get; set; }
 
         public bool annualita { get; set; }
+        public bool annualita_modificabile { get; set; }
 
         [Display(Name = "Data Inizio")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
@@ -46,6 +47,10 @@ namespace NewISE.Models.ViewModel
         public DateTime dataFineMAB { get; set; }
 
         public bool periodopartenza { get; set; }
+
+        public bool modificabile { get; set; }
+
+        public bool annullabile { get; set; }
 
     }
 }

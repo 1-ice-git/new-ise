@@ -62,7 +62,10 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                    var aml = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
+                    var aml = t.ATTIVAZIONEMAB
+                                .Where(a => a.ANNULLATO == false)
+                                .OrderBy(a => a.IDATTIVAZIONEMAB)
+                                .ToList();
 
                     if (aml?.Any() ?? false)
                     {
@@ -91,7 +94,6 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
-
 
 
 
@@ -673,6 +675,8 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+
         public PERIODOMAB GetPeriodoMABPartenza(decimal idMab, ModelDBISE db)
         {
             try
@@ -705,6 +709,8 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+      
 
         public MAGGIORAZIONEABITAZIONE GetMaggiorazioneAbitazioneByID(decimal idMagAbitazione)
         {
@@ -752,11 +758,11 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
+                var mab = db.MAB.Find(idMab);
+
                 PAGATOCONDIVISOMAB pcmab = new PAGATOCONDIVISOMAB();
 
-                var ma = db.MAB.Find(idMab);
-
-                var pcmabl = ma.PAGATOCONDIVISOMAB.Where(a => 
+                var pcmabl = mab.PAGATOCONDIVISOMAB.Where(a => 
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo)
                         .OrderBy(a => a.IDPAGATOCONDIVISO)
@@ -887,6 +893,7 @@ namespace NewISE.Models.DBModel.dtObj
                             am.ATTIVAZIONE = true;
                             am.DATAATTIVAZIONE = DateTime.Now;
                             am.DATAAGGIORNAMENTO = DateTime.Now;
+                            am.DATAVARIAZIONE = DateTime.Now;
 
                             int i = db.SaveChanges();
 
@@ -1037,13 +1044,15 @@ namespace NewISE.Models.DBModel.dtObj
                                                                     Resources.msgEmail.OggettoAttivazioneMaggiorazioneAbitazione,
                                                                     string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioneAbitazione, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
                                                                     db);
+
+                                                var att_new = CreaAttivazioneMAB(t.idTrasferimento, db);
                                             }
                                         }
                                     }
                                 }
 
                                 //this.EmailAttivaRichiestaMAB(am.IDATTIVAZIONEMAB, db);
-
+                              
                             }
                         }
                     }

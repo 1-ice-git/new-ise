@@ -22,7 +22,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data fine valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        public DateTime? dataFineValidita { get; set; }
+        public DateTime dataFineValidita { get; set; }
         [Required(ErrorMessage = "L'importo della pensione è richiesto.")]
         [Display(Name = "Pensione")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]

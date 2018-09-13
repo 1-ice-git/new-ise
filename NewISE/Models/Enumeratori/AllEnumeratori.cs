@@ -149,7 +149,8 @@ namespace NewISE.Models.Enumeratori
         Variazione_Maggiorazioni_Familiari = 6,
         Maggiorazione_Abitazione = 7,
         Anticipi = 8,
-        ProvvidenzeScolastiche = 9
+        ProvvidenzeScolastiche = 9,
+        Variazione_Maggiorazione_Abitazione = 10
     }
 
     public enum EnumTipoDoc
@@ -172,7 +173,6 @@ namespace NewISE.Models.Enumeratori
         Preventivo_Viaggio = 16,
         Passaporto = 17,
         Formulario_Provvidenze_Scolastiche = 18
-
     }
 
     public enum EnumFunzioniEventi

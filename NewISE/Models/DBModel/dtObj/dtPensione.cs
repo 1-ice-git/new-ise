@@ -447,7 +447,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         if (pcmDB.DATAINIZIO != pcm.dataInizioValidita || pcmDB.DATAFINE != pcm.dataFineValidita)
                         {
-                            lpcmInteressati = PrelevaMovPensioneInteressati(idConiuge, pcm.dataInizioValidita, pcm.dataFineValidita.Value, db).OrderBy(a => a.dataInizioValidita).ToList();
+                            lpcmInteressati = PrelevaMovPensioneInteressati(idConiuge, pcm.dataInizioValidita, pcm.dataFineValidita, db).OrderBy(a => a.dataInizioValidita).ToList();
                             if (lpcmInteressati != null && lpcmInteressati.Count > 0)
                             {
                                 lpcmInteressati.ForEach(a => a.Annulla(db));
@@ -478,7 +478,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
 
                                         importoPensione = pcmSuccessivo.importoPensione,
-                                        dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
+                                        dataInizioValidita = pcm.dataFineValidita.AddDays(1),
                                         dataFineValidita = pcmSuccessivo.dataFineValidita,
                                         dataAggiornamento = DateTime.Now,
                                         idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione
@@ -540,7 +540,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
 
                 lpcmInteressati =
-                    PrelevaMovPensioneInteressati(idConiuge, pcm.dataInizioValidita, pcm.dataFineValidita.Value, db)
+                    PrelevaMovPensioneInteressati(idConiuge, pcm.dataInizioValidita, pcm.dataFineValidita, db)
                         .OrderBy(a => a.dataInizioValidita)
                         .ToList();
 
@@ -575,7 +575,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
 
                             importoPensione = pcmSuccessivo.importoPensione,
-                            dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
+                            dataInizioValidita = pcm.dataFineValidita.AddDays(1),
                             dataFineValidita = pcmSuccessivo.dataFineValidita,
                             dataAggiornamento = DateTime.Now,
                             idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
@@ -914,7 +914,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
                         foreach (var pcmSucc in lpcmSuccessivi)
                         {
-                            if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                            if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.AddDays(1))
                             {
                                 dataFineCorrente = pcmSucc.dataFineValidita;
                                 pcmSucc.NascondiRecord(db);
@@ -1023,7 +1023,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
                             foreach (var pcmSucc in lpcmSuccessivi)
                             {
-                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.AddDays(1))
                                 {
                                     dataFineCorrente = pcmSucc.dataFineValidita;
                                     pcmSucc.NascondiRecord(db);
@@ -1037,7 +1037,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 #region edit record
                                 var pcPrecedente = db.PENSIONE.Find(pcmPrecedente.idPensioneConiuge);
                                 pcPrecedente.IMPORTOPENSIONE = pcm.importoPensione;
-                                pcPrecedente.DATAFINE = dataFineCorrente.Value;
+                                pcPrecedente.DATAFINE = dataFineCorrente;
                                 pcPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
                                 if (db.SaveChanges() <= 0)
                                 {
@@ -1091,7 +1091,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
                             foreach (var pcmSucc in lpcmSuccessivi)
                             {
-                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.AddDays(1))
                                 {
                                     dataFineCorrente = pcmSucc.dataFineValidita;
                                     pcmSucc.NascondiRecord(db);
@@ -1143,7 +1143,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
 
                     lpcmInteressati =
-                        PrelevaMovPensioneInteressati(idConiuge, pcm.dataInizioValidita, pcm.dataFineValidita.Value, db)
+                        PrelevaMovPensioneInteressati(idConiuge, pcm.dataInizioValidita, pcm.dataFineValidita, db)
                             .OrderBy(a => a.dataInizioValidita)
                             .ToList();
 
@@ -1180,7 +1180,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
 
                                 importoPensione = pcmSuccessivo.importoPensione,
-                                dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
+                                dataInizioValidita = pcm.dataFineValidita.AddDays(1),
                                 dataFineValidita = pcmSuccessivo.dataFineValidita,
                                 dataAggiornamento = DateTime.Now,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
@@ -1408,7 +1408,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     IMPORTOPENSIONE = pcm.importoPensione,
                     DATAINIZIO = pcm.dataInizioValidita,
-                    DATAFINE = pcm.dataFineValidita.Value,
+                    DATAFINE = pcm.dataFineValidita,
                     DATAAGGIORNAMENTO = pcm.dataAggiornamento,
                     IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
                 };
@@ -1471,7 +1471,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     IMPORTOPENSIONE = pcm.importoPensione,
                     DATAINIZIO = pcm.dataInizioValidita,
-                    DATAFINE = pcm.dataFineValidita.HasValue ? pcm.dataFineValidita.Value : Utility.DataFineStop(),
+                    DATAFINE = pcm.dataFineValidita<Utility.DataFineStop() ? pcm.dataFineValidita : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = pcm.dataAggiornamento,
                     IDSTATORECORD = pcm.idStatoRecord
                 };
@@ -1491,7 +1491,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IMPORTOPENSIONE = pcm.importoPensione,
                 DATAINIZIO = pcm.dataInizioValidita,
-                DATAFINE = pcm.dataFineValidita.HasValue ? pcm.dataFineValidita.Value : Utility.DataFineStop(),
+                DATAFINE = pcm.dataFineValidita<Utility.DataFineStop() ? pcm.dataFineValidita : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = pcm.dataAggiornamento,
                 IDSTATORECORD = pcm.idStatoRecord
             };
@@ -1718,7 +1718,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
                         foreach (var pcmSucc in lpcmSuccessivi)
                         {
-                            if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                            if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.AddDays(1))
                             {
                                 dataFineCorrente = pcmSucc.dataFineValidita;
                                 pcmSucc.NascondiRecord(db);
@@ -1815,7 +1815,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
                             foreach (var pcmSucc in lpcmSuccessivi)
                             {
-                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.AddDays(1))
                                 {
                                     dataFineCorrente = pcmSucc.dataFineValidita;
                                     pcmSucc.NascondiRecord(db);
@@ -1881,7 +1881,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
                             foreach (var pcmSucc in lpcmSuccessivi)
                             {
-                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.Value.AddDays(1))
+                                if (cont > 1 && pcmSucc.dataInizioValidita == dataFineCorrente.AddDays(1))
                                 {
                                     dataFineCorrente = pcmSucc.dataFineValidita;
                                     pcmSucc.NascondiRecord(db);

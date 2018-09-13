@@ -1,0 +1,244 @@
+﻿@using NewISE.Models.ViewModel
+@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+
+@model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
+
+@{
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    EnumChiamante enChiamante = EnumChiamante.Variazione_Maggiorazione_Abitazione;
+}
+
+@Html.Hidden("hiIdTipoDocumento", 0)
+@Html.Hidden("hIdDocFormularioMAB", 0)
+
+<table class="table" id="tabElencoFormulariMABInseriti_Var">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.progressivo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipoDocumento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nomeDocumento)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.estensione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInserimento)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    (@Html.DisplayFor(modelItem => item.IdAttivazione))
+                </td>
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
+                        (@Html.DisplayFor(modelItem => item.progressivo))
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
+                        (@Html.DisplayFor(modelItem => item.progressivo))
+                    </td>
+                }
+
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.DescrizioneTipoDocumento)
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.DescrizioneTipoDocumento)
+                    </td>
+                }
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+
+
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
+                </td>
+
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    @if (item.Modificabile)
+                    {
+                        <a href="#" onclick="EliminaFormularioMAB(@item.idDocumenti)" id="linkEliminaFormulario">
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                        </a>
+                    }
+                    else
+                    {
+                        <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<div class="modal fade" id="ModalEliminaFormularioMAB" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaFormularioMABLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="EliminaFormularioMABLabel">Eliminazione Formulario Maggiorazione Abitazione</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <input type="hidden" id="hIdDocFormularioMAB" />
+                <p><label>Eliminare il formulario selezionato?</label></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaFormularioMAB();">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#tabElencoFormulariMABInseriti_Var").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs":[
+            {
+                "targets": [0],
+                "visible":false,
+            }
+        ],
+        "order": [[0, "desc"], [5, "desc"]]
+    });
+
+    function EliminaFormularioMAB(idDoc) {
+        $("#hIdDocFormularioMAB").val(idDoc);
+        $("#ModalEliminaFormularioMAB").modal("show");
+    }
+
+    function ConfermaEliminaFormularioMAB() {
+        //debugger;
+        var rotta = "/Documenti/EliminaFormularioMAB";
+        var idDoc = $("#hIdDocFormularioMAB").val();
+        var idTrasferimento = $("#hdIdTrasferimento").val();
+        
+        $("#ModalEliminaFormularioMAB").modal("hide");
+        var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idDocumento: idDoc, chiamante: chiamante }, //I dati, forniti sotto forma di oggetto FormData
+            dataType: 'json',
+            cache: false,
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "" && result.err != undefined) {
+                    ErroreElaborazioneAjax(result.err);
+                }
+                else {
+                    ElencoFormulariMABInseriti(idTrasferimento)
+                    GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
+                }
+            },
+            complete: function () {
+            },
+            error: function (error) {
+                //debugger;
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+   
+</script>
+
+
