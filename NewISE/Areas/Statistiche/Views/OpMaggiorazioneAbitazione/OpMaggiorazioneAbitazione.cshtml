@@ -28,14 +28,19 @@
                         @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
                         @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
 
-                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                        @*<a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
                             <span class="glyphicon glyphicon-print"></span> Stampa
-                        </a>
+                        </a>*@
 
                         @*<button class="btn btn-default btn-sm" onclick="DownloadReport1();">
                             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
                             Stampa
                         </button>*@
+
+                        <button class="btn btn-default btn-sm" id="opener">
+                            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                            Stampa
+                        </button>
 
                     </div>
 
@@ -161,13 +166,8 @@
         }
     });
 
-    
-
-
-
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
-
 
 
     $(function () {
