@@ -19,6 +19,7 @@ namespace NewISE.EF
         {
             this.ELABMAB = new HashSet<ELABMAB>();
             this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
+            this.ELABINDRICHIAMO = new HashSet<ELABINDRICHIAMO>();
             this.ELABINDSISTEMAZIONE = new HashSet<ELABINDSISTEMAZIONE>();
         }
     
@@ -35,6 +36,8 @@ namespace NewISE.EF
         public virtual ICollection<ELABMAB> ELABMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDRICHIAMO> ELABINDRICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
     }

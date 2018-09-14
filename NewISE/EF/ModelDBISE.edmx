@@ -598,7 +598,6 @@
           <Property Name="PENSIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="FK_IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -670,7 +669,7 @@
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="RICALCOLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="EMAB_ALIQ">
           <Key>
@@ -1321,6 +1320,14 @@
           <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="RICH_ALIQ">
+          <Key>
+            <PropertyRef Name="IDELABINDRICHIAMO" />
+            <PropertyRef Name="IDALIQCONTR" />
+          </Key>
+          <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="RICHIAMO">
           <Key>
             <PropertyRef Name="IDRICHIAMO" />
@@ -1799,6 +1806,20 @@
             </Principal>
             <Dependent Role="LOGATTIVITA">
               <PropertyRef Name="IDATTIVITACRUD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AC_RA">
+          <End Role="ALIQUOTECONTRIBUTIVE" Type="Self.ALIQUOTECONTRIBUTIVE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RICH_ALIQ" Type="Self.RICH_ALIQ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALIQUOTECONTRIBUTIVE">
+              <PropertyRef Name="IDALIQCONTR" />
+            </Principal>
+            <Dependent Role="RICH_ALIQ">
+              <PropertyRef Name="IDALIQCONTR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3030,17 +3051,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EIR_EIR">
-          <End Role="ELABINDRICHIAMO" Type="Self.ELABINDRICHIAMO" Multiplicity="0..1">
+        <Association Name="R_EIR_RA">
+          <End Role="ELABINDRICHIAMO" Type="Self.ELABINDRICHIAMO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ELABINDRICHIAMO1" Type="Self.ELABINDRICHIAMO" Multiplicity="*" />
+          <End Role="RICH_ALIQ" Type="Self.RICH_ALIQ" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ELABINDRICHIAMO">
               <PropertyRef Name="IDELABINDRICHIAMO" />
             </Principal>
-            <Dependent Role="ELABINDRICHIAMO1">
-              <PropertyRef Name="FK_IDELABINDRICHIAMO" />
+            <Dependent Role="RICH_ALIQ">
+              <PropertyRef Name="IDELABINDRICHIAMO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5659,6 +5680,7 @@
           <EntitySet Name="PS_PFKM" EntityType="Self.PS_PFKM" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="REGOLECALCOLO" EntityType="Self.REGOLECALCOLO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RIC_PFKM" EntityType="Self.RIC_PFKM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RICH_ALIQ" EntityType="Self.RICH_ALIQ" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RICHIAMO" EntityType="Self.RICHIAMO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RICHIAMO_COEFFRICH" EntityType="Self.RICHIAMO_COEFFRICH" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISESIM" store:Type="Tables" />
@@ -5725,6 +5747,10 @@
           <AssociationSet Name="R_AC_LA" Association="Self.R_AC_LA">
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
+          </AssociationSet>
+          <AssociationSet Name="R_AC_RA" Association="Self.R_AC_RA">
+            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+            <End Role="RICH_ALIQ" EntitySet="RICH_ALIQ" />
           </AssociationSet>
           <AssociationSet Name="R_AC_SA" Association="Self.R_AC_SA">
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
@@ -6078,9 +6104,9 @@
             <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
             <End Role="ELABDATIFIGLI" EntitySet="ELABDATIFIGLI" />
           </AssociationSet>
-          <AssociationSet Name="R_EIR_EIR" Association="Self.R_EIR_EIR">
+          <AssociationSet Name="R_EIR_RA" Association="Self.R_EIR_RA">
             <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
-            <End Role="ELABINDRICHIAMO1" EntitySet="ELABINDRICHIAMO" />
+            <End Role="RICH_ALIQ" EntitySet="RICH_ALIQ" />
           </AssociationSet>
           <AssociationSet Name="R_EIR_T" Association="Self.R_EIR_T">
             <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
@@ -7217,10 +7243,6 @@
             <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="ELABINDENNITA" EntitySet="ELABINDENNITA" />
           </AssociationSet>
-          <AssociationSet Name="R_EIR_EIR" Association="DBISE.R_EIR_EIR">
-            <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
-            <End Role="ELABINDRICHIAMO1" EntitySet="ELABINDRICHIAMO" />
-          </AssociationSet>
           <AssociationSet Name="R_EIR_T" Association="DBISE.R_EIR_T">
             <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
             <End Role="TEORICI" EntitySet="TEORICI" />
@@ -7753,6 +7775,10 @@
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
           </AssociationSet>
+          <AssociationSet Name="RICH_ALIQ" Association="DBISE.RICH_ALIQ">
+            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+            <End Role="ELABINDRICHIAMO" EntitySet="ELABINDRICHIAMO" />
+          </AssociationSet>
           <AssociationSet Name="RICHIAMO_COEFFRICH" Association="DBISE.RICHIAMO_COEFFRICH">
             <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
@@ -7806,6 +7832,7 @@
           <NavigationProperty Name="TIPOALIQUOTECONTRIBUTIVE" Relationship="DBISE.R_TC_AC" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="TIPOALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISE.EMAB_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABMAB" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.IND_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABINDENNITA" />
+          <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.RICH_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.SIST_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABINDSISTEMAZIONE" />
         </EntityType>
         <EntityType Name="ALTRIDATIFAM">
@@ -8320,15 +8347,13 @@
           <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="FK_IDELABINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIR_EDF" FromRole="ELABINDRICHIAMO" ToRole="ELABDATIFIGLI" />
-          <NavigationProperty Name="ELABINDRICHIAMO1" Relationship="DBISE.R_EIR_EIR" FromRole="ELABINDRICHIAMO" ToRole="ELABINDRICHIAMO1" />
-          <NavigationProperty Name="ELABINDRICHIAMO2" Relationship="DBISE.R_EIR_EIR" FromRole="ELABINDRICHIAMO1" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EIR_T" FromRole="ELABINDRICHIAMO" ToRole="TEORICI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EIR" FromRole="ELABINDRICHIAMO" ToRole="LIVELLI" />
           <NavigationProperty Name="RICHIAMO" Relationship="DBISE.R_R_EIR" FromRole="ELABINDRICHIAMO" ToRole="RICHIAMO" />
+          <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.RICH_ALIQ" FromRole="ELABINDRICHIAMO" ToRole="ALIQUOTECONTRIBUTIVE" />
         </EntityType>
         <EntityType Name="ELABINDSISTEMAZIONE">
           <Key>
@@ -8410,7 +8435,7 @@
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="RICALCOLATO" Type="Boolean" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_ETE_T" FromRole="ELABTRASPEFFETTI" ToRole="TEORICI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_ETE" FromRole="ELABTRASPEFFETTI" ToRole="LIVELLI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISE.R_TEP_ETE" FromRole="ELABTRASPEFFETTI" ToRole="TEPARTENZA" />
@@ -10539,20 +10564,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EIR_EIR">
-          <End Type="DBISE.ELABINDRICHIAMO" Role="ELABINDRICHIAMO" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.ELABINDRICHIAMO" Role="ELABINDRICHIAMO1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELABINDRICHIAMO">
-              <PropertyRef Name="IDELABINDRICHIAMO" />
-            </Principal>
-            <Dependent Role="ELABINDRICHIAMO1">
-              <PropertyRef Name="FK_IDELABINDRICHIAMO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_EIR_T">
           <End Type="DBISE.ELABINDRICHIAMO" Role="ELABINDRICHIAMO" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -11923,6 +11934,10 @@
           <End Type="DBISE.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
           <End Type="DBISE.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
         </Association>
+        <Association Name="RICH_ALIQ">
+          <End Type="DBISE.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
+          <End Type="DBISE.ELABINDRICHIAMO" Role="ELABINDRICHIAMO" Multiplicity="*" />
+        </Association>
         <Association Name="RICHIAMO_COEFFRICH">
           <End Type="DBISE.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
           <End Type="DBISE.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
@@ -12368,7 +12383,6 @@
               <MappingFragment StoreEntitySet="ELABINDRICHIAMO">
                 <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
-                <ScalarProperty Name="FK_IDELABINDRICHIAMO" ColumnName="FK_IDELABINDRICHIAMO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="PENSIONECONIUGE" ColumnName="PENSIONECONIUGE" />
@@ -12442,7 +12456,7 @@
           <EntitySetMapping Name="ELABTRASPEFFETTI">
             <EntityTypeMapping TypeName="DBISE.ELABTRASPEFFETTI">
               <MappingFragment StoreEntitySet="ELABTRASPEFFETTI">
-                <ScalarProperty Name="RICALCOLATO" ColumnName="RICALCOLATO" />
+                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
@@ -13740,6 +13754,14 @@
             </EndProperty>
             <EndProperty Name="PERCENTUALEFKM">
               <ScalarProperty Name="IDPFKM" ColumnName="IDPFKM" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RICH_ALIQ" TypeName="DBISE.RICH_ALIQ" StoreEntitySet="RICH_ALIQ">
+            <EndProperty Name="ELABINDRICHIAMO">
+              <ScalarProperty Name="IDELABINDRICHIAMO" ColumnName="IDELABINDRICHIAMO" />
+            </EndProperty>
+            <EndProperty Name="ALIQUOTECONTRIBUTIVE">
+              <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="RICHIAMO_COEFFRICH" TypeName="DBISE.RICHIAMO_COEFFRICH" StoreEntitySet="RICHIAMO_COEFFRICH">

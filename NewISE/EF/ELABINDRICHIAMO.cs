@@ -18,8 +18,8 @@ namespace NewISE.EF
         public ELABINDRICHIAMO()
         {
             this.ELABDATIFIGLI = new HashSet<ELABDATIFIGLI>();
-            this.ELABINDRICHIAMO1 = new HashSet<ELABINDRICHIAMO>();
             this.TEORICI = new HashSet<TEORICI>();
+            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
         }
     
         public decimal IDELABINDRICHIAMO { get; set; }
@@ -32,18 +32,16 @@ namespace NewISE.EF
         public decimal PENSIONECONIUGE { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public Nullable<decimal> FK_IDELABINDRICHIAMO { get; set; }
         public decimal IDLIVELLO { get; set; }
         public bool CONGUAGLIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABINDRICHIAMO> ELABINDRICHIAMO1 { get; set; }
-        public virtual ELABINDRICHIAMO ELABINDRICHIAMO2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
         public virtual RICHIAMO RICHIAMO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
     }
 }

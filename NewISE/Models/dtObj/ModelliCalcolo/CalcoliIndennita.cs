@@ -80,6 +80,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _importoMABMaxMensile = 0;
         private decimal _importoMABMensile = 0;
 
+        private decimal _percentualeRiduzioneRichiamo = 0;
+
+
+
         private DateTime _dtDatiParametri;
         private TRASFERIMENTO _trasferimento = new TRASFERIMENTO();
         private INDENNITA _indennita = new INDENNITA();
@@ -187,6 +191,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal ImportoMABMaxMensile => _importoMABMaxMensile;
         [ReadOnly(true)]
         public decimal ImportoMABMensile => _importoMABMensile;
+        [ReadOnly(true)]
+        public decimal PercentualeRiduzioneRichiamo => _percentualeRiduzioneRichiamo;
         //[ReadOnly(true)]
         //public int GiorniSospensione => _giorniSospensione;
 
@@ -465,6 +471,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             }
 
         }
+
+
+
+
 
         private void CalcolaMab()
         {
@@ -816,6 +826,67 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         }
 
+        private void CalcolaRichiamo()
+        {
+            var lRichiamo =
+                _trasferimento.RICHIAMO.Where(
+                    a => a.ANNULLATO == false && a.DATARICHIAMO < Convert.ToDateTime("31/12/9999"))
+                    .OrderByDescending(a => a.IDRICHIAMO)
+                    .ToList();
+
+            if (lRichiamo?.Any() ?? false)
+            {
+                var richiamo = lRichiamo.First();
+                DateTime dataRientro = _trasferimento.DATARIENTRO;
+
+                var lcr =
+                    richiamo.COEFFICIENTEINDRICHIAMO.Where(
+                        a =>
+                            a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
+                            dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (lcr?.Any() ?? false)
+                {
+                    RIDUZIONI riduzione = new RIDUZIONI();
+
+                    var cr = lcr.First();
+
+                    var lrid =
+                        cr.RIDUZIONI.Where(
+                            a =>
+                                a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
+                                dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                    if (lrid?.Any() ?? false)
+                    {
+                        riduzione = lrid.First();
+                        _percentualeRiduzioneRichiamo = riduzione.PERCENTUALE;
+                    }
+
+                    var maggiorazione = _indennitaDiBase * _coefficienteDiSede;
+                    _coefficenteIndennitaRichiamo = cr.COEFFICIENTERICHIAMO;
+                    var abbattimento = maggiorazione * _coefficenteIndennitaRichiamo;
+
+
+
+                    if (_percentualeRiduzioneRichiamo > 0)
+                    {
+                        _indennitaRichiamoLordo = Math.Round(((abbattimento + _maggiorazioniFimailiri) * (_percentualeRiduzioneRichiamo / 100)), 8);
+                    }
+                    else
+                    {
+                        _indennitaRichiamoLordo = Math.Round(abbattimento + _maggiorazioniFimailiri, 8);
+                    }
+
+
+                }
+
+            }
+
+
+        }
+
+
         private void CalcolaPrimaSistemazione()
         {
             RIDUZIONI riduzioniPS = new RIDUZIONI();
@@ -859,47 +930,10 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     _indennitaSistemazione = Math.Round(_coefficienteIndennitaSistemazione * _indennitaPersonale, 8);
                     _indennitaSistemazioneAnticipabile = Math.Round(_coefficienteIndennitaSistemazione * _indennitaDiServizio, 8);
                 }
-
-
             }
-
-
         }
 
-        private void CalcolaRichiamo()
-        {
-            var lRichiamo = _trasferimento.RICHIAMO.Where(a => a.ANNULLATO == false).ToList();
 
-            if (lRichiamo?.Any() ?? false)
-            {
-                var richiamo = lRichiamo.First();
-                //DateTime dataRientro = richiamo.DATARICHIAMO.AddDays(-1);
-
-
-                var lcr =
-                    richiamo.COEFFICIENTEINDRICHIAMO.Where(
-                        a =>
-                            a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                            _dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-
-                if (lcr?.Any() ?? false)
-                {
-                    var cr = lcr.First();
-
-                    var maggiorazione = _indennitaDiBase * _coefficienteDiSede;
-
-                    _coefficenteIndennitaRichiamo = cr.COEFFICIENTERICHIAMO;
-
-                    var abbattimento = maggiorazione * _coefficenteIndennitaRichiamo;
-
-                    _indennitaRichiamoLordo = Math.Round(abbattimento + _maggiorazioniFimailiri, 8);
-
-
-                }
-
-            }
-
-        }
 
         private void CalcolaContributoOmniComprensivoPartenza()
         {

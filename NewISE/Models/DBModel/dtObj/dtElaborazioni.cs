@@ -1077,7 +1077,26 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void AssociaAliquoteIndRichiamo(decimal idIndRichiamo, decimal idAliquota, ModelDBISE db)
+        {
+            var indRich = db.ELABINDRICHIAMO.Find(idIndRichiamo);
+            var item = db.Entry<ELABINDRICHIAMO>(indRich);
 
+            item.State = EntityState.Modified;
+            item.Collection(a => a.ALIQUOTECONTRIBUTIVE).Load();
+            var aliq = db.ALIQUOTECONTRIBUTIVE.Find(idAliquota);
+
+            indRich.ALIQUOTECONTRIBUTIVE.Add(aliq);
+
+            var i = db.SaveChanges();
+
+            if (i <= 0)
+            {
+                throw new Exception("Impossibile associare l'aliquota all'indennità di richiamo.");
+            }
+            
+
+        }
 
 
         public void InviaSaldoUnicaSoluzionePrimaSitemazioneContabilita(decimal idAttivitaAnticipi, ModelDBISE db)
@@ -3143,8 +3162,23 @@ namespace NewISE.Models.DBModel.dtObj
             return ret;
         }
 
+        private decimal NettoIndennitaRichiamo(int matricola, decimal imponibileLordo, decimal aliqPrev, decimal detrazioni, out decimal outAliqIse)
+        {
+            decimal ret = 0;
+            outAliqIse = 0;
+
+
+
+            return ret;
+        }
+
+
+
         private void InsTrasportoEffetti(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
+
+            
+
             var tePartenza = trasferimento.TEPARTENZA;
             var teRientro = trasferimento.TERIENTRO;
 
@@ -3170,7 +3204,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var lElabTEAnticipo =
                         tePartenza.ELABTRASPEFFETTI.Where(
                             a =>
-                                a.ANNULLATO == false && a.RICALCOLATO == false && a.ANTICIPO == true && a.SALDO == false)
+                                a.ANNULLATO == false && a.CONGUAGLIO == false && a.ANTICIPO == true && a.SALDO == false)
                             .OrderByDescending(a => a.IDELABTRASPEFFETTI)
                             .ToList();
 
@@ -3202,7 +3236,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     SALDO = false,
                                     DATAOPERAZIONE = DateTime.Now,
                                     ANNULLATO = false,
-                                    RICALCOLATO = false
+                                    CONGUAGLIO = false
                                 };
 
                                 tePartenza.ELABTRASPEFFETTI.Add(teap);
@@ -3253,7 +3287,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 var lElabTESaldo =
                                     tePartenza.ELABTRASPEFFETTI.Where(
                                         a =>
-                                            a.ANNULLATO == false && a.RICALCOLATO == false && a.ANTICIPO == false &&
+                                            a.ANNULLATO == false && a.CONGUAGLIO == false && a.ANTICIPO == false &&
                                             a.SALDO == true)
                                         .OrderByDescending(a => a.IDELABTRASPEFFETTI)
                                         .ToList();
@@ -3285,7 +3319,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             SALDO = true,
                                             DATAOPERAZIONE = DateTime.Now,
                                             ANNULLATO = false,
-                                            RICALCOLATO = false
+                                            CONGUAGLIO = false
                                         };
 
                                         tePartenza.ELABTRASPEFFETTI.Add(teap);
@@ -3354,7 +3388,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         SALDO = true,
                                         DATAOPERAZIONE = DateTime.Now,
                                         ANNULLATO = false,
-                                        RICALCOLATO = false
+                                        CONGUAGLIO = false
                                     };
 
                                     tePartenza.ELABTRASPEFFETTI.Add(teap);
@@ -3406,12 +3440,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         db.SaveChanges();
                                     }
                                 }
-
-
                             }
-
-
-
                         }
                         else
                         {
@@ -3425,7 +3454,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 SALDO = false,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false,
-                                RICALCOLATO = false
+                                CONGUAGLIO = false
                             };
 
                             tePartenza.ELABTRASPEFFETTI.Add(teap);
@@ -3448,7 +3477,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     tipoMov = EnumTipoMovimento.MeseCorrente_M;
                                 }
 
-
                                 TEORICI t = new TEORICI()
                                 {
                                     IDTIPOMOVIMENTO = (decimal)tipoMov,
@@ -3469,8 +3497,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 db.SaveChanges();
                             }
                         }
-
-
                     }
                 }
             }
@@ -3495,7 +3521,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var lElabTEAnticipo =
                         teRientro.ELABTRASPEFFETTI.Where(
                             a =>
-                                a.ANNULLATO == false && a.ANTICIPO == true && a.SALDO == false)
+                                a.ANNULLATO == false && a.ANTICIPO == true && a.SALDO == false && a.CONGUAGLIO == false)
                             .OrderByDescending(a => a.IDELABTRASPEFFETTI)
                             .ToList();
 
@@ -3577,7 +3603,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 var lElabTESaldo =
                                     teRientro.ELABTRASPEFFETTI.Where(
                                         a =>
-                                            a.ANNULLATO == false && a.RICALCOLATO == false && a.ANTICIPO == false &&
+                                            a.ANNULLATO == false && a.CONGUAGLIO == false && a.ANTICIPO == false &&
                                             a.SALDO == true)
                                         .OrderByDescending(a => a.IDELABTRASPEFFETTI)
                                         .ToList();
@@ -3609,7 +3635,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             SALDO = true,
                                             DATAOPERAZIONE = DateTime.Now,
                                             ANNULLATO = false,
-                                            RICALCOLATO = false
+                                            CONGUAGLIO = false
                                         };
 
                                         teRientro.ELABTRASPEFFETTI.Add(teap);
@@ -3678,7 +3704,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         SALDO = true,
                                         DATAOPERAZIONE = DateTime.Now,
                                         ANNULLATO = false,
-                                        RICALCOLATO = false
+                                        CONGUAGLIO = false
                                     };
 
                                     tePartenza.ELABTRASPEFFETTI.Add(teap);
@@ -5735,6 +5761,194 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        private void InsSistemazioneRichiamo(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
+        {
+            var lRichiami = trasferimento.RICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDRICHIAMO).ToList();
+
+            if (lRichiami?.Any() ?? false)
+            {
+                DateTime dataFineTrasf = trasferimento.DATARIENTRO;
+
+                var richiamo = lRichiami.Last();
+
+                if (richiamo.DATARICHIAMO < Convert.ToDateTime("31/12/9999"))
+                {
+                    if ((richiamo.DATARICHIAMO - dataFineTrasf).Days == 1)
+                    {
+                        var lcoefRichiamo =
+                        richiamo.COEFFICIENTEINDRICHIAMO.Where(
+                            a =>
+                                a.ANNULLATO == false && dataFineTrasf >= a.DATAFINEVALIDITA &&
+                                dataFineTrasf <= a.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                        if (lcoefRichiamo?.Any() ?? false)
+                        {
+                            var coefRich = lcoefRichiamo.Last();
+
+                            RIDUZIONI riduzione = new RIDUZIONI();
+
+                            var lrid =
+                                coefRich.RIDUZIONI.Where(
+                                    a =>
+                                        a.ANNULLATO == false && dataFineTrasf >= a.DATAINIZIOVALIDITA &&
+                                        dataFineTrasf <= a.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                            if (lrid?.Any() ?? false)
+                            {
+                                riduzione = lrid.Last();
+                            }
+
+                            var ler =
+                                richiamo.ELABINDRICHIAMO.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.TEORICI.All(b => b.ANNULLATO == false && b.ELABORATO == false));
+
+
+                            if (ler?.Any() ?? false)
+                            {
+                                foreach (var er in ler)
+                                {
+                                    er.ANNULLATO = true;
+
+                                    var lteorici =
+                                        er.TEORICI.Where(
+                                            a =>
+                                                a.ANNULLATO == false && a.ELABORATO == false &&
+                                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)
+                                            .OrderBy(a => a.ANNORIFERIMENTO)
+                                            .ThenBy(a => a.MESERIFERIMENTO)
+                                            .ToList();
+
+                                    foreach (var teorico in lteorici)
+                                    {
+                                        teorico.ANNULLATO = true;
+                                    }
+
+                                }
+
+                                db.SaveChanges();
+                            }
+
+                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dataFineTrasf, db))
+                            {
+                                ELABINDRICHIAMO eir = new ELABINDRICHIAMO()
+                                {
+                                    IDRICHIAMO = richiamo.IDRICHIAMO,
+                                    IDLIVELLO = ci.Livello.IDLIVELLO,
+                                    INDENNITABASE = ci.IndennitaDiBase,
+                                    COEFFICENTESEDE = ci.CoefficienteDiSede,
+                                    COEFFICENTEINDRICHIAMO = ci.CoefficenteIndennitaRichiamo,
+                                    PERCENTUALERIDUZIONE = ci.PercentualeRiduzioneRichiamo,
+                                    PERCMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                                    PENSIONECONIUGE = ci.PensioneConiuge,
+                                    DATAOPERAZIONE = DateTime.Now,
+                                    CONGUAGLIO = false,
+                                    ANNULLATO = false
+
+                                };
+
+                                db.ELABINDRICHIAMO.Add(eir);
+
+                                int i = db.SaveChanges();
+
+                                if (i <= 0)
+                                {
+                                    throw new Exception("Errore nella fase d'inderimento dell'indennità di richiamo.");
+                                }
+
+                                if (ci.lDatiFigli?.Any() ?? false)
+                                {
+                                    foreach (var df in ci.lDatiFigli)
+                                    {
+                                        ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                        {
+                                            IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                            INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                                            PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
+                                        };
+
+                                        eir.ELABDATIFIGLI.Add(edf);
+                                    }
+
+                                    int j = db.SaveChanges();
+
+                                    if (j <= 0)
+                                    {
+                                        throw new Exception("Errore nella fase d'inderimento dell'indennità di richiamo.");
+                                    }
+                                }
+
+
+                                ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                                var lacDetr =
+                                    db.ALIQUOTECONTRIBUTIVE.Where(
+                                        a =>
+                                            a.ANNULLATO == false &&
+                                            a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                            dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                        .ToList();
+
+
+                                if (lacDetr?.Any() ?? false)
+                                {
+                                    detrazioni = lacDetr.First();
+                                }
+                                else
+                                {
+                                    throw new Exception("Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                                }
+
+                                this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, detrazioni.IDALIQCONTR, db);
+
+                                ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
+
+                                var lacPrev =
+                                    db.ALIQUOTECONTRIBUTIVE.Where(
+                                        a =>
+                                            a.ANNULLATO == false &&
+                                            a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                            dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                        .ToList();
+
+                                if (lacPrev?.Any() ?? false)
+                                {
+                                    aliqPrev = lacPrev.First();
+                                }
+                                else
+                                {
+                                    throw new Exception(
+                                        "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+                                }
+
+
+                                this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, aliqPrev.IDALIQCONTR, db);
+
+
+
+
+                            }
+
+
+
+
+
+
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+            //DateTime dataRichiamo = 
+
+        }
+
         /// <summary>
         /// Inserisce i dati della prima sistemazione al cedolino.
         /// </summary>
@@ -6003,8 +6217,26 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (leis?.Any() ?? false)
                                 {
                                     this.ConguaglioPrimaSistemazione(trasferimento, MeseAnnoElaborato, db);
-                                }
 
+                                    #region Conguaglio trasporto effetti partenza
+
+                                    var lete =
+                                        trasferimento.TEPARTENZA.ELABTRASPEFFETTI.Where(
+                                            a =>
+                                                a.ANNULLATO == false &&
+                                                a.TEORICI.Any(
+                                                    b =>
+                                                        b.ANNULLATO == false && b.ELABORATO == true &&
+                                                        b.VOCI.IDTIPOLIQUIDAZIONE ==
+                                                        (decimal)EnumTipoLiquidazione.Contabilità)).ToList();
+
+                                    if (lete?.Any() ?? false)
+                                    {
+                                        this.ConguaglioTrasportoEffettiPartenza(trasferimento, MeseAnnoElaborato, db);
+                                    }
+
+                                    #endregion
+                                }
 
                             }
                             #endregion
@@ -6045,15 +6277,10 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             #endregion
 
-
-
-
-
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.SetLastMeseElabDataInizioRicalcoli(dip.IDDIPENDENTE, idMeseAnnoElaborato, db, true);
                             }
-
                         }
                     }
                     else
@@ -6073,6 +6300,99 @@ namespace NewISE.Models.DBModel.dtObj
 
                 throw ex;
             }
+        }
+
+        private void ConguaglioTrasportoEffettiPartenza(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
+        {
+            //var dip = trasferimento.DIPENDENTI;
+            var tePartenza = trasferimento.TEPARTENZA;
+
+            var lete =
+                tePartenza.ELABTRASPEFFETTI.Where(
+                    a =>
+                        a.ANNULLATO == false &&
+                        a.TEORICI.Any(
+                            b =>
+                                b.ANNULLATO == false && b.ELABORATO == true &&
+                                b.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)).ToList();
+
+            if (lete?.Any() ?? false)
+            {
+                var verificaAnticipo = lete.Any(a => a.ANTICIPO == true && a.SALDO == false);
+                var verificaSaldo = lete.Any(a => a.SALDO == true && a.ANTICIPO == false);
+
+                if (verificaAnticipo && verificaSaldo)
+                {
+                    decimal contrOmni = 0;
+
+                    foreach (var ete in lete)
+                    {
+                        contrOmni += ete.TEORICI.Sum(a => a.IMPORTO);
+                    }
+
+                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA, db))
+                    {
+                        decimal totaleContrOmniNew = ci.TotaleContributoOmnicomprensivo;
+                        decimal congContrOmni = contrOmni - totaleContrOmniNew;
+
+                        if (congContrOmni != 0)
+                        {
+                            ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
+                            {
+                                IDTEPARTENZA = tePartenza.IDTEPARTENZA,
+                                IDLIVELLO = ci.Livello.IDLIVELLO,
+                                PERCENTUALEFK = ci.PercentualeFKMPartenza,
+                                PERCENTUALEANTICIPOSALDO = ci.PercentualeAnticipoTEPartenza,
+                                ANTICIPO = false,
+                                SALDO = false,
+                                DATAOPERAZIONE = DateTime.Now,
+                                ANNULLATO = false,
+                                CONGUAGLIO = true
+                            };
+
+                            tePartenza.ELABTRASPEFFETTI.Add(teap);
+
+                            int i = db.SaveChanges();
+
+                            if (i > 0)
+                            {
+                                EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
+
+                                TEORICI t = new TEORICI()
+                                {
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                    IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                    IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
+                                    IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                    MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
+                                    ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
+                                    IMPORTO = congContrOmni,
+                                    DATAOPERAZIONE = DateTime.Now,
+                                    INSERIMENTOMANUALE = false,
+                                    ELABORATO = false,
+                                    ANNULLATO = false
+                                };
+
+                                teap.TEORICI.Add(t);
+
+                                db.SaveChanges();
+                            }
+                        }
+
+                    }
+
+
+
+
+
+                }
+
+
+
+            }
+
+
+
         }
 
         private void ConguaglioPrimaSistemazione(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
