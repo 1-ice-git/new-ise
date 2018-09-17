@@ -1,15 +1,19 @@
 ﻿@{
-   ViewBag.Title = "Parametri";
+    ViewBag.Title = "Parametri";
     Layout = "~/Views/Shared/_Layout.cshtml";
     decimal idTipoContributo = ViewBag.idTipoContributo == null ? 0 : (decimal)ViewBag.idTipoContributo;
     //ViewBag.idTipoContributo
 }
 
 <link href="~/Areas/Parametri/Contenuti/CSS/Parametri.css" rel="stylesheet" />
+
+
+
+
 @Html.Hidden("hiTipoContributo")
 @Html.Hidden("hiIdUfficio")
 
-<div class="form-horizontal" id="divRiga1">
+<div class="form-horizontal animated fadeIn" id="divRiga1">
 
     <div class="form-group">
         @Html.Label("lblParametro", "Seleziona Tabella", new { @class = "control-label col-xs-2" })
@@ -33,9 +37,11 @@
 </div>
 
 <div id="divContentpartial" class="row">
-    <div id="divPViewParametri" class="col-xs-12">
+    <div id="divPViewParametri" class="col-xs-12 ">
     </div>
 </div>
+
+
 
 <div id="dialog-message" title="Attenzione!!!" style="display:none;">
     <div>
@@ -76,7 +82,7 @@
                 $("#divPViewParametri").empty();
                 return false;
             }
-           // debugger;
+            // debugger;
             idLivello = parseInt($("#hiTipoContributo").val());
             var idUfficio = $("#hiIdUfficio").val();
             //  debugger;
@@ -133,10 +139,10 @@
                 case 15:// PercentualeDisagio
                     rotta = "/Parametri/ParamPercDisagio/PercentualeDisagio";
                     break;
-                case 16:// PercentualeDisagio                   
+                case 16:// PercentualeDisagio
                     rotta = "/Parametri/ParamPercAnticipoTe/PercAnticipoTE";
                     break;
-                case 17:// PercentualeDisagio                   
+                case 17:// PercentualeDisagio
                     rotta = "/Parametri/ParamPercCondivisioneMAB/PercCondivisioneMAB";
                     break;
                 default:
@@ -152,12 +158,14 @@
                     //VerificaAutenticazione();
                     //$("#DialogNewDoc").dialog("destroy");
                     //$("#divEffettoLoadAutNoDoc").show("slow");
+
                 },
                 success: function (result) {
                     //debugger;
                     //$("#divEffettoLoadAutNoDoc").hide("slow");
                     $("#divPViewParametri").empty();
                     $("#divPViewParametri").html(result);
+
 
                     //RicercaDocumenti();
 
@@ -174,11 +182,7 @@
 
             });
 
-
-
         }
-
-
 
     </script>
 }

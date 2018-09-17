@@ -1094,7 +1094,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw new Exception("Impossibile associare l'aliquota all'indennità di richiamo.");
             }
-            
+
 
         }
 
@@ -3138,7 +3138,15 @@ namespace NewISE.Models.DBModel.dtObj
             return lLm;
         }
 
-
+        /// <summary>
+        /// Netto della prima sistemazione
+        /// </summary>
+        /// <param name="matricola"></param>
+        /// <param name="imponibileLordo"></param>
+        /// <param name="aliqPrev"></param>
+        /// <param name="detrazioni"></param>
+        /// <param name="outAliqIse"></param>
+        /// <returns></returns>
         private decimal NettoPrimaSistemazione(int matricola, decimal imponibileLordo, decimal aliqPrev, decimal detrazioni, out decimal outAliqIse)
         {
             decimal ret = 0;
@@ -3161,12 +3169,34 @@ namespace NewISE.Models.DBModel.dtObj
 
             return ret;
         }
-
+        /// <summary>
+        /// Netto del richiamo.
+        /// </summary>
+        /// <param name="matricola"></param>
+        /// <param name="imponibileLordo"></param>
+        /// <param name="aliqPrev"></param>
+        /// <param name="detrazioni"></param>
+        /// <param name="outAliqIse"></param>
+        /// <returns></returns>
         private decimal NettoIndennitaRichiamo(int matricola, decimal imponibileLordo, decimal aliqPrev, decimal detrazioni, out decimal outAliqIse)
         {
             decimal ret = 0;
             outAliqIse = 0;
 
+            var ImponibilePrevidenziale = imponibileLordo - detrazioni;
+            var RitenutePrevidenziali = ImponibilePrevidenziale * aliqPrev / 100;
+
+            using (dtAliquotaISE dtai = new dtAliquotaISE())
+            {
+                var aliqIse = dtai.GetAliquotaIse(matricola, RitenutePrevidenziali);
+                outAliqIse = aliqIse.Aliquota;
+
+                var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * aliqIse.Aliquota / 100;
+
+                var Netto = imponibileLordo - RitenutePrevidenziali - RitenutaIperf;
+
+                ret = Netto;
+            }
 
 
             return ret;
@@ -3177,7 +3207,7 @@ namespace NewISE.Models.DBModel.dtObj
         private void InsTrasportoEffetti(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
 
-            
+
 
             var tePartenza = trasferimento.TEPARTENZA;
             var teRientro = trasferimento.TERIENTRO;
@@ -5784,20 +5814,20 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (lcoefRichiamo?.Any() ?? false)
                         {
-                            var coefRich = lcoefRichiamo.Last();
+                            //var coefRich = lcoefRichiamo.Last();
 
-                            RIDUZIONI riduzione = new RIDUZIONI();
+                            //RIDUZIONI riduzione = new RIDUZIONI();
 
-                            var lrid =
-                                coefRich.RIDUZIONI.Where(
-                                    a =>
-                                        a.ANNULLATO == false && dataFineTrasf >= a.DATAINIZIOVALIDITA &&
-                                        dataFineTrasf <= a.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                            //var lrid =
+                            //    coefRich.RIDUZIONI.Where(
+                            //        a =>
+                            //            a.ANNULLATO == false && dataFineTrasf >= a.DATAINIZIOVALIDITA &&
+                            //            dataFineTrasf <= a.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                            if (lrid?.Any() ?? false)
-                            {
-                                riduzione = lrid.Last();
-                            }
+                            //if (lrid?.Any() ?? false)
+                            //{
+                            //    riduzione = lrid.Last();
+                            //}
 
                             var ler =
                                 richiamo.ELABINDRICHIAMO.Where(
@@ -5831,121 +5861,257 @@ namespace NewISE.Models.DBModel.dtObj
                                 db.SaveChanges();
                             }
 
-                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dataFineTrasf, db))
+                            var lerElab = richiamo.ELABINDRICHIAMO.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.TEORICI.All(b => b.ANNULLATO == false && b.ELABORATO == true));
+
+
+                            if (!lerElab?.Any() ?? false)
                             {
-                                ELABINDRICHIAMO eir = new ELABINDRICHIAMO()
+                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dataFineTrasf, db))
                                 {
-                                    IDRICHIAMO = richiamo.IDRICHIAMO,
-                                    IDLIVELLO = ci.Livello.IDLIVELLO,
-                                    INDENNITABASE = ci.IndennitaDiBase,
-                                    COEFFICENTESEDE = ci.CoefficienteDiSede,
-                                    COEFFICENTEINDRICHIAMO = ci.CoefficenteIndennitaRichiamo,
-                                    PERCENTUALERIDUZIONE = ci.PercentualeRiduzioneRichiamo,
-                                    PERCMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
-                                    PENSIONECONIUGE = ci.PensioneConiuge,
-                                    DATAOPERAZIONE = DateTime.Now,
-                                    CONGUAGLIO = false,
-                                    ANNULLATO = false
-
-                                };
-
-                                db.ELABINDRICHIAMO.Add(eir);
-
-                                int i = db.SaveChanges();
-
-                                if (i <= 0)
-                                {
-                                    throw new Exception("Errore nella fase d'inderimento dell'indennità di richiamo.");
-                                }
-
-                                if (ci.lDatiFigli?.Any() ?? false)
-                                {
-                                    foreach (var df in ci.lDatiFigli)
+                                    ELABINDRICHIAMO eir = new ELABINDRICHIAMO()
                                     {
-                                        ELABDATIFIGLI edf = new ELABDATIFIGLI()
-                                        {
-                                            IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                            INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
-                                            PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
-                                        };
+                                        IDRICHIAMO = richiamo.IDRICHIAMO,
+                                        IDLIVELLO = ci.Livello.IDLIVELLO,
+                                        INDENNITABASE = ci.IndennitaDiBase,
+                                        COEFFICENTESEDE = ci.CoefficienteDiSede,
+                                        COEFFICENTEINDRICHIAMO = ci.CoefficenteIndennitaRichiamo,
+                                        PERCENTUALERIDUZIONE = ci.PercentualeRiduzioneRichiamo,
+                                        PERCMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                                        PENSIONECONIUGE = ci.PensioneConiuge,
+                                        DATAOPERAZIONE = DateTime.Now,
+                                        CONGUAGLIO = false,
+                                        ANNULLATO = false
 
-                                        eir.ELABDATIFIGLI.Add(edf);
-                                    }
+                                    };
 
-                                    int j = db.SaveChanges();
+                                    db.ELABINDRICHIAMO.Add(eir);
 
-                                    if (j <= 0)
+                                    int i = db.SaveChanges();
+
+                                    if (i <= 0)
                                     {
                                         throw new Exception("Errore nella fase d'inderimento dell'indennità di richiamo.");
                                     }
+
+                                    if (ci.lDatiFigli?.Any() ?? false)
+                                    {
+                                        foreach (var df in ci.lDatiFigli)
+                                        {
+                                            ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                            {
+                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                                INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                                                PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
+                                            };
+
+                                            eir.ELABDATIFIGLI.Add(edf);
+                                        }
+
+                                        int j = db.SaveChanges();
+
+                                        if (j <= 0)
+                                        {
+                                            throw new Exception("Errore nella fase d'inderimento dell'indennità di richiamo.");
+                                        }
+                                    }
+
+
+                                    ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                                    var lacDetr =
+                                        db.ALIQUOTECONTRIBUTIVE.Where(
+                                            a =>
+                                                a.ANNULLATO == false &&
+                                                a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                                dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                            .ToList();
+
+
+                                    if (lacDetr?.Any() ?? false)
+                                    {
+                                        detrazioni = lacDetr.First();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                                    }
+
+                                    this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, detrazioni.IDALIQCONTR, db);
+
+                                    ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
+
+                                    var lacPrev =
+                                        db.ALIQUOTECONTRIBUTIVE.Where(
+                                            a =>
+                                                a.ANNULLATO == false &&
+                                                a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                                dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                            .ToList();
+
+                                    if (lacPrev?.Any() ?? false)
+                                    {
+                                        aliqPrev = lacPrev.First();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+                                    }
+
+                                    this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, aliqPrev.IDALIQCONTR, db);
+
+                                    var dip = trasferimento.DIPENDENTI;
+
+                                    decimal outAliqIse = 0;
+                                    decimal indennitaRichiamoLordo = ci.IndennitaRichiamoLordo;
+
+                                    var NettoRichiamo = this.NettoIndennitaRichiamo(dip.MATRICOLA, indennitaRichiamoLordo,
+                                        aliqPrev.VALORE, detrazioni.VALORE, out outAliqIse);
+
+                                    using (CalcoloMeseAnnoElaborazione cmae = new CalcoloMeseAnnoElaborazione(db))
+                                    {
+                                        var lmae = cmae.Mae;
+
+                                        if (lmae?.Any() ?? false)
+                                        {
+                                            var mae = lmae.First();
+                                            if (mae.chiuso == true)
+                                            {
+                                                cmae.NewMeseDaElaborare();
+                                            }
+
+                                            #region Contabilita
+
+                                            TEORICI teorici = new TEORICI()
+                                            {
+                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                                IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                                IDVOCI = (decimal)EnumVociContabili.Ind_Richiamo_IRI,
+                                                IDMESEANNOELAB = mae.idMeseAnnoElab,
+                                                MESERIFERIMENTO = dataFineTrasf.Month,
+                                                ANNORIFERIMENTO = dataFineTrasf.Year,
+                                                ALIQUOTAFISCALE = outAliqIse,
+                                                IMPORTO = NettoRichiamo,
+                                                DATAOPERAZIONE = DateTime.Now,
+                                                ELABORATO = false,
+                                                DIRETTO = true,
+                                                ANNULLATO = false
+                                            };
+
+                                            eir.TEORICI.Add(teorici);
+
+                                            int j = db.SaveChanges();
+
+                                            if (j <= 0)
+                                            {
+                                                throw new Exception(
+                                                    "Errore nella fase d'inderimento dell'indennità di richiamo in contabilità.");
+                                            }
+
+                                            #endregion
+
+                                            #region Cedolino
+                                            #region Lordo
+                                            TEORICI teoriciLordo = new TEORICI()
+                                            {
+                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                                IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                                IDVOCI = (decimal)EnumVociCedolino.Rientro_Lordo_086_381,
+                                                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                                MESERIFERIMENTO = dataFineTrasf.Month,
+                                                ANNORIFERIMENTO = dataFineTrasf.Year,
+                                                ALIQUOTAFISCALE = 0,
+                                                IMPORTO = indennitaRichiamoLordo,
+                                                DATAOPERAZIONE = DateTime.Now,
+                                                ANNULLATO = false
+                                            };
+
+                                            eir.TEORICI.Add(teoriciLordo);
+
+                                            int ja = db.SaveChanges();
+
+                                            if (ja <= 0)
+                                            {
+                                                throw new Exception(
+                                                    "Errore nella fase d'inderimento del lordo a cedolino per il richiamo (086-381).");
+                                            }
+                                            #endregion
+
+                                            #region Netto
+                                            TEORICI teoriciNetto = new TEORICI()
+                                            {
+                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                                IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                                IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                                MESERIFERIMENTO = dataFineTrasf.Month,
+                                                ANNORIFERIMENTO = dataFineTrasf.Year,
+                                                ALIQUOTAFISCALE = outAliqIse,
+                                                IMPORTO = NettoRichiamo,
+                                                DATAOPERAZIONE = DateTime.Now,
+                                                ANNULLATO = false
+                                            };
+
+                                            eir.TEORICI.Add(teoriciNetto);
+
+                                            int k = db.SaveChanges();
+
+                                            if (k <= 0)
+                                            {
+                                                throw new Exception(
+                                                    "Errore nella fase d'inderimento del netto a cedolino per il richiamo (086-383).");
+                                            }
+                                            #endregion
+
+                                            #region Detrazioni
+                                            TEORICI teoriciDetrazioni = new TEORICI()
+                                            {
+                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                                IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                                IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
+                                                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                                MESERIFERIMENTO = dataFineTrasf.Month,
+                                                ANNORIFERIMENTO = dataFineTrasf.Year,
+                                                ALIQUOTAFISCALE = outAliqIse,
+                                                IMPORTO = detrazioni.VALORE,
+                                                DATAOPERAZIONE = DateTime.Now,
+                                                ANNULLATO = false
+                                            };
+
+                                            eir.TEORICI.Add(teoriciDetrazioni);
+
+                                            int y = db.SaveChanges();
+
+                                            if (y <= 0)
+                                            {
+                                                throw new Exception(
+                                                    "Errore nella fase d'inderimento della detrazione a cedolino per il richiamo (086-384).");
+                                            }
+                                            #endregion
+
+                                            #endregion
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Errore nella fase di lettura del mese di elaborazione.");
+                                        }
+                                    }
                                 }
-
-
-                                ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
-
-                                var lacDetr =
-                                    db.ALIQUOTECONTRIBUTIVE.Where(
-                                        a =>
-                                            a.ANNULLATO == false &&
-                                            a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
-                                            dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
-                                        .ToList();
-
-
-                                if (lacDetr?.Any() ?? false)
-                                {
-                                    detrazioni = lacDetr.First();
-                                }
-                                else
-                                {
-                                    throw new Exception("Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
-                                }
-
-                                this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, detrazioni.IDALIQCONTR, db);
-
-                                ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
-
-                                var lacPrev =
-                                    db.ALIQUOTECONTRIBUTIVE.Where(
-                                        a =>
-                                            a.ANNULLATO == false &&
-                                            a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
-                                            dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
-                                        .ToList();
-
-                                if (lacPrev?.Any() ?? false)
-                                {
-                                    aliqPrev = lacPrev.First();
-                                }
-                                else
-                                {
-                                    throw new Exception(
-                                        "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
-                                }
-
-
-                                this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, aliqPrev.IDALIQCONTR, db);
-
-
-
-
                             }
 
 
-
-
-
-
+                        }
+                        else
+                        {
+                            throw new Exception("Coefficente di indennità di richiamo assente.");
                         }
                     }
                 }
             }
 
-
-
-
-
-            //DateTime dataRichiamo = 
 
         }
 
@@ -6274,6 +6440,25 @@ namespace NewISE.Models.DBModel.dtObj
                             if (lemab?.Any() ?? false)
                             {
                                 this.ConguaglioMAB(trasferimento, MeseAnnoElaborato, db);
+                            }
+                            #endregion
+
+                            #region Conguaglio Rientro
+
+
+                            if (trasferimento.DATARIENTRO >= dataInizioRicalcoli)
+                            {
+                                var lr =
+                                    trasferimento.RICHIAMO.Where(
+                                        a => a.ANNULLATO == false && a.DATARICHIAMO < Convert.ToDateTime("31/12/9999"))
+                                        .OrderBy(a => a.IDRICHIAMO)
+                                        .ToList();
+
+                                var richiamo = lr.Last();
+
+
+
+
                             }
                             #endregion
 
