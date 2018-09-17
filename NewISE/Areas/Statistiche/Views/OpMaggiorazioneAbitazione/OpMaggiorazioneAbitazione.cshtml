@@ -7,128 +7,131 @@
 <br /><br />
 
 
-<div class="container">
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</b></div>
+            <div class="panel-body">
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</b></div>
-        <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
 
-            <div class="form-horizontal">
-                <div class="form-group">
+                        <div class="col-md-2">
+                            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        </div>
 
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        <div class="col-md-2">
+                            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        </div>
+
+                        <div class="col-md-2">
+                            @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
+                            @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
+
+                            @*<a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                    <span class="glyphicon glyphicon-print"></span> Stampa
+                                </a>*@
+
+                            @*<button class="btn btn-default btn-sm" onclick="DownloadReport1();">
+                                    <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                                    Stampa
+                                </button>*@
+
+                            <button class="btn btn-default btn-sm" id="opener">
+                                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                                Stampa
+                            </button>
+
+                        </div>
+
+                        <div class="col-md-2">
+                            @*<a href="#" onclick="callpartialOpMaggAbitazione()">Visualizza il Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
+                        </div>
+
                     </div>
+                    <br />
 
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-                    </div>
+                </div>
 
-                    <div class="col-md-2">
-                        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
-                        @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
 
-                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
-                            <span class="glyphicon glyphicon-print"></span> Stampa
-                        </a>
+                @*<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.matricola)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.nominativo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.sede)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.valuta)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_decorrenza)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_lettera)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_operazione)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.canone)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.importo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.percentuale_applicata)
+                                </th>
 
-                        @*<button class="btn btn-default btn-sm" onclick="DownloadReport1();">
-                            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-                            Stampa
-                        </button>*@
-
-                    </div>
-
-                    <div class="col-md-2">
-                        @*<a href="#" onclick="callpartialOpMaggAbitazione()">Visualizza il Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
-                    </div>
-
-                    </div>
-                <br />
-
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                    {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.matricola)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.nominativo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.sede)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.valuta)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_decorrenza)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_lettera)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_operazione)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.canone)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.importo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.percentuale_applicata)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>*@
             </div>
-
-
-            @*<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.matricola)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.nominativo)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.sede)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.valuta)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_decorrenza)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_lettera)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_operazione)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.canone)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.importo)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.percentuale_applicata)
-                        </th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-            {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.matricola)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.nominativo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.sede)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.valuta)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_decorrenza)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_lettera)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_operazione)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.canone)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.importo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.percentuale_applicata)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>*@
         </div>
     </div>
 </div>
-
-
-
 
 <script type="text/javascript">
     $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
@@ -161,16 +164,11 @@
         }
     });
 
-    
-
-
-
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
 
 
-
-    $(function () {
+    
         $("#dialog").dialog({
             autoOpen: false,
             show: {
@@ -234,7 +232,7 @@
             });
 
         });
-    });
+    
 
 
     function invia() {

@@ -6,119 +6,122 @@
 @*<button id="opener">xx</button>*@
 <br /><br />
 
-<div class="container">
+<div class="row">
+    <div class="col-xs-12">
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><b>Presenze dei Livelli in servizio all'Estero</b></div>
-        <div class="panel-body">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Presenze dei Livelli in servizio all'Estero</b></div>
+            <div class="panel-body">
 
-        <div class="form-horizontal">
-            <div class="form-group">
-                   
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td>@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })</td>
-                            <td>@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })</td>
-                            <td>@Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })</td>
-                            <td>@*<a href="#" target="_blank" onclick="invia()">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
-                                @*<a href="#" id="opener">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
+                <div class="form-horizontal">
+                    <div class="form-group">
 
-                                <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
-                                    <span class="glyphicon glyphicon-print"></span> Stampa
-                                </a>
-                            </td>
-                            <td>
-                                @*<a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>*@
-                                @*<a href="#" onclick="callpartialPresenze()">Visualizza Presenze dei Livelli all'Estero </a>*@
-                        </td>
-                    </tr>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })</td>
+                                    <td>@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })</td>
+                                    <td>@Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })</td>
+                                    <td>
+                                        @*<a href="#" target="_blank" onclick="invia()">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
+                                    @*<a href="#" id="opener">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
 
-                </tbody>
-            </table>
+                                    <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                        <span class="glyphicon glyphicon-print"></span> Stampa
+                                    </a>
+                                </td>
+                                <td>
+                                    @*<a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>*@
+                                    @*<a href="#" onclick="callpartialPresenze()">Visualizza Presenze dei Livelli all'Estero </a>*@
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
 
 
 
-                  
 
-             </div>
-        </div>
-            
+
+                </div>
+            </div>
+
             @*<table id="tbDipEsteroLivello" class="display" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.codQualifica)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.qualifica)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.nominativo)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.matricola)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.sede)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.dt_Trasferimento)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.dt_Rientro)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.dt_Decorrenza)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.progr_trasferimento)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.progr_movimento)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-            {
+                    <thead>
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.codQualifica)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.qualifica)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.nominativo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.matricola)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.sede)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.dt_Trasferimento)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.dt_Rientro)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.dt_Decorrenza)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.progr_trasferimento)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.progr_movimento)
-                            </td>
+                            <th>
+                                @Html.DisplayNameFor(model => model.codQualifica)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.qualifica)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.nominativo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.matricola)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.sede)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dt_Trasferimento)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dt_Rientro)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dt_Decorrenza)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.progr_trasferimento)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.progr_movimento)
+                            </th>
                         </tr>
-                    }
-                </tbody>
-            </table>*@
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.codQualifica)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.qualifica)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.nominativo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.matricola)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.sede)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.dt_Trasferimento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.dt_Rientro)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.dt_Decorrenza)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.progr_trasferimento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.progr_movimento)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>*@
 
         </div>
+    </div>
     </div>
 </div>
 
@@ -407,7 +410,7 @@
     }
 
 
-   
+
 
     $("#COD_QUALIFICA").select2({
         placeholder: "Seleziona il Livello ",
