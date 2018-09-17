@@ -7,110 +7,110 @@
 
 <br /><br />
 
-<div class="container">
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Spese Diverse</b></div>
+            <div class="panel-body">
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><b>Spese Diverse</b></div>
-        <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                  
 
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        <div class="col-md-2">
+                            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        </div>
+
+                        <div class="col-md-2">
+                            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        </div>
+
+                        <div class="col-md-2">
+                            @*<a href="#" target="_blank" onclick="invia()">Stampa le Spese Diverse </a>*@
+                            @*<a href="#" id="opener">Stampa Spese Diverse </a>*@
+
+                            <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                <span class="glyphicon glyphicon-print"></span> Stampa
+                            </a>
+
+                        </div>
+
+                        <div class="col-md-2">
+                            @*<a href="#" onclick="Visualizza()">Visualizza le Spese Diverse </a>*@
+                            @*<a href="#" onclick="callpartialSpese()">Visualizza le Spese Diverse </a>*@
+                        </div>
+
                     </div>
+                    <br />
+                </div>
 
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-                    </div>
 
-                    <div class="col-md-2">
-                        @*<a href="#" target="_blank" onclick="invia()">Stampa le Spese Diverse </a>*@
-                        @*<a href="#" id="opener">Stampa Spese Diverse </a>*@
+                @*<table id="tb_Stp_Spese_Diverse" class="display" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MATRICOLA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NOMINATIVO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.LIVELLO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CODICE_SEDE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DESCRIZIONE_SEDE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DATA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.VOCE_DI_SPESA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.IMPORTO_VALUTA)
+                                </th>
 
-                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
-                            <span class="glyphicon glyphicon-print"></span> Stampa
-                        </a>
-
-                    </div>
-
-                    <div class="col-md-2">
-                        @*<a href="#" onclick="Visualizza()">Visualizza le Spese Diverse </a>*@
-                        @*<a href="#" onclick="callpartialSpese()">Visualizza le Spese Diverse </a>*@
-                    </div>
-
-                    </div>
-                <br />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                    {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MATRICOLA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NOMINATIVO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LIVELLO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CODICE_SEDE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DESCRIZIONE_SEDE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DATA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.VOCE_DI_SPESA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IMPORTO_VALUTA)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>*@
             </div>
-
-            
-            @*<table id="tb_Stp_Spese_Diverse" class="display" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.MATRICOLA)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.NOMINATIVO)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.LIVELLO)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CODICE_SEDE)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DESCRIZIONE_SEDE)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DATA)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.VOCE_DI_SPESA)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IMPORTO_VALUTA)
-                        </th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-            {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MATRICOLA)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NOMINATIVO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LIVELLO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CODICE_SEDE)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DESCRIZIONE_SEDE)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DATA)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.VOCE_DI_SPESA)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IMPORTO_VALUTA)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>*@
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     $('#tb_Stp_Spese_Diverse').DataTable({
         "order": [],

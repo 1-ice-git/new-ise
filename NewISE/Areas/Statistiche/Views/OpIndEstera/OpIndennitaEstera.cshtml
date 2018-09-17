@@ -7,144 +7,144 @@
 
 <br /><br />
 
-<div class="container">
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Indennità Estera</b></div>
+            <div class="panel-body">
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Indennità Estera</b></div>
-        <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                   
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        <div class="col-md-2">
+                            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        </div>
+
+                        <div class="col-md-2">
+                            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        </div>
+
+                        <div class="col-md-2">
+                            @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                            @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                            @*<a href="#">
+                                    <span class="glyphicon glyphicon-print"></span>Stampa
+                                </a>*@
+
+                            <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                <span class="glyphicon glyphicon-print"></span> Stampa
+                            </a>
+                        </div>
+
+                        <div class="col-md-2">
+                            @*<a href="#" onclick="OpIndennitaEstera()">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                            @*<a href="#" onclick="callpartialOpIndEstera();">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera</a>*@
+                        </div>
+
                     </div>
 
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-                    </div>
+                    <br />
 
-                    <div class="col-md-2">
-                        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
-                        @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
-                        @*<a href="#">
-                            <span class="glyphicon glyphicon-print"></span>Stampa
-                        </a>*@
-                        
-                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
-                            <span class="glyphicon glyphicon-print"></span> Stampa
-                        </a>
-                    </div>
+                </div>
 
-                    <div class="col-md-2">
-                        @*<a href="#" onclick="OpIndennitaEstera()">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
-                        @*<a href="#" onclick="callpartialOpIndEstera();">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera</a>*@
-                    </div>
 
-                   </div>
-                
-                <br />
+                @*<table id="tb_Op_Indennita_Estera" class="display" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.matricola)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.nominativo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.qualifica)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.sede)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.valuta)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.tipo_movimento)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.codice_tipo_movimento)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_decorrenza)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_lettera)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_operazione)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.indennita_personale)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.sist_rientro_lorda)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.anticipo)
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.matricola)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.nominativo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.qualifica)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.sede)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.valuta)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.tipo_movimento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.codice_tipo_movimento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_decorrenza)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_lettera)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_operazione)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.indennita_personale)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.sist_rientro_lorda)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.anticipo)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>*@
 
             </div>
-
-           
-            @*<table id="tb_Op_Indennita_Estera" class="display" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.matricola)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.nominativo)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.qualifica)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.sede)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.valuta)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.tipo_movimento)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.codice_tipo_movimento)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_decorrenza)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_lettera)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_operazione)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.indennita_personale)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.sist_rientro_lorda)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.anticipo)
-                        </th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.matricola)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.nominativo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.qualifica)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.sede)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.valuta)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.tipo_movimento)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.codice_tipo_movimento)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_decorrenza)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_lettera)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_operazione)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.indennita_personale)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.sist_rientro_lorda)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.anticipo)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>*@
-        
+        </div>
     </div>
 </div>
-</div>
-
 <script type="text/javascript">
 
     $('#tb_Op_Indennita_Estera').DataTable({

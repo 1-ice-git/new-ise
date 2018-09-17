@@ -6,170 +6,170 @@
 <div id="dialog" title="Storia del Dipendente"></div>
 @*<button id="opener">xx</button>*@
 <br /><br />
-<div class="container">
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Storia del Dipendente</b></div>
+            <div class="panel-body">
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><b>Storia del Dipendente</b></div>
-        <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                    
-                    <table class="table">
-                         <tbody>
-                            <tr>
-                                <td>@Html.TextBox("datepicker", ViewData["datepicker"], new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "" })</td>
-                                <td>@Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select" })</td>
-                                <td>
-                                    @*<a href="#" target="_blank" onclick="invia()">Stampa la Storia del Dipendente </a>*@
-                                    @*<a href="#" id="opener">Stampa Storia del Dipendente </a>*@
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>@Html.TextBox("datepicker", ViewData["datepicker"], new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "" })</td>
+                                    <td>@Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select" })</td>
+                                    <td>
+                                        @*<a href="#" target="_blank" onclick="invia()">Stampa la Storia del Dipendente </a>*@
+                                        @*<a href="#" id="opener">Stampa Storia del Dipendente </a>*@
 
-                                    <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
-                                        <span class="glyphicon glyphicon-print"></span> Stampa
-                                    </a>
-                                </td>
-                                <td>@*<a href="#" onclick="StoriaDipendente()">Visualizza Storia del Dipendente </a>*@</td>
-                            </tr>
-                        </tbody>
-                       
-                    </table>
+                                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                            <span class="glyphicon glyphicon-print"></span> Stampa
+                                        </a>
+                                    </td>
+                                    <td>@*<a href="#" onclick="StoriaDipendente()">Visualizza Storia del Dipendente </a>*@</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
 
 
-                    @*<div class="col-md-2">*@
+                        @*<div class="col-md-2">*@
                         @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-                        @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+                            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
                         @*@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })*@
 
-                        
 
-                    @*</div>*@
 
-                    @*<div class="col-md-2">*@
+                        @*</div>*@
+
+                        @*<div class="col-md-2">*@
                         @*@Html.DropDownList("Stampe", ViewData["Stampe"] as List<SelectListItem>, new { @class = "form-control select2 select2-select" })*@
                         @*@Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius(this.value);" })*@
 
-                        
-                    @*</div>*@
 
-                    @*<div class="select2-container select2-container--classic">*@
-                       
+                        @*</div>*@
 
-                    @*</div>*@
+                        @*<div class="select2-container select2-container--classic">*@
 
-                    @*<div class="col-md-2">*@
+
+                        @*</div>*@
+
+                        @*<div class="col-md-2">*@
                         @*<a href="#" onclick="StoriaDipendente()">Visualizza Storia del Dipendente </a>*@
-                    @*</div>*@
+                        @*</div>*@
                     </div>
-                <br />
+                    <br />
+                </div>
+
+                @*<table id="tbStoriaDipendente" class="display" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NOMINATIVO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MATRICOLA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.LIVELLO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TIPO_MOVIMENTO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DATA_DECORRENZA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DATA_LETTERA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.COEF_SEDE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PERC_DISAGIO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PERC_SPETTANTE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PERC_CONIUGE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PENSIONE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.N_FIGLI)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TFR)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DESCR)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.INDENNITA)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                    {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NOMINATIVO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MATRICOLA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LIVELLO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TIPO_MOVIMENTO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DATA_DECORRENZA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DATA_LETTERA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.COEF_SEDE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PERC_DISAGIO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PERC_SPETTANTE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PERC_CONIUGE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PENSIONE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.N_FIGLI)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TFR)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DESCR)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.INDENNITA)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>*@
             </div>
-            
-            @*<table id="tbStoriaDipendente" class="display" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.NOMINATIVO)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.MATRICOLA)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.LIVELLO)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.TIPO_MOVIMENTO)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DATA_DECORRENZA)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DATA_LETTERA)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.COEF_SEDE)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PERC_DISAGIO)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PERC_SPETTANTE)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PERC_CONIUGE)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PENSIONE)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.N_FIGLI)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.TFR)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DESCR)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.INDENNITA)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-            {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NOMINATIVO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MATRICOLA)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LIVELLO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TIPO_MOVIMENTO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DATA_DECORRENZA)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DATA_LETTERA)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.COEF_SEDE)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PERC_DISAGIO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PERC_SPETTANTE)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PERC_CONIUGE)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PENSIONE)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.N_FIGLI)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TFR)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DESCR)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.INDENNITA)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>*@
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript">
     $('#tbStoriaDipendente').DataTable({

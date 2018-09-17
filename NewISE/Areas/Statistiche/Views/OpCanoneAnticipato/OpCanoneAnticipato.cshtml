@@ -6,121 +6,122 @@
 @*<button id="opener">xx</button>*@
 
 <br /><br />
-<div class="container">
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Canone Anticipato</b></div>
+            <div class="panel-body">
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Canone Anticipato</b></div>
-        <div class="panel-body">
 
 
+                <div class="form-horizontal">
+                    <div class="form-group">
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                  
 
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        <div class="col-md-2">
+                            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        </div>
+
+                        <div class="col-md-2">
+                            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                        </div>
+
+                        <div class="col-md-2">
+                            @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
+                            @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
+
+                            <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                <span class="glyphicon glyphicon-print"></span> Stampa
+                            </a>
+
+                        </div>
+
+                        <div class="col-md-2">
+                            @*<a href="#" onclick="OpCanoneAnticipato()">Visualizza il Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
+                        </div>
+
                     </div>
 
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-                    </div>
+                </div>
 
-                    <div class="col-md-2">
-                        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
-                        @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
 
-                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
-                            <span class="glyphicon glyphicon-print"></span> Stampa
-                        </a>
-
-                    </div>
-
-                    <div class="col-md-2">
-                        @*<a href="#" onclick="OpCanoneAnticipato()">Visualizza il Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
-                    </div>
-
-                    </div>
-                
+                @*<table id="tb_Stp_Op_Canone_Anticipato" class="display" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.matricola)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.nominativo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.sede)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.valuta)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.anticipo_valuta)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.anticipo_euro)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.quota_mensile)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_decorrenza)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_lettera)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.data_operazione)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                    {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.matricola)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.nominativo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.sede)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.valuta)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.anticipo_valuta)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.anticipo_euro)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.quota_mensile)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_decorrenza)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_lettera)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.data_operazione)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>*@
             </div>
-
-            
-            @*<table id="tb_Stp_Op_Canone_Anticipato" class="display" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.matricola)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.nominativo)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.sede)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.valuta)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.anticipo_valuta)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.anticipo_euro)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.quota_mensile)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_decorrenza)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_lettera)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.data_operazione)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-            {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.matricola)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.nominativo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.sede)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.valuta)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.anticipo_valuta)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.anticipo_euro)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.quota_mensile)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_decorrenza)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_lettera)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.data_operazione)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>*@
         </div>
     </div>
-</div>
+    </div>
 <script type="text/javascript">
     $('#tb_Stp_Op_Canone_Anticipato').DataTable({
         "order": [],
