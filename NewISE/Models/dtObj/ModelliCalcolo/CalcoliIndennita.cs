@@ -414,7 +414,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
 
             var lmab =
-                _indennita.MAGGIORAZIONEABITAZIONE.MAB.Where(
+                _indennita.MAB.Where(
                     a =>
                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                         a.PERIODOMAB.Any(

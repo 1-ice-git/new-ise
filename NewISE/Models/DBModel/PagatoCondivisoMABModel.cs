@@ -58,7 +58,7 @@ namespace NewISE.Models.DBModel
 
                 if (db.SaveChanges() > 0)
                 {
-                    decimal idTrasf = pcmab.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+                    decimal idTrasf = pcmab.MAB.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica del pagato condiviso", "PAGATOCONDIVISO", db, idTrasf, pcmab.IDPAGATOCONDIVISO);
                 }
             }

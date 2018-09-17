@@ -1254,7 +1254,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione:
                     case EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione:
                     case EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione:
-                        t = d.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).First().TRASFERIMENTO;
+                        t = d.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).First().MAB.INDENNITA.TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
                         //t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;

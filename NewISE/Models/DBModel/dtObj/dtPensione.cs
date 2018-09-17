@@ -29,6 +29,10 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     throw new Exception(string.Format("La data d'inizio validità per la pensione non può essere inferiore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
                 }
+                if (dataInizioPensione > t.DATARIENTRO)
+                {
+                    throw new Exception(string.Format("La data d'inizio validità per la pensione non può essere superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                }
             }
 
 

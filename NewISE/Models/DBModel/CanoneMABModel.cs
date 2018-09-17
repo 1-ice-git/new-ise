@@ -67,7 +67,7 @@ namespace NewISE.Models.DBModel
 
                 if (db.SaveChanges() > 0)
                 {
-                    decimal idTrasf = cmab.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+                    decimal idTrasf = cmab.MAB.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica del canone", "CANONEMAB", db, idTrasf, cmab.IDCANONE);
                 }
             }

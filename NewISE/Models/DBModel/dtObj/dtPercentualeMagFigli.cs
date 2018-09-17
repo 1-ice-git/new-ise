@@ -153,6 +153,22 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void RimuoviAssociazione_Figlio_PercentualeMagFigli(decimal idFiglio, ModelDBISE db)
+        {
+            var f = db.FIGLI.Find(idFiglio);
+            var lpmf = f.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false).ToList();
+            if (lpmf?.Any() ?? false)
+            {
+                foreach (var pmf in lpmf)
+                {
+                    f.PERCENTUALEMAGFIGLI.Remove(pmf);
+                }
+
+                db.SaveChanges();
+            }
+
+        }
+
 
 
 

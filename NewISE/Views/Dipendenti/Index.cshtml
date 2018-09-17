@@ -108,6 +108,7 @@
             <div class="tab-pane" id="tabGestioneTrasferimento"></div>
             <div class="tab-pane" id="tabMaggiorazioneFamiliare"></div>
             <div class="tab-pane" id="tabMaggiorazioneAbitazione"></div>
+            <div class="tab-pane" id="tabSaldoTrasportoEffetti"></div>
             <div class="tab-pane" id="tabPassaporto"></div>
             <div class="tab-pane" id="tabCongediPermessi"></div>
             <div class="tab-pane" id="tabSospensione"></div>
@@ -632,6 +633,9 @@
             $("#lkMaggiorazioneAbitazione").attr("disabled", "disabled");
             $("#mnMaggiorazioneAbitazione").addClass("disabled");
 
+            $("#lkSaldoTrasportoEffetti").attr("disabled", "disabled");
+            $("#mnSaldoTrasportoEffetti").addClass("disabled");
+
             $("#lkPassaporto").attr("disabled", "disabled");
             $("#mnPassaporto").addClass("disabled");
 
@@ -695,6 +699,17 @@
             $("#lkMaggiorazioneAbitazione").removeAttr("disabled");
             $("#mnMaggiorazioneAbitazione").removeClass("disabled");
             $('#lkMaggiorazioneAbitazione').attr('onClick', 'MaggiorazioneAbitazione();');
+        }
+        else {
+            $("#lkMaggiorazioneAbitazione").attr("disabled", "disabled");
+            $("#mnMaggiorazioneAbitazione").addClass("disabled");
+            $("#lkMaggiorazioneAbitazione").removeAttr("onClick");
+        }
+
+        if (MenuSaldoTrasportoEffetti(idTrasferimento) == 1) {
+            $("#lkSaldoTrasportoEffetti").removeAttr("disabled");
+            $("#mnSaldoTrasportoEffetti").removeClass("disabled");
+            $('#lkSaldoTrasportoEffetti').attr('onClick', 'SaldoTrasportoEffetti();');
         }
         else {
             $("#lkMaggiorazioneAbitazione").attr("disabled", "disabled");
@@ -798,6 +813,7 @@
         $("#tabGestioneTrasferimento").empty();
         $("#tabMaggiorazioneFamiliare").empty();
         $("#tabMaggiorazioneAbitazione").empty();
+        $("#tabSaldoTrasportoEffetti").empty();
         $("#tabPassaporto").empty();
         $("#tabCongediPermessi").empty();
         $("#tabSospensione").empty();
@@ -955,6 +971,54 @@
     }
 
     function MenuMaggiorazioneAbitazione(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaMaggiorazioneAbitazione";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idMAB != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuSaldoTrasportoEffetti(idTrasferimento) {
         //debugger;
         var rotta = "/Trasferimento/VerificaMaggiorazioneAbitazione";
         var valoreRitorno = 0;

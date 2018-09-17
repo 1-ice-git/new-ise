@@ -18,34 +18,30 @@ namespace NewISE.EF
         public MAB()
         {
             this.ANTICIPOANNUALEMAB = new HashSet<ANTICIPOANNUALEMAB>();
+            this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
             this.CANONEMAB = new HashSet<CANONEMAB>();
-            this.MAB1 = new HashSet<MAB>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
             this.PERIODOMAB = new HashSet<PERIODOMAB>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
         }
     
         public decimal IDMAB { get; set; }
-        public decimal IDMAGABITAZIONE { get; set; }
-        public decimal IDATTIVAZIONEMAB { get; set; }
+        public decimal IDTRASFINDENNITA { get; set; }
         public decimal IDSTATORECORD { get; set; }
         public bool RINUNCIAMAB { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public Nullable<decimal> FK_IDMAB { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANTICIPOANNUALEMAB> ANTICIPOANNUALEMAB { get; set; }
-        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANONEMAB> CANONEMAB { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB> MAB1 { get; set; }
-        public virtual MAB MAB2 { get; set; }
+        public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERIODOMAB> PERIODOMAB { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }

@@ -39,7 +39,8 @@
                 Ind. Prima Sist. Lorda - Magg. Fam.
             </div>
             <div class="col-xs-2">
-                <input type="text" id="ValImportoPrevisto" class="form-control " readonly style="text-align: right" />
+                @Html.TextBoxFor(model => model.ImportoPrevisto, string.Format("{0:N2}", Model.ImportoPrevisto), new { @readonly = "readonly", @class = "form-control text-right" })
+
             </div>
             <div class="col-xs-2">
                 <input type="text" maxlength="3" onkeyup="CalcolaAnticipo(@idAttivitaAnticipi,@ValsoloLettura);" id="PercentualeAnticipoRichiesto" value="@Model.PercentualeAnticipoRichiesto" class="form-control " @txtReadOnly style="text-align: right" />
@@ -85,79 +86,18 @@
 
 
 
-    $('#ValImportoPrevisto').autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: '€ ',
-	    nSep: true
-	});
+    //$('#ValImportoPrevisto').autoNumeric('init',
+	//{
+	//    aSep: '.',
+	//    aDec: ',',
+	//    aSign: '€ ',
+	//    nSep: true
+	//});
 
     $('#hiPercentualeRichiesta').val(@Model.PercentualeAnticipoRichiesto);
 
-    $('#ValImportoPrevisto').autoNumeric('set', @Model.ImportoPrevisto);
+    //$('#ValImportoPrevisto').autoNumeric('set', @Model.ImportoPrevisto);
 
     CalcolaAnticipo(@idAttivitaAnticipi,@ValsoloLettura);
 
-    @*function CalcolaAnticipo_old() {
-
-        //debugger;
-        var rotta = "/Anticipi/CalcolaAnticipo";
-
-        var idAttivitaAnticipi = parseInt(@idAttivitaAnticipi);
-        var percRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
-
-        if (!isNaN(percRichiesta))
-        {
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { idAttivitaAnticipi: idAttivitaAnticipi, percRichiesta: percRichiesta },
-                async: true,
-                dataType: 'json',
-                beforeSend: function () {
-                    //debugger;
-                    VerificaAutenticazione();
-                    $("#divLoader").show();
-                    $("#divImportoPercepito").hide();
-                },
-                success: function (result) {
-                    //debugger;
-                    if (result.err == "") {
-                       
-                        $("#ValImportoPercepito").autoNumeric('set', result.importoPercepito);
-
-                        var percRichiesta_old = parseFloat($("#hiPercentualeRichiesta").val());
-
-                        if (@ValsoloLettura==0 && percRichiesta_old != percRichiesta && percRichiesta>0) {
-                            $("#btNotificaRichiestaAnticipi").removeAttr("disabled");
-                            $("#btNotificaRichiestaAnticipi").removeClass("disabled");
-                        } else
-                        {
-                            $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
-                            $("#btNotificaRichiestaAnticipi").addClass("disabled");
-                        }
-                    } else {
-                        ErroreElaborazioneAjax(result.err);
-                    }
-                    $("#divLoader").hide();
-                    $("#divImportoPercepito").show();
-
-                },
-                complete: function () {
-
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    ErroreElaborazioneAjax(msg);
-                }
-
-            });
-        } else
-        {
-            $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
-            $("#btNotificaRichiestaAnticipi").addClass("disabled");
-        }
-    }*@
 </script>

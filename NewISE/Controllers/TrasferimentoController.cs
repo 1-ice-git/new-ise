@@ -1241,6 +1241,15 @@ namespace NewISE.Controllers
                                     if (idTrasferimentoOld > 0)
                                     {
                                         dttr.TerminaTrasferimento(idTrasferimentoOld, trm.dataPartenza, db);
+                                        var dtFineTrasf = trm.dataPartenza.AddDays(-1);
+                                        using (dtVariazioniMaggiorazioneAbitazione dtvmab = new dtVariazioniMaggiorazioneAbitazione())
+                                        {
+                                            dtvmab.TerminaMABbyDataFineTrasf(idTrasferimentoOld, dtFineTrasf, db);
+                                        }
+                                        using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                                        {
+                                            dtvmf.TerminaMaggiorazioniFamiliariByDataFineTrasf(idTrasferimentoOld, dtFineTrasf, db);
+                                        }
                                     }
                                     #endregion
 
@@ -1785,9 +1794,10 @@ namespace NewISE.Controllers
 
                     if (trm?.idTrasferimento > 0)
                     {
-                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                         {
-                            return Json(new { StatoTrasferimento = (decimal)trm.idStatoTrasferimento });
+                            //return Json(new { StatoTrasferimento = (decimal)trm.idStatoTrasferimento });
+                            return Json(new { StatoTrasferimento = 1 });
                         }
                         else
                         {

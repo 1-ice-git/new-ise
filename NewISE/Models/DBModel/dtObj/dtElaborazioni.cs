@@ -89,7 +89,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else if (t.ELABMAB?.Any(a => a.ANNULLATO == false) ?? false)
                         {
-                            dip = t.ELABMAB.First(a => a.ANNULLATO == false).MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                            dip = t.ELABMAB.First(a => a.ANNULLATO == false).INDENNITA.TRASFERIMENTO.DIPENDENTI;
                         }
                         if (!lElencoDipCalcolati.Contains(dip))
                         {
@@ -365,7 +365,7 @@ namespace NewISE.Models.DBModel.dtObj
             else if (teorico.ELABMAB?.Any(a => a.ANNULLATO == false) ?? false)
             {
                 dip = new DIPENDENTI();
-                dip = teorico.ELABMAB.First(a => a.ANNULLATO == false).MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                dip = teorico.ELABMAB.First(a => a.ANNULLATO == false).INDENNITA.TRASFERIMENTO.DIPENDENTI;
 
             }
             else if (teorico?.IDELABTRASPEFFETTI > 0)
@@ -424,7 +424,7 @@ namespace NewISE.Models.DBModel.dtObj
                 else if (teorico.ELABMAB?.Any(a => a.ANNULLATO == false) ?? false)
                 {
                     dip = new DIPENDENTI();
-                    dip = teorico.ELABMAB.First(a => a.ANNULLATO == false).MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI;
+                    dip = teorico.ELABMAB.First(a => a.ANNULLATO == false).INDENNITA.TRASFERIMENTO.DIPENDENTI;
                     if (!lDip.Contains(dip))
                     {
                         lDip.Add(dip);
@@ -488,11 +488,11 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="dataIni"></param>
         /// <param name="dataFine"></param>
         /// <returns></returns>
-        private bool VeririficaElaborazioneMAB(MAGGIORAZIONEABITAZIONE magFam, DateTime dataIni, DateTime dataFine)
+        private bool VeririficaElaborazioneMAB(INDENNITA ind, DateTime dataIni, DateTime dataFine)
         {
             bool ret = false;
 
-            ret = magFam.ELABMAB.Any(
+            ret = ind.ELABMAB.Any(
                 a =>
                     a.ANNULLATO == false && a.AL >= dataIni && a.DAL <= dataFine &&
                     a.TEORICI.Any(
@@ -635,7 +635,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a.ANNULLATO == false &&
                         a.PROGRESSIVO == t.ELABMAB.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO));
 
-                var indennita = emab.MAGGIORAZIONEABITAZIONE.INDENNITA;
+                var indennita = emab.INDENNITA;
                 var trasferimento = indennita.TRASFERIMENTO;
                 var dip = trasferimento.DIPENDENTI;
                 var livello = emab.LIVELLI;
@@ -2000,7 +2000,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
             var indennita = trasferimento.INDENNITA;
-            var maggiorazioniAbitazione = indennita.MAGGIORAZIONEABITAZIONE;
+            //var maggiorazioniAbitazione = indennita.MAGGIORAZIONEABITAZIONE;
 
             DateTime dataInizioTrasferimento = trasferimento.DATAPARTENZA;
             DateTime dataFineTrasferimento = trasferimento.DATARIENTRO;
@@ -2021,17 +2021,11 @@ namespace NewISE.Models.DBModel.dtObj
 
 
             var lmab =
-                maggiorazioniAbitazione.MAB.Where(
+                indennita.MAB.Where(
                     a =>
                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                        a.ATTIVAZIONEMAB.ANNULLATO == false &&
-                        a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                        a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
                         a.RINUNCIAMAB == false &&
                         a.PERIODOMAB.Any(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                              b.ATTIVAZIONEMAB.ANNULLATO == false &&
-                                              b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                                              b.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
                                               b.DATAFINEMAB >= dataInizioElaborazione &&
                                               b.DATAINIZIOMAB <= dataFineElaborazione))
                     .OrderBy(a => a.IDMAB)
@@ -2042,7 +2036,6 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 foreach (var mab in lmab)
                 {
-
                     var lPeriodoMab =
                         mab.PERIODOMAB.Where(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                   b.ATTIVAZIONEMAB.ANNULLATO == false &&
@@ -2089,7 +2082,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             a.IDVOCI == (decimal)EnumVociContabili.MAB &&
                                             a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                             a.ELABMAB.Any(
-                                                b => b.ANNULLATO == false && b.IDMAGABITAZIONE == mab.IDMAGABITAZIONE))
+                                                b => b.ANNULLATO == false && b.IDTRASFINDENNITA == mab.IDTRASFINDENNITA))
                                         .OrderBy(a => a.ANNORIFERIMENTO)
                                         .ThenBy(a => a.MESERIFERIMENTO).ToList();
                                 if (lteoricofirstElab?.Any() ?? false)
@@ -2168,7 +2161,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     #region Elaborazioni OLD
 
                                     var lelabMabOld =
-                                        maggiorazioniAbitazione.ELABMAB.Where(
+                                        indennita.ELABMAB.Where(
                                             a =>
                                                 a.ANNULLATO == false && a.AL >= dataIniCiclo && a.DAL <= dataFineCiclo &&
                                                 a.TEORICI.Any(
@@ -2213,7 +2206,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                                     bool verificaElaborazioneMese =
-                                        this.VeririficaElaborazioneMAB(maggiorazioniAbitazione, dataIniCiclo,
+                                        this.VeririficaElaborazioneMAB(indennita, dataIniCiclo,
                                             dataFineCiclo);
 
 
@@ -2650,7 +2643,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                         {
                                                             ELABMAB emab = new ELABMAB()
                                                             {
-                                                                IDMAGABITAZIONE = maggiorazioniAbitazione.IDMAGABITAZIONE,
+                                                                IDTRASFINDENNITA = indennita.IDTRASFINDENNITA,
                                                                 IDLIVELLO = ci.Livello.IDLIVELLO,
                                                                 INDENNITABASE = ci.IndennitaDiBase,
                                                                 COEFFICENTESEDE = ci.CoefficienteDiSede,
@@ -2669,7 +2662,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                             };
 
-                                                            maggiorazioniAbitazione.ELABMAB.Add(emab);
+                                                            indennita.ELABMAB.Add(emab);
 
                                                             int n = db.SaveChanges();
 
@@ -2831,7 +2824,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 teorico.ELABMAB.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO));
 
 
-                    var tr = ei.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                    var tr = ei.INDENNITA.TRASFERIMENTO;
                     var dip = tr.DIPENDENTI;
                     var tm = teorico.TIPOMOVIMENTO;
                     var voce = teorico.VOCI;
@@ -3859,7 +3852,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             var indennita = trasferimento.INDENNITA;
             var dip = trasferimento.DIPENDENTI;
-            var magMab = indennita.MAGGIORAZIONEABITAZIONE;
+            //var magMab = indennita.MAGGIORAZIONEABITAZIONE;
 
             DateTime dataInizioTrasferimento = trasferimento.DATAPARTENZA;
             DateTime dataFineTrasferimento = trasferimento.DATARIENTRO;
@@ -3929,7 +3922,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                 a.ANNORIFERIMENTO == dataIniCiclo.Year &&
                                 a.MESERIFERIMENTO == dataIniCiclo.Month &&
-                                a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDMAGABITAZIONE == magMab.IDMAGABITAZIONE))
+                                a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
                             .ToList();
 
                     List<DateTime> lDateVariazioni = new List<DateTime>();
@@ -3940,7 +3933,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                         var lmab =
-                            magMab.MAB.Where(
+                            indennita.MAB.Where(
                                 a =>
                                     a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                     a.PERIODOMAB.Any(
@@ -4383,7 +4376,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                         ELABMAB emab = new ELABMAB()
                                                         {
-                                                            IDMAGABITAZIONE = magMab.IDMAGABITAZIONE,
+                                                            IDTRASFINDENNITA = indennita.IDTRASFINDENNITA,
                                                             IDLIVELLO = ci.Livello.IDLIVELLO,
                                                             INDENNITABASE = ci.IndennitaDiBase,
                                                             COEFFICENTESEDE = ci.CoefficienteDiSede,
@@ -4459,7 +4452,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, elabMabNew.DAL, db))
                                     {
-                                        magMab.ELABMAB.Add(elabMabNew);
+                                        indennita.ELABMAB.Add(elabMabNew);
                                         int n = db.SaveChanges();
 
                                         if (n > 0)
@@ -6428,7 +6421,7 @@ namespace NewISE.Models.DBModel.dtObj
                             #region Conguaglio MAB
 
                             var lemab =
-                                trasferimento.INDENNITA.MAGGIORAZIONEABITAZIONE.ELABMAB.Where(
+                                trasferimento.INDENNITA.ELABMAB.Where(
                                     a =>
                                         a.ANNULLATO == false &&
                                         a.TEORICI.Any(

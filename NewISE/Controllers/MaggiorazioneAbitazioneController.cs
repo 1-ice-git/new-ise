@@ -459,7 +459,7 @@ namespace NewISE.Controllers
                         //se non esiste la creo
                         if ((amm != null && amm.idAttivazioneMAB > 0) == false)
                         {
-                            amm = dtma.CreaAttivazioneMAB(idTrasferimento, db);
+                            amm = dtma.CreaAttivazioneMAB(amm.idMAB, db);
                         }
 
                         using (dtDocumenti dtd = new dtDocumenti())
@@ -695,7 +695,7 @@ namespace NewISE.Controllers
                             using (dtTrasferimento dtt = new dtTrasferimento())
                             {
                                 var m = db.MAB.Find(idMAB);
-                                var t = dtt.GetTrasferimentoById(m.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO);
+                                var t = dtt.GetTrasferimentoById(m.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO);
 
                                 var mab = dtma.GetMABPartenza(t.idTrasferimento, db);
 

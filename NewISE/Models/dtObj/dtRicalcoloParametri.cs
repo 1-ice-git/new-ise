@@ -47,7 +47,7 @@ namespace NewISE.Models.dtObj
                         {
                             tfr.CANONEMAB.Add(cmab);
 
-                            var t = cmab.ATTIVAZIONEMAB.TRASFERIMENTO;
+                            var t = cmab.ATTIVAZIONEMAB.MAB.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
@@ -736,7 +736,7 @@ namespace NewISE.Models.dtObj
                         {
                             pm.PERIODOMAB.Add(perMab);
 
-                            var t = perMab.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                            var t = perMab.MAB.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);
@@ -780,7 +780,7 @@ namespace NewISE.Models.dtObj
                                     b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                     b.ATTIVAZIONEMAB.ANNULLATO == false && b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
                                     b.ATTIVAZIONEMAB.ATTIVAZIONE == true) &&
-                            a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == ma.IDUFFICIO)
+                            a.INDENNITA.TRASFERIMENTO.IDUFFICIO == ma.IDUFFICIO)
                         .OrderBy(a => a.IDMAB)
                         .ToList();
 
@@ -800,7 +800,7 @@ namespace NewISE.Models.dtObj
                         {
                             ma.MAB.Add(mab);
 
-                            var t = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                            var t = mab.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ma.DATAINIZIOVALIDITA, db);
@@ -860,7 +860,7 @@ namespace NewISE.Models.dtObj
                         {
                             pc.PAGATOCONDIVISOMAB.Add(pgc);
 
-                            var t = pgc.MAB.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                            var t = pgc.MAB.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pc.DATAINIZIOVALIDITA, db);

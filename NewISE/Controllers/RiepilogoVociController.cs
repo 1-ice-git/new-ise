@@ -163,7 +163,7 @@ namespace NewISE.Controllers
 
                             var ps = t.PRIMASITEMAZIONE;
                             var ind = t.INDENNITA;
-                            var mab = ind.MAGGIORAZIONEABITAZIONE;
+                            //var mab = ind.MAGGIORAZIONEABITAZIONE;
                             var tep = t.TEPARTENZA;
                             var ter = t.TERIENTRO;
 
@@ -176,7 +176,7 @@ namespace NewISE.Controllers
                                     a.ANNULLATO == false && a.ELABORATO == true &&
                                     (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
                                     a.ELABINDENNITA.Any(b => b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
-                                    a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDMAGABITAZIONE == mab.IDMAGABITAZIONE) ||
+                                    a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
                                     a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
                                     a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO)
                                 .OrderBy(a => a.ANNORIFERIMENTO)

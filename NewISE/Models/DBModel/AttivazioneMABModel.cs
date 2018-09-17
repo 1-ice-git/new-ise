@@ -13,8 +13,8 @@ namespace NewISE.Models.DBModel
         [Key]
         public decimal idAttivazioneMAB { get; set; }
 
-        [Required(ErrorMessage = "Il trasferimento è richiesto.")]
-        public decimal? idTrasferimento { get; set; }
+        [Required(ErrorMessage = "La MAB è richiesta.")]
+        public decimal idMAB { get; set; }
 
         [Required()]
         [DefaultValue(false)]

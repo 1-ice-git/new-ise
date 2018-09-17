@@ -462,14 +462,14 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region MaggiorazioneAbitazione
-                var lma = t.INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(x => x.IDMAB);
+                var lma = t.INDENNITA.MAB.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(x => x.IDMAB);
                 if (lma?.Any() ?? false)
                 {
                     var ma = lma.First();
 
                     if (ma != null && ma.IDMAB > 0)
                     {
-                        var lam = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
+                        var lam = ma.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
 
                         if (lam?.Any() ?? false)
                         {
@@ -2829,7 +2829,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mab = db.MAB.Find(idMAB);
-                var tr = mab.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO;
+                var tr = mab.INDENNITA.TRASFERIMENTO;
 
                 tm = new TrasferimentoModel()
                 {
