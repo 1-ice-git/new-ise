@@ -2036,7 +2036,6 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 foreach (var mab in lmab)
                 {
-
                     var lPeriodoMab =
                         mab.PERIODOMAB.Where(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                   b.ATTIVAZIONEMAB.ANNULLATO == false &&
