@@ -194,11 +194,11 @@ namespace NewISE.Controllers
             return PartialView(ledcm);
 
         }
+
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
         public ActionResult CalcolaElaborazioneMensile(List<int> dipendenti, decimal idAnnoMeseElaborato)
         {
-
             try
             {
                 using (dtElaborazioni dte = new dtElaborazioni())

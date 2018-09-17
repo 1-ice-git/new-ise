@@ -190,7 +190,6 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
 
-
                 //PERCENTUALEMAB p = new PERCENTUALEMAB();
                 List<PERCENTUALEMAB> plAll = new List<PERCENTUALEMAB>();
                 //List<PERCENTUALEMAB> pl = new List<PERCENTUALEMAB>();
@@ -210,11 +209,14 @@ namespace NewISE.Models.DBModel.dtObj
 
                 foreach (var l in livelli)
                 {
+                    DateTime dtIni = l.DATAINIZIOVALIDITA < pmm.dataInizioMAB ? pmm.dataInizioMAB : l.DATAINIZIOVALIDITA;
+                    DateTime dtFin = l.DATAFINEVALIDITA > pmm.dataFineMAB ? pmm.dataFineMAB : l.DATAFINEVALIDITA;
+
                     var pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
-                                                    a.DATAFINEVALIDITA >= l.DATAINIZIOVALIDITA &&
-                                                    a.DATAINIZIOVALIDITA <= l.DATAFINEVALIDITA &&
-                                                    a.IDUFFICIO == u.IDUFFICIO &&
-                                                    a.IDLIVELLO == l.IDLIVELLO).ToList();
+                                                          a.DATAFINEVALIDITA >= dtIni &&
+                                                          a.DATAINIZIOVALIDITA <= dtFin &&
+                                                          a.IDUFFICIO == u.IDUFFICIO &&
+                                                          a.IDLIVELLO == l.IDLIVELLO).ToList();
 
                     if (!pl?.Any() ?? false)
                     {
@@ -2912,7 +2914,7 @@ namespace NewISE.Models.DBModel.dtObj
             lpc = GetListaPercentualeCondivisione(pcmabm.DataInizioValidita, pcmabm.DataFineValidita, db);
             foreach (var pc in lpc)
             {
-                
+
                 Associa_PagatoCondivisoMAB_PercentualeCondivisione(pcmabm.idPagatoCondiviso, pc.IDPERCCOND, db);
             }
 

@@ -252,7 +252,8 @@ namespace NewISE.Models.Enumeratori
         Sistemazione_Richiamo_Netto_086_383 = 1,
         Sistemazione_Lorda_086_380 = 2,
         Detrazione_086_384 = 3,
-        Trasp_Mass_Partenza_Rientro_162_131 = 9
+        Trasp_Mass_Partenza_Rientro_162_131 = 9,
+        Rientro_Lordo_086_381 = 13
 
     }
 
@@ -260,7 +261,8 @@ namespace NewISE.Models.Enumeratori
     {
         Ind_Sede_Estera = 8,
         Ind_Prima_Sist_IPS = 10,
-        MAB = 11
+        MAB = 11,
+        Ind_Richiamo_IRI = 12
 
     }
 

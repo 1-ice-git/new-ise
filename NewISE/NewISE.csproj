@@ -303,6 +303,8 @@
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\ru.js" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\tr.js" />
     <Content Include="bower_components\jquery-modal\customCssModal.css" />
+    <Content Include="Content\animate.css" />
+    <Content Include="Content\animate.min.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput-rtl.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput-rtl.min.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput.css" />
@@ -6493,7 +6495,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50417</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
