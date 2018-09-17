@@ -13,7 +13,7 @@ namespace NewISE.Models.DBModel
         [Key]
         public decimal idMAB { get; set; }
 
-        public decimal idMagAbitazione { get; set; }
+        public decimal idTrasfIndennita { get; set; }
 
         public decimal idAttivazioneMAB { get; set; }
 
@@ -29,8 +29,6 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data agg.")]
         public DateTime dataAggiornamento { get; set; }
-
-        public decimal? FK_idMAB { get; set; }
 
         public bool HasValue()
         {

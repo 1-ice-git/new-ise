@@ -125,8 +125,7 @@ namespace NewISE.Controllers
                             {
                                 var t = dtt.GetTrasferimentoById(idTrasferimento);
                                 statoTrasferimento = t.idStatoTrasferimento;
-                                if (statoTrasferimento == EnumStatoTraferimento.Annullato ||
-                                    statoTrasferimento == EnumStatoTraferimento.Terminato)
+                                if (statoTrasferimento == EnumStatoTraferimento.Annullato)
                                 {
                                     soloLettura = true;
                                 }
@@ -285,8 +284,7 @@ namespace NewISE.Controllers
 
                                     var t = dtt.GetTrasferimentoById(idTrasferimento);
                                     statoTrasferimento = t.idStatoTrasferimento;
-                                    if (statoTrasferimento == EnumStatoTraferimento.Annullato ||
-                                        statoTrasferimento == EnumStatoTraferimento.Terminato)
+                                    if (statoTrasferimento == EnumStatoTraferimento.Annullato)
                                     {
                                         soloLettura = true;
                                     }
@@ -363,8 +361,7 @@ namespace NewISE.Controllers
 
                                     var t = dtt.GetTrasferimentoById(idTrasferimento);
                                     statoTrasferimento = t.idStatoTrasferimento;
-                                    if (statoTrasferimento == EnumStatoTraferimento.Annullato ||
-                                        statoTrasferimento == EnumStatoTraferimento.Terminato)
+                                    if (statoTrasferimento == EnumStatoTraferimento.Annullato)
                                     {
                                         soloLettura = true;
                                     }
@@ -889,7 +886,7 @@ namespace NewISE.Controllers
                             }
 
                             var t = dtt.GetTrasferimentoById(idTrasferimento);
-                            if (t.idStatoTrasferimento == EnumStatoTraferimento.Annullato || t.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                            if (t.idStatoTrasferimento == EnumStatoTraferimento.Annullato)
                             {
                                 trasfSolaLettura = true;
                             }
@@ -1528,9 +1525,10 @@ namespace NewISE.Controllers
                             {
                                 mabvm.idMAB = mab.IDMAB;
 
+                                var att = mab.ATTIVAZIONEMAB.Where(a=>a.ANNULLATO==false).OrderByDescending(a=>a.IDATTIVAZIONEMAB).ToList().First();
                                 //mam.dataPartenza = t.dataPartenza;
-                                mabvm.idTrasferimento = mab.IDMAGABITAZIONE;
-                                mabvm.idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
+                                mabvm.idTrasferimento = mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+                                mabvm.idAttivazioneMAB = att.IDATTIVAZIONEMAB;
 
                                 var pmm = dtvma.GetPeriodoMABModel(mab.IDMAB, db);
 
@@ -1577,7 +1575,7 @@ namespace NewISE.Controllers
                                 if (aa.IDMAGANNUALI > 0)
                                 {
                                     mabvm.annualita = true;
-                                    var att_mab=dtvma.GetAttivazioneById(mab.IDATTIVAZIONEMAB, db);
+                                    var att_mab=dtvma.GetAttivazioneById(att.IDATTIVAZIONEMAB, db);
                                     if(att_mab.ATTIVAZIONE==false)
                                     {
                                         mabvm.annualita_modificabile = true;
@@ -1738,9 +1736,10 @@ namespace NewISE.Controllers
                                     if (mab.IDMAB > 0)
                                     {
                                         mvm.idMAB = mab.IDMAB;
+                                        var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();
 
-                                        mvm.idTrasferimento = mab.IDMAGABITAZIONE;
-                                        mvm.idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
+                                        mvm.idTrasferimento = mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+                                        mvm.idAttivazioneMAB = att.IDATTIVAZIONEMAB;
 
                                         var pmm = dtvma.GetPeriodoMABModel(mab.IDMAB, db);
 
@@ -1798,9 +1797,9 @@ namespace NewISE.Controllers
                                 if (mab.IDMAB > 0)
                                 {
                                     mvm.idMAB = mab.IDMAB;
-
-                                    mvm.idTrasferimento = mab.IDMAGABITAZIONE;
-                                    mvm.idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
+                                    var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();
+                                    mvm.idTrasferimento = mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+                                    mvm.idAttivazioneMAB = att.IDATTIVAZIONEMAB;
 
                                     var pmm = dtvma.GetPeriodoMABModel(mab.IDMAB, db);
 
@@ -1856,9 +1855,9 @@ namespace NewISE.Controllers
                             if (mab.IDMAB > 0)
                             {
                                 mvm.idMAB = mab.IDMAB;
-
-                                mvm.idTrasferimento = mab.IDMAGABITAZIONE;
-                                mvm.idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
+                                var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();
+                                mvm.idTrasferimento = mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+                                mvm.idAttivazioneMAB = att.IDATTIVAZIONEMAB;
 
                                 var pmm = dtvma.GetPeriodoMABModel(mab.IDMAB, db);
 

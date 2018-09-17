@@ -1185,7 +1185,7 @@ namespace NewISE.Models.DBModel.dtObj
                         List<DateTime> lDateVariazioni = new List<DateTime>();
 
                         //var xx = db.TRASFERIMENTO.Find(idTrasferimento).DIPENDENTI.LIVELLIDIPENDENTI;
-                        var lmab = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.MAGGIORAZIONEABITAZIONE.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                        var lmab = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
 
 
                         using (dtMaggiorazioneAbitazione dtmab = new dtMaggiorazioneAbitazione())
