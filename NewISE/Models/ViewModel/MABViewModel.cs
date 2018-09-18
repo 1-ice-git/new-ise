@@ -52,5 +52,7 @@ namespace NewISE.Models.ViewModel
 
         public bool annullabile { get; set; }
 
+        public bool esistonoFormulari { get; set; }
+
     }
 }

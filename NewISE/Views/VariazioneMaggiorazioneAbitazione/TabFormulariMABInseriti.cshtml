@@ -202,6 +202,7 @@
         var rotta = "/Documenti/EliminaFormularioMAB";
         var idDoc = $("#hIdDocFormularioMAB").val();
         var idTrasferimento = $("#hdIdTrasferimento").val();
+        var idMab = $("#hdIdMab").val();
         
         $("#ModalEliminaFormularioMAB").modal("hide");
         var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
@@ -224,7 +225,7 @@
                     ErroreElaborazioneAjax(result.err);
                 }
                 else {
-                    ElencoFormulariMABInseriti(idTrasferimento)
+                    ElencoFormulariMABInseriti(idTrasferimento, idMab)
                     GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
                 }
             },

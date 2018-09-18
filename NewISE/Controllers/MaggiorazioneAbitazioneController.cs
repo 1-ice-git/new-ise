@@ -45,7 +45,7 @@ namespace NewISE.Controllers
         {
             List<MABViewModel> mavml = new List<MABViewModel>();
             MABViewModel mavm = new MABViewModel();
-            MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
+            //MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
             MAB mab = new MAB();
             PERIODOMAB pmab = new PERIODOMAB();
             ATTIVAZIONEMAB am = new ATTIVAZIONEMAB();
@@ -197,7 +197,7 @@ namespace NewISE.Controllers
             EnumStatoTraferimento statoTrasferimento = 0;
 
 
-            MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
+            //MaggiorazioneAbitazioneModel mam = new MaggiorazioneAbitazioneModel();
 
             try
             {
@@ -609,71 +609,71 @@ namespace NewISE.Controllers
                     });
         }
 
-        public ActionResult NuovaMAB(decimal idTrasferimento)
-        {
-            MABViewModel mam = new MABViewModel();
+        //public ActionResult NuovaMAB(decimal idTrasferimento)
+        //{
+        //    MABViewModel mam = new MABViewModel();
 
-            List<SelectListItem> lValute = new List<SelectListItem>();
+        //    List<SelectListItem> lValute = new List<SelectListItem>();
 
-            var r = new List<SelectListItem>();
+        //    var r = new List<SelectListItem>();
 
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
-                    {
-                        using (dtValute dtv = new dtValute())
-                        {
-                            var lv = dtv.GetElencoValute(db);
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+        //            {
+        //                using (dtValute dtv = new dtValute())
+        //                {
+        //                    var lv = dtv.GetElencoValute(db);
 
-                            if (lv != null && lv.Count > 0)
-                            {
-                                r = (from v in lv
-                                     select new SelectListItem()
-                                     {
-                                         Text = v.DESCRIZIONEVALUTA,
-                                         Value = v.IDVALUTA.ToString()
-                                     }).ToList();
+        //                    if (lv != null && lv.Count > 0)
+        //                    {
+        //                        r = (from v in lv
+        //                             select new SelectListItem()
+        //                             {
+        //                                 Text = v.DESCRIZIONEVALUTA,
+        //                                 Value = v.IDVALUTA.ToString()
+        //                             }).ToList();
 
-                                r.Insert(0, new SelectListItem() { Text = "", Value = "" });
-                            }
+        //                        r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+        //                    }
 
-                            lValute = r;
-                            ViewBag.lValute = lValute;
+        //                    lValute = r;
+        //                    ViewBag.lValute = lValute;
 
-                            var vm = dtv.GetValutaUfficiale(db);
+        //                    var vm = dtv.GetValutaUfficiale(db);
 
-                            mam.id_Valuta = vm.idValuta;
-                        }
-                        using (dtTrasferimento dtt = new dtTrasferimento())
-                        {
-                            var t = dtt.GetTrasferimentoById(idTrasferimento);
-                            //mam.dataInizioMAB = t.dataPartenza;
-                            mam.idTrasferimento = idTrasferimento;
-                            //mam.dataPartenza = t.dataPartenza;
-                        }
-                        //mam.dataFineMAB = Utility.DataFineStop();
-                        mam.ut_dataFineMAB = null;
-                        mam.importo_canone = 0;
+        //                    mam.id_Valuta = vm.idValuta;
+        //                }
+        //                using (dtTrasferimento dtt = new dtTrasferimento())
+        //                {
+        //                    var t = dtt.GetTrasferimentoById(idTrasferimento);
+        //                    //mam.dataInizioMAB = t.dataPartenza;
+        //                    mam.idTrasferimento = idTrasferimento;
+        //                    //mam.dataPartenza = t.dataPartenza;
+        //                }
+        //                //mam.dataFineMAB = Utility.DataFineStop();
+        //                mam.ut_dataFineMAB = null;
+        //                mam.importo_canone = 0;
 
-                        //mam.AnticipoAnnuale = false;
-                        //var mann = dtma.GetMaggiorazioneAnnuale(mam, db);
-                        //mam.idMagAnnuali = mann.idMagAnnuali;
+        //                //mam.AnticipoAnnuale = false;
+        //                //var mann = dtma.GetMaggiorazioneAnnuale(mam, db);
+        //                //mam.idMagAnnuali = mann.idMagAnnuali;
 
-                        ViewData.Add("idTrasferimento", idTrasferimento);
-                        ViewBag.lValute = lValute;
+        //                ViewData.Add("idTrasferimento", idTrasferimento);
+        //                ViewBag.lValute = lValute;
 
-                        return PartialView(mam);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
+        //                return PartialView(mam);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+        //    }
 
-        }
+        //}
 
 
         public ActionResult ModificaMAB(decimal idMAB)
@@ -707,6 +707,7 @@ namespace NewISE.Controllers
 
                                 mam.importo_canone = cm.IMPORTOCANONE;
                                 mam.dataInizioMAB = pmm.dataInizioMAB;
+                                mam.ut_dataInizioMAB = pmm.dataInizioMAB;
                                 mam.dataFineMAB = pmm.dataFineMAB;
                                 mam.anticipoAnnuale = aa.ANTICIPOANNUALE;
                                 mam.id_Valuta = cm.IDVALUTA;

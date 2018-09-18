@@ -29,7 +29,6 @@
     });
 }
 
-
 function FormulariMAB(idTrasferimento) {
     //debugger;
     var rotta = '/MaggiorazioneAbitazione/FormulariMAB';
@@ -62,7 +61,6 @@ function FormulariMAB(idTrasferimento) {
 
     });
 }
-
 
 function AttivitaMAB(idTrasferimento) {
     //debugger;
@@ -124,7 +122,6 @@ function GestioneMAB(idTrasferimento) {
     });
 }
 
-
 function UploadDocumentoMABModal(idTipoDocumento, idTrasferimento) {
     //debugger;
     var rotta = '/MaggiorazioneAbitazione/DocumentoMAB';
@@ -173,7 +170,6 @@ function CloseModalFileMAB(idTrasferimento) {
     $('#inviaDocMABModal').modal('hide');
     setTimeout(FormulariMAB(idTrasferimento), 1000);
 }
-
 
 function ValidazioneMAB(idTrasferimento) {
     //debugger;
@@ -401,7 +397,6 @@ function ConfermaAttivaRichiestaMAB() {
         }
     });
 }
-
 
 function NuovaMAB(idTrasferimento) {
     //debugger;

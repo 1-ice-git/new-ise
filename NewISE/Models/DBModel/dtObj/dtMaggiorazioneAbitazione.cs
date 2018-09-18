@@ -27,27 +27,27 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
-            var ma = context.ObjectInstance as MaggiorazioneAbitazioneModel;
-            if (ma != null)
-            {
-                //if (ma.dataInizioMAB < ma.dataPartenza)
-                //{
-                //    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", ma.dataPartenza.ToShortDateString()));
-                //}
-                //else
-                //{
-                //    vr = ValidationResult.Success;
-                //}
-            }
-            else
-            {
-                vr = new ValidationResult("La data di inizio validità è richiesta.");
-            }
-            return vr;
-        }
+        //public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
+        //    var ma = context.ObjectInstance as MaggiorazioneAbitazioneModel;
+        //    if (ma != null)
+        //    {
+        //        //if (ma.dataInizioMAB < ma.dataPartenza)
+        //        //{
+        //        //    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", ma.dataPartenza.ToShortDateString()));
+        //        //}
+        //        //else
+        //        //{
+        //        //    vr = ValidationResult.Success;
+        //        //}
+        //    }
+        //    else
+        //    {
+        //        vr = new ValidationResult("La data di inizio validità è richiesta.");
+        //    }
+        //    return vr;
+        //}
 
 
 
@@ -61,12 +61,12 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                    var lmab = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB == false).OrderBy(a => a.IDMAB).ToList();
+                    var lmab = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDMAB).ToList();
                     if (lmab?.Any() ?? false)
                     {
                         var mab = lmab.First();
 
-                        var lam = mab.ATTIVAZIONEMAB.Where(a=>a.ANNULLATO==false).OrderBy(a=>a.IDATTIVAZIONEMAB).ToList().First();
+                        am = mab.ATTIVAZIONEMAB.Where(a=>a.ANNULLATO==false).OrderBy(a=>a.IDATTIVAZIONEMAB).ToList().First();
 
                         amm = new AttivazioneMABModel()
                         {
@@ -863,7 +863,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (db.SaveChanges() > 0)
             {
-                var mab = GetMABbyId(am.IDMAB);
+                var mab = GetMABbyId(am.IDMAB, db);
                 dm.idDocumenti = d.IDDOCUMENTO;
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo documento (maggiorazione abitazione).", "Documenti", db, mab.IDTRASFINDENNITA, dm.idDocumenti);
             }
@@ -910,7 +910,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var am = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
                     if (am?.IDATTIVAZIONEMAB > 0)
                     {
-                        var mab = GetMABbyId(am.IDMAB);
+                        var mab = GetMABbyId(am.IDMAB, db);
 
                         if (am.NOTIFICARICHIESTA == true)
                         {
@@ -929,10 +929,10 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Attivazione maggiorazione abitazione.", "ATTIVAZIONEMAB", db,
-                                    mab.IDTRASFINDENNITA, am.IDATTIVAZIONEMAB);
+                                    mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO, am.IDATTIVAZIONEMAB);
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
-                                    dtce.ModificaInCompletatoCalendarioEvento(mab.IDTRASFINDENNITA, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
+                                    dtce.ModificaInCompletatoCalendarioEvento(mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
                                 }
 
                                 #region aggiorno l'associazione anticipo annuale
@@ -960,7 +960,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 TrasferimentoModel tm = new TrasferimentoModel();
                                 using (dtTrasferimento dtt = new dtTrasferimento())
                                 {
-                                    tm = dtt.GetTrasferimentoById(mab.IDTRASFINDENNITA);
+                                    tm = dtt.GetTrasferimentoById(mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO);
                                 }
 
                                 //this.RimuoviAssociazione_MAB_PercentualeMAB(mm.idMAB, db);
@@ -1072,7 +1072,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                                     string.Format(Resources.msgEmail.MessaggioAttivazioneMaggiorazioneAbitazione, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
                                                                     db);
 
-                                                var att_new = CreaAttivazioneMAB(mab.IDMAB, db);
+                                                //var att_new = CreaAttivazioneMAB(mab.IDMAB, db);
                                             }
                                         }
                                     }
@@ -1114,7 +1114,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (amab?.IDATTIVAZIONEMAB > 0)
                 {
-                    TRASFERIMENTO tr = GetMABbyId(amab.IDMAB).INDENNITA.TRASFERIMENTO;
+                    TRASFERIMENTO tr = GetMABbyId(amab.IDMAB, db).INDENNITA.TRASFERIMENTO;
                     DIPENDENTI d = tr.DIPENDENTI;
                     UFFICI u = tr.UFFICI;
 
@@ -1196,6 +1196,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var mab = db.MAB.Find(am_Old.IDMAB);
 
+                    var idTrasferimento = mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+
                     if (am_Old?.IDATTIVAZIONEMAB > 0)
                     {
                         if (am_Old.NOTIFICARICHIESTA == true && am_Old.ATTIVAZIONE == false && am_Old.ANNULLATO == false)
@@ -1214,7 +1216,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Annullamento della riga per il ciclo di attivazione della richiesta di maggiorazione abitazione",
-                                    "ATTIVAZIONEMAB", db, mab.IDTRASFINDENNITA,
+                                    "ATTIVAZIONEMAB", db, idTrasferimento,
                                     am_Old.IDATTIVAZIONEMAB);
 
                                 am_New = new ATTIVAZIONEMAB()
@@ -1238,7 +1240,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                                         "Inserimento di una nuova riga per il ciclo di attivazione relativo alla richiesta maggiorazione abitazione.",
-                                        "ATTIVAZIONEMAB", db, mab.IDTRASFINDENNITA,
+                                        "ATTIVAZIONEMAB", db, idTrasferimento,
                                         am_New.IDATTIVAZIONEMAB);
                                 }
                             }
@@ -1253,12 +1255,12 @@ namespace NewISE.Models.DBModel.dtObj
                     #region lettura trasferimento
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        tm = dtt.GetTrasferimentoById(mab.IDTRASFINDENNITA);
+                        tm = dtt.GetTrasferimentoById(idTrasferimento);
                     }
                     #endregion
 
                     #region MAB
-                    var mab_old = GetMABPartenza(mab.IDTRASFINDENNITA, db);
+                    var mab_old = GetMABPartenza(idTrasferimento, db);
 
                     if (mab_old.IDMAB > 0)
                     {
@@ -1282,7 +1284,7 @@ namespace NewISE.Models.DBModel.dtObj
                             Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                                 "Inserimento di una nuova riga per MAB.",
                                 "MAB", db,
-                                mab.IDTRASFINDENNITA,
+                                idTrasferimento,
                                 mab_new.IDMAB);
                         }
                     }
@@ -1324,7 +1326,7 @@ namespace NewISE.Models.DBModel.dtObj
                         Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                             "Inserimento di una nuova riga per PERIODO MAB.",
                             "PERIODOMAB", db,
-                            mab.IDTRASFINDENNITA,
+                            idTrasferimento,
                             pmab_new.IDPERIODOMAB);
 
                         using (dtTrasferimento dtt = new dtTrasferimento())
@@ -1382,7 +1384,7 @@ namespace NewISE.Models.DBModel.dtObj
                             Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                                 "Inserimento di una nuova riga canone per la richiesta maggiorazione abitazione.",
                                 "CANONEMAB", db,
-                                mab.IDTRASFINDENNITA,
+                                idTrasferimento,
                                 canone_new.IDCANONE);
 
                             //var tfr_l =  old_canone.TFR.ToList();
@@ -1428,7 +1430,7 @@ namespace NewISE.Models.DBModel.dtObj
                             Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                                     "Inserimento di una nuova riga Pagato Condiviso MAB per la richiesta maggiorazione abitazione.",
                                     "PAGATOCONDIVISOMAB", db,
-                                    mab.IDTRASFINDENNITA,
+                                    idTrasferimento,
                                     pcmab_new.IDPAGATOCONDIVISO);
 
                             var lpc = GetListaPercentualeCondivisione(pcmab_new.DATAINIZIOVALIDITA, pcmab_new.DATAFINEVALIDITA, db);
@@ -1470,7 +1472,7 @@ namespace NewISE.Models.DBModel.dtObj
                             Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                                     "Inserimento di una nuova riga Anticipo Annuale MAB per la richiesta maggiorazione abitazione.",
                                     "ANTICIPOANNUALE", db,
-                                    mab.IDTRASFINDENNITA,
+                                    idTrasferimento,
                                     aa_new.IDANTICIPOANNUALEMAB);
 
                         }
@@ -1480,8 +1482,6 @@ namespace NewISE.Models.DBModel.dtObj
                         throw new Exception("Errore - Nessun Anticipo Annuale MAB trovato.");
                     }
                     #endregion
-
-
 
                     #region documenti
                     var ld_old = this.GetDocumentiMAB(idAttivazioneMAB, db);
@@ -1505,14 +1505,14 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     #endregion
 
-                    EmailTrasferimento.EmailAnnulla(mab.IDTRASFINDENNITA,
+                    EmailTrasferimento.EmailAnnulla(idTrasferimento,
                                                         Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioneAbitazione,
                                                         msg,
                                                         db);
-                    //this.EmailAnnullaRichiestaMAB(am_New.IDATTIVAZIONEMAB, db);
+
                     using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                     {
-                        dtce.AnnullaMessaggioEvento(mab.IDTRASFINDENNITA, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
+                        dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaMaggiorazioneAbitazione, db);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -1526,63 +1526,63 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void EmailAnnullaRichiestaMAB(decimal idAttivazioneMAB, ModelDBISE db)
-        {
-            AccountModel am = new AccountModel();
-            Mittente mittente = new Mittente();
-            Destinatario to = new Destinatario();
-            Destinatario cc = new Destinatario();
+        //public void EmailAnnullaRichiestaMAB(decimal idAttivazioneMAB, ModelDBISE db)
+        //{
+        //    AccountModel am = new AccountModel();
+        //    Mittente mittente = new Mittente();
+        //    Destinatario to = new Destinatario();
+        //    Destinatario cc = new Destinatario();
 
-            try
-            {
-                am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
+        //    try
+        //    {
+        //        am = Utility.UtenteAutorizzato();
+        //        mittente.Nominativo = am.nominativo;
+        //        mittente.EmailMittente = am.eMail;
 
-                var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+        //        var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
 
-                if (amab?.IDATTIVAZIONEMAB > 0)
-                {
-                    TRASFERIMENTO tr = amab.MAB.INDENNITA.TRASFERIMENTO;
-                    DIPENDENTI dip = tr.DIPENDENTI;
-                    UFFICI uff = tr.UFFICI;
+        //        if (amab?.IDATTIVAZIONEMAB > 0)
+        //        {
+        //            TRASFERIMENTO tr = amab.MAB.INDENNITA.TRASFERIMENTO;
+        //            DIPENDENTI dip = tr.DIPENDENTI;
+        //            UFFICI uff = tr.UFFICI;
 
-                    using (GestioneEmail gmail = new GestioneEmail())
-                    {
-                        using (ModelloMsgMail msgMail = new ModelloMsgMail())
-                        {
-                            cc = new Destinatario()
-                            {
-                                Nominativo = am.nominativo,
-                                EmailDestinatario = am.eMail
-                            };
+        //            using (GestioneEmail gmail = new GestioneEmail())
+        //            {
+        //                using (ModelloMsgMail msgMail = new ModelloMsgMail())
+        //                {
+        //                    cc = new Destinatario()
+        //                    {
+        //                        Nominativo = am.nominativo,
+        //                        EmailDestinatario = am.eMail
+        //                    };
 
-                            to = new Destinatario()
-                            {
-                                Nominativo = dip.NOME + " " + dip.COGNOME,
-                                EmailDestinatario = dip.EMAIL,
-                            };
+        //                    to = new Destinatario()
+        //                    {
+        //                        Nominativo = dip.NOME + " " + dip.COGNOME,
+        //                        EmailDestinatario = dip.EMAIL,
+        //                    };
 
-                            msgMail.mittente = mittente;
-                            msgMail.cc.Add(cc);
-                            msgMail.destinatario.Add(to);
+        //                    msgMail.mittente = mittente;
+        //                    msgMail.cc.Add(cc);
+        //                    msgMail.destinatario.Add(to);
 
-                            msgMail.oggetto =
-                            Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioneAbitazione;
-                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioneAbitazione, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
+        //                    msgMail.oggetto =
+        //                    Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioneAbitazione;
+        //                    msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioneAbitazione, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
 
-                            gmail.sendMail(msgMail);
-                        }
-                    }
+        //                    gmail.sendMail(msgMail);
+        //                }
+        //            }
 
-                }
-            }
-            catch (Exception ex)
-            {
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public void NotificaRichiestaMAB(decimal idAttivazioneMAB)
         {
@@ -1633,7 +1633,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 #region incaso di rinuncia reimposto i dati con i valori di default e cancello il documento
                                 var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
-                                var m = GetMABbyId(amab.IDMAB);
+                                var m = GetMABbyId(amab.IDMAB, db);
                                 var mab = this.GetMABPartenza(m.IDTRASFINDENNITA, db);
                                 if (mab.RINUNCIAMAB)
                                 {
@@ -1733,89 +1733,89 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        private void EmailNotificaRichiestaMAB(decimal idAttivazioneMAB, ModelDBISE db)
-        {
-            AccountModel am = new AccountModel();
-            Mittente mittente = new Mittente();
-            Destinatario to = new Destinatario();
-            Destinatario cc = new Destinatario();
-            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+        //private void EmailNotificaRichiestaMAB(decimal idAttivazioneMAB, ModelDBISE db)
+        //{
+        //    AccountModel am = new AccountModel();
+        //    Mittente mittente = new Mittente();
+        //    Destinatario to = new Destinatario();
+        //    Destinatario cc = new Destinatario();
+        //    List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
 
 
-            try
-            {
-                am = Utility.UtenteAutorizzato();
-                mittente.Nominativo = am.nominativo;
-                mittente.EmailMittente = am.eMail;
+        //    try
+        //    {
+        //        am = Utility.UtenteAutorizzato();
+        //        mittente.Nominativo = am.nominativo;
+        //        mittente.EmailMittente = am.eMail;
 
-                var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+        //        var amab = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
 
-                var mab = GetMABbyId(amab.IDMAB);
+        //        var mab = GetMABbyId(amab.IDMAB);
 
-                if (amab?.IDATTIVAZIONEMAB > 0)
-                {
-                    TRASFERIMENTO tr = mab.INDENNITA.TRASFERIMENTO;
-                    DIPENDENTI d = tr.DIPENDENTI;
+        //        if (amab?.IDATTIVAZIONEMAB > 0)
+        //        {
+        //            TRASFERIMENTO tr = mab.INDENNITA.TRASFERIMENTO;
+        //            DIPENDENTI d = tr.DIPENDENTI;
 
-                    UFFICI u = tr.UFFICI;
+        //            UFFICI u = tr.UFFICI;
 
-                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-                    {
-                        using (GestioneEmail gmail = new GestioneEmail())
-                        {
-                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
-                            {
+        //            using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+        //            {
+        //                using (GestioneEmail gmail = new GestioneEmail())
+        //                {
+        //                    using (ModelloMsgMail msgMail = new ModelloMsgMail())
+        //                    {
 
-                                cc = new Destinatario()
-                                {
-                                    Nominativo = am.nominativo,
-                                    EmailDestinatario = am.eMail
-                                };
+        //                        cc = new Destinatario()
+        //                        {
+        //                            Nominativo = am.nominativo,
+        //                            EmailDestinatario = am.eMail
+        //                        };
 
-                                msgMail.mittente = mittente;
-                                msgMail.cc.Add(cc);
+        //                        msgMail.mittente = mittente;
+        //                        msgMail.cc.Add(cc);
 
-                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+        //                        luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
 
-                                foreach (var uam in luam)
-                                {
-                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
-                                    {
-                                        to = new Destinatario()
-                                        {
-                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                            EmailDestinatario = amministratore.EMAIL
-                                        };
+        //                        foreach (var uam in luam)
+        //                        {
+        //                            var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+        //                            if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+        //                            {
+        //                                to = new Destinatario()
+        //                                {
+        //                                    Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+        //                                    EmailDestinatario = amministratore.EMAIL
+        //                                };
 
-                                        msgMail.destinatario.Add(to);
-                                    }
+        //                                msgMail.destinatario.Add(to);
+        //                            }
 
 
-                                }
-                                msgMail.oggetto = Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioneAbitazione;
-                                msgMail.corpoMsg =
-                                        string.Format(
-                                            Resources.msgEmail.MessaggioNotificaMaggiorazioneAbitazione,
-                                            d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                            tr.DATAPARTENZA.ToLongDateString(),
-                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
+        //                        }
+        //                        msgMail.oggetto = Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioneAbitazione;
+        //                        msgMail.corpoMsg =
+        //                                string.Format(
+        //                                    Resources.msgEmail.MessaggioNotificaMaggiorazioneAbitazione,
+        //                                    d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
+        //                                    tr.DATAPARTENZA.ToLongDateString(),
+        //                                    u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
 
-                                gmail.sendMail(msgMail);
+        //                        gmail.sendMail(msgMail);
 
-                            }
-                        }
+        //                    }
+        //                }
 
-                    }
-                }
+        //            }
+        //        }
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         //public decimal SetMaggiorazioneAbitazione(ref MABViewModel mvm, ModelDBISE db, decimal idAttivazioneMAB)
         //{
@@ -2180,7 +2180,6 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
                     #endregion
-
 
                     #region inserisce/aggiorna eventuale pagato condiviso
                     var lpc = this.GetListPagatoCondivisoMABPartenza(mvm);
@@ -2609,7 +2608,7 @@ namespace NewISE.Models.DBModel.dtObj
         //    }
         //}
 
-        public MABModel CreaMABPartenza(decimal idTrasferimento, decimal idAttivazioneMAB, ModelDBISE db)
+        public MABModel CreaMABPartenza(decimal idTrasferimento, ModelDBISE db)
         {
             try
             {
@@ -2618,7 +2617,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 MAB m = new MAB()
                 {
-                    IDTRASFINDENNITA = idTrasferimento,
+                    IDTRASFINDENNITA = t.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO,
                     IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
                     RINUNCIAMAB = false,
                     DATAAGGIORNAMENTO = DateTime.Now,
@@ -2687,7 +2686,7 @@ namespace NewISE.Models.DBModel.dtObj
                     };
 
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento PeriodoMAB", "PERIODOMAB", db,
-                            pm.MAB.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO, pm.IDPERIODOMAB);
+                            t.IDTRASFERIMENTO, pm.IDPERIODOMAB);
                 }
                 else
                 {
@@ -2776,17 +2775,14 @@ namespace NewISE.Models.DBModel.dtObj
         //    }
         //}
 
-        public MAB GetMABbyId(decimal idMAB)
+        public MAB GetMABbyId(decimal idMAB, ModelDBISE db)
         {
             try
             {
-                using (ModelDBISE db = new ModelDBISE())
-                {
 
-                    MAB mab = db.MAB.Find(idMAB);
+                MAB mab = db.MAB.Find(idMAB);
 
-                    return mab;
-                }
+                return mab;
             }
             catch (Exception ex)
             {
@@ -2801,7 +2797,7 @@ namespace NewISE.Models.DBModel.dtObj
             AttivazioneMABModel amabm = new AttivazioneMABModel();
             MABModel mm = new MABModel();
             PeriodoMABModel pmm = new PeriodoMABModel();
-            MaggiorazioneAbitazioneModel mabm = new MaggiorazioneAbitazioneModel();
+            //MaggiorazioneAbitazioneModel mabm = new MaggiorazioneAbitazioneModel();
             IndennitaModel im = new IndennitaModel();
             MaggiorazioniAnnualiModel mam = new MaggiorazioniAnnualiModel();
             PagatoCondivisoMABModel pcmabm = new PagatoCondivisoMABModel();
@@ -2814,10 +2810,9 @@ namespace NewISE.Models.DBModel.dtObj
 
             //mabm = CreaMaggiorazioneAbitazionePartenza(trm.idTrasferimento, db);
 
-            mm = CreaMABPartenza(trm.idTrasferimento, amabm.idAttivazioneMAB, db);
+            mm = CreaMABPartenza(trm.idTrasferimento, db);
 
-            amabm = CreaAttivazioneMAB(trm.idTrasferimento, db);
-
+            amabm = CreaAttivazioneMAB(mm.idMAB, db);
 
             pmm = CreaPeriodoMABPartenza(trm.idTrasferimento, mm.idMAB, amabm.idAttivazioneMAB, db);
 
@@ -3133,7 +3128,7 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
                 DOCUMENTI dm = db.DOCUMENTI.Find(idDocumentoMAB);
-                var mab = GetMABbyId(idMAB);
+                var mab = GetMABbyId(idMAB, db);
                 if (dm.IDDOCUMENTO > 0)
                 {
                     dm.IDSTATORECORD = (decimal)stato;
@@ -3164,7 +3159,6 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    //var atep = db.ATTIVITATEPARTENZA.Find(idATEPArtenza);
                     var mab = db.MAB.Find(idMAB);
 
                     if (mab.IDMAB > 0)

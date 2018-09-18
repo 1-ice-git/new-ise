@@ -31,7 +31,7 @@
                 <th>
                 </th>
                 <th>
-                    Tipo Anticipo
+                    @Html.DisplayNameFor(model => model.anticipoAnnuale )
                 </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizioMAB )
@@ -44,6 +44,9 @@
                 </th>
                 <th class="text-center">
                     Pagato Condiviso
+                </th>
+                <th class="text-center">
+                    Formulari
                 </th>
                 <th></th>
                 <th></th>
@@ -90,6 +93,18 @@
                     <td style="text-align: center">
                         <a href="#" onclick="PagatoCondivisoMAB(@idTrasferimento,@item.idMAB);" id="linkPagatoCondivisoMAB">
                             <img src='~/Immagini/group-icon.png' width='20' title="Periodi Pagato Condiviso" />
+                        </a>
+                    </td>
+                    <td style="text-align: center">
+                        <a href="#" onclick="ElencoFormulariMABInseriti(@idTrasferimento,@item.idMAB);" id="linkFormulariMAB">
+                        @if (item.esistonoFormulari)
+                        {
+                            <img src='~/Immagini/IconeDocumenti/PDF-icon.png' width='20' title="Elenco Formulari" />
+                        }
+                        else
+                        {
+                            <img src='~/Immagini/IconeDocumenti/PDF-icon-Disable.png' width='20' title="Elenco Formulari" />
+                        }
                         </a>
                     </td>
 

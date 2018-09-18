@@ -239,7 +239,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" title="Chiudi"><i class="fa fa-times fa-2x"></i></button>
                     <button type="button" class="btn btn-secondary" onclick="NuovoFormularioMAB_VaiTipo();" title="Torna alla selezione del tipo di formulario"><i class="fa fa-arrow-left fa-2x"></i></button>
-                    <button type="button" class="btn btn-success" onclick="SalvaDocMAB_var(@idTrasferimento);" title="Salva il formulario selezionato"><i class="fa fa-2x fa-save"></i></button>
+                    <button type="button" class="btn btn-success" onclick="SalvaDocMAB_var();" title="Salva il formulario selezionato"><i class="fa fa-2x fa-save"></i></button>
                 </div>
             </div>
         </div>
@@ -253,11 +253,13 @@
     //debugger;
     GestioneMAB_var(@idTrasferimento);
 
-    function SalvaDocMAB_var(idTrasferimento)
+    function SalvaDocMAB_var()
     {
         //debugger;
+        var idMab = parseInt($('#hdIdMab').val());
+
         var idTipoDocumento=parseInt($("#hiIdTipoDocumento").val());
-        SalvaDocumentoMAB_var(idTrasferimento, idTipoDocumento);
+        SalvaDocumentoMAB_var(idMab, idTipoDocumento);
     }
 </script>
 
