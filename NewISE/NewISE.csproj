@@ -5616,7 +5616,6 @@
     <Compile Include="Models\DBModel\Fascia_KMModel.cs" />
     <Compile Include="Models\DBModel\FunzioneRiduzioneModel.cs" />
     <Compile Include="Models\DBModel\GruppoFKMModel.cs" />
-    <Compile Include="Models\DBModel\MaggiorazioniAbitazioneModel.cs" />
     <Compile Include="Models\DBModel\PercentualeFasciaKMModel.cs" />
     <Compile Include="Models\DBModel\EmailSecondarieDipModel.cs" />
     <Compile Include="Models\DBModel\RichiamoModel.cs" />

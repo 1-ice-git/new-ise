@@ -1,6 +1,6 @@
 ﻿@model NewISE.Models.DBModel.VariazioneDocumentiModel
 @{
-    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idMab = Convert.ToDecimal(ViewData["idMab"]);
     var errori = ViewData.ModelState;
 
 }
@@ -61,7 +61,7 @@
 
 
         if (Validazione()) {
-            datiForm.append("idTrasferimento", @idTrasferimento);
+            datiForm.append("idMab", @idMab);
             datiForm.append("idTipo", idTipo);
 
             $.ajax({

@@ -1403,99 +1403,96 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniAbitazioneVariazione(decimal idTrasferimento)
+        public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniAbitazioneVariazione(decimal idMab, ModelDBISE db)
         {
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
 
             using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
             {
-                using (ModelDBISE db = new ModelDBISE())
+                var mab = db.MAB.Find(idMab);
+
+                var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idMab,db).OrderBy(a => a.idAttivazioneMAB).ToList(); 
+
+                var statoTrasf = mab.INDENNITA.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+
+                var i = 1;
+                var coloresfondo = "";
+                var coloretesto = "";
+
+                if (lamabm?.Any() ?? false)
                 {
-                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
-
-                    var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idTrasferimento).OrderBy(a => a.idAttivazioneMAB).ToList(); 
-
-                    var statoTrasf = t.IDSTATOTRASFERIMENTO;
-
-                    var i = 1;
-                    var coloresfondo = "";
-                    var coloretesto = "";
-
-                    if (lamabm?.Any() ?? false)
+                    foreach (var amabm in lamabm)
                     {
-                        foreach (var amabm in lamabm)
+                        var amab = db.ATTIVAZIONEMAB.Find(amabm.idAttivazioneMAB);
+
+                        var ld =
+                            amab.DOCUMENTI.Where(
+                                a => (
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione
+                                    ) && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                        bool modificabile = false;
+                        if (amab.NOTIFICARICHIESTA == false &&
+                            amab.ATTIVAZIONE == false &&
+                            statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
+                            statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
                         {
-                            var amab = db.ATTIVAZIONEMAB.Find(amabm.idAttivazioneMAB);
-
-                            var ld =
-                                amab.DOCUMENTI.Where(
-                                    a => (
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione
-                                        ) && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
-                                    .OrderByDescending(a => a.DATAINSERIMENTO);
-
-                            bool modificabile = false;
-                            if (amab.NOTIFICARICHIESTA == false &&
+                            modificabile = true;
+                            coloresfondo = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Sfondo;
+                            coloretesto = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Testo;
+                        }
+                        else
+                        {
+                            if (amab.NOTIFICARICHIESTA == true &&
                                 amab.ATTIVAZIONE == false &&
                                 statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
                                 statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                modificabile = true;
                                 coloresfondo = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Sfondo;
                                 coloretesto = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Testo;
                             }
                             else
                             {
-                                if (amab.NOTIFICARICHIESTA == true &&
-                                    amab.ATTIVAZIONE == false &&
-                                    statoTrasf != (decimal)EnumStatoTraferimento.Annullato &&
-                                    statoTrasf != (decimal)EnumStatoTraferimento.Terminato)
+                                if (i % 2 == 0)
                                 {
-                                    coloresfondo = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Sfondo;
-                                    coloretesto = Resources.VariazioneMABColori.AttivazioniMABAbilitate_Testo;
+                                    coloresfondo = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_SfondoDispari;
                                 }
                                 else
                                 {
-                                    if (i % 2 == 0)
-                                    {
-                                        coloresfondo = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_SfondoDispari;
-                                    }
-                                    else
-                                    {
-                                        coloresfondo = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_SfondoPari;
-                                    }
-                                    coloretesto = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_Testo;
+                                    coloresfondo = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_SfondoPari;
                                 }
+                                coloretesto = Resources.VariazioneMABColori.AttivazioniMABDisabilitate_Testo;
                             }
-                            foreach (var doc in ld)
-                            {
-                                var vdm = new VariazioneDocumentiModel()
-                                {
-                                    dataInserimento = doc.DATAINSERIMENTO,
-                                    estensione = doc.ESTENSIONE,
-                                    idDocumenti = doc.IDDOCUMENTO,
-                                    nomeDocumento = doc.NOMEDOCUMENTO,
-                                    Modificabile = modificabile,
-                                    IdAttivazione = amab.IDATTIVAZIONEMAB,
-                                    DataAggiornamento = amab.DATAAGGIORNAMENTO,
-                                    ColoreSfondo = coloresfondo,
-                                    ColoreTesto = coloretesto,
-                                    progressivo = i,
-                                    tipoDocumento = (EnumTipoDoc)doc.IDTIPODOCUMENTO,
-                                    DescrizioneTipoDocumento = GetDescrizioneTipoDocumento((EnumTipoDoc)doc.IDTIPODOCUMENTO, db)                                  
-                                };
-                                ldm.Add(vdm);
-                            }
-
-                            i++;
-
                         }
+                        foreach (var doc in ld)
+                        {
+                            var vdm = new VariazioneDocumentiModel()
+                            {
+                                dataInserimento = doc.DATAINSERIMENTO,
+                                estensione = doc.ESTENSIONE,
+                                idDocumenti = doc.IDDOCUMENTO,
+                                nomeDocumento = doc.NOMEDOCUMENTO,
+                                Modificabile = modificabile,
+                                IdAttivazione = amab.IDATTIVAZIONEMAB,
+                                DataAggiornamento = amab.DATAAGGIORNAMENTO,
+                                ColoreSfondo = coloresfondo,
+                                ColoreTesto = coloretesto,
+                                progressivo = i,
+                                tipoDocumento = (EnumTipoDoc)doc.IDTIPODOCUMENTO,
+                                DescrizioneTipoDocumento = GetDescrizioneTipoDocumento((EnumTipoDoc)doc.IDTIPODOCUMENTO, db)                                  
+                            };
+                            ldm.Add(vdm);
+                        }
+
+                        i++;
+
                     }
                 }
             }
@@ -1504,7 +1501,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniAbitazioneVariazioneByIdAttivazione(decimal idTrasferimento, decimal idAttivazione)
+        public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniAbitazioneVariazioneByIdAttivazione(decimal idMab, decimal idAttivazione)
         {
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
 
@@ -1512,10 +1509,11 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var mab = db.MAB.Find(idMab);
 
-                    var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idTrasferimento).OrderBy(a=>a.idAttivazioneMAB).ToList();
+                    var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idMab,db).OrderBy(a=>a.idAttivazioneMAB).ToList();
 
+                    var t = mab.INDENNITA.TRASFERIMENTO;
                     var statoTrasf = t.IDSTATOTRASFERIMENTO;
 
                     var i = 1;

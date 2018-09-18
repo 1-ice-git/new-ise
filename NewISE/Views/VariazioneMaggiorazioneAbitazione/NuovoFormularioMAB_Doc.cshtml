@@ -1,6 +1,6 @@
 ﻿@model NewISE.Models.DBModel.DocumentiModel
 @{
-    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idMab = Convert.ToDecimal(ViewData["idMab"]);
     decimal idTipo = Convert.ToDecimal(ViewData["idTipo"]);
     string descTipo = Convert.ToString(ViewData["descTipo"]);
     
@@ -112,7 +112,7 @@
         var rotta = "/VariazioneMaggiorazioneAbitazione/NuovoFormularioMAB_TipoDoc";
         //var idTipo = $("#ldescrizioneTipoDoc").val();
 
-        datiForm.append("idTrasferimento", @idTrasferimento);
+        datiForm.append("idMab", @idMab);
         datiForm.append("idTipo", @idTipo);
 
         $.ajax({
