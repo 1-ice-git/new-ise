@@ -4661,6 +4661,18 @@
     <Content Include="DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\RptRiepiloghiIseMensile.cshtml" />
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiIseMensile.xsc">
+      <DependentUpon>DataSetRiepiloghiIseMensile.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiIseMensile.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetRiepiloghiIseMensile.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiIseMensile.xss">
+      <DependentUpon>DataSetRiepiloghiIseMensile.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -4897,6 +4909,13 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\IndennitaSedeEsteraController.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptRiepiloghiIseMensileModel.cs" />
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiIseMensile.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetRiepiloghiIseMensile.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AnticipiController.cs" />
     <Compile Include="Controllers\ElaborazioniController.cs" />
     <Compile Include="Controllers\IndennitaController.cs" />
@@ -6319,6 +6338,7 @@
     <Folder Include="Areas\App_Data\" />
     <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
     <Folder Include="Areas\Statistiche\Views\Default\" />
+    <Folder Include="Areas\Statistiche\Views\IndennitaSedeEstera\" />
     <Folder Include="Lib\json\" />
     <Folder Include="Lib\js\" />
     <Folder Include="Lib\locale\" />
@@ -6477,6 +6497,7 @@
     <Content Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc" />
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
