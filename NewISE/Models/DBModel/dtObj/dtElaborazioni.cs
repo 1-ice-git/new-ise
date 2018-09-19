@@ -5905,9 +5905,9 @@ namespace NewISE.Models.DBModel.dtObj
                                             eir.ELABDATIFIGLI.Add(edf);
                                         }
 
-                                        int j = db.SaveChanges();
+                                        int j2 = db.SaveChanges();
 
-                                        if (j <= 0)
+                                        if (j2 <= 0)
                                         {
                                             throw new Exception("Errore nella fase d'inderimento dell'indennità di richiamo.");
                                         }
@@ -6947,9 +6947,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 eir.ELABDATIFIGLI.Add(edf);
                             }
 
-                            int j = db.SaveChanges();
+                            int j3 = db.SaveChanges();
 
-                            if (j <= 0)
+                            if (j3 <= 0)
                             {
                                 throw new Exception("Errore nella fase d'inderimento dell'indennità di richiamo.");
                             }
