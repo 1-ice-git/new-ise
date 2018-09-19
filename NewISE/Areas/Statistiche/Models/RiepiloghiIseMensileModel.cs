@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using NewISE.Models.DBModel;
+using System.ComponentModel;
 using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Statistiche.Models
 {
-    public class RptRiepiloghiIseMensileModel
+    public class RiepiloghiIseMensileModel
     {
+
         [Display(Name = "Matricola")]
         public string matricola { get; set; }
         [Display(Name = "Nominativo")]
@@ -36,16 +38,28 @@ namespace NewISE.Areas.Statistiche.Models
         public string anticipo { get; set; }
 
 
-        public decimal IdTeorici { get; set; }
-        public string DescrizioneVoce { get; set; }
-        public string Voce { get; set; }
-        public string Movimento { get; set; }
-        public string Inserimento { get; set; }
-        public string Liquidazione { get; set; }
-        public string DataRiferimento { get; set; }
-        public decimal Importo { get; set; }
-        public bool Inviato { get; set; }
+        [Key]
+        public decimal idTeorici { get; set; }
+        [Required(ErrorMessage = "Il campo è richiesto.")]
         public string Nominativo { get; set; }
+
+        [Display(Name = "Voci")]
+        public decimal idVoci { get; set; }
+
+        [Required(ErrorMessage = "Il campo è richiesto.")]
+        [DefaultValue(0)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal Importo { get; set; }
+        [Required(ErrorMessage = "Il campo è richiesto.")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime Data { get; set; }
+
+        public VociModel Voci { get; set; }
+
+        [Display(Name = "Elab.")]
+        [DefaultValue(false)]
+        public bool Elaborato { get; set; }
 
         public TipoMovimentoModel TipoMovimento { get; set; }
 

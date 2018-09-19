@@ -109,8 +109,8 @@
                  type: "POST",
                  url: rotta,
                  data: {
-                     V_DATA1: data1,
-                     V_DATA2: data2
+                     dtIni: data1,
+                     dtFin: data2
                  },
                  dataType: 'html',
                  beforeSend: function () {
@@ -139,39 +139,39 @@
          });
 
          // Operazioni Effettuate - Indennità di Sede Estera (Nuovo ISE) - Test
-         //function callpartialRptOpIndSedeEstera() {
-         //    //debugger;
+         function callpartialRptOpIndSedeEstera() {
+             //debugger;
 
-         //    rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
+             rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
 
-         //    var data = $("#datepicker").datepicker().val()
-         //    var data = $("#datepicker").datepicker().val()
+             var data = $("#datepicker").datepicker().val()
+             var data = $("#datepicker").datepicker().val()
 
-         //    $.ajax({
-         //        type: "POST",
-         //        url: rotta,
-         //        data: {
-         //            V_DATA: data,
-         //            V_DATA1: data1
-         //        },
-         //        dataType: 'html',
-         //        beforeSend: function () {
+             $.ajax({
+                 type: "POST",
+                 url: rotta,
+                 data: {
+                     V_DATA: data,
+                     V_DATA1: data1
+                 },
+                 dataType: 'html',
+                 beforeSend: function () {
 
-         //        },
-         //        success: function (result) {
-         //            //debugger;
-         //            $("#divPartialView").empty();
-         //            $("#divPartialView").html(result);
-         //        },
-         //        complete: function () {
+                 },
+                 success: function (result) {
+                     //debugger;
+                     $("#divPartialView").empty();
+                     $("#divPartialView").html(result);
+                 },
+                 complete: function () {
 
-         //        },
-         //        error: function (jqXHR, textStatus, errorThrow) {
-         //            //debugger;
-         //            var msg = errorThrow.err;
-         //            AlertDialog(msg);
-         //        }
-         //    });
-         //}
+                 },
+                 error: function (jqXHR, textStatus, errorThrow) {
+                     //debugger;
+                     var msg = errorThrow.err;
+                     AlertDialog(msg);
+                 }
+             });
+         }
      
 </script>
