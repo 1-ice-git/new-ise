@@ -61,7 +61,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _percentualeAnticipoTERientro = 0;
         private decimal _percentualeSaldoTERientro = 0;
         private decimal _saldoContributoOmnicomprensivoRientro = 0;
-        private decimal _totaleContributoOmnicomprensivo = 0;
+        private decimal _totaleContributoOmnicomprensivoPartenza = 0;
+        private decimal _totaleContributoOmnicomprensivoRientro = 0;
 
         private decimal _coefficenteIndennitaRichiamo = 0;
         private decimal _indennitaRichiamoLordo = 0;
@@ -150,8 +151,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         [ReadOnly(true)]
         public decimal SaldoContributoOmnicomprensivoPartenza => _saldoContributoOmnicomprensivoPartenza;
         [ReadOnly(true)]
-        public decimal TotaleContributoOmnicomprensivo => _totaleContributoOmnicomprensivo;
-
+        public decimal TotaleContributoOmnicomprensivoPartenza => _totaleContributoOmnicomprensivoPartenza;
+        [ReadOnly(true)]
+        public decimal TotaleContributoOmnicomprensivoRientro => _totaleContributoOmnicomprensivoRientro;
 
 
         [ReadOnly(true)]
@@ -962,11 +964,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     _percentualeAnticipoTEPartenza = pa.PERCENTUALE;
                     _percentualeSaldoTEPartenza = 100 - _percentualeAnticipoTEPartenza;
 
-                    _totaleContributoOmnicomprensivo = Math.Round(_indennitaSistemazione * (_percentualeFKMPartenza / 100), 8);
+                    _totaleContributoOmnicomprensivoPartenza = Math.Round(_indennitaSistemazione * (_percentualeFKMPartenza / 100), 8);
 
-                    _anticipoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivo * (_percentualeAnticipoTEPartenza / 100), 8);
+                    _anticipoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivoPartenza * (_percentualeAnticipoTEPartenza / 100), 8);
 
-                    _saldoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivo * (_percentualeSaldoTEPartenza / 100), 8);
+                    _saldoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivoPartenza * (_percentualeSaldoTEPartenza / 100), 8);
 
                 }
 
@@ -983,7 +985,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             if (lric?.Any() ?? false)
             {
                 var ric = lric.First();
-                DateTime dataRientro = ric.DATARICHIAMO.AddDays(-1);
+                DateTime dataRientro = _trasferimento.DATARIENTRO;
 
                 var lpfk =
                 ric.PERCENTUALEFKM.Where(
@@ -1011,11 +1013,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         _percentualeAnticipoTERientro = pa.PERCENTUALE;
                         _percentualeSaldoTERientro = 100 - _percentualeAnticipoTERientro;
 
-                        _anticipoContributoOmnicomprensivoRientro = Math.Round((_indennitaRichiamoLordo * (_percentualeFKMRientro / 100) *
-                                                                      (_percentualeAnticipoTERientro / 100)), 8);
+                        _totaleContributoOmnicomprensivoRientro = _indennitaRichiamoLordo * (_percentualeFKMRientro / 100);
 
-                        _saldoContributoOmnicomprensivoRientro = Math.Round((_indennitaRichiamoLordo * (_percentualeFKMRientro / 100) *
-                                                                      (_percentualeSaldoTERientro / 100)), 8);
+                        _anticipoContributoOmnicomprensivoRientro = Math.Round((_totaleContributoOmnicomprensivoRientro * (_percentualeAnticipoTERientro / 100)), 8);
+
+                        _saldoContributoOmnicomprensivoRientro = Math.Round((_totaleContributoOmnicomprensivoRientro * (_percentualeSaldoTERientro / 100)), 8);
 
                     }
                 }
