@@ -836,54 +836,52 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
             if (lRichiamo?.Any() ?? false)
             {
-                var richiamo = lRichiamo.First();
-                DateTime dataRientro = _trasferimento.DATARIENTRO;
-
-                var lcr =
-                    richiamo.COEFFICIENTEINDRICHIAMO.Where(
-                        a =>
-                            a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
-                            dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-
-                if (lcr?.Any() ?? false)
+                if (_trasferimento.DATARIENTRO >= _dtDatiParametri)
                 {
-                    RIDUZIONI riduzione = new RIDUZIONI();
+                    var richiamo = lRichiamo.First();
+                    DateTime dataRientro = _trasferimento.DATARIENTRO;
 
-                    var cr = lcr.First();
-
-                    var lrid =
-                        cr.RIDUZIONI.Where(
+                    var lcr =
+                        richiamo.COEFFICIENTEINDRICHIAMO.Where(
                             a =>
                                 a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
                                 dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
-                    if (lrid?.Any() ?? false)
+                    if (lcr?.Any() ?? false)
                     {
-                        riduzione = lrid.First();
-                        _percentualeRiduzioneRichiamo = riduzione.PERCENTUALE;
+                        RIDUZIONI riduzione = new RIDUZIONI();
+
+                        var cr = lcr.First();
+
+                        var lrid =
+                            cr.RIDUZIONI.Where(
+                                a =>
+                                    a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
+                                    dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                        if (lrid?.Any() ?? false)
+                        {
+                            riduzione = lrid.First();
+                            _percentualeRiduzioneRichiamo = riduzione.PERCENTUALE;
+                        }
+
+                        var maggiorazione = _indennitaDiBase * _coefficienteDiSede;
+                        _coefficenteIndennitaRichiamo = cr.COEFFICIENTERICHIAMO;
+                        var abbattimento = maggiorazione * _coefficenteIndennitaRichiamo;
+
+
+
+                        if (_percentualeRiduzioneRichiamo > 0)
+                        {
+                            _indennitaRichiamoLordo = Math.Round(((abbattimento + _maggiorazioniFimailiri) * (_percentualeRiduzioneRichiamo / 100)), 8);
+                        }
+                        else
+                        {
+                            _indennitaRichiamoLordo = Math.Round(abbattimento + _maggiorazioniFimailiri, 8);
+                        }
                     }
-
-                    var maggiorazione = _indennitaDiBase * _coefficienteDiSede;
-                    _coefficenteIndennitaRichiamo = cr.COEFFICIENTERICHIAMO;
-                    var abbattimento = maggiorazione * _coefficenteIndennitaRichiamo;
-
-
-
-                    if (_percentualeRiduzioneRichiamo > 0)
-                    {
-                        _indennitaRichiamoLordo = Math.Round(((abbattimento + _maggiorazioniFimailiri) * (_percentualeRiduzioneRichiamo / 100)), 8);
-                    }
-                    else
-                    {
-                        _indennitaRichiamoLordo = Math.Round(abbattimento + _maggiorazioniFimailiri, 8);
-                    }
-
-
                 }
-
             }
-
-
         }
 
 

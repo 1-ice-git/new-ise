@@ -1978,6 +1978,8 @@ namespace NewISE.Models.DBModel.dtObj
                             this.InsTrasportoEffetti(trasferimento, meseAnnoElaborazione, db);
 
                             this.InsMab(trasferimento, meseAnnoElaborazione, db);
+
+                            this.InsSistemazioneRichiamo(trasferimento, meseAnnoElaborazione, db);
                         }
 
                     }
@@ -5964,134 +5966,119 @@ namespace NewISE.Models.DBModel.dtObj
                                     var NettoRichiamo = this.NettoIndennitaRichiamo(dip.MATRICOLA, indennitaRichiamoLordo,
                                         aliqPrev.VALORE, detrazioni.VALORE, out outAliqIse);
 
-                                    using (CalcoloMeseAnnoElaborazione cmae = new CalcoloMeseAnnoElaborazione(db))
+                                    #region Contabilita
+
+                                    TEORICI teorici = new TEORICI()
                                     {
-                                        var lmae = cmae.Mae;
+                                        IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                        IDVOCI = (decimal)EnumVociContabili.Ind_Richiamo_IRI,
+                                        IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                        MESERIFERIMENTO = dataFineTrasf.Month,
+                                        ANNORIFERIMENTO = dataFineTrasf.Year,
+                                        ALIQUOTAFISCALE = outAliqIse,
+                                        IMPORTO = NettoRichiamo,
+                                        DATAOPERAZIONE = DateTime.Now,
+                                        ELABORATO = false,
+                                        DIRETTO = false,
+                                        ANNULLATO = false
+                                    };
 
-                                        if (lmae?.Any() ?? false)
-                                        {
-                                            var mae = lmae.First();
-                                            if (mae.chiuso == true)
-                                            {
-                                                cmae.NewMeseDaElaborare();
-                                            }
+                                    eir.TEORICI.Add(teorici);
 
-                                            #region Contabilita
+                                    int j = db.SaveChanges();
 
-                                            TEORICI teorici = new TEORICI()
-                                            {
-                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                                IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
-                                                IDVOCI = (decimal)EnumVociContabili.Ind_Richiamo_IRI,
-                                                IDMESEANNOELAB = mae.idMeseAnnoElab,
-                                                MESERIFERIMENTO = dataFineTrasf.Month,
-                                                ANNORIFERIMENTO = dataFineTrasf.Year,
-                                                ALIQUOTAFISCALE = outAliqIse,
-                                                IMPORTO = NettoRichiamo,
-                                                DATAOPERAZIONE = DateTime.Now,
-                                                ELABORATO = false,
-                                                DIRETTO = true,
-                                                ANNULLATO = false
-                                            };
-
-                                            eir.TEORICI.Add(teorici);
-
-                                            int j = db.SaveChanges();
-
-                                            if (j <= 0)
-                                            {
-                                                throw new Exception(
-                                                    "Errore nella fase d'inderimento dell'indennità di richiamo in contabilità.");
-                                            }
-
-                                            #endregion
-
-                                            #region Cedolino
-                                            #region Lordo
-                                            TEORICI teoriciLordo = new TEORICI()
-                                            {
-                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                                IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
-                                                IDVOCI = (decimal)EnumVociCedolino.Rientro_Lordo_086_381,
-                                                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
-                                                MESERIFERIMENTO = dataFineTrasf.Month,
-                                                ANNORIFERIMENTO = dataFineTrasf.Year,
-                                                ALIQUOTAFISCALE = 0,
-                                                IMPORTO = indennitaRichiamoLordo,
-                                                DATAOPERAZIONE = DateTime.Now,
-                                                ANNULLATO = false
-                                            };
-
-                                            eir.TEORICI.Add(teoriciLordo);
-
-                                            int ja = db.SaveChanges();
-
-                                            if (ja <= 0)
-                                            {
-                                                throw new Exception(
-                                                    "Errore nella fase d'inderimento del lordo a cedolino per il richiamo (086-381).");
-                                            }
-                                            #endregion
-
-                                            #region Netto
-                                            TEORICI teoriciNetto = new TEORICI()
-                                            {
-                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                                IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
-                                                IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
-                                                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
-                                                MESERIFERIMENTO = dataFineTrasf.Month,
-                                                ANNORIFERIMENTO = dataFineTrasf.Year,
-                                                ALIQUOTAFISCALE = outAliqIse,
-                                                IMPORTO = NettoRichiamo,
-                                                DATAOPERAZIONE = DateTime.Now,
-                                                ANNULLATO = false
-                                            };
-
-                                            eir.TEORICI.Add(teoriciNetto);
-
-                                            int k = db.SaveChanges();
-
-                                            if (k <= 0)
-                                            {
-                                                throw new Exception(
-                                                    "Errore nella fase d'inderimento del netto a cedolino per il richiamo (086-383).");
-                                            }
-                                            #endregion
-
-                                            #region Detrazioni
-                                            TEORICI teoriciDetrazioni = new TEORICI()
-                                            {
-                                                IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                                IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
-                                                IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
-                                                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
-                                                MESERIFERIMENTO = dataFineTrasf.Month,
-                                                ANNORIFERIMENTO = dataFineTrasf.Year,
-                                                ALIQUOTAFISCALE = outAliqIse,
-                                                IMPORTO = detrazioni.VALORE,
-                                                DATAOPERAZIONE = DateTime.Now,
-                                                ANNULLATO = false
-                                            };
-
-                                            eir.TEORICI.Add(teoriciDetrazioni);
-
-                                            int y = db.SaveChanges();
-
-                                            if (y <= 0)
-                                            {
-                                                throw new Exception(
-                                                    "Errore nella fase d'inderimento della detrazione a cedolino per il richiamo (086-384).");
-                                            }
-                                            #endregion
-
-                                            #endregion
-                                        }
-                                        else
-                                        {
-                                            throw new Exception("Errore nella fase di lettura del mese di elaborazione.");
-                                        }
+                                    if (j <= 0)
+                                    {
+                                        throw new Exception(
+                                            "Errore nella fase d'inderimento dell'indennità di richiamo in contabilità.");
                                     }
+
+                                    #endregion
+
+                                    #region Cedolino
+                                    #region Lordo
+                                    TEORICI teoriciLordo = new TEORICI()
+                                    {
+                                        IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                        IDVOCI = (decimal)EnumVociCedolino.Rientro_Lordo_086_381,
+                                        IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                        MESERIFERIMENTO = dataFineTrasf.Month,
+                                        ANNORIFERIMENTO = dataFineTrasf.Year,
+                                        ALIQUOTAFISCALE = 0,
+                                        IMPORTO = indennitaRichiamoLordo,
+                                        DATAOPERAZIONE = DateTime.Now,
+                                        ANNULLATO = false
+                                    };
+
+                                    eir.TEORICI.Add(teoriciLordo);
+
+                                    int ja = db.SaveChanges();
+
+                                    if (ja <= 0)
+                                    {
+                                        throw new Exception(
+                                            "Errore nella fase d'inderimento del lordo a cedolino per il richiamo (086-381).");
+                                    }
+                                    #endregion
+
+                                    #region Netto
+                                    TEORICI teoriciNetto = new TEORICI()
+                                    {
+                                        IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                        IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                        IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                        MESERIFERIMENTO = dataFineTrasf.Month,
+                                        ANNORIFERIMENTO = dataFineTrasf.Year,
+                                        ALIQUOTAFISCALE = outAliqIse,
+                                        IMPORTO = NettoRichiamo,
+                                        DATAOPERAZIONE = DateTime.Now,
+                                        ANNULLATO = false
+                                    };
+
+                                    eir.TEORICI.Add(teoriciNetto);
+
+                                    int k = db.SaveChanges();
+
+                                    if (k <= 0)
+                                    {
+                                        throw new Exception(
+                                            "Errore nella fase d'inderimento del netto a cedolino per il richiamo (086-383).");
+                                    }
+                                    #endregion
+
+                                    #region Detrazioni
+                                    TEORICI teoriciDetrazioni = new TEORICI()
+                                    {
+                                        IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                        IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
+                                        IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                        MESERIFERIMENTO = dataFineTrasf.Month,
+                                        ANNORIFERIMENTO = dataFineTrasf.Year,
+                                        ALIQUOTAFISCALE = outAliqIse,
+                                        IMPORTO = detrazioni.VALORE,
+                                        DATAOPERAZIONE = DateTime.Now,
+                                        ANNULLATO = false
+                                    };
+
+                                    eir.TEORICI.Add(teoriciDetrazioni);
+
+                                    int y = db.SaveChanges();
+
+                                    if (y <= 0)
+                                    {
+                                        throw new Exception(
+                                            "Errore nella fase d'inderimento della detrazione a cedolino per il richiamo (086-384).");
+                                    }
+                                    #endregion
+
+                                    #endregion
+
+
+
                                 }
                             }
 
@@ -6447,7 +6434,31 @@ namespace NewISE.Models.DBModel.dtObj
                                         .OrderBy(a => a.IDRICHIAMO)
                                         .ToList();
 
-                                var richiamo = lr.Last();
+                                if (lr?.Any() ?? false)
+                                {
+                                    var richiamo = lr.Last();
+
+                                    var leir = richiamo.ELABINDRICHIAMO.Where(a => a.ANNULLATO == false &&
+                                                                                   a.TEORICI.Any(
+                                                                                       b =>
+                                                                                           b.ANNULLATO == false &&
+                                                                                           b.ELABORATO == true &&
+                                                                                           b.VOCI.IDTIPOLIQUIDAZIONE ==
+                                                                                           (decimal)
+                                                                                               EnumTipoLiquidazione
+                                                                                                   .Contabilità))
+                                        .ToList();
+
+                                    if (leir?.Any() ?? false)
+                                    {
+
+                                    }
+
+
+
+
+                                }
+
 
 
 
@@ -6559,16 +6570,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                     }
 
-
-
-
-
                 }
 
-
-
             }
-
 
 
         }
@@ -6602,7 +6606,8 @@ namespace NewISE.Models.DBModel.dtObj
                         a =>
                             a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                             a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                            a.ELABORATO == true)
+                            a.ELABORATO == true && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                            a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == primaSistemazione.IDPRIMASISTEMAZIONE)
                         .ToList();
 
                 #region Saldo e unica soluzione
@@ -6834,6 +6839,274 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
+
+        private void ConguaglioRichiamo(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
+        {
+            var dip = trasferimento.DIPENDENTI;
+
+            DateTime dataIniRicalcolo = dip.DATAINIZIORICALCOLI;
+            DateTime dataFineTrasf = trasferimento.DATARIENTRO;
+
+            decimal teoricoOldLordo = 0;
+
+
+            var lric =
+                trasferimento.RICHIAMO.Where(a => a.ANNULLATO == false && a.DATARICHIAMO >= dataIniRicalcolo)
+                    .OrderBy(a => a.IDRICHIAMO)
+                    .ToList();
+
+            if (lric?.Any() ?? false)
+            {
+                foreach (var ric in lric)
+                {
+                    var lTeoriciOld =
+                        db.TEORICI.Where(
+                            a =>
+                                a.ANNULLATO == false && a.ELABORATO == true &&
+                                a.ELABINDRICHIAMO.ANNULLATO == false && a.ELABINDRICHIAMO.IDRICHIAMO == ric.IDRICHIAMO)
+                            .ToList();
+
+                    if (lTeoriciOld?.Any() ?? false)
+                    {
+                        teoricoOldLordo +=
+                            lTeoriciOld.Where(
+                                a =>
+                                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                    a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Rientro_Lordo_086_381)
+                                .Sum(a => a.IMPORTO);
+                    }
+
+                    var lTeoriciNoElab =
+                        db.TEORICI.Where(
+                            a =>
+                                a.ANNULLATO == false && a.ELABORATO == false &&
+                                a.ELABINDRICHIAMO.ANNULLATO == false && a.ELABINDRICHIAMO.CONGUAGLIO == true &&
+                                a.ELABINDRICHIAMO.IDRICHIAMO == ric.IDRICHIAMO)
+                            .ToList();
+
+                    if (lTeoriciNoElab?.Any() ?? false)
+                    {
+                        foreach (var tnoElab in lTeoriciNoElab)
+                        {
+                            tnoElab.ANNULLATO = true;
+
+                            tnoElab.ELABINDRICHIAMO.ANNULLATO = true;
+                        }
+
+                        db.SaveChanges();
+                    }
+
+                }
+
+                var richiamo = lric.Last();
+
+                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dataFineTrasf, db))
+                {
+                    decimal indRicLordoNew = ci.IndennitaRichiamoLordo;
+
+                    decimal congRicLordo = indRicLordoNew - teoricoOldLordo;
+
+                    if (congRicLordo > 0)
+                    {
+                        ELABINDRICHIAMO eir = new ELABINDRICHIAMO()
+                        {
+                            IDRICHIAMO = richiamo.IDRICHIAMO,
+                            IDLIVELLO = ci.Livello.IDLIVELLO,
+                            INDENNITABASE = ci.IndennitaDiBase,
+                            COEFFICENTESEDE = ci.CoefficienteDiSede,
+                            COEFFICENTEINDRICHIAMO = ci.CoefficenteIndennitaRichiamo,
+                            PERCENTUALERIDUZIONE = ci.PercentualeRiduzioneRichiamo,
+                            PERCMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                            PENSIONECONIUGE = ci.PensioneConiuge,
+                            DATAOPERAZIONE = DateTime.Now,
+                            CONGUAGLIO = true,
+                            ANNULLATO = false
+
+                        };
+
+                        db.ELABINDRICHIAMO.Add(eir);
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Errore nella fase d'inderimento del conguaglio d'indennità di richiamo.");
+                        }
+
+                        if (ci.lDatiFigli?.Any() ?? false)
+                        {
+                            foreach (var df in ci.lDatiFigli)
+                            {
+                                ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                {
+                                    IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                                    INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                                    PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
+                                };
+
+                                eir.ELABDATIFIGLI.Add(edf);
+                            }
+
+                            int j = db.SaveChanges();
+
+                            if (j <= 0)
+                            {
+                                throw new Exception("Errore nella fase d'inderimento dell'indennità di richiamo.");
+                            }
+                        }
+
+                        ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                        var lacDetr =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                    dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+
+                        if (lacDetr?.Any() ?? false)
+                        {
+                            detrazioni = lacDetr.First();
+                        }
+                        else
+                        {
+                            throw new Exception("Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                        }
+
+                        this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, detrazioni.IDALIQCONTR, db);
+
+                        ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
+
+                        var lacPrev =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lacPrev?.Any() ?? false)
+                        {
+                            aliqPrev = lacPrev.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+                        }
+
+                        this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, aliqPrev.IDALIQCONTR, db);
+
+                        decimal outAliqIse = 0;
+
+                        var congNettoRichiamo = this.NettoIndennitaRichiamo(dip.MATRICOLA, congRicLordo,
+                            aliqPrev.VALORE, 0, out outAliqIse);
+
+                        #region Contabilità
+                        TEORICI teorici = new TEORICI()
+                        {
+                            IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                            IDVOCI = (decimal)EnumVociContabili.Ind_Richiamo_IRI,
+                            IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                            MESERIFERIMENTO = dataFineTrasf.Month,
+                            ANNORIFERIMENTO = dataFineTrasf.Year,
+                            ALIQUOTAFISCALE = outAliqIse,
+                            IMPORTO = congNettoRichiamo,
+                            DATAOPERAZIONE = DateTime.Now,
+                            ELABORATO = false,
+                            DIRETTO = false,
+                            ANNULLATO = false
+                        };
+
+                        eir.TEORICI.Add(teorici);
+
+                        int j = db.SaveChanges();
+
+                        if (j <= 0)
+                        {
+                            throw new Exception(
+                                "Errore nella fase d'inderimento dell'indennità di richiamo in contabilità.");
+                        }
+
+                        #endregion
+
+                        #region Cedolino
+                        #region Lordo
+                        TEORICI teoriciLordo = new TEORICI()
+                        {
+                            IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                            IDVOCI = (decimal)EnumVociCedolino.Rientro_Lordo_086_381,
+                            IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                            MESERIFERIMENTO = dataFineTrasf.Month,
+                            ANNORIFERIMENTO = dataFineTrasf.Year,
+                            ALIQUOTAFISCALE = 0,
+                            IMPORTO = congRicLordo,
+                            DATAOPERAZIONE = DateTime.Now,
+                            ANNULLATO = false
+                        };
+
+                        eir.TEORICI.Add(teoriciLordo);
+
+                        int ja = db.SaveChanges();
+
+                        if (ja <= 0)
+                        {
+                            throw new Exception(
+                                "Errore nella fase d'inderimento del lordo a cedolino per il conguaglio del richiamo (086-381).");
+                        }
+                        #endregion
+
+                        #region Netto
+                        TEORICI teoriciNetto = new TEORICI()
+                        {
+                            IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
+                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                            IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                            IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                            MESERIFERIMENTO = dataFineTrasf.Month,
+                            ANNORIFERIMENTO = dataFineTrasf.Year,
+                            ALIQUOTAFISCALE = outAliqIse,
+                            IMPORTO = congNettoRichiamo,
+                            DATAOPERAZIONE = DateTime.Now,
+                            ANNULLATO = false
+                        };
+
+                        eir.TEORICI.Add(teoriciNetto);
+
+                        int k = db.SaveChanges();
+
+                        if (k <= 0)
+                        {
+                            throw new Exception(
+                                "Errore nella fase d'inderimento del conguaglio netto a cedolino per il richiamo (086-383).");
+                        }
+                        #endregion
+                        #endregion
+
+                    }
+
+
+
+
+
+                }
+
+
+
+
+
+            }
+
+
+
+        }
+
+
+
 
         //private void ProvaLettura(TRASFERIMENTO tr)
         //{
