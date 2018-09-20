@@ -1142,7 +1142,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
                                 dit.indennitaPersonale = ci.IndennitaPersonale;
                                 dit.primaSitemazione = ci.IndennitaSistemazioneLorda;
-                                dit.contributoOmnicomprensivo = ci.TotaleContributoOmnicomprensivo;
+                                dit.contributoOmnicomprensivo = ci.TotaleContributoOmnicomprensivoPartenza;
                                 dit.mabMensile = ci.ImportoMABMaxMensile;
                             }
                         }
