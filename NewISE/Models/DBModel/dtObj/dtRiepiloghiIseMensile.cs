@@ -33,31 +33,24 @@ namespace NewISE.Models.DBModel.dtObj
         {   
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
             
-            // Dove inserire le date ????
+            DateTime dataDal = Convert.ToDateTime(dtIni);
+            DateTime dataAl = Convert.ToDateTime(dtFin);
+
 
             var lTeorici =
                    db.TEORICI.Where(
                        a =>
                            a.ANNULLATO == false &&
-                           a.DIRETTO == true &&
+                           a.ELABORATO == true &&
+                           a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.AL == dataDal && b.DAL == dataAl ) &&
                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera).ToList();
+            
 
             foreach (var t in lTeorici)
             {
                 string tipoOperazione = string.Empty;
 
-                if (t.ELABINDSISTEMAZIONE.ANTICIPO == true)
-                {
-                    tipoOperazione = "Anticipo";
-                }
-                else if (t.ELABINDSISTEMAZIONE.SALDO == true)
-                {
-                    tipoOperazione = "Saldo";
-                }
-                else if (t.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true)
-                {
-                    tipoOperazione = "Unica sol.";
-                }
+                
                 var dip = t.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
 
                 var ldvm = new RiepiloghiIseMensileModel()
