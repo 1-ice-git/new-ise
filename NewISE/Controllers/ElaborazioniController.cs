@@ -17,6 +17,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.Enumeratori;
 using RestSharp;
 using NewISE.Report.Elaborazioni.Modell;
+using Newtonsoft.Json.Schema;
 using RestSharp.Extensions;
 
 namespace NewISE.Controllers
@@ -199,6 +200,7 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult CalcolaElaborazioneMensile(List<int> dipendenti, decimal idAnnoMeseElaborato)
         {
+
             try
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
