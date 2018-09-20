@@ -1330,6 +1330,7 @@ namespace NewISE.Controllers
         #region Indennità Personale + Report di Stampa
         public ActionResult IndennitaPersonale(decimal idTrasferimento)
         {   
+
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             
             try
