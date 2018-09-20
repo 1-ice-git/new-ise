@@ -16,10 +16,10 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-       // public ActionResult AliquoteContributive(bool escludiAnnullati, decimal idAliqContr = 0)idLivello
+        // public ActionResult AliquoteContributive(bool escludiAnnullati, decimal idAliqContr = 0)idLivello
         public ActionResult AliquoteContributive(bool escludiAnnullati, decimal idLivello = 0)
         {
-            ViewBag.escludiAnnullati = escludiAnnullati;            
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
             var r = new List<SelectListItem>();
             List<TipoAliquoteContributiveModel> llm = new List<TipoAliquoteContributiveModel>();
@@ -56,7 +56,7 @@ namespace NewISE.Areas.Parametri.Controllers
                             else
                                 r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
 
-                            var temp2= dtl.GetTipoAliquote().Where(a => a.idTipoAliqContr == idLivello).ToList();
+                            var temp2 = dtl.GetTipoAliquote().Where(a => a.idTipoAliqContr == idLivello).ToList();
                             if (temp2.Count == 0)
                             {
                                 decimal indice2 = 0;
@@ -64,14 +64,14 @@ namespace NewISE.Areas.Parametri.Controllers
                                 while (temp2.Count == 0)
                                 {
                                     temp2 = dtl.GetTipoAliquote().Where(a => a.idTipoAliqContr == indice2).ToList();
-                                    indice2 = indice2 + 1;                                   
+                                    indice2 = indice2 + 1;
                                 }
                             }
                             var lm = temp2.First().descrizione; // dtl.GetTipoAliquote().Where(a => a.idTipoAliqContr == idLivello).First().descrizione;
                             ViewBag.descrizione = lm;
                         }
                     }
-                    ViewBag.Aliquote = r;                    
+                    ViewBag.Aliquote = r;
                 }
 
                 using (dtAliquoteContr dtib = new dtAliquoteContr())
@@ -129,7 +129,12 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                MsgErr msg = new MsgErr()
+                {
+                    msg = ex.Message
+                };
+                return PartialView("ErrorPartial", msg);
+
             }
             ViewBag.idTipoContributo = idTipoContributo;
 
@@ -153,7 +158,12 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                MsgErr msg = new MsgErr()
+                {
+                    msg = ex.Message
+                };
+
+                return PartialView("ErrorPartial", msg);
             }
         }
 
@@ -172,7 +182,7 @@ namespace NewISE.Areas.Parametri.Controllers
                              Value = t.idTipoAliqContr.ToString()
                          }).ToList();
                     r.Where(a => a.Value == idTipoContributo.ToString()).First().Selected = true;
-                }                              
+                }
             }
             TempData["Aliquote"] = r;
         }
@@ -180,7 +190,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [HttpPost]
         [Authorize(Roles = "1, 2")]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciAliquoteContributive(AliquoteContributiveModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
+        public ActionResult InserisciAliquoteContributive(AliquoteContributiveModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
             try
@@ -191,7 +201,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtAliquoteContr dtib = new dtAliquoteContr())
                     {
-                        dtib.SetAliquoteContributive(ibm,aggiornaTutto);
+                        dtib.SetAliquoteContributive(ibm, aggiornaTutto);
                     }
                     DeterminaAliquotePerIlCombo(ibm.idTipoContributo);
                     //  return RedirectToAction("AliquoteContributiveLivello", new { idTipoContributo = ibm.idTipoContributo,escludiAnnullati = escludiAnnullati });            //return RedirectToAction("AliquoteContributive", new { escludiAnnullati = escludiAnnullati, idTipoAliqContr = ibm.idTipoContributo });
@@ -204,16 +214,16 @@ namespace NewISE.Areas.Parametri.Controllers
                     return PartialView("AliquoteContributive", libm);
                 }
                 else
-                {                    
+                {
                     using (dtParTipoAliquoteContributive dtl = new dtParTipoAliquoteContributive())
                     {
-                            var lm = dtl.GetTipoAliquote(ibm.idTipoContributo);
-                            ViewBag.Livello = lm;
-                            ViewBag.descrizione = lm;
-                        }
-                        ViewBag.escludiAnnullati = escludiAnnullati;
-                        return PartialView("NuovaAliquotaContributiva", ibm);
+                        var lm = dtl.GetTipoAliquote(ibm.idTipoContributo);
+                        ViewBag.Livello = lm;
+                        ViewBag.descrizione = lm;
                     }
+                    ViewBag.escludiAnnullati = escludiAnnullati;
+                    return PartialView("NuovaAliquotaContributiva", ibm);
+                }
             }
             catch (Exception ex)
             {
@@ -229,7 +239,7 @@ namespace NewISE.Areas.Parametri.Controllers
             try
             {
                 using (dtAliquoteContr dtib = new dtAliquoteContr())
-                {                 
+                {
                     dtib.DelAliquoteContributive(idAliqContr);//corretto da confermare                    
                 }
                 var r = new List<SelectListItem>();
@@ -238,13 +248,13 @@ namespace NewISE.Areas.Parametri.Controllers
                     var llm = dtl.GetTipoAliquote().OrderBy(a => a.descrizione).ToList();
                     if (llm != null && llm.Count > 0)
                     {
-                       r = (from t in llm
+                        r = (from t in llm
                              select new SelectListItem()
                              {
                                  Text = t.descrizione,
                                  Value = t.idTipoAliqContr.ToString()
                              }).ToList();
-                        r.Where(a => a.Value == idTipoContributo.ToString()).First().Selected = true;                       
+                        r.Where(a => a.Value == idTipoContributo.ToString()).First().Selected = true;
                     }
                     TempData["Aliquote"] = r;
                 }
@@ -254,7 +264,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_AliquoteContributivePrimoNonAnnullato(idTipoContributo);
                     libm = dtib.getListAliquoteContributive(idTipoContributo, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                   
+
                 }
                 return PartialView("AliquoteContributive", libm);
             }

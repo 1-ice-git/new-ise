@@ -66,7 +66,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var mab = lmab.First();
 
-                        am = mab.ATTIVAZIONEMAB.Where(a=>a.ANNULLATO==false).OrderBy(a=>a.IDATTIVAZIONEMAB).ToList().First();
+                        am = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList().First();
 
                         amm = new AttivazioneMABModel()
                         {
@@ -301,13 +301,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    bool esiste = false;
+                    //bool esiste = false;
 
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                     var aml = t.INDENNITA.MAB
-                            .Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
-                            .OrderBy(a=>a.IDMAB)
+                            .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                            .OrderBy(a => a.IDMAB)
                             .ToList()
                             .First()
                             .ATTIVAZIONEMAB;//.Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
@@ -323,7 +323,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 var d = dl.First();
 
-                                esiste = true;
+                                //esiste = true;
 
                                 idDoc = d.IDDOCUMENTO;
                             }
@@ -539,8 +539,8 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var NumAttivazioni = 0;
-                NumAttivazioni = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.MAB.Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
-                                    .OrderBy(a=>a.IDMAB)
+                NumAttivazioni = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
+                                    .OrderBy(a => a.IDMAB)
                                     .ToList()
                                     .First()
                                     .ATTIVAZIONEMAB
@@ -591,7 +591,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idMAB = m.IDMAB,
                         idTrasfIndennita = m.IDTRASFINDENNITA,
-                        idStatoRecord=m.IDSTATORECORD,
+                        idStatoRecord = m.IDSTATORECORD,
                         dataAggiornamento = m.DATAAGGIORNAMENTO,
                         rinunciaMAB = m.RINUNCIAMAB
                     };
@@ -720,7 +720,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-      
+
 
         //public MAGGIORAZIONEABITAZIONE GetMaggiorazioneAbitazioneByID(decimal idMagAbitazione)
         //{
@@ -1050,7 +1050,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (mab.RINUNCIAMAB == false)
                                 {
                                     var dm = am.DOCUMENTI.OrderBy(a => a.IDDOCUMENTO).Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione).First();
-                                    UpdateStatoDocumentiMAB(dm.IDDOCUMENTO,mab.IDMAB, EnumStatoRecord.Attivato, db);
+                                    UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, mab.IDMAB, EnumStatoRecord.Attivato, db);
                                 }
                                 #endregion
 
@@ -1079,7 +1079,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
 
                                 //this.EmailAttivaRichiestaMAB(am.IDATTIVAZIONEMAB, db);
-                              
+
                             }
                         }
                     }
@@ -1685,7 +1685,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         .OrderBy(a => a.IDDOCUMENTO).ToList();
                                     foreach (var dm in ldm)
                                     {
-                                        UpdateStatoDocumentiMAB(dm.IDDOCUMENTO,mab.IDMAB, EnumStatoRecord.Da_Attivare, db);
+                                        UpdateStatoDocumentiMAB(dm.IDDOCUMENTO, mab.IDMAB, EnumStatoRecord.Da_Attivare, db);
                                     }
                                 }
                                 #endregion
@@ -3123,7 +3123,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void UpdateStatoDocumentiMAB(decimal idDocumentoMAB,decimal idMAB, EnumStatoRecord stato, ModelDBISE db)
+        public void UpdateStatoDocumentiMAB(decimal idDocumentoMAB, decimal idMAB, EnumStatoRecord stato, ModelDBISE db)
         {
             try
             {

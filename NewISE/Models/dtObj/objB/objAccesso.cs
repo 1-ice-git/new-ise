@@ -29,7 +29,7 @@ namespace NewISE.Models.dtObj.objB
                 }
                 catch (Exception ex)
                 {
-
+                    throw ex;
                 }
             }
         }

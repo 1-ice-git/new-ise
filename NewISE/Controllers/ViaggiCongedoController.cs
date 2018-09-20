@@ -500,7 +500,7 @@ namespace NewISE.Controllers
                     else
                     {
                         idDocumento = 0;
-                        tmp = dtvc.AttivaPreventiviRichiesta(idAttivazioneVC, idDocumento, idFaseInCorso, idTrasferimento);
+                        //tmp = dtvc.AttivaPreventiviRichiesta(idAttivazioneVC, idDocumento, idFaseInCorso, idTrasferimento);
                         //NotificaInviata = dtvc.NotificaPreventiviInviata(idAttivazioneVC, idFaseInCorso);
                         //ViewData["id_Attiv_Viaggio_Congedo"] = tmp;// idAttivazioneVC; il nuova ma non il vecchio
                         //ViewData["NotificaInviata"] = NotificaInviata;

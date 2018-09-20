@@ -371,7 +371,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 catch (Exception ex)
                 {
-
+                    throw ex;
                 }
 
 

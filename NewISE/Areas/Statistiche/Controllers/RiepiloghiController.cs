@@ -39,10 +39,12 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             catch (Exception ex)
             {
-                return View("Error");
+                HandleErrorInfo her = new HandleErrorInfo(ex, "Riepiloghi", "Index");
+
+                return View("Error", her);
 
             }
-            
+
 
         }
 

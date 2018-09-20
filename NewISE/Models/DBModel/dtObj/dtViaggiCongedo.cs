@@ -664,7 +664,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     db.Database.CurrentTransaction.Commit();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     db.Database.CurrentTransaction.Rollback();
                     throw new Exception("Selezionare un elemento per l'Attivazione");

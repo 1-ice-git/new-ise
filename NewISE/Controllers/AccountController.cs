@@ -659,7 +659,8 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                return View("Error");
+                HandleErrorInfo her = new HandleErrorInfo(ex, "Account", "Login");
+                return View("Error", her);
             }
         }
 

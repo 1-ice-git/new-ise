@@ -228,7 +228,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita = null)
         {
-            DateTime dt;
+            //DateTime dt;
 
 
             using (ModelDBISE db = new ModelDBISE())

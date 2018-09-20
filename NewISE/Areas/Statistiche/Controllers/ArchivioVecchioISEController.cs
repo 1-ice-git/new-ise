@@ -42,7 +42,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Canone Anticipato", Value = "11" });
                 t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Spese Diverse", Value = "12" });
                 t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Maggiorazione Abitazione", Value = "13" });
-                
+
 
                 ViewBag.VecchioIse = t;
                 return PartialView();
@@ -50,7 +50,8 @@ namespace NewISE.Areas.Statistiche.Controllers
             }
             catch (Exception ex)
             {
-                return View("Error");
+                HandleErrorInfo her = new HandleErrorInfo(ex, "ArchivioVecchioISE", "Index");
+                return View("Error", her);
 
             }
 
@@ -65,9 +66,9 @@ namespace NewISE.Areas.Statistiche.Controllers
         //    {
         //        //using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
         //        //{
-                    
+
         //        //    //String Sql = "SELECT DECODE (rec,1, z.livello, '') livello, DECODE(rec, 1, z.TIPO_MOVIMENTO, '') tipo_movimento, DECODE(rec, 1, z.IES_DT_DECORRENZA, '') data_decorrenza, DECODE(rec, 1, z.IES_DT_LETTERA, '') data_lettera, DECODE(rec, 1, z.COEFFICIENTE_DI_SEDE, '') coef_sede, DECODE(rec, 1, z.IES_PERC_DISAGIO, '') perc_disagio, DECODE(rec, 1, z.IES_PERC_ABBATTIMENTO, '') perc_spettante, DECODE(rec, 1, z.IES_PERC_CONIUGE, '') perc_Coniuge, DECODE(rec, 1, z.IES_PENSIONE, '') pensione, DECODE(rec, 1, z.IES_FIGLI, '') n_figli, DECODE(rec, 1, z.CAMBIO, '') TFR, z.descr, z.indennita, z.IES_COD_TIPO_MOVIMENTO ord2, z.IES_PROG_MOVIMENTO ord3, z.IES_DT_DECORRENZA ord1 FROM (SELECT DISTINCT IES_PROG_TRASFERIMENTO AS TIPOLOGIA_TRASFERIMENTO, SED_DESCRIZIONE                       AS SEDE, VAL_DESCRIZIONE                       AS VALUTA,IBS_DESCRIZIONE                       AS LIVELLO, TMO_DESCRIZIONE_MOVIMENTO             AS TIPO_MOVIMENTO, IES_DT_DECORRENZA, IES_DT_LETTERA, ABS(IES_COEFFICIENTE_SEDE) AS COEFFICIENTE_DI_SEDE, IES_PERC_DISAGIO, IES_PERC_ABBATTIMENTO, IES_PERC_CONIUGE, IES_PENSIONE, IES_FIGLI, ABS(IES_CAMBIO) AS CAMBIO, '1-Base  ' descr, IES_INDEN_BASE AS Indennita, IES_COD_TIPO_MOVIMENTO, IES_PROG_MOVIMENTO, AND_COGNOME || ' '|| AND_NOME NOMINATIVO, 1 rec FROM INDESTERA, TIPOMOVIMENTO, SEDIESTERE, VALUTE, INDENNITABASE, ANADIPE WHERE IES_COD_SEDE = SED_COD_SEDE AND IES_COD_VALUTA = VAL_COD_VALUTA AND IES_COD_QUALIFICA = IBS_COD_QUALIFICA AND IES_COD_TIPO_MOVIMENTO = TMO_COD_TIPO_MOVIMENTO AND IES_MATRICOLA = AND_MATRICOLA AND IES_MATRICOLA = 3192 AND IES_FLAG_RICALCOLATO IS NULL UNION SELECT DISTINCT IES_PROG_TRASFERIMENTO AS TIPOLOGIA_TRASFERIMENTO, SED_DESCRIZIONE                      AS SEDE, VAL_DESCRIZIONE                      AS VALUTA, IBS_DESCRIZIONE                      AS LIVELLO, TMO_DESCRIZIONE_MOVIMENTO            AS TIPO_MOVIMENTO, IES_DT_DECORRENZA, IES_DT_LETTERA, ABS(IES_COEFFICIENTE_SEDE) AS COEFFICIENTE_DI_SEDE, IES_PERC_DISAGIO, IES_PERC_ABBATTIMENTO, IES_PERC_CONIUGE, IES_PENSIONE, IES_FIGLI, ABS(IES_CAMBIO) AS CAMBIO, '2-Pers.  ' descr, DECODE(IES_FLAG_VALUTA, 'E', IES_INDEN_PERS * IES_CAMBIO, IES_INDEN_PERS / IES_CAMBIO) AS Indennita, IES_COD_TIPO_MOVIMENTO, IES_PROG_MOVIMENTO, AND_COGNOME || ' ' || AND_NOME NOMINATIVO, 2 rec FROM INDESTERA, TIPOMOVIMENTO, SEDIESTERE, VALUTE, INDENNITABASE, ANADIPE WHERE IES_COD_SEDE = SED_COD_SEDE AND IES_COD_VALUTA = VAL_COD_VALUTA AND IES_COD_QUALIFICA = IBS_COD_QUALIFICA AND IES_COD_TIPO_MOVIMENTO = TMO_COD_TIPO_MOVIMENTO AND IES_MATRICOLA = AND_MATRICOLA AND IES_MATRICOLA = 3192 AND IES_FLAG_RICALCOLATO  IS NULL UNION SELECT DISTINCT IES_PROG_TRASFERIMENTO AS TIPOLOGIA_TRASFERIMENTO, SED_DESCRIZIONE                      AS SEDE, VAL_DESCRIZIONE                      AS VALUTA, IBS_DESCRIZIONE                      AS LIVELLO, TMO_DESCRIZIONE_MOVIMENTO            AS TIPO_MOVIMENTO, IES_DT_DECORRENZA, IES_DT_LETTERA, ABS(IES_COEFFICIENTE_SEDE) AS COEFFICIENTE_DI_SEDE, IES_PERC_DISAGIO, IES_PERC_ABBATTIMENTO, IES_PERC_CONIUGE, IES_PENSIONE, IES_FIGLI, ABS(IES_CAMBIO) AS CAMBIO, '4-Sist/Rien.  ' descr, IES_INDEN_SIS_RIE AS Indennita, IES_COD_TIPO_MOVIMENTO, IES_PROG_MOVIMENTO, AND_COGNOME || ' ' || AND_NOME NOMINATIVO, 4 rec FROM INDESTERA, TIPOMOVIMENTO, SEDIESTERE, VALUTE, INDENNITABASE, ANADIPE WHERE IES_COD_SEDE = SED_COD_SEDE AND IES_COD_VALUTA = VAL_COD_VALUTA AND IES_COD_QUALIFICA = IBS_COD_QUALIFICA AND IES_COD_TIPO_MOVIMENTO = TMO_COD_TIPO_MOVIMENTO AND IES_MATRICOLA = AND_MATRICOLA AND IES_MATRICOLA = 3192 AND IES_FLAG_RICALCOLATO  IS NULL UNION SELECT DISTINCT IES_PROG_TRASFERIMENTO AS TIPOLOGIA_TRASFERIMENTO, SED_DESCRIZIONE                      AS SEDE, VAL_DESCRIZIONE                      AS VALUTA, IBS_DESCRIZIONE                      AS LIVELLO, TMO_DESCRIZIONE_MOVIMENTO            AS TIPO_MOVIMENTO, IES_DT_DECORRENZA, IES_DT_LETTERA, ABS(IES_COEFFICIENTE_SEDE) AS COEFFICIENTE_DI_SEDE, IES_PERC_DISAGIO, IES_PERC_ABBATTIMENTO, IES_PERC_CONIUGE,IES_PENSIONE, IES_FIGLI, ABS(IES_CAMBIO) AS CAMBIO, '3-Anticipo  ' descr, IES_ANTICIPO AS Indennita, IES_COD_TIPO_MOVIMENTO, IES_PROG_MOVIMENTO, AND_COGNOME || ' ' || AND_NOME NOMINATIVO, 3 rec FROM INDESTERA, TIPOMOVIMENTO, SEDIESTERE, VALUTE, INDENNITABASE, ANADIPE WHERE IES_COD_SEDE = SED_COD_SEDE AND IES_COD_VALUTA = VAL_COD_VALUTA AND IES_COD_QUALIFICA = IBS_COD_QUALIFICA AND IES_COD_TIPO_MOVIMENTO = TMO_COD_TIPO_MOVIMENTO AND IES_MATRICOLA = AND_MATRICOLA AND IES_MATRICOLA = 3192 AND IES_FLAG_RICALCOLATO  IS NULL UNION SELECT DISTINCT IES_PROG_TRASFERIMENTO AS TIPOLOGIA_TRASFERIMENTO, SED_DESCRIZIONE                      AS SEDE, VAL_DESCRIZIONE                      AS VALUTA, IBS_DESCRIZIONE                      AS LIVELLO, TMO_DESCRIZIONE_MOVIMENTO            AS TIPO_MOVIMENTO, IES_DT_DECORRENZA, IES_DT_LETTERA, ABS(IES_COEFFICIENTE_SEDE) AS COEFFICIENTE_DI_SEDE, IES_PERC_DISAGIO, IES_PERC_ABBATTIMENTO, IES_PERC_CONIUGE, IES_PENSIONE, IES_FIGLI, ABS(IES_CAMBIO) AS CAMBIO, '5-Sist.Netta  ' descr, DECODE(IES_FLAG_VALUTA, 'E', IES_INDEN_SIS_RIE_NETTA * IES_CAMBIO, IES_INDEN_SIS_RIE_NETTA / IES_CAMBIO) AS Indennita, IES_COD_TIPO_MOVIMENTO, IES_PROG_MOVIMENTO, AND_COGNOME || ' ' || AND_NOME NOMINATIVO, 5 rec FROM INDESTERA, TIPOMOVIMENTO, SEDIESTERE, VALUTE, INDENNITABASE, ANADIPE WHERE IES_COD_SEDE = SED_COD_SEDE AND IES_COD_VALUTA = VAL_COD_VALUTA AND IES_COD_QUALIFICA = IBS_COD_QUALIFICA AND IES_COD_TIPO_MOVIMENTO = TMO_COD_TIPO_MOVIMENTO AND IES_MATRICOLA = AND_MATRICOLA AND IES_MATRICOLA = 3192 AND IES_FLAG_RICALCOLATO  IS NULL ) z ORDER BY z.IES_DT_DECORRENZA, z.IES_COD_TIPO_MOVIMENTO, z.IES_PROG_MOVIMENTO, z.descr";
-                    
+
         //        //    String Sql = "SELECT DECODE (rec,1, z.nominativo, '') nominativo, ";
         //        //    Sql += "DECODE (rec,1, z.ies_matricola, '') matricola, ";
         //        //    Sql += "DECODE (rec,1, z.livello, '') livello, ";
@@ -338,7 +339,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
         //        //    return PartialView("StoriaDipendente", model);
         //        //}
-                
+
         //    }
         //    catch (Exception)
         //    {
@@ -348,8 +349,8 @@ namespace NewISE.Areas.Statistiche.Controllers
 
 
         //}
-  
-        public ActionResult RptStoriaDipendente(string matricola = "", string V_DATA="")
+
+        public ActionResult RptStoriaDipendente(string matricola = "", string V_DATA = "")
         {
             DataSet6 ds6 = new DataSet6();
             try
@@ -360,8 +361,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.SizeToReportContent = true;
                 reportViewer.Width = Unit.Percentage(100);
                 reportViewer.Height = Unit.Percentage(100);
-                
-                
+
+
                 var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
 
                 OracleConnection conx = new OracleConnection(connectionString);
@@ -576,11 +577,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "z.IES_DT_DECORRENZA, ";
                 Sql += "z.IES_COD_TIPO_MOVIMENTO, ";
                 Sql += "z.IES_PROG_MOVIMENTO, ";
-                Sql += "z.descr "; 
+                Sql += "z.descr ";
                 #endregion
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
-                
+
                 //adp.Fill(ds6, ds6.STP_STORIA_DIP_ISESTOR.TableName);
                 adp.Fill(ds6, ds6.DataTable6.TableName);
 
@@ -607,7 +608,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return View();
         }
-        
+
         public ActionResult BindWithViewBag()
         {
             List<SelectListItem> items = new List<SelectListItem>();
@@ -634,7 +635,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return View();
         }
-        
+
         public ActionResult BindWithDbValues(string matricola = "")
         {
             ViewBag.ListaCategorie = new List<SelectListItem>();
@@ -673,7 +674,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     }
                 }
-                
+
 
                 ViewBag.ListaCategorie = lr;
             }
@@ -903,7 +904,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "z.IES_DT_DECORRENZA, ";
                 Sql += "z.IES_COD_TIPO_MOVIMENTO, ";
                 Sql += "z.IES_PROG_MOVIMENTO, ";
-                Sql += "z.descr "; 
+                Sql += "z.descr ";
                 #endregion
 
                 using (OracleCommand cmd = new OracleCommand())
@@ -1007,23 +1008,23 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             //StampeISE.Class1 xx = new Class1();
             //xx.Stampa_Elenco_Trasferimenti();
-            
-            
+
+
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
-                
+
                 OracleCommand cmd1 = new OracleCommand();
                 cmd1.Connection = cn;
                 cmd1.CommandText = "ISE_STAMPA_ELENCO_TRASF";
                 cmd1.CommandType = System.Data.CommandType.StoredProcedure;
-                
+
                 cmd1.Parameters.Add("@V_UTENTE", OracleDbType.Varchar2, 50).Value = V_UTENTE;
                 cmd1.Parameters.Add("@V_DATA", OracleDbType.Varchar2, 50).Value = V_DATA;
                 cmd1.Parameters.Add("@V_UFFICIO", OracleDbType.Varchar2, 50).Value = codicesede;
-                
+
                 cn.Open();
                 cmd1.ExecuteNonQuery();
-                
+
                 //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + codicesede + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
 
                 String Sql = "Select SEDE,VALUTA, ";
@@ -1079,7 +1080,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("DislocazioneDipEstero", model);
             }
 
-           
+
 
         }
 
@@ -1097,7 +1098,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.Width = Unit.Percentage(100);
                 reportViewer.Height = Unit.Percentage(100);
 
-                 
+
                 var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
 
                 OracleConnection conx = new OracleConnection(connectionString);
@@ -1130,17 +1131,17 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "From ISE_STP_ELENCOTRASFERIMENTI ";
                 Sql += "Where UTENTE = '" + V_UTENTE + "' ";
                 Sql += "Order By SEDE, NOMINATIVO ";
-                
+
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
                 //adp.Fill(ds15, ds15.V_ISE_STP_ELENCO_TRASF.TableName);
                 adp.Fill(ds15, ds15.DataTable15.TableName);
-                
+
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet15", ds15.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
-                {   
+                {
                     new ReportParameter ("fromDate",V_DATA)
                 };
 
@@ -1163,14 +1164,14 @@ namespace NewISE.Areas.Statistiche.Controllers
         {
 
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
-            {  
+            {
                 List<Stp_Consuntivo_dei_costi> model = new List<Stp_Consuntivo_dei_costi>();
 
                 if (V_DATA != string.Empty && V_DATA1 != string.Empty)
                 {
                     OracleCommand cmd1 = new OracleCommand();
                     cmd1.Connection = cn;
-                                        
+
                     cmd1.CommandText = "ISE_Consuntivo_Costi.CONSUNTIVO_COSTI_MAIN";
                     cmd1.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -1185,7 +1186,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     OracleCommand cmd = new OracleCommand(Sql, cn);
                     OracleDataReader rdr = cmd.ExecuteReader();
-                    
+
                     while (rdr.Read())
                     {
                         var details = new Stp_Consuntivo_dei_costi();
@@ -1251,7 +1252,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet9", ds9.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
-                   {    
+                   {
                         new ReportParameter ("fromDate",V_DATA),
                         new ReportParameter ("toDate",V_DATA1)
                    };
@@ -1271,7 +1272,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Consuntivo Costi CoAn
-        public ActionResult ConsuntivoCostiCoAn(string codicecoan ="", string V_DATA = "", string V_DATA1 = "")
+        public ActionResult ConsuntivoCostiCoAn(string codicecoan = "", string V_DATA = "", string V_DATA1 = "")
         {
 
             ViewBag.ListaCodiceCoan = new List<SelectListItem>();
@@ -1363,10 +1364,10 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     model.Add(details);
                 }
-            
+
                 return PartialView("ConsuntivoCostiCoAn", model);
             }
-            
+
         }
 
         // Report Consuntivo Costi CoAn
@@ -1509,7 +1510,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "IES_DT_DECORRENZA, ";
                 Sql += "IES_PROG_MOVIMENTO ";
 
-           
+
                 OracleCommand cmd = new OracleCommand(Sql, cn);
                 cn.Open();
                 OracleDataReader rdr = cmd.ExecuteReader();
@@ -1676,7 +1677,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("OpContributoAbitazione", model);
             }
         }
-       
+
         // Report Operazioni Effettuate - Contributo Abitazione
         public ActionResult RptOpContributoAbitazione(string V_DATA = "", string V_DATA1 = "")
         {
@@ -1755,7 +1756,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
-                
+
                 String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME NOMINATIVO, ";
                 Sql += "USO_MATRICOLA AS MATRICOLA, ";
                 Sql += "SED_DESCRIZIONE AS SEDE, ";
@@ -1887,7 +1888,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
-                
+
                 String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME AS NOMINATIVO, ";
                 Sql += "CAN_MATRICOLA AS MATRICOLA, ";
                 Sql += "SED_DESCRIZIONE AS SEDE, ";
@@ -1938,7 +1939,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //return View("ViewName", model);
                 return PartialView("OpCanoneAnticipato", model);
 
-                
+
             }
         }
 
@@ -2054,7 +2055,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
-                
+
                 String Sql = "Select Distinct ANADIPE.AND_COGNOME || ' ' || ANADIPE.AND_NOME AS NOMINATIVO,";
                 Sql += "SPESEDIVERSE.SPD_MATRICOLA AS MATRICOLA, ";
                 Sql += "SEDIESTERE.SED_DESCRIZIONE AS DESCRIZIONE, ";
@@ -2311,7 +2312,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Presenze Livelli in servizio all' Estero
-        public ActionResult PresenzeLivelli(string codicequalifica = "", string V_DATA= "", string V_DATA1= "")
+        public ActionResult PresenzeLivelli(string codicequalifica = "", string V_DATA = "", string V_DATA1 = "")
         {
             // Combo Qualifiche
             //Select Distinct IBS_DESCRIZIONE From INDENNITABASE Order By IBS_DESCRIZIONE
@@ -2321,7 +2322,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             List<SelectListItem> lr = new List<SelectListItem>();
             List<Stp_Presenze_Livelli> lsd = new List<Stp_Presenze_Livelli>();
             List<Stp_Presenze_Livelli> model = new List<Stp_Presenze_Livelli>();
-            
+
             lcm = Dipendenti.GetAllQualifiche().ToList();
 
             if (lcm != null && lcm.Any())
@@ -2369,8 +2370,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 {
                     V_DATA = "01/01/" + DateTime.Now.Year;
                 }
-            
-                
+
+
                 String Sql = "Select Distinct IES_COD_QUALIFICA, ";
                 Sql += "IBS_DESCRIZIONE, ";
                 Sql += "IES_MATRICOLA, ";
@@ -2450,11 +2451,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("PresenzeLivelli", model);
             }
 
-            
+
         }
 
         // Report Presenze Livelli in servizio all' Estero
-        public ActionResult RptPresenzeLivelli(string codicequalifica="", string V_DATA="", string V_DATA1="")
+        public ActionResult RptPresenzeLivelli(string codicequalifica = "", string V_DATA = "", string V_DATA1 = "")
         {
             DataSet13 ds13 = new DataSet13();
 
@@ -2511,7 +2512,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "And IES_PROG_TRASFERIMENTO = TRA_PROG_TRASFERIMENTO ";
                 if (codicequalifica != "")
                     //Sql += "And IES_COD_QUALIFICA = :codicequalifica ";
-                Sql += "And IES_COD_QUALIFICA = '" + codicequalifica + "' ";
+                    Sql += "And IES_COD_QUALIFICA = '" + codicequalifica + "' ";
                 //Sql += "And IBS_DESCRIZIONE = 'DIRIGENTE' ";
                 Sql += "Order By IES_MATRICOLA, ";
                 Sql += "IES_PROG_TRASFERIMENTO Desc, ";
@@ -2552,7 +2553,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
-                
+
                 //String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME NOMINATIVO, ";
                 //Sql += "ANADIPE.AND_LIVELLO LIVELLO, ";
                 //Sql += "SED_DESCRIZIONE SEDE, ";
@@ -2590,15 +2591,15 @@ namespace NewISE.Areas.Statistiche.Controllers
                 while (rdr.Read())
                 {
                     var details = new Stp_Spese_diverse();
-                        details.MATRICOLA = rdr["MATRICOLA"].ToString();
-                        details.NOMINATIVO = rdr["NOMINATIVO"].ToString();
-                        details.LIVELLO = rdr["LIVELLO"].ToString();
-                        details.CODICE_SEDE = rdr["CODICE_SEDE"].ToString();
-                        details.DESCRIZIONE_SEDE = rdr["DESCRIZIONE_SEDE"].ToString();
-                        details.DATA = Convert.ToDateTime(rdr["DATA"]).ToString("dd/mm/yyyy");
-                        details.VOCE_DI_SPESA = rdr["VOCE_DI_SPESA"].ToString();
-                        details.IMPORTO_VALUTA = rdr["IMPORTO_VALUTA"].ToString();
-                        model.Add(details);
+                    details.MATRICOLA = rdr["MATRICOLA"].ToString();
+                    details.NOMINATIVO = rdr["NOMINATIVO"].ToString();
+                    details.LIVELLO = rdr["LIVELLO"].ToString();
+                    details.CODICE_SEDE = rdr["CODICE_SEDE"].ToString();
+                    details.DESCRIZIONE_SEDE = rdr["DESCRIZIONE_SEDE"].ToString();
+                    details.DATA = Convert.ToDateTime(rdr["DATA"]).ToString("dd/mm/yyyy");
+                    details.VOCE_DI_SPESA = rdr["VOCE_DI_SPESA"].ToString();
+                    details.IMPORTO_VALUTA = rdr["IMPORTO_VALUTA"].ToString();
+                    model.Add(details);
                 }
                 //return View("ViewName", model);
                 return PartialView("SpeseDiverse", model);
@@ -2667,7 +2668,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
                 adp.Fill(ds18, ds18.DataTable1.TableName);
-                
+
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptSpeseDiverse.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet18", ds18.Tables[0]));
@@ -2698,7 +2699,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
-               
+
                 String Sql = "SELECT DISTINCT SPESEDIVERSE.SPD_MATRICOLA AS MATRICOLA, ";
                 Sql += "ANADIPE.AND_COGNOME || ' ' || ANADIPE.AND_NOME AS NOMINATIVO, ";
                 Sql += "ANADIPE.AND_LIVELLO AS LIVELLO, ";
@@ -2830,7 +2831,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return View();
         }
-        
+
         // Stampa Livelli
         public ActionResult StampaLivelli()
         {
@@ -2844,11 +2845,11 @@ namespace NewISE.Areas.Statistiche.Controllers
             //add any parameters the stored procedure might require
             cmd.Parameters.Add(new OracleParameter("@V_UTENTE", "fantomas"));
             cmd.Parameters.Add(new OracleParameter("@V_DATA", "31-AGO-2017"));
-            
+
             cnn.Open();
             //object o = cmd.ExecuteScalar();
 
-            
+
             using (OracleDataReader rdr = cmd.ExecuteReader())
             {
                 if (rdr.HasRows)
@@ -2877,7 +2878,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             cnn.Close();
             return View();
         }
-        
+
     }
-    
+
 }

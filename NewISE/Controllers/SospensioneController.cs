@@ -72,9 +72,9 @@ namespace NewISE.Controllers
                 //    var tm = dtt.GetTrasferimentoByIdSosp(idSospensione);
                 //    idTrasferimento = tm.idTrasferimento;
                 //}
-            
-            var r = new List<SelectListItem>();
-            
+
+                var r = new List<SelectListItem>();
+
                 using (dtSospensione dttc = new dtSospensione())
                 {
                     var ltcm = dttc.GetListTipologiaSospensione();
@@ -107,9 +107,9 @@ namespace NewISE.Controllers
             using (dtTrasferimento dtt = new dtTrasferimento())
             {
                 var tm = dtt.GetTrasferimentoByIdSosp(idSospensione);
-                ViewData["idTrasferimento"]  = tm.idTrasferimento;
+                ViewData["idTrasferimento"] = tm.idTrasferimento;
             }
-            
+
             SospensioneModel tmp = new SospensioneModel();
             using (dtSospensione ds = new dtSospensione())
             {
@@ -158,8 +158,8 @@ namespace NewISE.Controllers
             List<SelectListItem> lTipologiaSospensione;
             try
             {
-            lTipologiaSospensione = new List<SelectListItem>();
-            var r = new List<SelectListItem>();
+                lTipologiaSospensione = new List<SelectListItem>();
+                var r = new List<SelectListItem>();
                 using (dtSospensione dttc = new dtSospensione())
                 {
                     var ltcm = dttc.GetListTipologiaSospensione();
@@ -191,14 +191,14 @@ namespace NewISE.Controllers
         {
             try
             {
-                 ViewData["idTrasferimento"] = idTrasferimento;
+                ViewData["idTrasferimento"] = idTrasferimento;
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-           return PartialView("AttivitaSospensione");
+            return PartialView("AttivitaSospensione");
         }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
@@ -206,7 +206,7 @@ namespace NewISE.Controllers
         public ActionResult InserisciSospensione(SospensioneModel sm, decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
-            string[] my_array=null;
+            string[] my_array = null;
             try
             {
                 if (ModelState.IsValid)
@@ -245,9 +245,8 @@ namespace NewISE.Controllers
                 }
                 else
                 {
-                    List<SelectListItem> lTipologiaSospensione;
+                    List<SelectListItem> lTipologiaSospensione = new List<SelectListItem>();
 
-                    lTipologiaSospensione = new List<SelectListItem>();
                     var r = new List<SelectListItem>();
                     using (dtSospensione dttc = new dtSospensione())
                     {
@@ -270,7 +269,8 @@ namespace NewISE.Controllers
                 }
             }
             catch (Exception ex)
-            {               
+            {
+
                 return PartialView("ErrorPartial", new MsgErr() { msg = my_array[1] });
             }
             return PartialView("AttivitaSospensione");

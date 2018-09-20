@@ -187,7 +187,7 @@ namespace NewISE.Models.Tools
 
                 return true;
             }
-            catch (SmtpException e)
+            catch (SmtpException)
             {
                 //Console.WriteLine("Errore: wwwww", e.StatusCode);
                 // pLog.descAttivitaSvolta;

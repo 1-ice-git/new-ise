@@ -21,7 +21,7 @@ namespace NewISE.Controllers
 {
     public class RichiamoController : Controller
     {
-        private object dtric;
+        //private object dtric;
 
         // GET: Richiamo
         public ActionResult Index()

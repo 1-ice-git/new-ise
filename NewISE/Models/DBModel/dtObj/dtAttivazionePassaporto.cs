@@ -44,21 +44,21 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-                        bool faseRichiesta = false;
+                        //bool faseRichiesta = false;
                         bool faseRichiestaNotificata = false;
-                        bool faseRichiestaAttivata = false;
-                        bool faseInvio = false;
+                        //bool faseRichiestaAttivata = false;
+                        //bool faseInvio = false;
                         bool faseInvioNotificata = false;
                         bool faseInvioAttivata = false;
                         if (attivazioneFaseRichiesta.IDATTIVAZIONIPASSAPORTI > 0)
                         {
-                            faseRichiesta = true;
-                            faseRichiestaAttivata = attivazioneFaseRichiesta.PRATICACONCLUSA;
+                            //faseRichiesta = true;
+                            //faseRichiestaAttivata = attivazioneFaseRichiesta.PRATICACONCLUSA;
                             faseRichiestaNotificata = attivazioneFaseRichiesta.NOTIFICARICHIESTA;
                         }
                         if (attivazioneFaseInvio.IDATTIVAZIONIPASSAPORTI > 0)
                         {
-                            faseInvio = true;
+                            //faseInvio = true;
                             faseInvioNotificata = attivazioneFaseInvio.NOTIFICARICHIESTA;
                             faseInvioAttivata = attivazioneFaseInvio.PRATICACONCLUSA;
                         }

@@ -97,8 +97,7 @@ namespace NewISE.Models.Tools
             }
             catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
 
         }

@@ -45,7 +45,9 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return View("Error");
+                HandleErrorInfo her = new HandleErrorInfo(ex, "Parametri", "index");
+
+                return View("Error", her);
             }
         }
     }

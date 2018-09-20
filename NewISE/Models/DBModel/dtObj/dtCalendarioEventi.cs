@@ -686,7 +686,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 return tmp;
             }
-            catch (Exception eex)
+            catch (Exception)
             {
                 return null;
             }
