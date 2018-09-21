@@ -60,8 +60,6 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
 
 
@@ -105,7 +103,7 @@
     });
 
     $("#mesiAnniElaborati1").change(function () {
-        debugger;
+        //debugger;
 
         if (this.value != "") {
             var valore = this.value;
@@ -115,7 +113,7 @@
     });
 
     function ValorizzazioneIniziale() {
-        debugger;
+        //debugger;
         var valore = $("#mesiAnniElaborati").val();
 
     }
@@ -157,9 +155,11 @@
 
         var rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
 
-        var data1 = $("#data1").datepicker().val()
-        var data2 = $("#data2").datepicker().val()
+        //var data1 = $("#data1").datepicker().val()
+        //var data2 = $("#data2").datepicker().val()
 
+        var data1 = $("#mesiAnniElaborati").val();
+        var data2 = $("#mesiAnniElaborati1").val();
 
         $.ajax({
             type: "POST",

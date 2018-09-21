@@ -129,7 +129,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView();
         }
-        public ActionResult RptRiepiloghiIseMensile(string dtIni, string dtFin)
+        public ActionResult RptRiepiloghiIseMensile(decimal dtIni, decimal dtFin)
         {
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
             List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
@@ -165,8 +165,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                         }
                     }
 
-
-
                 }
 
 
@@ -199,8 +197,8 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 ReportParameter[] parameterValues = new ReportParameter[]
                    {
-                        new ReportParameter ("Dal",dtIni),
-                        new ReportParameter ("Al",dtFin)
+                        new ReportParameter ("Dal",Convert.ToString(dtIni)),
+                        new ReportParameter ("Al",Convert.ToString(dtFin))
                    };
 
                 reportViewer.LocalReport.SetParameters(parameterValues);
