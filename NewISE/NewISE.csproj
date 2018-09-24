@@ -6337,6 +6337,12 @@
     <Content Include="Views\VariazioneTrasportoEffetti\TabDocumentiVariazioneTEPInseriti.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\NuovoDocumentoVariazioneTEP.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\MessaggioAnnullaVariazioneTEP.cshtml" />
+    <Content Include="Views\Elaborazioni\ReportLiquidazioniDirette.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
