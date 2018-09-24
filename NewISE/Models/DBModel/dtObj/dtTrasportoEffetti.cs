@@ -26,6 +26,78 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+
+        //private bool testAnticipoPercepitoTE(TRASFERIMENTO trasf, EnumTrasportoEffetti trasportoEffetti, ModelDBISE db, out decimal anticipoPercepito)
+        //{
+        //    bool ret = false;
+        //    anticipoPercepito = 0;
+        //    List<TEORICI> lt = new List<TEORICI>();
+
+        //    if (trasportoEffetti == EnumTrasportoEffetti.Partenza)
+        //    {
+        //        var tePartenza = trasf.TEPARTENZA;
+
+        //        decimal idTEpartenza = tePartenza.IDTEPARTENZA;
+
+        //        int annoElab = trasf.DATAPARTENZA.Year;
+        //        int meseElab = trasf.DATAPARTENZA.Month;
+
+        //        lt =
+        //            db.TEORICI.Where(
+        //                a =>
+        //                    a.ANNULLATO == false && a.ELABORATO == true &&
+        //                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+        //                    a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+        //                    a.ANNORIFERIMENTO == annoElab &&
+        //                    a.MESERIFERIMENTO == meseElab &&
+        //                    a.ELABTRASPEFFETTI.ANNULLATO == false && a.ELABTRASPEFFETTI.CONGUAGLIO == false &&
+        //                    a.ELABTRASPEFFETTI.ANTICIPO == true && a.ELABTRASPEFFETTI.IDTEPARTENZA == idTEpartenza)
+        //                .ToList();
+
+        //    }
+        //    else if (trasportoEffetti == EnumTrasportoEffetti.Rientro)
+        //    {
+
+
+
+        //        var teRientro = trasf.TERIENTRO;
+
+        //        decimal idTErientro = teRientro.IDTERIENTRO;
+
+        //        int annoElab = trasf.DATARIENTRO.Year;
+        //        int meseElab = trasf.DATARIENTRO.Month;
+
+        //        lt =
+        //            db.TEORICI.Where(
+        //                a =>
+        //                    a.ANNULLATO == false && a.ELABORATO == true &&
+        //                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+        //                    a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+        //                    a.ANNORIFERIMENTO == annoElab &&
+        //                    a.MESERIFERIMENTO == meseElab &&
+        //                    a.ELABTRASPEFFETTI.ANNULLATO == false && a.ELABTRASPEFFETTI.CONGUAGLIO == false &&
+        //                    a.ELABTRASPEFFETTI.ANTICIPO == true && a.ELABTRASPEFFETTI.IDTERIENTRO == idTErientro)
+        //                .ToList();
+        //    }
+
+        //    if (lt?.Any() ?? false)
+        //    {
+        //        anticipoPercepito = lt.Sum(a => a.IMPORTO);
+
+        //        if (anticipoPercepito > 0)
+        //        {
+        //            ret = true;
+        //        }
+        //    }
+
+
+        //    return ret;
+
+        //}
+
+
+
         public void PreSetTrasportoEffetti(decimal idTrasferimento, ModelDBISE db)
         {
             TEPARTENZA tep = new TEPARTENZA();

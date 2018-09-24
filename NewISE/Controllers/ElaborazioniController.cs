@@ -22,9 +22,10 @@ using RestSharp.Extensions;
 
 namespace NewISE.Controllers
 {
+    [Authorize(Roles = "1 ,2")]
     public class ElaborazioniController : Controller
     {
-        [Authorize(Roles = "1 ,2")]
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -36,17 +37,17 @@ namespace NewISE.Controllers
 
                 ViewBag.Amministratore = admin;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return View("Error");
+                HandleErrorInfo her = new HandleErrorInfo(ex, "Elaborazioni", "Index");
+                return View("Error", her);
             }
 
 
             return View();
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         [HttpPost]
         public JsonResult VerificaFlussiDirettiDaInviare(decimal idAnnoMeseElaborato)
         {
@@ -66,7 +67,7 @@ namespace NewISE.Controllers
             return Json(new { vfd = vfd, err = "" });
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         [HttpPost]
         public JsonResult PrelevaMesiAnniElab(string search)
         {
@@ -77,8 +78,6 @@ namespace NewISE.Controllers
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-
-
                     lmaem = dte.PrelevaAnniMesiElaborati().ToList();
 
                     foreach (var mae in lmaem)
@@ -91,26 +90,23 @@ namespace NewISE.Controllers
 
                         ls2.Add(s2);
                     }
-
-
                 }
 
                 if (search != null && search != string.Empty)
                 {
                     ls2 = ls2.Where(a => a.text.ToUpper().Contains(search.ToUpper())).ToList();
-
                 }
             }
             catch (Exception ex)
             {
-
                 return Json(new { results = new List<Select2Model>(), err = ex.Message });
             }
 
             return Json(new { results = ls2, err = "" });
         }
 
-        [Authorize(Roles = "1 ,2")]
+
+
         [HttpGet]
         public ActionResult SelezionaMeseAnno(int mese = 0, int anno = 0)
         {
@@ -172,7 +168,7 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult DipendentiDaElaborare(decimal idMeseAnnoElaborato)
         {
@@ -196,7 +192,7 @@ namespace NewISE.Controllers
 
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         [HttpPost]
         public ActionResult CalcolaElaborazioneMensile(List<int> dipendenti, decimal idAnnoMeseElaborato)
         {
@@ -221,7 +217,6 @@ namespace NewISE.Controllers
         }
 
 
-        [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult DatiLiquidazioniDirette(decimal idAnnoMeseElaborato)
         {
@@ -229,6 +224,7 @@ namespace NewISE.Controllers
             ViewData.Add("idAnnoMeseElaborato", idAnnoMeseElaborato);
             return PartialView();
         }
+
 
         public ActionResult DatiLiquidazioniDiretteDaInviare(decimal idAnnoMeseElaborato)
         {
@@ -276,8 +272,6 @@ namespace NewISE.Controllers
         }
 
 
-
-        [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult DatiLiquidazioneMensile(decimal idAnnoMeseElaborato)
         {
@@ -299,7 +293,7 @@ namespace NewISE.Controllers
             return PartialView(lLm);
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         public ActionResult PulsantiInvioElaborazione(decimal idAnnoMeseElaborato)
         {
             ViewData["idAnnoMeseElaborato"] = idAnnoMeseElaborato;
@@ -307,7 +301,7 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         [HttpPost]
         public JsonResult VerificaDipendentiCalcolati(decimal idMeseAnnoElab)
         {
@@ -330,7 +324,6 @@ namespace NewISE.Controllers
         }
 
 
-        [Authorize(Roles = "1 ,2")]
         [HttpPost]
         public JsonResult GestionePulsanteCalcola(List<decimal> lDipendenti, decimal idAnnoMeseElab)
         {
@@ -363,7 +356,6 @@ namespace NewISE.Controllers
         }
 
 
-        [Authorize(Roles = "1 ,2")]
         [HttpPost]
         public JsonResult VerificaChiusuraMeseElab(decimal idAnnoMeseElab)
         {
@@ -388,7 +380,7 @@ namespace NewISE.Controllers
             return Json(new { pc = periodoChiuso, err = "" });
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         [HttpPost]
         public JsonResult GestionePulsanteInvioFlussiMensili(decimal idAnnoMeseElab)
         {
@@ -414,8 +406,6 @@ namespace NewISE.Controllers
         }
 
 
-
-        [Authorize(Roles = "1 ,2")]
         [HttpPost]
         public JsonResult InviaFlussiDirettiOA(decimal idAnnoMeseElaborato, List<decimal> Teorici)
         {
@@ -458,7 +448,7 @@ namespace NewISE.Controllers
             //return RedirectToAction("DatiLiquidazioniDirette", "Elaborazioni", new { idAnnoMeseElaborato = idAnnoMeseElaborato });
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         [HttpPost]
         public JsonResult InviaFlussiMensili(decimal idAnnoMeseElaborato)
         {
@@ -610,7 +600,6 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "1 ,2")]
         public JsonResult VerificaPresenzaDatiLiquidazioneDiretta(decimal idAnnoMeseElaborato, bool Elab = false)
         {
             List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
@@ -639,7 +628,6 @@ namespace NewISE.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "1 ,2")]
         public ActionResult ReportLiquidazioniDirette(decimal idAnnoMeseElaborato, bool Elab = false)
         {
             List<LiquidazioniDiretteViewModel> lLd = new List<LiquidazioniDiretteViewModel>();
@@ -729,7 +717,6 @@ namespace NewISE.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "1 ,2")]
         public ActionResult ReportLiquidazioniMensili(decimal idAnnoMeseElaborato)
         {
             //ViewData["annoMeseElab"] = annoMeseElab;
@@ -816,6 +803,83 @@ namespace NewISE.Controllers
 
         }
 
+        public ActionResult VociManuali()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public JsonResult PrelevaMatricole(string search)
+        {
+            List<Select2Model> ls2 = new List<Select2Model>();
+            List<DipendentiModel> ldipm = new List<DipendentiModel>();
+
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    ldipm = dtd.GetDipendentiAnyTrasf().ToList();
+
+
+                    foreach (var dipm in ldipm)
+                    {
+                        Select2Model s2 = new Select2Model()
+                        {
+                            id = dipm.idDipendente.ToString(),
+                            text = dipm.Nominativo + " (" + dipm.matricola + ")",
+                        };
+
+                        ls2.Add(s2);
+                    }
+
+                    if (search != null && search != string.Empty)
+                    {
+                        ls2 = ls2.Where(a => a.text.ToUpper().Contains(search.ToUpper())).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { results = new List<Select2Model>(), err = ex.Message });
+            }
+
+            return Json(new { results = ls2, err = "" });
+
+        }
+
+        [HttpPost]
+        public JsonResult PrelevaVoci(string search)
+        {
+            List<Select2Model> ls2 = new List<Select2Model>();
+            List<VociManualiModel> lvm = new List<VociManualiModel>();
+
+            try
+            {
+                using (dtVoci dtvm = new dtVoci())
+                {
+                    lvm = dtvm.GetVociManuali().ToList();
+
+                    foreach (var vm in lvm)
+                    {
+                        Select2Model s2 = new Select2Model()
+                        {
+                            id = vm.idVoci.ToString(),
+                            text = vm.DescVoce
+                        };
+
+                        ls2.Add(s2);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { results = new List<Select2Model>(), err = ex.Message });
+            }
+
+            return Json(new { results = ls2, err = "" });
+
+        }
 
 
 

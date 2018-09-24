@@ -5599,6 +5599,7 @@
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\DestinatarioModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtVoci.cs" />
     <Compile Include="Models\DBModel\dtObj\EvIndennita.cs" />
     <Compile Include="Models\DBModel\dtVariazioneIndennita.cs" />
     <Compile Include="Models\DBModel\ElabIndSistemazioneModel.cs" />
@@ -5835,6 +5836,7 @@
     <Compile Include="Models\ViewModel\MABViewModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel - Copy.cs" />
     <Compile Include="Models\ViewModel\VariazioneMABModel.cs" />
+    <Compile Include="Models\ViewModel\VociManualiModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Report\Elaborazioni\DataSet\dsLiquidazioniDirette.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6328,6 +6330,7 @@
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\TabFormulariMABInseriti.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoFormularioMAB_TipoDoc.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoFormularioMAB_Doc.cshtml" />
+    <Content Include="Views\Elaborazioni\VociManuali.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\VariazioneTE.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\VariazioneTEP.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\ElencoDocumentiVariazioneTEP.cshtml" />

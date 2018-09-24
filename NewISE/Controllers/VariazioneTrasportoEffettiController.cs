@@ -84,7 +84,7 @@ namespace NewISE.Controllers
 
                             vtepm.indennitaPrimaSistemazione = Math.Round(ci.IndennitaSistemazioneLorda, 2);
                             vtepm.percKM = ci.PercentualeFKMPartenza;
-                            vtepm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivo, 2);
+                            vtepm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivoPartenza, 2);
                             vtepm.anticipoPercepito = anticipoPercepito;
                             vtepm.saldo = Math.Round(vtepm.contributoLordo - vtepm.anticipoPercepito, 2);
 
@@ -512,7 +512,7 @@ namespace NewISE.Controllers
                     {
                         decimal idAttivazione = dtvte.GetUltimaAttivazioneTEPartenza(idTEPartenza, db).IDATEPARTENZA;
 
-                        dtvte.AttivaRichiestaVariazioneTEP(idAttivazione,db);
+                        dtvte.AttivaRichiestaVariazioneTEP(idAttivazione, db);
                     }
                 }
             }

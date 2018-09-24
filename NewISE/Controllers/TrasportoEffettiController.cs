@@ -64,7 +64,7 @@ namespace NewISE.Controllers
 
                         tepm.indennitaPrimaSistemazione = Math.Round(ci.IndennitaSistemazioneLorda, 2);
                         tepm.percKM = ci.PercentualeFKMPartenza;
-                        tepm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivo, 2);
+                        tepm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivoPartenza, 2);
                         var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza(idTrasportoEffettiPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
                         tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
                         tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100, 2);
