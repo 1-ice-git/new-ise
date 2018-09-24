@@ -89,7 +89,7 @@ namespace NewISE.Controllers
                                     }
                                     if (pmm.dataFineMAB == Utility.DataFineStop())
                                     {
-                                        //ssoloLettura = true;
+                                        //soloLettura = true;
                                         if (ultima_att.NOTIFICARICHIESTA && ultima_att.ATTIVAZIONE==false)
                                         {
                                             modificabile = false;

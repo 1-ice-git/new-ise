@@ -1,0 +1,511 @@
+﻿@using NewISE.Models.DBModel
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idTEPartenza = Convert.ToDecimal(ViewData["idTEPartenza"]);
+
+}
+
+<link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divVariazioneTEP">
+            @Html.Action("VariazioneTEP", "VariazioneTrasportoEffetti", new { idTEPartenza = idTEPartenza })
+        </div>
+    </div>
+    <div class="col-xs-12">
+
+        <hr />
+    </div>
+
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="pull-right" style="margin-bottom: 10px;margin-right:30px ">
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaVariazioneTEP" onclick="ModalNotificaRichiestaVariazioneTEP();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled " hidden disabled id="btAttivaRichiestaVariazioneTEP" onclick="ModalAttivaRichiestaVariazioneTEP();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Attiva richiesta
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaRichiestaVariazioneTEP" onclick="ModalAnnullaRichiestaVariazioneTEP();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Annulla richiesta
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalNotificaRichiestaVariazioneTEP" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaVariazioneTEPLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaRichiestaVariazioneTEP">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotificaRichiestaVariazioneTEP" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaVariazioneTEP();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaRichiestaVariazioneTEP" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaVariazioneTEPLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaRichiestaVariazioneTEP">
+                    <label>Procedere con l'attivazione della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazioneRichiestaVariazioneTEP" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaVariazioneTEP();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaRichiestaVariazioneTEP" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaVariazioneTEPLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaRichiestaVariazioneTEP">
+                    <label>Procedere con l'annullamento della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnullaRichiestaVariazioneTEP" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaVariazioneTEP();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    GestionePulsantiNotificaAttivaAnnullaVariazioneTEP();
+
+    function GestionePulsantiNotificaAttivaAnnullaVariazioneTEP() {
+        //debugger;
+        var rotta = "/VariazioneTrasportoEffetti/GestionePulsantiNotificaAttivaAnnullaVariazioneTEP";
+        var idTEPartenza = parseInt('@idTEPartenza');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTEPartenza: idTEPartenza },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    var admin = result.admin;
+                    var richiestaTE = result.richiestaTE;
+                    var attivazioneTE = result.attivazioneTE;
+                    var DocAttestazione = result.DocAttestazione;
+                    var trasfAnnullato = result.trasfAnnullato;
+                    var siAnticipo =result.siAnticipo; 
+                    var anticipoPercepito = result.anticipoPercepito;
+                    var rinunciaTE=result.rinunciaTE;
+
+                    $("#btNotificaRichiestaVariazioneTEP").attr("disabled", "disabled");
+                    $("#btNotificaRichiestaVariazioneTEP").addClass("disabled");
+
+                    $("#btNotificaRichiestaVariazioneTEP").removeAttr("hidden");
+                    $("#btNotificaRichiestaVariazioneTEP").removeClass("hidden");
+
+
+                    //se amministratore vedo i pulsanti altrimenti solo notifica
+                    if (admin) {
+                        $("#btAttivaRichiestaVariazioneTEP").removeAttr("hidden");
+                        $("#btAttivaRichiestaVariazioneTEP").removeClass("hidden");
+
+                        $("#btAnnullaRichiestaVariazioneTEP").removeAttr("hidden");
+                        $("#btAnnullaRichiestaVariazioneTEP").removeClass("hidden");
+
+                        $("#btAttivaRichiestaVariazioneTEP").attr("disabled", "disabled");
+                        $("#btAttivaRichiestaVariazioneTEP").addClass("disabled");
+
+                        $("#btAnnullaRichiestaVariazioneTEP").attr("disabled", "disabled");
+                        $("#btAnnullaRichiestaVariazioneTEP").addClass("disabled");
+                    }
+
+                    //Se risulta in lavorazione con almeno un documento abilito il pulsante notifica
+                    if (
+                            (
+                                richiestaTE==false &&
+                                attivazioneTE==false &&
+                                DocAttestazione &&
+                                trasfAnnullato==false &&
+                                siAnticipo 
+                        //&& rinunciaTE == false
+                            ) 
+                        )
+
+                    {
+                        $("#btNotificaRichiestaVariazioneTEP").removeAttr("disabled");
+                        $("#btNotificaRichiestaVariazioneTEP").removeClass("disabled");
+                    } else {
+                        if (admin) {
+                            if (richiestaTE && 
+                                attivazioneTE==false && 
+                                trasfAnnullato==false && 
+                                siAnticipo 
+                                //&& rinunciaTE==false
+                                ) {
+                                $("#btAttivaRichiestaVariazioneTEP").removeAttr("disabled");
+                                $("#btAttivaRichiestaVariazioneTEP").removeClass("disabled");
+                                $("#btAnnullaRichiestaVariazioneTEP").removeAttr("disabled");
+                                $("#btAnnullaRichiestaVariazioneTEP").removeClass("disabled");
+                            }
+                        }
+                    }
+                    //GestioneAttivitaTrasferimento();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ModalNotificaRichiestaVariazioneTEP() {
+        //debugger;
+        $('#ModalNotificaRichiestaVariazioneTEP').modal().show();
+    }
+
+    function ModalAnnullaRichiestaVariazioneTEP() {
+        //debugger;
+        MessaggioAnnullaRichiestaVariazioneTEP();
+        $('#ModalAnnullaRichiestaVariazioneTEP').modal().show();
+    }
+
+    function ModalAttivaRichiestaVariazioneTEP() {
+        //debugger;
+        $('#ModalAttivaRichiestaVariazioneTEP').modal().show();
+    }
+
+
+    function ConfermaNotificaRichiestaVariazioneTEP() {
+        //debugger;
+        var rotta = "/VariazioneTrasportoEffetti/ConfermaNotificaRichiestaVariazioneTEP";
+        var idTEPartenza = parseInt('@idTEPartenza');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTEPartenza: idTEPartenza },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    VariazioneTEP();
+                    //GestioneRinunciaTEPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaVariazioneTEP();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAnnullaRichiestaVariazioneTEP() {
+        //debugger;
+        var rotta = "/VariazioneTrasportoEffetti/ConfermaAnnullaRichiestaVariazioneTEP";
+        var idTEPartenza = parseInt('@idTEPartenza');
+        var testoAnnullaTE = $('#FullDescriptionVariazioneTEP').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTEPartenza: idTEPartenza, msg:testoAnnullaTE },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    VariazioneTEP();
+                    //GestioneRinunciaTEPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaVariazioneTEP();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaAttivaRichiestaVariazioneTEP() {
+        //debugger;
+        var rotta = "/VariazioneTrasportoEffetti/ConfermaAttivaRichiestaVariazioneTEP";
+        var idTEPartenza = parseInt('@idTEPartenza');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTEPartenza: idTEPartenza },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    VariazioneTEP();
+                    //GestioneRinunciaTEPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaVariazioneTEP();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    //aggiungere funzione che esegue TrasportoEffettiPartenza
+    function VariazioneTEP() {
+        //debugger;
+        var rotta = "/VariazioneTrasportoEffetti/VariazioneTEP";
+        var idTEPartenza = @idTEPartenza;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTEPartenza: idTEPartenza},
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divVariazioneTEP").empty();
+                $("#divVariazioneTEP").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function MessaggioAnnullaRichiestaVariazioneTEP() {
+        //debugger;
+        var rotta = "/VariazioneTrasportoEffetti/MessaggioAnnullaVariazioneTEP";
+        var idTEPartenza = parseInt('@idTEPartenza');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data:{idTEPartenza:idTEPartenza},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaVariazioneTEP").empty();
+                $("#viewAnnullaRichiestaVariazioneTEP").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaEliminaDocumentoVariazioneTE(idTipoDocumento) {
+        //debugger;
+        var rotta = "/VariazioneTrasportoEffetti/EliminaDocumentoVariazioneTEP";
+        var idDocumento = parseInt($("#hIdDocumentoTE").val());
+
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idDocumento: idDocumento }, //I dati, forniti sotto forma di oggetto FormData
+            dataType: 'json',
+            cache: false,
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "" && result.err != undefined) {
+                    ErroreElaborazioneAjax(result.err);
+                }
+                else {
+                    $("#ModalEliminaDocumentoVariazioneTE").modal("hide");
+
+                    //InfoElaborazioneAjax(result.msg);
+                    //GestionePulsantiNotificaAttivaAnnullaVariazioneTEP();
+                    //ElencoDocumentiVariazioniTEP(idTipoDocumento);
+                }
+            },
+            complete: function () {
+            },
+            error: function (error) {
+                //debugger;
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+
+    @*function GestioneRinunciaTEPartenza() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/GestioneRinunciaTEPartenza";
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divRinunciaTEPartenza").empty();
+                $("#divRinunciaTEPartenza").html(result);
+                Sblocca();
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }*@
+
+    //function AggiornaRinunciaTEPartenza(idATEPartenza) {
+    //    //debugger;
+    //    var rotta = "/TrasportoEffetti/AggiornaRinunciaTEPartenza";
+
+    //    $.ajax({
+    //        url: rotta,
+    //        type: "POST", //Le info testuali saranno passate in POST
+    //        data: { idATEPartenza: idATEPartenza},
+    //        dataType: 'json',
+    //        async: false,
+    //        beforeSend: function () {
+    //            //debugger;
+    //            VerificaAutenticazione();
+    //            Blocca();
+
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            if (result.errore === "") {
+    //                TrasportoEffettiPartenza();
+    //                GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+    //            } else {
+    //                ErroreElaborazioneAjax(result.msg);
+    //            }
+    //        },
+    //        complete: function () {
+    //            Sblocca();
+    //        },
+    //        error: function (error) {
+    //            //debugger;
+    //            Sblocca();
+    //            var msg = error.responseText;
+    //            ErroreElaborazioneAjax(msg);
+    //        }
+    //    });
+
+    //}
+
+</script>
+

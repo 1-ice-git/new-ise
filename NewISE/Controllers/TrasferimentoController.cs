@@ -2287,9 +2287,59 @@ namespace NewISE.Controllers
             {
                 return Json(new { err = ex.Message });
             }
+        }
+
+        public JsonResult VerificaSaldoTEPartenza(decimal idTrasferimento)
+        {
+            try
+            {
+                if (idTrasferimento.Equals(null))
+                {
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
+                }
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+                        if (trm != null && trm.HasValue())
+                        {
+                            if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                            {
+                                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                                {
+                                    TrasportoEffettiPartenzaModel TEPartenzamam = dtte.GetTEPartenzaModel(idTrasferimento, db);
+
+                                    if (TEPartenzamam.idTEPartenza>0)
+                                    {
+                                        return Json(new { idTEPartenza = TEPartenzamam.idTEPartenza.ToString() });
+                                    }
+                                    else
+                                    {
+                                        return Json(new { idTEPartenza = 0 });
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { idTEPartenza = 0 });
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { idTEPartenza = 0 });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
 
 
         }
+
 
         public JsonResult VerificaPassaporto(decimal idTrasferimento)
         {

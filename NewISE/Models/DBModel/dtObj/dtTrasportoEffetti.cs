@@ -118,7 +118,8 @@ namespace NewISE.Models.DBModel.dtObj
                 decimal nDoc = 0;
 
                 var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
-                var latep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).ToList();
+                var latep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false &&
+                                a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo).ToList();
 
                 if (latep?.Any() ?? false)
                 {
@@ -179,7 +180,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                     //elenco attivazioni valide
                     var latep = tep.ATTIVITATEPARTENZA
-                                .Where(a => a.ANNULLATO == false || (a.RICHIESTATRASPORTOEFFETTI && a.ATTIVAZIONETRASPORTOEFFETTI))
+                                .Where(a => (a.ANNULLATO == false || (a.RICHIESTATRASPORTOEFFETTI && a.ATTIVAZIONETRASPORTOEFFETTI)) &&
+                                    a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                                 .OrderByDescending(a => a.IDATEPARTENZA).ToList();
 
                     if (latep?.Any() ?? false)
@@ -246,7 +248,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
 
                     var latep = tep.ATTIVITATEPARTENZA
-                            .Where(a => a.ANNULLATO == false)
+                            .Where(a => a.ANNULLATO == false && a.IDANTICIPOSALDOTE==(decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                             .OrderByDescending(a => a.IDATEPARTENZA).ToList();
                     if (latep?.Any() ?? false)
                     {
@@ -348,8 +350,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                             EmailTrasferimento.EmailNotifica(EnumChiamante.Trasporto_Effetti,
                                                             atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                            Resources.msgEmail.OggettoNotificaTrasportoEffettiPartenza,
-                                                            Resources.msgEmail.MessaggioNotificaTrasportoEffettiPartenza,
+                                                            Resources.msgEmail.OggettoNotificaTrasportoEffettiPartenzaAnticipo,
+                                                            Resources.msgEmail.MessaggioNotificaTrasportoEffettiPartenzaAnticipo,
                                                             db);
 
 
@@ -482,7 +484,14 @@ namespace NewISE.Models.DBModel.dtObj
                 var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
                 var statoTrasferimento = tep.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
 
-                var latep = tep.ATTIVITATEPARTENZA.Where(a => (a.ATTIVAZIONETRASPORTOEFFETTI == true && a.RICHIESTATRASPORTOEFFETTI == true) || a.ANNULLATO == false).OrderBy(a => a.IDATEPARTENZA).ToList();
+                var latep = tep.ATTIVITATEPARTENZA.Where(a => 
+                    (
+                        (a.ATTIVAZIONETRASPORTOEFFETTI == true && 
+                            a.RICHIESTATRASPORTOEFFETTI == true) || 
+                        a.ANNULLATO == false
+                        ) &&
+                    a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo
+                    ).OrderBy(a => a.IDATEPARTENZA).ToList();
 
 
                 if (latep?.Any() ?? false)
@@ -547,7 +556,9 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var NumAttivazioni = 0;
                 NumAttivazioni = db.TEPARTENZA.Find(idTrasportoEffettiPartenza).ATTIVITATEPARTENZA
-                                    .Where(a => a.ANNULLATO == false && a.RICHIESTATRASPORTOEFFETTI == true)
+                                    .Where(a => a.ANNULLATO == false && 
+                                    a.RICHIESTATRASPORTOEFFETTI == true &&
+                                    a.IDANTICIPOSALDOTE==(decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                                     .OrderByDescending(a => a.IDATEPARTENZA).Count();
                 return NumAttivazioni;
             }
@@ -567,7 +578,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var latep =
                     tep.ATTIVITATEPARTENZA.Where(
-                        a => a.ANNULLATO == false && a.ATTIVAZIONETRASPORTOEFFETTI == false && a.RICHIESTATRASPORTOEFFETTI == false)
+                        a => a.ANNULLATO == false && a.ATTIVAZIONETRASPORTOEFFETTI == false && 
+                        a.RICHIESTATRASPORTOEFFETTI == false &&
+                        a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                         .OrderByDescending(a => a.IDTEPARTENZA).ToList();
                 if (latep?.Any() ?? false)
                 {
@@ -802,7 +815,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     #endregion
 
                                     EmailTrasferimento.EmailAnnulla(idTrasferimento,
-                                                                    Resources.msgEmail.OggettoAnnullaRichiestaTrasportoPartenza,
+                                                                    Resources.msgEmail.OggettoAnnullaRichiestaTrasportoPartenzaAnticipo,
                                                                     msg,
                                                                     db);
                                     //this.EmailAnnullaRichiestaTEPartenza(atep_New.IDATEPARTENZA, db);
@@ -936,8 +949,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
 
 
-                                var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenza;
-                                var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenza;
+                                var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenzaAnticipo;
+                                var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenzaAnticipo;
 
                                 EmailTrasferimento.EmailAttiva(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
                                                     oggettoAttiva,
@@ -1221,6 +1234,36 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public TrasportoEffettiPartenzaModel GetTEPartenzaModel(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+                TrasportoEffettiPartenzaModel TEPm = new TrasportoEffettiPartenzaModel();
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                var tep = t.TEPARTENZA;
+
+                if (tep.IDTEPARTENZA>0)
+                {
+                    TEPm = new TrasportoEffettiPartenzaModel()
+                    {
+                        idTEPartenza = tep.IDTEPARTENZA
+                    };
+
+                }
+                else
+                {
+                    throw new Exception(string.Format("nessun record Trasporto Effetti Partenza trovato."));
+                }
+
+                return TEPm;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
 }
