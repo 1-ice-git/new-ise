@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -635,6 +636,70 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
+        /// <summary>
+        /// Preleva i dipendenti che hanno avuto almeno un trasferimento.
+        /// </summary>
+        /// <returns></returns>
+        public IList<DipendentiModel> GetDipendentiAnyTrasf()
+        {
+            List<DipendentiModel> ldipm = new List<DipendentiModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var ldip =
+                        db.DIPENDENTI.Where(
+                            a =>
+                                a.ABILITATO == true && a.NOSISTEMA == false &&
+                                a.TRASFERIMENTO.Any(
+                                    b => b.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato))
+                            .OrderBy(a => a.COGNOME)
+                            .ThenBy(a => a.NOME)
+                            .ToList();
+
+
+                    ldipm = (from d in ldip
+                             select new DipendentiModel()
+                             {
+                                 idDipendente = d.IDDIPENDENTE,
+                                 matricola = d.MATRICOLA,
+                                 nome = d.NOME,
+                                 cognome = d.COGNOME,
+                                 dataAssunzione = d.DATAASSUNZIONE,
+                                 dataCessazione = d.DATACESSAZIONE,
+                                 indirizzo = d.INDIRIZZO,
+                                 cap = d.CAP,
+                                 citta = d.CITTA,
+                                 provincia = d.PROVINCIA,
+                                 email = d.EMAIL,
+                                 telefono = d.TELEFONO,
+                                 fax = d.FAX,
+                                 abilitato = d.ABILITATO,
+                                 dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                                 cdcGepe = new CDCGepeModel()
+                                 {
+                                     iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                                     codiceCDC = d.CDCGEPE.CODICECDC,
+                                     descCDC = d.CDCGEPE.DESCCDC,
+                                     dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                                 }
+
+                             }).ToList();
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return ldipm;
+
+        }
+
+
 
     }
 }

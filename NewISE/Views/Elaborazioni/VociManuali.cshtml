@@ -1,0 +1,119 @@
+﻿<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group-sm">
+            @Html.Label("lblMatricole", "Seleziona il nominativo", new { @class = "control-label col-xs-5" })
+            <div class="select2-container select2-container--classic">
+                <select id="ddlMatricole" name="idDipendente" class="form-control select2 select2-select js-data-example-ajax"></select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group-sm">
+            @Html.Label("lblVoci", "Seleziona la voce", new { @class = "control-label col-xs-5" })
+            <div class="select2-container select2-container--classic">
+                <select id="ddlVoci" name="voce" class="form-control select2 select2-select js-data-example-ajax"></select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group-sm">
+            @Html.Label("lblImporto", "Importo", new { @class = "control-label col-xs-5" })
+            <div style="width: 110px;">
+                <input type="text" id="txtImporto" name="Importo" value="0" class="form-control text-right" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <div class="form-group-sm">
+            @Html.Label("lblDa", "Da", new { @class = "control-label col-xs-1" })
+            <div>
+                <input type="text" id="txtDa" name="Importo" value="0" class="form-control text-right" />
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.Label("lblA", "A", new { @class = "control-label col-xs-1" })
+                <div>
+                    <input type="text" id="txtA" name="Importo" value="0" class="form-control text-right" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $('#txtImporto').autoNumeric('init',
+	{
+	    aSep: '.',
+	    aDec: ',',
+	    nSep: true
+	});
+
+
+    $("#ddlMatricole").select2({
+        placeholder: "Seleziona il nominativo",
+        allowClear: false,
+        language: "it",
+        width: '200',
+        ajax: {
+            delay: 250,
+            url: "/Elaborazioni/PrelevaMatricole",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
+    });
+
+    $("#ddlVoci").select2({
+        placeholder: "Seleziona la voce",
+        allowClear: false,
+        language: "it",
+        width: '200',
+        ajax: {
+            delay: 250,
+            url: "/Elaborazioni/PrelevaVoci",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
+    });
+</script>
