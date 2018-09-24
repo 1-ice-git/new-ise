@@ -158,7 +158,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 Voce = lm.Voci.codiceVoce,
                                 Inserimento = lm.tipoInserimento.ToString(),
                                 Importo = lm.Importo,
-                                Inviato = lm.Elaborato
+                                Inviato = lm.Elaborato,
+                                meseRiferimento = lm.meseRiferimento
+                                 
                             };
 
                             rpt.Add(rptds);
@@ -190,7 +192,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiIseMensile", rpt));
                 reportViewer.LocalReport.Refresh();
 
-                // Nel caso in cui le passo come Data
+                // Nel caso in cui passo il DatePicker
                 //ReportParameter[] parameterValues = new ReportParameter[]
                 //   {
                 //        new ReportParameter ("Dal",Convert.ToString(dtIni)),

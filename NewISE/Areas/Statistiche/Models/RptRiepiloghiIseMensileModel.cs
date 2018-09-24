@@ -35,8 +35,10 @@ namespace NewISE.Areas.Statistiche.Models
         [Display(Name = "Sist. /Rientro Lorda")]
         public string anticipo { get; set; }
 
+        public decimal meseRiferimento { get; set; }
 
         public decimal IdTeorici { get; set; }
+        public string codiceVoce { get; set; }
         public string DescrizioneVoce { get; set; }
         public string Voce { get; set; }
         public string Movimento { get; set; }

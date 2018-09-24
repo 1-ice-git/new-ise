@@ -9,22 +9,6 @@
                 <div class="panel-body">
 
                     <div class="col-xs-2 date">
-
-                        <div class="input-group input-append date">
-                            <input type="text" class="form-control" id="data1" />
-                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-2 date">
-
-                        <div class="input-group input-append date">
-                            <input type="text" class="form-control" id="data2" />
-                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                    </div>
-                    
-                    <div class="col-xs-2 date">
                         <div class="input-group input-append date">
                             @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati", @class = "form-control select2 select2-select js-data-example-ajax" })
                             
@@ -47,6 +31,22 @@
                             </button>
                         </div>
                     </div>
+
+                    @*<div class="col-xs-2 date">
+
+                        <div class="input-group input-append date">
+                            <input type="text" class="form-control" id="data1" />
+                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-2 date">
+
+                        <div class="input-group input-append date">
+                            <input type="text" class="form-control" id="data2" />
+                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </div>*@
 
 
                     @*<div class="col-md-3">

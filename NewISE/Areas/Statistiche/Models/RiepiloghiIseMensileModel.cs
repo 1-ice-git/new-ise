@@ -67,10 +67,10 @@ namespace NewISE.Areas.Statistiche.Models
 
         public string Ufficio { get; set; }
 
-       public decimal meseRiferimento { get; set; }
+        public decimal meseRiferimento { get; set; }
 
         public decimal annoRiferimento { get; set; }
-        
+
         public string MeseAnnoRiferimento
         {
             get
