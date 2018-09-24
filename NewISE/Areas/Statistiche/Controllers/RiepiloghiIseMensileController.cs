@@ -165,8 +165,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                         }
                     }
 
-                }
+                var annoMeseElab = db.MESEANNOELABORAZIONE.Find(dtIni);
+                decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
 
+                var annoMeseElab1 = db.MESEANNOELABORAZIONE.Find(dtFin);
+                decimal annoMese1 = Convert.ToDecimal(annoMeseElab1.ANNO.ToString() + annoMeseElab1.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
 
                 ReportViewer reportViewer = new ReportViewer();
 
@@ -197,14 +200,14 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 ReportParameter[] parameterValues = new ReportParameter[]
                    {
-                        new ReportParameter ("Dal",Convert.ToString(dtIni)),
-                        new ReportParameter ("Al",Convert.ToString(dtFin))
+                        new ReportParameter ("Dal",Convert.ToString(annoMese)),
+                        new ReportParameter ("Al",Convert.ToString(annoMese1))
                    };
 
                 reportViewer.LocalReport.SetParameters(parameterValues);
                 ViewBag.ReportViewer = reportViewer;
 
-
+                }
             }
             catch (Exception ex)
             {

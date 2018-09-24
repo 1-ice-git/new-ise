@@ -93,13 +93,42 @@
     });
 
     $("#mesiAnniElaborati").change(function () {
-        debugger;
+        //debugger;
 
         if (this.value != "") {
             var valore = this.value;
 
         }
 
+    });
+
+    $("#mesiAnniElaborati1").select2({
+        placeholder: "Seleziona il mese-anno",
+        allowClear: false,
+        language: "it",
+        width: '150',
+        ajax: {
+            delay: 250,
+            url: "/RiepiloghiIseMensile/PrelevaMesiAnniElab",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
     });
 
     $("#mesiAnniElaborati1").change(function () {
