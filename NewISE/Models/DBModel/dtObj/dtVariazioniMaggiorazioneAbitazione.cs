@@ -4946,13 +4946,13 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             #endregion
 
-                            #region annullo pagato condiviso associato
-                            pmab.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
-                            if (db.SaveChanges() <= 0)
-                            {
-                                throw new Exception("Errore durante l'annullamento Periodo MAB successivo alla fine trasferimento.");
-                            }
-                            #endregion
+                            //#region annullo pagato condiviso associato
+                            //pmab.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                            //if (db.SaveChanges() <= 0)
+                            //{
+                            //    throw new Exception("Errore durante l'annullamento Periodo MAB successivo alla fine trasferimento.");
+                            //}
+                            //#endregion
 
                             #region annullo pagato condiviso associati attivi
                             var lpcmab = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDMAB).ToList();
@@ -4980,8 +4980,40 @@ namespace NewISE.Models.DBModel.dtObj
                             #endregion
 
                             #region annullo documenti associati attivi
-                            // da fare appena MAB => DOMUNENTI
+                            // da fare appena MAB => DOCUMENTI
+                            var l_attmab = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA && a.ATTIVAZIONE).ToList();
+                            foreach (var attmab in l_attmab)
+                            {
+                                var ldoc = attmab.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                                foreach (var doc in ldoc)
+                                {
+                                    doc.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante l'annullamento documenti relativi a MAB successive alla fine trasferimento.");
+                                    }
+                                }
+                            }
                             #endregion
+
+                            #region elimino documenti in lavorazione o da attivare
+                            // da fare appena MAB => DOCUMENTI
+                            foreach (var attmab in l_attmab)
+                            {
+                                var ldoc = attmab.DOCUMENTI.Where(a => 
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione ||
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                                foreach (var doc in ldoc)
+                                {
+                                    db.DOCUMENTI.Remove(doc);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore durante la cancellazione di documenti non attivati relativi a MAB successive alla fine trasferimento.");
+                                    }
+                                }
+                            }
+                            #endregion
+
                         }
                         else
                         {

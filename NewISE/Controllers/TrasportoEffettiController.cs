@@ -64,7 +64,7 @@ namespace NewISE.Controllers
 
                         tepm.indennitaPrimaSistemazione = Math.Round(ci.IndennitaSistemazioneLorda, 2);
                         tepm.percKM = ci.PercentualeFKMPartenza;
-                        tepm.contributoLordo = Math.Round(ci.AnticipoContributoOmnicomprensivoPartenza, 2);
+                        tepm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivo, 2);
                         var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza(idTrasportoEffettiPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
                         tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
                         tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100, 2);
@@ -498,7 +498,7 @@ namespace NewISE.Controllers
                                 var dip = dtd.GetDipendenteByID(t.idDipendente);
                                 var uff = dtu.GetUffici(t.idUfficio);
 
-                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaTrasportoEffettiPartenza, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaTrasportoEffettiPartenzaAnticipo, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
                             }
                         }
                     }

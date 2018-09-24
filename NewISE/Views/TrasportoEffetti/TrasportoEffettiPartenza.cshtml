@@ -26,7 +26,8 @@
                         <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
                     </div>
                     <div class="col-xs-3" style="padding-top:5px">
-                        <input id="valIndennitaPrimaSistemazione" class="form-control " readonly style="text-align: right" />
+                        @*<input id="valIndennitaPrimaSistemazione" class="form-control " readonly style="text-align: right" />*@
+                        @Html.TextBoxFor(model => model.indennitaPrimaSistemazione, string.Format("{0:N2}", Model.indennitaPrimaSistemazione), new { @readonly = "readonly", @class = "form-control text-right" })
                     </div>
                 </div>
                 <div class="row">
@@ -34,7 +35,8 @@
                         <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
                     </div>
                     <div class="col-xs-3" style="padding-top:5px">
-                        <input id="valPercKM" class="form-control" style="text-align: right" readonly />
+                        @*<input id="valPercKM" class="form-control" style="text-align: right" readonly />*@
+                        @Html.TextBoxFor(model => model.percKM,  new { @readonly = "readonly", @class = "form-control text-right" })
                     </div>
 
                     <div class="col-xs-2 text-center" style="padding-top:10px">
@@ -49,13 +51,16 @@
                         <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
                     </div>
                     <div class="col-xs-3" style="padding-top:5px">
-                        <input id="valContributoLordo" class="form-control" style="text-align: right" readonly />
+                        @*<input id="valContributoLordo" class="form-control" style="text-align: right" readonly />*@
+                        @Html.TextBoxFor(model => model.contributoLordo, string.Format("{0:N2}", Model.contributoLordo), new { @readonly = "readonly", @class = "form-control text-right" })
                     </div>
                     <div class="col-xs-2" style="padding-top:5px">
-                        <input id="percContributoLordo" class="form-control" style="text-align: right" readonly />
+                        @*<input id="percContributoLordo" class="form-control" style="text-align: right" readonly />*@
+                        @Html.TextBoxFor(model => model.percAnticipo, new { @readonly = "readonly", @class = "form-control text-right" })
                     </div>
                     <div class="col-xs-3" style="padding-top:5px">
-                        <input id="valAnticipo" class="form-control" style="text-align: right" readonly />
+                        @*<input id="valAnticipo" class="form-control" style="text-align: right" readonly />*@
+                        @Html.TextBoxFor(model => model.anticipo, string.Format("{0:N2}", Model.anticipo), new { @readonly = "readonly", @class = "form-control text-right" })
                     </div>
                 </div>
                 <div class="row">
@@ -98,15 +103,15 @@
 
 <script type="text/javascript">
 
-    $('#valIndennitaPrimaSistemazione').autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        aSign: '€ ',
-        nSep: true
-    });
+   
+    //$('#indennitaPrimaSistemazione').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '€ '
+    //});
 
-    $('#valContributoLordo').autoNumeric('init',
+    @*$('#valContributoLordo').autoNumeric('init',
     {
         aSep: '.',
         aDec: ',',
@@ -145,11 +150,11 @@
     });
 
 
-    $('#valIndennitaPrimaSistemazione').autoNumeric('set', @Model.indennitaPrimaSistemazione);
+    //$('#indennitaPrimaSistemazione').autoNumerisc('set', @Model.indennitaPrimaSistemazione);
     $('#valContributoLordo').autoNumeric('set', @Model.contributoLordo);
     $('#valPercKM').autoNumeric('set', @Model.percKM);
     $('#percContributoLordo').autoNumeric('set', @Model.percAnticipo);
-    $('#valAnticipo').autoNumeric('set', @Model.anticipo);
+    $('#valAnticipo').autoNumeric('set', @Model.anticipo);*@
 
 
     function ElencoDocumentiTE(idTipoDocumento) {

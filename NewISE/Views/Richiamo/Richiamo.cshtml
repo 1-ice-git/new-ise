@@ -14,14 +14,27 @@
     string txtFKM = coef.Text.Trim() == "" ? "?" : coef.Text.Trim();
     string ValFkm = coef.Value == "" ? "0" : coef.Value;
 }
-@Html.ValidationSummary(false, "", new { @class = "text-danger" })
-@Html.Hidden("hiddenCoefficenteFasciaKM_Nuovo")
-@Html.Hidden("hiddenidDataRichiamo_Nuovo")
-@Html.Hidden("idGruppoFKmRichiamo")
 
-@Html.Hidden("hiddenErroreInserimento", errore.ToString().Trim())
+
+
 <div class="form-horizontal" id="DivRichiamoMain">
-    <br />
+    <div class="row">
+        <div class="col-xs-12" style="margin-left:30px;">
+            <h4><strong>RICHIAMO</strong></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <hr>
+        </div>
+    </div>
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.Hidden("hiddenCoefficenteFasciaKM_Nuovo")
+    @Html.Hidden("hiddenidDataRichiamo_Nuovo")
+    @Html.Hidden("idGruppoFKmRichiamo")
+
+    @Html.Hidden("hiddenErroreInserimento", errore.ToString().Trim())
+
     @Html.Hidden("hiddenCoefficenteFasciaKM")
     <div class="form-group">
         @Html.Label("lblDataPartenzaRichiamo", "Data Partenza", new { @class = "control-label col-xs-4" })

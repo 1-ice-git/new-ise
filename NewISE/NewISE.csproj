@@ -4922,6 +4922,7 @@
     <Compile Include="Controllers\IndennitaController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
     <Compile Include="Controllers\RiepilogoVociController.cs" />
+    <Compile Include="Controllers\VariazioneTrasportoEffettiController.cs" />
     <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioneAbitazioneController.cs" />
@@ -5304,6 +5305,7 @@
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepiloghiIseMensile.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepilogoVoci.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtVariazioneTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneAbitazione.cs" />
@@ -5822,6 +5824,7 @@
     <Compile Include="Models\ViewModel\LiquidazioneMensileViewModel.cs" />
     <Compile Include="Models\ViewModel\LiquidazioniDiretteViewModel.cs" />
     <Compile Include="Models\ViewModel\CanoneMABViewModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneTEPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfFigliModel.cs" />
@@ -6325,6 +6328,12 @@
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\TabFormulariMABInseriti.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoFormularioMAB_TipoDoc.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioneAbitazione\NuovoFormularioMAB_Doc.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\VariazioneTE.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\VariazioneTEP.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\ElencoDocumentiVariazioneTEP.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\TabDocumentiVariazioneTEPInseriti.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\NuovoDocumentoVariazioneTEP.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\MessaggioAnnullaVariazioneTEP.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
