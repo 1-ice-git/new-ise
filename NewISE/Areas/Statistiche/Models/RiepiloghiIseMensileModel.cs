@@ -37,7 +37,6 @@ namespace NewISE.Areas.Statistiche.Models
         [Display(Name = "Sist. /Rientro Lorda")]
         public string anticipo { get; set; }
 
-
         [Key]
         public decimal idTeorici { get; set; }
         [Required(ErrorMessage = "Il campo è richiesto.")]
@@ -65,5 +64,19 @@ namespace NewISE.Areas.Statistiche.Models
 
         [Display(Name = "Movimentazione")]
         public EnumTipoInserimento tipoInserimento { get; set; }
+
+        public string Ufficio { get; set; }
+
+        public decimal meseRiferimento { get; set; }
+
+        public decimal annoRiferimento { get; set; }
+
+        public string MeseAnnoRiferimento
+        {
+            get
+            {
+                return meseRiferimento.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + annoRiferimento;
+            }
+        }
     }
 }

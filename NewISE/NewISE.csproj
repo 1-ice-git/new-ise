@@ -4597,7 +4597,7 @@
     <Content Include="Areas\Statistiche\Views\Riepiloghi\IseMensile.cshtml" />
     <Content Include="Areas\Statistiche\Views\Riepiloghi\MaggAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\Riepiloghi\AltreIndennita.cshtml" />
-    <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\Index_old.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiMaggAbitazione\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiAltreIndennita\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\Riepiloghi\AltreSpese.cshtml" />
@@ -4673,6 +4673,8 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiIseMensile.xss">
       <DependentUpon>DataSetRiepiloghiIseMensile.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\SelezionaMeseAnno.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\Index.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>

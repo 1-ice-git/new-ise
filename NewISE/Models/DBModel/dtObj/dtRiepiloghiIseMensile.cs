@@ -29,12 +29,23 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-        public IList<RiepiloghiIseMensileModel> GetRiepiloghiIseMensile(string dtIni, string dtFin, ModelDBISE db)
+        public IList<RiepiloghiIseMensileModel> GetRiepiloghiIseMensile(decimal dtIni, decimal dtFin, ModelDBISE db)
         {   
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
-            
-            DateTime dataDal = Convert.ToDateTime(dtIni);
-            DateTime dataAl = Convert.ToDateTime(dtFin);
+           
+
+            // Sistema configurato con il DatePicker
+            //DateTime dataDal = Convert.ToDateTime(dtIni);
+            //DateTime dataAl = Convert.ToDateTime(dtFin);
+
+
+            //var lTeorici =
+            //       db.TEORICI.Where(
+            //           a =>
+            //               a.ANNULLATO == false &&
+            //               a.ELABORATO == true &&
+            //               a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.AL == dataDal && b.DAL == dataAl ) &&
+            //               a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera).ToList();
 
 
             var lTeorici =
@@ -42,51 +53,103 @@ namespace NewISE.Models.DBModel.dtObj
                        a =>
                            a.ANNULLATO == false &&
                            a.ELABORATO == true &&
-                           a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.AL == dataDal && b.DAL == dataAl ) &&
+                           a.IDMESEANNOELAB >= dtIni && 
+                           a.IDMESEANNOELAB <= dtFin &&
+                           a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera).ToList();
-            
 
-            foreach (var t in lTeorici)
+            //var x = db.TEORICI.Where(a=>a.ANNULLATO == false && a.ELABORATO == true && a.MESEANNOELABORAZIONE.ANNO)
+
+            if (lTeorici?.Any() ?? false)
             {
-                string tipoOperazione = string.Empty;
-
-                
-                var dip = t.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
-
-                var ldvm = new RiepiloghiIseMensileModel()
+                foreach (var t in lTeorici)
                 {
-                    idTeorici = t.IDTEORICI,
-                    Nominativo = dip.COGNOME + " " + dip.NOME + " (" + dip.MATRICOLA + ")",
-                    idVoci = t.IDVOCI,
-                    Voci = new VociModel()
+                    //var ei =
+                    //    t.ELABINDENNITA.Last(
+                    //        a =>
+                    //            a.ANNULLATO == false &&
+                    //            a.PROGRESSIVO ==
+                    //            t.ELABMAB.Where(b => b.ANNULLATO == false).Max(b => b.PROGRESSIVO));
+
+                    
+                    //var tr = ei.INDENNITA.TRASFERIMENTO;
+                    //var dip = tr.DIPENDENTI;
+                    var tm = t.TIPOMOVIMENTO;
+                    var voce = t.VOCI;
+                    var tl = t.VOCI.TIPOLIQUIDAZIONE;
+                    var tv = t.VOCI.TIPOVOCE;
+                    //var uf = tr.UFFICI;
+
+                    RiepiloghiIseMensileModel ldvm = new RiepiloghiIseMensileModel()
                     {
-                        idVoci = t.VOCI.IDVOCI,
-                        idTipoLiquidazione = t.VOCI.IDTIPOLIQUIDAZIONE,
-                        idTipoVoce = t.VOCI.IDTIPOVOCE,
-                        codiceVoce = t.VOCI.CODICEVOCE,
-                        descrizione =
-                            t.VOCI.DESCRIZIONE + " (" + t.ELABINDSISTEMAZIONE.PERCANTSALDOUNISOL.ToString() + "% - " + tipoOperazione + ")",
-                        flagDiretto = t.DIRETTO,
-                        TipoLiquidazione = new TipoLiquidazioneModel()
+                        idTeorici = t.IDTEORICI,
+                        //Nominativo = dip.COGNOME + " " + dip.NOME + " (" + dip.MATRICOLA + ")",
+                        //Ufficio = uf.DESCRIZIONEUFFICIO + " (" + uf.CODICEUFFICIO + ")",
+                        TipoMovimento = new TipoMovimentoModel()
                         {
-                            idTipoLiquidazione = t.VOCI.IDTIPOLIQUIDAZIONE,
-                            descrizione = t.VOCI.TIPOLIQUIDAZIONE.DESCRIZIONE,
+                            idTipoMovimento = tm.IDTIPOMOVIMENTO,
+                            TipoMovimento = tm.TIPOMOVIMENTO1,
+                            DescMovimento = tm.DESCMOVIMENTO
                         },
-                        TipoVoce = new TipoVoceModel()
+                        Voci = new VociModel()
                         {
-                            idTipoVoce = t.VOCI.IDTIPOVOCE,
-                            descrizione = t.VOCI.TIPOVOCE.DESCRIZIONE
-                        }
-                    },
-                    Data = t.DATAOPERAZIONE,
-                    Importo = t.IMPORTO,
-                    Elaborato = t.ELABORATO
-                };
+                            idVoci = voce.IDVOCI,
+                            codiceVoce = voce.CODICEVOCE,
+                            descrizione = voce.DESCRIZIONE,
+                            TipoLiquidazione = new TipoLiquidazioneModel()
+                            {
+                                idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                descrizione = tl.DESCRIZIONE
+                            },
+                            TipoVoce = new TipoVoceModel()
+                            {
+                                idTipoVoce = tv.IDTIPOVOCE,
+                                descrizione = tv.DESCRIZIONE
+                            }
+                        },
+                        meseRiferimento = t.MESERIFERIMENTO,
+                        annoRiferimento = t.ANNORIFERIMENTO,                        
+                        Importo = t.IMPORTO,
+                        Elaborato = t.ELABORATO
+                    };
 
-                rim.Add(ldvm);
+                        //string tipoOperazione = string.Empty;
+
+                        //var dip = t.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI;
+
+                        //var ldvm = new RiepiloghiIseMensileModel()
+                        //{
+                        ////    idTeorici = t.IDTEORICI,
+                        ////    Nominativo = dip.COGNOME + " " + dip.NOME + " (" + dip.MATRICOLA + ")",
+                        ////    idVoci = t.IDVOCI,
+                        ////    Voci = new VociModel()
+                        ////    {
+                        ////        idVoci = t.VOCI.IDVOCI,
+                        ////        idTipoLiquidazione = t.VOCI.IDTIPOLIQUIDAZIONE,
+                        ////        idTipoVoce = t.VOCI.IDTIPOVOCE,
+                        ////        codiceVoce = t.VOCI.CODICEVOCE,
+                        ////        descrizione =
+                        ////            t.VOCI.DESCRIZIONE + " (" + t.ELABINDSISTEMAZIONE.PERCANTSALDOUNISOL.ToString() + "% - " + tipoOperazione + ")",
+                        ////        flagDiretto = t.DIRETTO,
+                        ////        TipoLiquidazione = new TipoLiquidazioneModel()
+                        ////        {
+                        ////            idTipoLiquidazione = t.VOCI.IDTIPOLIQUIDAZIONE,
+                        ////            descrizione = t.VOCI.TIPOLIQUIDAZIONE.DESCRIZIONE,
+                        ////        },
+                        ////        TipoVoce = new TipoVoceModel()
+                        ////        {
+                        ////            idTipoVoce = t.VOCI.IDTIPOVOCE,
+                        ////            descrizione = t.VOCI.TIPOVOCE.DESCRIZIONE
+                        ////        }
+                        ////    },
+                        ////    Data = t.DATAOPERAZIONE,
+                        ////    Importo = t.IMPORTO,
+                        ////    Elaborato = t.ELABORATO
+                        //};
+
+                    rim.Add(ldvm);
+                }
             }
-
-
 
             return rim;
             
