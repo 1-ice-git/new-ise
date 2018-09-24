@@ -4675,6 +4675,7 @@
     </Content>
     <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\SelezionaMeseAnno.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiMaggAbitazione\SelezionaMeseAnno.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -5306,6 +5307,7 @@
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepiloghiIseMensile.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtRiepiloghiMaggAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepilogoVoci.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioneTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />

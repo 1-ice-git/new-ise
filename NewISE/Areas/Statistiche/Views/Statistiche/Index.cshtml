@@ -81,7 +81,7 @@
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Livello</a>
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Ufficio</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpIndSedeEstera();">Riepilogo delle operazioni effettuate - Indennità di sede estera</a>
-                        <a href="#" class="list-group-item" onclick="">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazione()">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
                         <a href="#" class="list-group-item" onclick="">Sospensioni</a>
                         <a href="#" class="list-group-item" onclick="">Storia del Dipendente</a>
                         
@@ -858,5 +858,42 @@
                     }
                 });
             }
+
+            // Operazioni Effettuate - Maggiorazione Abitazione (Nuovo ISE)
+            function callpartialOpMaggAbitazione() {
+                debugger;
+
+                rotta = "/Statistiche/RiepiloghiMaggAbitazione/Index";
+
+                var data1 = $("#data1").datepicker().val()
+                var data2 = $("#data2").datepicker().val()
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        V_DATA1: data1,
+                        V_DATA2: data2
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#divPartialView").empty();
+                        $("#divPartialView").html(result);
+                    },
+                    complete: function () {
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            }
+
 
         </script>
