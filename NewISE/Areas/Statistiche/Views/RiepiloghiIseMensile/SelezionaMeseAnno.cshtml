@@ -1,4 +1,4 @@
-﻿<div id="dialog" title="Riepilogo delle Operazioni Effettuate - Indennità di Sede Estera"></div>
+﻿<div id="dialog"></div>
 
 
 <div class="row">
@@ -8,21 +8,21 @@
                 <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Indennità di Sede Estera</b></div>
                 <div class="panel-body">
 
-                    <div class="col-xs-2 date">
+                    <div class="col-xs-4 date">
                         <div class="input-group input-append date">
                             @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati", @class = "form-control select2 select2-select js-data-example-ajax" })
                             
                         </div>
                     </div>
 
-                    <div class="col-xs-2 date">
+                    <div class="col-xs-4 date">
                         <div class="input-group input-append date">
                             @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati1", @class = "form-control select2 select2-select js-data-example-ajax" })
 
                         </div>
                     </div>
 
-                    <div class="col-xs-2 date">
+                    <div class="col-xs-4 date">
                         <div class="input-group input-append date">
                             <button class="btn btn-small btn-default" id="opener">
                                 <i aria-hidden="true" class="fa fa-2x fa-print"></i>

@@ -2,6 +2,7 @@
 using NewISE.Areas.Statistiche.Models;
 using NewISE.Areas.Statistiche.Models.dtObj;
 using NewISE.Areas.Statistiche.RPTDataSet;
+using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
@@ -24,10 +25,8 @@ namespace NewISE.Areas.Statistiche.Controllers
         // GET: Statistiche/RiepiloghiMaggAbitazione
         public ActionResult Index()
         {
-            return View();
+            return PartialView();
         }
-
-
         public JsonResult PrelevaMesiAnniElab(string search)
         {
             List<Select2Model> ls2 = new List<Select2Model>();
@@ -129,5 +128,88 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView();
         }
+        public ActionResult RptRiepiloghiMaggAbitazione(decimal dtIni, decimal dtFin)
+        {
+            List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
+            List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
+
+            try
+            {
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    //using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
+                    //{
+                    //    rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
+                    //}
+
+                    //if (rim?.Any() ?? false)
+                    //{
+                    //    foreach (var lm in rim)
+                    //    {
+                    //        RptRiepiloghiIseMensileModel rptds = new RptRiepiloghiIseMensileModel()
+                    //        {
+                    //            IdTeorici = lm.idTeorici,
+                    //            DescrizioneVoce = lm.Voci.descrizione,
+                    //            Nominativo = lm.Nominativo,
+                    //            Movimento = lm.TipoMovimento.DescMovimento,
+                    //            Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
+                    //            Voce = lm.Voci.codiceVoce,
+                    //            Inserimento = lm.tipoInserimento.ToString(),
+                    //            Importo = lm.Importo,
+                    //            Inviato = lm.Elaborato,
+                    //            meseRiferimento = lm.meseRiferimento
+
+                    //        };
+
+                    //        rpt.Add(rptds);
+                    //    }
+                    //}
+
+                    var annoMeseElab = db.MESEANNOELABORAZIONE.Find(dtIni);
+                    decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+
+                    var annoMeseElab1 = db.MESEANNOELABORAZIONE.Find(dtFin);
+                    decimal annoMese1 = Convert.ToDecimal(annoMeseElab1.ANNO.ToString() + annoMeseElab1.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    var datasource = new ReportDataSource("DataSetRiepiloghiMaggAbitazione");
+
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptRiepiloghiMaggAbitazione.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+
+                    reportViewer.LocalReport.DataSources.Add(datasource);
+                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiMaggAbitazione", rpt));
+                    reportViewer.LocalReport.Refresh();
+                    
+
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                       {
+                        new ReportParameter ("Dal",Convert.ToString(annoMese)),
+                        new ReportParameter ("Al",Convert.ToString(annoMese1))
+                       };
+
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView("RptRiepiloghiMaggAbitazione");
+        }
+
     }
 }
