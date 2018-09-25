@@ -31,6 +31,5 @@ namespace NewISE.Models.DBModel
         public string ev_dataInizio { get; set; }
         public string ev_dataFine { get; set; }
         public string ev_Tipologia { get; set; }
-
     }
 }

@@ -249,7 +249,7 @@ namespace NewISE.Controllers
                                             Nominativo = e.cognome + " " + e.nome,
                                             CodiceFiscale = e.codiceFiscale,
                                             dataInizio = e.dataInizio,
-                                            dataFine = e.dataFine,
+                                            dataFine =  e.dataFine,
                                             parentela = EnumParentela.Coniuge,
                                             idAltriDati = dtvmf.GetAltriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
                                             Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge, idMaggiorazioniFamiliari),
@@ -302,7 +302,7 @@ namespace NewISE.Controllers
                                             parentela = EnumParentela.Figlio,
                                             idAltriDati = dtvmf.GetAltriDatiFamiliariFiglio(e.idFigli, idMaggiorazioniFamiliari).idAltriDatiFam,
                                             Documenti = dtvmf.GetDocumentiByIdTable_MF(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio, idMaggiorazioniFamiliari),
-                                            HasPensione = dtp.HasPensione(e.idFigli),
+                                            HasPensione = false,// dtp.HasPensione(e.idFigli),
                                             eliminabile = e.eliminabile,
                                             idStatoRecord = e.idStatoRecord,
                                             modificabile = e.modificabile,
@@ -1150,7 +1150,6 @@ namespace NewISE.Controllers
                 {
                     decimal idMaggiorazioniFamiliari = dtc.GetConiugebyID(idConiuge).idMaggiorazioniFamiliari;
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-
                     using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
                     {
                         bool rinunciaMagFam = false;
@@ -1195,10 +1194,12 @@ namespace NewISE.Controllers
                         #region controllo modifica pensioni
                         using (ModelDBISE db = new ModelDBISE())
                         {
+                            var t = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari).TRASFERIMENTO;
                             var lp_in_lav = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(a =>
-                                 a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
-                                 a.NASCONDI == false)
-                                     .OrderByDescending(a => a.IDPENSIONE).ToList();
+                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
+                                                a.NASCONDI == false &&
+                                                ((a.DATAINIZIO<=t.DATARIENTRO && a.DATAFINE>=t.DATARIENTRO) || a.DATAFINE<=t.DATARIENTRO))
+                                            .OrderByDescending(a => a.IDPENSIONE).ToList();
                             bool pensioniModificate = false;
                             if (lp_in_lav.Count() > 0)
                             {

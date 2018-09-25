@@ -2787,9 +2787,13 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 c = db.CONIUGE.Find(idConiuge);
+                var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                lp = c.PENSIONE.Where(x => x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                            x.NASCONDI == false).OrderByDescending(a => a.IDPENSIONE).ToList();
+                lp = c.PENSIONE.Where(x => 
+                                x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                x.NASCONDI == false &&
+                                ((x.DATAINIZIO<=t.DATARIENTRO && x.DATAFINE>=t.DATARIENTRO) || x.DATAFINE<t.DATARIENTRO)
+                                ).OrderByDescending(a => a.IDPENSIONE).ToList();
 
                 if (lp?.Any() ?? false)
                 {
@@ -2801,7 +2805,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idPensioneConiuge = p.IDPENSIONE,
                             importoPensione = p.IMPORTOPENSIONE,
                             dataInizioValidita = p.DATAINIZIO,
-                            dataFineValidita = p.DATAFINE,
+                            dataFineValidita = p.DATAFINE>t.DATARIENTRO ? t.DATARIENTRO : p.DATAFINE,
                             idStatoRecord = p.IDSTATORECORD,
                             dataAggiornamento = p.DATAAGGIORNAMENTO,
                             FK_idPensione = p.FK_IDPENSIONE,
@@ -2825,8 +2829,13 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 c = db.CONIUGE.Find(idConiuge);
+                var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                lp = c.PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                lp = c.PENSIONE
+                        .Where(x => 
+                                x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                ((x.DATAINIZIO <= t.DATARIENTRO && x.DATAFINE >= t.DATARIENTRO) || x.DATAFINE < t.DATARIENTRO))
+                        .ToList();
 
                 if (lp?.Any() ?? false)
                 {
@@ -2838,7 +2847,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idPensioneConiuge = p.IDPENSIONE,
                             importoPensione = p.IMPORTOPENSIONE,
                             dataInizioValidita = p.DATAINIZIO,
-                            dataFineValidita = p.DATAFINE,
+                            dataFineValidita = p.DATAFINE>t.DATARIENTRO?t.DATARIENTRO:p.DATAFINE,
                             idStatoRecord = p.IDSTATORECORD,
                             dataAggiornamento = p.DATAAGGIORNAMENTO,
                             FK_idPensione = p.FK_IDPENSIONE,

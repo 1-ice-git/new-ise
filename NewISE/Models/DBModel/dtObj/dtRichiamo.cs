@@ -19,56 +19,44 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public decimal Restituisci_ID_CoeffIndRichiamo_Da_Data(RichiamoModel ri)
+        public decimal Restituisci_ID_CoeffIndRichiamo_Da_Data(RichiamoModel ri, ModelDBISE db)
         {
             decimal tmp = 0;
-            using (ModelDBISE db = new ModelDBISE())
+            var lCIR = db.COEFFICIENTEINDRICHIAMO.ToList().Where(a => a.ANNULLATO == false && ri.DataRichiamo >= a.DATAINIZIOVALIDITA && ri.DataRichiamo <= a.DATAFINEVALIDITA).ToList();
+            if (lCIR?.Any() ?? false)
             {
-                var lCIR = db.COEFFICIENTEINDRICHIAMO.ToList().Where(a => a.ANNULLATO == false && ri.DataRichiamo >= a.DATAINIZIOVALIDITA && ri.DataRichiamo <= a.DATAFINEVALIDITA).ToList();
-                if (lCIR?.Any() ?? false)
-                {
-                    tmp = lCIR.First().IDCOEFINDRICHIAMO;
-                }
+                tmp = lCIR.First().IDCOEFINDRICHIAMO;
             }
             return tmp;
         }
-        public decimal Restituisci_ID_PercentualeFKM_Da_Data(RichiamoModel ri)
+        public decimal Restituisci_ID_PercentualeFKM_Da_Data(RichiamoModel ri, ModelDBISE db)
         {
             decimal tmp = 0;
-            using (ModelDBISE db = new ModelDBISE())
+            var lCIR = db.PERCENTUALEFKM.Where(x => x.IDFKM == ri.CoeffKm && x.ANNULLATO == false).ToList().Where(a => ri.DataRichiamo >= a.DATAINIZIOVALIDITA &&
+                ri.DataRichiamo <= a.DATAFINEVALIDITA).ToList();
+            if (lCIR?.Any() ?? false)
             {
-                var lCIR = db.PERCENTUALEFKM.Where(x => x.IDFKM == ri.CoeffKm && x.ANNULLATO == false).ToList().Where(a => ri.DataRichiamo >= a.DATAINIZIOVALIDITA &&
-                    ri.DataRichiamo <= a.DATAFINEVALIDITA).ToList();
-                if (lCIR?.Any() ?? false)
-                {
-                    tmp = lCIR.First().IDPFKM;
-                }
+                tmp = lCIR.First().IDPFKM;
             }
             return tmp;
         }
-        public DateTime Restituisci_DataPartenza(decimal idTrasferimento)
+        public DateTime Restituisci_DataPartenza(decimal idTrasferimento, ModelDBISE db)
         {
             DateTime tmp = new DateTime();
-            using (ModelDBISE db = new ModelDBISE())
+            var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
+            if (CIR != null) //CIR.IDTRASFERIMENTO
             {
-                var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
-                if (CIR != null) //CIR.IDTRASFERIMENTO
-                {
-                    tmp = CIR.DATAPARTENZA;
-                }
+                tmp = CIR.DATAPARTENZA;
             }
             return tmp;
         }
-        public DateTime Restituisci_DataRientro(decimal idTrasferimento)
+        public DateTime Restituisci_DataRientro(decimal idTrasferimento, ModelDBISE db)
         {
             DateTime tmp = new DateTime();
-            using (ModelDBISE db = new ModelDBISE())
+            var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
+            if (CIR != null) //CIR.IDTRASFERIMENTO
             {
-                var CIR = db.TRASFERIMENTO.Find(idTrasferimento);
-                if (CIR != null) //CIR.IDTRASFERIMENTO
-                {
-                    tmp = CIR.DATARIENTRO;
-                }
+                tmp = CIR.DATARIENTRO;
             }
             return tmp;
         }
@@ -178,107 +166,94 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
-        public decimal SetRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, DateTime DataRientro)
+        public decimal SetRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, DateTime DataRientro, ModelDBISE db)
         {
 
             decimal tmp = 0;
             if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0)
                 return 0;
 
-            using (ModelDBISE db = new ModelDBISE())
+            try
             {
-                try
+                RICHIAMO ri = new RICHIAMO()
                 {
-                    db.Database.BeginTransaction();
-                    RICHIAMO ri = new RICHIAMO()
-                    {
-                        IDTRASFERIMENTO = ric.idTrasferimento,
-                        DATARICHIAMO = ric.DataRichiamo,
-                        DATAAGGIORNAMENTO = DateTime.Now,
-                        ANNULLATO = ric.annullato
-                    };
-                    db.RICHIAMO.Add(ri);
-                    int i = db.SaveChanges();
-                    tmp = ri.IDRICHIAMO;
-                    var t = db.TRASFERIMENTO.Find(ric.idTrasferimento);
-                    t.DATARIENTRO = DataRientro;// ric.DataRichiamo.AddDays(-1);
-                    t.DATAAGGIORNAMENTO = DateTime.Now;
-                    db.SaveChanges();
-                    //DataRientro = ;// ric.DataRichiamo.AddDays(-1);
-                    using (dtRichiamo dtr = new dtRichiamo())
-                    {
-                        dtr.Associa_Richiamo_CoeffIndRichiamo(ri.IDRICHIAMO, idCoeffIndRichiamo, db);
-                        dtr.Associa_Richiamo_PercentualeFKM(ri.IDRICHIAMO, idPercentualeFKM, db);
-                    }
-                    if (i > 0)
-                    {
-                        ric.idTrasferimento = ri.IDTRASFERIMENTO;
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo richiamo.", "Richiamo", db, ric.idTrasferimento, ri.IDTRASFERIMENTO);
-                    }
-                    db.Database.CurrentTransaction.Commit();
-                }
-                catch (Exception eexx)
+                    IDTRASFERIMENTO = ric.idTrasferimento,
+                    DATARICHIAMO = ric.DataRichiamo,
+                    DATAAGGIORNAMENTO = DateTime.Now,
+                    ANNULLATO = ric.annullato
+                };
+                db.RICHIAMO.Add(ri);
+                int i = db.SaveChanges();
+                tmp = ri.IDRICHIAMO;
+                var t = db.TRASFERIMENTO.Find(ric.idTrasferimento);
+                t.DATARIENTRO = DataRientro;// ric.DataRichiamo.AddDays(-1);
+                t.DATAAGGIORNAMENTO = DateTime.Now;
+                db.SaveChanges();
+                //DataRientro = ;// ric.DataRichiamo.AddDays(-1);
+                using (dtRichiamo dtr = new dtRichiamo())
                 {
-                    db.Database.CurrentTransaction.Rollback();
-                    tmp = 0;
+                    dtr.Associa_Richiamo_CoeffIndRichiamo(ri.IDRICHIAMO, idCoeffIndRichiamo, db);
+                    dtr.Associa_Richiamo_PercentualeFKM(ri.IDRICHIAMO, idPercentualeFKM, db);
                 }
+                if (i > 0)
+                {
+                    ric.idTrasferimento = ri.IDTRASFERIMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo richiamo.", "Richiamo", db, ric.idTrasferimento, ri.IDTRASFERIMENTO);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             return tmp;
         }
-        public decimal EditRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, DateTime DataRientro, decimal idRichiamo)
+        public decimal EditRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, DateTime DataRientro, decimal idRichiamo, ModelDBISE db)
         {
 
             decimal tmp = 0;
             if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0)
                 return 0;
 
-            using (ModelDBISE db = new ModelDBISE())
+            try
             {
-                try
+                var rich = db.RICHIAMO.Find(idRichiamo);
+                rich.ANNULLATO = true;
+                rich.DATAAGGIORNAMENTO = DateTime.Now;
+                db.SaveChanges();
+
+                RICHIAMO riNew = new RICHIAMO()
                 {
-                    db.Database.BeginTransaction();
+                    IDTRASFERIMENTO = ric.idTrasferimento,
+                    DATARICHIAMO = ric.DataRichiamo,
+                    DATAAGGIORNAMENTO = DateTime.Now,
+                    ANNULLATO = false
+                };
+                db.RICHIAMO.Add(riNew);
 
-                    var rich = db.RICHIAMO.Find(idRichiamo);
-                    rich.ANNULLATO = true;
-                    rich.DATAAGGIORNAMENTO = DateTime.Now;
-                    db.SaveChanges();
+                int i = db.SaveChanges();
+                tmp = riNew.IDRICHIAMO;
 
-                    RICHIAMO riNew = new RICHIAMO()
-                    {
-                        IDTRASFERIMENTO = ric.idTrasferimento,
-                        DATARICHIAMO = ric.DataRichiamo,
-                        DATAAGGIORNAMENTO = DateTime.Now,
-                        ANNULLATO = false
-                    };
-                    db.RICHIAMO.Add(riNew);
-
-                    int i = db.SaveChanges();
-                    tmp = riNew.IDRICHIAMO;
-
-                    var t = db.TRASFERIMENTO.Find(ric.idTrasferimento);
-                    t.DATARIENTRO = DataRientro;// ric.DataRichiamo.AddDays(-1);
-                    t.DATAAGGIORNAMENTO = DateTime.Now;
-                    db.SaveChanges();
-                    //DataRientro = ric.DataRichiamo.AddDays(-1);
-                    using (dtRichiamo dtr = new dtRichiamo())
-                    {
-                        RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(idRichiamo, db);
-                        RimuoviAsscoiazioni_Richiamo_PercentualeFKM(idRichiamo, db);
-
-                        dtr.Associa_Richiamo_CoeffIndRichiamo(tmp, idCoeffIndRichiamo, db);
-                        dtr.Associa_Richiamo_PercentualeFKM(tmp, idPercentualeFKM, db);
-                    }
-                    if (i > 0)
-                    {
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica richiamo.", "Richiamo", db, rich.IDTRASFERIMENTO, rich.IDTRASFERIMENTO);
-                    }
-                    db.Database.CurrentTransaction.Commit();
-                }
-                catch (Exception eexx)
+                var t = db.TRASFERIMENTO.Find(ric.idTrasferimento);
+                t.DATARIENTRO = DataRientro;// ric.DataRichiamo.AddDays(-1);
+                t.DATAAGGIORNAMENTO = DateTime.Now;
+                db.SaveChanges();
+                //DataRientro = ric.DataRichiamo.AddDays(-1);
+                using (dtRichiamo dtr = new dtRichiamo())
                 {
-                    db.Database.CurrentTransaction.Rollback();
-                    tmp = 0;
+                    RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(idRichiamo, db);
+                    RimuoviAsscoiazioni_Richiamo_PercentualeFKM(idRichiamo, db);
+
+                    dtr.Associa_Richiamo_CoeffIndRichiamo(tmp, idCoeffIndRichiamo, db);
+                    dtr.Associa_Richiamo_PercentualeFKM(tmp, idPercentualeFKM, db);
                 }
+                if (i > 0)
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica richiamo.", "Richiamo", db, rich.IDTRASFERIMENTO, rich.IDTRASFERIMENTO);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             return tmp;
         }
@@ -355,79 +330,75 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
-        public IList<TrasferimentoModel> GetListaTrasferimentoPerRichiamo(decimal matricola)
+        public IList<TrasferimentoModel> GetListaTrasferimentoPerRichiamo(decimal matricola, ModelDBISE db)
         {
             List<TrasferimentoModel> ltm = new List<TrasferimentoModel>();
             try
             {
-                using (ModelDBISE db = new ModelDBISE())
+                var d = db.DIPENDENTI.First(a => a.MATRICOLA == matricola);
+
+                if (d?.IDDIPENDENTE > 0)
                 {
-                    var d = db.DIPENDENTI.First(a => a.MATRICOLA == matricola);
+                    var lt = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO);
 
-                    if (d?.IDDIPENDENTE > 0)
+                    if (lt?.Any() ?? false)
                     {
-                        var lt = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO);
-
-                        if (lt?.Any() ?? false)
-                        {
-                            ltm = (from t in lt
-                                   select new TrasferimentoModel()
-                                   {
-                                       idTrasferimento = t.IDTRASFERIMENTO,
-                                       idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
-                                       idUfficio = t.IDUFFICIO,
-                                       idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
-                                       idDipendente = t.IDDIPENDENTE,
-                                       idTipoCoan = t.IDTIPOCOAN,
-                                       dataPartenza = t.DATAPARTENZA,
-                                       dataRientro = t.DATARIENTRO,
-                                       coan = t.COAN,
-                                       protocolloLettera = t.PROTOCOLLOLETTERA,
-                                       dataLettera = t.DATALETTERA,
-                                       notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
-                                       dataAggiornamento = t.DATAAGGIORNAMENTO,
-                                       StatoTrasferimento = new StatoTrasferimentoModel()
-                                       {
-                                           idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
-                                           descrizioneStatoTrasferimento = t.STATOTRASFERIMENTO.DESCRIZIONE
-                                       },
-                                       TipoTrasferimento = new TipoTrasferimentoModel()
-                                       {
-                                           idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
-                                           descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
-                                       },
-                                       Ufficio = new UfficiModel()
-                                       {
-                                           idUfficio = t.UFFICI.IDUFFICIO,
-                                           codiceUfficio = t.UFFICI.CODICEUFFICIO,
-                                           descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
-                                       },
-                                       Dipendente = new DipendentiModel()
-                                       {
-                                           idDipendente = t.DIPENDENTI.IDDIPENDENTE,
-                                           matricola = t.DIPENDENTI.MATRICOLA,
-                                           nome = t.DIPENDENTI.NOME,
-                                           cognome = t.DIPENDENTI.COGNOME,
-                                           dataAssunzione = t.DIPENDENTI.DATAASSUNZIONE,
-                                           dataCessazione = t.DIPENDENTI.DATACESSAZIONE,
-                                           indirizzo = t.DIPENDENTI.INDIRIZZO,
-                                           cap = t.DIPENDENTI.CAP,
-                                           citta = t.DIPENDENTI.CITTA,
-                                           provincia = t.DIPENDENTI.PROVINCIA,
-                                           email = t.DIPENDENTI.EMAIL,
-                                           telefono = t.DIPENDENTI.TELEFONO,
-                                           fax = t.DIPENDENTI.FAX,
-                                           abilitato = t.DIPENDENTI.ABILITATO,
-                                           dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
-                                       },
-                                       TipoCoan = new TipologiaCoanModel()
-                                       {
-                                           idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
-                                           descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
-                                       },
-                                   }).ToList();
-                        }
-
+                        ltm = (from t in lt
+                                select new TrasferimentoModel()
+                                {
+                                    idTrasferimento = t.IDTRASFERIMENTO,
+                                    idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                                    idUfficio = t.IDUFFICIO,
+                                    idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
+                                    idDipendente = t.IDDIPENDENTE,
+                                    idTipoCoan = t.IDTIPOCOAN,
+                                    dataPartenza = t.DATAPARTENZA,
+                                    dataRientro = t.DATARIENTRO,
+                                    coan = t.COAN,
+                                    protocolloLettera = t.PROTOCOLLOLETTERA,
+                                    dataLettera = t.DATALETTERA,
+                                    notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                                    dataAggiornamento = t.DATAAGGIORNAMENTO,
+                                    StatoTrasferimento = new StatoTrasferimentoModel()
+                                    {
+                                        idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                                        descrizioneStatoTrasferimento = t.STATOTRASFERIMENTO.DESCRIZIONE
+                                    },
+                                    TipoTrasferimento = new TipoTrasferimentoModel()
+                                    {
+                                        idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                                        descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                                    },
+                                    Ufficio = new UfficiModel()
+                                    {
+                                        idUfficio = t.UFFICI.IDUFFICIO,
+                                        codiceUfficio = t.UFFICI.CODICEUFFICIO,
+                                        descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
+                                    },
+                                    Dipendente = new DipendentiModel()
+                                    {
+                                        idDipendente = t.DIPENDENTI.IDDIPENDENTE,
+                                        matricola = t.DIPENDENTI.MATRICOLA,
+                                        nome = t.DIPENDENTI.NOME,
+                                        cognome = t.DIPENDENTI.COGNOME,
+                                        dataAssunzione = t.DIPENDENTI.DATAASSUNZIONE,
+                                        dataCessazione = t.DIPENDENTI.DATACESSAZIONE,
+                                        indirizzo = t.DIPENDENTI.INDIRIZZO,
+                                        cap = t.DIPENDENTI.CAP,
+                                        citta = t.DIPENDENTI.CITTA,
+                                        provincia = t.DIPENDENTI.PROVINCIA,
+                                        email = t.DIPENDENTI.EMAIL,
+                                        telefono = t.DIPENDENTI.TELEFONO,
+                                        fax = t.DIPENDENTI.FAX,
+                                        abilitato = t.DIPENDENTI.ABILITATO,
+                                        dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
+                                    },
+                                    TipoCoan = new TipologiaCoanModel()
+                                    {
+                                        idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
+                                        descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
+                                    },
+                                }).ToList();
 
                     }
                     else
@@ -486,16 +457,13 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return idDipendente;
         }
-        public DipendentiModel RestituisciDipendenteByID(decimal idDipendente)
+        public DipendentiModel RestituisciDipendenteByID(decimal idDipendente, ModelDBISE db)
         {
             DipendentiModel dm = new DipendentiModel();
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
-                dm.idDipendente = d.IDDIPENDENTE;
-                dm.nome = d.NOME; dm.cognome = d.COGNOME;
-                dm.email = d.EMAIL; d.INDIRIZZO = d.INDIRIZZO;
-            }
+            DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
+            dm.idDipendente = d.IDDIPENDENTE;
+            dm.nome = d.NOME; dm.cognome = d.COGNOME;
+            dm.email = d.EMAIL; d.INDIRIZZO = d.INDIRIZZO;
             return dm;
         }
         public string DeterminaSede(decimal idTrasferimento)

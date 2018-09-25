@@ -63,6 +63,7 @@ namespace NewISE.Controllers
             }
         }
 
+        [Authorize(Roles = "1 ,2")]
         public ActionResult Richiamo(decimal idTrasferimento, decimal idFKm, string dataRichiamo, decimal nuovo = 0)
         {
             DateTime dataPartenza = new DateTime();
@@ -75,19 +76,20 @@ namespace NewISE.Controllers
                 ViewData["dataRichiamo"] = dataRichiamo;
                 CaricaComboFKM(idFKm, nuovo);
                 ViewData["abilitaModifica"] = idFKm;
-                using (dtRichiamo dtr = new dtRichiamo())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento);
-                    //if (nuovo == 1)
-                    //{
-                    RichiamoModel rcm = dtr.Restituisci_Ultimo_Richiamo(idTrasferimento);
-                    ViewData["idRichiamo"] = rcm.IdRichiamo;
-                    if (rcm.IdRichiamo != 0)
+                    using (dtRichiamo dtr = new dtRichiamo())
                     {
-                        ViewData["dataRientro"] = rcm.DataRientro;
-                        ViewData["dataRichiamo"] = rcm.DataRichiamo;
+                        dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento, db);
+                        RichiamoModel rcm = dtr.Restituisci_Ultimo_Richiamo(idTrasferimento);
+                        ViewData["idRichiamo"] = rcm.IdRichiamo;
+                        if (rcm.IdRichiamo != 0)
+                        {
+                            ViewData["dataRientro"] = rcm.DataRientro;
+                            ViewData["dataRichiamo"] = rcm.DataRichiamo;
+                        }
+                        CaricaComboFKM(rcm.CoeffKm, nuovo, rcm.IdRichiamo);
                     }
-                    CaricaComboFKM(rcm.CoeffKm, nuovo, rcm.IdRichiamo);
                 }
                 ViewData["dataPartenza"] = dataPartenza;
             }
@@ -222,14 +224,18 @@ namespace NewISE.Controllers
 
         public ActionResult MessaggioInserisciRichiamo(decimal idTrasferimento, decimal idFKm, string dataInserita, decimal idRichiamo = 0)
         {
+
             ViewData["idTrasferimento"] = idTrasferimento;
             ViewData["idFKm"] = idFKm;
             ViewData["dataInserita"] = dataInserita == null ? "" : dataInserita.ToString();
             CaricaComboFKM(idFKm, 0, idRichiamo);
-            using (dtRichiamo dtr = new dtRichiamo())
+            using (ModelDBISE db = new ModelDBISE())
             {
-                DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento);
-                ViewData["dataPartenza"] = dataPartenza;
+                using (dtRichiamo dtr = new dtRichiamo())
+                {
+                    DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento,db);
+                    ViewData["dataPartenza"] = dataPartenza;
+                }
             }
             return PartialView();
         }
@@ -240,90 +246,114 @@ namespace NewISE.Controllers
             ViewData["idFKm"] = idFKm;
             ViewData["dataInserita"] = dataInserita == null ? "" : dataInserita.ToString();
             CaricaComboFKM(idFKm, idFKm, idRichiamo);
-            using (dtRichiamo dtr = new dtRichiamo())
+            using (ModelDBISE db = new ModelDBISE())
             {
-                DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento);
-                DateTime dataRientro = dtr.Restituisci_DataRientro(idTrasferimento);
-                ViewData["dataPartenza"] = dataPartenza;
-                ViewData["dataRientro"] = dataRientro;
+                using (dtRichiamo dtr = new dtRichiamo())
+                {
+                    DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento,db);
+                    DateTime dataRientro = dtr.Restituisci_DataRientro(idTrasferimento, db);
+                    ViewData["dataPartenza"] = dataPartenza;
+                    ViewData["dataRientro"] = dataRientro;
+                }
             }
             return PartialView();
         }
 
         public JsonResult ConfermaInserisciRichiamo(decimal idTrasferimento, decimal idFasciaFKM, string dataRichiamo)
         {
-            ViewData["idTrasferimento"] = idTrasferimento;
-            ViewData["idFKm"] = idFasciaFKM;
-            CaricaComboFKM(idFasciaFKM, idFasciaFKM);
-            string errore = "";
-            DateTime dataPartenza = new DateTime();
-            var lstr = new List<SelectListItem>();
-            using (dtRichiamo dtric = new dtRichiamo())
+            using (ModelDBISE db = new ModelDBISE())
             {
-                dataPartenza = dtric.Restituisci_DataPartenza(idTrasferimento);
-            }
-            ViewData["dataPartenza"] = dataPartenza;
-            decimal idRichiamo = 0;
-            try
-            {
-                RichiamoModel ri = new RichiamoModel();
-                ri.DataRichiamo = Convert.ToDateTime(dataRichiamo);
-                ri.DataAggiornamento = DateTime.Now;
-                ri.CoeffKm = idFasciaFKM;
-                ri.idTrasferimento = idTrasferimento;
-                using (dtRichiamo dtric = new dtRichiamo())
+                db.Database.BeginTransaction();
+
+                string errore = "";
+                var lstr = new List<SelectListItem>();
+
+                try
                 {
-                    decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri);
-                    decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri);
-                    var r = new List<SelectListItem>();
-                    if (idCoeffIndRichiamo == 0 || IDPFKM == 0)
+
+                    ViewData["idTrasferimento"] = idTrasferimento;
+                    ViewData["idFKm"] = idFasciaFKM;
+                    CaricaComboFKM(idFasciaFKM, idFasciaFKM);
+                    DateTime dataPartenza = new DateTime();
+                    using (dtRichiamo dtric = new dtRichiamo())
                     {
-                        ViewData["errore"] = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
-                        //  return PartialView("Richiamo");
-                        // return PartialView("ErrorPartial", new MsgErr() { msg = "Non esistono coefficenti corrispondenti ai criteri del Richiamo" });
-                        errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
-                        throw new Exception("Non esistono coefficenti corrispondenti ai criteri del Richiamo");
+                        dataPartenza = dtric.Restituisci_DataPartenza(idTrasferimento, db);
                     }
-                    ri.IDPFKM = IDPFKM;
-                    DateTime DataRientro = Convert.ToDateTime(dataRichiamo).AddDays(-1);
-                    ////
-                    //idRichiamo = dtric.SetRichiamo(ri, idCoeffIndRichiamo, IDPFKM, out DataRientro);
-                    ///
-                    ri.DataRientro = DataRientro;
-
-                    //if (idRichiamo != 0)
-                    //{
-                    ViewData["dataRichiamo"] = ri.DataRichiamo.ToShortDateString();
-                    ViewData["dataRientro"] = ri.DataRientro.ToShortDateString();
-                    ViewData["idRichiamo"] = idRichiamo;
-
-                    if (DataRientro < dataPartenza)
-                        errore = "Data Rientro " + DataRientro.ToShortDateString() + " non può essere inferiore alla data Partenza " + dataPartenza.ToShortDateString();
-                    else
+                    ViewData["dataPartenza"] = dataPartenza;
+                    decimal idRichiamo = 0;
+                    try
                     {
-                        idRichiamo = dtric.SetRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro);
-                        ViewData["idRichiamo"] = idRichiamo;
-                        errore = "";
+                        RichiamoModel ri = new RichiamoModel();
+                        ri.DataRichiamo = Convert.ToDateTime(dataRichiamo);
+                        ri.DataAggiornamento = DateTime.Now;
+                        ri.CoeffKm = idFasciaFKM;
+                        ri.idTrasferimento = idTrasferimento;
+                        using (dtRichiamo dtric = new dtRichiamo())
+                        {
+                            decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri, db);
+                            decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri, db);
+                            var r = new List<SelectListItem>();
+                            if (idCoeffIndRichiamo == 0 || IDPFKM == 0)
+                            {
+                                ViewData["errore"] = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
+                                errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
+                                throw new Exception("Non esistono coefficenti corrispondenti ai criteri del Richiamo");
+                            }
+                            ri.IDPFKM = IDPFKM;
+                            DateTime DataRientro = Convert.ToDateTime(dataRichiamo).AddDays(-1);
+                            ri.DataRientro = DataRientro;
+
+                            ViewData["dataRichiamo"] = ri.DataRichiamo.ToShortDateString();
+                            ViewData["dataRientro"] = ri.DataRientro.ToShortDateString();
+                            ViewData["idRichiamo"] = idRichiamo;
+
+                            if (DataRientro < dataPartenza)
+                                errore = "Data Rientro " + DataRientro.ToShortDateString() + " non può essere inferiore alla data Partenza " + dataPartenza.ToShortDateString();
+                            else
+                            {
+                                idRichiamo = dtric.SetRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro, db);
+                                ViewData["idRichiamo"] = idRichiamo;
+                                errore = "";
+                            }
+
+                            lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento, db);
+                            string sede = dtric.DeterminaSede(idTrasferimento);
+                            string oggetto = Resources.msgEmail.OggettoRichiamoInserisci;
+                            string corpoMessaggio = string.Format(Resources.msgEmail.MessaggioRichiamoInserisci, sede, ri.DataRientro.ToShortDateString());
+
+                            //using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                            //{
+                            //    dtvmf.TerminaMaggiorazioniFamiliariByDataFineTrasf(idTrasferimento, ri.DataRientro, db);
+                            //}
+                            //using (dtVariazioniMaggiorazioneAbitazione dtvmab = new dtVariazioniMaggiorazioneAbitazione())
+                            //{
+                            //    dtvmab.TerminaMABbyDataFineTrasf(idTrasferimento, ri.DataRientro, db);
+                            //}
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db);
+                            }
+
+
+                            InviaMailRichiamo(idTrasferimento, db, corpoMessaggio, oggetto);
+                        }
                     }
-
-                    lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento);
-                    string sede = dtric.DeterminaSede(idTrasferimento);
-                    string oggetto = Resources.msgEmail.OggettoRichiamoInserisci;
-                    string corpoMessaggio = string.Format(Resources.msgEmail.MessaggioRichiamoInserisci, sede, ri.DataRientro.ToShortDateString());
-
-                    InviaMailRichiamo(idTrasferimento, corpoMessaggio, oggetto);
+                    catch (Exception ex)
+                    {
+                        ViewData["errore"] = ex.Message;
+                        errore = ex.Message;
+                    }
+                    db.Database.CurrentTransaction.Commit();
                 }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+                return Json(new { err = errore, list = lstr });
             }
-            catch (Exception ex)
-            {
-                ViewData["errore"] = ex.Message;
-                // return PartialView("Richiamo");
-                //  return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-                errore = ex.Message;
-            }
-            return Json(new { err = errore, list = lstr });
         }
-        public List<SelectListItem> AggiornaViewBag_Lista_Trasferimenti(decimal idTrasferimento)
+        public List<SelectListItem> AggiornaViewBag_Lista_Trasferimenti(decimal idTrasferimento, ModelDBISE db)
         {
             var r = new List<SelectListItem>();
             using (dtRichiamo dtric = new dtRichiamo())
@@ -332,7 +362,7 @@ namespace NewISE.Controllers
                 // var eltr = dtric.GetListaTrasferimentoPerRichiamo(matricola);
                 if (matricola > 0)
                 {
-                    var lt = dtric.GetListaTrasferimentoPerRichiamo(matricola);
+                    var lt = dtric.GetListaTrasferimentoPerRichiamo(matricola, db);
                     if (lt?.Any() ?? false)
                     {
                         r = (from e in lt
@@ -372,78 +402,110 @@ namespace NewISE.Controllers
         }
         public JsonResult ConfermaModificaRichiamo(decimal idTrasferimento, decimal idFasciaFKM, string dataRichiamo, decimal idRichiamo)
         {
-            ViewData["idTrasferimento"] = idTrasferimento;
-            ViewData["idFKm"] = idFasciaFKM;
-            DateTime dataPartenza = new DateTime();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
 
-            CaricaComboFKM(idFasciaFKM, idFasciaFKM);
-            string errore = ""; var lstr = new List<SelectListItem>();
-            using (dtRichiamo dtric = new dtRichiamo())
-            {
-                dataPartenza = dtric.Restituisci_DataPartenza(idTrasferimento);
-            }
-            ViewData["dataPartenza"] = dataPartenza;
-            try
-            {
-                RichiamoModel ri = new RichiamoModel();
-                ri.DataRichiamo = Convert.ToDateTime(dataRichiamo);
-                ri.DataAggiornamento = DateTime.Now;
-                ri.CoeffKm = idFasciaFKM;
-                ri.idTrasferimento = idTrasferimento;
-                using (dtRichiamo dtric = new dtRichiamo())
+                string errore = "";
+                var lstr = new List<SelectListItem>();
+
+                try
                 {
-                    decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri);
-                    decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri);
-                    if (idCoeffIndRichiamo == 0 || IDPFKM == 0)
+                    ViewData["idTrasferimento"] = idTrasferimento;
+                    ViewData["idFKm"] = idFasciaFKM;
+                    DateTime dataPartenza = new DateTime();
+
+                    CaricaComboFKM(idFasciaFKM, idFasciaFKM);
+                    using (dtRichiamo dtric = new dtRichiamo())
                     {
-                        errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
-                        ViewData["errore"] = errore;
+                        dataPartenza = dtric.Restituisci_DataPartenza(idTrasferimento,db);
                     }
-                    ri.IDPFKM = IDPFKM;
-
-                    DateTime dataRientroPrecedente = dtric.Restituisci_Data_Rientro(idTrasferimento);
-                    DateTime DataRientro = Convert.ToDateTime(dataRichiamo).AddDays(-1);
-
-                    ri.DataRientro = DataRientro;
-
-                    if (idRichiamo != 0)
+                    ViewData["dataPartenza"] = dataPartenza;
+                    try
                     {
-                        ViewData["dataRichiamo"] = ri.DataRichiamo.ToShortDateString();
-                        ViewData["dataRientro"] = ri.DataRientro.ToShortDateString();
-                        ViewData["idRichiamo"] = idRichiamo;
-
-                        if (DataRientro < dataPartenza)
-                            errore = "Data Rientro (" + DataRientro.ToShortDateString() + ") non può essere inferiore alla data Partenza (" + dataPartenza.ToShortDateString() + " )";
-                        else
+                        RichiamoModel ri = new RichiamoModel();
+                        ri.DataRichiamo = Convert.ToDateTime(dataRichiamo);
+                        ri.DataAggiornamento = DateTime.Now;
+                        ri.CoeffKm = idFasciaFKM;
+                        ri.idTrasferimento = idTrasferimento;
+                        using (dtRichiamo dtric = new dtRichiamo())
                         {
-                            idRichiamo = dtric.EditRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro, idRichiamo);
-                            errore = "";
-                            lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento);
-                            string sede = dtric.DeterminaSede(idTrasferimento);
-                            string oggetto = Resources.msgEmail.OggettoRichiamoModifica;
-                            string corpoMessaggio = string.Format(Resources.msgEmail.MessaggioRichiamoModifica, sede, dataRientroPrecedente.ToShortDateString(), ri.DataRientro.ToShortDateString());
+                            decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri,db);
+                            decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri,db);
+                            if (idCoeffIndRichiamo == 0 || IDPFKM == 0)
+                            {
+                                errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
+                                ViewData["errore"] = errore;
+                            }
+                            ri.IDPFKM = IDPFKM;
 
-                            InviaMailRichiamo(idTrasferimento, corpoMessaggio, oggetto);
+                            DateTime dataRientroPrecedente = dtric.Restituisci_Data_Rientro(idTrasferimento);
+                            DateTime DataRientro = Convert.ToDateTime(dataRichiamo).AddDays(-1);
+
+                            ri.DataRientro = DataRientro;
+
+                            if (idRichiamo != 0)
+                            {
+                                ViewData["dataRichiamo"] = ri.DataRichiamo.ToShortDateString();
+                                ViewData["dataRientro"] = ri.DataRientro.ToShortDateString();
+                                ViewData["idRichiamo"] = idRichiamo;
+
+                                if (DataRientro < dataPartenza)
+                                    errore = "Data Rientro (" + DataRientro.ToShortDateString() + ") non può essere inferiore alla data Partenza (" + dataPartenza.ToShortDateString() + " )";
+                                else
+                                {
+                                    idRichiamo = dtric.EditRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro, idRichiamo, db);
+                                    errore = "";
+                                    lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento, db);
+
+                                    //using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                                    //{
+                                    //    dtvmf.TerminaMaggiorazioniFamiliariByDataFineTrasf(idTrasferimento, ri.DataRientro, db);
+                                    //}
+                                    //using (dtVariazioniMaggiorazioneAbitazione dtvmab = new dtVariazioniMaggiorazioneAbitazione())
+                                    //{
+                                    //    dtvmab.TerminaMABbyDataFineTrasf(idTrasferimento, ri.DataRientro, db);
+                                    //}
+
+                                    using (dtDipendenti dtd = new dtDipendenti())
+                                    {
+                                        dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db);
+                                    }
+
+                                    string sede = dtric.DeterminaSede(idTrasferimento);
+                                    string oggetto = Resources.msgEmail.OggettoRichiamoModifica;
+                                    string corpoMessaggio = string.Format(Resources.msgEmail.MessaggioRichiamoModifica, sede, dataRientroPrecedente.ToShortDateString(), ri.DataRientro.ToShortDateString());
+
+                                    InviaMailRichiamo(idTrasferimento, db, corpoMessaggio, oggetto);
+                                }
+                            }
+                            else
+                            {
+                                ViewData["errore"] = "Errore riscontrato nell'inserimento del Richiamo";
+                                errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
+                                //  return PartialView("Richiamo");
+                                // return PartialView("ErrorPartial", new MsgErr() { msg = "Errore riscontrato nell'inserimento del Richiamo" });
+                            }
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        ViewData["errore"] = "Errore riscontrato nell'inserimento del Richiamo";
-                        errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
-                        //  return PartialView("Richiamo");
-                        // return PartialView("ErrorPartial", new MsgErr() { msg = "Errore riscontrato nell'inserimento del Richiamo" });
+                        ViewData["errore"] = ex.Message;
+                        // return PartialView("Richiamo");
+                        //  return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                        errore = ex.Message;
                     }
+                    db.Database.CurrentTransaction.Commit();
                 }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+                return Json(new { err = errore, list = lstr });
             }
-            catch (Exception ex)
-            {
-                ViewData["errore"] = ex.Message;
-                // return PartialView("Richiamo");
-                //  return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-                errore = ex.Message;
-            }
-            return Json(new { err = errore, list = lstr });
         }
+
         public JsonResult ControllaDataValida(string dataDaControllare)
         {
             try
@@ -459,7 +521,8 @@ namespace NewISE.Controllers
                 return Json(new { errore = ex.Message, msg = ex.Message });
             }
         }
-        public void InviaMailRichiamo(decimal idTrasferimento, string corpoMessaggio = "", string oggetto = "")
+
+        public void InviaMailRichiamo(decimal idTrasferimento, ModelDBISE db, string corpoMessaggio = "", string oggetto = "")
         {
             // UtentiAutorizzatiModel uta = null;
             //decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
@@ -493,7 +556,7 @@ namespace NewISE.Controllers
                     //decimal id_dip = dtn.RestituisciIDdestinatarioDaEmail(mitt.EmailMittente);
                     if (uam?.idDipendente > 0)
                     {
-                        DipendentiModel dmod = dtn.RestituisciDipendenteByID(uam.idDipendente);
+                        DipendentiModel dmod = dtn.RestituisciDipendenteByID(uam.idDipendente, db);
                         mitt.Nominativo = dmod.nome + " " + dmod.cognome;
                         mitt.EmailMittente = dmod.email;
                     }
@@ -504,8 +567,8 @@ namespace NewISE.Controllers
                     }
 
                     decimal idDestinatario = dtn.Restituisci_ID_Destinatario(idTrasferimento);
-                    string nome_ = dtn.RestituisciDipendenteByID(idDestinatario).nome;
-                    string cognome_ = dtn.RestituisciDipendenteByID(idDestinatario).cognome;
+                    string nome_ = dtn.RestituisciDipendenteByID(idDestinatario, db).nome;
+                    string cognome_ = dtn.RestituisciDipendenteByID(idDestinatario, db).cognome;
                     string nominativo_ = nome_ + " " + cognome_;
                     dest = new Destinatario();
                     dest.EmailDestinatario = dtn.GetEmailByIdDipendente(idDestinatario);

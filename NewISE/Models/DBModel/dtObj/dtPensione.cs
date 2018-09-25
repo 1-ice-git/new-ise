@@ -50,6 +50,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var t = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 var c = amf.CONIUGE.First(a => a.IDCONIUGE == idConiuge);
 
@@ -137,6 +138,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //aggiunge i record non annullati
                     var lp = c.PENSIONE.Where(a =>
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                            ((a.DATAINIZIO <= t.DATARIENTRO && a.DATAFINE >= t.DATARIENTRO) || a.DATAFINE < t.DATARIENTRO) &&
                             a.ATTIVAZIONIMAGFAM.Any(d => d.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam && d.ANNULLATO == false))
                             .OrderBy(a => a.DATAINIZIO)
                         .ToList();
@@ -148,7 +150,7 @@ namespace NewISE.Models.DBModel.dtObj
                                          idPensioneConiuge = e.IDPENSIONE,
                                          importoPensione = e.IMPORTOPENSIONE,
                                          dataInizioValidita = e.DATAINIZIO,
-                                         dataFineValidita = e.DATAFINE,
+                                         dataFineValidita = e.DATAFINE>t.DATARIENTRO?t.DATARIENTRO:e.DATAFINE,
                                          dataAggiornamento = e.DATAAGGIORNAMENTO,
                                          idStatoRecord = e.IDSTATORECORD
                                      });
@@ -1584,10 +1586,13 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var c = db.CONIUGE.Find(idConiuge);
+                var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI == false).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                ((a.DATAINIZIO<=t.DATARIENTRO && a.DATAFINE>=t.DATARIENTRO) || a.DATAFINE<t.DATARIENTRO) && 
+                                a.NASCONDI == false).ToList();
                     if (lpc?.Any() ?? false)
                     {
                         ret = true;
@@ -1614,10 +1619,15 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var c = db.CONIUGE.Find(idConiuge);
+                var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam) && a.NASCONDI == false).ToList();
+                    var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                    ((a.DATAINIZIO<=t.DATARIENTRO && a.DATAFINE>=t.DATARIENTRO) || a.DATAFINE<t.DATARIENTRO) &&
+                    a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam) 
+                    //&& a.NASCONDI == false
+                    ).ToList();
                     if (lpc?.Any() ?? false)
                     {
                         ret = true;
