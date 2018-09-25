@@ -17,88 +17,78 @@
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
 
-    <div class="row">
-        <div class="col-xs-12" style="margin-left:30px;">
-            <h4><strong>SALDO TRASPORTO EFFETTI PARTENZA</strong></h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <hr>
-        </div>
-    </div>
-    <div class="col-xs-12">
-        <div class="col-xs-12 fa-border" style="background-color:white; border:solid;border-width:thin;margin-bottom:15px;border-radius:15px">
-            <div class="row">
-                <div class="col-xs-4 text-right" style="padding-top:10px">
-                    <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
-                </div>
-                <div class="col-xs-3" style="padding-top:5px">
-                    @Html.TextBoxFor(model => model.indennitaPrimaSistemazione, string.Format("{0:N2}", Model.indennitaPrimaSistemazione), new { @readonly = "readonly", @class = "form-control text-right" })
-                </div>
+<div class="col-xs-12">
+    <div class="col-xs-12 fa-border" style="background-color:white; border:solid;border-width:thin;margin-bottom:15px;border-radius:15px">
+        <div class="row">
+            <div class="col-xs-4 text-right" style="padding-top:10px">
+                <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
             </div>
-            <div class="row">
-                <div class="col-xs-4 text-right" style="padding-top:10px">
-                    <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
-                </div>
-                <div class="col-xs-3" style="padding-top:5px">
-                    @Html.TextBoxFor(model => model.percKM, new { @readonly = "readonly", @class = "form-control text-right" })
-                </div>
-
-                <div class="col-xs-2 text-center" style="padding-top:10px">
-                    <label for="anticipoPercepito" class="control-label">@Html.DisplayNameFor(model => model.anticipoPercepito)</label>
-                </div>
-                <div class="col-xs-3 text-center" style="padding-top:10px">
-                    <label for="anticipoPercepito" class="control-label">@Html.DisplayNameFor(model => model.saldo)</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4 text-right" style="padding-top:10px">
-                    <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
-                </div>
-                <div class="col-xs-3" style="padding-top:5px">
-                    @Html.TextBoxFor(model => model.contributoLordo, string.Format("{0:N2}", Model.contributoLordo), new { @readonly = "readonly", @class = "form-control text-right" })
-                </div>
-                <div class="col-xs-2" style="padding-top:5px">
-                    @Html.TextBoxFor(model => model.anticipoPercepito, string.Format("{0:N2}", Model.anticipoPercepito), new { @readonly = "readonly", @class = "form-control text-right" })
-                </div>
-                <div class="col-xs-3" style="padding-top:5px">
-                    @Html.TextBoxFor(model => model.saldo, string.Format("{0:N2}", Model.saldo), new { @readonly = "readonly", @class = "form-control text-right" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    &nbsp;
-                </div>
+            <div class="col-xs-3" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.indennitaPrimaSistemazione, string.Format("{0:N2}", Model.indennitaPrimaSistemazione), new { @readonly = "readonly", @class = "form-control text-right" })
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-5" style="text-align:right">
-                <b>Modulo 3 - (Attestazione Avvenuto Trasloco - Trasferimento)</b>
+            <div class="col-xs-4 text-right" style="padding-top:10px">
+                <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
             </div>
-            <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
-                @if (rinunciaTE==false)
-                {
-                    if (DocAttestazione)
-                    {
-                        <a href="#" onclick="ElencoDocumentiVariazioneTEP(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocVariazioniTEP">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="#" onclick="ElencoDocumentiVariazioneTEP(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocVariazioniTEP">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
-                        </a>
-                    }
-                }
-                else
-                {
-                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
-                }
+            <div class="col-xs-3" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.percKM, new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+
+            <div class="col-xs-2 text-center" style="padding-top:10px">
+                <label for="anticipoPercepito" class="control-label">@Html.DisplayNameFor(model => model.anticipoPercepito)</label>
+            </div>
+            <div class="col-xs-3 text-center" style="padding-top:10px">
+                <label for="anticipoPercepito" class="control-label">@Html.DisplayNameFor(model => model.saldo)</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 text-right" style="padding-top:10px">
+                <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
+            </div>
+            <div class="col-xs-3" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.contributoLordo, string.Format("{0:N2}", Model.contributoLordo), new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+            <div class="col-xs-2" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.anticipoPercepito, string.Format("{0:N2}", Model.anticipoPercepito), new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+            <div class="col-xs-3" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.saldo, string.Format("{0:N2}", Model.saldo), new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                &nbsp;
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-5" style="text-align:right">
+            <b>Modulo 3 - (Attestazione Avvenuto Trasloco - Trasferimento)</b>
+        </div>
+        <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
+            @if (rinunciaTE==false)
+            {
+                if (DocAttestazione)
+                {
+                    <a href="#" onclick="ElencoDocumentiVariazioneTEP(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocVariazioniTEP">
+                        <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
+                    </a>
+                }
+                else
+                {
+                    <a href="#" onclick="ElencoDocumentiVariazioneTEP(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocVariazioniTEP">
+                        <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
+                    </a>
+                }
+            }
+            else
+            {
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
+            }
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 

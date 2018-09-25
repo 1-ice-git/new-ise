@@ -400,10 +400,13 @@ namespace NewISE.Models.DBModel.dtObj
             {
 
                 var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var t = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
-                    var lf = amf.FIGLI.OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA);
+                    var lf = amf.FIGLI.Where(a=>
+                                (a.DATAINIZIOVALIDITA <= t.DATARIENTRO && a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA);
 
                     //var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
 
@@ -421,7 +424,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 cognome = item.COGNOME,
                                 codiceFiscale = item.CODICEFISCALE,
                                 dataInizio = item.DATAINIZIOVALIDITA,
-                                dataFine = item.DATAFINEVALIDITA,
+                                dataFine = item.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:item.DATAFINEVALIDITA,
                                 dataAggiornamento = item.DATAAGGIORNAMENTO,
                                 idStatoRecord = item.IDSTATORECORD,
                                 FK_IdFigli = item.FK_IDFIGLI,
@@ -473,9 +476,12 @@ namespace NewISE.Models.DBModel.dtObj
                 {
 
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                    var t = mf.TRASFERIMENTO;
 
                     lf = mf.FIGLI.Where(y =>
-                                y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato
+                                y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                ((y.DATAINIZIOVALIDITA<=t.DATARIENTRO &&
+                                y.DATAFINEVALIDITA>=t.DATARIENTRO) || y.DATAFINEVALIDITA<t.DATARIENTRO)
                             ).ToList();
                     if (lf?.Any() ?? false)
                     {
@@ -492,7 +498,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 cognome = f.COGNOME,
                                 codiceFiscale = f.CODICEFISCALE,
                                 dataInizio = f.DATAINIZIOVALIDITA,
-                                dataFine = f.DATAFINEVALIDITA,
+                                dataFine = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA,
                                 dataAggiornamento = f.DATAAGGIORNAMENTO,
                                 idStatoRecord = f.IDSTATORECORD,
                                 FK_IdFigli = f.FK_IDFIGLI,

@@ -52,10 +52,15 @@ namespace NewISE.Controllers
                             bool siDati = false;
                             bool siModifiche = false;
                             EnumStatoTraferimento statoTrasferimento = 0;
+                            TrasferimentoModel tm;
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                tm = dtt.GetTrasferimentoById(idTrasferimento);
+                            }
 
                             ATTIVAZIONEMAB ultima_att = dtvma.GetUltimaAttivazioneMAB(idTrasferimento, db);
-                            MAB mab_modificata =  dtvma.GetMAB_ByID_var(ultima_att.IDMAB, db);
-                            PERIODOMAB periodo_modificato = dtvma.GetPeriodoMAB(mab_modificata.IDMAB,db);
+                            //MAB mab_modificata =  dtvma.GetMAB_ByID_var(ultima_att.IDMAB, db);
+                            //PERIODOMAB periodo_modificato = dtvma.GetPeriodoMAB(mab_modificata.IDMAB,db);
 
                             var lmabNonAttive = dtvma.GetMABNonAttiveModel(idTrasferimento, db);
                             if (lmabNonAttive?.Any() ?? false)
@@ -78,8 +83,10 @@ namespace NewISE.Controllers
                                     var pmm = dtvma.GetPeriodoMABModel(mabm.idMAB, db);
                                     var att = db.ATTIVAZIONEMAB.Find(pmm.idAttivazioneMAB);
 
+                                    var dataFineMAB = pmm.dataFineMAB > tm.dataRientro ? tm.dataRientro.Value : pmm.dataFineMAB;
+
                                     bool modificabile = true;
-                                    if (pmm.dataFineMAB < Utility.DataFineStop())
+                                    if (dataFineMAB < Utility.DataFineStop())
                                     {
                                         if (ultima_att.NOTIFICARICHIESTA)
                                         {
@@ -87,7 +94,7 @@ namespace NewISE.Controllers
                                         }
 
                                     }
-                                    if (pmm.dataFineMAB == Utility.DataFineStop())
+                                    if (dataFineMAB == Utility.DataFineStop())
                                     {
                                         //soloLettura = true;
                                         if (ultima_att.NOTIFICARICHIESTA && ultima_att.ATTIVAZIONE==false)
@@ -102,18 +109,10 @@ namespace NewISE.Controllers
                                         annullabile = true;
                                     }
 
-                                    //if (pmm.dataFineMAB < Utility.DataFineStop() && att.NOTIFICARICHIESTA == false)
-                                    //{
-                                    //    soloLettura = true;
-                                    //}
-                                    if (pmm.dataFineMAB == Utility.DataFineStop())
+                                    if (dataFineMAB == Utility.DataFineStop())
                                     {
                                         soloLettura = true;
                                     }
-                                    //if (att.NOTIFICARICHIESTA == false)
-                                    //{
-                                    //    soloLettura = true;
-                                    //}
 
                                     bool siFormulari = false;
                                     using (dtDocumenti dtd = new dtDocumenti())
@@ -130,7 +129,7 @@ namespace NewISE.Controllers
                                         idAttivazioneMAB = mabm.idAttivazioneMAB,
                                         idMAB = mabm.idMAB,
                                         dataInizioMAB = pmm.dataInizioMAB,
-                                        dataFineMAB = pmm.dataFineMAB,
+                                        dataFineMAB = dataFineMAB,
                                         anticipoAnnuale = dtvma.AnticipoAnnualeMAB(mabm.idMAB, db),
                                         annullabile = annullabile,
                                         esistonoFormulari=siFormulari
@@ -142,18 +141,7 @@ namespace NewISE.Controllers
                                 }
                             }
 
-                            //if (ultima_att.IDATTIVAZIONEMAB > 0)
-                            //{
-                            //    if (ultima_att.NOTIFICARICHIESTA && ultima_att.ATTIVAZIONE && periodo_modificato.DATAFINEMAB<Utility.DataFineStop())
-                            //    {
-                            //        soloLettura = false;
-                            //    }
-                            //}else
-                            //{
-                            //    soloLettura = false;
-                            //}
 
-                            ////
                             if (ultima_att.NOTIFICARICHIESTA && ultima_att.ATTIVAZIONE == false)
                             {
                                 soloLettura = true;
@@ -163,7 +151,6 @@ namespace NewISE.Controllers
                             {
                                 soloLettura = true;
                             }
-
 
 
                             using (dtTrasferimento dtt = new dtTrasferimento())
@@ -337,7 +324,7 @@ namespace NewISE.Controllers
                                     #region controllo modifica canoni
                                     var lc_in_lav = db.MAB.Find(idMab).CANONEMAB.Where(a =>
                                             a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
-                                            a.NASCONDI == false)
+                                            a.NASCONDI == false && ((a.DATAFINEVALIDITA>=t.dataRientro && a.DATAINIZIOVALIDITA<=t.dataRientro)||a.DATAFINEVALIDITA<t.dataRientro))
                                                 .OrderByDescending(a => a.IDCANONE).ToList();
                                     bool canoniModificati = false;
                                     if (lc_in_lav.Count() > 0)
@@ -414,6 +401,7 @@ namespace NewISE.Controllers
                                     #region controllo modifica pagato condiviso
                                     var lc_in_lav = db.MAB.Find(idMab).PAGATOCONDIVISOMAB.Where(a =>
                                             a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
+                                            ((a.DATAINIZIOVALIDITA <= t.dataRientro && a.DATAFINEVALIDITA >= t.dataRientro) || a.DATAFINEVALIDITA < t.dataRientro) &&
                                             a.NASCONDI == false)
                                                 .OrderByDescending(a => a.IDPAGATOCONDIVISO).ToList();
                                     bool pagatocondivisoModificato = false;

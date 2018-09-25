@@ -1359,45 +1359,32 @@ namespace NewISE.Models.DBModel.dtObj
                 var i = t.INDENNITA;
 
                 var mabl = i.MAB.Where(a =>
-                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
                         a.RINUNCIAMAB == false).ToList();
 
                 if (mabl?.Any() ?? false)
                 {
                     foreach (var mab in mabl)
                     {
-                        //var idAttivazioneMAB = mab.IDATTIVAZIONEMAB;
-                        bool esistonoVariazioni = VerificaVariazioniMAB(mab.IDMAB, db, false);
+                        var pmab = GetPeriodoMABModel(mab.IDMAB, db);
+                        if((pmab.dataInizioMAB<=t.DATARIENTRO && pmab.dataFineMAB>=t.DATARIENTRO) || pmab.dataFineMAB<t.DATARIENTRO)
+                        { 
+                            bool esistonoVariazioni = VerificaVariazioniMAB(mab.IDMAB, db, false);
 
-                        ////VERIFICA MAB
-                        //bool esisteMAB = (mab.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione ||
-                        //                    mab.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare) ? true : false;
-
-                        ////verifica Periodo MAB
-                        //var lPeriodoMAB = mab.PERIODOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-
-
-                        ////verifica Pagato Condiviso MAB
-                        //var lPagatoCondivisoMAB = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-
-                        ////verifica Canone MAB
-                        //var lCanoneMAB = mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-
-
-                        //if (esisteMAB || lPeriodoMAB.Count()>0 || lPagatoCondivisoMAB.Count()>0 || lCanoneMAB.Count()>0)
-                        if(esistonoVariazioni)
-                        {
-                            MABModel mabInLavm = new MABModel()
+                            if (esistonoVariazioni)
                             {
-                                idMAB = mab.IDMAB,
-                                idTrasfIndennita = mab.IDTRASFINDENNITA,
-                                idStatoRecord = mab.IDSTATORECORD,
-                                rinunciaMAB = mab.RINUNCIAMAB,
-                                dataAggiornamento = mab.DATAAGGIORNAMENTO
-                            };
-                            lmabInLavm.Add(mabInLavm);
+                                MABModel mabInLavm = new MABModel()
+                                {
+                                    idMAB = mab.IDMAB,
+                                    idTrasfIndennita = mab.IDTRASFINDENNITA,
+                                    idStatoRecord = mab.IDSTATORECORD,
+                                    rinunciaMAB = mab.RINUNCIAMAB,
+                                    dataAggiornamento = mab.DATAAGGIORNAMENTO
+                                };
+                                lmabInLavm.Add(mabInLavm);
 
-                            return lmabInLavm;
+                                return lmabInLavm;
+                            }
                         }
                     }
                 }
@@ -1433,15 +1420,19 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var mabm in mabl)
                         {
-                            MABModel mabm_new = new MABModel()
+                            var pmab = GetPeriodoMABModel(mabm.IDMAB, db);
+                            if ((pmab.dataInizioMAB <= t.DATARIENTRO && pmab.dataFineMAB >= t.DATARIENTRO) || pmab.dataFineMAB < t.DATARIENTRO)
                             {
-                                idMAB = mabm.IDMAB,
-                                idTrasfIndennita = mabm.IDTRASFINDENNITA,
-                                idStatoRecord = mabm.IDSTATORECORD,
-                                rinunciaMAB = mabm.RINUNCIAMAB,
-                                dataAggiornamento = mabm.DATAAGGIORNAMENTO
-                            };
-                            lmabm.Add(mabm_new);
+                                MABModel mabm_new = new MABModel()
+                                {
+                                    idMAB = mabm.IDMAB,
+                                    idTrasfIndennita = mabm.IDTRASFINDENNITA,
+                                    idStatoRecord = mabm.IDSTATORECORD,
+                                    rinunciaMAB = mabm.RINUNCIAMAB,
+                                    dataAggiornamento = mabm.DATAAGGIORNAMENTO
+                                };
+                                lmabm.Add(mabm_new);
+                            }
                         }
                     }
                 }
@@ -5365,13 +5356,15 @@ namespace NewISE.Models.DBModel.dtObj
                 List<CanoneMABModel> lcmm = new List<CanoneMABModel>();
 
                 var mab = db.MAB.Find(idMab);
+                var t = mab.INDENNITA.TRASFERIMENTO;
 
                 var lcm =
                         mab.CANONEMAB.Where(
                             a =>
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo && 
-                                a.NASCONDI==false)
+                                a.NASCONDI==false && 
+                                ((a.DATAINIZIOVALIDITA<=t.DATARIENTRO&&a.DATAFINEVALIDITA>=t.DATARIENTRO)||a.DATAFINEVALIDITA<t.DATARIENTRO))
                             .OrderBy(a => a.DATAINIZIOVALIDITA)
                             .ToList();
 
@@ -5386,7 +5379,7 @@ namespace NewISE.Models.DBModel.dtObj
                             IDAttivazioneMAB = cm.IDATTIVAZIONEMAB,
                             idValuta=cm.IDVALUTA,
                             DataInizioValidita = cm.DATAINIZIOVALIDITA,
-                            DataFineValidita = cm.DATAFINEVALIDITA,
+                            DataFineValidita = cm.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:cm.DATAFINEVALIDITA,
                             ImportoCanone=cm.IMPORTOCANONE,
                             DataAggiornamento = cm.DATAAGGIORNAMENTO,
                             idStatoRecord = cm.IDSTATORECORD,
@@ -5417,12 +5410,14 @@ namespace NewISE.Models.DBModel.dtObj
                 List<PagatoCondivisoMABModel> lpcmabm = new List<PagatoCondivisoMABModel>();
 
                 var mab = db.MAB.Find(idMab);
+                var t = mab.INDENNITA.TRASFERIMENTO;
 
                 var lpcmab =
                         mab.PAGATOCONDIVISOMAB.Where(
                             a =>
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo &&
+                                ((a.DATAINIZIOVALIDITA<=t.DATARIENTRO && a.DATAFINEVALIDITA>=t.DATARIENTRO)||a.DATAFINEVALIDITA<t.DATARIENTRO) &&
                                 a.NASCONDI == false)
                             .OrderBy(a => a.DATAINIZIOVALIDITA)
                             .ToList();
@@ -5438,7 +5433,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idAttivazioneMAB = pcmab.IDATTIVAZIONEMAB,
                             idStatoRecord = pcmab.IDSTATORECORD,
                             DataInizioValidita = pcmab.DATAINIZIOVALIDITA,
-                            DataFineValidita = pcmab.DATAFINEVALIDITA,
+                            DataFineValidita = pcmab.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:pcmab.DATAFINEVALIDITA,
                             Pagato = pcmab.PAGATO,
                             Condiviso=pcmab.CONDIVISO,
                             DataAggiornamento = pcmab.DATAAGGIORNAMENTO,

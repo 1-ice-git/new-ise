@@ -1640,7 +1640,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 amf.CONIUGE.Where(
                                     a =>
                                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                        a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente)
+                                        a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente &&
+                                        ((a.DATAINIZIOVALIDITA<=t.DATARIENTRO && a.DATAFINEVALIDITA>=t.DATARIENTRO) || a.DATAFINEVALIDITA<t.DATARIENTRO))
                                     .OrderBy(a => a.DATAINIZIOVALIDITA);
 
                             if (lc?.Any() ?? false)
@@ -1694,7 +1695,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             nominativo = c.COGNOME + " " + c.NOME,
                                             codiceFiscale = c.CODICEFISCALE,
                                             dataInizio = c.DATAINIZIOVALIDITA,
-                                            dataFine = c.DATAFINEVALIDITA,
+                                            dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:c.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Coniuge,
                                             idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = cp.INCLUDIPASSAPORTO,
@@ -1724,7 +1725,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             nominativo = c.COGNOME + " " + c.NOME,
                                             codiceFiscale = c.CODICEFISCALE,
                                             dataInizio = c.DATAINIZIOVALIDITA,
-                                            dataFine = c.DATAFINEVALIDITA,
+                                            dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:c.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Coniuge,
                                             idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = cp.INCLUDIPASSAPORTO,
@@ -1756,7 +1757,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     a =>
                                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                         (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||
-                                         a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente))
+                                         a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente) &&
+                                        ((a.DATAINIZIOVALIDITA <= t.DATARIENTRO && a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO))
                                     .OrderBy(a => a.DATAINIZIOVALIDITA);
 
                             if (lf?.Any() ?? false)
@@ -1811,7 +1813,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             nominativo = f.COGNOME + " " + f.NOME,
                                             codiceFiscale = f.CODICEFISCALE,
                                             dataInizio = f.DATAINIZIOVALIDITA,
-                                            dataFine = f.DATAFINEVALIDITA,
+                                            dataFine = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Figlio,
                                             idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = fp.INCLUDIPASSAPORTO,
@@ -1839,7 +1841,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             nominativo = f.COGNOME + " " + f.NOME,
                                             codiceFiscale = f.CODICEFISCALE,
                                             dataInizio = f.DATAINIZIOVALIDITA,
-                                            dataFine = f.DATAFINEVALIDITA,
+                                            dataFine = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA,
                                             parentela = EnumParentela.Figlio,
                                             idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).First().IDALTRIDATIFAM,
                                             richiedi = fp.INCLUDIPASSAPORTO,
@@ -2042,8 +2044,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         esisteDocPassaporto = (idDocPassaporto > 0) ? true : false
                                     },
                                     ordinamento = ordine
-                                    //idAttivazioneInvioPassaporti=ap_invio.IDATTIVAZIONIPASSAPORTI,
-                                    //idFamiliareInvioPassaporto=pr_invio.IDPASSAPORTORICHIEDENTE
                                 };
 
                                 lefm.Add(richiedente);
@@ -2099,11 +2099,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     ordine++;
                                     var c = cp.CONIUGE.First();
-                                    //ConiugeModel cm = new ConiugeModel();
-                                    //using (dtConiuge dtc = new dtConiuge())
-                                    //{
-                                    //    cm = dtc.GetConiugebyID(cp.IDCONIUGE);
-                                    //}
 
                                     //idDocPassaporto = GetIdDocPassaportoFamiliare(ap_invio.IDATTIVAZIONIPASSAPORTI, cp.IDCONIUGE, (decimal)EnumParentela.Coniuge, db);
                                     idDocPassaporto = GetIdDocFamiliare((decimal)EnumTipoDoc.Passaporto, ap_invio.IDATTIVAZIONIPASSAPORTI, c.IDCONIUGE, (decimal)EnumParentela.Coniuge, db);
@@ -2117,7 +2112,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         nominativo = c.COGNOME + " " + c.NOME,
                                         codiceFiscale = c.CODICEFISCALE,
                                         dataInizio = c.DATAINIZIOVALIDITA,
-                                        dataFine = c.DATAFINEVALIDITA,
+                                        dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:c.DATAFINEVALIDITA,
                                         parentela = EnumParentela.Coniuge,
                                         idAltriDati = c.ALTRIDATIFAM.Where(a =>
                                                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
@@ -2206,13 +2201,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     ordine++;
                                     var f = fp.FIGLI.First();
-                                    //FigliModel fm = new FigliModel();
-                                    //using (dtFigli dtf = new dtFigli())
-                                    //{
-                                    //    fm = dtf.GetFigliobyID(fp.IDFIGLI);
-                                    //}
-
-                                    //idDocPassaporto = GetIdDocPassaportoFamiliare(ap_invio.IDATTIVAZIONIPASSAPORTI, fp.IDFIGLI, (decimal)EnumParentela.Figlio, db);
                                     idDocPassaporto = GetIdDocFamiliare((decimal)EnumTipoDoc.Passaporto, ap_invio.IDATTIVAZIONIPASSAPORTI, f.IDFIGLI, (decimal)EnumParentela.Figlio, db);
                                     idDocIdentita = GetIdDocFamiliare((decimal)EnumTipoDoc.Documento_Identita, ap_invio.IDATTIVAZIONIPASSAPORTI, f.IDFIGLI, (decimal)EnumParentela.Figlio, db);
 
@@ -2242,10 +2230,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         },
 
                                         ordinamento = ordine,
-                                        //idAttivazioneInvioPassaporti = ap_invio.IDATTIVAZIONIPASSAPORTI,
-                                        //idFamiliareInvioPassaporto = cp_invio.IDCONIUGEPASSAPORTO
-
-
                                     };
 
                                     lFiglio.Add(figlio);
