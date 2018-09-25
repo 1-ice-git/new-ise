@@ -8,11 +8,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-
-
-
 <div style="margin: 15px"></div>
-
 
 <div class="row">
     <div class="col-xs-4">
@@ -57,7 +53,7 @@
                         <a href="#" class="list-group-item" onclick="callpartialOpUsoAbitazione();">Operazioni Effettuate - Uso Abitazione</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpCanoneAnticipato();">Operazioni Effettuate - Canone Anticipato</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpSpeseDiverse();">Operazioni Effettuate - Spese Diverse</a>
-                        <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazione();">Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</a>
+                        <!--<a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazione();">Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</a>-->
                     </div>
                 </div>
             </div>
@@ -80,9 +76,9 @@
                         <a href="#" class="list-group-item" onclick="">Dislocazione dei dipendenti all'Estero</a>
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Livello</a>
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Ufficio</a>
-                        <a href="#" class="list-group-item" onclick="callpartialOpIndSedeEstera();">Riepilogo delle operazioni effettuate - Indennità di sede estera</a>
-                        <a href="#" class="list-group-item" onclick="">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
-                        <a href="#" class="list-group-item" onclick="">Sospensioni</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpIndSedeEsteraNew();">Riepilogo delle operazioni effettuate - Indennità di sede estera</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazioneNew();">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpSospensioniNew();">Sospensioni</a>
                         <a href="#" class="list-group-item" onclick="">Storia del Dipendente</a>
                         
                     </div>
@@ -90,120 +86,12 @@
             </div>
 
         </div>
-        </div>
     </div>
-        <div style="margin: 15px"></div>
 
-        <!--
-        <div id="accordion">
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Collapsible Group Item #1
-                        </button>
-                    </h5>
-                </div>
+    <div id="divPartialView" class="col-xs-8"></div>
 
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Collapsible Group Item #2
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Collapsible Group Item #3
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
-
-
-        <div class="row">
-
-            <div class="col-xs-5">
-                <!--
-                        <div id="divMsgUtente" class="DivSfondoBordo border_radius">
-                            <br /><br />
-                            <ul>
-                                <li><a href="#" onclick="callpartial();">LOG Attivita</a></li>
-                            </ul>
-                            <ul>
-                                <li>
-                                    Archivio Vecchio ISE
-                                    @*<a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a>*@
-                                    <ul class="no-bullets">
-                                        <li>Consuntivo dei Costi * </li>
-                                        @*<li><a href="#">Consuntivo dei Costi * </a></li>*@
-                                        <li>Consuntivo dei Costi per codice CoAn * </li>
-                                        @*<li><a href="#">Consuntivo dei Costi per codice CoAn * </a></li>*@
-                                        @*<li><a href="#" onclick="callpartialDislocazione();">Dislocazione dei dipendenti all'estero</a></li>*@
-                                        <li>Dislocazione dei dipendenti all'estero *</li>
-                                        <li><a href="#" onclick="callpartialPresenze();">Presenze dei livelli in servizio all'estero</a></li>
-                                        <li><a href="#" onclick="callpartialSpese();">Spese diverse</a></li>
-                                        <li><a href="#" onclick="callpartialSpeseAvvicendamento();">Spese avvicendamento</a></li>
-                                        <li><a href="#" onclick="callpartialStoria();">Storia del dipendente</a></li>
-                                        <li><a href="#" onclick="callpartialOpIndEstera();">Operazioni effettuate - Indennità di Sede Estera</a></li>
-                                        <li><a href="#" onclick="callpartialOpContributoAbitazione();">Operazioni Effettuate - Contributo Abitazione</a></li>
-                                        <li><a href="#" onclick="callpartialOpUsoAbitazione();">Operazioni Effettuate - Uso Abitazione</a></li>
-                                        <li><a href="#" onclick="callpartialOpCanoneAnticipato();">Operazioni Effettuate - Canone Anticipato</a></li>
-                                        <li><a href="#" onclick="callpartialOpSpeseDiverse();">Operazioni Effettuate - Spese Diverse</a></li>
-                                        <li><a href="#" onclick="callpartialOpMaggAbitazione();">Operazioni Effettuate - Maggiorazione Abitazione</a></li>
-                                    </ul>
-
-                                </li>
-
-                            </ul>
-                            <ul>
-                                <li>
-                                    ISE
-                                    @*<a href="#" onclick="callpartial();">ISE</a>*@
-                                    <ul class="no-bullets">
-                                        <li>Interrogazione dipendente * </li>
-                                        @*<li><a href="#">Interrogazione dipendente * </a></li>*@
-                                        <li>Riepiloghi * </li>
-                                        @*<li><a href="#" onclick="callpartial5();">Riepiloghi * </a></li>*@
-                                        <li>Altre Statistiche * </li>
-                                        @*<li><a href="#">Altre Statistiche * </a></li>*@
-                                    </ul>
-
-                                </li>
-                            </ul>
-                        </div>
-                        -->
-
-
-            </div>
-
-            <div id="divPartialView" class="col-xs-12">
-                @Html.Hidden("codicedipendente")
-            </div>
-
-        </div>
+</div>
+       
 
         <script type="text/javascript">
 
@@ -822,9 +710,8 @@
                 });
             }
 
-
             // Operazioni Effettuate - Indennità di Sede Estera (Nuovo ISE)
-            function callpartialOpIndSedeEstera() {
+            function callpartialOpIndSedeEsteraNew() {
                 //debugger;
 
                 rotta = "/Statistiche/RiepiloghiIseMensile/Index";
@@ -839,6 +726,72 @@
                         V_DATA1: data1,
                         V_DATA2: data2
                     },
+                    dataType: 'html',
+                    beforeSend: function () {
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#divPartialView").empty();
+                        $("#divPartialView").html(result);
+                    },
+                    complete: function () {
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            }
+
+            // Operazioni Effettuate - Maggiorazione Abitazione (Nuovo ISE)
+            function callpartialOpMaggAbitazioneNew() {
+                //debugger;
+
+                rotta = "/Statistiche/RiepiloghiMaggAbitazione/Index";
+
+                var data1 = $("#data1").datepicker().val()
+                var data2 = $("#data2").datepicker().val()
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        V_DATA1: data1,
+                        V_DATA2: data2
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#divPartialView").empty();
+                        $("#divPartialView").html(result);
+                    },
+                    complete: function () {
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            }
+
+            // Operazioni Effettuate - Sospensioni (Nuovo ISE)
+            function callpartialOpSospensioniNew() {
+                //debugger;
+
+                rotta = "/Statistiche/RiepiloghiSospensioni/Index";
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {},
                     dataType: 'html',
                     beforeSend: function () {
 

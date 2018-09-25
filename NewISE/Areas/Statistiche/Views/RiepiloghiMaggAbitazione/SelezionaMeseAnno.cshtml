@@ -5,13 +5,13 @@
     <div class="col-xs-12">
         <div class="form-group">
             <div class="panel panel-default">
-                <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Indennità di Sede Estera</b></div>
+                <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</b></div>
                 <div class="panel-body">
 
                     <div class="col-xs-4 date">
                         <div class="input-group input-append date">
                             @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati", @class = "form-control select2 select2-select js-data-example-ajax" })
-                            
+
                         </div>
                     </div>
 
@@ -32,27 +32,7 @@
                         </div>
                     </div>
 
-                    @*<div class="col-xs-2 date">
-
-                        <div class="input-group input-append date">
-                            <input type="text" class="form-control" id="data1" />
-                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-2 date">
-
-                        <div class="input-group input-append date">
-                            <input type="text" class="form-control" id="data2" />
-                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                    </div>*@
-
-
-                    @*<div class="col-md-3">
-                        <a href="#" onclick="callpartialRptOpIndSedeEstera()">Test </a>
-
-                    </div>*@
+                   
 
                 </div>
             </div>
@@ -70,7 +50,7 @@
         width: '150',
         ajax: {
             delay: 250,
-            url: "/RiepiloghiIseMensile/PrelevaMesiAnniElab",
+            url: "/RiepiloghiMaggAbitazione/PrelevaMesiAnniElab",
             data: function (dati) {
                 //debugger;
                 var query = {
@@ -109,7 +89,7 @@
         width: '150',
         ajax: {
             delay: 250,
-            url: "/RiepiloghiIseMensile/PrelevaMesiAnniElab",
+            url: "/RiepiloghiMaggAbitazione/PrelevaMesiAnniElab",
             data: function (dati) {
                 //debugger;
                 var query = {
@@ -147,7 +127,7 @@
 
     }
 
-    
+
 
     $(".form-control:input").datepicker();
 
@@ -167,6 +147,7 @@
         },
         close: function (event, ui) {
             $('.container').removeClass("NoOverflow");
+            
         },
         height: windowHeight, width: windowWidth
 
@@ -182,7 +163,7 @@
         $("#dialog").css("background-color", "#ffffff");
 
 
-        var rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
+        var rotta = "/Statistiche/RiepiloghiMaggAbitazione/RptRiepiloghiMaggAbitazione";
 
         //var data1 = $("#data1").datepicker().val()
         //var data2 = $("#data2").datepicker().val()
@@ -223,41 +204,7 @@
 
     });
 
-    // Operazioni Effettuate - Indennità di Sede Estera (Nuovo ISE) - Test
-    function callpartialRptOpIndSedeEstera() {
-        //debugger;
-
-        rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
-
-        var data = $("#datepicker").datepicker().val()
-        var data = $("#datepicker").datepicker().val()
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                V_DATA: data,
-                V_DATA1: data1
-            },
-            dataType: 'html',
-            beforeSend: function () {
-
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
-
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+  
 
     $("#mesiAnniElaborati").select2({
         placeholder: "Seleziona la Data Dal",
@@ -280,4 +227,5 @@
 
 
 </script>
+
 

@@ -4675,6 +4675,20 @@
     </Content>
     <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\SelezionaMeseAnno.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiMaggAbitazione\SelezionaMeseAnno.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiMaggAbitazione\RptRiepiloghiMaggAbitazione.cshtml" />
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiMaggAbitazione.xsc">
+      <DependentUpon>DataSetRiepiloghiMaggAbitazione.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiMaggAbitazione.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetRiepiloghiMaggAbitazione.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiMaggAbitazione.xss">
+      <DependentUpon>DataSetRiepiloghiMaggAbitazione.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\Index.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -4912,12 +4926,18 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="Areas\Statistiche\Controllers\IndennitaSedeEsteraController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSospensioniController.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiIseMensileModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiIseMensileModel.cs" />
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiIseMensile.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetRiepiloghiIseMensile.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiMaggAbitazione.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetRiepiloghiMaggAbitazione.xsd</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AnticipiController.cs" />
     <Compile Include="Controllers\ElaborazioniController.cs" />
@@ -5306,6 +5326,7 @@
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepiloghiIseMensile.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtRiepiloghiMaggAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepilogoVoci.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioneTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />
@@ -6519,6 +6540,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptRiepiloghiMaggAbitazione.rdlc" />
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>
