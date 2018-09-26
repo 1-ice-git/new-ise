@@ -1216,8 +1216,6 @@ namespace NewISE.Controllers
                     {
                         using (dtTrasferimento dttr = new dtTrasferimento())
                         {
-                            ///inserisce le informazioni
-
                             using (ModelDBISE db = new ModelDBISE())
                             {
                                 try
@@ -1241,15 +1239,6 @@ namespace NewISE.Controllers
                                     if (idTrasferimentoOld > 0)
                                     {
                                         dttr.TerminaTrasferimento(idTrasferimentoOld, trm.dataPartenza, db);
-                                        var dtFineTrasf = trm.dataPartenza.AddDays(-1);
-                                        using (dtVariazioniMaggiorazioneAbitazione dtvmab = new dtVariazioniMaggiorazioneAbitazione())
-                                        {
-                                            dtvmab.TerminaMABbyDataFineTrasf(idTrasferimentoOld, dtFineTrasf, db);
-                                        }
-                                        using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
-                                        {
-                                            dtvmf.TerminaMaggiorazioniFamiliariByDataFineTrasf(idTrasferimentoOld, dtFineTrasf, db);
-                                        }
                                     }
                                     #endregion
 
@@ -1302,7 +1291,6 @@ namespace NewISE.Controllers
                                         List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
 
                                         im.idTrasfIndennita = trm.idTrasferimento;
-
                                         im.dataAggiornamento = DateTime.Now;
 
                                         dti.SetIndennita(im, db);
@@ -1448,34 +1436,14 @@ namespace NewISE.Controllers
                                             }
 
                                         }
-
+                                        //////
                                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                         {
-                                            //RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
-
-                                            //if (rdm != null && rdm.idRuoloDipendente>0)
-                                            //{
-                                            //rdm = new RuoloDipendenteModel()
-                                            //{
-                                            //    idRuolo = trm.idRuoloUfficio,
-                                            //    idTrasferimento = trm.idTrasferimento,
-                                            //    dataInizioValidita = trm.dataPartenza,
-                                            //    dataFineValidita = Utility.DataFineStop(),
-                                            //    dataAggiornamento = DateTime.Now,
-                                            //    annullato = false
-                                            //};
-
-                                            //    dtrd.AggiornaRuoloDipendente(ref rdm, trm, db);
-
-                                            //}
-                                            //else
-                                            //{
+                                         
                                             rdm = dtrd.InserisciRuoloDipendentePartenza(trm, db);
-                                            //}
-
 
                                         }
-
+                                        ///////
                                         using (dtFasciaKm dtfkm = new dtFasciaKm())
                                         {
                                             using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
@@ -1504,13 +1472,33 @@ namespace NewISE.Controllers
                                     }
                                     #endregion
 
-                                    #region provvidenze scolastiche
-                                    using (dtAttivazioniProvScol dtps = new dtAttivazioniProvScol())
-                                    {
-                                        //dtps.PreSetMaggiorazioneAbitazione(dtps, db);
-                                    }
-                                    #endregion
+                                    //#region provvidenze scolastiche
+                                    //using (dtAttivazioniProvScol dtps = new dtAttivazioniProvScol())
+                                    //{
+                                    //    //dtps.PreSetMaggiorazioneAbitazione(dtps, db);
+                                    //}
+                                    //#endregion
 
+
+                                    //#region riallinea date di tutti i componenti del trasferimento 
+                                    //var t = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+                                    //dttr.AllineaDateTrasferimento(t, db);
+                                    //#endregion
+
+                                    if (idTrasferimentoOld > 0)
+                                    {
+                                        #region riassocio indennita del trasferimento precedente
+                                        var t_old = db.TRASFERIMENTO.Find(idTrasferimentoOld);
+                                        dttr.RiassociaIndennitaTrasferimento(t_old, db);
+                                        #endregion
+
+                                        #region aggiorno data ricalcolo dipendente del trasferimento precedente
+                                        using (dtDipendenti dtd = new dtDipendenti())
+                                        {
+                                            dtd.DataInizioRicalcoliDipendente(t_old.IDTRASFERIMENTO, t_old.DATARIENTRO, db);
+                                        }
+                                        #endregion
+                                    }
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 catch (Exception ex)

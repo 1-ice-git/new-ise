@@ -69,9 +69,6 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova indennità.", "Indennita", db, im.idTrasfIndennita, im.idTrasfIndennita);
             }
-
-
-
         }
 
         public void EditIndennita(IndennitaModel im, ModelDBISE db)

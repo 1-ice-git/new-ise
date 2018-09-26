@@ -406,25 +406,30 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var tvc in ltvc)
                     {
-                        
-                        var c=tvc.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderBy(a => a.IDCONIUGE).First();
-                        //var c = db.CONIUGE.Find(tvc.IDCONIUGE);
 
-                        ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
+                        var lc = tvc.CONIUGE.Where(a =>
+                                      a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                      (a.DATAINIZIOVALIDITA <= t.DATARIENTRO && a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO)
+                                    .OrderBy(a => a.IDCONIUGE).ToList();
+                        if (lc?.Any() ?? false)
                         {
-                            idFamiliare = c.IDCONIUGE,
-                            Nominativo = c.NOME + " " + c.COGNOME,
-                            CodiceFiscale = c.CODICEFISCALE,
-                            dataInizio = c.DATAINIZIOVALIDITA,
-                            dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:c.DATAFINEVALIDITA,
-                            parentela = EnumParentela.Coniuge,
-                            idAltriDati = this.GetIdAltriDatiFamiliari(tvc.IDTITOLOVIAGGIO, c.IDCONIUGE, EnumParentela.Coniuge),
-                            RichiediTitoloViaggio = tvc.RICHIEDITITOLOVIAGGIO,
-                            idAttivazioneTitoloViaggio = tvc.IDATTIVAZIONETITOLIVIAGGIO,
-                            idTitoloViaggio = tvc.IDTITOLOVIAGGIO
-                        };
-                        letvm.Add(etvcm);
+                            var c = lc.First();
 
+                            ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
+                            {
+                                idFamiliare = c.IDCONIUGE,
+                                Nominativo = c.NOME + " " + c.COGNOME,
+                                CodiceFiscale = c.CODICEFISCALE,
+                                dataInizio = c.DATAINIZIOVALIDITA,
+                                dataFine = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA,
+                                parentela = EnumParentela.Coniuge,
+                                idAltriDati = this.GetIdAltriDatiFamiliari(tvc.IDTITOLOVIAGGIO, c.IDCONIUGE, EnumParentela.Coniuge),
+                                RichiediTitoloViaggio = tvc.RICHIEDITITOLOVIAGGIO,
+                                idAttivazioneTitoloViaggio = tvc.IDATTIVAZIONETITOLIVIAGGIO,
+                                idTitoloViaggio = tvc.IDTITOLOVIAGGIO
+                            };
+                            letvm.Add(etvcm);
+                        }
                     }
                 }
 
@@ -435,24 +440,29 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     foreach (var tvf in ltvf)
                     {
-                        
-                        var f = tvf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderBy(a => a.IDFIGLI).First();
 
-                        ElencoTitoliViaggioModel etvfm = new ElencoTitoliViaggioModel()
+                        var lf = tvf.FIGLI.Where(a =>
+                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                    (a.DATAINIZIOVALIDITA <= t.DATARIENTRO && a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO)
+                                    .OrderBy(a => a.IDFIGLI).ToList();
+                        if (lf?.Any() ?? false)
                         {
-                            idFamiliare = f.IDFIGLI,
-                            Nominativo = f.NOME + " " + f.COGNOME,
-                            CodiceFiscale = f.CODICEFISCALE,
-                            dataInizio = f.DATAINIZIOVALIDITA,
-                            dataFine = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA,
-                            parentela = EnumParentela.Figlio,
-                            idAltriDati = this.GetIdAltriDatiFamiliari(tvf.IDTITOLOVIAGGIO, f.IDFIGLI, EnumParentela.Figlio),
-                            RichiediTitoloViaggio = tvf.RICHIEDITITOLOVIAGGIO,
-                            idAttivazioneTitoloViaggio = tvf.IDATTIVAZIONETITOLIVIAGGIO,
-                            idTitoloViaggio = tvf.IDTITOLOVIAGGIO
-                        };
-                        letvm.Add(etvfm);
-
+                            var f = lf.First();
+                            ElencoTitoliViaggioModel etvfm = new ElencoTitoliViaggioModel()
+                            {
+                                idFamiliare = f.IDFIGLI,
+                                Nominativo = f.NOME + " " + f.COGNOME,
+                                CodiceFiscale = f.CODICEFISCALE,
+                                dataInizio = f.DATAINIZIOVALIDITA,
+                                dataFine = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA,
+                                parentela = EnumParentela.Figlio,
+                                idAltriDati = this.GetIdAltriDatiFamiliari(tvf.IDTITOLOVIAGGIO, f.IDFIGLI, EnumParentela.Figlio),
+                                RichiediTitoloViaggio = tvf.RICHIEDITITOLOVIAGGIO,
+                                idAttivazioneTitoloViaggio = tvf.IDATTIVAZIONETITOLIVIAGGIO,
+                                idTitoloViaggio = tvf.IDTITOLOVIAGGIO
+                            };
+                            letvm.Add(etvfm);
+                        }
                     }
                 }
 

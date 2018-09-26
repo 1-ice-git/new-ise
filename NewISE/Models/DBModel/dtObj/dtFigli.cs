@@ -289,6 +289,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var f = db.FIGLI.Find(idFiglio);
+                var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 if (f != null && f.IDFIGLI > 0)
                 {
@@ -301,7 +302,7 @@ namespace NewISE.Models.DBModel.dtObj
                         cognome = f.COGNOME,
                         codiceFiscale = f.CODICEFISCALE,
                         dataInizio = f.DATAINIZIOVALIDITA,
-                        dataFine = f.DATAFINEVALIDITA,
+                        dataFine = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA,
                         dataAggiornamento = f.DATAAGGIORNAMENTO,
                         idStatoRecord = f.IDSTATORECORD,
                         FK_IdFigli = f.FK_IDFIGLI

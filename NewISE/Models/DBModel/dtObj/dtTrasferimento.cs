@@ -1959,382 +1959,849 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
-        public void AllineaDateTrasferimentoPartenza(TRASFERIMENTO t, ModelDBISE db, DateTime dataPartenzaOriginale)
+        public void RiassociaIndennitaTrasferimento(TRASFERIMENTO t, ModelDBISE db)
         {
             try
             {
-                using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                #region modello parziale del trasferimento
+                TrasferimentoModel tm = new TrasferimentoModel()
                 {
+                    idTrasferimento = t.IDTRASFERIMENTO,
+                    dataPartenza=t.DATAPARTENZA,
+                    dataRientro=t.DATARIENTRO                        
+                };
+                #endregion
 
-                    #region modello parziale del trasferimento
-                    TrasferimentoModel tm = new TrasferimentoModel()
-                    {
-                        idTrasferimento = t.IDTRASFERIMENTO
-                    };
-                    #endregion
-
-                    #region allinea data ruolo dipendente
-                    var rd = t.RUOLODIPENDENTE.First();
+                #region allinea data ruolo dipendente
+                var rd = t.RUOLODIPENDENTE.First();
+                if (rd.DATAINZIOVALIDITA != t.DATAPARTENZA)
+                {
                     rd.DATAINZIOVALIDITA = t.DATAPARTENZA;
                     if (db.SaveChanges() <= 0)
                     {
                         throw new Exception("Errore di correzione data inizio validita ruolo dipendente da " + rd.DATAINZIOVALIDITA + " a " + t.DATAPARTENZA);
                     }
-                    #endregion
+                }
+                #endregion
 
-                    #region legge indennita
-                    var i = t.INDENNITA;
-                    #endregion
+                #region legge indennita
+                var i = t.INDENNITA;
+                #endregion
 
-                    #region riassocia livelli dipendente
-                    using (dtLivelliDipendente dtld = new dtLivelliDipendente())
+                #region riassocia livelli dipendente
+                using (dtLivelliDipendente dtld = new dtLivelliDipendente())
+                {
+                    var lld = i.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var ld in lld)
                     {
-                        var lld = i.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false).ToList();
-                        foreach (var ld in lld)
+                        i.LIVELLIDIPENDENTI.Remove(ld);
+                    }
+                    var lldm =
+                        dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA,
+                            t.DATARIENTRO, db).ToList();
+                    if (lldm?.Any() ?? false)
+                    {
+                        foreach (var ldm in lldm)
                         {
-                            i.LIVELLIDIPENDENTI.Remove(ld);
-                        }
-                        var lldm =
-                            dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA,
-                                t.DATARIENTRO, db).ToList();
-                        if (lldm?.Any() ?? false)
-                        {
-                            foreach (var ldm in lldm)
+                            dtld.AssociaLivelloDipendente_Indennita(t.IDTRASFERIMENTO,
+                                ldm.idLivDipendente, db);
+
+                            using (dtIndennitaBase dtib = new dtIndennitaBase())
                             {
-                                dtld.AssociaLivelloDipendente_Indennita(t.IDTRASFERIMENTO,
-                                    ldm.idLivDipendente, db);
+                                List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
 
-                                using (dtIndennitaBase dtib = new dtIndennitaBase())
+                                DateTime dataInizio = Utility.GetData_Inizio_Base();
+                                DateTime dataFine = Utility.DataFineStop();
+
+                                if (t.DATAPARTENZA > ldm.dataInizioValdita)
                                 {
-                                    List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+                                    dataInizio = t.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dataInizio = t.DATAPARTENZA;
+                                }
 
-                                    DateTime dataInizio = Utility.GetData_Inizio_Base();
-                                    DateTime dataFine = Utility.DataFineStop();
-
-                                    if (t.DATAPARTENZA > ldm.dataInizioValdita)
+                                if (ldm.dataFineValidita.HasValue)
+                                {
+                                    if (t.DATARIENTRO > ldm.dataFineValidita.Value)
                                     {
-                                        dataInizio = t.DATAPARTENZA;
+                                        dataFine = ldm.dataFineValidita.Value;
                                     }
                                     else
                                     {
-                                        dataInizio = t.DATAPARTENZA;
-                                    }
-
-                                    if (ldm.dataFineValidita.HasValue)
-                                    {
-                                        if (t.DATARIENTRO > ldm.dataFineValidita.Value)
-                                        {
-                                            dataFine = ldm.dataFineValidita.Value;
-                                        }
-                                        else
-                                        {
-                                            dataFine = t.DATARIENTRO;
-                                        }
-                                    }
-
-
-                                    libm =
-                                        dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
-                                            dataFine, db).ToList();
-
-                                    if (libm?.Any() ?? false)
-                                    {
-                                        foreach (var ibm in libm)
-                                        {
-                                            dtib.AssociaIndennitaBase_Indennita(t.IDTRASFERIMENTO, ibm.idIndennitaBase, db);
-                                        }
-
-
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("Non risulta l'indennità base per il livello interessato.");
+                                        dataFine = t.DATARIENTRO;
                                     }
                                 }
 
+                                libm =
+                                    dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
+                                        dataFine, db).ToList();
+
+                                if (libm?.Any() ?? false)
+                                {
+                                    foreach (var ibm in libm)
+                                    {
+                                        dtib.AssociaIndennitaBase_Indennita(t.IDTRASFERIMENTO, ibm.idIndennitaBase, db);
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    throw new Exception("Non risulta l'indennità base per il livello interessato.");
+                                }
                             }
+
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Non risulta assegnato nessun livello per il dipendente " + t.DIPENDENTI.COGNOME + " " + t.DIPENDENTI.NOME + " (" + t.DIPENDENTI.MATRICOLA + ")");
+                    }
+                }
+                #endregion
+
+                #region riassocia TFR
+                using (dtTFR dttfr = new dtTFR())
+                {
+                    var ltfr = i.TFR.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var tfr in ltfr)
+                    {
+                        i.TFR.Remove(tfr);
+                    }
+
+                    List<TFRModel> ltfrm =
+                        dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA,
+                            t.DATARIENTRO, db).ToList();
+
+                    if (ltfrm?.Any() ?? false)
+                    {
+                        foreach (var tfrm in ltfrm)
+                        {
+                            dttfr.AssociaTFR_Indennita(t.IDTRASFERIMENTO, tfrm.idTFR, db);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
+                    }
+                }
+                #endregion
+
+                #region riassocia percentuale disagio
+                using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+                {
+                    var lpd = i.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var pd in lpd)
+                    {
+                        i.PERCENTUALEDISAGIO.Remove(pd);
+                    }
+
+                    List<PercentualeDisagioModel> lpdm =
+                        dtpd.GetPercentualeDisagioIndennitaByRange(t.IDUFFICIO,
+                            t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+
+
+                    if (lpdm?.Any() ?? false)
+                    {
+                        foreach (var pdm in lpdm)
+                        {
+                            dtpd.AssociaPercentualeDisagio_Indennita(t.IDTRASFERIMENTO, pdm.idPercentualeDisagio, db);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
+                    }
+
+
+                }
+                #endregion
+
+                #region riassocia coefficiente sede
+                using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+                {
+                    var lcs = i.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var cs in lcs)
+                    {
+                        i.COEFFICIENTESEDE.Remove(cs);
+                    }
+
+                    List<CoefficientiSedeModel> lcsm =
+                        dtcs.GetCoefficenteSedeIndennitaByRangeDate(t.IDUFFICIO,
+                            t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+
+                    if (lcsm?.Any() ?? false)
+                    {
+                        foreach (var csm in lcsm)
+                        {
+                            dtcs.AssociaCoefficenteSede_Indennita(t.IDTRASFERIMENTO, csm.idCoefficientiSede, db);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Non risulta il valore di coefficiente di sede per l'ufficio interessato.");
+                    }
+                }
+                #endregion
+
+                #region riassocia fascia KM
+                using (dtFasciaKm dtfkm = new dtFasciaKm())
+                {
+                    using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
+                    {
+                        var psm = dtps.GetPrimaSistemazioneBtIdTrasf(t.IDTRASFERIMENTO, db);
+                        var ps = db.PRIMASITEMAZIONE.Find(psm.idPrimaSistemazione);
+                        var lpfk = ps.PERCENTUALEFKM.Where(a => a.ANNULLATO == false).ToList();
+                        foreach (var pfk in lpfk)
+                        {
+                            ps.PERCENTUALEFKM.Remove(pfk);
+                        }
+
+                        var pfkmm = dtfkm.GetPercentualeFKM(lpfk.First().IDFKM, t.DATAPARTENZA, db);
+                        if (pfkmm?.idPFKM > 0)
+                        {
+                            dtfkm.AssociaPercentualeFKMPrimaSistemazione(psm.idPrimaSistemazione, pfkmm.idPFKM, db);
                         }
                         else
                         {
-                            throw new Exception("Non risulta assegnato nessun livello per il dipendente " + t.DIPENDENTI.COGNOME + " " + t.DIPENDENTI.NOME + " (" + t.DIPENDENTI.MATRICOLA + ")");
+                            throw new Exception("Non risulta il valore della percentuale fascia chilometrica.");
                         }
                     }
-                    #endregion
+                }
+                #endregion
 
-                    #region riassocia TFR
-                    using (dtTFR dttfr = new dtTFR())
+                #region legge MaggiorazioniFamiliari
+                var mf = t.MAGGIORAZIONIFAMILIARI;
+                #endregion
+
+                #region Riassocia perc magg coniuge
+                var lc = mf.CONIUGE.Where(a =>
+                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
+                    //&& a.DATAINIZIOVALIDITA<t.DATAPARTENZA
+                    ).ToList();
+                if (lc?.Any() ?? false)
+                {
+                    foreach (var c in lc)
                     {
-                        var ltfr = i.TFR.Where(a => a.ANNULLATO == false).ToList();
-                        foreach (var tfr in ltfr)
+                        using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                         {
-                            i.TFR.Remove(tfr);
-                        }
-
-                        List<TFRModel> ltfrm =
-                            dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA,
-                                t.DATARIENTRO, db).ToList();
-
-                        if (ltfrm?.Any() ?? false)
-                        {
-                            foreach (var tfrm in ltfrm)
+                            //elimina le associazioni perc magg coniuge
+                            var lpmc = c.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var pmc in lpmc)
                             {
-                                dttfr.AssociaTFR_Indennita(t.IDTRASFERIMENTO, tfrm.idTFR, db);
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
-                        }
-                    }
-                    #endregion
-
-                    #region riassocia percentuale disagio
-                    using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
-                    {
-                        var lpd = i.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false).ToList();
-                        foreach (var pd in lpd)
-                        {
-                            i.PERCENTUALEDISAGIO.Remove(pd);
-                        }
-
-                        List<PercentualeDisagioModel> lpdm =
-                            dtpd.GetPercentualeDisagioIndennitaByRange(t.IDUFFICIO,
-                                t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
-
-
-                        if (lpdm?.Any() ?? false)
-                        {
-                            foreach (var pdm in lpdm)
-                            {
-                                dtpd.AssociaPercentualeDisagio_Indennita(t.IDTRASFERIMENTO, pdm.idPercentualeDisagio, db);
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
-                        }
-
-
-                    }
-                    #endregion
-
-                    #region riassocia coefficiente sede
-                    using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
-                    {
-                        var lcs = i.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false).ToList();
-                        foreach (var cs in lcs)
-                        {
-                            i.COEFFICIENTESEDE.Remove(cs);
-                        }
-
-                        List<CoefficientiSedeModel> lcsm =
-                            dtcs.GetCoefficenteSedeIndennitaByRangeDate(t.IDUFFICIO,
-                                t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
-
-                        if (lcsm?.Any() ?? false)
-                        {
-                            foreach (var csm in lcsm)
-                            {
-                                dtcs.AssociaCoefficenteSede_Indennita(t.IDTRASFERIMENTO, csm.idCoefficientiSede, db);
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Non risulta il valore di coefficiente di sede per l'ufficio interessato.");
-                        }
-                    }
-                    #endregion
-
-                    #region riassocia fascia KM
-                    using (dtFasciaKm dtfkm = new dtFasciaKm())
-                    {
-                        using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
-                        {
-                            var psm = dtps.GetPrimaSistemazioneBtIdTrasf(t.IDTRASFERIMENTO, db);
-                            var ps = db.PRIMASITEMAZIONE.Find(psm.idPrimaSistemazione);
-                            var lpfk = ps.PERCENTUALEFKM.Where(a => a.ANNULLATO == false).ToList();
-                            foreach (var pfk in lpfk)
-                            {
-                                ps.PERCENTUALEFKM.Remove(pfk);
+                                c.PERCENTUALEMAGCONIUGE.Remove(pmc);
                             }
 
-                            var pfkmm = dtfkm.GetPercentualeFKM(lpfk.First().IDFKM, t.DATAPARTENZA, db);
-                            if (pfkmm?.idPFKM > 0)
+                            //ricalcola perc magg coniuge
+                            DateTime dtIni = c.DATAINIZIOVALIDITA;
+                            DateTime dtFin = c.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:c.DATAFINEVALIDITA;
+
+                            List<PercentualeMagConiugeModel> lpmcm =
+                                dtpc.GetListaPercentualiMagConiugeByRangeDate((EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE, dtIni, dtFin, db)
+                                    .ToList();
+
+                            if (lpmcm?.Any() ?? false)
                             {
-                                dtfkm.AssociaPercentualeFKMPrimaSistemazione(psm.idPrimaSistemazione, pfkmm.idPFKM, db);
+                                foreach (var pmcm in lpmcm)
+                                {
+                                    dtpc.AssociaPercentualeMaggiorazioneConiuge(c.IDCONIUGE, pmcm.idPercentualeConiuge, db);
+                                }
                             }
                             else
                             {
-                                throw new Exception("Non risulta il valore della percentuale fascia chilometrica.");
+                                throw new Exception("Non è presente nessuna percentuale del coniuge.");
                             }
                         }
                     }
-                    #endregion
+                }
+                #endregion
 
-                    #region legge MaggiorazioniFamiliari
-                    var mf = t.MAGGIORAZIONIFAMILIARI;
-                    #endregion
 
-                    #region allinea date Maggiorazioni Familiari Coniuge e riassocia perc magg coniuge
-                    var lc = mf.CONIUGE.Where(a =>
-                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
-                        //&& a.DATAINIZIOVALIDITA<t.DATAPARTENZA
-                        ).ToList();
-                    if (lc?.Any() ?? false)
+                #region Riassocia perc magg figli e perc primo segretario
+                var lf = mf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                if (lf?.Any() ?? false)
+                {
+                    foreach (var f in lf)
                     {
-                        foreach (var c in lc)
+
+                        using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
                         {
-                            if (c.DATAINIZIOVALIDITA == dataPartenzaOriginale ||
-                                c.DATAINIZIOVALIDITA < t.DATAPARTENZA)
+                            //elimina le associazioni perc magg figli
+                            var lpmf = f.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var pmf in lpmf)
                             {
-                                c.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                                f.PERCENTUALEMAGFIGLI.Remove(pmf);
+                            }
+
+                            //ricalcola perc magg figli
+                            DateTime dtIni = f.DATAINIZIOVALIDITA;
+                            DateTime dtFin = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA;
+
+                            List<PercentualeMagFigliModel> lpmfm =
+                                dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db)
+                                    .ToList();
+
+                            if (lpmfm?.Any() ?? false)
+                            {
+                                foreach (var pmfm in lpmfm)
+                                {
+                                    dtpmf.AssociaPercentualeMaggiorazioneFigli(f.IDFIGLI, pmfm.idPercMagFigli, db);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Non è presente nessuna percentuale maggiorazione figli.");
+                            }
+                        }
+
+                        using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+                        {
+                            //elimina le associazioni perc indennita primo segretario
+                            var lpps = f.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var pps in lpps)
+                            {
+                                f.INDENNITAPRIMOSEGRETARIO.Remove(pps);
+                            }
+
+                            DateTime dtIni = f.DATAINIZIOVALIDITA;
+                            DateTime dtFin = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA;
+
+                            List<IndennitaPrimoSegretModel> lipsm =
+                                dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                            if (lipsm?.Any() ?? false)
+                            {
+                                foreach (var ipsm in lipsm)
+                                {
+                                    dtips.AssociaIndennitaPrimoSegretarioFiglio(f.IDFIGLI, ipsm.idIndPrimoSegr, db);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Non è presente nessuna indennità di primo segretario per il figlio " + f.COGNOME + " " + f.NOME + ".");
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                #region maggiorazioni abitazione
+                using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
+                {
+                    using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                    {
+                        var lmab = dtvma.GetElencoMAB(t.IDTRASFERIMENTO, db);
+
+                        foreach (var mab in lmab)
+                        {
+
+                            #region riassocia percMAB e magg annuali
+                            var lmann = mab.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var mann in lmann)
+                            {
+                                mab.MAGGIORAZIONIANNUALI.Remove(mann);
+                            }
+
+                            var pmab = dtvma.GetPeriodoMAB(mab.IDMAB, db);
+                            var pmabm = dtvma.GetPeriodoMABModel(mab.IDMAB, db);
+
+                            if (pmab.IDPERIODOMAB > 0)
+                            {
+                                var dtini = pmab.DATAINIZIOMAB;
+                                var dtfin = pmab.DATAFINEMAB > t.DATARIENTRO ? t.DATARIENTRO : pmab.DATAFINEMAB;
+
+                                //elimina le associazioni percentualeMAB variazioniMAB
+                                var lpercMab = pmab.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+                                foreach (var percMab in lpercMab)
+                                {
+                                    pmab.PERCENTUALEMAB.Remove(percMab);
+                                }
+
+                                var lpmab = dtma.GetListaPercentualeMABByRangeDate(pmabm, dtini, dtfin, tm, db);
+                                foreach (var pm in lpmab)
+                                {
+                                    dtma.Associa_PerMAB_PercentualeMAB(pmab.IDPERIODOMAB, pm.IDPERCMAB, db);
+                                }
+                            }
+
+                            //riassocia maggiorazioni annuali
+                            var mam = dtma.GetMaggiorazioneAnnuale(mab, db);
+                            if (mam.IDMAGANNUALI > 0)
+                            {
+                                if (mam.ANNUALITA)
+                                {
+                                    dtma.Associa_MAB_MaggiorazioniAnnuali(mab.IDMAB, mam.IDMAGANNUALI, db);
+
+                                }
+                            }
+                            #endregion
+
+                            #region riassocia perc condiviso MAB
+                            var lpcma = mab.PAGATOCONDIVISOMAB.Where(a =>
+                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                            if (lpcma?.Any() ?? false)
+                            {
+                                foreach (var pcma in lpcma)
+                                {
+                                    var lpc = pcma.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
+                                    foreach (var pc in lpc)
+                                    {
+                                        pcma.PERCENTUALECONDIVISIONE.Remove(pc);
+                                    }
+
+                                    var dtIni = pcma.DATAINIZIOVALIDITA;
+                                    var dtFin = pcma.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : pcma.DATAFINEVALIDITA;
+                                    lpc = dtma.GetListaPercentualeCondivisione(dtIni, dtFin, db);
+                                    foreach (var pc in lpc)
+                                    {
+                                        dtma.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pcma.IDPAGATOCONDIVISO, pc.IDPERCCOND, db);
+                                    }
+                                }
+                            }
+                            #endregion
+
+                            #region riassocia TFR
+                            var lcma = mab.CANONEMAB.Where(a =>
+                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                            if (lcma?.Any() ?? false)
+                            {
+                                foreach (var cma in lcma)
+                                {
+
+                                    var ltfr = cma.TFR.Where(a => a.ANNULLATO == false).ToList();
+                                    foreach (var tfr in ltfr)
+                                    {
+                                        cma.TFR.Remove(tfr);
+                                    }
+
+                                    using (dtTFR dtTfr = new dtTFR())
+                                    {
+                                        var dtIni = cma.DATAINIZIOVALIDITA;
+                                        var dtFin = cma.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : cma.DATAFINEVALIDITA;
+
+                                        var ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(tm, cma.IDVALUTA, dtIni, dtFin, db);
+                                        foreach (var tfrm in ltfrm)
+                                        {
+                                            dtma.Associa_TFR_CanoneMAB(tfrm.idTFR, cma.IDCANONE, db);
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
+                        }
+                    }
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+        public void AllineaDateIni_Trasferimento(TRASFERIMENTO t, DateTime dataPartenzaOriginale, ModelDBISE db)
+        {
+            try
+            {
+
+                #region modello parziale del trasferimento
+                TrasferimentoModel tm = new TrasferimentoModel()
+                {
+                    idTrasferimento = t.IDTRASFERIMENTO,
+                    dataPartenza = t.DATAPARTENZA,
+                    dataRientro = t.DATARIENTRO
+                };
+                #endregion
+
+                #region allinea data ruolo dipendente
+                var rd = t.RUOLODIPENDENTE.First();
+                if (rd.DATAINZIOVALIDITA == dataPartenzaOriginale)
+                {
+                    rd.DATAINZIOVALIDITA = t.DATAPARTENZA;
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore di correzione data inizio validita ruolo dipendente da " + rd.DATAINZIOVALIDITA + " a " + t.DATAPARTENZA);
+                    }
+                }
+                #endregion
+
+                #region legge indennita
+                var i = t.INDENNITA;
+                #endregion
+
+                #region riassocia livelli dipendente
+                using (dtLivelliDipendente dtld = new dtLivelliDipendente())
+                {
+                    var lld = i.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var ld in lld)
+                    {
+                        i.LIVELLIDIPENDENTI.Remove(ld);
+                    }
+                    var lldm =
+                        dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA,
+                            t.DATARIENTRO, db).ToList();
+                    if (lldm?.Any() ?? false)
+                    {
+                        foreach (var ldm in lldm)
+                        {
+                            dtld.AssociaLivelloDipendente_Indennita(t.IDTRASFERIMENTO,
+                                ldm.idLivDipendente, db);
+
+                            using (dtIndennitaBase dtib = new dtIndennitaBase())
+                            {
+                                List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+
+                                DateTime dataInizio = Utility.GetData_Inizio_Base();
+                                DateTime dataFine = Utility.DataFineStop();
+
+                                if (t.DATAPARTENZA > ldm.dataInizioValdita)
+                                {
+                                    dataInizio = t.DATAPARTENZA;
+                                }
+                                else
+                                {
+                                    dataInizio = t.DATAPARTENZA;
+                                }
+
+                                if (ldm.dataFineValidita.HasValue)
+                                {
+                                    if (t.DATARIENTRO > ldm.dataFineValidita.Value)
+                                    {
+                                        dataFine = ldm.dataFineValidita.Value;
+                                    }
+                                    else
+                                    {
+                                        dataFine = t.DATARIENTRO;
+                                    }
+                                }
+
+                                libm =
+                                    dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
+                                        dataFine, db).ToList();
+
+                                if (libm?.Any() ?? false)
+                                {
+                                    foreach (var ibm in libm)
+                                    {
+                                        dtib.AssociaIndennitaBase_Indennita(t.IDTRASFERIMENTO, ibm.idIndennitaBase, db);
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    throw new Exception("Non risulta l'indennità base per il livello interessato.");
+                                }
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Non risulta assegnato nessun livello per il dipendente " + t.DIPENDENTI.COGNOME + " " + t.DIPENDENTI.NOME + " (" + t.DIPENDENTI.MATRICOLA + ")");
+                    }
+                }
+                #endregion
+
+                #region riassocia TFR
+                using (dtTFR dttfr = new dtTFR())
+                {
+                    var ltfr = i.TFR.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var tfr in ltfr)
+                    {
+                        i.TFR.Remove(tfr);
+                    }
+
+                    List<TFRModel> ltfrm =
+                        dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA,
+                            t.DATARIENTRO, db).ToList();
+
+                    if (ltfrm?.Any() ?? false)
+                    {
+                        foreach (var tfrm in ltfrm)
+                        {
+                            dttfr.AssociaTFR_Indennita(t.IDTRASFERIMENTO, tfrm.idTFR, db);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
+                    }
+                }
+                #endregion
+
+                #region riassocia percentuale disagio
+                using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+                {
+                    var lpd = i.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var pd in lpd)
+                    {
+                        i.PERCENTUALEDISAGIO.Remove(pd);
+                    }
+
+                    List<PercentualeDisagioModel> lpdm =
+                        dtpd.GetPercentualeDisagioIndennitaByRange(t.IDUFFICIO,
+                            t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+
+
+                    if (lpdm?.Any() ?? false)
+                    {
+                        foreach (var pdm in lpdm)
+                        {
+                            dtpd.AssociaPercentualeDisagio_Indennita(t.IDTRASFERIMENTO, pdm.idPercentualeDisagio, db);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
+                    }
+
+
+                }
+                #endregion
+
+                #region riassocia coefficiente sede
+                using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+                {
+                    var lcs = i.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false).ToList();
+                    foreach (var cs in lcs)
+                    {
+                        i.COEFFICIENTESEDE.Remove(cs);
+                    }
+
+                    List<CoefficientiSedeModel> lcsm =
+                        dtcs.GetCoefficenteSedeIndennitaByRangeDate(t.IDUFFICIO,
+                            t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+
+                    if (lcsm?.Any() ?? false)
+                    {
+                        foreach (var csm in lcsm)
+                        {
+                            dtcs.AssociaCoefficenteSede_Indennita(t.IDTRASFERIMENTO, csm.idCoefficientiSede, db);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Non risulta il valore di coefficiente di sede per l'ufficio interessato.");
+                    }
+                }
+                #endregion
+
+                #region riassocia fascia KM
+                using (dtFasciaKm dtfkm = new dtFasciaKm())
+                {
+                    using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
+                    {
+                        var psm = dtps.GetPrimaSistemazioneBtIdTrasf(t.IDTRASFERIMENTO, db);
+                        var ps = db.PRIMASITEMAZIONE.Find(psm.idPrimaSistemazione);
+                        var lpfk = ps.PERCENTUALEFKM.Where(a => a.ANNULLATO == false).ToList();
+                        foreach (var pfk in lpfk)
+                        {
+                            ps.PERCENTUALEFKM.Remove(pfk);
+                        }
+
+                        var pfkmm = dtfkm.GetPercentualeFKM(lpfk.First().IDFKM, t.DATAPARTENZA, db);
+                        if (pfkmm?.idPFKM > 0)
+                        {
+                            dtfkm.AssociaPercentualeFKMPrimaSistemazione(psm.idPrimaSistemazione, pfkmm.idPFKM, db);
+                        }
+                        else
+                        {
+                            throw new Exception("Non risulta il valore della percentuale fascia chilometrica.");
+                        }
+                    }
+                }
+                #endregion
+
+                #region legge MaggiorazioniFamiliari
+                var mf = t.MAGGIORAZIONIFAMILIARI;
+                #endregion
+
+                #region allinea date Maggiorazioni Familiari Coniuge e riassocia perc magg coniuge
+                var lc = mf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                if (lc?.Any() ?? false)
+                {
+                    foreach (var c in lc)
+                    {
+                        if (c.DATAINIZIOVALIDITA == dataPartenzaOriginale)
+                        {
+                            c.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore di correzione data inizio validita coniuge " + c.COGNOME + " " + c.NOME + " da " + c.DATAINIZIOVALIDITA + " a " + dataPartenzaOriginale);
+                            }
+                        }
+
+                        if (c.DATAINIZIOVALIDITA < t.DATAPARTENZA)
+                        {
+                            c.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore di correzione data inizio validita coniuge " + c.COGNOME + " " + c.NOME + " da " + c.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
+                            }
+                        }
+
+                        using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                        {
+                            //elimina le associazioni perc magg coniuge
+                            var lpmc = c.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var pmc in lpmc)
+                            {
+                                c.PERCENTUALEMAGCONIUGE.Remove(pmc);
+                            }
+
+                            //ricalcola perc magg coniuge
+                            DateTime dtIni = c.DATAINIZIOVALIDITA;
+                            DateTime dtFin = c.DATAFINEVALIDITA;
+
+                            List<PercentualeMagConiugeModel> lpmcm =
+                                dtpc.GetListaPercentualiMagConiugeByRangeDate((EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE, dtIni, dtFin, db)
+                                    .ToList();
+
+                            if (lpmcm?.Any() ?? false)
+                            {
+                                foreach (var pmcm in lpmcm)
+                                {
+                                    dtpc.AssociaPercentualeMaggiorazioneConiuge(c.IDCONIUGE, pmcm.idPercentualeConiuge, db);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Non è presente nessuna percentuale del coniuge.");
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                #region allinea date Maggiorazioni Familiari Pensione Coniuge
+                //prende tutti i coniugi validi
+                lc = mf.CONIUGE.Where(a =>
+                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                if (lc?.Any() ?? false)
+                {
+                    foreach (var c in lc)
+                    {
+                        var lpc = c.PENSIONE.Where(a =>
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
+                                        //&& a.DATAINIZIO<t.DATAPARTENZA
+                                        ).ToList();
+                        foreach (var pc in lpc)
+                        {
+                            if (pc.DATAINIZIO == dataPartenzaOriginale)
+                            {
+                                pc.DATAINIZIO = t.DATAPARTENZA;
                                 if (db.SaveChanges() <= 0)
                                 {
-                                    throw new Exception("Errore di correzione data inizio validita coniuge " + c.COGNOME + " " + c.NOME + " da " + c.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
-                                }
-
-                                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                                {
-                                    //elimina le associazioni perc magg coniuge
-                                    var lpmc = c.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false).ToList();
-                                    foreach (var pmc in lpmc)
-                                    {
-                                        c.PERCENTUALEMAGCONIUGE.Remove(pmc);
-                                    }
-
-                                    //ricalcola perc magg coniuge
-                                    DateTime dtIni = c.DATAINIZIOVALIDITA;
-                                    DateTime dtFin = c.DATAFINEVALIDITA;
-
-                                    List<PercentualeMagConiugeModel> lpmcm =
-                                        dtpc.GetListaPercentualiMagConiugeByRangeDate((EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE, dtIni, dtFin, db)
-                                            .ToList();
-
-                                    if (lpmcm?.Any() ?? false)
-                                    {
-                                        foreach (var pmcm in lpmcm)
-                                        {
-                                            dtpc.AssociaPercentualeMaggiorazioneConiuge(c.IDCONIUGE, pmcm.idPercentualeConiuge, db);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("Non è presente nessuna percentuale del coniuge.");
-                                    }
+                                    throw new Exception("Errore di correzione data inizio pensione coniuge " + c.COGNOME + " " + c.NOME + " da " + pc.DATAINIZIO + " a " + dataPartenzaOriginale);
                                 }
                             }
-                        }
-                    }
-                    #endregion
-
-                    #region allinea date Maggiorazioni Familiari Pensione Coniuge
-                    //prende tutti i coniugi validi
-                    lc = mf.CONIUGE.Where(a =>
-                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                    if (lc?.Any() ?? false)
-                    {
-                        foreach (var c in lc)
-                        {
-                            var lpc = c.PENSIONE.Where(a =>
-                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
-                                            //&& a.DATAINIZIO<t.DATAPARTENZA
-                                            ).ToList();
-                            foreach (var pc in lpc)
+                            if (pc.DATAINIZIO < t.DATAPARTENZA)
                             {
-                                if (pc.DATAINIZIO == dataPartenzaOriginale ||
-                                    pc.DATAINIZIO < t.DATAPARTENZA)
-                                {
-                                    pc.DATAINIZIO = t.DATAPARTENZA;
-                                    if (db.SaveChanges() <= 0)
-                                    {
-                                        throw new Exception("Errore di correzione data inizio pensione coniuge " + c.COGNOME + " " + c.NOME + " da " + pc.DATAINIZIO + " a " + t.DATAPARTENZA);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    #endregion
-
-                    #region allinea date Maggiorazioni Familiari Figli e riassocia perc magg figli e perc primo segretario
-                    var lf = mf.FIGLI.Where(a =>
-                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
-                        //&& a.DATAINIZIOVALIDITA < t.DATAPARTENZA
-                        ).ToList();
-                    if (lf?.Any() ?? false)
-                    {
-                        foreach (var f in lf)
-                        {
-                            if (f.DATAINIZIOVALIDITA == dataPartenzaOriginale ||
-                                f.DATAINIZIOVALIDITA < t.DATAPARTENZA)
-                            {
-
-                                f.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                                pc.DATAINIZIO = t.DATAPARTENZA;
                                 if (db.SaveChanges() <= 0)
                                 {
-                                    throw new Exception("Errore di correzione data inizio validita figlio " + f.COGNOME + " " + f.NOME + " da " + f.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
-                                }
-                                using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
-                                {
-                                    //elimina le associazioni perc magg figli
-                                    var lpmf = f.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false).ToList();
-                                    foreach (var pmf in lpmf)
-                                    {
-                                        f.PERCENTUALEMAGFIGLI.Remove(pmf);
-                                    }
-
-                                    //ricalcola perc magg figli
-                                    DateTime dtIni = f.DATAINIZIOVALIDITA;
-                                    DateTime dtFin = f.DATAFINEVALIDITA;
-
-                                    List<PercentualeMagFigliModel> lpmfm =
-                                        dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db)
-                                            .ToList();
-
-                                    if (lpmfm?.Any() ?? false)
-                                    {
-                                        foreach (var pmfm in lpmfm)
-                                        {
-                                            dtpmf.AssociaPercentualeMaggiorazioneFigli(f.IDFIGLI, pmfm.idPercMagFigli, db);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("Non è presente nessuna percentuale maggiorazione figli.");
-                                    }
-                                }
-
-                                using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
-                                {
-                                    //elimina le associazioni perc indennita primo segretario
-                                    var lpps = f.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).ToList();
-                                    foreach (var pps in lpps)
-                                    {
-                                        f.INDENNITAPRIMOSEGRETARIO.Remove(pps);
-                                    }
-
-                                    DateTime dtIni = f.DATAINIZIOVALIDITA;
-                                    DateTime dtFin = f.DATAFINEVALIDITA;
-
-                                    List<IndennitaPrimoSegretModel> lipsm =
-                                        dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
-
-                                    if (lipsm?.Any() ?? false)
-                                    {
-                                        foreach (var ipsm in lipsm)
-                                        {
-                                            dtips.AssociaIndennitaPrimoSegretarioFiglio(f.IDFIGLI, ipsm.idIndPrimoSegr, db);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("Non è presente nessuna indennità di primo segretario per il figlio " + f.COGNOME + " " + f.NOME + ".");
-                                    }
+                                    throw new Exception("Errore di correzione data inizio pensione coniuge " + c.COGNOME + " " + c.NOME + " da " + pc.DATAINIZIO + " a " + t.DATAPARTENZA);
                                 }
                             }
                         }
                     }
-                    #endregion
+                }
+                #endregion
 
+                #region allinea date Maggiorazioni Familiari Figli e riassocia perc magg figli e perc primo segretario
+                var lf = mf.FIGLI.Where(a =>
+                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
+                    //&& a.DATAINIZIOVALIDITA < t.DATAPARTENZA
+                    ).ToList();
+                if (lf?.Any() ?? false)
+                {
+                    foreach (var f in lf)
+                    {
+                        if (f.DATAINIZIOVALIDITA == dataPartenzaOriginale)
+                        {
+                            f.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore di correzione data inizio validita figlio " + f.COGNOME + " " + f.NOME + " da " + f.DATAINIZIOVALIDITA + " a " + dataPartenzaOriginale);
+                            }
+                        }
+                        if (f.DATAINIZIOVALIDITA < t.DATAPARTENZA)
+                        {
+                            f.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore di correzione data inizio validita figlio " + f.COGNOME + " " + f.NOME + " da " + f.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
+                            }
+                        }
+
+                        using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                        {
+                            //elimina le associazioni perc magg figli
+                            var lpmf = f.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var pmf in lpmf)
+                            {
+                                f.PERCENTUALEMAGFIGLI.Remove(pmf);
+                            }
+
+                            //ricalcola perc magg figli
+                            DateTime dtIni = f.DATAINIZIOVALIDITA;
+                            DateTime dtFin = f.DATAFINEVALIDITA;
+
+                            List<PercentualeMagFigliModel> lpmfm =
+                                dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db)
+                                    .ToList();
+
+                            if (lpmfm?.Any() ?? false)
+                            {
+                                foreach (var pmfm in lpmfm)
+                                {
+                                    dtpmf.AssociaPercentualeMaggiorazioneFigli(f.IDFIGLI, pmfm.idPercMagFigli, db);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Non è presente nessuna percentuale maggiorazione figli.");
+                            }
+                        }
+
+                        using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+                        {
+                            //elimina le associazioni perc indennita primo segretario
+                            var lpps = f.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var pps in lpps)
+                            {
+                                f.INDENNITAPRIMOSEGRETARIO.Remove(pps);
+                            }
+
+                            DateTime dtIni = f.DATAINIZIOVALIDITA;
+                            DateTime dtFin = f.DATAFINEVALIDITA;
+
+                            List<IndennitaPrimoSegretModel> lipsm =
+                                dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                            if (lipsm?.Any() ?? false)
+                            {
+                                foreach (var ipsm in lipsm)
+                                {
+                                    dtips.AssociaIndennitaPrimoSegretarioFiglio(f.IDFIGLI, ipsm.idIndPrimoSegr, db);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Non è presente nessuna indennità di primo segretario per il figlio " + f.COGNOME + " " + f.NOME + ".");
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                {
                     #region legge MAB
                     var mab = dtma.GetMABPartenza(t.IDTRASFERIMENTO, db);
                     if (!(mab.IDMAB > 0))
@@ -2355,43 +2822,35 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (pmab.IDPERIODOMAB > 0)
                     {
-                        if (pmab.DATAINIZIOMAB != t.DATAPARTENZA)
+                        pmab.DATAINIZIOMAB = t.DATAPARTENZA;
+                        if (db.SaveChanges() <= 0)
                         {
-                            pmab.DATAINIZIOMAB = t.DATAPARTENZA;
-                            if (db.SaveChanges() <= 0)
-                            {
-                                throw new Exception("Errore di correzione data inizio maggiorazione abitazione su PERIODOMAB da " + pmab.DATAINIZIOMAB + " a " + t.DATAPARTENZA);
-                            }
-                            //mm.dataInizioMAB = m.DATAINIZIOMAB;
+                            throw new Exception("Errore di correzione data inizio maggiorazione abitazione su PERIODOMAB da " + pmab.DATAINIZIOMAB + " a " + dataPartenzaOriginale);
+                        }
 
-                            //elimina le associazioni percentualeMAB variazioniMAB
-                            var lpercMab = pmab.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
-                            foreach (var percMab in lpercMab)
-                            {
-                                pmab.PERCENTUALEMAB.Remove(percMab);
-                            }
+                        //elimina le associazioni percentualeMAB variazioniMAB
+                        var lpercMab = pmab.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+                        foreach (var percMab in lpercMab)
+                        {
+                            pmab.PERCENTUALEMAB.Remove(percMab);
+                        }
 
-                            //var idMAB = m.IDMAB;
+                        var lpmab = dtma.GetListaPercentualeMAB(pmabm, tm, db);
+                        foreach (var pm in lpmab)
+                        {
+                            dtma.Associa_PerMAB_PercentualeMAB(pmab.IDPERIODOMAB, pm.IDPERCMAB, db);
+                        }
 
-                            var lpmab = dtma.GetListaPercentualeMAB(pmabm, tm, db);
-                            foreach (var pm in lpmab)
+                        //riassocia maggiorazioni annuali
+                        var mam = dtma.GetMaggiorazioneAnnuale(mab, db);
+                        if (mam.IDMAGANNUALI > 0)
+                        {
+                            if (mam.ANNUALITA)
                             {
-                                dtma.Associa_PerMAB_PercentualeMAB(pmab.IDPERIODOMAB, pm.IDPERCMAB, db);
-                            }
-
-                            //riassocia maggiorazioni annuali
-                            var mam = dtma.GetMaggiorazioneAnnuale(mab, db);
-                            if (mam.IDMAGANNUALI > 0)
-                            {
-                                if (mam.ANNUALITA)
-                                {
-                                    dtma.Associa_MAB_MaggiorazioniAnnuali(mab.IDMAB, mam.IDMAGANNUALI, db);
-                                }
+                                dtma.Associa_MAB_MaggiorazioniAnnuali(mab.IDMAB, mam.IDMAGANNUALI, db);
                             }
                         }
                     }
-
-
                     #endregion
 
                     #region allinea date PagatoCondivisoMAB e riassocia perc condiviso MAB
@@ -2401,25 +2860,34 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var pcma in lpcma)
                         {
-                            if (pcma.DATAINIZIOVALIDITA != t.DATAPARTENZA)
+                            if (pcma.DATAINIZIOVALIDITA == dataPartenzaOriginale)
+                            {
+                                pcma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore di correzione data inizio validita su PagatoCondivisoMAB da " + pcma.DATAINIZIOVALIDITA + " a " + dataPartenzaOriginale);
+                                }
+                            }
+
+                            if (pcma.DATAINIZIOVALIDITA < t.DATAPARTENZA)
                             {
                                 pcma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
                                 if (db.SaveChanges() <= 0)
                                 {
                                     throw new Exception("Errore di correzione data inizio validita su PagatoCondivisoMAB da " + pcma.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
                                 }
+                            }
 
-                                var lpc = pcma.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
-                                foreach (var pc in lpc)
-                                {
-                                    pcma.PERCENTUALECONDIVISIONE.Remove(pc);
-                                }
+                            var lpc = pcma.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var pc in lpc)
+                            {
+                                pcma.PERCENTUALECONDIVISIONE.Remove(pc);
+                            }
 
-                                lpc = dtma.GetListaPercentualeCondivisione(pcma.DATAINIZIOVALIDITA, pcma.DATAFINEVALIDITA, db);
-                                foreach (var pc in lpc)
-                                {
-                                    dtma.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pcma.IDPAGATOCONDIVISO, pc.IDPERCCOND, db);
-                                }
+                            lpc = dtma.GetListaPercentualeCondivisione(pcma.DATAINIZIOVALIDITA, pcma.DATAFINEVALIDITA, db);
+                            foreach (var pc in lpc)
+                            {
+                                dtma.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pcma.IDPAGATOCONDIVISO, pc.IDPERCCOND, db);
                             }
                         }
                     }
@@ -2432,27 +2900,36 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var cma in lcma)
                         {
-                            if (cma.DATAINIZIOVALIDITA != t.DATAPARTENZA)
+                            if (cma.DATAINIZIOVALIDITA == dataPartenzaOriginale)
+                            {
+                                cma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore di correzione data inizio validita su CanoneMAB da " + cma.DATAINIZIOVALIDITA + " a " + dataPartenzaOriginale);
+                                }
+                            }
+
+                            if (cma.DATAINIZIOVALIDITA < t.DATAPARTENZA)
                             {
                                 cma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
                                 if (db.SaveChanges() <= 0)
                                 {
                                     throw new Exception("Errore di correzione data inizio validita su CanoneMAB da " + cma.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
                                 }
+                            }
 
-                                var ltfr = cma.TFR.Where(a => a.ANNULLATO == false).ToList();
-                                foreach (var tfr in ltfr)
-                                {
-                                    cma.TFR.Remove(tfr);
-                                }
+                            var ltfr = cma.TFR.Where(a => a.ANNULLATO == false).ToList();
+                            foreach (var tfr in ltfr)
+                            {
+                                cma.TFR.Remove(tfr);
+                            }
 
-                                using (dtTFR dtTfr = new dtTFR())
+                            using (dtTFR dtTfr = new dtTFR())
+                            {
+                                var ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(tm, cma.IDVALUTA, cma.DATAINIZIOVALIDITA, cma.DATAFINEVALIDITA, db);
+                                foreach (var tfrm in ltfrm)
                                 {
-                                    var ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(tm, cma.IDVALUTA, cma.DATAINIZIOVALIDITA, cma.DATAFINEVALIDITA, db);
-                                    foreach (var tfrm in ltfrm)
-                                    {
-                                        dtma.Associa_TFR_CanoneMAB(tfrm.idTFR, cma.IDCANONE, db);
-                                    }
+                                    dtma.Associa_TFR_CanoneMAB(tfrm.idTFR, cma.IDCANONE, db);
                                 }
                             }
                         }
@@ -2467,6 +2944,516 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
         }
+
+
+        //public void AllineaDateTrasferimentoPartenza(TRASFERIMENTO t, ModelDBISE db, DateTime dataPartenzaOriginale)
+        //{
+        //    try
+        //    {
+        //        using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+        //        {
+
+        //            #region modello parziale del trasferimento
+        //            TrasferimentoModel tm = new TrasferimentoModel()
+        //            {
+        //                idTrasferimento = t.IDTRASFERIMENTO
+        //            };
+        //            #endregion
+
+        //            #region allinea data ruolo dipendente
+        //            var rd = t.RUOLODIPENDENTE.First();
+        //            rd.DATAINZIOVALIDITA = t.DATAPARTENZA;
+        //            if (db.SaveChanges() <= 0)
+        //            {
+        //                throw new Exception("Errore di correzione data inizio validita ruolo dipendente da " + rd.DATAINZIOVALIDITA + " a " + t.DATAPARTENZA);
+        //            }
+        //            #endregion
+
+        //            #region legge indennita
+        //            var i = t.INDENNITA;
+        //            #endregion
+
+        //            #region riassocia livelli dipendente
+        //            using (dtLivelliDipendente dtld = new dtLivelliDipendente())
+        //            {
+        //                var lld = i.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false).ToList();
+        //                foreach (var ld in lld)
+        //                {
+        //                    i.LIVELLIDIPENDENTI.Remove(ld);
+        //                }
+        //                var lldm =
+        //                    dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA,
+        //                        t.DATARIENTRO, db).ToList();
+        //                if (lldm?.Any() ?? false)
+        //                {
+        //                    foreach (var ldm in lldm)
+        //                    {
+        //                        dtld.AssociaLivelloDipendente_Indennita(t.IDTRASFERIMENTO,
+        //                            ldm.idLivDipendente, db);
+
+        //                        using (dtIndennitaBase dtib = new dtIndennitaBase())
+        //                        {
+        //                            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+
+        //                            DateTime dataInizio = Utility.GetData_Inizio_Base();
+        //                            DateTime dataFine = Utility.DataFineStop();
+
+        //                            if (t.DATAPARTENZA > ldm.dataInizioValdita)
+        //                            {
+        //                                dataInizio = t.DATAPARTENZA;
+        //                            }
+        //                            else
+        //                            {
+        //                                dataInizio = t.DATAPARTENZA;
+        //                            }
+
+        //                            if (ldm.dataFineValidita.HasValue)
+        //                            {
+        //                                if (t.DATARIENTRO > ldm.dataFineValidita.Value)
+        //                                {
+        //                                    dataFine = ldm.dataFineValidita.Value;
+        //                                }
+        //                                else
+        //                                {
+        //                                    dataFine = t.DATARIENTRO;
+        //                                }
+        //                            }
+
+
+        //                            libm =
+        //                                dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
+        //                                    dataFine, db).ToList();
+
+        //                            if (libm?.Any() ?? false)
+        //                            {
+        //                                foreach (var ibm in libm)
+        //                                {
+        //                                    dtib.AssociaIndennitaBase_Indennita(t.IDTRASFERIMENTO, ibm.idIndennitaBase, db);
+        //                                }
+
+
+        //                            }
+        //                            else
+        //                            {
+        //                                throw new Exception("Non risulta l'indennità base per il livello interessato.");
+        //                            }
+        //                        }
+
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    throw new Exception("Non risulta assegnato nessun livello per il dipendente " + t.DIPENDENTI.COGNOME + " " + t.DIPENDENTI.NOME + " (" + t.DIPENDENTI.MATRICOLA + ")");
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region riassocia TFR
+        //            using (dtTFR dttfr = new dtTFR())
+        //            {
+        //                var ltfr = i.TFR.Where(a => a.ANNULLATO == false).ToList();
+        //                foreach (var tfr in ltfr)
+        //                {
+        //                    i.TFR.Remove(tfr);
+        //                }
+
+        //                List<TFRModel> ltfrm =
+        //                    dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA,
+        //                        t.DATARIENTRO, db).ToList();
+
+        //                if (ltfrm?.Any() ?? false)
+        //                {
+        //                    foreach (var tfrm in ltfrm)
+        //                    {
+        //                        dttfr.AssociaTFR_Indennita(t.IDTRASFERIMENTO, tfrm.idTFR, db);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region riassocia percentuale disagio
+        //            using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+        //            {
+        //                var lpd = i.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false).ToList();
+        //                foreach (var pd in lpd)
+        //                {
+        //                    i.PERCENTUALEDISAGIO.Remove(pd);
+        //                }
+
+        //                List<PercentualeDisagioModel> lpdm =
+        //                    dtpd.GetPercentualeDisagioIndennitaByRange(t.IDUFFICIO,
+        //                        t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+
+
+        //                if (lpdm?.Any() ?? false)
+        //                {
+        //                    foreach (var pdm in lpdm)
+        //                    {
+        //                        dtpd.AssociaPercentualeDisagio_Indennita(t.IDTRASFERIMENTO, pdm.idPercentualeDisagio, db);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
+        //                }
+
+
+        //            }
+        //            #endregion
+
+        //            #region riassocia coefficiente sede
+        //            using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+        //            {
+        //                var lcs = i.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false).ToList();
+        //                foreach (var cs in lcs)
+        //                {
+        //                    i.COEFFICIENTESEDE.Remove(cs);
+        //                }
+
+        //                List<CoefficientiSedeModel> lcsm =
+        //                    dtcs.GetCoefficenteSedeIndennitaByRangeDate(t.IDUFFICIO,
+        //                        t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+
+        //                if (lcsm?.Any() ?? false)
+        //                {
+        //                    foreach (var csm in lcsm)
+        //                    {
+        //                        dtcs.AssociaCoefficenteSede_Indennita(t.IDTRASFERIMENTO, csm.idCoefficientiSede, db);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    throw new Exception("Non risulta il valore di coefficiente di sede per l'ufficio interessato.");
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region riassocia fascia KM
+        //            using (dtFasciaKm dtfkm = new dtFasciaKm())
+        //            {
+        //                using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
+        //                {
+        //                    var psm = dtps.GetPrimaSistemazioneBtIdTrasf(t.IDTRASFERIMENTO, db);
+        //                    var ps = db.PRIMASITEMAZIONE.Find(psm.idPrimaSistemazione);
+        //                    var lpfk = ps.PERCENTUALEFKM.Where(a => a.ANNULLATO == false).ToList();
+        //                    foreach (var pfk in lpfk)
+        //                    {
+        //                        ps.PERCENTUALEFKM.Remove(pfk);
+        //                    }
+
+        //                    var pfkmm = dtfkm.GetPercentualeFKM(lpfk.First().IDFKM, t.DATAPARTENZA, db);
+        //                    if (pfkmm?.idPFKM > 0)
+        //                    {
+        //                        dtfkm.AssociaPercentualeFKMPrimaSistemazione(psm.idPrimaSistemazione, pfkmm.idPFKM, db);
+        //                    }
+        //                    else
+        //                    {
+        //                        throw new Exception("Non risulta il valore della percentuale fascia chilometrica.");
+        //                    }
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region legge MaggiorazioniFamiliari
+        //            var mf = t.MAGGIORAZIONIFAMILIARI;
+        //            #endregion
+
+        //            #region allinea date Maggiorazioni Familiari Coniuge e riassocia perc magg coniuge
+        //            var lc = mf.CONIUGE.Where(a =>
+        //                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
+        //                //&& a.DATAINIZIOVALIDITA<t.DATAPARTENZA
+        //                ).ToList();
+        //            if (lc?.Any() ?? false)
+        //            {
+        //                foreach (var c in lc)
+        //                {
+        //                    if (c.DATAINIZIOVALIDITA == dataPartenzaOriginale ||
+        //                        c.DATAINIZIOVALIDITA < t.DATAPARTENZA)
+        //                    {
+        //                        c.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+        //                        if (db.SaveChanges() <= 0)
+        //                        {
+        //                            throw new Exception("Errore di correzione data inizio validita coniuge " + c.COGNOME + " " + c.NOME + " da " + c.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
+        //                        }
+
+        //                        using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+        //                        {
+        //                            //elimina le associazioni perc magg coniuge
+        //                            var lpmc = c.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false).ToList();
+        //                            foreach (var pmc in lpmc)
+        //                            {
+        //                                c.PERCENTUALEMAGCONIUGE.Remove(pmc);
+        //                            }
+
+        //                            //ricalcola perc magg coniuge
+        //                            DateTime dtIni = c.DATAINIZIOVALIDITA;
+        //                            DateTime dtFin = c.DATAFINEVALIDITA;
+
+        //                            List<PercentualeMagConiugeModel> lpmcm =
+        //                                dtpc.GetListaPercentualiMagConiugeByRangeDate((EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE, dtIni, dtFin, db)
+        //                                    .ToList();
+
+        //                            if (lpmcm?.Any() ?? false)
+        //                            {
+        //                                foreach (var pmcm in lpmcm)
+        //                                {
+        //                                    dtpc.AssociaPercentualeMaggiorazioneConiuge(c.IDCONIUGE, pmcm.idPercentualeConiuge, db);
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                throw new Exception("Non è presente nessuna percentuale del coniuge.");
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region allinea date Maggiorazioni Familiari Pensione Coniuge
+        //            //prende tutti i coniugi validi
+        //            lc = mf.CONIUGE.Where(a =>
+        //                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+        //            if (lc?.Any() ?? false)
+        //            {
+        //                foreach (var c in lc)
+        //                {
+        //                    var lpc = c.PENSIONE.Where(a =>
+        //                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
+        //                                    //&& a.DATAINIZIO<t.DATAPARTENZA
+        //                                    ).ToList();
+        //                    foreach (var pc in lpc)
+        //                    {
+        //                        if (pc.DATAINIZIO == dataPartenzaOriginale ||
+        //                            pc.DATAINIZIO < t.DATAPARTENZA)
+        //                        {
+        //                            pc.DATAINIZIO = t.DATAPARTENZA;
+        //                            if (db.SaveChanges() <= 0)
+        //                            {
+        //                                throw new Exception("Errore di correzione data inizio pensione coniuge " + c.COGNOME + " " + c.NOME + " da " + pc.DATAINIZIO + " a " + t.DATAPARTENZA);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region allinea date Maggiorazioni Familiari Figli e riassocia perc magg figli e perc primo segretario
+        //            var lf = mf.FIGLI.Where(a =>
+        //                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
+        //                //&& a.DATAINIZIOVALIDITA < t.DATAPARTENZA
+        //                ).ToList();
+        //            if (lf?.Any() ?? false)
+        //            {
+        //                foreach (var f in lf)
+        //                {
+        //                    if (f.DATAINIZIOVALIDITA == dataPartenzaOriginale ||
+        //                        f.DATAINIZIOVALIDITA < t.DATAPARTENZA)
+        //                    {
+
+        //                        f.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+        //                        if (db.SaveChanges() <= 0)
+        //                        {
+        //                            throw new Exception("Errore di correzione data inizio validita figlio " + f.COGNOME + " " + f.NOME + " da " + f.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
+        //                        }
+        //                        using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+        //                        {
+        //                            //elimina le associazioni perc magg figli
+        //                            var lpmf = f.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false).ToList();
+        //                            foreach (var pmf in lpmf)
+        //                            {
+        //                                f.PERCENTUALEMAGFIGLI.Remove(pmf);
+        //                            }
+
+        //                            //ricalcola perc magg figli
+        //                            DateTime dtIni = f.DATAINIZIOVALIDITA;
+        //                            DateTime dtFin = f.DATAFINEVALIDITA;
+
+        //                            List<PercentualeMagFigliModel> lpmfm =
+        //                                dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db)
+        //                                    .ToList();
+
+        //                            if (lpmfm?.Any() ?? false)
+        //                            {
+        //                                foreach (var pmfm in lpmfm)
+        //                                {
+        //                                    dtpmf.AssociaPercentualeMaggiorazioneFigli(f.IDFIGLI, pmfm.idPercMagFigli, db);
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                throw new Exception("Non è presente nessuna percentuale maggiorazione figli.");
+        //                            }
+        //                        }
+
+        //                        using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+        //                        {
+        //                            //elimina le associazioni perc indennita primo segretario
+        //                            var lpps = f.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).ToList();
+        //                            foreach (var pps in lpps)
+        //                            {
+        //                                f.INDENNITAPRIMOSEGRETARIO.Remove(pps);
+        //                            }
+
+        //                            DateTime dtIni = f.DATAINIZIOVALIDITA;
+        //                            DateTime dtFin = f.DATAFINEVALIDITA;
+
+        //                            List<IndennitaPrimoSegretModel> lipsm =
+        //                                dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+        //                            if (lipsm?.Any() ?? false)
+        //                            {
+        //                                foreach (var ipsm in lipsm)
+        //                                {
+        //                                    dtips.AssociaIndennitaPrimoSegretarioFiglio(f.IDFIGLI, ipsm.idIndPrimoSegr, db);
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                throw new Exception("Non è presente nessuna indennità di primo segretario per il figlio " + f.COGNOME + " " + f.NOME + ".");
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region legge MAB
+        //            var mab = dtma.GetMABPartenza(t.IDTRASFERIMENTO, db);
+        //            if (!(mab.IDMAB > 0))
+        //            {
+        //                throw new Exception("MAB non trovata.");
+        //            }
+        //            #endregion
+
+        //            #region allinea date PERIODO MAB e riassocia percMAB e magg annuali
+        //            var lmann = mab.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
+        //            foreach (var mann in lmann)
+        //            {
+        //                mab.MAGGIORAZIONIANNUALI.Remove(mann);
+        //            }
+
+        //            var pmab = dtma.GetPeriodoMABPartenza(mab.IDMAB, db);
+        //            var pmabm = dtma.GetPeriodoMABModelPartenza(mab.IDMAB, db);
+
+        //            if (pmab.IDPERIODOMAB > 0)
+        //            {
+        //                if (pmab.DATAINIZIOMAB != t.DATAPARTENZA)
+        //                {
+        //                    pmab.DATAINIZIOMAB = t.DATAPARTENZA;
+        //                    if (db.SaveChanges() <= 0)
+        //                    {
+        //                        throw new Exception("Errore di correzione data inizio maggiorazione abitazione su PERIODOMAB da " + pmab.DATAINIZIOMAB + " a " + t.DATAPARTENZA);
+        //                    }
+        //                    //mm.dataInizioMAB = m.DATAINIZIOMAB;
+
+        //                    //elimina le associazioni percentualeMAB variazioniMAB
+        //                    var lpercMab = pmab.PERCENTUALEMAB.Where(a => a.ANNULLATO == false).ToList();
+        //                    foreach (var percMab in lpercMab)
+        //                    {
+        //                        pmab.PERCENTUALEMAB.Remove(percMab);
+        //                    }
+
+        //                    //var idMAB = m.IDMAB;
+
+        //                    var lpmab = dtma.GetListaPercentualeMAB(pmabm, tm, db);
+        //                    foreach (var pm in lpmab)
+        //                    {
+        //                        dtma.Associa_PerMAB_PercentualeMAB(pmab.IDPERIODOMAB, pm.IDPERCMAB, db);
+        //                    }
+
+        //                    //riassocia maggiorazioni annuali
+        //                    var mam = dtma.GetMaggiorazioneAnnuale(mab, db);
+        //                    if (mam.IDMAGANNUALI > 0)
+        //                    {
+        //                        if (mam.ANNUALITA)
+        //                        {
+        //                            dtma.Associa_MAB_MaggiorazioniAnnuali(mab.IDMAB, mam.IDMAGANNUALI, db);
+        //                        }
+        //                    }
+        //                }
+        //            }
+
+
+        //            #endregion
+
+        //            #region allinea date PagatoCondivisoMAB e riassocia perc condiviso MAB
+        //            var lpcma = mab.PAGATOCONDIVISOMAB.Where(a =>
+        //                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+        //            if (lpcma?.Any() ?? false)
+        //            {
+        //                foreach (var pcma in lpcma)
+        //                {
+        //                    if (pcma.DATAINIZIOVALIDITA != t.DATAPARTENZA)
+        //                    {
+        //                        pcma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+        //                        if (db.SaveChanges() <= 0)
+        //                        {
+        //                            throw new Exception("Errore di correzione data inizio validita su PagatoCondivisoMAB da " + pcma.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
+        //                        }
+
+        //                        var lpc = pcma.PERCENTUALECONDIVISIONE.Where(a => a.ANNULLATO == false).ToList();
+        //                        foreach (var pc in lpc)
+        //                        {
+        //                            pcma.PERCENTUALECONDIVISIONE.Remove(pc);
+        //                        }
+
+        //                        lpc = dtma.GetListaPercentualeCondivisione(pcma.DATAINIZIOVALIDITA, pcma.DATAFINEVALIDITA, db);
+        //                        foreach (var pc in lpc)
+        //                        {
+        //                            dtma.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pcma.IDPAGATOCONDIVISO, pc.IDPERCCOND, db);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            #endregion
+
+        //            #region allinea date CanoneMAB e riassocia TFR
+        //            var lcma = mab.CANONEMAB.Where(a =>
+        //                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+        //            if (lcma?.Any() ?? false)
+        //            {
+        //                foreach (var cma in lcma)
+        //                {
+        //                    if (cma.DATAINIZIOVALIDITA != t.DATAPARTENZA)
+        //                    {
+        //                        cma.DATAINIZIOVALIDITA = t.DATAPARTENZA;
+        //                        if (db.SaveChanges() <= 0)
+        //                        {
+        //                            throw new Exception("Errore di correzione data inizio validita su CanoneMAB da " + cma.DATAINIZIOVALIDITA + " a " + t.DATAPARTENZA);
+        //                        }
+
+        //                        var ltfr = cma.TFR.Where(a => a.ANNULLATO == false).ToList();
+        //                        foreach (var tfr in ltfr)
+        //                        {
+        //                            cma.TFR.Remove(tfr);
+        //                        }
+
+        //                        using (dtTFR dtTfr = new dtTFR())
+        //                        {
+        //                            var ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(tm, cma.IDVALUTA, cma.DATAINIZIOVALIDITA, cma.DATAFINEVALIDITA, db);
+        //                            foreach (var tfrm in ltfrm)
+        //                            {
+        //                                dtma.Associa_TFR_CanoneMAB(tfrm.idTFR, cma.IDCANONE, db);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            #endregion
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+
+        //}
 
         public void AttivaTrasf(decimal idTrasferimento, DateTime dataPartenzaEffettiva)
         {
@@ -2509,13 +3496,34 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 if (dataPartenzaOriginale != dataPartenzaEffettiva)
                                 {
-                                    this.AllineaDateTrasferimentoPartenza(t, db, dataPartenzaOriginale);
+                                    AllineaDateIni_Trasferimento(t, dataPartenzaOriginale, db);
                                 }
 
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
-                                    //using (dtTrasferimento dtt = new dtTrasferimento())
-                                    //{
+
+                                    var d = db.DIPENDENTI.Find(t.IDDIPENDENTE);
+                                    var lt_prec = d.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato).OrderByDescending(a=>a.IDTRASFERIMENTO).ToList();
+                                    if(lt_prec?.Any()??false)
+                                    {
+                                        var t_prec = lt_prec.First();
+    
+                                        t_prec.DATAAGGIORNAMENTO = DateTime.Now;
+                                        var r = t_prec.RICHIAMO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDRICHIAMO).ToList();
+                                        if (r.Count() == 0)
+                                        {
+                                            t_prec.DATARIENTRO = dataPartenzaEffettiva.AddDays(-1);
+    
+                                            if (db.SaveChanges() <= 0)
+                                            {
+                                                throw new Exception("Errore: Impossibile completare l'attivazione del trasferimento. Data Rientro del trasferimento precedente non modificata.");
+                                            }
+                                            RiassociaIndennitaTrasferimento(t_prec, db);
+
+                                            dtd.DataInizioRicalcoliDipendente(t_prec.IDTRASFERIMENTO, t_prec.DATARIENTRO, db);
+                                        }
+                                    }
+    
                                     using (dtUffici dtu = new dtUffici())
                                     {
                                         var dip = dtd.GetDipendenteByID(t.IDDIPENDENTE);
@@ -2529,11 +3537,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                                         oggettoAttiva,
                                                                         string.Format(messaggioAttiva, dip.cognome + " " + dip.nome + " (" + dip.matricola + ") ", uff.descUfficio + " (" + uff.codiceUfficio + ")", t.DATAPARTENZA.ToShortDateString()),
                                                                         db);
-
                                     }
-
-
-                                    //}
                                 }
 
 

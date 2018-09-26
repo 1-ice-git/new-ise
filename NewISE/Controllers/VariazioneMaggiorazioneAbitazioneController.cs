@@ -1089,79 +1089,35 @@ namespace NewISE.Controllers
                 string hiddenAnnullaRichiesta = "hidden";
                 EnumStatoTraferimento statoTrasferimento = 0;
 
+                bool esistonoVariazioni = false;
+                bool notificaRichiesta = false;
+                bool attivaRichiesta = false;
+
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
                     {
                         amm = dtvma.GetUltimaAttivazioneMABmodel(idTrasferimento);
                         am = dtvma.GetUltimaAttivazioneMAB(idTrasferimento, db);
-                        var mab = dtvma.GetMAB_ByID_var(am.IDMAB, db);
-                        //var idAttivazioneMAB = amm.idAttivazioneMAB;
-
-                        //bool esisteMAB = false;
-                        //bool esistePagatoCondivisoMAB = false;
-                        //bool esisteCanoneMAB = false;
-                        //bool esistePeriodoMAB = false;
-                        //bool siDocCopiaContratto = false;
-                        //bool siDocCopiaRicevuta = false;
-                        //bool siDocModulo1 = false;
-                        //bool siDocModulo2 = false;
-                        //bool siDocModulo3 = false;
-                        //bool siDocModulo4 = false;
-                        //bool siDocModulo5 = false;
-                        //bool nuovaMAB = false;
-                        //decimal idDocCopiaContratto = 0;
-                        //decimal idDocCopiaRicevuta = 0;
-                        //decimal idDocModulo1 = 0;
-                        //decimal idDocModulo2 = 0;
-                        //decimal idDocModulo3 = 0;
-                        //decimal idDocModulo4 = 0;
-                        //decimal idDocModulo5 = 0;
-                        bool esistonoVariazioni = false;
-
-
-                        bool notificaRichiesta = am.NOTIFICARICHIESTA;
-                        bool attivaRichiesta = am.ATTIVAZIONE;
-
-                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        if (am.IDATTIVAZIONEMAB > 0)
                         {
-                            var t = dtt.GetTrasferimentoById(idTrasferimento);
-                            statoTrasferimento = t.idStatoTrasferimento;
-                        }
-                        if (mab.IDMAB > 0)
-                        {
-                            esistonoVariazioni = dtvma.VerificaVariazioniMAB(mab.IDMAB, db, true);
+                            var mab = dtvma.GetMAB_ByID_var(am.IDMAB, db);
+                            esistonoVariazioni = false;
 
-                            //VERIFICA MAB
-                            //esisteMAB = dtvma.VerificaMAB(idAttivazioneMAB);
 
-                            //verifica se è una nuova MAB (se ha un periodo solo è una nuova MAB)
-                            //nuovaMAB = dtvma.VerificaSeNuovaMAB(am.IDATTIVAZIONEMAB);
+                            notificaRichiesta = am.NOTIFICARICHIESTA;
+                            attivaRichiesta = am.ATTIVAZIONE;
 
-                            //verifica Periodo MAB
-                            //esistePeriodoMAB = dtvma.VerificaPeriodoMAB(idAttivazioneMAB);
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var t = dtt.GetTrasferimentoById(idTrasferimento);
+                                statoTrasferimento = t.idStatoTrasferimento;
+                            }
+                            if (mab.IDMAB > 0)
+                            {
+                                esistonoVariazioni = dtvma.VerificaVariazioniMAB(mab.IDMAB, db, true);
 
-                            //verifica Pagato Condiviso MAB
-                            //esistePagatoCondivisoMAB = dtvma.VerificaPagatoCondivisoMAB(idAttivazioneMAB);
-
-                            //verifica Canone MAB
-                            //esisteCanoneMAB = dtvma.VerificaCanoneMAB(idAttivazioneMAB);
-
-                            //dtvma.VerificaDocumenti_var(am,
-                            //                            out siDocCopiaContratto,
-                            //                            out siDocCopiaRicevuta,
-                            //                            out siDocModulo1,
-                            //                            out siDocModulo2,
-                            //                            out siDocModulo3,
-                            //                            out siDocModulo4,
-                            //                            out siDocModulo5,
-                            //                            out idDocCopiaContratto,
-                            //                            out idDocCopiaRicevuta,
-                            //                            out idDocModulo1,
-                            //                            out idDocModulo2,
-                            //                            out idDocModulo3,
-                            //                            out idDocModulo4,
-                            //                            out idDocModulo5);
+                            }
                         }
 
                         //se amministratore vedo i pulsanti altrimenti solo notifica
@@ -1179,77 +1135,26 @@ namespace NewISE.Controllers
                                 disabledAnnullaRichiesta = "";
                             }
 
-                            //if (nuovaMAB)
-                            //{
-                            //    if (notificaRichiesta == false &&
-                            //        attivaRichiesta == false &&
-                            //        statoTrasferimento != EnumStatoTraferimento.Annullato &&
-                            //        esistonoVariazioni
-                            //        //esisteCanoneMAB &&
-                            //        //esistePeriodoMAB &&
-                            //        //esistePagatoCondivisoMAB &&
-                            //        //siDocModulo1
-                            //        )
-                            //    {
-                            //        disabledNotificaRichiesta = "";
-                            //    }
-
-                            //}
-                            //else
-                            //{
-                                if (notificaRichiesta == false &&
-                                    attivaRichiesta == false &&
-                                    statoTrasferimento != EnumStatoTraferimento.Annullato &&
-                                    esistonoVariazioni
-                                    )
-                                {
-                                    disabledNotificaRichiesta = "";
-                                }
-
-                            //}
+                            if (notificaRichiesta == false &&
+                                attivaRichiesta == false &&
+                                statoTrasferimento != EnumStatoTraferimento.Annullato &&
+                                esistonoVariazioni
+                                )
+                            {
+                                disabledNotificaRichiesta = "";
+                            }
                         }
                         else
                         {
-                            //if (nuovaMAB)
-                            //{
-                                if (
-                                    notificaRichiesta == false &&
-                                    attivaRichiesta == false &&
-                                    statoTrasferimento != EnumStatoTraferimento.Annullato &&
-                                    esistonoVariazioni
-                                    //esisteCanoneMAB &&
-                                    //esistePagatoCondivisoMAB &&
-                                    //esistePeriodoMAB &&
-                                    //siDocModulo1
-                                    )
-                                {
-                                    disabledNotificaRichiesta = "";
-                                }
-                            //}
-                            //else
-                            //{
-                            //    if (notificaRichiesta == false &&
-                            //        attivaRichiesta == false &&
-                            //        statoTrasferimento != EnumStatoTraferimento.Annullato &&
-                            //        esistonoVariazioni
-                            //                //(esisteCanoneMAB ||
-                            //                //esistePagatoCondivisoMAB ||
-                            //                //esisteMAB ||
-                            //                //esistePeriodoMAB ||
-                            //                //siDocCopiaContratto ||
-                            //                //siDocCopiaRicevuta ||
-                            //                //siDocModulo1 ||
-                            //                //siDocModulo2 ||
-                            //                //siDocModulo3 ||
-                            //                //siDocModulo4 ||
-                            //                //siDocModulo5)
-                            //        )
-                            //    {
-                            //        disabledNotificaRichiesta = "";
-                            //    }
-
-                            //}
-
+                            if (
+                                notificaRichiesta == false &&
+                                attivaRichiesta == false &&
+                                statoTrasferimento != EnumStatoTraferimento.Annullato &&
+                                esistonoVariazioni
+                                )
+                            {
+                                disabledNotificaRichiesta = "";
+                            }
                         }
 
                         ViewData.Add("idTrasferimento", idTrasferimento);
