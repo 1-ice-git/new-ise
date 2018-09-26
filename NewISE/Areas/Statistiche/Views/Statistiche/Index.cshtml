@@ -80,9 +80,8 @@
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Ufficio</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpIndSedeEsteraNew();">Riepilogo delle operazioni effettuate - Indennità di sede estera</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazioneNew();">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
-                        <a href="#" class="list-group-item" onclick="callpartialOpSpeseDiverseNew();">Riepilogo delle operazioni effettuate - Spese Diverse</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpTrasportoEffettiNew();">Trasporto Effetti</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpSospensioniNew();">Sospensioni</a>
-                        <a href="#" class="list-group-item" onclick="">Spese Diverse</a>
                         <a href="#" class="list-group-item" onclick="">Storia del Dipendente</a>
                         
                     </div>
@@ -786,11 +785,11 @@
                 });
             }
 
-            // Operazioni Effettuate - Spese Diverse (Nuovo ISE)
-            function callpartialOpSpeseDiverseNew() {
+            // Trasporto Effetti (Nuovo ISE)
+            function callpartialOpTrasportoEffettiNew() {
                 //debugger;
 
-                rotta = "/Statistiche/RiepiloghiSpeseDiverse/Index";
+                rotta = "/Statistiche/TrasportoEffetti/Index";
 
                 var data1 = $("#data1").datepicker().val()
                 var data2 = $("#data2").datepicker().val()

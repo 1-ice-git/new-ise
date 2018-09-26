@@ -80,7 +80,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var tl = t.VOCI.TIPOLIQUIDAZIONE;
                             var tv = t.VOCI.TIPOVOCE;
                     
-
+                        
                                 RiepiloghiIseMensileModel ldvm = new RiepiloghiIseMensileModel()
                                 {
                                     idTeorici = t.IDTEORICI,

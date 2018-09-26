@@ -50,5 +50,8 @@ namespace NewISE.EF
         public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABMAB> ELABMAB { get; set; }
+
+     
+
     }
 }
