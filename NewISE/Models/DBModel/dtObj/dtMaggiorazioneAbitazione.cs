@@ -231,6 +231,51 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+
+        public List<PERCENTUALEMAB> GetListaPercentualeMABByRangeDate(PeriodoMABModel pmm, DateTime dtIni, DateTime dtFin, TrasferimentoModel trm, ModelDBISE db)
+        {
+            try
+            {
+                List<PERCENTUALEMAB> plAll = new List<PERCENTUALEMAB>();
+
+                var t = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+
+                UFFICI u = t.UFFICI;
+                DIPENDENTI d = t.DIPENDENTI;
+
+                var livelli =
+                    d.LIVELLIDIPENDENTI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni &&
+                            a.DATAINIZIOVALIDITA <= dtFin).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                foreach (var l in livelli)
+                {
+                    DateTime dtIniPerc = l.DATAINIZIOVALIDITA < dtIni ? dtIni : l.DATAINIZIOVALIDITA;
+                    DateTime dtFinPerc = l.DATAFINEVALIDITA >  dtFin ? dtFin : l.DATAFINEVALIDITA;
+
+                    var pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
+                                                          a.DATAFINEVALIDITA >= dtIniPerc &&
+                                                          a.DATAINIZIOVALIDITA <= dtFinPerc &&
+                                                          a.IDUFFICIO == u.IDUFFICIO &&
+                                                          a.IDLIVELLO == l.IDLIVELLO).ToList();
+
+                    if (!pl?.Any() ?? false)
+                    {
+                        throw new Exception("La percentuale mab per il livello " + l.LIVELLI.LIVELLO + " non è presente.");
+                    }
+
+                    plAll.AddRange(pl);
+                }
+
+                return plAll;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<PERCENTUALECONDIVISIONE> GetListaPercentualeCondivisione(DateTime dataIni, DateTime dataFin, ModelDBISE db)
         {
             try
@@ -2617,7 +2662,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 MAB m = new MAB()
                 {
-                    IDTRASFINDENNITA = t.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO,
+                    IDTRASFINDENNITA = t.INDENNITA.IDTRASFINDENNITA,
                     IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
                     RINUNCIAMAB = false,
                     DATAAGGIORNAMENTO = DateTime.Now,

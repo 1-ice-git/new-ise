@@ -4211,7 +4211,17 @@ namespace NewISE.Models.DBModel.dtObj
 
                         #region crea CANONE
                         var ultimaMab = GetUltimaMABAttiva(idTrasferimento, db);
-                        var vm = GetUltimaValutaInseritaModel(ultimaMab.IDMAB, db);
+                        ValuteModel vm;
+                        if (ultimaMab.IDMAB > 0)
+                        {
+                            vm = GetUltimaValutaInseritaModel(ultimaMab.IDMAB, db);
+                        }else
+                        {
+                            using (dtValute dtv = new dtValute())
+                            {
+                                vm = dtv.GetValutaUfficiale(db);
+                            }
+                        }
 
                         CanoneMABModel cmabm = new CanoneMABModel();
                         cmabm.idValuta = vm.idValuta;
