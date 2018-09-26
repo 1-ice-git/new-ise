@@ -80,7 +80,7 @@
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Ufficio</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpIndSedeEsteraNew();">Riepilogo delle operazioni effettuate - Indennità di sede estera</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazioneNew();">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
-                        <a href="#" class="list-group-item" onclick="">Riepilogo delle operazioni effettuate - Spese Diverse</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpSpeseDiverseNew();">Riepilogo delle operazioni effettuate - Spese Diverse</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpSospensioniNew();">Sospensioni</a>
                         <a href="#" class="list-group-item" onclick="">Spese Diverse</a>
                         <a href="#" class="list-group-item" onclick="">Storia del Dipendente</a>
@@ -785,6 +785,43 @@
                     }
                 });
             }
+
+            // Operazioni Effettuate - Spese Diverse (Nuovo ISE)
+            function callpartialOpSpeseDiverseNew() {
+                //debugger;
+
+                rotta = "/Statistiche/RiepiloghiSpeseDiverse/Index";
+
+                var data1 = $("#data1").datepicker().val()
+                var data2 = $("#data2").datepicker().val()
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        V_DATA1: data1,
+                        V_DATA2: data2
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#divPartialView").empty();
+                        $("#divPartialView").html(result);
+                    },
+                    complete: function () {
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            }
+
 
             // Operazioni Effettuate - Sospensioni (Nuovo ISE)
             function callpartialOpSospensioniNew() {

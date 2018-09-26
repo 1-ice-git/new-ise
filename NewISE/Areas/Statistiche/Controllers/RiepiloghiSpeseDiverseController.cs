@@ -1,18 +1,12 @@
 ﻿using Microsoft.Reporting.WebForms;
 using NewISE.Areas.Statistiche.Models;
-using NewISE.Areas.Statistiche.Models.dtObj;
-using NewISE.Areas.Statistiche.RPTDataSet;
 using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.dtObj.ModelliCalcolo;
-using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,13 +14,14 @@ using System.Web.UI.WebControls;
 
 namespace NewISE.Areas.Statistiche.Controllers
 {
-    public class RiepiloghiMaggAbitazioneController : Controller
+    public class RiepiloghiSpeseDiverseController : Controller
     {
-        // GET: Statistiche/RiepiloghiMaggAbitazione
+        // GET: Statistiche/RiepiloghiSpeseDiverse
         public ActionResult Index()
         {
             return PartialView();
         }
+
         public JsonResult PrelevaMesiAnniElab(string search)
         {
             List<Select2Model> ls2 = new List<Select2Model>();
@@ -52,6 +47,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     }
 
 
+
                 }
 
                 if (search != null && search != string.Empty)
@@ -68,6 +64,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return Json(new { results = ls2, err = "" });
         }
+
         public ActionResult SelezionaMeseAnno(int mese = 0, int anno = 0)
         {
             var rMeseAnno = new List<SelectListItem>();
@@ -128,26 +125,27 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView();
         }
-        public ActionResult RptRiepiloghiMaggAbitazione(decimal dtIni, decimal dtFin)
+
+        public ActionResult RptRiepiloghiSpeseDiverse(decimal dtIni, decimal dtFin)
         {
-            List<RiepiloghiMaggAbitazioneModel> rim = new List<RiepiloghiMaggAbitazioneModel>();
-            List<RptRiepiloghiMaggAbitazioneModel> rpt = new List<RptRiepiloghiMaggAbitazioneModel>();
+            List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
+            List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
 
             try
             {
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtRiepiloghiMaggAbitazione dtRiepiloghiMaggAbitazione = new dtRiepiloghiMaggAbitazione())
+                    using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
                     {
-                        rim = dtRiepiloghiMaggAbitazione.GetRiepiloghiMaggAbitazione(dtIni, dtFin, db).ToList();
+                        rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
                     }
 
                     if (rim?.Any() ?? false)
                     {
                         foreach (var lm in rim)
                         {
-                            RptRiepiloghiMaggAbitazioneModel rptds = new RptRiepiloghiMaggAbitazioneModel()
+                            RptRiepiloghiIseMensileModel rptds = new RptRiepiloghiIseMensileModel()
                             {
                                 IdTeorici = lm.idTeorici,
                                 DescrizioneVoce = lm.Voci.descrizione,
@@ -155,7 +153,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 Movimento = lm.TipoMovimento.DescMovimento,
                                 Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
                                 Voce = lm.Voci.codiceVoce,
-                                Inserimento = lm.tipoInserimento.ToString(),
+                                //Inserimento = lm.tipoInserimento.ToString(),
                                 Importo = lm.Importo,
                                 Inviato = lm.Elaborato,
                                 meseRiferimento = lm.meseRiferimento
@@ -179,18 +177,25 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.Width = Unit.Percentage(100);
                     reportViewer.Height = Unit.Percentage(100);
 
-                    var datasource = new ReportDataSource("DataSetRiepiloghiMaggAbitazione");
+                    var datasource = new ReportDataSource("DataSetRiepiloghiIseMensile");
 
                     reportViewer.Visible = true;
                     reportViewer.ProcessingMode = ProcessingMode.Local;
 
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptRiepiloghiMaggAbitazione.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc";
                     reportViewer.LocalReport.DataSources.Clear();
 
                     reportViewer.LocalReport.DataSources.Add(datasource);
-                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiMaggAbitazione", rpt));
+                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiIseMensile", rpt));
                     reportViewer.LocalReport.Refresh();
-                    
+
+                    // Nel caso in cui passo il DatePicker
+                    //ReportParameter[] parameterValues = new ReportParameter[]
+                    //   {
+                    //        new ReportParameter ("Dal",Convert.ToString(dtIni)),
+                    //        new ReportParameter ("Al",Convert.ToString(dtFin))
+                    //   };
+
 
                     ReportParameter[] parameterValues = new ReportParameter[]
                        {
@@ -208,7 +213,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView("RptRiepiloghiMaggAbitazione");
+            return PartialView("RptRiepiloghiIseMensile");
         }
 
     }

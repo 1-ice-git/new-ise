@@ -4689,6 +4689,8 @@
       <DependentUpon>DataSetRiepiloghiMaggAbitazione.xsd</DependentUpon>
     </Content>
     <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiSpeseDiverse\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiSpeseDiverse\SelezionaMeseAnno.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -4927,8 +4929,11 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="Areas\Statistiche\Controllers\IndennitaSedeEsteraController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSospensioniController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiIseMensileModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\RiepiloghiMaggAbitazioneModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiIseMensileModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptRiepiloghiMaggAbitazioneModel.cs" />
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiIseMensile.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
