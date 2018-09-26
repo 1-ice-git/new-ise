@@ -2,57 +2,28 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Textbox Name="Textbox24">
+      <Textbox Name="Textbox2">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>="Roma, " &amp; Today()</Value>
-                <Style />
+                <Value>Periodo di riferimento:</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox24</rd:DefaultName>
-        <Top>0.46729cm</Top>
-        <Left>21.08779cm</Left>
+        <rd:DefaultName>Textbox2</rd:DefaultName>
+        <Top>0.89062cm</Top>
+        <Left>0.54649cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.90423cm</Width>
-        <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
-="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox6">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>="al  " &amp; Parameters!Al.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.46729cm</Top>
-        <Left>8.3636cm</Left>
-        <Height>0.6cm</Height>
-        <Width>2.79477cm</Width>
-        <ZIndex>1</ZIndex>
+        <Width>5.14095cm</Width>
+        <ToolTip>Periodo di riferimento</ToolTip>
         <Style>
           <Border>
             <Style>None</Style>
@@ -78,11 +49,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>0.46729cm</Top>
-        <Left>5.73996cm</Left>
+        <Top>0.89062cm</Top>
+        <Left>5.76681cm</Left>
         <Height>0.6cm</Height>
-        <Width>2.62364cm</Width>
-        <ZIndex>2</ZIndex>
+        <Width>2.6501cm</Width>
+        <ZIndex>1</ZIndex>
         <ToolTip>Dal </ToolTip>
         <Style>
           <Border>
@@ -94,29 +65,26 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox2">
+      <Textbox Name="Textbox6">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Periodo di riferimento:</Value>
-                <Style>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
+                <Value>="al  " &amp; Parameters!Al.Value</Value>
+                <Style />
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>0.46729cm</Top>
-        <Left>0.51964cm</Left>
+        <rd:DefaultName>Textbox6</rd:DefaultName>
+        <Top>0.89062cm</Top>
+        <Left>8.39045cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.11449cm</Width>
-        <ZIndex>3</ZIndex>
-        <ToolTip>Periodo di riferimento</ToolTip>
+        <Width>2.82123cm</Width>
+        <ZIndex>2</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -127,23 +95,55 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Tablix Name="Tablix2">
+      <Textbox Name="Textbox24">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>="Roma, " &amp; Today()</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox24</rd:DefaultName>
+        <Top>0.89062cm</Top>
+        <Left>21.11464cm</Left>
+        <Height>0.6cm</Height>
+        <Width>3.93069cm</Width>
+        <ZIndex>3</ZIndex>
+        <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
+="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Tablix Name="Tablix3">
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>5.00231cm</Width>
+              <Width>2.5cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.85737cm</Width>
+              <Width>2.5cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.48437cm</Width>
+              <Width>2.5cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.11937cm</Width>
+              <Width>2.5cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.89677cm</Width>
+              <Width>2.5cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -160,9 +160,7 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Importo</Value>
-                              <Style>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
+                              <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -184,7 +182,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox23">
+                    <Textbox Name="Textbox22">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -192,15 +190,13 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Voce</Value>
-                              <Style>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
+                              <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox23</rd:DefaultName>
+                      <rd:DefaultName>Textbox22</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -216,7 +212,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox27">
+                    <Textbox Name="Textbox26">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -224,15 +220,13 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Liquidazione</Value>
-                              <Style>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
+                              <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox27</rd:DefaultName>
+                      <rd:DefaultName>Textbox26</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -248,7 +242,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox29">
+                    <Textbox Name="Textbox28">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -256,15 +250,13 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Movimento</Value>
-                              <Style>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
+                              <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox29</rd:DefaultName>
+                      <rd:DefaultName>Textbox28</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -280,7 +272,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox31">
+                    <Textbox Name="Textbox30">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -288,15 +280,13 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Descrizione Voce</Value>
-                              <Style>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
+                              <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox31</rd:DefaultName>
+                      <rd:DefaultName>Textbox30</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -324,7 +314,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!Importo.Value,2)</Value>
+                              <Value>=Fields!Importo.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -488,11 +478,11 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>DataSetRiepiloghiIseMensile</DataSetName>
-        <Top>2.72203cm</Top>
-        <Left>0.63182cm</Left>
+        <DataSetName>DataSetRiepiloghiMaggAbitazione</DataSetName>
+        <Top>3.59516cm</Top>
+        <Left>0.54649cm</Left>
         <Height>1.2cm</Height>
-        <Width>24.3602cm</Width>
+        <Width>12.5cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -515,8 +505,8 @@
           <Source>Embedded</Source>
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
-          <Top>0.24094cm</Top>
-          <Left>0.49318cm</Left>
+          <Top>0.3055cm</Top>
+          <Left>0.54649cm</Left>
           <Height>2.05811cm</Height>
           <Width>4.02088cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
@@ -547,7 +537,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>RIEPILOGO DELLE OPERAZIONI EFFETTUATE - INDENNITA' DI SEDE ESTERA</Value>
+                  <Value>RIEPILOGO DELLE OPERAZIONI EFFETTUATE - MAGGIORAZIONE ABITAZIONE</Value>
                   <Style>
                     <FontStyle>Normal</FontStyle>
                     <FontSize>14pt</FontSize>
@@ -562,8 +552,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox25</rd:DefaultName>
-          <Top>0.24094cm</Top>
-          <Left>4.61989cm</Left>
+          <Top>0.3055cm</Top>
+          <Left>4.6732cm</Left>
           <Height>2.05811cm</Height>
           <Width>20.37213cm</Width>
           <ZIndex>1</ZIndex>
@@ -588,58 +578,14 @@
       <Height>2.54cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
-      <ReportItems>
-        <Textbox Name="Textbox22">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>I</Value>
-                  <Style>
-                    <FontStyle>Italic</FontStyle>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>ndennità di Servizio all'Estero</Value>
-                  <Style>
-                    <FontStyle>Italic</FontStyle>
-                    <FontSize>9pt</FontSize>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Left</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox22</rd:DefaultName>
-          <Top>0.97cm</Top>
-          <Left>0.49318cm</Left>
-          <Height>0.6cm</Height>
-          <Width>24.49884cm</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-      </ReportItems>
       <Style>
         <Border>
           <Style>None</Style>
         </Border>
       </Style>
     </PageFooter>
-    <PageHeight>21cm</PageHeight>
-    <PageWidth>29.7cm</PageWidth>
+    <PageHeight>29.7cm</PageHeight>
+    <PageWidth>21cm</PageWidth>
     <LeftMargin>2cm</LeftMargin>
     <RightMargin>2cm</RightMargin>
     <TopMargin>2cm</TopMargin>
@@ -649,18 +595,18 @@
   </Page>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DataSetRiepiloghiIseMensile">
+    <DataSource Name="DataSetRiepiloghiMaggAbitazione">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>51a5ba99-9dca-4af4-88b9-c947ae15329c</rd:DataSourceID>
+      <rd:DataSourceID>c200efbb-60d1-465e-a317-b4a7b01d89b5</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSetRiepiloghiIseMensile">
+    <DataSet Name="DataSetRiepiloghiMaggAbitazione">
       <Query>
-        <DataSourceName>DataSetRiepiloghiIseMensile</DataSourceName>
+        <DataSourceName>DataSetRiepiloghiMaggAbitazione</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
@@ -686,9 +632,9 @@
         </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>DataSetRiepiloghiIseMensile</rd:DataSetName>
-        <rd:SchemaPath>C:\Users\UTENTE\Documents\Visual Studio 2015\Projects\NewISE\NewISE\Areas\Statistiche\RPTDataSet\DataSetRiepiloghiIseMensile.xsd</rd:SchemaPath>
-        <rd:TableName>DataSetRiepiloghiIseMensile</rd:TableName>
+        <rd:DataSetName>DataSetRiepiloghiMaggAbitazione</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\UTENTE\Documents\Visual Studio 2015\Projects\NewISE\NewISE\Areas\Statistiche\RPTDataSet\DataSetRiepiloghiMaggAbitazione.xsd</rd:SchemaPath>
+        <rd:TableName>DataTable1</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
@@ -733,5 +679,5 @@ k+knx+DOzXkxblLestrlOWueGaodjqdSaKsMkkY69/ZTrUL9Co0SjQAceEvybbCeZlpzYtNGVseI4hHU
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>5e8243c8-0314-420d-9d22-56a4681e5fa1</rd:ReportID>
+  <rd:ReportID>f5b25edb-ebf1-4d6b-a4ee-5d1a61583dca</rd:ReportID>
 </Report>

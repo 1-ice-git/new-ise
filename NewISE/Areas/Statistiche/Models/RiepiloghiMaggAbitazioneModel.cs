@@ -1,14 +1,15 @@
-﻿using System;
+﻿using NewISE.Models.DBModel;
+using NewISE.Models.Enumeratori;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using System.ComponentModel.DataAnnotations;
-using NewISE.Models.DBModel;
-using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Statistiche.Models
 {
-    public class RptRiepiloghiIseMensileModel
+    public class RiepiloghiMaggAbitazioneModel
     {
         [Display(Name = "Matricola")]
         public string matricola { get; set; }
@@ -35,23 +36,46 @@ namespace NewISE.Areas.Statistiche.Models
         [Display(Name = "Sist. /Rientro Lorda")]
         public string anticipo { get; set; }
 
-        public decimal meseRiferimento { get; set; }
-
-        public decimal IdTeorici { get; set; }
-        public string codiceVoce { get; set; }
-        public string DescrizioneVoce { get; set; }
-        public string Voce { get; set; }
-        public string Movimento { get; set; }
-        public string Inserimento { get; set; }
-        public string Liquidazione { get; set; }
-        public string DataRiferimento { get; set; }
-        public decimal Importo { get; set; }
-        public bool Inviato { get; set; }
+        [Key]
+        public decimal idTeorici { get; set; }
+        [Required(ErrorMessage = "Il campo è richiesto.")]
         public string Nominativo { get; set; }
+
+        [Display(Name = "Voci")]
+        public decimal idVoci { get; set; }
+
+        [Required(ErrorMessage = "Il campo è richiesto.")]
+        [DefaultValue(0)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal Importo { get; set; }
+        [Required(ErrorMessage = "Il campo è richiesto.")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime Data { get; set; }
+
+        public VociModel Voci { get; set; }
+
+        [Display(Name = "Elab.")]
+        [DefaultValue(false)]
+        public bool Elaborato { get; set; }
 
         public TipoMovimentoModel TipoMovimento { get; set; }
 
         [Display(Name = "Movimentazione")]
         public EnumTipoInserimento tipoInserimento { get; set; }
+
+        public string Ufficio { get; set; }
+
+        public decimal meseRiferimento { get; set; }
+
+        public decimal annoRiferimento { get; set; }
+
+        public string MeseAnnoRiferimento
+        {
+            get
+            {
+                return meseRiferimento.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + annoRiferimento;
+            }
+        }
     }
 }

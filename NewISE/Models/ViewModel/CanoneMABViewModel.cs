@@ -24,6 +24,7 @@ namespace NewISE.Models.ViewModel
 
         public bool canonePartenza { get; set; }
         [Display(Name = "Canone Attuale")]
+        [NoValidate]
         public decimal canoneAttuale { get; set; }
     }
 }

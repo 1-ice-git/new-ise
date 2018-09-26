@@ -453,8 +453,11 @@ namespace NewISE.Models.DBModel.dtObj
             {
 
                 var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var t = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                lc = amf.CONIUGE.OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                lc = amf.CONIUGE.Where(a=>
+                            (a.DATAINIZIOVALIDITA<=t.DATARIENTRO && a.DATAFINEVALIDITA>=t.DATARIENTRO) || a.DATAFINEVALIDITA<t.DATARIENTRO)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
 
 
                 if (lc?.Any() ?? false)
@@ -469,7 +472,7 @@ namespace NewISE.Models.DBModel.dtObj
                                cognome = e.COGNOME,
                                codiceFiscale = e.CODICEFISCALE,
                                dataInizio = e.DATAINIZIOVALIDITA,
-                               dataFine = e.DATAFINEVALIDITA,
+                               dataFine = e.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                FK_idConiuge = e.FK_IDCONIUGE,
                                idAttivazioneMagFam = idAttivazioneMagFam,
@@ -599,8 +602,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                 {
-
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                    var t = mf.TRASFERIMENTO;
 
                     lc = mf.CONIUGE.Where(y =>
                                     y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato
@@ -609,7 +612,12 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var c in lc)
                         {
-                            if (db.CONIUGE.Where(a => a.FK_IDCONIUGE == c.IDCONIUGE && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).Count() == 0)
+                            if (db.CONIUGE.Where(a => 
+                                a.FK_IDCONIUGE == c.IDCONIUGE && 
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                                ((a.DATAINIZIOVALIDITA<=t.DATARIENTRO &&
+                                a.DATAFINEVALIDITA>=t.DATARIENTRO) || a.DATAFINEVALIDITA<t.DATARIENTRO))
+                                .Count() == 0)
                             {
 
                                 VariazioneConiugeModel cm = new VariazioneConiugeModel()
@@ -623,7 +631,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     cognome = c.COGNOME,
                                     codiceFiscale = c.CODICEFISCALE,
                                     dataInizio = c.DATAINIZIOVALIDITA,
-                                    dataFine = c.DATAFINEVALIDITA,
+                                    dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO? t.DATARIENTRO :c.DATAFINEVALIDITA,
                                     dataAggiornamento = c.DATAAGGIORNAMENTO,
                                     idStatoRecord = c.IDSTATORECORD,
                                     FK_idConiuge = c.FK_IDCONIUGE,

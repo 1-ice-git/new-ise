@@ -20,17 +20,17 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("DataSetRiepiloghiIseMensile")]
+    [global::System.Xml.Serialization.XmlRootAttribute("DataSetRiepiloghiMaggAbitazione")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class DataSetRiepiloghiIseMensile : global::System.Data.DataSet {
+    public partial class DataSetRiepiloghiMaggAbitazione : global::System.Data.DataSet {
         
-        private DataSetRiepiloghiIseMensileDataTable tableDataSetRiepiloghiIseMensile;
+        private DataTable1DataTable tableDataTable1;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public DataSetRiepiloghiIseMensile() {
+        public DataSetRiepiloghiMaggAbitazione() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected DataSetRiepiloghiIseMensile(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected DataSetRiepiloghiMaggAbitazione(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -54,8 +54,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["DataSetRiepiloghiIseMensile"] != null)) {
-                    base.Tables.Add(new DataSetRiepiloghiIseMensileDataTable(ds.Tables["DataSetRiepiloghiIseMensile"]));
+                if ((ds.Tables["DataTable1"] != null)) {
+                    base.Tables.Add(new DataTable1DataTable(ds.Tables["DataTable1"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public DataSetRiepiloghiIseMensileDataTable _DataSetRiepiloghiIseMensile {
+        public DataTable1DataTable DataTable1 {
             get {
-                return this.tableDataSetRiepiloghiIseMensile;
+                return this.tableDataTable1;
             }
         }
         
@@ -127,7 +127,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            DataSetRiepiloghiIseMensile cln = ((DataSetRiepiloghiIseMensile)(base.Clone()));
+            DataSetRiepiloghiMaggAbitazione cln = ((DataSetRiepiloghiMaggAbitazione)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -152,8 +152,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["DataSetRiepiloghiIseMensile"] != null)) {
-                    base.Tables.Add(new DataSetRiepiloghiIseMensileDataTable(ds.Tables["DataSetRiepiloghiIseMensile"]));
+                if ((ds.Tables["DataTable1"] != null)) {
+                    base.Tables.Add(new DataTable1DataTable(ds.Tables["DataTable1"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableDataSetRiepiloghiIseMensile = ((DataSetRiepiloghiIseMensileDataTable)(base.Tables["DataSetRiepiloghiIseMensile"]));
+            this.tableDataTable1 = ((DataTable1DataTable)(base.Tables["DataTable1"]));
             if ((initTable == true)) {
-                if ((this.tableDataSetRiepiloghiIseMensile != null)) {
-                    this.tableDataSetRiepiloghiIseMensile.InitVars();
+                if ((this.tableDataTable1 != null)) {
+                    this.tableDataTable1.InitVars();
                 }
             }
         }
@@ -199,18 +199,18 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "DataSetRiepiloghiIseMensile";
+            this.DataSetName = "DataSetRiepiloghiMaggAbitazione";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/DataSetRiepiloghiIseMensile.xsd";
+            this.Namespace = "http://tempuri.org/DataSetRiepiloghiMaggAbitazione.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableDataSetRiepiloghiIseMensile = new DataSetRiepiloghiIseMensileDataTable();
-            base.Tables.Add(this.tableDataSetRiepiloghiIseMensile);
+            this.tableDataTable1 = new DataTable1DataTable();
+            base.Tables.Add(this.tableDataTable1);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerialize_DataSetRiepiloghiIseMensile() {
+        private bool ShouldSerializeDataTable1() {
             return false;
         }
         
@@ -225,7 +225,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            DataSetRiepiloghiIseMensile ds = new DataSetRiepiloghiIseMensile();
+            DataSetRiepiloghiMaggAbitazione ds = new DataSetRiepiloghiMaggAbitazione();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -270,14 +270,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void DataSetRiepiloghiIseMensileRowChangeEventHandler(object sender, DataSetRiepiloghiIseMensileRowChangeEvent e);
+        public delegate void DataTable1RowChangeEventHandler(object sender, DataTable1RowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class DataSetRiepiloghiIseMensileDataTable : global::System.Data.TypedTableBase<DataSetRiepiloghiIseMensileRow> {
+        public partial class DataTable1DataTable : global::System.Data.TypedTableBase<DataTable1Row> {
             
             private global::System.Data.DataColumn columnImporto;
             
@@ -291,8 +291,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileDataTable() {
-                this.TableName = "DataSetRiepiloghiIseMensile";
+            public DataTable1DataTable() {
+                this.TableName = "DataTable1";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -300,7 +300,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal DataSetRiepiloghiIseMensileDataTable(global::System.Data.DataTable table) {
+            internal DataTable1DataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -317,7 +317,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected DataSetRiepiloghiIseMensileDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DataTable1DataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -373,49 +373,49 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileRow this[int index] {
+            public DataTable1Row this[int index] {
                 get {
-                    return ((DataSetRiepiloghiIseMensileRow)(this.Rows[index]));
+                    return ((DataTable1Row)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DataSetRiepiloghiIseMensileRowChangeEventHandler DataSetRiepiloghiIseMensileRowChanging;
+            public event DataTable1RowChangeEventHandler DataTable1RowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DataSetRiepiloghiIseMensileRowChangeEventHandler DataSetRiepiloghiIseMensileRowChanged;
+            public event DataTable1RowChangeEventHandler DataTable1RowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DataSetRiepiloghiIseMensileRowChangeEventHandler DataSetRiepiloghiIseMensileRowDeleting;
+            public event DataTable1RowChangeEventHandler DataTable1RowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DataSetRiepiloghiIseMensileRowChangeEventHandler DataSetRiepiloghiIseMensileRowDeleted;
+            public event DataTable1RowChangeEventHandler DataTable1RowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddDataSetRiepiloghiIseMensileRow(DataSetRiepiloghiIseMensileRow row) {
+            public void AddDataTable1Row(DataTable1Row row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileRow AddDataSetRiepiloghiIseMensileRow(string Importo, string Voce, string Liquidazione, string Movimento, string DescrizioneVoce) {
-                DataSetRiepiloghiIseMensileRow rowDataSetRiepiloghiIseMensileRow = ((DataSetRiepiloghiIseMensileRow)(this.NewRow()));
+            public DataTable1Row AddDataTable1Row(string Importo, string Voce, string Liquidazione, string Movimento, string DescrizioneVoce) {
+                DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Importo,
                         Voce,
                         Liquidazione,
                         Movimento,
                         DescrizioneVoce};
-                rowDataSetRiepiloghiIseMensileRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowDataSetRiepiloghiIseMensileRow);
-                return rowDataSetRiepiloghiIseMensileRow;
+                rowDataTable1Row.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDataTable1Row);
+                return rowDataTable1Row;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                DataSetRiepiloghiIseMensileDataTable cln = ((DataSetRiepiloghiIseMensileDataTable)(base.Clone()));
+                DataTable1DataTable cln = ((DataTable1DataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -423,7 +423,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new DataSetRiepiloghiIseMensileDataTable();
+                return new DataTable1DataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -449,34 +449,32 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnMovimento);
                 this.columnDescrizioneVoce = new global::System.Data.DataColumn("DescrizioneVoce", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescrizioneVoce);
-                this.ExtendedProperties.Add("Generator_TablePropName", "_DataSetRiepiloghiIseMensile");
-                this.ExtendedProperties.Add("Generator_UserTableName", "DataSetRiepiloghiIseMensile");
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileRow NewDataSetRiepiloghiIseMensileRow() {
-                return ((DataSetRiepiloghiIseMensileRow)(this.NewRow()));
+            public DataTable1Row NewDataTable1Row() {
+                return ((DataTable1Row)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new DataSetRiepiloghiIseMensileRow(builder);
+                return new DataTable1Row(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(DataSetRiepiloghiIseMensileRow);
+                return typeof(DataTable1Row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.DataSetRiepiloghiIseMensileRowChanged != null)) {
-                    this.DataSetRiepiloghiIseMensileRowChanged(this, new DataSetRiepiloghiIseMensileRowChangeEvent(((DataSetRiepiloghiIseMensileRow)(e.Row)), e.Action));
+                if ((this.DataTable1RowChanged != null)) {
+                    this.DataTable1RowChanged(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
                 }
             }
             
@@ -484,8 +482,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.DataSetRiepiloghiIseMensileRowChanging != null)) {
-                    this.DataSetRiepiloghiIseMensileRowChanging(this, new DataSetRiepiloghiIseMensileRowChangeEvent(((DataSetRiepiloghiIseMensileRow)(e.Row)), e.Action));
+                if ((this.DataTable1RowChanging != null)) {
+                    this.DataTable1RowChanging(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
                 }
             }
             
@@ -493,8 +491,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.DataSetRiepiloghiIseMensileRowDeleted != null)) {
-                    this.DataSetRiepiloghiIseMensileRowDeleted(this, new DataSetRiepiloghiIseMensileRowChangeEvent(((DataSetRiepiloghiIseMensileRow)(e.Row)), e.Action));
+                if ((this.DataTable1RowDeleted != null)) {
+                    this.DataTable1RowDeleted(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
                 }
             }
             
@@ -502,14 +500,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.DataSetRiepiloghiIseMensileRowDeleting != null)) {
-                    this.DataSetRiepiloghiIseMensileRowDeleting(this, new DataSetRiepiloghiIseMensileRowChangeEvent(((DataSetRiepiloghiIseMensileRow)(e.Row)), e.Action));
+                if ((this.DataTable1RowDeleting != null)) {
+                    this.DataTable1RowDeleting(this, new DataTable1RowChangeEvent(((DataTable1Row)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveDataSetRiepiloghiIseMensileRow(DataSetRiepiloghiIseMensileRow row) {
+            public void RemoveDataTable1Row(DataTable1Row row) {
                 this.Rows.Remove(row);
             }
             
@@ -518,7 +516,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                DataSetRiepiloghiIseMensile ds = new DataSetRiepiloghiIseMensile();
+                DataSetRiepiloghiMaggAbitazione ds = new DataSetRiepiloghiMaggAbitazione();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -536,7 +534,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "DataSetRiepiloghiIseMensileDataTable";
+                attribute2.FixedValue = "DataTable1DataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -580,15 +578,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class DataSetRiepiloghiIseMensileRow : global::System.Data.DataRow {
+        public partial class DataTable1Row : global::System.Data.DataRow {
             
-            private DataSetRiepiloghiIseMensileDataTable tableDataSetRiepiloghiIseMensile;
+            private DataTable1DataTable tableDataTable1;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal DataSetRiepiloghiIseMensileRow(global::System.Data.DataRowBuilder rb) : 
+            internal DataTable1Row(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableDataSetRiepiloghiIseMensile = ((DataSetRiepiloghiIseMensileDataTable)(this.Table));
+                this.tableDataTable1 = ((DataTable1DataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -596,15 +594,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string Importo {
                 get {
                     try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.ImportoColumn]));
+                        return ((string)(this[this.tableDataTable1.ImportoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Importo\' nella tabella \'DataSetRiepiloghiIseMensile\' è D" +
-                                "BNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Importo\' nella tabella \'DataTable1\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataSetRiepiloghiIseMensile.ImportoColumn] = value;
+                    this[this.tableDataTable1.ImportoColumn] = value;
                 }
             }
             
@@ -613,15 +610,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string Voce {
                 get {
                     try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.VoceColumn]));
+                        return ((string)(this[this.tableDataTable1.VoceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Voce\' nella tabella \'DataSetRiepiloghiIseMensile\' è DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Voce\' nella tabella \'DataTable1\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataSetRiepiloghiIseMensile.VoceColumn] = value;
+                    this[this.tableDataTable1.VoceColumn] = value;
                 }
             }
             
@@ -630,15 +626,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string Liquidazione {
                 get {
                     try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.LiquidazioneColumn]));
+                        return ((string)(this[this.tableDataTable1.LiquidazioneColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Liquidazione\' nella tabella \'DataSetRiepiloghiIseMensile" +
-                                "\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Liquidazione\' nella tabella \'DataTable1\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataSetRiepiloghiIseMensile.LiquidazioneColumn] = value;
+                    this[this.tableDataTable1.LiquidazioneColumn] = value;
                 }
             }
             
@@ -647,15 +642,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string Movimento {
                 get {
                     try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.MovimentoColumn]));
+                        return ((string)(this[this.tableDataTable1.MovimentoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Movimento\' nella tabella \'DataSetRiepiloghiIseMensile\' è" +
-                                " DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Movimento\' nella tabella \'DataTable1\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataSetRiepiloghiIseMensile.MovimentoColumn] = value;
+                    this[this.tableDataTable1.MovimentoColumn] = value;
                 }
             }
             
@@ -664,76 +658,75 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string DescrizioneVoce {
                 get {
                     try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.DescrizioneVoceColumn]));
+                        return ((string)(this[this.tableDataTable1.DescrizioneVoceColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DescrizioneVoce\' nella tabella \'DataSetRiepiloghiIseMens" +
-                                "ile\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DescrizioneVoce\' nella tabella \'DataTable1\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataSetRiepiloghiIseMensile.DescrizioneVoceColumn] = value;
+                    this[this.tableDataTable1.DescrizioneVoceColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsImportoNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.ImportoColumn);
+                return this.IsNull(this.tableDataTable1.ImportoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetImportoNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.ImportoColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable1.ImportoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsVoceNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.VoceColumn);
+                return this.IsNull(this.tableDataTable1.VoceColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetVoceNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.VoceColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable1.VoceColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsLiquidazioneNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.LiquidazioneColumn);
+                return this.IsNull(this.tableDataTable1.LiquidazioneColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetLiquidazioneNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.LiquidazioneColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable1.LiquidazioneColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsMovimentoNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.MovimentoColumn);
+                return this.IsNull(this.tableDataTable1.MovimentoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetMovimentoNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.MovimentoColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable1.MovimentoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDescrizioneVoceNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.DescrizioneVoceColumn);
+                return this.IsNull(this.tableDataTable1.DescrizioneVoceColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDescrizioneVoceNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.DescrizioneVoceColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable1.DescrizioneVoceColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -741,22 +734,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class DataSetRiepiloghiIseMensileRowChangeEvent : global::System.EventArgs {
+        public class DataTable1RowChangeEvent : global::System.EventArgs {
             
-            private DataSetRiepiloghiIseMensileRow eventRow;
+            private DataTable1Row eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileRowChangeEvent(DataSetRiepiloghiIseMensileRow row, global::System.Data.DataRowAction action) {
+            public DataTable1RowChangeEvent(DataTable1Row row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileRow Row {
+            public DataTable1Row Row {
                 get {
                     return this.eventRow;
                 }

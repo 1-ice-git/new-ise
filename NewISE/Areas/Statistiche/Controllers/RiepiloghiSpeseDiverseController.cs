@@ -1,19 +1,12 @@
 ﻿using Microsoft.Reporting.WebForms;
 using NewISE.Areas.Statistiche.Models;
-using NewISE.Areas.Statistiche.Models.dtObj;
-using NewISE.Areas.Statistiche.RPTDataSet;
 using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.dtObj.ModelliCalcolo;
-using NewISE.Models.Enumeratori;
-using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,13 +14,14 @@ using System.Web.UI.WebControls;
 
 namespace NewISE.Areas.Statistiche.Controllers
 {
-    public class RiepiloghiIseMensileController : Controller
+    public class RiepiloghiSpeseDiverseController : Controller
     {
-        // GET: Statistiche/RiepiloghiIseMensile
+        // GET: Statistiche/RiepiloghiSpeseDiverse
         public ActionResult Index()
-        {   
+        {
             return PartialView();
         }
+
         public JsonResult PrelevaMesiAnniElab(string search)
         {
             List<Select2Model> ls2 = new List<Select2Model>();
@@ -70,6 +64,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return Json(new { results = ls2, err = "" });
         }
+
         public ActionResult SelezionaMeseAnno(int mese = 0, int anno = 0)
         {
             var rMeseAnno = new List<SelectListItem>();
@@ -130,7 +125,8 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView();
         }
-        public ActionResult RptRiepiloghiIseMensile(decimal dtIni, decimal dtFin)
+
+        public ActionResult RptRiepiloghiSpeseDiverse(decimal dtIni, decimal dtFin)
         {
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
             List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
@@ -141,7 +137,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
-                    {   
+                    {
                         rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
                     }
 
@@ -157,58 +153,58 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 Movimento = lm.TipoMovimento.DescMovimento,
                                 Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
                                 Voce = lm.Voci.codiceVoce,
-                                Inserimento = lm.tipoInserimento.ToString(),
+                                //Inserimento = lm.tipoInserimento.ToString(),
                                 Importo = lm.Importo,
                                 Inviato = lm.Elaborato,
                                 meseRiferimento = lm.meseRiferimento
-                                 
+
                             };
 
                             rpt.Add(rptds);
                         }
                     }
 
-                var annoMeseElab = db.MESEANNOELABORAZIONE.Find(dtIni);
-                decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    var annoMeseElab = db.MESEANNOELABORAZIONE.Find(dtIni);
+                    decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
 
-                var annoMeseElab1 = db.MESEANNOELABORAZIONE.Find(dtFin);
-                decimal annoMese1 = Convert.ToDecimal(annoMeseElab1.ANNO.ToString() + annoMeseElab1.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    var annoMeseElab1 = db.MESEANNOELABORAZIONE.Find(dtFin);
+                    decimal annoMese1 = Convert.ToDecimal(annoMeseElab1.ANNO.ToString() + annoMeseElab1.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
 
-                ReportViewer reportViewer = new ReportViewer();
+                    ReportViewer reportViewer = new ReportViewer();
 
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                reportViewer.SizeToReportContent = true;
-                reportViewer.Width = Unit.Percentage(100);
-                reportViewer.Height = Unit.Percentage(100);
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
 
-                var datasource = new ReportDataSource("DataSetRiepiloghiIseMensile");
+                    var datasource = new ReportDataSource("DataSetRiepiloghiIseMensile");
 
-                reportViewer.Visible = true;
-                reportViewer.ProcessingMode = ProcessingMode.Local;
-                
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc"; 
-                reportViewer.LocalReport.DataSources.Clear();
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
 
-                reportViewer.LocalReport.DataSources.Add(datasource);
-                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiIseMensile", rpt));
-                reportViewer.LocalReport.Refresh();
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
 
-                // Nel caso in cui passo il DatePicker
-                //ReportParameter[] parameterValues = new ReportParameter[]
-                //   {
-                //        new ReportParameter ("Dal",Convert.ToString(dtIni)),
-                //        new ReportParameter ("Al",Convert.ToString(dtFin))
-                //   };
+                    reportViewer.LocalReport.DataSources.Add(datasource);
+                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiIseMensile", rpt));
+                    reportViewer.LocalReport.Refresh();
+
+                    // Nel caso in cui passo il DatePicker
+                    //ReportParameter[] parameterValues = new ReportParameter[]
+                    //   {
+                    //        new ReportParameter ("Dal",Convert.ToString(dtIni)),
+                    //        new ReportParameter ("Al",Convert.ToString(dtFin))
+                    //   };
 
 
-                ReportParameter[] parameterValues = new ReportParameter[]
-                   {
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                       {
                         new ReportParameter ("Dal",Convert.ToString(annoMese)),
                         new ReportParameter ("Al",Convert.ToString(annoMese1))
-                   };
+                       };
 
-                reportViewer.LocalReport.SetParameters(parameterValues);
-                ViewBag.ReportViewer = reportViewer;
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
 
                 }
             }

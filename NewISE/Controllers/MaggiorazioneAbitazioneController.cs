@@ -67,6 +67,7 @@ namespace NewISE.Controllers
 
                         using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                         {
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
 
                             amm = dtma.GetAttivazionePartenzaMAB(idTrasferimento);
 
@@ -93,7 +94,7 @@ namespace NewISE.Controllers
                             aa = dtma.GetAnticipoAnnualeMABPartenza(mab, db);
                             mavm.importo_canone = cm.IMPORTOCANONE;
                             mavm.dataInizioMAB = pmab.DATAINIZIOMAB;
-                            mavm.dataFineMAB = pmab.DATAFINEMAB;
+                            mavm.dataFineMAB = pmab.DATAFINEMAB>t.dataRientro?t.dataRientro.Value:pmab.DATAFINEMAB;
                             if (aa.IDANTICIPOANNUALEMAB > 0)
                             {
                                 mavm.anticipoAnnuale = aa.ANTICIPOANNUALE;
@@ -126,7 +127,6 @@ namespace NewISE.Controllers
 
                             siDati = true;
 
-                            var t = dtt.GetTrasferimentoById(idTrasferimento);
                             statoTrasferimento = t.idStatoTrasferimento;
                             if (statoTrasferimento == EnumStatoTraferimento.Annullato)
                             {

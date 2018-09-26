@@ -17,6 +17,7 @@
         @Html.Hidden("idMab", idMab)
         @Html.Hidden("idTrasferimento", idTrasferimento)
         @Html.Hidden("dataInizioValiditaModificabile", dataInizioValiditaModificabile)
+        <input type="hidden" id="hImportoCanone" name="ImportoCanone" value="0" />
 
         <div class="form-horizontal">
             <h4>Nuovo Canone M.AB.</h4>
@@ -30,11 +31,12 @@
                             <div class="col-xs-2">
                                 @if (Model != null)
                                 {
-                                    @Html.TextBoxFor(model => model.canoneAttuale, string.Format("{0:N2}", Model.canoneAttuale), new { @readonly = "readonly", @class = "form-control text-right" })
+
+                                    <input type="text" id="canoneAttuale" value="@Model.canoneAttuale.ToString("N2")" readonly="readonly" class="form-control text-right" />
                                 }
                                 else
                                 {
-                                    @Html.TextBoxFor(model => model.canoneAttuale, new { @readonly = "readonly", @class = "form-control text-right" })
+                                    <input type="text" id="canoneAttuale" value="0,00" readonly="readonly" class="form-control text-right" />
                                 }
                             </div>
                         </div>
@@ -43,11 +45,12 @@
                             <div class="col-xs-2">
                                 @if (Model != null)
                                 {
-                                    @Html.TextBoxFor(model => model.ImportoCanone, string.Format("{0:N2}", Model.ImportoCanone), new { @class = "form-control text-right", onclick = "SelectNumer();" })
+                                    <input type="text" id="ImportoCanone" value="@Model.ImportoCanone.ToString("N2")" class="form-control text-right" onclick="SelectNumer();" />
                                 }
                                 else
                                 {
-                                    @Html.TextBoxFor(model => model.ImportoCanone, new { @class = "form-control text-right" })
+
+                                    <input type="text" id="ImportoCanone" value="0,00" class="form-control text-right" onclick="SelectNumer();" />
                                 }
                             </div>
                         </div>
@@ -130,7 +133,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                                        break;
+                                                            break;
         }
 
     }
@@ -152,8 +155,16 @@
         }
     }
 
+    //canoneAttuale = new AutoNumeric('#canoneAttuale', autoNumericOptionsEuro);
+
+    ImportoCanone = new AutoNumeric('#ImportoCanone', autoNumericOptionsEuro);
+
+    function SelectNumer() {
+        ImportoCanone.selectNumber();
+    }
+
     $('#formNewCanoneMAB').submit(function () {
-        debugger;
+        //debugger;
         var form = $(this);
         if (!form.valid()) {
             DialogModalError('True');
@@ -161,7 +172,8 @@
         else {
             //var ip = $("#ImportoCanone").autoNumeric("get");
             var ip = ImportoCanone.getNumber();
-            $("#ImportoCanone").val(ip.toString().replace(".", ","));
+            $("#hImportoCanone").val(ip.toString().replace(".", ","));
+            //$("#canoneAttuale").val($("#canoneAttuale").val().toString().replace(".", ","));
         }
     });
 
@@ -184,11 +196,7 @@
     //    aSign: ''
     //});
 
-    ImportoCanone = new AutoNumeric('#ImportoCanone', autoNumericOptionsEuro);
 
-    function SelectNumer() {
-        ImportoCanone.selectNumber();
-    }
 
     $.culture = Globalize.culture("it-IT");
 

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using NewISE.Models.DBModel;
+using NewISE.Models.Enumeratori;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using System.ComponentModel.DataAnnotations;
-using NewISE.Models.DBModel;
-using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Statistiche.Models
 {
-    public class RptRiepiloghiIseMensileModel
+    public class RptRiepiloghiMaggAbitazioneModel
     {
+
         [Display(Name = "Matricola")]
         public string matricola { get; set; }
         [Display(Name = "Nominativo")]

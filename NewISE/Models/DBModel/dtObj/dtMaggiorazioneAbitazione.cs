@@ -769,7 +769,7 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
                 var mab = db.MAB.Find(idMab);
-
+                var t = mab.INDENNITA.TRASFERIMENTO;
                 PAGATOCONDIVISOMAB pcmab = new PAGATOCONDIVISOMAB();
 
                 var ma = db.MAB.Find(idMab);
