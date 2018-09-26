@@ -1,7 +1,7 @@
 ﻿@model NewISE.Models.DBModel.MaggiorazioniAnnualiModel
 @using NewISE.Models.DBModel;
 
-<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+@*<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>*@
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
@@ -60,12 +60,12 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.annualita, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -128,28 +128,30 @@
 
     Globalize.culture("it-IT");
 
-    $("#percentuale").autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: ''
-	});
+    //$("#percentuale").autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: ''
+    //});
+
+    //anElement = new AutoNumeric('#percentuale', autoNumericOptionsEuroOttoDec);
 
     $('form').submit(function () {
         //debugger;
-        var form = $(this);
-        $('input.number').each(function (i) {
-            //debugger;
-            var self = $(this);
-            try {
-                var v = self.autoNumeric('get');
-                //self.autoNumeric('destroy');
-                var n = v.replace(".", ",");
-                self.val(n);
-            } catch (err) {
-                console.log("Non è un campo autonumeric: " + self.attr("name"));
-            }
-        });
+        //var form = $(this);
+        //$('input.number').each(function (i) {
+        //    //debugger;
+        //    var self = $(this);
+        //    try {
+        //        var v = self.getNumber();
+        //        //self.autoNumeric('destroy');
+        //        var n = v.toString().replace(".", ",");
+        //        self.val(n);
+        //    } catch (err) {
+        //        console.log("Non è un campo autonumeric: " + self.attr("name"));
+        //    }
+        //});
         return true;
     });
 
@@ -158,10 +160,10 @@
     //    return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
     //};
 
-    $.validator.methods.number = function (value, element) {
-        //debugger;
-        return this.optional(element) || !isNaN(Globalize.parseFloat(value));
-    };
+    //$.validator.methods.number = function (value, element) {
+    //    //debugger;
+    //    return this.optional(element) || !isNaN(Globalize.parseFloat(value));
+    //};
 
     $('#dataInizioValidita').datepicker({
         inline: true,

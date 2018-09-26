@@ -477,6 +477,13 @@ namespace NewISE.Models.Tools
             return (((EnumDescrizioneMesi)mese).ToString() + " " + anno.ToString()).ToString();
         }
 
+        public static List<T> CreaLista<T>(params T[] elements)
+        {
+            return new List<T>(elements);
+        }
+
+
+
     }
 
 

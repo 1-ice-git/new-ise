@@ -882,6 +882,95 @@ namespace NewISE.Controllers
         }
 
 
+        [HttpPost]
+        public JsonResult PrelevaMesi(string search)
+        {
+            List<Select2Model> ls2 = new List<Select2Model>();
+
+
+            try
+            {
+                var mesi = new List<dynamic>();
+
+                for (int i = 1; i <= 12; i++)
+                {
+                    var mese = new { id = i.ToString(), DescMese = (EnumDescrizioneMesi)i };
+                    mesi.Add(mese);
+                }
+
+                foreach (var m in mesi)
+                {
+                    Select2Model s2 = new Select2Model()
+                    {
+                        id = m.id.ToString(),
+                        text = m.DescMese.ToString(),
+                    };
+
+                    ls2.Add(s2);
+                }
+
+                if (search != null && search != string.Empty)
+                {
+                    ls2 = ls2.Where(a => a.text.ToUpper().Contains(search.ToUpper())).ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { results = new List<Select2Model>(), err = ex.Message });
+            }
+
+            return Json(new { results = ls2, err = "" });
+
+        }
+
+        [HttpPost]
+        public JsonResult PrelevaAnni(string search)
+        {
+            List<Select2Model> ls2 = new List<Select2Model>();
+            int numeroAnniVociManuali = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["NumeroAnniVociManuali"]);
+
+            try
+            {
+                var anni = new List<dynamic>();
+
+                int i = DateTime.Now.Year - numeroAnniVociManuali;
+                int fine = DateTime.Now.Year + numeroAnniVociManuali;
+
+
+
+
+                for (var j = i; j <= fine; j++)
+                {
+                    var anno = new { id = j.ToString(), DescAnno = j.ToString() };
+                    anni.Add(anno);
+                }
+
+                foreach (var a in anni)
+                {
+                    Select2Model s2 = new Select2Model()
+                    {
+                        id = a.id.ToString(),
+                        text = a.DescAnno.ToString(),
+                    };
+
+                    ls2.Add(s2);
+                }
+
+                if (search != null && search != string.Empty)
+                {
+                    ls2 = ls2.Where(a => a.text.ToUpper().Contains(search.ToUpper())).ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { results = new List<Select2Model>(), err = ex.Message });
+            }
+
+            return Json(new { results = ls2, err = "" });
+
+        }
 
     }
 }

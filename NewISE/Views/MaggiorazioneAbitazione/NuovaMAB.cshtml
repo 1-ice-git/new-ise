@@ -175,9 +175,18 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                                break;
+                                        break;
         }
     }
+
+    //$('#imp_canone').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    nSep: true
+    //});
+
+    imp_canone = new AutoNumeric('#imp_canone', autoNumericOptionsEuroOttoDec);
 
     $("#canone_condiviso").click(function () {
         if ($(this).is(':checked')) {
@@ -214,7 +223,8 @@
 
     $("#imp_canone").on('change', function () {
         //debugger;
-        var appo = $("#imp_canone").autoNumeric('get');
+        //var appo = $("#imp_canone").autoNumeric('get');
+        var appo = imp_canone.getNumber();
         var appo3 = parseFloat(appo).toString().replace('.', ',');
 
         $('#importo_canone').val(appo3);
@@ -235,11 +245,6 @@
         }
     }
 
-    $('#imp_canone').autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        nSep: true
-    });
+
 
 </script>

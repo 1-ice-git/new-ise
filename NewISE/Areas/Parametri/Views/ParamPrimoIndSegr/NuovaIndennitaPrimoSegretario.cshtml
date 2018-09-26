@@ -1,7 +1,7 @@
 ﻿@model NewISE.Models.DBModel.IndennitaPrimoSegretModel
 @using NewISE.Models.DBModel;
 
-<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
@@ -93,13 +93,15 @@
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    $("#indennita").autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: '',
-	    mDec: 5,
-	});
+    //$("#indennita").autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '',
+    //    mDec: 5,
+    //});
+
+    anElement = new AutoNumeric('#indennita', autoNumericOptionsEuroOttoDec);
 
     $('form').submit(function () {
         //debugger;
@@ -108,9 +110,9 @@
             //debugger;
             var self = $(this);
             try {
-                var v = self.autoNumeric('get');
+                var v = self.getNumber();
                 //self.autoNumeric('destroy');
-                var n = v.replace(".", ",");
+                var n = v.toString().replace(".", ",");
                 self.val(n);
             } catch (err) {
                 console.log("Non è un campo autonumeric: " + self.attr("name"));

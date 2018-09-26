@@ -30,7 +30,7 @@
             @Html.Hidden("dataInizioMAB", Model.dataInizioMAB)
             @Html.Hidden("dataFineMAB", Model.dataFineMAB)
             @Html.Hidden("ut_dataFineMAB", Model.ut_dataFineMAB)
-            @Html.Hidden("ut_dataInizioMAB", Model.ut_dataInizioMAB )
+            @Html.Hidden("ut_dataInizioMAB", Model.ut_dataInizioMAB)
             @Html.Hidden("idMagAnnuali", Model.idMagAnnuali)
             @Html.Hidden("idMAB", idMAB)
             <div class="row">
@@ -78,10 +78,10 @@
                         <div class="col-xs-3">
                             @{ decimal canone = Convert.ToDecimal(Model.importo_canone);}
                             @*@Html.TextBox("imp_canone", canone, new { disabled = "disabled", @class = "form-control col-xs-2" })*@
-                            @Html.TextBoxFor(Model => Model.importo_canone, new { disabled = "disabled", type = "number", @class = "form-control col-xs-2" })
+                            @Html.TextBoxFor(Model => Model.importo_canone, "{0:N2}", new { @readonly = "readonly", type = "number", @class = "form-control col-xs-2 text-right" })
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group ">
                         @Html.Label("Valuta", htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="select2-container select2-container--classic col-xs-3">
                             @Html.DropDownListFor(Model => Model.id_Valuta, ViewBag.lValute as IEnumerable<SelectListItem>, new { disabled = "disabled", @class = "form-control select2 select2-select", @onchange = "" })
@@ -146,14 +146,24 @@
 <script src="~/Scripts/MyValidateDate.js"></script>
 
 <script type="text/javascript">
+    //debugger;
     @foreach (var e in errori)
     {
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                break;
+                                                    break;
         }
     }
+
+    //$('#imp_canone').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    nSep: true
+    //});
+
+    //imp_canone = new AutoNumeric('#imp_canone', autoNumericOptionsEuroOttoDec);
 
     $("#canone_condiviso").click(function () {
         if ($(this).is(':checked')) {
@@ -196,7 +206,7 @@
 
     $("#imp_canone").on('change', function () {
         //debugger;
-        var appo = $("#imp_canone").autoNumeric('get');
+        var appo = imp_canone.getNumber();
         var appo3 = parseFloat(appo).toString().replace('.', ',');
         $('#importo_canone').val(appo3);
     });
@@ -217,11 +227,6 @@
         }
     }
 
-    $('#imp_canone').autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        nSep: true
-    });
+
 
 </script>

@@ -51,14 +51,14 @@
                 </div>
             </div>
 
-    @*<div class="row">
-        <div class="col-xs-2 text-right" style="margin-top:3px;font-weight:bold">
-            Aggiorna Tutto
-        </div>
-        <div class="col-xs-1">
-            <input type="checkbox" id="idAggiornaTutto">
-        </div>
-    </div>*@
+            @*<div class="row">
+                    <div class="col-xs-2 text-right" style="margin-top:3px;font-weight:bold">
+                        Aggiorna Tutto
+                    </div>
+                    <div class="col-xs-1">
+                        <input type="checkbox" id="idAggiornaTutto">
+                    </div>
+                </div>*@
             <div class="form-group">&nbsp;</div>
 
             <div class="form-group">
@@ -105,7 +105,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-            break;
+                    break;
         }
 
     }
@@ -124,8 +124,9 @@
             DialogModalError('True');
         }
         else {
-            var ip = $("#importoPensione").autoNumeric("get");
-            $("#importoPensione").val(ip.replace(".", ","));
+            //var ip = $("#importoPensione").autoNumeric("get");
+            var ip = importoPensione.getNumber();
+            $("#importoPensione").val(ip.toString().replace(".", ","));
         }
     });
 
@@ -141,12 +142,14 @@
         changeYear: true,
     });
 
-    $("#importoPensione").autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        aSign: ''
-    });
+    //$("#importoPensione").autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: ''
+    //});
+
+    importoPensione = new AutoNumeric('#importoPensione', autoNumericOptionsEuroOttoDec);
 
     $.culture = Globalize.culture("it-IT");
 

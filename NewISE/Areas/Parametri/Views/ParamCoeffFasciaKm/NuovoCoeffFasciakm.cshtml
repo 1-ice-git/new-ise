@@ -2,7 +2,7 @@
 
 @using NewISE.Models.DBModel;
 
-<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
@@ -32,9 +32,8 @@
             </div>
         </div>
 
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
-        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
-
+        <input type="hidden" id="escludiAnnullati" name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
+        <input type="hidden" id="aggiornaTutto" name="aggiornaTutto" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
@@ -102,7 +101,7 @@
         if(e.Value.Errors.Count>0)
         {
             @:DialogModalError('True');
-                    break;
+                                        break;
         }
     }
 
@@ -123,19 +122,7 @@
 
     Globalize.culture("it-IT");
 
-    //$("#valore").autoNumeric('init',
-    //{
-    //    aSep: '.',
-    //    aDec: ',',
-    //    aSign: ''
-    //});
-
-    //$("#valoreResponsabile").autoNumeric('init',
-    //{
-    //    aSep: '.',
-    //    aDec: ',',
-    //    aSign: ''
-    //});
+    anElement = new AutoNumeric('#coefficienteKm', autoNumericOptionsEuroTreDec);
 
     $('form').submit(function () {
         //debugger;
@@ -144,9 +131,9 @@
             //debugger;
             var self = $(this);
             try {
-                var v = self.autoNumeric('get');
+                var v = self.getNumber();
                 //self.autoNumeric('destroy');
-                var n = v.replace(".", ",");
+                var n = v.toString().replace(".", ",");
                 self.val(n);
             } catch (err) {
                 console.log("Non è un campo autonumeric: " + self.attr("name"));

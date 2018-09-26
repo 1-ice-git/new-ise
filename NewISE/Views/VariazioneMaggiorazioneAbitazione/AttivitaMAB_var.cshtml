@@ -14,16 +14,16 @@
 
 @Html.Hidden("hiAnnullaModMAB")
 
-<div >
+<div>
     <div style="padding-top: 10px;padding-bottom:10px">
-    @if (soloLettura == true)
-    {
-        <button href="#" class="btn btn-default disabled" disabled="disabled">Nuova</button>
-    }
-    else
-    {
-        @Ajax.ActionLink("Nuova", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabAttivitaMAB_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new {@class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
-    }
+        @if (soloLettura == true)
+        {
+            <button href="#" class="btn btn-default disabled" disabled="disabled">Nuova</button>
+        }
+        else
+        {
+            @Ajax.ActionLink("Nuova", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabAttivitaMAB_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
+        }
     </div>
     <table id="tabMAB" class="table table-striped">
         <thead>
@@ -31,10 +31,10 @@
                 <th>
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.anticipoAnnuale )
+                    @Html.DisplayNameFor(model => model.anticipoAnnuale)
                 </th>
                 <th class="text-center">
-                    @Html.DisplayNameFor(model => model.dataInizioMAB )
+                    @Html.DisplayNameFor(model => model.dataInizioMAB)
                 </th>
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataFineMAB)
@@ -80,10 +80,10 @@
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizioMAB)</span>
                     </td>
                     <td style="text-align: center">
-                    @if (item.dataFineMAB != Utility.DataFineStop())
-                    {
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
-                    }
+                        @if (item.dataFineMAB != Utility.DataFineStop())
+                        {
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
+                        }
                     </td>
                     <td style="text-align: center">
                         <a href="#" onclick="CanoneMAB(@idTrasferimento,@item.idMAB);" id="linkCanoneMAB">
@@ -97,14 +97,14 @@
                     </td>
                     <td style="text-align: center">
                         <a href="#" onclick="ElencoFormulariMABInseriti(@idTrasferimento,@item.idMAB);" id="linkFormulariMAB">
-                        @if (item.esistonoFormulari)
-                        {
-                            <img src='~/Immagini/IconeDocumenti/PDF-icon.png' width='20' title="Elenco Formulari" />
-                        }
-                        else
-                        {
-                            <img src='~/Immagini/IconeDocumenti/PDF-icon-Disable.png' width='20' title="Elenco Formulari" />
-                        }
+                            @if (item.esistonoFormulari)
+                            {
+                                <img src='~/Immagini/IconeDocumenti/PDF-icon.png' width='20' title="Elenco Formulari" />
+                            }
+                            else
+                            {
+                                <img src='~/Immagini/IconeDocumenti/PDF-icon-Disable.png' width='20' title="Elenco Formulari" />
+                            }
                         </a>
                     </td>
 
@@ -173,10 +173,10 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "columnDefs":[
+        "columnDefs": [
            {
                "targets": [0],
-               "visible":false,
+               "visible": false,
            }
         ],
         "order": [[0, "asc"]]
@@ -184,12 +184,14 @@
 
     GestionePulsantiNotificaAttivaAnnullaMAB_var(@idTrasferimento);
 
-    $('#ImportoCanone').autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        nSep: true
-    });
+    //$('#ImportoCanone').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    nSep: true
+    //});
+
+    //ImportoCanone = new AutoNumeric('#ImportoCanone', autoNumericOptionsEuroOttoDec);
 
     function AnnullaModificheMAB_var(idMab) {
         $('#AnnullaModificheMABModal').modal('show');

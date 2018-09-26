@@ -110,7 +110,7 @@
     <script src="~/Componenti/bootstrap-checkbox-1.4.0/dist/js/bootstrap-checkbox.min.js"></script>
     <script src="~/Componenti/bootstrap-checkbox-1.4.0/dist/js/i18n/it.js"></script>
 
-    <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+    <script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
 
     <link href="~/Content/css/SystemCSS.css" rel="stylesheet" />
 
@@ -434,6 +434,43 @@
         function is_numeric(n) {
             return !isNaN(parseFloat(n)) && isFinite(n);
         }
+
+        var autoNumericOptionsEuro = {
+            digitGroupSeparator: '.',
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            showOnlyNumbersOnFocus: true,
+            //currencySymbol: '\u202f€',
+            //currencySymbolPlacement: AutoNumeric.options.currencySymbolPlacement.suffix,
+            //roundingMethod: AutoNumeric.options.roundingMethod.halfUpSymmetric,
+        };
+
+        var autoNumericOptionsEuroTreDec = {
+            digitGroupSeparator: '.',
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            eDec: 3,
+            decimalPlacesShownOnBlur: 3,
+            currencySymbol: '\u202f%',
+            currencySymbolPlacement: AutoNumeric.options.currencySymbolPlacement.suffix,
+            roundingMethod: AutoNumeric.options.roundingMethod.halfUpSymmetric,
+            minimumValue: 0,
+            maximumValue: 100,
+            showOnlyNumbersOnFocus: true
+        };
+
+        var autoNumericOptionsEuroOttoDec = {
+            digitGroupSeparator: '.',
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            eDec: 8,
+            decimalPlacesShownOnBlur: 8
+            //currencySymbol: '\u202f€',
+            //currencySymbolPlacement: AutoNumeric.options.currencySymbolPlacement.suffix,
+            //roundingMethod: AutoNumeric.options.roundingMethod.halfUpSymmetric,
+        };
+
+
     </script>
 </body>
 </html>

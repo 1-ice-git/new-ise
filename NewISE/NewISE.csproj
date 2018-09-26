@@ -1139,9 +1139,22 @@
     <Content Include="Lib\jquery.min.js" />
     <Content Include="Lib\locale-all.js" />
     <Content Include="Lib\moment.min.js" />
+    <Content Include="node_modules\autonumeric\dist\autoNumeric.js" />
+    <Content Include="node_modules\autonumeric\dist\autoNumeric.min.js" />
+    <Content Include="node_modules\autonumeric\src\AutoNumeric.js" />
+    <Content Include="node_modules\autonumeric\src\AutoNumericDefaultSettings.js" />
+    <Content Include="node_modules\autonumeric\src\AutoNumericEnum.js" />
+    <Content Include="node_modules\autonumeric\src\AutoNumericEvents.js" />
+    <Content Include="node_modules\autonumeric\src\AutoNumericHelper.js" />
+    <Content Include="node_modules\autonumeric\src\AutoNumericOptions.js" />
+    <Content Include="node_modules\autonumeric\src\AutoNumericPredefinedOptions.js" />
+    <Content Include="node_modules\autonumeric\src\main.js" />
+    <Content Include="node_modules\autonumeric\yarnfix.js" />
     <Content Include="ReportViewerWebForm.aspx" />
-    <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
+    <Content Include="Scripts\autoNumeric\autoNumeric-min_OLD.js" />
     <Content Include="Scripts\autoNumeric\autoNumeric.js" />
+    <Content Include="Scripts\autoNumeric\autoNumeric.min.js" />
+    <Content Include="Scripts\autoNumeric\autoNumeric_OLD.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
@@ -4683,6 +4696,16 @@
     </Content>
     <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
+    <Content Include="node_modules\autonumeric\AUTHORS" />
+    <Content Include="node_modules\autonumeric\CHANGELOG.md" />
+    <Content Include="node_modules\autonumeric\dist\autoNumeric.min.js.gz" />
+    <Content Include="node_modules\autonumeric\dist\autoNumeric.min.js.map" />
+    <Content Include="node_modules\autonumeric\doc\CONTRIBUTING.md" />
+    <Content Include="node_modules\autonumeric\doc\HowToUpgradeToV4.md" />
+    <Content Include="node_modules\autonumeric\LICENSE" />
+    <Content Include="node_modules\autonumeric\package.json" />
+    <Content Include="node_modules\autonumeric\README.md" />
+    <Content Include="node_modules\autonumeric\yarn.lock" />
     <None Include="Properties\PublishProfiles\Mauro.pubxml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <Content Include="Scripts\ckeditor\.github\ISSUE_TEMPLATE" />
@@ -4731,6 +4754,8 @@
     <Content Include="Report\Elaborazioni\DataSet\dsLiquidazioniMensili.xss">
       <DependentUpon>dsLiquidazioniMensili.xsd</DependentUpon>
     </Content>
+    <Content Include="Scripts\autoNumeric\autoNumeric.min.js.gz" />
+    <Content Include="Scripts\autoNumeric\autoNumeric.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\af.js" />

@@ -65,34 +65,38 @@
     });
 
 
-    $('#PercentualeAnticipoRichiesto').autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: ' %',
-	    pSign:'s',
-	    vMin: 0,
-	    vMax: 100,
-	    nSep: true
-	});
-
-    $('#ValImportoPercepito').autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        aSign: '€ ',
-        nSep: true
-    });
+    //$('#PercentualeAnticipoRichiesto').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: ' %',
+    //    pSign:'s',
+    //    vMin: 0,
+    //    vMax: 100,
+    //    nSep: true
+    //});
 
 
+
+    PercentualeAnticipoRichiesto = new AutoNumeric('#PercentualeAnticipoRichiesto', autoNumericOptionsEuroTreDec);
+
+    //$('#ValImportoPercepito').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '€ ',
+    //    nSep: true
+    //});
+
+    ValImportoPercepito = new AutoNumeric('#ValImportoPercepito', autoNumericOptionsEuro);
 
     //$('#ValImportoPrevisto').autoNumeric('init',
-	//{
-	//    aSep: '.',
-	//    aDec: ',',
-	//    aSign: '€ ',
-	//    nSep: true
-	//});
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '€ ',
+    //    nSep: true
+    //});
 
     $('#hiPercentualeRichiesta').val(@Model.PercentualeAnticipoRichiesto);
 

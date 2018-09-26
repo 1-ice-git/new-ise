@@ -1,6 +1,6 @@
 ﻿@model NewISE.Models.DBModel.PrimaSistemazioneModel
 
-<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
 
 @{
     decimal idPrimaSistemazione = Convert.ToDecimal(ViewData["idPrimaSistemazione"]);
@@ -200,7 +200,7 @@
     function ConfermaNotificaRichiestaAnticipi() {
         //debugger;
         var rotta = "/Anticipi/ConfermaNotificaRichiestaAnticipi";
-        var percentualeRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
+        var percentualeRichiesta = parseInt(PercentualeAnticipoRichiesto.getNumber());
         var idAttivitaAnticipi = parseInt($('#hiIdAttivitaAnticipi').val());
 
 
@@ -309,7 +309,8 @@
         //debugger;
         var rotta = "/Anticipi/CalcolaAnticipo";
 
-        var percRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
+        //var percRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
+        var percRichiesta = parseInt(PercentualeAnticipoRichiesto.getNumber());
 
         if (!isNaN(percRichiesta)) {
             $.ajax({
@@ -328,7 +329,9 @@
                     //debugger;
                     if (result.err == "") {
 
-                        $("#ValImportoPercepito").autoNumeric('set', result.importoPercepito);
+                        //$("#ValImportoPercepito").autoNumeric('set', result.importoPercepito);
+
+                        ValImportoPercepito.set(result.importoPercepito);
 
                         var percRichiesta_old = parseFloat($("#hiPercentualeRichiesta").val());
 

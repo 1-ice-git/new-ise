@@ -1,7 +1,7 @@
 ﻿@model NewISE.Models.DBModel.AliquoteContributiveModel
 @using NewISE.Models.DBModel;
 
-<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
@@ -119,7 +119,7 @@
         if(e.Value.Errors.Count>0)
         {
             @:DialogModalError('True');
-                    break;
+                                break;
         }
     }
 
@@ -140,13 +140,15 @@
 
     Globalize.culture("it-IT");
 
-    $("#aliquota").autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: '',
-	    mDec: 8,
-	});
+    //$("#aliquota").autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '',
+    //    mDec: 8,
+    //});
+
+    anElement = new AutoNumeric('#aliquota', autoNumericOptionsEuroOttoDec);
 
     //var x= $("#hiTipoContributo").val();
 
@@ -159,7 +161,7 @@
             try {
                 var v = self.autoNumeric('get');
                 //self.autoNumeric('destroy');
-                var n = v.replace(".", ",");
+                var n = v.toString().replace(".", ",");
                 self.val(n);
             } catch (err) {
                 console.log("Non è un campo autonumeric: " + self.attr("name"));

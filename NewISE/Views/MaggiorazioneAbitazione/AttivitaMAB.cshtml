@@ -55,46 +55,46 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @if (siDati)
+            <tr>
+                <td>
+                    @if (siDati)
                         {
                             if (item.anticipoAnnuale)
                             {
-                                <span class="text-uppercase">ANNUALE</span>
+                        <span class="text-uppercase">ANNUALE</span>
                             }
                             else
                             {
-                                <span class="text-uppercase">SEMESTRALE</span>
+                        <span class="text-uppercase">SEMESTRALE</span>
                             }
                         }
                         else
                         {
-                            <span class="text-uppercase"></span>
+                        <span class="text-uppercase"></span>
                         }
-                    </td>
-                    <td style="text-align: center">
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.descrizioneValuta)</span>
-                    </td>
-                    <td style="text-align: center">
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.importo_canone)</span>
-                    </td>
-                    <td style="text-align: center">
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizioMAB)</span>
-                    </td>
-                    <td style="text-align: center">
-                        @if (item.dataFineMAB != Utility.DataFineStop())
+                </td>
+                <td style="text-align: center">
+                    <span class="text-uppercase">@Html.DisplayFor(modelItem => item.descrizioneValuta)</span>
+                </td>
+                <td style="text-align: center">
+                    <span class="text-uppercase">@Html.DisplayFor(modelItem => item.importo_canone)</span>
+                </td>
+                <td style="text-align: center">
+                    <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizioMAB)</span>
+                </td>
+                <td style="text-align: center">
+                    @if (item.dataFineMAB != Utility.DataFineStop())
                         {
-                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
                         }
-                    </td>
-                    <td style="text-align: center">
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_condiviso)</span>
-                    </td>
-                    <td style="text-align: center">
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_pagato)</span>
-                    </td>
-                </tr>
+                </td>
+                <td style="text-align: center">
+                    <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_condiviso)</span>
+                </td>
+                <td style="text-align: center">
+                    <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_pagato)</span>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -136,11 +136,13 @@
         "sDom": 'lfrtip',
     });
 
-    $('#ImportoCanone').autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        nSep: true
-    });
+    //$('#ImportoCanone').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    nSep: true
+    //});
+
+    //ImportoCanone = new AutoNumeric('#ImportoCanone', autoNumericOptionsEuroOttoDec);
 
 </script>

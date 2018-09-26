@@ -1,5 +1,5 @@
 ﻿<head>
-    <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+    <script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
     <script src="~/Scripts/ViewScripts/MaggiorazioneAbitazione.js"></script>
 </head>
 
@@ -124,17 +124,16 @@
         </div>
     </div>
 
-</body>    
+</body>
 
 
 <script type="text/javascript">
     //debugger;
     GestioneMAB(@idTrasferimento);
 
-    function SalvaDocMAB(idTrasferimento)
-    {
+    function SalvaDocMAB(idTrasferimento) {
         //debugger;
-        var idTipoDocumento=parseInt($("#hiIdTipoDocumento").val());
+        var idTipoDocumento = parseInt($("#hiIdTipoDocumento").val());
         SalvaDocumentoMAB(idTrasferimento, idTipoDocumento);
     }
 </script>
