@@ -1,0 +1,127 @@
+﻿<div id="dialog"></div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <div class="panel panel-default">
+                <div class="panel-heading"><b>Storia del Dipendente</b></div>
+                <div class="panel-body">
+
+                    <div class="col-xs-4 date">
+                        <div class="input-group input-append date">
+                            @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "Nominativo", @class = "form-control select2 select2-select" })
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 date">
+                        <div class="input-group input-append date">
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 date">
+                        <div class="input-group input-append date">
+                            <button class="btn btn-small btn-default" id="opener">
+                                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+
+                                Stampa
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+
+    $("#dialog").dialog({
+        autoOpen: false,
+        show: {
+            //effect: "blind",
+            //duration: 1000
+        },
+        hide: {
+            //effect: "explode",
+            //duration: 1000
+        },
+        close: function (event, ui) {
+            $('.container').removeClass("NoOverflow");
+        },
+        height: windowHeight, width: windowWidth
+
+
+    });
+
+    $("#opener").on("click", function () {
+        //debugger;
+
+        $('.container').addClass("NoOverflow");
+
+        $("#dialog").dialog("open");
+        $("#dialog").css("background-color", "#ffffff");
+
+
+        var rotta = "/Statistiche/StoriaDipendenteNew/RptStoriaDipendenteNew";
+
+        //var data1 = $("#data1").datepicker().val()
+        //var data2 = $("#data2").datepicker().val()
+
+        var Nominativo = $("#Nominativo").val();
+        //var data2 = $("#mesiAnniElaborati1").val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                Nominativo: Nominativo
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#dialog").empty();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#dialog").html(result);
+
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    });
+
+    $("#Nominativo").select2({
+        placeholder: "Seleziona il Nominativo",
+        allowClear: true,
+        language: "it",
+        width: '250',
+        allowClear: false
+
+    });
+
+   
+
+</script>
+
+

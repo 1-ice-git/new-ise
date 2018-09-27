@@ -82,7 +82,7 @@
                         <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazioneNew();">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpTrasportoEffettiNew();">Trasporto Effetti</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpSospensioniNew();">Sospensioni</a>
-                        <a href="#" class="list-group-item" onclick="">Storia del Dipendente</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpStoriaDipendenteNew()">Storia del Dipendente</a>
                         
                     </div>
                 </div>
@@ -827,6 +827,36 @@
                 //debugger;
 
                 rotta = "/Statistiche/RiepiloghiSospensioni/Index";
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {},
+                    dataType: 'html',
+                    beforeSend: function () {
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#divPartialView").empty();
+                        $("#divPartialView").html(result);
+                    },
+                    complete: function () {
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            }
+
+            // Operazioni Effettuate - Storia del Dipendente (Nuovo ISE)
+            function callpartialOpStoriaDipendenteNew() {
+                //debugger;
+
+                rotta = "/Statistiche/StoriaDipendenteNew/Index";
 
                 $.ajax({
                     type: "POST",
