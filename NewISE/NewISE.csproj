@@ -5054,6 +5054,9 @@
     <Compile Include="EF\ATTIVITATERIENTRO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\AUTOMATISMOVOCIMANUALI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\CALENDARIOEVENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -6421,6 +6424,7 @@
     <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Elaborazioni\FormVociManuali.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

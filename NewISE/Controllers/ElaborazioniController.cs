@@ -803,7 +803,7 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult VociManuali()
+        public ActionResult FormVociManuali()
         {
             var lMesi = new List<SelectListItem>();
             var lAnni = new List<SelectListItem>();
@@ -872,13 +872,17 @@ namespace NewISE.Controllers
 
                 ViewBag.ListaAnni = lAnni;
                 ViewBag.ListaMesi = lMesi;
-
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+            return PartialView();
+        }
+
+        public ActionResult VociManuali()
+        {
             return PartialView();
         }
 
@@ -1049,35 +1053,62 @@ namespace NewISE.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciVoce(AutomatismoVociManualiModel avmm)
+        public JsonResult InserisciVoce(AutomatismoVociManualiModel avmm)
         {
-
+            AUTOMATISMOVOCIMANUALI avm = new AUTOMATISMOVOCIMANUALI();
+            DIPENDENTI d = new DIPENDENTI();
+            VOCI v = new VOCI();
             try
             {
                 if (avmm != null)
                 {
                     if (avmm.idDipendente <= 0 || avmm.IdVoce <= 0 || avmm.Importo <= 0 || avmm.AnnoDa <= 0 || avmm.MeseDa <= 0 || avmm.AnnoA <= 0 || avmm.MeseA <= 0)
                     {
-                        return Json(new { err = "I campi con asterisco sono obbligatori." });
+                        throw new Exception("I campi con asterisco sono obbligatori.");
                     }
                     else
                     {
+                        using (ModelDBISE db = new ModelDBISE())
+                        {
+                            using (dtElaborazioni dte = new dtElaborazioni())
+                            {
+                                avm = dte.InserimentoVociManuali(avmm, db);
+                                d = avm.TRASFERIMENTO.DIPENDENTI;
+                                v = db.VOCI.Find(avmm.IdVoce);
+                            }
+
+                            return
+                                Json(
+                                    new
+                                    {
+                                        err = "",
+                                        msg =
+                                            "Inserimento della voce " + v.DESCRIZIONE + " con importo " +
+                                            avmm.Importo + " per il dipendente " + d.COGNOME + " " + d.NOME + " (" +
+                                            d.MATRICOLA + ") è avvenuto con successo."
+                                    });
+                        }
 
                     }
                 }
                 else
                 {
-                    return Json(new { err = "I campi con asterisco sono obbligatori." });
+                    throw new Exception("I campi con asterisco sono obbligatori.");
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { err = ex.Message });
+                return Json(new { err = ex.Message, msg = "" });
             }
 
-            return null;
         }
 
+        public ActionResult ElencoVociManuali()
+        {
+
+
+            return PartialView();
+        }
 
 
     }

@@ -41,6 +41,7 @@ namespace NewISE.EF
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
         public virtual DbSet<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
+        public virtual DbSet<AUTOMATISMOVOCIMANUALI> AUTOMATISMOVOCIMANUALI { get; set; }
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DbSet<CANONEMAB> CANONEMAB { get; set; }
         public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
