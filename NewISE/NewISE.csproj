@@ -4986,7 +4986,6 @@
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSospensioniController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StoriaDipendenteNewController.cs" />
-    <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiNewController.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiIseMensileModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiMaggAbitazioneModel.cs" />
