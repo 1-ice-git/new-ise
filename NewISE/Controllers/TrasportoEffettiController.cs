@@ -32,6 +32,17 @@ namespace NewISE.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult TERientro(decimal idTrasferimento)
+        {
+            using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+            {
+                ViewData.Add("idTERientro", idTrasferimento);
+                ViewData.Add("idTrasferimento", idTrasferimento);
+
+                return PartialView();
+            }
+        }
 
 
         [HttpPost]
@@ -85,6 +96,59 @@ namespace NewISE.Controllers
             }
 
         }
+
+        [HttpPost]
+        public ActionResult TrasportoEffettiRientro(decimal idTERientro)
+        {
+            try
+            {
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        bool richiestaTER = false;
+                        bool attivazioneTER = false;
+                        bool DocContributo = false;
+                        bool trasfAnnullato = false;
+                        bool rinunciaTERientro = false;
+
+                        TrasportoEffettiRientroModel term = new TrasportoEffettiRientroModel();
+
+                        var atep = dtte.GetUltimaAttivazioneTERientro(idTERientro);
+
+                        dtte.SituazioneTERientro(idTERientro,
+                                                    out richiestaTER, out attivazioneTER,
+                                                    out DocContributo,
+                                                    out trasfAnnullato, out rinunciaTERientro);
+
+                        var tm = dtt.GetTrasferimentoByIdTERientro(idTERientro);
+
+                        CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+
+                        term.indennitaRichiamo = Math.Round(ci.IndennitaRichiamoLordo, 2);
+                        term.percKM = ci.PercentualeFKMPartenza;
+                        term.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivoRientro, 2);
+                        var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTERientro(idTERientro, (decimal)EnumTipoAnticipoTE.Rientro);
+                        term.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
+                        term.anticipo = Math.Round(term.percAnticipo * term.contributoLordo / 100, 2);
+
+                        ViewData.Add("rinunciaTERientro", rinunciaTERientro);
+                        ViewData.Add("richiestaTER", richiestaTER);
+                        ViewData.Add("attivazioneTER", attivazioneTER);
+                        ViewData.Add("DocContributo", DocContributo);
+                        ViewData.Add("idTERientro", idTERientro);
+
+                        return PartialView(term);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+        }
+
 
         public JsonResult ConfermaNotificaRichiestaTEPartenza(decimal idTrasportoEffettiPartenza)
         {
@@ -252,6 +316,53 @@ namespace NewISE.Controllers
                         DocContributo = DocContributo,
                         trasfAnnullato = trasfAnnullato,
                         rinunciaTE = rinunciaTE,
+                        err = errore
+                    });
+
+        }
+
+        public JsonResult GestionePulsantiNotificaAttivaAnnullaTERientro(decimal idTERientro)
+        {
+
+            bool amministratore = false;
+            string errore = "";
+            bool richiestaTER = false;
+            bool attivazioneTER = false;
+            bool DocContributo = false;
+            bool trasfAnnullato = false;
+            bool rinunciaTER = false;
+
+            try
+            {
+                amministratore = Utility.Amministratore();
+
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                {
+
+                    dtte.SituazioneTERientro(idTERientro,
+                                            out richiestaTER,
+                                            out attivazioneTER,
+                                            out DocContributo,
+                                            out trasfAnnullato,
+                                            out rinunciaTER);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        admin = amministratore,
+                        richiestaTER = richiestaTER,
+                        attivazioneTER = attivazioneTER,
+                        DocContributo = DocContributo,
+                        trasfAnnullato = trasfAnnullato,
+                        rinunciaTER = rinunciaTER,
                         err = errore
                     });
 
@@ -561,6 +672,56 @@ namespace NewISE.Controllers
             return PartialView(rtepm);
         }
 
+        public ActionResult GestioneRinunciaTERientro(decimal idTERientro)
+        {
+            RinunciaTERientroModel rterm = new RinunciaTERientroModel();
+            bool soloLettura = false;
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                    {
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var ater = dtte.GetUltimaAttivazioneTERientro(idTERientro);
+                            if (ater.RICHIESTATRASPORTOEFFETTI == true || ater.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo)
+                            {
+                                soloLettura = true;
+                            }
+
+                            rterm = dtte.GetRinunciaTERientro(ater.IDATERIENTRO, db);
+
+                            EnumStatoTraferimento statoTrasferimento = 0;
+                            var t = dtt.GetTrasferimentoByIdTERientro(idTERientro);
+                            statoTrasferimento = t.idStatoTrasferimento;
+                            if (statoTrasferimento == EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Attivo)
+                            {
+                                soloLettura = true;
+                            }
+
+                            var n_att = dtte.GetNumAttivazioniTERientro(idTERientro);
+
+                            if (n_att > 0)
+                            {
+                                soloLettura = true;
+                            }
+
+                            ViewData.Add("soloLettura", soloLettura);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(rterm);
+        }
+
         public JsonResult AggiornaRinunciaTEPartenza(decimal idATEPartenza)
         {
             try
@@ -576,6 +737,43 @@ namespace NewISE.Controllers
             }
             return Json(new { errore = "", msg = "Aggiornamento eseguito correttamente." });
         }
+
+        public JsonResult VerificaTERientroAnticipo(decimal idTrasferimento)
+        {
+            ViewData["idTrasferimento"] = idTrasferimento;
+            decimal tmp = 0;
+            try
+            {
+                if (idTrasferimento <= 0)
+                {
+                    throw new Exception("Trasferimento non valorizzato");
+                }
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    using (dtRichiamo dtr = new dtRichiamo())
+                    {
+                        TrasferimentoModel trm = dtt.GetTrasferimentoById(idTrasferimento);
+                        if (trm != null)
+                        {
+                            if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                            {
+                                if (dtr.GetRichiamoByIdTrasf(idTrasferimento).idTrasferimento > 0)
+                                {
+                                    tmp = 1;
+                                }
+                            }
+    
+                        }
+                    }
+                }
+                return Json(new { VerificaTERientroAnticipo = tmp });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+        }
+
 
 
     }

@@ -433,6 +433,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DateTime dtIni = cm.dataInizio.Value;
                 DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : t.DATARIENTRO;
                 cm.dataFine = dtFin;
+                dtFin = (dtFin != t.DATARIENTRO) ? dtFin : c.DATAFINEVALIDITA;
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
@@ -1030,6 +1031,9 @@ namespace NewISE.Models.DBModel.dtObj
                 DateTime dtIni = fm.dataInizio.Value;
                 DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : t.DATARIENTRO;
                 fm.dataFine = dtFin;
+                //fm.dataFine = (dtFin != t.DATARIENTRO) ? dtFin : f.DATAFINEVALIDITA;
+                dtFin = (dtFin != t.DATARIENTRO) ? dtFin : f.DATAFINEVALIDITA;
+
 
                 if (f != null && f.IDFIGLI > 0)
                 {

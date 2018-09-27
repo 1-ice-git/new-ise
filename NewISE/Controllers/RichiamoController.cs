@@ -157,7 +157,6 @@ namespace NewISE.Controllers
         public JsonResult VerificaRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
-            ViewData["dataPartenza"] = "Inserire qui la Data come idTrasferimento";
             decimal tmp = 0;
             try
             {
@@ -167,25 +166,36 @@ namespace NewISE.Controllers
                 }
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    dipInfoTrasferimentoModel trm = dtt.GetInfoTrasferimento(idTrasferimento);
+                    TrasferimentoModel trm = dtt.GetTrasferimentoById(idTrasferimento);
                     if (trm != null)
                     {
-                        if (trm.statoTrasferimento == EnumStatoTraferimento.Attivo)
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                         {
                             tmp = 1;
-                        }
-                        else
-                        {
-                            if (trm.statoTrasferimento == EnumStatoTraferimento.Terminato)
-                            {
-                                TrasferimentoModel trmod = dtt.GetTrasferimentoById(idTrasferimento);
-                                if (trmod.TipoTrasferimento.idTipoTrasferimento == (decimal)EnumTipoTrasferimento.ItaliaEstero)
-                                {
-                                    tmp = 1;
-                                }
-                            }
+
+                            //var ltrasf = dtt.GetListaTrasferimentoByMatricola(trm.Dipendente.matricola);
+                            //if (ltrasf?.Any() ?? false)
+                            //{
+                            //    var ultimo_trasf = ltrasf.First();
+                            //    if(ultimo_trasf.idTrasferimento==idTrasferimento)
+                            //    {
+                            //        tmp = 1;
+                            //    }
+                            //}
                         }
                     }
+                    //else
+                    //{
+                    //    if (trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                    //    {
+                    //        TrasferimentoModel trmod = dtt.GetTrasferimentoById(idTrasferimento);
+                    //        if (trmod.TipoTrasferimento.idTipoTrasferimento == (decimal)EnumTipoTrasferimento.ItaliaEstero)
+                    //            {
+                    //                tmp = 1;
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
                 return Json(new { VerificaRichiamo = tmp });
             }
