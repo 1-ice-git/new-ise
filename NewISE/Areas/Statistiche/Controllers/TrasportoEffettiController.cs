@@ -22,6 +22,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             return PartialView();
         }
 
+
         public JsonResult PrelevaMesiAnniElab(string search)
         {
             List<Select2Model> ls2 = new List<Select2Model>();
