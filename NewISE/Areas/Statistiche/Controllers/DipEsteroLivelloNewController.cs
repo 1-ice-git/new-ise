@@ -19,8 +19,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             return PartialView();
 
         }
-
-        public ActionResult RptDipEsteroLivello(decimal dtIni, decimal dtFin)
+        public ActionResult RptDipEsteroLivello(string dtIni, string dtFin)
         {
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
             List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
@@ -67,16 +66,16 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.Width = Unit.Percentage(100);
                     reportViewer.Height = Unit.Percentage(100);
 
-                    var datasource = new ReportDataSource("DataSetRiepiloghiIseMensile");
+                    var datasource = new ReportDataSource("DataSetDipEsteroLivello");
 
                     reportViewer.Visible = true;
                     reportViewer.ProcessingMode = ProcessingMode.Local;
 
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptDipEsteroLivello.rdlc";
                     reportViewer.LocalReport.DataSources.Clear();
 
                     reportViewer.LocalReport.DataSources.Add(datasource);
-                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiIseMensile", rpt));
+                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetDipEsteroLivello", rpt));
                     reportViewer.LocalReport.Refresh();
 
                     // Nel caso in cui passo il DatePicker
@@ -96,7 +95,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView("RptRiepiloghiIseMensile");
+            return PartialView("RptDipEsteroLivello");
         }
 
     }
