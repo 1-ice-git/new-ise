@@ -805,6 +805,80 @@ namespace NewISE.Controllers
 
         public ActionResult VociManuali()
         {
+            var lMesi = new List<SelectListItem>();
+            var lAnni = new List<SelectListItem>();
+            SelectListItem mese = new SelectListItem();
+            SelectListItem anno = new SelectListItem();
+
+            int numeroAnniVociManuali = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["NumeroAnniVociManuali"]);
+
+            DateTime dataAttuale = DateTime.Now;
+
+            try
+            {
+                for (int i = 1; i <= 12; i++)
+                {
+                    if (dataAttuale.Month == i)
+                    {
+                        mese = new SelectListItem()
+                        {
+                            Value = i.ToString(),
+                            Text = ((EnumDescrizioneMesi)i).ToString(),
+                            Selected = true
+                        };
+                    }
+                    else
+                    {
+                        mese = new SelectListItem()
+                        {
+                            Value = i.ToString(),
+                            Text = ((EnumDescrizioneMesi)i).ToString(),
+                            Selected = false
+                        };
+                    }
+
+
+                    lMesi.Add(mese);
+                }
+
+                int k = DateTime.Now.Year - numeroAnniVociManuali;
+                int fine = DateTime.Now.Year + numeroAnniVociManuali;
+
+
+                for (var j = k; j <= fine; j++)
+                {
+                    if (dataAttuale.Year == j)
+                    {
+                        anno = new SelectListItem()
+                        {
+                            Value = j.ToString(),
+                            Text = j.ToString(),
+                            Selected = true
+                        };
+                    }
+                    else
+                    {
+                        anno = new SelectListItem()
+                        {
+                            Value = j.ToString(),
+                            Text = j.ToString(),
+                            Selected = false
+                        };
+                    }
+
+                    lAnni.Add(anno);
+
+                }
+
+                ViewBag.ListaAnni = lAnni;
+                ViewBag.ListaMesi = lMesi;
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
             return PartialView();
         }
 
@@ -880,6 +954,8 @@ namespace NewISE.Controllers
             return Json(new { results = ls2, err = "" });
 
         }
+
+
 
 
         [HttpPost]
@@ -971,6 +1047,38 @@ namespace NewISE.Controllers
             return Json(new { results = ls2, err = "" });
 
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciVoce(AutomatismoVociManualiModel avmm)
+        {
+
+            try
+            {
+                if (avmm != null)
+                {
+                    if (avmm.idDipendente <= 0 || avmm.IdVoce <= 0 || avmm.Importo <= 0 || avmm.AnnoDa <= 0 || avmm.MeseDa <= 0 || avmm.AnnoA <= 0 || avmm.MeseA <= 0)
+                    {
+                        return Json(new { err = "I campi con asterisco sono obbligatori." });
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else
+                {
+                    return Json(new { err = "I campi con asterisco sono obbligatori." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+
+            return null;
+        }
+
+
 
     }
 }

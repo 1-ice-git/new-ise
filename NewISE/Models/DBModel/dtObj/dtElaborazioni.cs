@@ -7545,7 +7545,22 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void InserimentoVociManuali(AutomatismoVociManualiModel avmm)
+        {
 
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
 
         //private void ProvaLettura(TRASFERIMENTO tr)

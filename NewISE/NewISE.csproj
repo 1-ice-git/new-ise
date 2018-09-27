@@ -4919,6 +4919,7 @@
     <Content Include="Scripts\ViewScripts\anticipo.js" />
     <Content Include="Scripts\ViewScripts\VariazioneMaggiorazioneAbitazione.js" />
     <Content Include="Scripts\ViewScripts\MaggiorazioneAbitazione.js" />
+    <Content Include="Scripts\_Layout.js" />
     <Content Include="Template\HtmlPage1.html" />
     <Content Include="Views\Content\NoScroller.css" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
@@ -5369,6 +5370,7 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
+    <Compile Include="Models\DBModel\AutomatismoVociManualiModel.cs" />
     <Compile Include="Models\DBModel\bsObj\VariazioniIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
@@ -6104,7 +6106,6 @@
     <Content Include="Views\MaggiorazioneAbitazione\GestionePulsantiMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\ElencoDocumentiFormularioMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\DocumentoMAB.cshtml" />
-    <Content Include="Views\MaggiorazioneAbitazione\NuovaMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\GestioneMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\ModificaMAB.cshtml" />
     <Content Include="Views\Notifiche\Index.cshtml" />
