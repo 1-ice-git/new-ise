@@ -4704,8 +4704,6 @@
     <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiSpeseDiverse\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiSpeseDiverse\SelezionaMeseAnno.cshtml" />
-    <Content Include="Areas\Statistiche\Views\TrasportoEffetti\Index.cshtml" />
-    <Content Include="Areas\Statistiche\Views\TrasportoEffetti\SelezionaMeseAnno.cshtml" />
     <Content Include="Areas\Statistiche\RPTDataSet\DataSetTrasportoEffetti.xsc">
       <DependentUpon>DataSetTrasportoEffetti.xsd</DependentUpon>
     </Content>
@@ -4728,10 +4726,13 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSetTrasportoEffetti.xss">
       <DependentUpon>DataSetTrasportoEffetti.xsd</DependentUpon>
     </Content>
-    <Content Include="Areas\Statistiche\Views\TrasportoEffetti\RptTrasportoEffetti.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendenteNew\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendenteNew\DipendentiGepe.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendenteNew\RptStoriaDipendenteNew.cshtml" />
+    <Content Include="Areas\Statistiche\Views\DipEsteroLivelloNew\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\TrasportoEffettiNew\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\TrasportoEffettiNew\SelezionaMeseAnno.cshtml" />
+    <Content Include="Areas\Statistiche\Views\TrasportoEffettiNew\RptTrasportoEffetti.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -4980,11 +4981,13 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\DipEsteroLivelloNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\IndennitaSedeEsteraController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSospensioniController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StoriaDipendenteNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiNewController.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiIseMensileModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiMaggAbitazioneModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiIseMensileModel.cs" />

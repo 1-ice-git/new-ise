@@ -73,7 +73,7 @@
                         <a href="#" class="list-group-item" onclick="">Consuntivo dei Costi</a>
                         <a href="#" class="list-group-item" onclick="">Consuntivo dei Costi per codice Co. An.</a>
                         <a href="#" class="list-group-item" onclick="">Consuntivo spese di Avvicendamento</a>
-                        <a href="#" class="list-group-item" onclick="">Dipendenti all'Estero per Livello</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroLivelloNew();">Dipendenti all'Estero per Livello</a>
                         <a href="#" class="list-group-item" onclick="">Dislocazione dei dipendenti all'Estero</a>
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Livello</a>
                         <a href="#" class="list-group-item" onclick="">Riepilogo Generale</a>
@@ -787,9 +787,9 @@
 
             // Trasporto Effetti (Nuovo ISE)
             function callpartialOpTrasportoEffettiNew() {
-                //debugger;
+                debugger;
 
-                rotta = "/Statistiche/TrasportoEffetti/Index";
+                rotta = "/Statistiche/TrasportoEffettiNew/Index";
 
                 var data1 = $("#data1").datepicker().val()
                 var data2 = $("#data2").datepicker().val()
@@ -857,6 +857,36 @@
                 //debugger;
 
                 rotta = "/Statistiche/StoriaDipendenteNew/Index";
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {},
+                    dataType: 'html',
+                    beforeSend: function () {
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#divPartialView").empty();
+                        $("#divPartialView").html(result);
+                    },
+                    complete: function () {
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            }
+
+            // Operazioni Effettuate - Dipendenti all' Estero per Livello (Nuovo ISE)
+            function callpartialOpDipEsteroLivelloNew() {
+                debugger;
+
+                rotta = "/Statistiche/DipEsteroLivelloNew/Index";
 
                 $.ajax({
                     type: "POST",
