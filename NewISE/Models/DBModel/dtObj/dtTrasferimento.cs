@@ -168,6 +168,79 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public TrasferimentoModel GetTrasferimentoByIdTERientro(decimal idTERientro)
+        {
+            TrasferimentoModel trm = new TrasferimentoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ter = db.TERIENTRO.Find(idTERientro);
+                var tr = ter.TRASFERIMENTO;
+                if (tr != null && tr.IDTRASFERIMENTO > 0)
+                {
+                    trm = new TrasferimentoModel()
+                    {
+                        idTrasferimento = tr.IDTRASFERIMENTO,
+                        idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
+                        idUfficio = tr.IDUFFICIO,
+                        idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
+                        idDipendente = tr.IDDIPENDENTE,
+                        idTipoCoan = tr.IDTIPOCOAN,
+                        dataPartenza = tr.DATAPARTENZA,
+                        dataRientro = tr.DATARIENTRO,
+                        coan = tr.COAN,
+                        protocolloLettera = tr.PROTOCOLLOLETTERA,
+                        dataLettera = tr.DATALETTERA,
+                        notificaTrasferimento = tr.NOTIFICATRASFERIMENTO,
+                        dataAggiornamento = tr.DATAAGGIORNAMENTO,
+                        StatoTrasferimento = new StatoTrasferimentoModel()
+                        {
+                            idStatoTrasferimento = tr.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                            descrizioneStatoTrasferimento = tr.STATOTRASFERIMENTO.DESCRIZIONE
+                        },
+                        TipoTrasferimento = new TipoTrasferimentoModel()
+                        {
+                            idTipoTrasferimento = tr.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                            descTipoTrasf = tr.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                        },
+                        Ufficio = new UfficiModel()
+                        {
+                            idUfficio = tr.UFFICI.IDUFFICIO,
+                            codiceUfficio = tr.UFFICI.CODICEUFFICIO,
+                            descUfficio = tr.UFFICI.DESCRIZIONEUFFICIO
+                        },
+                        Dipendente = new DipendentiModel()
+                        {
+                            idDipendente = tr.DIPENDENTI.IDDIPENDENTE,
+                            matricola = tr.DIPENDENTI.MATRICOLA,
+                            nome = tr.DIPENDENTI.NOME,
+                            cognome = tr.DIPENDENTI.COGNOME,
+                            dataAssunzione = tr.DIPENDENTI.DATAASSUNZIONE,
+                            dataCessazione = tr.DIPENDENTI.DATACESSAZIONE,
+                            indirizzo = tr.DIPENDENTI.INDIRIZZO,
+                            cap = tr.DIPENDENTI.CAP,
+                            citta = tr.DIPENDENTI.CITTA,
+                            provincia = tr.DIPENDENTI.PROVINCIA,
+                            email = tr.DIPENDENTI.EMAIL,
+                            telefono = tr.DIPENDENTI.TELEFONO,
+                            fax = tr.DIPENDENTI.FAX,
+                            abilitato = tr.DIPENDENTI.ABILITATO,
+                            dataInizioRicalcoli = tr.DIPENDENTI.DATAINIZIORICALCOLI
+                        },
+                        TipoCoan = new TipologiaCoanModel()
+                        {
+                            idTipoCoan = tr.TIPOLOGIACOAN.IDTIPOCOAN,
+                            descrizione = tr.TIPOLOGIACOAN.DESCRIZIONE
+                        }
+                    };
+                }
+
+            }
+
+            return trm;
+
+        }
+
 
         public bool EsisteTrasferimentoSuccessivo(decimal idTrasferimento)
         {
@@ -1524,6 +1597,15 @@ namespace NewISE.Models.DBModel.dtObj
             return trm;
 
         }
+
+        public TRASFERIMENTO GetTrasferimento(decimal idTrasferimento, ModelDBISE db)
+        {
+            TRASFERIMENTO tr = new TRASFERIMENTO();
+
+            tr = db.TRASFERIMENTO.Find(idTrasferimento);
+            return tr;
+        }
+
 
         public TrasferimentoModel GetTrasferimentoByIdAttPassaporto(decimal idAttivazionePassaporto)
         {

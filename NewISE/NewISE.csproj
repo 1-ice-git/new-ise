@@ -5686,6 +5686,7 @@
     <Compile Include="Models\DBModel\PeriodoMABModel.cs" />
     <Compile Include="Models\DBModel\MeseAnnoElaborazioneModel.cs" />
     <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
+    <Compile Include="Models\DBModel\RinunciaTERientroModel.cs" />
     <Compile Include="Models\DBModel\RptAnticipoIndennitàdiSistemazione_Lorda.cs" />
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoRientroModel.cs" />
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoTrasferimentoModel.cs" />
@@ -5902,6 +5903,7 @@
     <Compile Include="Models\ViewModel\LiquidazioneMensileViewModel.cs" />
     <Compile Include="Models\ViewModel\LiquidazioniDiretteViewModel.cs" />
     <Compile Include="Models\ViewModel\CanoneMABViewModel.cs" />
+    <Compile Include="Models\ViewModel\TrasportoEffettiRientroModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneTEPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfConiugeModel.cs" />
@@ -6420,6 +6422,8 @@
     <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\TrasportoEffetti\TERientro.cshtml" />
+    <Content Include="Views\TrasportoEffetti\TrasportoEffettiRientro.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -628,6 +628,48 @@ namespace NewISE.Controllers
         //    return Json(new { errore = "", msg = "Aggiornamento eseguito correttamente." });
         //}
 
+        public JsonResult VerificaTERientroSaldo(decimal idTrasferimento)
+        {
+            ViewData["idTrasferimento"] = idTrasferimento;
+            decimal tmp = 0;
+            try
+            {
+                if (idTrasferimento <= 0)
+                {
+                    throw new Exception("Trasferimento non valorizzato");
+                }
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                    {
+                        TrasferimentoModel trm = dtt.GetTrasferimentoById(idTrasferimento);
+                        if (trm != null)
+                        {
+                            if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                            {
+                                using (ModelDBISE db = new ModelDBISE())
+                                {
+                                    var t = dtt.GetTrasferimento(idTrasferimento, db);
+                                    var TeRientro = t.TERIENTRO;
+                                    var att = dtte.GetUltimaAttivazioneTERientro(TeRientro.IDTERIENTRO);
+
+                                    if (att.IDATERIENTRO > 0 && att.ATTIVAZIONETRASPORTOEFFETTI && att.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
+                                    {
+                                        tmp = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return Json(new { VerificaTERientroSaldo = tmp });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+        }
+
 
     }
 }

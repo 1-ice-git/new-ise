@@ -361,10 +361,8 @@
     function MessaggioInserisciRichiamo(idTrasferimento, xx) {
         //    debugger;
         var rotta = "/Richiamo/MessaggioInserisciRichiamo";
-        //  var idFKm = $("#idGruppoFKmRichiamo").val();
         var idFKm = parseInt('@ValFkm');
 
-        //var idTrasportoEffettiPartenza = 0;@*// parseInt('@idTrasportoEffettiPartenza');*@
         var idRichiamo = parseInt('@idRichiamo');
         $.ajax({
             type: "POST",

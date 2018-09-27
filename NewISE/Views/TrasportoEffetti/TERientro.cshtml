@@ -1,0 +1,463 @@
+﻿@using NewISE.Models.DBModel
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idTERientro = Convert.ToDecimal(ViewData["idTERientro"]);
+}
+
+<link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
+
+<div class="row" style="padding-right: 15px">
+    <div class="col-xs-12">
+        <div id="divTrasportoEffettiRientro">
+            @Html.Action("TrasportoEffettiRientro", "TrasportoEffetti", new { idTERientro = idTERientro })
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-right: 15px">
+    <hr />
+    <div class="col-xs-4">
+        <div id="divRinunciaTERientro">
+        </div>
+    </div>
+    <div class="col-xs-8">
+        <div class="row">
+            <div class="pull-right" style="margin-bottom: 10px;margin-right:30px ">
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaTER" onclick="ModalNotificaRichiestaTER();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled " hidden disabled id="btAttivaRichiestaTER" onclick="ModalAttivaRichiestaTER();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Attiva richiesta
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaRichiestaTER" onclick="ModalAnnullaRichiestaTER();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Annulla richiesta
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalNotificaRichiestaTER" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaTERLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaRichiestaTER">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotificaRichiestaTER" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaTER();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaRichiestaTER" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaTERLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaRichiestaTE">
+                    <label>Procedere con l'attivazione della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazioneRichiestaTER" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaTER();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaRichiestaTER" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaTERLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaRichiestaTER">
+                    <label>Procedere con l'annullamento della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnullaRichiestaTER" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaTER();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    GestioneRinunciaTERientro();
+    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiRientro();
+
+    function GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiRientro() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/GestionePulsantiNotificaAttivaAnnullaTERientro";
+        var idTERientro = parseInt('@idTERientro');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTERientro: idTERientro },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    var admin = result.admin;
+                    var richiestaTER = result.richiestaTER;
+                    var attivazioneTER = result.attivazioneTER;
+                    var DocContributo = result.DocContributo;
+                    var trasfAnnullato = result.trasfAnnullato;
+                    var rinunciaTER = result.rinunciaTER;
+
+                    $("#btNotificaRichiestaTER").attr("disabled", "disabled");
+                    $("#btNotificaRichiestaTER").addClass("disabled");
+
+                    $("#btNotificaRichiestaTER").removeAttr("hidden");
+                    $("#btNotificaRichiestaTER").removeClass("hidden");
+
+
+                    //se amministratore vedo i pulsanti altrimenti solo notifica
+                    if (admin) {
+                        $("#btAttivaRichiestaTER").removeAttr("hidden");
+                        $("#btAttivaRichiestaTER").removeClass("hidden");
+
+                        $("#btAnnullaRichiestaTER").removeAttr("hidden");
+                        $("#btAnnullaRichiestaTER").removeClass("hidden");
+
+                        $("#btAttivaRichiestaTER").attr("disabled", "disabled");
+                        $("#btAttivaRichiestaTER").addClass("disabled");
+
+                        $("#btAnnullaRichiestaTER").attr("disabled", "disabled");
+                        $("#btAnnullaRichiestaTER").addClass("disabled");
+                    }
+
+                    //Se risulta in lavorazione con almeno un documento abilito la il pulsante notifica
+                    if (
+                            (
+                                richiestaTER==false &&
+                                attivazioneTER==false &&
+                                DocContributo &&
+                                trasfAnnullato==false &&
+                                rinunciaTER == false
+                            ) ||
+                            (
+                                richiestaTER==false && attivazioneTER==false && trasfAnnullato==false && rinunciaTER == true
+                            )
+                        )
+
+                    {
+                        $("#btNotificaRichiestaTER").removeAttr("disabled");
+                        $("#btNotificaRichiestaTER").removeClass("disabled");
+                    } else {
+                        if (admin) {
+                            if (richiestaTER && attivazioneTER==false && trasfAnnullatoR==false) {
+                                $("#btAttivaRichiestaTER").removeAttr("disabled");
+                                $("#btAttivaRichiestaTER").removeClass("disabled");
+                                $("#btAnnullaRichiestaTER").removeAttr("disabled");
+                                $("#btAnnullaRichiestaTER").removeClass("disabled");
+                            }
+                        }
+                    }
+                    //GestioneAttivitaTrasferimento();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ModalNotificaRichiestaTER() {
+        //debugger;
+        $('#ModalNotificaRichiestaTER').modal().show();
+    }
+
+    function ModalAnnullaRichiestaTER() {
+        //debugger;
+        MessaggioAnnullaRichiestaTER();
+        $('#ModalAnnullaRichiestaTER').modal().show();
+    }
+
+    function ModalAttivaRichiestaTER() {
+        //debugger;
+        $('#ModalAttivaRichiestaTER').modal().show();
+    }
+
+
+    function ConfermaNotificaRichiestaTER() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/ConfermaNotificaRichiestaTERientro";
+        var idTERientro = parseInt('@idTERientro');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTERientro: idTERientro },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    TrasportoEffettiRientro();
+                    GestioneRinunciaTERientro();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiRientro();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAnnullaRichiestaTER() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/ConfermaAnnullaRichiestaTERientro";
+        var idTERientro = parseInt('@idTERientro');
+        var testoAnnullaTER = $('#FullDescription').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTERientro: idTERientro, msg:testoAnnullaTER },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    TrasportoEffettiRientro();
+                    GestioneRinunciaTERientro();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiRientro();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaAttivaRichiestaTER() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/ConfermaAttivaRichiestaTERientro";
+        var idTERientro = parseInt('@idTERientro');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTERientro: idTERientro },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    TrasportoEffettiRientro();
+                    GestioneRinunciaTERientro();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiRientro();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    //aggiungere funzione che esegue TrasportoEffettiPartenza
+    function TrasportoEffettiRientro() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/TrasportoEffettiRientro";
+        var idTERientro = @idTERientro;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTERientro: idTERientro},
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divTrasportoEffettiRientro").empty();
+                $("#divTrasportoEffettiRientro").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function MessaggioAnnullaRichiestaTER() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/MessaggioAnnullaTERientro";
+        var idTERientro = parseInt('@idTERientro');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data:{idTERientro:idTERientro},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaTER").empty();
+                $("#viewAnnullaRichiestaTER").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function GestioneRinunciaTERientro() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/GestioneRinunciaTERientro";
+        var idTERientro = parseInt('@idTERientro');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTERientro: idTERientro },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divRinunciaTERientro").empty();
+                $("#divRinunciaTERientro").html(result);
+                Sblocca();
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function AggiornaRinunciaTERientro(idATERientro) {
+        //debugger;
+        var rotta = "/TrasportoEffetti/AggiornaRinunciaTERientro";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idATERientro: idATERientro},
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.errore === "") {
+                    TrasportoEffettiRientro();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiRientro();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+</script>
+
