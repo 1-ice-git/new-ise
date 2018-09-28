@@ -6448,6 +6448,7 @@
     <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Scripts\themes\" />
     <Folder Include="Views\Log\" />
+    <Folder Include="Views\prova\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

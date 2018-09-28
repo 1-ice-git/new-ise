@@ -23,16 +23,14 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult TrasportoEffetti(decimal idTrasferimento)
         {
-            using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
-            {
-                ViewData.Add("idTrasportoEffettiPartenza", idTrasferimento);
-                ViewData.Add("idTrasferimento", idTrasferimento);
+            //using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+            //{
+            ViewData.Add("idTrasportoEffettiPartenza", idTrasferimento);
+            ViewData.Add("idTrasferimento", idTrasferimento);
 
-                return PartialView();
-            }
+            return PartialView();
+            //}
         }
-
-
 
         [HttpPost]
         public ActionResult TrasportoEffettiPartenza(decimal idTrasportoEffettiPartenza)
@@ -279,7 +277,6 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-
 
         public JsonResult SalvaDocumentoTEPartenza(decimal idTipoDocumento, decimal idTrasportoEffettiPartenza)
         {
