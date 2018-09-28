@@ -30,7 +30,46 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public IList<ElencoVociManualiViewModel> PrelevaLeVociManualiDaElaborare()
+        {
+            List<ElencoVociManualiViewModel> levmm = new List<ElencoVociManualiViewModel>();
 
+            try
+            {
+
+                Decimal AnnoMeseAttuale = Convert.ToDecimal(DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString().PadLeft(2, (char)'0'));
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var levm =
+                        db.AUTOMATISMOVOCIMANUALI.Where(
+                            a => AnnoMeseAttuale >= a.ANNOMESEINIZIO && AnnoMeseAttuale <= a.ANNOMESEFINE)
+                            .OrderBy(a => a.ANNOMESEINIZIO)
+                            .ToList();
+
+                    if (levm?.Any() ?? false)
+                    {
+                        levmm = (from e in levm
+                                 select new ElencoVociManualiViewModel()
+                                 {
+                                     idAutoVociManuali = e.IDAUTOVOCIMANUALI,
+                                     nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                     ufficio = e.TRASFERIMENTO.UFFICI.DESCRIZIONEUFFICIO + " (" + e.TRASFERIMENTO.UFFICI.CODICEUFFICIO + ")",
+                                     voce = e.VOCI.DESCRIZIONE + " (" + e.VOCI.CODICEVOCE + ")",
+                                     meseAnnoInizio = Utility.MeseAnnoTesto(Convert.ToInt16(e.ANNOMESEINIZIO.ToString().Substring(e.ANNOMESEINIZIO.ToString().Length - 2, 2)), Convert.ToInt16(e.ANNOMESEINIZIO.ToString().Substring(0, 4))),
+                                     meseAnnoFine = Utility.MeseAnnoTesto(Convert.ToInt16(e.ANNOMESEFINE.ToString().Substring(e.ANNOMESEFINE.ToString().Length - 2, 2)), Convert.ToInt16(e.ANNOMESEFINE.ToString().Substring(0, 4))),
+                                     importo = e.IMPORTO
+                                 }).OrderBy(a => a.nominativo).ThenBy(a => a.meseAnnoInizio).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return levmm;
+        }
 
         public bool VerificaElencoDipElab(decimal idMeseAnnoElab)
         {

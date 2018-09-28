@@ -1105,9 +1105,22 @@ namespace NewISE.Controllers
 
         public ActionResult ElencoVociManuali()
         {
+            List<ElencoVociManualiViewModel> levm = new List<ElencoVociManualiViewModel>();
+
+            try
+            {
+                using (dtElaborazioni dte = new dtElaborazioni())
+                {
+                    levm = dte.PrelevaLeVociManualiDaElaborare().ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
 
-            return PartialView();
+            return PartialView(levm);
         }
 
 

@@ -5891,6 +5891,7 @@
     <Compile Include="Models\Tools\EmailCredenziali.cs" />
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
+    <Compile Include="Models\ViewModel\ElencoVociManualiViewModel.cs" />
     <Compile Include="Models\ViewModel\NoValidateAttribute.cs" />
     <Compile Include="Models\ViewModel\PagatoCondivisoMABViewModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
@@ -6454,6 +6455,7 @@
     <Content Include="Views\Elaborazioni\FormVociManuali.cshtml" />
     <Content Include="Views\TrasportoEffetti\TERientro.cshtml" />
     <Content Include="Views\TrasportoEffetti\TrasportoEffettiRientro.cshtml" />
+    <Content Include="Views\Elaborazioni\ElencoVociManuali.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

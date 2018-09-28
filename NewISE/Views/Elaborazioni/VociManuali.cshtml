@@ -10,24 +10,23 @@
         @Html.Action("FormVociManuali", "Elaborazioni")
     </div>
 
-
-
 }
+<hr />
 
 <div class="row">
-    <div class="col-xs-12">
-        <a id="linkElencoVoci" href="#" class="btn btn-default btn-sm" onclick="">Elenco voci manuali</a>
+    <div class="col-xs-12 text-center">
+        <a id="linkElencoVoci" href="#" class="btn btn-default btn-sm" onclick="ElencoVociManuali();">Visualizza l'elenco delle voci manuali</a>
     </div>
 </div>
 
-<div class="modal fade" id="myModalElencoVoci" tabindex="-5" role="dialog" aria-labelledby="myModalElencoVoci" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade " id="myModalElencoVoci" tabindex="-5" role="dialog" aria-labelledby="myModalElencoVoci" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title alert alert-info text-info" id="myModalInfoLabel">Elenco Voci</h4>
+                <h4 class="modal-title alert alert-info text-info" id="myModalInfoLabel">Elenco Voci manuali</h4>
             </div>
             <div class="modal-body alert alert-info text-info">
                 <div id="divContElencoVoci">
@@ -44,6 +43,36 @@
 <script type="text/javascript">
 
     function ElencoVociManuali() {
+        var rotta = "/Elaborazioni/ElencoVociManuali";
+
+        //$('#notificaModal').modal().show();
+
+
+        $.ajax({
+            url: rotta,
+            type: "post", //Le info testuali saranno passate in POST
+            //data: { idSospensione: idSospensione, idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            async: true,
+            beforeSend: function () {
+                //  debugger;
+                //Blocca();
+            },
+            success: function (result) {
+                // debugger;
+                $('#myModalElencoVoci').modal().show();
+                $("#divContElencoVoci").empty();
+                $("#divContElencoVoci").html(result);
+
+
+            },
+            error: function (error) {
+                //    debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
 
     }
 
@@ -65,7 +94,7 @@
     }
 
     function ResetForm() {
-        var rotta = "/Elaborazioni/VociManuali";
+        var rotta = "/Elaborazioni/FormVociManuali";
 
         $.ajax({
             url: rotta,

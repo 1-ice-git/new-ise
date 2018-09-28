@@ -27,7 +27,8 @@
             @Html.Label("lblImporto", "Importo", new { @class = "control-label" }) <span class="text-danger">*</span>
         </div>
         <div class="col-xs-9">
-            <input type="text" id="txtImporto" name="Importo" onfocus=" SelectNumer(); " value="0" style="width: 266px;" class="form-control text-right" />
+            <input type="text" id="txtImporto" onfocus=" SelectNumer(); " value="0" style="width: 266px;" class="form-control text-right" />
+            <input type="hidden" id="hImporto" name="Importo" value="0" />
         </div>
 
     </div>
@@ -81,8 +82,16 @@
 
     function SelectNumer() {
         txtImporto.selectNumber();
+
     }
 
+    $('form').submit(function () {
+        //debugger;
+        //var form = $(this);
+        var str = txtImporto.getNumber().toString().replace(".", ",");
+        $("#hImporto").val(str);
+        return true;
+    });
 
 
     $("#AnnoDa").select2({
