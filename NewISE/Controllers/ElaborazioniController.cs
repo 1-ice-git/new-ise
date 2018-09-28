@@ -537,6 +537,21 @@ namespace NewISE.Controllers
                             }
                             #endregion
 
+                            #region Lettura dati voci manuali
+                            List<decimal> lt5 = (from a in db.TEORICI
+                                                 where a.ANNULLATO == false && a.INSERIMENTOMANUALE == true &&
+                                                       a.IDMESEANNOELAB == idAnnoMeseElaborato &&
+                                                       a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                                       a.DIRETTO == false &&
+                                                       a.ELABORATO == false
+                                                 select a.IDTEORICI).ToList();
+
+                            if (lt4?.Any() ?? false)
+                            {
+                                lTeorici.AddRange(lt4);
+                            }
+                            #endregion
+
                             lTeorici = lTeorici.OrderBy(a => a).ToList();
 
                             List<ElencoDipendentiDaCalcolareModel> ledcm = new List<ElencoDipendentiDaCalcolareModel>();

@@ -949,7 +949,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                     lLm.AddRange(this.PlmPrimaSistemazione(mae, db));
 
+
                     #endregion
+                    #region Voci manuali
+                    lLm.AddRange(this.PlmVociManuali(mae, db));
+                    #endregion
+
 
                     #region Trasporto effetti
                     lLm.AddRange(this.PlmTrasportoEffettiPartenza(mae, db));
@@ -2019,12 +2024,11 @@ namespace NewISE.Models.DBModel.dtObj
                             this.InsMab(trasferimento, meseAnnoElaborazione, db);
 
                             this.InsSistemazioneRichiamo(trasferimento, meseAnnoElaborazione, db);
-                        }
 
+                            this.ElaboraVociManuali(trasferimento, meseAnnoElaborazione, db);
+                        }
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -2032,6 +2036,151 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
 
+        }
+
+        public void ElaboraVociManuali(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
+        {
+
+            decimal AnnoMeseElab = Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() + meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char)'0'));
+
+            var lvm =
+                db.AUTOMATISMOVOCIMANUALI.Where(
+                    a =>
+                        a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
+                        !a.TEORICI.Any(
+                            b =>
+                                b.ANNULLATO == false &&
+                                b.INSERIMENTOMANUALE == true &&
+                                b.IMPORTO == a.IMPORTO &&
+                                b.ELABORATO == true &&
+                                b.DIRETTO == false))
+                    .OrderBy(a => a.ANNOMESEINIZIO)
+                    .ToList();
+
+            if (lvm?.Any() ?? false)
+            {
+                foreach (var vm in lvm)
+                {
+
+                    DateTime dataFineElaborazione;
+
+                    DateTime dataInizioElaborazione =
+                        Convert.ToDateTime("01/" + vm.ANNOMESEINIZIO.ToString().Substring(4, 2) + "/" +
+                                           vm.ANNOMESEINIZIO.ToString().Substring(0, 4));
+
+                    if (vm.ANNOMESEFINE < AnnoMeseElab)
+                    {
+                        dataFineElaborazione =
+                            Utility.GetDtFineMese(
+                                Convert.ToDateTime("01/" + vm.ANNOMESEFINE.ToString().Substring(4, 2) + "/" +
+                                                   vm.ANNOMESEFINE.ToString().Substring(0, 4)));
+                    }
+                    else
+                    {
+                        dataFineElaborazione =
+                            Utility.GetDtFineMese(
+                                Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char)'0') +
+                                                   "/" +
+                                                   meseAnnoElaborazione.ANNO.ToString()));
+                    }
+
+
+                    var ltOld =
+                        vm.TEORICI.Where(
+                            a =>
+                                a.ANNULLATO == false && a.IDMESEANNOELAB == meseAnnoElaborazione.IDMESEANNOELAB &&
+                                a.IDVOCI == vm.IDVOCI && a.INSERIMENTOMANUALE == true &&
+                                a.ELABORATO == false).ToList();
+
+                    if (ltOld?.Any() ?? false)
+                    {
+                        foreach (var tOld in ltOld)
+                        {
+                            tOld.ANNULLATO = true;
+                        }
+
+                        db.SaveChanges();
+                    }
+
+
+
+
+                    using (GiorniRateo gr = new GiorniRateo(dataInizioElaborazione, dataFineElaborazione))
+                    {
+                        int numeroCicli = gr.CicliElaborazione;
+                        //List<TEORICI> lt = new List<TEORICI>();
+
+                        for (int i = 0; i < numeroCicli; i++)
+                        {
+                            DateTime dtIni = dataInizioElaborazione;
+                            //DateTime dtFin = Utility.GetDtFineMese(dtIni);
+
+                            EnumTipoMovimento tm = EnumTipoMovimento.MeseCorrente_M;
+
+                            if (i > 0)
+                            {
+                                dtIni.AddMonths(i);
+                                //dtFin = Utility.GetDtFineMese(dtIni);
+                            }
+
+                            decimal AnnoMeseCiclato =
+                                Convert.ToDecimal(dtIni.Year.ToString() + dtIni.Month.ToString().PadLeft(2, (char)'0'));
+
+                            if (AnnoMeseCiclato < AnnoMeseElab)
+                            {
+                                tm = EnumTipoMovimento.Conguaglio_C;
+                            }
+                            else
+                            {
+                                tm = EnumTipoMovimento.MeseCorrente_M;
+                            }
+
+
+
+                            bool tElab = db.TEORICI.All(
+                                a =>
+                                    a.ANNULLATO == false && a.IDMESEANNOELAB == meseAnnoElaborazione.IDMESEANNOELAB &&
+                                    a.IDVOCI == vm.IDVOCI && a.ANNORIFERIMENTO == dtIni.Year &&
+                                    a.MESERIFERIMENTO == dtIni.Month && a.INSERIMENTOMANUALE == true &&
+                                    a.ELABORATO == true);
+
+                            if (tElab == false)
+                            {
+                                TEORICI t = new TEORICI()
+                                {
+                                    IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                                    IDVOCI = vm.IDVOCI,
+                                    IDTIPOMOVIMENTO = (decimal)tm,
+                                    IDAUTOVOCIMANUALI = vm.IDAUTOVOCIMANUALI,
+                                    MESERIFERIMENTO = dtIni.Month,
+                                    ANNORIFERIMENTO = dtIni.Year,
+                                    IMPORTO = vm.IMPORTO,
+                                    DATAOPERAZIONE = DateTime.Now,
+                                    INSERIMENTOMANUALE = true,
+                                    ELABORATO = false,
+                                    DIRETTO = false,
+                                    ANNULLATO = false
+                                };
+
+                                db.TEORICI.Add(t);
+
+                                int k = db.SaveChanges();
+
+                                if (k <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di elaborazione per le voci manuali.");
+                                }
+
+
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            }
 
         }
 
@@ -3171,6 +3320,93 @@ namespace NewISE.Models.DBModel.dtObj
 
             return lLm;
         }
+
+
+        /// <summary>
+        /// Preleva le liquidazione mensili per la prima sistemazione.
+        /// </summary>
+        /// <param name="mae"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        private IList<LiquidazioneMensileViewModel> PlmVociManuali(MESEANNOELABORAZIONE mae, ModelDBISE db)
+        {
+            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+
+            var lTeorici =
+                db.TEORICI.Where(
+                    a =>
+                        a.ANNULLATO == false &&
+                        a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.INSERIMENTOMANUALE == true && a.IDAUTOVOCIMANUALI > 0 &&
+                         a.DIRETTO == false && a.IMPORTO > 0)
+                    .OrderBy(a => a.AUTOMATISMOVOCIMANUALI.TRASFERIMENTO.DIPENDENTI.COGNOME)
+                    .ThenBy(a => a.AUTOMATISMOVOCIMANUALI.TRASFERIMENTO.DIPENDENTI.NOME)
+                    .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
+                    .ToList();
+
+            if (lTeorici?.Any() ?? false)
+            {
+                foreach (var teorico in lTeorici)
+                {
+                    var tr = teorico.AUTOMATISMOVOCIMANUALI.TRASFERIMENTO;
+                    var dip = tr.DIPENDENTI;
+                    var tm = teorico.TIPOMOVIMENTO;
+                    var voce = teorico.VOCI;
+                    var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+                    var tv = teorico.VOCI.TIPOVOCE;
+                    var uf = tr.UFFICI;
+
+                    LiquidazioneMensileViewModel lm = new LiquidazioneMensileViewModel()
+                    {
+                        idTeorici = teorico.IDTEORICI,
+                        Nominativo = dip.COGNOME + " " + dip.NOME + " (" + dip.MATRICOLA + ")",
+                        Ufficio = uf.DESCRIZIONEUFFICIO + " (" + uf.CODICEUFFICIO + ")",
+                        TipoMovimento = new TipoMovimentoModel()
+                        {
+                            idTipoMovimento = tm.IDTIPOMOVIMENTO,
+                            TipoMovimento = tm.TIPOMOVIMENTO1,
+                            DescMovimento = tm.DESCMOVIMENTO
+                        },
+                        Voci = new VociModel()
+                        {
+                            idVoci = voce.IDVOCI,
+                            codiceVoce = voce.CODICEVOCE,
+                            descrizione = voce.DESCRIZIONE,
+                            TipoLiquidazione = new TipoLiquidazioneModel()
+                            {
+                                idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                descrizione = tl.DESCRIZIONE
+                            },
+                            TipoVoce = new TipoVoceModel()
+                            {
+                                idTipoVoce = tv.IDTIPOVOCE,
+                                descrizione = tv.DESCRIZIONE
+                            }
+                        },
+                        meseRiferimento = teorico.MESERIFERIMENTO,
+                        annoRiferimento = teorico.ANNORIFERIMENTO,
+                        Importo = teorico.IMPORTO,
+                        Elaborato = teorico.ELABORATO
+
+                    };
+
+                    if (teorico.INSERIMENTOMANUALE == true)
+                    {
+                        lm.tipoInserimento = EnumTipoInserimento.Manuale;
+                    }
+                    else
+                    {
+                        lm.tipoInserimento = EnumTipoInserimento.Software;
+                    }
+
+                    lLm.Add(lm);
+                }
+            }
+
+            return lLm;
+        }
+
+
+
 
         /// <summary>
         /// Netto della prima sistemazione
