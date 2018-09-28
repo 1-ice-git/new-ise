@@ -7545,7 +7545,60 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public AUTOMATISMOVOCIMANUALI InserimentoVociManuali(AutomatismoVociManualiModel avmm, ModelDBISE db)
+        {
+            AUTOMATISMOVOCIMANUALI avm = new AUTOMATISMOVOCIMANUALI();
+            decimal annoMeseIni = 0;
+            decimal annoMeseFin = 0;
 
+            try
+            {
+
+                var lt =
+                    db.TRASFERIMENTO.Where(
+                        a =>
+                            a.IDDIPENDENTE == avmm.idDipendente &&
+                            a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo)
+                        .OrderBy(a => a.DATAPARTENZA)
+                        .ToList();
+
+                if (lt?.Any() ?? false)
+                {
+                    var t = lt.Last();
+
+                    annoMeseIni = Convert.ToDecimal(avmm.AnnoDa.ToString() + avmm.MeseDa.ToString().PadLeft(2, (char)'0'));
+                    annoMeseFin = Convert.ToDecimal(avmm.AnnoA.ToString() + avmm.MeseA.ToString().PadLeft(2, (char)'0'));
+
+                    avm = new AUTOMATISMOVOCIMANUALI()
+                    {
+                        IDTRASFERIMENTO = t.IDTRASFERIMENTO,
+                        IDVOCI = avmm.IdVoce,
+                        ANNOMESEINIZIO = annoMeseIni,
+                        ANNOMESEFINE = annoMeseFin,
+                        DATAINSERIMENTO = DateTime.Now,
+                        IMPORTO = avmm.Importo
+                    };
+
+                    db.AUTOMATISMOVOCIMANUALI.Add(avm);
+
+                    int i = db.SaveChanges();
+
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase d'inserimento della voce manuale, riprovare l'inserimento.");
+                    }
+                }
+
+                return avm;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
 
         //private void ProvaLettura(TRASFERIMENTO tr)

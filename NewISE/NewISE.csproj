@@ -4934,6 +4934,7 @@
     <Content Include="Scripts\ViewScripts\anticipo.js" />
     <Content Include="Scripts\ViewScripts\VariazioneMaggiorazioneAbitazione.js" />
     <Content Include="Scripts\ViewScripts\MaggiorazioneAbitazione.js" />
+    <Content Include="Scripts\_Layout.js" />
     <Content Include="Template\HtmlPage1.html" />
     <Content Include="Views\Content\NoScroller.css" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
@@ -5075,6 +5076,9 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\ATTIVITATERIENTRO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\AUTOMATISMOVOCIMANUALI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\CALENDARIOEVENTI.cs">
@@ -5393,6 +5397,7 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
+    <Compile Include="Models\DBModel\AutomatismoVociManualiModel.cs" />
     <Compile Include="Models\DBModel\bsObj\VariazioniIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
@@ -6131,7 +6136,6 @@
     <Content Include="Views\MaggiorazioneAbitazione\GestionePulsantiMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\ElencoDocumentiFormularioMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\DocumentoMAB.cshtml" />
-    <Content Include="Views\MaggiorazioneAbitazione\NuovaMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\GestioneMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\ModificaMAB.cshtml" />
     <Content Include="Views\Notifiche\Index.cshtml" />
@@ -6447,6 +6451,7 @@
     <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Elaborazioni\FormVociManuali.cshtml" />
     <Content Include="Views\TrasportoEffetti\TERientro.cshtml" />
     <Content Include="Views\TrasportoEffetti\TrasportoEffettiRientro.cshtml" />
     <None Include="Web.Debug.config">
@@ -6472,6 +6477,7 @@
     <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Scripts\themes\" />
     <Folder Include="Views\Log\" />
+    <Folder Include="Views\prova\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

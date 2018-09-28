@@ -296,6 +296,18 @@
           <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="AUTOMATISMOVOCIMANUALI">
+          <Key>
+            <PropertyRef Name="IDAUTOVOCIMANUALI" />
+          </Key>
+          <Property Name="IDAUTOVOCIMANUALI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ANNOMESEINIZIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ANNOMESEFINE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINSERIMENTO" Type="date" Nullable="false" />
+          <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
+        </EntityType>
         <EntityType Name="C_CP">
           <Key>
             <PropertyRef Name="IDCONIUGE" />
@@ -1483,6 +1495,7 @@
           <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
           <Property Name="DIRETTO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDAUTOVOCIMANUALI" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -2341,6 +2354,20 @@
             </Principal>
             <Dependent Role="DOCVC">
               <PropertyRef Name="IDATTIVAZIONEVC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AVM_T">
+          <End Role="AUTOMATISMOVOCIMANUALI" Type="Self.AUTOMATISMOVOCIMANUALI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AUTOMATISMOVOCIMANUALI">
+              <PropertyRef Name="IDAUTOVOCIMANUALI" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDAUTOVOCIMANUALI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4594,6 +4621,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_T_AVM">
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AUTOMATISMOVOCIMANUALI" Type="Self.AUTOMATISMOVOCIMANUALI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="AUTOMATISMOVOCIMANUALI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_B">
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5420,6 +5461,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_V_AVM">
+          <End Role="VOCI" Type="Self.VOCI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AUTOMATISMOVOCIMANUALI" Type="Self.AUTOMATISMOVOCIMANUALI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VOCI">
+              <PropertyRef Name="IDVOCI" />
+            </Principal>
+            <Dependent Role="AUTOMATISMOVOCIMANUALI">
+              <PropertyRef Name="IDVOCI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_V_CMAB">
           <End Role="VALUTE" Type="Self.VALUTE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5530,6 +5585,7 @@
           <EntitySet Name="ATTIVITATERIENTRO" EntityType="Self.ATTIVITATERIENTRO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ATTMAGFAM_DOC" EntityType="Self.ATTMAGFAM_DOC" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="ATV_DOC" EntityType="Self.ATV_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="AUTOMATISMOVOCIMANUALI" EntityType="Self.AUTOMATISMOVOCIMANUALI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="C_CP" EntityType="Self.C_CP" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="C_CTV" EntityType="Self.C_CTV" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="C_P" EntityType="Self.C_P" Schema="ISESIM" store:Type="Tables" />
@@ -5851,6 +5907,10 @@
           <AssociationSet Name="R_AVC_DVC" Association="Self.R_AVC_DVC">
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
             <End Role="DOCVC" EntitySet="DOCVC" />
+          </AssociationSet>
+          <AssociationSet Name="R_AVM_T" Association="Self.R_AVM_T">
+            <End Role="AUTOMATISMOVOCIMANUALI" EntitySet="AUTOMATISMOVOCIMANUALI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_C_ADFC" Association="Self.R_C_ADFC">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -6496,6 +6556,10 @@
             <End Role="STATOTRASFERIMENTO" EntitySet="STATOTRASFERIMENTO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
+          <AssociationSet Name="R_T_AVM" Association="Self.R_T_AVM">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="AUTOMATISMOVOCIMANUALI" EntitySet="AUTOMATISMOVOCIMANUALI" />
+          </AssociationSet>
           <AssociationSet Name="R_T_B" Association="Self.R_T_B">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
@@ -6732,6 +6796,10 @@
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
           </AssociationSet>
+          <AssociationSet Name="R_V_AVM" Association="Self.R_V_AVM">
+            <End Role="VOCI" EntitySet="VOCI" />
+            <End Role="AUTOMATISMOVOCIMANUALI" EntitySet="AUTOMATISMOVOCIMANUALI" />
+          </AssociationSet>
           <AssociationSet Name="R_V_CMAB" Association="Self.R_V_CMAB">
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
@@ -6778,6 +6846,7 @@
           <EntitySet Name="ATTIVITACRUD" EntityType="DBISE.ATTIVITACRUD" />
           <EntitySet Name="ATTIVITATEPARTENZA" EntityType="DBISE.ATTIVITATEPARTENZA" />
           <EntitySet Name="ATTIVITATERIENTRO" EntityType="DBISE.ATTIVITATERIENTRO" />
+          <EntitySet Name="AUTOMATISMOVOCIMANUALI" EntityType="DBISE.AUTOMATISMOVOCIMANUALI" />
           <EntitySet Name="CALENDARIOEVENTI" EntityType="DBISE.CALENDARIOEVENTI" />
           <EntitySet Name="CANONEMAB" EntityType="DBISE.CANONEMAB" />
           <EntitySet Name="CDCGEPE" EntityType="DBISE.CDCGEPE" />
@@ -7045,6 +7114,18 @@
           <AssociationSet Name="R_TER_ATER" Association="DBISE.R_TER_ATER">
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
+          </AssociationSet>
+          <AssociationSet Name="R_AVM_T" Association="DBISE.R_AVM_T">
+            <End Role="AUTOMATISMOVOCIMANUALI" EntitySet="AUTOMATISMOVOCIMANUALI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_AVM" Association="DBISE.R_T_AVM">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="AUTOMATISMOVOCIMANUALI" EntitySet="AUTOMATISMOVOCIMANUALI" />
+          </AssociationSet>
+          <AssociationSet Name="R_V_AVM" Association="DBISE.R_V_AVM">
+            <End Role="VOCI" EntitySet="VOCI" />
+            <End Role="AUTOMATISMOVOCIMANUALI" EntitySet="AUTOMATISMOVOCIMANUALI" />
           </AssociationSet>
           <AssociationSet Name="R_FE_CE" Association="DBISE.R_FE_CE">
             <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
@@ -8003,6 +8084,21 @@
           <NavigationProperty Name="RINUNCIA_TE_R" Relationship="DBISE.R_ATER_RTER" FromRole="ATTIVITATERIENTRO" ToRole="RINUNCIA_TE_R" />
           <NavigationProperty Name="TERIENTRO" Relationship="DBISE.R_TER_ATER" FromRole="ATTIVITATERIENTRO" ToRole="TERIENTRO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.DOC_ATER" FromRole="ATTIVITATERIENTRO" ToRole="DOCUMENTI" />
+        </EntityType>
+        <EntityType Name="AUTOMATISMOVOCIMANUALI">
+          <Key>
+            <PropertyRef Name="IDAUTOVOCIMANUALI" />
+          </Key>
+          <Property Name="IDAUTOVOCIMANUALI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ANNOMESEINIZIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ANNOMESEFINE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_AVM_T" FromRole="AUTOMATISMOVOCIMANUALI" ToRole="TEORICI" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_AVM" FromRole="AUTOMATISMOVOCIMANUALI" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="VOCI" Relationship="DBISE.R_V_AVM" FromRole="AUTOMATISMOVOCIMANUALI" ToRole="VOCI" />
         </EntityType>
         <EntityType Name="CALENDARIOEVENTI">
           <Key>
@@ -9123,6 +9219,8 @@
           <Property Name="IDELABINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DIRETTO" Type="Boolean" Nullable="false" />
           <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDAUTOVOCIMANUALI" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_AVM_T" FromRole="TEORICI" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_T" FromRole="TEORICI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
           <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISE.R_ETE_T" FromRole="TEORICI" ToRole="ELABTRASPEFFETTI" />
@@ -9329,6 +9427,7 @@
           <Property Name="DATALETTERA" Type="DateTime" />
           <Property Name="NOTIFICATRASFERIMENTO" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_T_AVM" FromRole="TRASFERIMENTO" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISE.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
@@ -9422,6 +9521,7 @@
           <Property Name="IDTIPOVOCE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CODICEVOCE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_V_AVM" FromRole="VOCI" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_V_T" FromRole="VOCI" ToRole="TEORICI" />
           <NavigationProperty Name="TIPOLIQUIDAZIONE" Relationship="DBISE.R_TL_V" FromRole="VOCI" ToRole="TIPOLIQUIDAZIONE" />
           <NavigationProperty Name="TIPOVOCE" Relationship="DBISE.R_TV_V" FromRole="VOCI" ToRole="TIPOVOCE" />
@@ -10011,6 +10111,48 @@
             </Principal>
             <Dependent Role="ATTIVITATERIENTRO">
               <PropertyRef Name="IDTERIENTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AVM_T">
+          <End Type="DBISE.AUTOMATISMOVOCIMANUALI" Role="AUTOMATISMOVOCIMANUALI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AUTOMATISMOVOCIMANUALI">
+              <PropertyRef Name="IDAUTOVOCIMANUALI" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDAUTOVOCIMANUALI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_AVM">
+          <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.AUTOMATISMOVOCIMANUALI" Role="AUTOMATISMOVOCIMANUALI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="AUTOMATISMOVOCIMANUALI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_V_AVM">
+          <End Type="DBISE.VOCI" Role="VOCI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.AUTOMATISMOVOCIMANUALI" Role="AUTOMATISMOVOCIMANUALI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VOCI">
+              <PropertyRef Name="IDVOCI" />
+            </Principal>
+            <Dependent Role="AUTOMATISMOVOCIMANUALI">
+              <PropertyRef Name="IDVOCI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -12056,6 +12198,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AUTOMATISMOVOCIMANUALI">
+            <EntityTypeMapping TypeName="DBISE.AUTOMATISMOVOCIMANUALI">
+              <MappingFragment StoreEntitySet="AUTOMATISMOVOCIMANUALI">
+                <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
+                <ScalarProperty Name="DATAINSERIMENTO" ColumnName="DATAINSERIMENTO" />
+                <ScalarProperty Name="ANNOMESEFINE" ColumnName="ANNOMESEFINE" />
+                <ScalarProperty Name="ANNOMESEINIZIO" ColumnName="ANNOMESEINIZIO" />
+                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDAUTOVOCIMANUALI" ColumnName="IDAUTOVOCIMANUALI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CALENDARIOEVENTI">
             <EntityTypeMapping TypeName="DBISE.CALENDARIOEVENTI">
               <MappingFragment StoreEntitySet="CALENDARIOEVENTI">
@@ -12961,6 +13116,7 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="IDAUTOVOCIMANUALI" ColumnName="IDAUTOVOCIMANUALI" />
                 <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
                 <ScalarProperty Name="DIRETTO" ColumnName="DIRETTO" />
                 <ScalarProperty Name="IDELABINDRICHIAMO" ColumnName="IDELABINDRICHIAMO" />

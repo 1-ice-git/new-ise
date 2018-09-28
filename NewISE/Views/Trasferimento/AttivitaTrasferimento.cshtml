@@ -93,7 +93,7 @@
         </tr>
         <tr>
             <th>
-                @Ajax.ActionLink("Richiesta Trasporto Effetti", "TrasportoEffetti", "TrasportoEffetti", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "linkTrasportoEffetti" })
+                @Ajax.ActionLink("Richiesta Trasporto Effetti", "TrasportoEffetti", "TrasportoEffetti", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErrorCallAjax" }, new { @id = "linkTrasportoEffetti" })
             </th>
             <td>
                 <div class="material-switch pull-right">
@@ -142,6 +142,13 @@
 
 
 <script type="text/javascript">
+
+
+    function ErrorCallAjax(data) {
+        debugger;
+        ErroreElaborazioneAjax();
+    }
+
 
     function ModalNotificaAnnullaTrasf() {
         //debugger;

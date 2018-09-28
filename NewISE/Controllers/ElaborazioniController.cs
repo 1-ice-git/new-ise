@@ -803,6 +803,84 @@ namespace NewISE.Controllers
 
         }
 
+        public ActionResult FormVociManuali()
+        {
+            var lMesi = new List<SelectListItem>();
+            var lAnni = new List<SelectListItem>();
+            SelectListItem mese = new SelectListItem();
+            SelectListItem anno = new SelectListItem();
+
+            int numeroAnniVociManuali = Convert.ToInt16(System.Configuration.ConfigurationManager.AppSettings["NumeroAnniVociManuali"]);
+
+            DateTime dataAttuale = DateTime.Now;
+
+            try
+            {
+                for (int i = 1; i <= 12; i++)
+                {
+                    if (dataAttuale.Month == i)
+                    {
+                        mese = new SelectListItem()
+                        {
+                            Value = i.ToString(),
+                            Text = ((EnumDescrizioneMesi)i).ToString(),
+                            Selected = true
+                        };
+                    }
+                    else
+                    {
+                        mese = new SelectListItem()
+                        {
+                            Value = i.ToString(),
+                            Text = ((EnumDescrizioneMesi)i).ToString(),
+                            Selected = false
+                        };
+                    }
+
+
+                    lMesi.Add(mese);
+                }
+
+                int k = DateTime.Now.Year - numeroAnniVociManuali;
+                int fine = DateTime.Now.Year + numeroAnniVociManuali;
+
+
+                for (var j = k; j <= fine; j++)
+                {
+                    if (dataAttuale.Year == j)
+                    {
+                        anno = new SelectListItem()
+                        {
+                            Value = j.ToString(),
+                            Text = j.ToString(),
+                            Selected = true
+                        };
+                    }
+                    else
+                    {
+                        anno = new SelectListItem()
+                        {
+                            Value = j.ToString(),
+                            Text = j.ToString(),
+                            Selected = false
+                        };
+                    }
+
+                    lAnni.Add(anno);
+
+                }
+
+                ViewBag.ListaAnni = lAnni;
+                ViewBag.ListaMesi = lMesi;
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView();
+        }
+
         public ActionResult VociManuali()
         {
             return PartialView();
@@ -880,6 +958,8 @@ namespace NewISE.Controllers
             return Json(new { results = ls2, err = "" });
 
         }
+
+
 
 
         [HttpPost]
@@ -971,6 +1051,65 @@ namespace NewISE.Controllers
             return Json(new { results = ls2, err = "" });
 
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult InserisciVoce(AutomatismoVociManualiModel avmm)
+        {
+            AUTOMATISMOVOCIMANUALI avm = new AUTOMATISMOVOCIMANUALI();
+            DIPENDENTI d = new DIPENDENTI();
+            VOCI v = new VOCI();
+            try
+            {
+                if (avmm != null)
+                {
+                    if (avmm.idDipendente <= 0 || avmm.IdVoce <= 0 || avmm.Importo <= 0 || avmm.AnnoDa <= 0 || avmm.MeseDa <= 0 || avmm.AnnoA <= 0 || avmm.MeseA <= 0)
+                    {
+                        throw new Exception("I campi con asterisco sono obbligatori.");
+                    }
+                    else
+                    {
+                        using (ModelDBISE db = new ModelDBISE())
+                        {
+                            using (dtElaborazioni dte = new dtElaborazioni())
+                            {
+                                avm = dte.InserimentoVociManuali(avmm, db);
+                                d = avm.TRASFERIMENTO.DIPENDENTI;
+                                v = db.VOCI.Find(avmm.IdVoce);
+                            }
+
+                            return
+                                Json(
+                                    new
+                                    {
+                                        err = "",
+                                        msg =
+                                            "Inserimento della voce " + v.DESCRIZIONE + " con importo " +
+                                            avmm.Importo + " per il dipendente " + d.COGNOME + " " + d.NOME + " (" +
+                                            d.MATRICOLA + ") è avvenuto con successo."
+                                    });
+                        }
+
+                    }
+                }
+                else
+                {
+                    throw new Exception("I campi con asterisco sono obbligatori.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message, msg = "" });
+            }
+
+        }
+
+        public ActionResult ElencoVociManuali()
+        {
+
+
+            return PartialView();
+        }
+
 
     }
 }
