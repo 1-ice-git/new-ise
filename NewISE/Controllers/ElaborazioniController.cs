@@ -546,9 +546,9 @@ namespace NewISE.Controllers
                                                        a.ELABORATO == false
                                                  select a.IDTEORICI).ToList();
 
-                            if (lt4?.Any() ?? false)
+                            if (lt5?.Any() ?? false)
                             {
-                                lTeorici.AddRange(lt4);
+                                lTeorici.AddRange(lt5);
                             }
                             #endregion
 

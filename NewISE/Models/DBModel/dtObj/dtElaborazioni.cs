@@ -1991,7 +1991,6 @@ namespace NewISE.Models.DBModel.dtObj
                     Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
                                       meseAnnoElaborazione.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
 
-
                 #endregion
                 var lTrasferimenti =
                     dipendente.TRASFERIMENTO
@@ -2046,14 +2045,7 @@ namespace NewISE.Models.DBModel.dtObj
             var lvm =
                 db.AUTOMATISMOVOCIMANUALI.Where(
                     a =>
-                        a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
-                        !a.TEORICI.Any(
-                            b =>
-                                b.ANNULLATO == false &&
-                                b.INSERIMENTOMANUALE == true &&
-                                b.IMPORTO == a.IMPORTO &&
-                                b.ELABORATO == true &&
-                                b.DIRETTO == false))
+                        a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
                     .OrderBy(a => a.ANNOMESEINIZIO)
                     .ToList();
 
@@ -2119,7 +2111,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (i > 0)
                             {
-                                dtIni.AddMonths(i);
+                                dtIni = dtIni.AddMonths(i);
                                 //dtFin = Utility.GetDtFineMese(dtIni);
                             }
 
@@ -2137,9 +2129,9 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-                            bool tElab = db.TEORICI.All(
+                            bool tElab = db.TEORICI.Any(
                                 a =>
-                                    a.ANNULLATO == false && a.IDMESEANNOELAB == meseAnnoElaborazione.IDMESEANNOELAB &&
+                                    a.ANNULLATO == false &&
                                     a.IDVOCI == vm.IDVOCI && a.ANNORIFERIMENTO == dtIni.Year &&
                                     a.MESERIFERIMENTO == dtIni.Month && a.INSERIMENTOMANUALE == true &&
                                     a.ELABORATO == true);
