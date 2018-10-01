@@ -127,8 +127,8 @@
             <div class="tab-pane" id="tabCongediPermessi"></div>
             <div class="tab-pane" id="tabSospensione"></div>
             <div class="tab-pane" id="tabRichiamo"></div>
-            <div class="tab-pane" id="tabTrasportoEffettiRichiamoAnticipo"></div>
-            <div class="tab-pane" id="tabTrasportoEffettiRichiamoSaldo"></div>
+            <div class="tab-pane" id="tabTrasportoEffettiRientroAnticipo"></div>
+            <div class="tab-pane" id="tabTrasportoEffettiRientroSaldo"></div>
             <div class="tab-pane" id="tabIndennita"></div>
             <div class="tab-pane" id="tabRiepilogoVoci"></div>
             <div class="tab-pane" id="tabProvvidenzeScolastiche"></div>
@@ -481,7 +481,7 @@
         });
     }
 
-    function TrasportoEffettiRientro_Anticipo() {
+    function TrasportoEffettiRientroAnticipo() {
         //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         rotta = "/TrasportoEffetti/TERientro";
@@ -502,6 +502,37 @@
             },
             complete: function () {
                 $("#hMenuInLavorazione").val("mnTrasportoEffettiRientroAnticipo");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function TrasportoEffettiRientroSaldo() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/VariazioneTrasportoEffetti/VariazioneTERientro";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabGestioneTrasferimento").empty();
+                $("#tabTrasportoEffettiRientroSaldo").empty();
+                $("#tabTrasportoEffettiRientroSaldo").html(result);
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnTrasportoEffettiRientroSaldo");
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -1043,7 +1074,7 @@
 
     function MenuRientro(idTrasferimento) {
         //debugger;
-        var rotta = "/Trasferimento/VerificaStatoStrasferimentoJsonResult";
+        var rotta = "/Trasferimento/VerificaRientro";
         var valoreRitorno = 0;
 
         if (idTrasferimento != "" && idTrasferimento != undefined) {
@@ -1062,7 +1093,7 @@
                     //debugger;
 
                     if (result.err == "" || result.err == undefined) {
-                        if (result.StatoTrasferimento == 1) {
+                        if (result.RientroAbilitato == 1) {
                             valoreRitorno = 1;
                         }
                         else {

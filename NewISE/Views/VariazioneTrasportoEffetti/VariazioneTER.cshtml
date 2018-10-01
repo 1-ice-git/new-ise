@@ -1,18 +1,14 @@
 ﻿@using NewISE.Models.DBModel
 @using NewISE.Models.Enumeratori
-@model NewISE.Models.ViewModel.VariazioneTEPartenzaModel
+@model NewISE.Models.ViewModel.VariazioneTERientroModel
 
 @{
-    bool richiestaTE = Convert.ToBoolean(ViewData["richiestaTE"]);
-    bool rinunciaTE = Convert.ToBoolean(ViewData["rinunciaTE"]);
+    bool richiestaTER = Convert.ToBoolean(ViewData["richiestaTER"]);
+    bool rinunciaTER = Convert.ToBoolean(ViewData["rinunciaTER"]);
 
-    bool attivazioneTE = Convert.ToBoolean(ViewData["attivazioneTE"]);
+    bool attivazioneTER = Convert.ToBoolean(ViewData["attivazioneTER"]);
     bool DocAttestazione = Convert.ToBoolean(ViewData["DocAttestazione"]);
-    //    bool rinunciaTEPartenza = Convert.ToBoolean(ViewData["rinunciaTEPartenza"]);
-    decimal idTEPartenza = Convert.ToDecimal(ViewData["idTEPartenza"]);
-    //decimal indennita = Convert.ToDecimal(ViewData["indennita"]);
-    //decimal perc_km = Convert.ToDecimal(ViewData["perc_km"]);
-    //decimal contributoLordo = Convert.ToDecimal(ViewData["contributoLordo"]);
+    decimal idTERientro = Convert.ToDecimal(ViewData["idTERientro"]);
 }
 
 <script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
@@ -21,10 +17,10 @@
     <div class="col-xs-12 fa-border" style="background-color:white; border:solid;border-width:thin;margin-bottom:15px;border-radius:15px">
         <div class="row">
             <div class="col-xs-4 text-right" style="padding-top:10px">
-                <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
+                <label for="indennitaRichiamo" class="control-label">@Html.DisplayNameFor(model => model.indennitaRichiamo)</label>
             </div>
             <div class="col-xs-3" style="padding-top:5px">
-                @Html.TextBoxFor(model => model.indennitaPrimaSistemazione, string.Format("{0:N2}", Model.indennitaPrimaSistemazione), new { @readonly = "readonly", @class = "form-control text-right" })
+                @Html.TextBoxFor(model => model.indennitaRichiamo, string.Format("{0:N2}", Model.indennitaRichiamo), new { @readonly = "readonly", @class = "form-control text-right" })
             </div>
         </div>
         <div class="row">
@@ -65,20 +61,20 @@
 
     <div class="row">
         <div class="col-xs-5" style="text-align:right">
-            <b>Modulo 3 - (Attestazione Avvenuto Trasloco - Trasferimento)</b>
+            <b>Modulo 4 - (Attestazione Avvenuto Trasloco - Rientro in Italia)</b>
         </div>
         <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
-            @if (rinunciaTE == false)
+            @if (rinunciaTER == false)
             {
                 if (DocAttestazione)
                 {
-                    <a href="#" onclick="ElencoDocumentiVariazioneTEP(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocVariazioniTEP">
+                    <a href="#" onclick="ElencoDocumentiVariazioneTER(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco_Rientro));" id="linkElencoDocVariazioniTER">
                         <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
                     </a>
                 }
                 else
                 {
-                    <a href="#" onclick="ElencoDocumentiVariazioneTEP(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocVariazioniTEP">
+                    <a href="#" onclick="ElencoDocumentiVariazioneTER(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco_Rientro));" id="linkElencoDocVariazioniTER">
                         <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
                     </a>
                 }
@@ -93,39 +89,18 @@
 
 <script type="text/javascript">
 
-   
-    @*valIndennitaPrimaSistemazione = new AutoNumeric('#valIndennitaPrimaSistemazione', autoNumericOptionsEuroOttoDec);
-
-    valContributoLordo = new AutoNumeric('#valContributoLordo', autoNumericOptionsEuroOttoDec);
-
-    valPercKM = new AutoNumeric('#valPercKM', autoNumericOptionsEuroTreDec);
-
-    valAnticipoPercepito = new AutoNumeric('#valAnticipoPercepito', autoNumericOptionsEuroOttoDec);
-
-    valSaldo = new AutoNumeric('#valSaldo', autoNumericOptionsEuroOttoDec);
-
-    valIndennitaPrimaSistemazione.set(@Model.indennitaPrimaSistemazione);
-
-    valContributoLordo.set(@Model.contributoLordo);
-
-    valPercKM.set(@Model.percKM);
-
-    valAnticipoPercepito.set(@Model.anticipoPercepito);
-
-    valSaldo.set(@Model.saldo);*@
-
-    function ElencoDocumentiVariazioneTEP(idTipoDocumento) {
+    function ElencoDocumentiVariazioneTER(idTipoDocumento) {
         //debugger;
-        var idTEPartenza = parseInt('@idTEPartenza');
+        var idTERientro = parseInt('@idTERientro');
 
-        var rotta = "/VariazioneTrasportoEffetti/ElencoDocumentiVariazioneTEP";
+        var rotta = "/VariazioneTrasportoEffetti/ElencoDocumentiVariazioneTER";
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
                 idTipoDocumento: idTipoDocumento,
-                idTEPartenza: idTEPartenza
+                idTERientro: idTERientro
             },
             dataType: 'html',
             beforeSend: function () {
@@ -137,8 +112,8 @@
             success: function (result) {
                 //debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divVariazioneTEP").empty();
-                $("#divVariazioneTEP").html(result);
+                $("#divVariazioneTER").empty();
+                $("#divVariazioneTER").html(result);
 
                 //RicercaDocumenti();
 

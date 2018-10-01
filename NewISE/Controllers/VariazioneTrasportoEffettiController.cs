@@ -44,6 +44,30 @@ namespace NewISE.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult VariazioneTERientro(decimal idTrasferimento)
+        {
+            try
+            {
+                using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                {
+                    var idTERientro = dtvte.GetTERientroByIdTrasferimento(idTrasferimento).idTERientro;
+                    if (idTERientro > 0)
+                    {
+                        ViewData.Add("idTrasferimento", idTrasferimento);
+                        ViewData.Add("idTERientro", idTERientro);
+                    }
+
+                    return PartialView();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
 
 
         [HttpPost]
@@ -127,6 +151,87 @@ namespace NewISE.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult VariazioneTER(decimal idTERientro)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                    {
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            bool richiestaTER = false;
+                            bool attivazioneTER = false;
+                            bool DocAttestazione = false;
+                            bool trasfAnnullato = false;
+                            bool siAnticipo = false;
+                            bool rinunciaTER = false;
+                            decimal anticipoPercepito = 0;
+
+                            VariazioneTERientroModel vterm = new VariazioneTERientroModel();
+
+                            var ater = dtvte.GetUltimaAttivazioneTERientro(idTERientro, db);
+
+                            dtvte.SituazioneTERientro(idTERientro,
+                                                        out richiestaTER,
+                                                        out attivazioneTER,
+                                                        out DocAttestazione,
+                                                        out siAnticipo,
+                                                        out anticipoPercepito,
+                                                        out rinunciaTER,
+                                                        out trasfAnnullato);
+
+                            var tm = dtt.GetTrasferimentoByIdTERientro(idTERientro);
+
+                            CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+
+                            vterm.indennitaRichiamo = Math.Round(ci.IndennitaRichiamoLordo, 2);
+                            vterm.percKM = ci.PercentualeFKMRientro;
+                            vterm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivoRientro, 2);
+                            vterm.anticipoPercepito = anticipoPercepito;
+                            vterm.saldo = Math.Round(vterm.contributoLordo - vterm.anticipoPercepito, 2);
+
+                            //se ho rinunciato imposto la form con dati a zero e blocco l'inserimento di documenti
+                            if (rinunciaTER)
+                            {
+                                siAnticipo = false;
+                                vterm.anticipoPercepito = 0;
+                                vterm.saldo = 0;
+                            }
+
+                            ////TEST (anche su gestione pulsanti)
+                            //siAnticipo = true;
+                            //if (siAnticipo)
+                            //{
+                            //    var PercentualeAnticipoTE = dtvte.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
+                            //    var percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
+                            //    vtepm.anticipoPercepito = Math.Round(percAnticipo * vtepm.contributoLordo / 100, 2);
+                            //    vtepm.saldo = Math.Round(vtepm.contributoLordo - vtepm.anticipoPercepito, 2);
+                            //}
+                            ////FINE TEST
+
+                            vterm.siAnticipo = siAnticipo;
+
+                            ViewData.Add("richiestaTER", richiestaTER);
+                            ViewData.Add("rinunciaTER", rinunciaTER);
+                            ViewData.Add("attivazioneTER", attivazioneTER);
+                            ViewData.Add("DocAttestazione", DocAttestazione);
+                            ViewData.Add("idTERientro", idTERientro);
+
+                            return PartialView(vterm);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+        }
+
         public JsonResult ConfermaNotificaRichiestaVariazioneTEP(decimal idTEPartenza)
         {
             string errore = "";
@@ -139,6 +244,35 @@ namespace NewISE.Controllers
                     {
                         decimal idAttivitaTEPartenza = dtvte.GetUltimaAttivazioneTEPartenza(idTEPartenza, db).IDATEPARTENZA;
                         dtvte.NotificaRichiestaVariazioneTEP(idAttivitaTEPartenza, db);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+
+        public JsonResult ConfermaNotificaRichiestaVariazioneTER(decimal idTERientro)
+        {
+            string errore = "";
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                    {
+                        decimal idAttivitaTER = dtvte.GetUltimaAttivazioneTERientro(idTERientro, db).IDATERIENTRO;
+                        dtvte.NotificaRichiestaVariazioneTER(idAttivitaTER, db);
                     }
                 }
             }
@@ -214,6 +348,58 @@ namespace NewISE.Controllers
             }
         }
 
+        public ActionResult ElencoDocumentiVariazioneTER(decimal idTipoDocumento, decimal idTERientro)
+        {
+            try
+            {
+                string DescrizioneTE = "";
+                bool richiestaVariazioneTER = false;
+                bool attivazioneVariazioneTER = false;
+                decimal idStatoTrasferimento = 0;
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var t = dtt.GetTrasferimentoByIdTERientro(idTERientro);
+                    idStatoTrasferimento = (decimal)t.idStatoTrasferimento;
+                }
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                }
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                    {
+                        var atep = dtvte.GetUltimaAttivazioneTERientro(idTERientro, db);
+                        if (atep.RICHIESTATRASPORTOEFFETTI && atep.ATTIVAZIONETRASPORTOEFFETTI == false)
+                        {
+                            richiestaVariazioneTER = true;
+                        }
+                        if (atep.RICHIESTATRASPORTOEFFETTI && atep.ATTIVAZIONETRASPORTOEFFETTI)
+                        {
+                            attivazioneVariazioneTER = true;
+                            richiestaVariazioneTER = true;
+                        }
+                    }
+                }
+
+                ViewData.Add("DescrizioneTE", DescrizioneTE);
+                ViewData.Add("idTipoDocumento", idTipoDocumento);
+                ViewData.Add("idTERientro", idTERientro);
+                ViewData.Add("idStatoTrasferimento", idStatoTrasferimento);
+                ViewData.Add("richiestaVariazioneTER", richiestaVariazioneTER);
+                ViewData.Add("attivazioneVariazioneTER", attivazioneVariazioneTER);
+
+                return PartialView();
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
         public ActionResult TabDocumentiVariazioneTEPInseriti(decimal idTEPartenza, decimal idTipoDocumento)
         {
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
@@ -242,6 +428,38 @@ namespace NewISE.Controllers
             ViewData.Add("DescrizioneTE", DescrizioneTE);
             ViewData.Add("idTipoDocumento", idTipoDocumento);
             ViewData.Add("idTEPartenza", idTEPartenza);
+
+            return PartialView(ldm);
+        }
+
+        public ActionResult TabDocumentiVariazioneTERInseriti(decimal idTERientro, decimal idTipoDocumento)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+
+            string DescrizioneTE = "";
+
+            try
+            {
+
+                using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                {
+                    ldm = dtvte.GetDocumentiTERientro(idTERientro, idTipoDocumento);
+                }
+
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            ViewData.Add("DescrizioneTE", DescrizioneTE);
+            ViewData.Add("idTipoDocumento", idTipoDocumento);
+            ViewData.Add("idTERientro", idTERientro);
 
             return PartialView(ldm);
         }
@@ -302,6 +520,63 @@ namespace NewISE.Controllers
 
         }
 
+
+        public JsonResult GestionePulsantiNotificaAttivaAnnullaVariazioneTER(decimal idTERientro)
+        {
+
+            bool amministratore = false;
+            string errore = "";
+            bool richiestaTER = false;
+            bool attivazioneTER = false;
+            bool DocAttestazione = false;
+            bool trasfAnnullato = false;
+            bool siAnticipo = false;
+            bool rinunciaTER = false;
+            decimal anticipoPercepito = 0;
+
+            try
+            {
+                amministratore = Utility.Amministratore();
+
+                using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                {
+                    dtvte.SituazioneTERientro(idTERientro,
+                                            out richiestaTER,
+                                            out attivazioneTER,
+                                            out DocAttestazione,
+                                            out siAnticipo,
+                                            out anticipoPercepito,
+                                            out rinunciaTER,
+                                            out trasfAnnullato);
+
+                    ////TEST
+                    //siAnticipo = true;
+                    ////
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        admin = amministratore,
+                        richiestaTER = richiestaTER,
+                        attivazioneTER = attivazioneTER,
+                        DocAttestazione = DocAttestazione,
+                        trasfAnnullato = trasfAnnullato,
+                        siAnticipo = siAnticipo,
+                        rinunciaTER = rinunciaTER,
+                        anticipoPercepito = anticipoPercepito,
+                        err = errore
+                    });
+
+        }
+
         public ActionResult NuovoDocumentoVariazioneTEP(EnumTipoDoc idTipoDocumento, decimal idTEPartenza)
         {
             try
@@ -316,6 +591,29 @@ namespace NewISE.Controllers
                 ViewData.Add("titoloPagina", titoloPagina);
                 ViewData.Add("idTipoDocumento", (decimal)idTipoDocumento);
                 ViewData.Add("idTEPartenza", idTEPartenza);
+
+                return PartialView();
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
+        public ActionResult NuovoDocumentoVariazioneTER(EnumTipoDoc idTipoDocumento, decimal idTERientro)
+        {
+            try
+            {
+                string titoloPagina = string.Empty;
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    titoloPagina = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento((decimal)idTipoDocumento);
+                }
+
+                ViewData.Add("titoloPagina", titoloPagina);
+                ViewData.Add("idTipoDocumento", (decimal)idTipoDocumento);
+                ViewData.Add("idTERientro", idTERientro);
 
                 return PartialView();
             }
@@ -363,6 +661,70 @@ namespace NewISE.Controllers
                                     if (dimensioneConsentita)
                                     {
                                         dtvte.SetDocumentoVariazioniTEP(ref dm, idTEPartenza, db, idTipoDocumento);
+
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Il documento selezionato supera la dimensione massima consentita (" +
+                                            dimensioneMaxConsentita + " Mb).");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Il documento è obbligatorio.");
+                                }
+                            }
+                        }
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { error = ex.Message });
+                };
+            }
+        }
+
+        public JsonResult SalvaDocumentoVariazioneTER(decimal idTipoDocumento, decimal idTERientro)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
+
+                    foreach (string item in Request.Files)
+                    {
+
+                        HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
+
+                        using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                        {
+                            using (dtDocumenti dtd = new dtDocumenti())
+                            {
+                                DocumentiModel dm = new DocumentiModel();
+                                bool esisteFile = false;
+                                bool gestisceEstensioni = false;
+                                bool dimensioneConsentita = false;
+                                string dimensioneMaxConsentita = string.Empty;
+
+                                PreSetDocumentoTERientro(file, out dm, out esisteFile, out gestisceEstensioni,
+                                    out dimensioneConsentita, out dimensioneMaxConsentita, idTipoDocumento);
+
+                                if (esisteFile)
+                                {
+                                    if (gestisceEstensioni == false)
+                                    {
+                                        throw new Exception(
+                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                                    }
+
+                                    if (dimensioneConsentita)
+                                    {
+                                        dtvte.SetDocumentoVariazioniTER(ref dm, idTERientro, db, idTipoDocumento);
 
                                     }
                                     else
@@ -445,6 +807,61 @@ namespace NewISE.Controllers
             }
         }
 
+        public static void PreSetDocumentoTERientro(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
+        {
+            dm = new DocumentiModel();
+            gestisceEstensioni = false;
+            dimensioneConsentita = false;
+            esisteFile = false;
+            dimensioneMaxDocumento = string.Empty;
+
+            try
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    esisteFile = true;
+
+                    var estensioniGestite = new[] { ".pdf" };
+                    var estensione = Path.GetExtension(file.FileName);
+                    var nomeFileNoEstensione = Path.GetFileNameWithoutExtension(file.FileName);
+                    if (!estensioniGestite.Contains(estensione.ToLower()))
+                    {
+                        gestisceEstensioni = false;
+                    }
+                    else
+                    {
+                        gestisceEstensioni = true;
+                    }
+                    var keyDimensioneDocumento = System.Configuration.ConfigurationManager.AppSettings["DimensioneDocumento"];
+
+                    dimensioneMaxDocumento = keyDimensioneDocumento;
+
+                    if (file.ContentLength / 1024 <= Convert.ToInt32(keyDimensioneDocumento))
+                    {
+                        dm.nomeDocumento = nomeFileNoEstensione;
+                        dm.estensione = estensione;
+                        dm.tipoDocumento = (EnumTipoDoc)idTipoDocumento;
+                        dm.dataInserimento = DateTime.Now;
+                        dm.file = file;
+                        dimensioneConsentita = true;
+                    }
+                    else
+                    {
+                        dimensioneConsentita = false;
+                    }
+
+                }
+                else
+                {
+                    esisteFile = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public JsonResult EliminaDocumentoVariazioneTEP(decimal idDocumento)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -455,7 +872,7 @@ namespace NewISE.Controllers
                 {
                     using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
                     {
-                        dtvte.DeleteDocumentoVariazioneTE(idDocumento);
+                        dtvte.DeleteDocumentoVariazioneTEP(idDocumento);
                     }
                     db.Database.CurrentTransaction.Commit();
                     return Json(new { msg = "Il documento relativo al saldo trasporto effetti (partenza) è stato eliminato." });
@@ -467,6 +884,30 @@ namespace NewISE.Controllers
                 }
             }
         }
+
+        public JsonResult EliminaDocumentoVariazioneTER(decimal idDocumento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                    {
+                        dtvte.DeleteDocumentoVariazioneTER(idDocumento);
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il documento relativo al saldo trasporto effetti (rientro) è stato eliminato." });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
+
 
         [HttpPost]
         [ValidateInput(false)]
@@ -500,6 +941,38 @@ namespace NewISE.Controllers
                     });
         }
 
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult ConfermaAnnullaRichiestaVariazioneTER(decimal idTERientro, string msg)
+        {
+            string errore = "";
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                    {
+                        decimal idAttivazione_notificata = dtvte.GetUltimaAttivazioneTERientro(idTERientro, db).IDATERIENTRO;
+
+                        dtvte.AnnullaRichiestaVariazioneTER(idAttivazione_notificata, msg, db);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+
         public JsonResult ConfermaAttivaRichiestaVariazioneTEP(decimal idTEPartenza)
         {
             string errore = "";
@@ -513,6 +986,36 @@ namespace NewISE.Controllers
                         decimal idAttivazione = dtvte.GetUltimaAttivazioneTEPartenza(idTEPartenza, db).IDATEPARTENZA;
 
                         dtvte.AttivaRichiestaVariazioneTEP(idAttivazione, db);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+
+        public JsonResult ConfermaAttivaRichiestaVariazioneTER(decimal idTERientro)
+        {
+            string errore = "";
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtVariazioneTrasportoEffetti dtvte = new dtVariazioneTrasportoEffetti())
+                    {
+                        decimal idAttivazione = dtvte.GetUltimaAttivazioneTERientro(idTERientro, db).IDATERIENTRO;
+
+                        dtvte.AttivaRichiestaVariazioneTER(idAttivazione, db);
                     }
                 }
             }
@@ -562,71 +1065,40 @@ namespace NewISE.Controllers
             return PartialView(msg);
         }
 
-        //public ActionResult GestioneRinunciaTEPartenza(decimal idTrasportoEffettiPartenza)
-        //{
-        //    RinunciaTEPartenzaModel rtepm = new RinunciaTEPartenzaModel();
-        //    bool soloLettura = false;
+        public ActionResult MessaggioAnnullaVariazioneTER(decimal idTERientro)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
 
-        //    try
-        //    {
-        //        using (ModelDBISE db = new ModelDBISE())
-        //        {
-        //            using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
-        //            {
-        //                using (dtTrasferimento dtt = new dtTrasferimento())
-        //                {
-        //                    var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
-        //                    if (atep.RICHIESTATRASPORTOEFFETTI == true || atep.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo)
-        //                    {
-        //                        soloLettura = true;
-        //                    }
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtUffici dtu = new dtUffici())
+                        {
+                            var t = dtt.GetTrasferimentoByIdTERientro(idTERientro);
 
-        //                    rtepm = dtte.GetRinunciaTEPartenza(atep.IDATEPARTENZA, db);
+                            if (t?.idTrasferimento > 0)
+                            {
+                                var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                var uff = dtu.GetUffici(t.idUfficio);
 
-        //                    EnumStatoTraferimento statoTrasferimento = 0;
-        //                    var t = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
-        //                    statoTrasferimento = t.idStatoTrasferimento;
-        //                    if (statoTrasferimento == EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Attivo)
-        //                    {
-        //                        soloLettura = true;
-        //                    }
+                                msg.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaTrasportoEffettiRientroSaldo, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
+        }
 
-        //                    var n_att = dtte.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
 
-        //                    if (n_att > 0)
-        //                    {
-        //                        soloLettura = true;
-        //                    }
 
-        //                    ViewData.Add("soloLettura", soloLettura);
-        //                }
-        //            }
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-        //    }
-
-        //    return PartialView(rtepm);
-        //}
-
-        //public JsonResult AggiornaRinunciaTEPartenza(decimal idATEPartenza)
-        //{
-        //    try
-        //    {
-        //        using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
-        //        {
-        //            dtte.Aggiorna_RinunciaTEPartenza(idATEPartenza);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { errore = ex.Message, msg = "" });
-        //    }
-        //    return Json(new { errore = "", msg = "Aggiornamento eseguito correttamente." });
-        //}
 
         public JsonResult VerificaTERientroSaldo(decimal idTrasferimento)
         {

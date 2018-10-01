@@ -1804,6 +1804,69 @@ namespace NewISE.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult VerificaRientro(decimal idTrasferimento)
+        {
+            try
+            {
+                if (idTrasferimento <= 0)
+                {
+                    throw new Exception("Trasferimento non valorizzato");
+                }
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    TrasferimentoModel trm = dtt.GetTrasferimentoById(idTrasferimento);
+                    if (trm != null)
+                    {
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                        {
+
+                            var ltrasf = dtt.GetListaTrasferimentoByMatricola(trm.Dipendente.matricola);
+                            if (ltrasf?.Any() ?? false)
+                            {
+                                var ultimo_trasf = ltrasf.First();
+                                if (ultimo_trasf.idTrasferimento == idTrasferimento)
+                                {
+                                    return Json(new { RientroAbilitato = 1 });
+                                }
+                                else
+                                {
+                                    using (dtRichiamo dtr = new dtRichiamo())
+                                    {
+                                        var r = dtr.GetRichiamoByIdTrasf(idTrasferimento);
+                                        if(r.IdRichiamo>0)
+                                        {
+                                            return Json(new { RientroAbilitato = 1 });
+                                        }else
+                                        {
+                                            return Json(new { RientroAbilitato = 0 });
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { RientroAbilitato = 0 });
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { RientroAbilitato = 0 });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { RientroAbilitato = 0 });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+        }
+
+
         public JsonResult VerificaNotificaTrasferimento(decimal idTrasferimento)
         {
             try

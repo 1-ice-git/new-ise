@@ -9,7 +9,7 @@
 
 
 
-<div class="row" style="padding-right: 15px">
+<div class="row">
     <div class="col-xs-12">
         <div id="divTrasportoEffettiPartenza">
             @Html.Action("TrasportoEffettiPartenza", "TrasportoEffetti", new { idTrasportoEffettiPartenza = idTrasportoEffettiPartenza })
@@ -17,15 +17,20 @@
     </div>
 </div>
 
-<div class="row" style="margin-right: 15px">
-    <hr />
+<div class="row" style="margin-right:1px">
+    <div class="col-xs-12" >
+        <hr />
+    </div>
+</div>
+
+<div class="row">
     <div class="col-xs-4">
         <div id="divRinunciaTEPartenza">
         </div>
     </div>
     <div class="col-xs-8">
         <div class="row">
-            <div class="pull-right" style="margin-bottom: 10px;margin-right:30px ">
+            <div class="pull-right" style="margin-bottom: 10px;margin-right:30px">
                 <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaTE" onclick="ModalNotificaRichiestaTE();">
                     <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                     Notifica richiesta

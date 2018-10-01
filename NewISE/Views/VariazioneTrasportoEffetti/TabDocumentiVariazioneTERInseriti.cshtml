@@ -1,0 +1,133 @@
+﻿@using NewISE.Models.ViewModel
+@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
+
+@{
+    string DescrizioneTE = Convert.ToString(ViewData["DescrizioneTE"]);
+    decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
+    decimal idTERientro = Convert.ToDecimal(ViewData["idTERientro"]);
+}
+
+<table class="table" id="tabElencoDocumentiVariazioneTERInseriti">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.nomeDocumento)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.estensione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInserimento)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (item.Modificabile)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                @if (item.Modificabile)
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+
+
+                @if (item.Modificabile)
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+
+                <td class="text-center">
+                    <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare @DescrizioneTE." /></a>
+                </td>
+
+                <td class="text-center">
+                    @if (item.Modificabile)
+                    {
+                        <a href="#" onclick="EliminaDocumentoVariazioneTER(@item.idDocumenti)" id="linkEliminaDocumentoVariazioneTER">
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina @DescrizioneTE" />
+                        </a>
+                    }
+                    else
+                    {
+                        <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+<script type="text/javascript">
+    $("#tabElencoDocumentiVariazioneTERInseriti").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 4,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "order": [[0,"desc"],[2, "desc"]]
+    });
+
+
+</script>
+
+
+

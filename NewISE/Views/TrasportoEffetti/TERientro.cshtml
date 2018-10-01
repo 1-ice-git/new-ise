@@ -7,18 +7,20 @@
 
 <link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
 
-<div class="row" style="padding-right: 15px">
+<div class="row">
     <div class="col-xs-12">
         <div id="divTrasportoEffettiRientro">
             @Html.Action("TrasportoEffettiRientro", "TrasportoEffetti", new { idTERientro = idTERientro })
         </div>
     </div>
 </div>
-
-<div class="row" style="margin-right: 15px">
+<div class="row" style="margin-right:15px;margin-left:15px">
     <hr />
+</div>
+
+<div class="row">
     <div class="col-xs-4">
-        <div id="divRinunciaTERientro">
+        <div id="divRinunciaTERientro" style="margin-left:15px">
         </div>
     </div>
     <div class="col-xs-8">
@@ -140,7 +142,6 @@
                     $("#btNotificaRichiestaTER").removeAttr("hidden");
                     $("#btNotificaRichiestaTER").removeClass("hidden");
 
-
                     //se amministratore vedo i pulsanti altrimenti solo notifica
                     if (admin) {
                         $("#btAttivaRichiestaTER").removeAttr("hidden");
@@ -175,7 +176,7 @@
                         $("#btNotificaRichiestaTER").removeClass("disabled");
                     } else {
                         if (admin) {
-                            if (richiestaTER && attivazioneTER==false && trasfAnnullatoR==false) {
+                            if (richiestaTER && attivazioneTER==false && trasfAnnullato==false) {
                                 $("#btAttivaRichiestaTER").removeAttr("disabled");
                                 $("#btAttivaRichiestaTER").removeClass("disabled");
                                 $("#btAnnullaRichiestaTER").removeAttr("disabled");
@@ -295,6 +296,8 @@
         //debugger;
         var rotta = "/TrasportoEffetti/ConfermaAttivaRichiestaTERientro";
         var idTERientro = parseInt('@idTERientro');
+        var idTrasferimento = parseInt('@idTrasferimento');
+
 
         $.ajax({
             type: "POST",
@@ -313,6 +316,7 @@
                     TrasportoEffettiRientro();
                     GestioneRinunciaTERientro();
                     GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiRientro();
+                    GestioneAbilitazioneMenu(idTrasferimento);
                     //InfoElaborazioneAjax(result.msg);
                 } else {
                     ErroreElaborazioneAjax(result.err);

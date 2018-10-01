@@ -1,6 +1,7 @@
 ﻿@using NewISE.Models.DBModel
 @model NewISE.Models.DBModel.RichiamoModel
 @{
+    bool solaLettura = (bool)ViewData["solaLettura"];
     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
     decimal idRichiamo = ViewData["idRichiamo"] == null ? 0 : (decimal)ViewData["idRichiamo"];
     decimal idFKm = (decimal)ViewData["idFKm"];
@@ -95,17 +96,18 @@
                                         <div class="row col-xs-12" style="margin-top:5px">
                                             @Html.Label("lblDataRich_iamo", "     ", new { @class = "control-label col-xs-12" })
                                             <div class="col-xs-12 text-right">
-                                                @if (admin)
+                                                @if (solaLettura == false)
                                                 {
-                                                    if (idRichiamo != 0)
+                                                    if (admin)
                                                     {
-                                                        @*<input id="btnModificaRichiamo" name="btnModificaRichiamo" type="button" value="Modifica" onclick="Mostra_Modal_ModificaRichiamo();" class="form-control" />*@
-                                                        <button id="btnModificaRichiamo" name="btnModificaRichiamo" type="button" class="btn btn-success col-xs-12" onclick="Mostra_Modal_ModificaRichiamo();">Modifica</button>
-                                                    }
-                                                    else
-                                                    {
-                                                        @*<input id="btnInsertRichiamo" name="btnInsertRichiamo" type="button" value="Inserisci" onclick="Mostra_Modal_InserisciRichiamo();" class="form-control" />*@
-                                                        <button id="btnInsertRichiamo" name="btnInsertRichiamo" type="button" class="btn btn-success col-xs-12" onclick="Mostra_Modal_InserisciRichiamo();">Inserisci</button>
+                                                        if (idRichiamo != 0)
+                                                        {
+                                                            <button id="btnModificaRichiamo" name="btnModificaRichiamo" type="button" class="btn btn-success col-xs-12" onclick="Mostra_Modal_ModificaRichiamo();">Modifica</button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button id="btnInsertRichiamo" name="btnInsertRichiamo" type="button" class="btn btn-success col-xs-12" onclick="Mostra_Modal_InserisciRichiamo();">Inserisci</button>
+                                                        }
                                                     }
                                                 }
                                             </div>
@@ -276,7 +278,9 @@
                         $('#ElencolistaTrasferimento').html('');
                         $.each(list, function (key, val) {
                             $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
-                        })
+                        });
+                        InfoTrasferimento(idTrasferimento);
+                        GestioneAbilitazioneMenu(idTrasferimento);
                     }
                     else {
                         ErroreElaborazioneAjax(result.err);

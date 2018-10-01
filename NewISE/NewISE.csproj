@@ -4733,6 +4733,7 @@
     <Content Include="Areas\Statistiche\Views\TrasportoEffettiNew\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\TrasportoEffettiNew\SelezionaMeseAnno.cshtml" />
     <Content Include="Areas\Statistiche\Views\TrasportoEffettiNew\RptTrasportoEffetti.cshtml" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -5935,6 +5936,7 @@
     <Compile Include="Models\ViewModel\LiquidazioniDiretteViewModel.cs" />
     <Compile Include="Models\ViewModel\CanoneMABViewModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiRientroModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneTERientroModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneTEPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneAdfConiugeModel.cs" />
@@ -6455,7 +6457,18 @@
     <Content Include="Views\Elaborazioni\FormVociManuali.cshtml" />
     <Content Include="Views\TrasportoEffetti\TERientro.cshtml" />
     <Content Include="Views\TrasportoEffetti\TrasportoEffettiRientro.cshtml" />
+    <Content Include="Views\TrasportoEffetti\GestioneRinunciaTERientro.cshtml" />
+    <Content Include="Views\TrasportoEffetti\ElencoDocumentiTERientro.cshtml" />
+    <Content Include="Views\TrasportoEffetti\TabDocumentiTERientroInseriti.cshtml" />
+    <Content Include="Views\TrasportoEffetti\NuovoDocumentoTERientro.cshtml" />
+    <Content Include="Views\TrasportoEffetti\MessaggioAnnullaTERientro.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\VariazioneTERientro.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\VariazioneTER.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\ElencoDocumentiVariazioneTER.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\TabDocumentiVariazioneTERInseriti.cshtml" />
     <Content Include="Views\Elaborazioni\ElencoVociManuali.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\NuovoDocumentoVariazioneTER.cshtml" />
+    <Content Include="Views\VariazioneTrasportoEffetti\MessaggioAnnullaVariazioneTER.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

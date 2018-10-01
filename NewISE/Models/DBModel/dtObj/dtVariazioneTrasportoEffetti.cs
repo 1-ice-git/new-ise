@@ -93,6 +93,32 @@ namespace NewISE.Models.DBModel.dtObj
             return vtepm;
         }
 
+        public VariazioneTERientroModel GetTERientroByIdTrasferimento(decimal idTrasferimento)
+        {
+            VariazioneTERientroModel vterm = new VariazioneTERientroModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                var ter = t.TERIENTRO;
+
+                if (ter.IDTERIENTRO > 0)
+                {
+                    vterm = new VariazioneTERientroModel()
+                    {
+                        idTERientro= ter.IDTERIENTRO
+                    };
+                }
+                else
+                {
+                    throw new Exception("Nessun record TERientro trovato.");
+                }
+
+            }
+
+            return vterm;
+        }
+
         public TrasportoEffettiPartenzaModel GetTEPartenzaByID(decimal idTrasportoEffettiPartenza)
         {
             TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
@@ -271,6 +297,116 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void SituazioneTERientro(decimal idTERientro,
+                                        out bool richiestaTER,
+                                        out bool attivazioneTER,
+                                        out bool DocAttestazione,
+                                        out bool siAnticipo,
+                                        out decimal anticipoPercepito,
+                                        out bool rinunciaTER,
+                                        out bool trasfAnnullato)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    richiestaTER = false;
+                    attivazioneTER = false;
+                    DocAttestazione = false;
+                    trasfAnnullato = false;
+                    rinunciaTER = false;
+
+                    var ter = db.TERIENTRO.Find(idTERientro);
+
+                    var idtrasferimento = ter.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                    var idStatoTrasferimento = ter.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+                    if (idStatoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
+                    {
+                        trasfAnnullato = true;
+                    }
+
+                    if (ter == null)
+                    {
+                        TERIENTRO new_ter = new TERIENTRO()
+                        {
+                            IDTERIENTRO = idTERientro
+                        };
+                        db.TERIENTRO.Add(new_ter);
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore - Impossibile creare i record su TERientro.");
+                        }
+                        ter = new_ter;
+                    }
+
+                    ATTIVITATERIENTRO last_ater = new ATTIVITATERIENTRO();
+                    RinunciaTERientroModel rterm = new RinunciaTERientroModel();
+
+                    //elenco attivazioni valide
+                    var later = ter.ATTIVITATERIENTRO
+                                .Where(a => (a.ANNULLATO == false || (a.RICHIESTATRASPORTOEFFETTI && a.ATTIVAZIONETRASPORTOEFFETTI)) &&
+                                    a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo)
+                                .OrderByDescending(a => a.IDATERIENTRO).ToList();
+
+                    if (later?.Any() ?? false)
+                    {
+                        //se esiste verifica se ci sono elementi associati
+
+                        //imposta l'ultima valida
+                        last_ater = later.First();
+
+                        //verifica se è stata richiesta
+                        if (last_ater.RICHIESTATRASPORTOEFFETTI)
+                        {
+                            richiestaTER = true;
+                        }
+                        //verifica se è stata attivata
+                        if (last_ater.ATTIVAZIONETRASPORTOEFFETTI)
+                        {
+                            attivazioneTER = true;
+                        }
+
+                        foreach (var ater in later)
+                        {
+                            //documenti attestazione
+                            var ldc = ater.DOCUMENTI.Where(a => (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Trasloco_Rientro)).ToList();
+                            if (ldc?.Any() ?? false)
+                            {
+                                DocAttestazione = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        last_ater = this.GetUltimaAttivazioneTERientro(idTERientro, db);
+                    }
+
+                    //leggo il relativo record di rinuncia
+                    var t = db.TRASFERIMENTO.Find(idtrasferimento);
+                    var l_primaTERientro = t.TERIENTRO.ATTIVITATERIENTRO.Where(a => a.ANNULLATO == false && a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo).OrderBy(a => a.IDATERIENTRO).ToList();
+                    if (l_primaTERientro?.Any() ?? false)
+                    {
+
+                        var primaTERientro = l_primaTERientro.First();
+                        var rinunciaTE_R = primaTERientro.RINUNCIA_TE_R;
+                        rinunciaTER = rinunciaTE_R.RINUNCIATE;
+                    }
+                    else
+                    {
+                        throw new Exception("Nessuna Attivazione TE rientro trovata.");
+                    }
+
+                    siAnticipo = GetAnticipoPercepitoTE(idtrasferimento, EnumTrasportoEffetti.Rientro, db, out anticipoPercepito);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         public ATTIVITATEPARTENZA GetUltimaAttivazioneTEPartenza(decimal idTEPartenza, ModelDBISE db)
         {
@@ -331,6 +467,68 @@ namespace NewISE.Models.DBModel.dtObj
 
             }
             return atep;
+
+        }
+
+        public ATTIVITATERIENTRO GetUltimaAttivazioneTERientro(decimal idTERientro, ModelDBISE db)
+        {
+            ATTIVITATERIENTRO ater = new ATTIVITATERIENTRO();
+
+            var ter = db.TERIENTRO.Find(idTERientro);
+
+            if (ter != null && ter.IDTERIENTRO > 0)
+            {
+
+                var later = ter.ATTIVITATERIENTRO
+                        .Where(a => a.ANNULLATO == false && a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo)
+                        .OrderByDescending(a => a.IDATERIENTRO).ToList();
+                if (later?.Any() ?? false)
+                {
+                    ater = later.First();
+                }
+                else
+                {
+                    //se non esiste una attivazione
+                    //ne creo una 
+                    ATTIVITATERIENTRO new_ater = new ATTIVITATERIENTRO()
+                    {
+                        IDTERIENTRO = idTERientro,
+                        IDANTICIPOSALDOTE = (decimal)EnumTipoAnticipoSaldoTE.Saldo,
+                        RICHIESTATRASPORTOEFFETTI = false,
+                        DATARICHIESTATE = null,
+                        ATTIVAZIONETRASPORTOEFFETTI = false,
+                        DATAATTIVAZIONETE = null,
+                        DATAAGGIORNAMENTO = DateTime.Now,
+                        ANNULLATO = false
+                    };
+                    db.ATTIVITATERIENTRO.Add(new_ater);
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore nella fase di creazione dell'attivita trasporto effetti rientro.");
+                    }
+                    else
+                    {
+                        //creo la riga relativa alla rinuncia
+                        var rter = CreaRinunciaTERientro(new_ater.IDATERIENTRO, db);
+
+                        //leggo la percentuale e la associo
+                        var PercentualeAnticipoTE = GetPercentualeAnticipoTERientro(idTERientro, (decimal)EnumTipoAnticipoTE.Rientro);
+                        if (PercentualeAnticipoTE.IDPERCANTICIPOTM > 0)
+                        {
+                            this.Associa_TErientro_perceAnticipoTE(idTERientro, PercentualeAnticipoTE.IDPERCANTICIPOTM, db);
+
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                            "Inserimento attivita trasporto effetti rientro.", "ATTIVITATERIENTRO", db, idTERientro,
+                            new_ater.IDATERIENTRO);
+                        }
+                    }
+
+                    ater = new_ater;
+                }
+
+            }
+            return ater;
 
         }
 
@@ -400,91 +598,71 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void NotificaRichiestaVariazioneTER(decimal idAttivitaTER, ModelDBISE db)
+        {
+            try
+            {
+                db.Database.BeginTransaction();
 
-        //private void EmailNotificaRichiestaTEPartenza(decimal idAttivitaTEPartenza, ModelDBISE db)
-        //{
-        //    TEPARTENZA tep = new TEPARTENZA();
-        //    AccountModel am = new AccountModel();
-        //    Mittente mittente = new Mittente();
-        //    Destinatario to = new Destinatario();
-        //    Destinatario cc = new Destinatario();
-        //    List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+                try
+                {
+                    var ater = db.ATTIVITATERIENTRO.Find(idAttivitaTER);
+                    ater.RICHIESTATRASPORTOEFFETTI = true;
+                    ater.DATARICHIESTATE = DateTime.Now;
+                    ater.DATAAGGIORNAMENTO = DateTime.Now;
 
+                    var i = db.SaveChanges();
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione trasporto effetti rientro.");
+                    }
 
-        //    try
-        //    {
-        //        am = Utility.UtenteAutorizzato();
-        //        mittente.Nominativo = am.nominativo;
-        //        mittente.EmailMittente = am.eMail;
-
-        //        var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTEPartenza);
-
-        //        tep = atep.TEPARTENZA;
-
-        //        if (tep?.IDTEPARTENZA > 0)
-        //        {
-        //            TRASFERIMENTO tr = tep.TRASFERIMENTO;
-        //            DIPENDENTI d = tr.DIPENDENTI;
-
-        //            UFFICI u = tr.UFFICI;
-
-        //            using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-        //            {
-        //                using (GestioneEmail gmail = new GestioneEmail())
-        //                {
-        //                    using (ModelloMsgMail msgMail = new ModelloMsgMail())
-        //                    {
-
-        //                        cc = new Destinatario()
-        //                        {
-        //                            Nominativo = am.nominativo,
-        //                            EmailDestinatario = am.eMail
-        //                        };
-
-        //                        msgMail.mittente = mittente;
-        //                        msgMail.cc.Add(cc);
-
-        //                        luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-
-        //                        foreach (var uam in luam)
-        //                        {
-        //                            var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-        //                            if (amministratore != null && amministratore.IDDIPENDENTE > 0)
-        //                            {
-        //                                to = new Destinatario()
-        //                                {
-        //                                    Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-        //                                    EmailDestinatario = amministratore.EMAIL
-        //                                };
-
-        //                                msgMail.destinatario.Add(to);
-        //                            }
+                    #region ciclo attivazione documenti TE
+                    var ldte = ater.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                    foreach (var dte in ldte)
+                    {
+                        dte.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore durante il ciclo di attivazione trasporto effetti (notifica documenti)");
+                        }
+                    }
+                    #endregion
 
 
-        //                        }
-        //                        msgMail.oggetto = Resources.msgEmail.OggettoNotificaTrasportoEffettiPartenza;
-        //                        msgMail.corpoMsg =
-        //                                string.Format(
-        //                                    Resources.msgEmail.MessaggioNotificaTrasportoEffettiPartenza,
-        //                                    d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-        //                                    tr.DATAPARTENZA.ToLongDateString(),
-        //                                    u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
+                    EmailTrasferimento.EmailNotifica(EnumChiamante.Trasporto_Effetti,
+                                                    ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                    Resources.msgEmail.OggettoNotificaTrasportoEffettiRientroSaldo,
+                                                    Resources.msgEmail.MessaggioNotificaTrasportoEffettiRientroSaldo,
+                                                    db);
 
-        //                        gmail.sendMail(msgMail);
+                    using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                    {
+                        CalendarioEventiModel cem = new CalendarioEventiModel()
+                        {
+                            idFunzioneEventi = EnumFunzioniEventi.RichiestaTrasportoEffettiRientro,
+                            idTrasferimento = ater.TERIENTRO.IDTERIENTRO,
+                            DataInizioEvento = DateTime.Now.Date,
+                            DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaTrasportoEffettiRientro)).Date,
+                        };
 
-        //                    }
-        //                }
+                        dtce.InsertCalendarioEvento(ref cem, db);
 
-        //            }
-        //        }
+                    }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-        //}
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
         public List<VariazioneDocumentiModel> GetDocumentiTEPartenza(decimal idTEPartenza, decimal idTipoDoc)
@@ -549,19 +727,70 @@ namespace NewISE.Models.DBModel.dtObj
             return ldm;
 
         }
-        //public decimal GetNumAttivazioniTEPartenza(decimal idTEPartenza)
-        //{
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        var NumAttivazioni = 0;
-        //        NumAttivazioni = db.TEPARTENZA.Find(idTEPartenza).ATTIVITATEPARTENZA
-        //                            .Where(a => a.ANNULLATO == false &&
-        //                                    a.RICHIESTATRASPORTOEFFETTI == true &&
-        //                                    a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo)
-        //                            .OrderByDescending(a => a.IDATEPARTENZA).Count();
-        //        return NumAttivazioni;
-        //    }
-        //}
+
+        public List<VariazioneDocumentiModel> GetDocumentiTERientro(decimal idTERientro, decimal idTipoDoc)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ter = db.TERIENTRO.Find(idTERientro);
+                var statoTrasferimento = ter.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+
+                var later = ter.ATTIVITATERIENTRO.Where(a => ((a.ATTIVAZIONETRASPORTOEFFETTI == true && a.RICHIESTATRASPORTOEFFETTI == true) || a.ANNULLATO == false) &&
+                                    a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo).OrderBy(a => a.IDATERIENTRO).ToList();
+
+
+                if (later?.Any() ?? false)
+                {
+                    foreach (var ater in later)
+                    {
+                        var ld = ater.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == idTipoDoc).OrderByDescending(a => a.DATAINSERIMENTO).ToList();
+
+                        var rter = ater.RINUNCIA_TE_R;
+
+                        bool modificabile = false;
+                        if (ater.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo)
+                        {
+                            if (ater.ATTIVAZIONETRASPORTOEFFETTI == false && ater.RICHIESTATRASPORTOEFFETTI == false)
+                            {
+                                modificabile = true;
+                            }
+                        }
+
+
+                        if (statoTrasferimento == (decimal)EnumStatoTraferimento.Annullato)
+                        {
+                            modificabile = false;
+                        }
+
+                        foreach (var doc in ld)
+                        {
+                            var amf = new VariazioneDocumentiModel()
+                            {
+                                dataInserimento = doc.DATAINSERIMENTO,
+                                estensione = doc.ESTENSIONE,
+                                idDocumenti = doc.IDDOCUMENTO,
+                                nomeDocumento = doc.NOMEDOCUMENTO,
+                                Modificabile = modificabile,
+                                IdAttivazione = ater.IDATERIENTRO,
+                                DataAggiornamento = ater.DATAAGGIORNAMENTO,
+                                fk_iddocumento = doc.FK_IDDOCUMENTO,
+                                idStatoRecord = doc.IDSTATORECORD
+                            };
+
+                            ldm.Add(amf);
+                        }
+
+                    }
+
+                }
+            }
+
+            return ldm;
+
+        }
+
 
         public void SetDocumentoVariazioniTEP(ref DocumentiModel dm, decimal idTEPartenza, ModelDBISE db, decimal idTipoDocumento)
         {
@@ -618,6 +847,59 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void SetDocumentoVariazioniTER(ref DocumentiModel dm, decimal idTERientro, ModelDBISE db, decimal idTipoDocumento)
+        {
+            try
+            {
+                MemoryStream ms = new MemoryStream();
+                DOCUMENTI d = new DOCUMENTI();
+                ATTIVITATERIENTRO ater = new ATTIVITATERIENTRO();
+
+                dm.file.InputStream.CopyTo(ms);
+
+                var ter = db.TERIENTRO.Find(idTERientro);
+
+                var later =
+                    ter.ATTIVITATERIENTRO.Where(
+                        a => a.ANNULLATO == false && a.ATTIVAZIONETRASPORTOEFFETTI == false && a.RICHIESTATRASPORTOEFFETTI == false &&
+                                    a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo)
+                        .OrderByDescending(a => a.IDTERIENTRO).ToList();
+                if (later?.Any() ?? false)
+                {
+                    ater = later.First();
+                }
+                else
+                {
+                    ater = GetUltimaAttivazioneTERientro(idTERientro, db);
+                }
+
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = idTipoDocumento;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+                d.MODIFICATO = false;
+                d.FK_IDDOCUMENTO = null;
+                d.IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione;
+
+                ater.DOCUMENTI.Add(d);
+
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (trasporto effetti rientro).", "Documenti", db, ter.IDTERIENTRO, dm.idDocumenti);
+                }
+                else
+                {
+                    throw new Exception("Errore nella fase di inserimento del documento (trasporto effetti rientro).");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public ATTIVITATEPARTENZA CreaAttivitaTEPartenza(decimal idTEPartenza, ModelDBISE db)
         {
             //var NumAttivazioni = this.GetNumAttivazioniTEPartenza(idTEPartenza);
@@ -653,7 +935,7 @@ namespace NewISE.Models.DBModel.dtObj
             return new_atep;
         }
 
-        public void DeleteDocumentoVariazioneTE(decimal idDocumento)
+        public void DeleteDocumentoVariazioneTEP(decimal idDocumento)
         {
             TEPARTENZA tep = new TEPARTENZA();
 
@@ -674,6 +956,38 @@ namespace NewISE.Models.DBModel.dtObj
                         else
                         {
                             Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + ((EnumTipoDoc)d.IDTIPODOCUMENTO).ToString() + ").", "Documenti", db, tep.IDTEPARTENZA, d.IDDOCUMENTO);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void DeleteDocumentoVariazioneTER(decimal idDocumento)
+        {
+            TERIENTRO ter = new TERIENTRO();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var d = db.DOCUMENTI.Find(idDocumento);
+
+                    if (d != null && d.IDDOCUMENTO > 0)
+                    {
+                        db.DOCUMENTI.Remove(d);
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception(string.Format("Non è stato possibile effettuare l'eliminazione del documento ({0}).", d.NOMEDOCUMENTO + d.ESTENSIONE));
+                        }
+                        else
+                        {
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + ((EnumTipoDoc)d.IDTIPODOCUMENTO).ToString() + ").", "Documenti", db, ter.IDTERIENTRO, d.IDDOCUMENTO);
                         }
                     }
                 }
@@ -820,6 +1134,140 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void AnnullaRichiestaVariazioneTER(decimal idAttivitaTE, string msg, ModelDBISE db)
+        {
+
+            db.Database.BeginTransaction();
+
+            try
+            {
+                var ater_Old = db.ATTIVITATERIENTRO.Find(idAttivitaTE);
+
+                if (ater_Old?.IDATERIENTRO > 0)
+                {
+                    if (ater_Old.RICHIESTATRASPORTOEFFETTI == true && ater_Old.ATTIVAZIONETRASPORTOEFFETTI == false && ater_Old.ANNULLATO == false)
+                    {
+                        ater_Old.ANNULLATO = true;
+                        ater_Old.DATAAGGIORNAMENTO = DateTime.Now;
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Errore - Impossibile annullare la notifica della richiesta trasporto effetti (rientro).");
+                        }
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                            "Annullamento della riga per il ciclo di attivazione del trasporto effetti (rientro)",
+                            "ATTIVITATERIENTRO", db, ater_Old.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO,
+                            ater_Old.IDATERIENTRO);
+
+                        var idTrasferimento = ater_Old.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                        ATTIVITATERIENTRO ater_New = new ATTIVITATERIENTRO()
+                        {
+                            IDTERIENTRO = ater_Old.IDTERIENTRO,
+                            RICHIESTATRASPORTOEFFETTI = false,
+                            IDANTICIPOSALDOTE = ater_Old.IDANTICIPOSALDOTE,
+                            ATTIVAZIONETRASPORTOEFFETTI = false,
+                            DATAAGGIORNAMENTO = DateTime.Now,
+                            ANNULLATO = false
+                        };
+
+                        db.ATTIVITATERIENTRO.Add(ater_New);
+
+                        int j = db.SaveChanges();
+
+                        if (j <= 0)
+                        {
+                            throw new Exception("Errore - Impossibile creare il nuovo ciclo di attivazione per il trasporto effetti (rientro).");
+                        }
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                            "Inserimento di una nuova riga per il ciclo di attivazione relativo al trasporto effetti (rientro).",
+                            "ATTIVITATERIENTRO", db, ater_New.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO,
+                            ater_New.IDATERIENTRO);
+
+                        #region ricrea rinunciaTE
+                        var rtep_old = ater_Old.RINUNCIA_TE_R;
+
+                        RINUNCIA_TE_R rter_new = new RINUNCIA_TE_R()
+                        {
+                            IDATERIENTRO = ater_New.IDATERIENTRO,
+                            RINUNCIATE = false,
+                            DATAAGGIORNAMENTO = DateTime.Now,
+                        };
+                        db.RINUNCIA_TE_R.Add(rter_new);
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception(string.Format("Non è stato possibile creare una nuova rinuncia trasporto effetti rientro durante il ciclo di annullamento."));
+                        }
+                        #endregion
+
+                        #region documenti
+                        var ldoc_Old =
+                                    ater_Old.DOCUMENTI
+                                        .Where(
+                                                a => a.MODIFICATO == false &&
+                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
+                                        .OrderBy(a => a.DATAINSERIMENTO);
+
+                        if (ldoc_Old?.Any() ?? false)
+                        {
+                            foreach (var doc_Old in ldoc_Old)
+                            {
+                                DOCUMENTI doc_New = new DOCUMENTI()
+                                {
+                                    IDTIPODOCUMENTO = doc_Old.IDTIPODOCUMENTO,
+                                    NOMEDOCUMENTO = doc_Old.NOMEDOCUMENTO,
+                                    ESTENSIONE = doc_Old.ESTENSIONE,
+                                    FILEDOCUMENTO = doc_Old.FILEDOCUMENTO,
+                                    DATAINSERIMENTO = doc_Old.DATAINSERIMENTO,
+                                    MODIFICATO = doc_Old.MODIFICATO,
+                                    FK_IDDOCUMENTO = doc_Old.FK_IDDOCUMENTO,
+                                    IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione
+                                };
+
+                                ater_New.DOCUMENTI.Add(doc_New);
+                                doc_Old.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
+
+                                int y = db.SaveChanges();
+
+                                if (y <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile associare il documento per il trasporto effetti rientro. (" + doc_New.NOMEDOCUMENTO + ")");
+                                }
+
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                    "Inserimento di una nuova riga per il documento relativo al trasporto effetti rientro.",
+                                    "DOCUMENTI", db,
+                                    ater_New.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO,
+                                    doc_New.IDDOCUMENTO);
+                                #endregion
+                            }
+                        }
+
+                        EmailTrasferimento.EmailAnnulla(idTrasferimento,
+                                                        Resources.msgEmail.OggettoAnnullaRichiestaTrasportoRientroSaldo,
+                                                        msg,
+                                                        db);
+                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        {
+                            dtce.AnnullaMessaggioEvento(idTrasferimento, EnumFunzioniEventi.RichiestaTrasportoEffettiRientro, db);
+                        }
+                    }
+
+                }
+                db.Database.CurrentTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
+
 
         public void AttivaRichiestaVariazioneTEP(decimal idAttivitaTEPartenza,ModelDBISE db)
         {
@@ -884,6 +1332,68 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void AttivaRichiestaVariazioneTER(decimal idAttivitaTER, ModelDBISE db)
+        {
+            db.Database.BeginTransaction();
+
+            try
+            {
+                var ater = db.ATTIVITATERIENTRO.Find(idAttivitaTER);
+                if (ater?.IDATERIENTRO > 0)
+                {
+                    if (ater.RICHIESTATRASPORTOEFFETTI == true)
+                    {
+                        ater.ATTIVAZIONETRASPORTOEFFETTI = true;
+                        ater.DATAATTIVAZIONETE = DateTime.Now;
+                        ater.DATAAGGIORNAMENTO = DateTime.Now;
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Errore: Impossibile completare l'attivazione del trasporto effetti rientro.");
+                        }
+
+                        #region ciclo attivazione documenti TE
+                        var ldte = ater.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                        foreach (var dte in ldte)
+                        {
+                            dte.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore durante il ciclo di attivazione trasporto effetti (attiva documenti)");
+                            }
+                        }
+                        #endregion
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                            "Attivazione trasporto effetti rientro.", "ATTIVITATERIENTRO", db,
+                            ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO, ater.IDATERIENTRO);
+                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        {
+                            dtce.ModificaInCompletatoCalendarioEvento(ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTrasportoEffettiRientro, db);
+                        }
+
+
+                        var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiRientroSaldo;
+                        var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiRientroSaldo;
+
+                        EmailTrasferimento.EmailAttiva(ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO,
+                                            oggettoAttiva,
+                                            messaggioAttiva,
+                                            db);
+
+                    }
+                }
+
+                db.Database.CurrentTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
 
         public PERCENTUALEANTICIPOTE GetPercentualeAnticipoTEPartenza(decimal idTEPartenza, decimal idTipoAnticipo)
         {
@@ -937,6 +1447,58 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public PERCENTUALEANTICIPOTE GetPercentualeAnticipoTERientro(decimal idTERientro, decimal idTipoAnticipo)
+        {
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var TErientro = db.TERIENTRO.Find(idTERientro);
+                    var t = TErientro.TRASFERIMENTO;
+
+                    List<PERCENTUALEANTICIPOTE> lpater = new List<PERCENTUALEANTICIPOTE>();
+                    PERCENTUALEANTICIPOTE pater = new PERCENTUALEANTICIPOTE();
+
+                    lpater = TErientro.PERCENTUALEANTICIPOTE.Where(a => a.ANNULLATO == false &&
+                                                                         a.IDTIPOANTICIPOTE == idTipoAnticipo &&
+                                                                         a.DATAINIZIOVALIDITA <= t.DATAPARTENZA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                    if (lpater?.Any() ?? false)
+                    {
+                        pater = lpater.First();
+                    }
+                    else
+                    {
+                        var lPte = db.PERCENTUALEANTICIPOTE.Where(a => a.ANNULLATO == false &&
+                                                                       a.IDTIPOANTICIPOTE == idTipoAnticipo &&
+                                                                       a.DATAINIZIOVALIDITA <= t.DATAPARTENZA)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                        if (lPte?.Any() ?? false)
+                        {
+                            pater = lPte.First();
+
+                        }
+                        else
+                        {
+                            throw new Exception("Non e' stata trovata nessuna percentuale di anticipo trasporto effetti rientro per il trasferimento corrente.");
+                        }
+
+                    }
+
+                    return pater;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
         public void Associa_TEpartenza_perceAnticipoTE(decimal idTEPartenza, decimal idPercAnticipoTM, ModelDBISE db)
         {
             var tep = db.TEPARTENZA.Find(idTEPartenza);
@@ -951,6 +1513,24 @@ namespace NewISE.Models.DBModel.dtObj
             if (i <= 0)
             {
                 throw new Exception("Non è stato possibile associare la percentuale anticipo trasporto effetti al Trasporto Effetti in partenza.");
+            }
+
+        }
+
+        public void Associa_TErientro_perceAnticipoTE(decimal idTERientro, decimal idPercAnticipoTM, ModelDBISE db)
+        {
+            var ter = db.TERIENTRO.Find(idTERientro);
+
+            var item = db.Entry<TERIENTRO>(ter);
+            item.State = EntityState.Modified;
+            item.Collection(a => a.PERCENTUALEANTICIPOTE).Load();
+            var percAnticipo = db.PERCENTUALEANTICIPOTE.Find(idPercAnticipoTM);
+            ter.PERCENTUALEANTICIPOTE.Add(percAnticipo);
+            int i = db.SaveChanges();
+
+            if (i <= 0)
+            {
+                throw new Exception("Non è stato possibile associare la percentuale anticipo trasporto effetti al Trasporto Effetti rientro.");
             }
 
         }
@@ -978,6 +1558,35 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
                 return new_ratep;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public RINUNCIA_TE_R CreaRinunciaTERientro(decimal idATERientro, ModelDBISE db)
+        {
+            try
+            {
+                RINUNCIA_TE_R new_rater = new RINUNCIA_TE_R()
+                {
+                    IDATERIENTRO = idATERientro,
+                    RINUNCIATE = false,
+                    DATAAGGIORNAMENTO = DateTime.Now,
+                };
+                db.RINUNCIA_TE_R.Add(new_rater);
+
+                if (db.SaveChanges() <= 0)
+                {
+                    throw new Exception(string.Format("Non è stato possibile creare una nuova rinuncia trasporto effetti rientro."));
+                }
+                else
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova rinuncia trasporto effetti rientro.", "RINUNCIA_TE_R", db, new_rater.ATTIVITATERIENTRO.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO, new_rater.IDATERIENTRO);
+                }
+
+                return new_rater;
             }
             catch (Exception ex)
             {

@@ -68,6 +68,8 @@ namespace NewISE.Controllers
         {
             DateTime dataPartenza = new DateTime();
             bool admin = Utility.Amministratore();
+            bool solaLettura = false;
+
             ViewBag.Amministratore = admin;
             try
             {
@@ -90,19 +92,30 @@ namespace NewISE.Controllers
                         }
                         CaricaComboFKM(rcm.CoeffKm, nuovo, rcm.IdRichiamo);
                     }
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        TrasferimentoModel trm = dtt.GetTrasferimentoById(idTrasferimento);
+                        if (trm != null)
+                        {
+                            var ltrasf = dtt.GetListaTrasferimentoByMatricola(trm.Dipendente.matricola);
+                            if (ltrasf?.Any() ?? false)
+                            {
+                                var ultimo_trasf = ltrasf.First();
+                                if (ultimo_trasf.idTrasferimento != idTrasferimento)
+                                {
+                                    solaLettura = true;
+                                }
+                            }
+                        }
+                    }
                 }
+                ViewData["solaLettura"] = solaLettura;
                 ViewData["dataPartenza"] = dataPartenza;
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            //RichiamoModel rm = new RichiamoModel();
-            //rm.idTrasferimento = idTrasferimento;
-            //rm.DataRichiamo =Convert.ToDateTime(dataRichiamo);
-            //rm.DataPartenza = dataPartenza;
-            //rm.CoeffKm = idFKm;
-            //return PartialView(rm);
             return PartialView();
         }
         public void CaricaComboFKM(decimal idLivelloGFKM = 0, decimal nuovo = 0, decimal idRichiamo = 0)
@@ -172,30 +185,8 @@ namespace NewISE.Controllers
                         if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                         {
                             tmp = 1;
-
-                            //var ltrasf = dtt.GetListaTrasferimentoByMatricola(trm.Dipendente.matricola);
-                            //if (ltrasf?.Any() ?? false)
-                            //{
-                            //    var ultimo_trasf = ltrasf.First();
-                            //    if(ultimo_trasf.idTrasferimento==idTrasferimento)
-                            //    {
-                            //        tmp = 1;
-                            //    }
-                            //}
                         }
                     }
-                    //else
-                    //{
-                    //    if (trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
-                    //    {
-                    //        TrasferimentoModel trmod = dtt.GetTrasferimentoById(idTrasferimento);
-                    //        if (trmod.TipoTrasferimento.idTipoTrasferimento == (decimal)EnumTipoTrasferimento.ItaliaEstero)
-                    //            {
-                    //                tmp = 1;
-                    //            }
-                    //        }
-                    //    }
-                    //}
                 }
                 return Json(new { VerificaRichiamo = tmp });
             }
@@ -331,19 +322,10 @@ namespace NewISE.Controllers
                             string oggetto = Resources.msgEmail.OggettoRichiamoInserisci;
                             string corpoMessaggio = string.Format(Resources.msgEmail.MessaggioRichiamoInserisci, sede, ri.DataRientro.ToShortDateString());
 
-                            //using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
-                            //{
-                            //    dtvmf.TerminaMaggiorazioniFamiliariByDataFineTrasf(idTrasferimento, ri.DataRientro, db);
-                            //}
-                            //using (dtVariazioniMaggiorazioneAbitazione dtvmab = new dtVariazioniMaggiorazioneAbitazione())
-                            //{
-                            //    dtvmab.TerminaMABbyDataFineTrasf(idTrasferimento, ri.DataRientro, db);
-                            //}
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db);
                             }
-
 
                             InviaMailRichiamo(idTrasferimento, db, corpoMessaggio, oggetto);
                         }

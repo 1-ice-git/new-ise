@@ -186,6 +186,7 @@ namespace NewISE.Models.DBModel.dtObj
                 int i = db.SaveChanges();
                 tmp = ri.IDRICHIAMO;
                 var t = db.TRASFERIMENTO.Find(ric.idTrasferimento);
+                t.IDSTATOTRASFERIMENTO = (decimal)EnumStatoTraferimento.Terminato;
                 t.DATARIENTRO = DataRientro;// ric.DataRichiamo.AddDays(-1);
                 t.DATAAGGIORNAMENTO = DateTime.Now;
                 db.SaveChanges();
@@ -234,6 +235,7 @@ namespace NewISE.Models.DBModel.dtObj
                 tmp = riNew.IDRICHIAMO;
 
                 var t = db.TRASFERIMENTO.Find(ric.idTrasferimento);
+                t.IDSTATOTRASFERIMENTO = (decimal)EnumStatoTraferimento.Terminato;
                 t.DATARIENTRO = DataRientro;// ric.DataRichiamo.AddDays(-1);
                 t.DATAAGGIORNAMENTO = DateTime.Now;
                 db.SaveChanges();

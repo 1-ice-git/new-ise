@@ -172,7 +172,9 @@ namespace NewISE.Models.Enumeratori
         MAB_Modulo4_Dichiarazione_Costo_Locazione = 15,
         Preventivo_Viaggio = 16,
         Passaporto = 17,
-        Formulario_Provvidenze_Scolastiche = 18
+        Formulario_Provvidenze_Scolastiche = 18,
+        Contributo_Fisso_Omnicomprensivo_Rientro = 19,
+        Attestazione_Trasloco_Rientro = 20
     }
 
     public enum EnumFunzioniEventi

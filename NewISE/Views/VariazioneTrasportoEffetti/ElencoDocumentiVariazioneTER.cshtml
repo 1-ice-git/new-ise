@@ -3,16 +3,15 @@
 @{
     string DescrizioneTE = Convert.ToString(ViewData["DescrizioneTE"]);
     decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
-    decimal idTEPartenza = Convert.ToDecimal(ViewData["idTEPartenza"]);
-    bool richiestaVariazioneTEPartenza = Convert.ToBoolean(ViewData["richiestaVariazioneTEPartenza"]);
+    decimal idTERientro = Convert.ToDecimal(ViewData["idTERientro"]);
+    bool richiestaVariazioneTER = Convert.ToBoolean(ViewData["richiestaVariazioneTER"]);
     decimal idStatoTrasferimento = Convert.ToDecimal(ViewData["idStatoTrasferimento"]);
-    bool attivazioneVariazioneTEPartenza = Convert.ToBoolean(ViewData["attivazioneVariazioneTEPartenza"]);
-//    decimal NumAttivazioniTEPartenza = Convert.ToDecimal(ViewData["NumAttivazioniTEPartenza"]);
+    bool attivazioneVariazioneTER = Convert.ToBoolean(ViewData["attivazioneVariazioneTER"]);
 }
 
 @Html.Hidden("hiNuovoDocumento")
 
-@Html.Hidden("hIdDocumentoTE")
+@Html.Hidden("hIdDocumentoTER")
 
 
 
@@ -27,9 +26,9 @@
     <div class="row">
         <div class="col-xs-3">
             <div style="margin-top: 10px; margin-bottom: 10px; margin-left:15px">
-                @if (idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco)
+                @if (idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco_Rientro)
                 {
-                    <a class="btn btn-default btn-sm" href="~/FormulariMaster/FormularioTE/modulo 3.pdf" target="_blank">
+                    <a class="btn btn-default btn-sm" href="~/FormulariMaster/FormularioTE/modulo 4.pdf" target="_blank">
                         <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
                         Download Formulario
                     </a>
@@ -39,16 +38,16 @@
         <div class="col-xs-3">
             <div style="margin-top: 10px; margin-bottom: 10px;">
                 @if (
-                    richiestaVariazioneTEPartenza == false
-                    &&
-                    attivazioneVariazioneTEPartenza == false
-                    &&
-                    idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco
-                    &&
-                    idStatoTrasferimento != (decimal)EnumStatoTraferimento.Annullato
-                )
+                richiestaVariazioneTER == false
+                &&
+                attivazioneVariazioneTER == false
+                &&
+                idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco_Rientro
+                &&
+                idStatoTrasferimento != (decimal)EnumStatoTraferimento.Annullato
+            )
                 {
-                    <button class="btn btn-default btn-sm" onclick="NuovoDocumentoVariazioneTE();">
+                    <button class="btn btn-default btn-sm" onclick="NuovoDocumentoVariazioneTER();">
                         <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
                         Aggiungi Documento
                     </button>
@@ -67,23 +66,23 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div id="divTabElencoDocumentiVariazioneTE" style="margin-left:15px;margin-right:15px;">
-                @Html.Action("TabDocumentiVariazioneTEPInseriti", "VariazioneTrasportoEffetti", new { idTEPartenza = idTEPartenza, idTipoDocumento = idTipoDocumento })
+            <div id="divTabElencoDocumentiVariazioneTER" style="margin-left:15px;margin-right:15px;">
+                @Html.Action("TabDocumentiVariazioneTERInseriti", "VariazioneTrasportoEffetti", new { idTERientro = idTERientro, idTipoDocumento = idTipoDocumento })
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="ModalNuovoDocumentoVariazioneTE" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoDocumentoVariazioneTELabel" aria-hidden="true">
+    <div class="modal fade" id="ModalNuovoDocumentoVariazioneTER" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoDocumentoVariazioneTERLabel" aria-hidden="true">
         <div class="modal-dialog  modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title alert alert-info text-info" id="NuovoDocumentoVariazioneTELabel">Nuovo documento @DescrizioneTE</h3>
+                    <h3 class="modal-title alert alert-info text-info" id="NuovoDocumentoVariazioneTERLabel">Nuovo documento @DescrizioneTE</h3>
                 </div>
                 <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                    <div id="divViewNuovoDocumentoVariazioneTE">
+                    <div id="divViewNuovoDocumentoVariazioneTER">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -93,47 +92,49 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ModalEliminaDocumentoVariazioneTE" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaDocumentoVariazioneTELabel" aria-hidden="true" >
-        <div class="modal-dialog modal-lg" role="document" >
-            <div class="modal-content" >
+    <div class="modal fade" id="ModalEliminaDocumentoVariazioneTER" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaDocumentoVariazioneTERLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title alert alert-info text-info" id="EliminaDocumentoVariazioneTELabel">Elimina @DescrizioneTE</h3>
+                    <h3 class="modal-title alert alert-info text-info" id="EliminaDocumentoVariazioneTERLabel">Elimina @DescrizioneTE</h3>
                 </div>
 
                 <div class="modal-body alert alert-info text-info" style="font-size: 1em">
-                    <input type="hidden" id="hIdDocTE">  <p><label>Eliminare il documento selezionato ?</label></p>
+                    <input type="hidden" id="hIdDocTER">
+                    <p><label>Eliminare il documento selezionato ?</label></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaDocumentoVariazioneTE(@idTipoDocumento);">Ok</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaDocumentoVariazioneTER(@idTipoDocumento);">Ok</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
                 </div>
             </div>
         </div>
     </div>
+</p>
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "VariazioneTEP", "VariazioneTrasportoEffetti", new { idTEPartenza = idTEPartenza }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divVariazioneTEP", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "VariazioneTER", "VariazioneTrasportoEffetti", new { idTERientro = idTERientro }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divVariazioneTER", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <script type="text/javascript">
     $('#hiNuovoDocumento').val(@idTipoDocumento);
 
-    GestionePulsantiNotificaAttivaAnnullaVariazioneTEP();
+    GestionePulsantiNotificaAttivaAnnullaVariazioneTER();
 
 
-    function NuovoDocumentoVariazioneTE() {
+    function NuovoDocumentoVariazioneTER() {
         //debugger;
-        var rotta = "/VariazioneTrasportoEffetti/NuovoDocumentoVariazioneTEP";
-        var idTEPartenza= @idTEPartenza;
+        var rotta = "/VariazioneTrasportoEffetti/NuovoDocumentoVariazioneTER";
+        var idTERientro= parseInt('@idTERientro');
         var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idTipoDocumento:idTipoDocumento , idTEPartenza: idTEPartenza},
+            data: { idTipoDocumento:idTipoDocumento , idTERientro: idTERientro},
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -141,12 +142,12 @@
                 VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 Blocca();
-                $('#ModalNuovoDocumentoVariazioneTE').modal('show');
+                $('#ModalNuovoDocumentoVariazioneTER').modal('show');
             },
             success: function (result) {
                 //debugger;
-                $("#divViewNuovoDocumentoVariazioneTE").empty();
-                $("#divViewNuovoDocumentoVariazioneTE").html(result);
+                $("#divViewNuovoDocumentoVariazioneTER").empty();
+                $("#divViewNuovoDocumentoVariazioneTER").html(result);
             },
             error: function (error) {
                 //debugger;
@@ -157,17 +158,17 @@
         });
     }
 
-    function TabElencoDocumentiVariazioneTEP() {
+    function TabElencoDocumentiVariazioneTER() {
         //debugger;
-        var rotta = "/VariazioneTrasportoEffetti/TabDocumentiVariazioneTEPInseriti";
-        var idTEPartenza = @idTEPartenza;
+        var rotta = "/VariazioneTrasportoEffetti/TabDocumentiVariazioneTERInseriti";
+        var idTERientro = @idTERientro;
         var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: {
-                idTEPartenza: idTEPartenza,
+                idTERientro: idTERientro,
                 idTipoDocumento:idTipoDocumento
             },
             dataType: 'html',
@@ -180,8 +181,8 @@
             },
             success: function (result) {
                 //debugger;
-                $("#divTabElencoDocumentiVariazioneTE").empty();
-                $("#divTabElencoDocumentiVariazioneTE").html(result);
+                $("#divTabElencoDocumentiVariazioneTER").empty();
+                $("#divTabElencoDocumentiVariazioneTER").html(result);
             },
             error: function (error) {
                 //debugger;
@@ -193,22 +194,23 @@
     }
 
 
-    $("#ModalNuovoDocumentoVariazioneTE").on("hidden.bs.modal", function () {
+    $("#ModalNuovoDocumentoVariazioneTER").on("hidden.bs.modal", function () {
         //debugger;
-        TabElencoDocumentiVariazioneTEP();
-        ElencoDocumentiVariazioneTEP(@idTipoDocumento);
+        TabElencoDocumentiVariazioneTER();
+        ElencoDocumentiVariazioneTER(@idTipoDocumento);
     });
 
-    function EliminaDocumentoVariazioneTE(idDoc) {
-        $("#hIdDocumentoTE").val(idDoc);
-        $("#ModalEliminaDocumentoVariazioneTE").modal("show");
+    function EliminaDocumentoVariazioneTER(idDoc) {
+        $("#hIdDocumentoTER").val(idDoc);
+        $("#ModalEliminaDocumentoVariazioneTER").modal("show");
     }
 
 
-    $("#ModalEliminaDocumentoVariazioneTE").on("hidden.bs.modal", function () {
+    $("#ModalEliminaDocumentoVariazioneTER").on("hidden.bs.modal", function () {
         //debugger;
-        TabElencoDocumentiVariazioneTEP();
+        TabElencoDocumentiVariazioneTER();
     });
 
 </script>
+
 
