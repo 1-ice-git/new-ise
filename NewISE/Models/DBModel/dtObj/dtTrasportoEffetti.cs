@@ -367,7 +367,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (last_ater.RICHIESTATRASPORTOEFFETTI && last_ater.ATTIVAZIONETRASPORTOEFFETTI == false)
                         {
                             richiestaTER = true;
-                            
+
                         }
                         //verifica se è stata attivata
                         if (last_ater.RICHIESTATRASPORTOEFFETTI && last_ater.ATTIVAZIONETRASPORTOEFFETTI)
@@ -721,10 +721,10 @@ namespace NewISE.Models.DBModel.dtObj
                 var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
                 var statoTrasferimento = tep.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
 
-                var latep = tep.ATTIVITATEPARTENZA.Where(a => 
+                var latep = tep.ATTIVITATEPARTENZA.Where(a =>
                     (
-                        (a.ATTIVAZIONETRASPORTOEFFETTI == true && 
-                            a.RICHIESTATRASPORTOEFFETTI == true) || 
+                        (a.ATTIVAZIONETRASPORTOEFFETTI == true &&
+                            a.RICHIESTATRASPORTOEFFETTI == true) ||
                         a.ANNULLATO == false
                         ) &&
                     a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo
@@ -793,9 +793,9 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var NumAttivazioni = 0;
                 NumAttivazioni = db.TEPARTENZA.Find(idTrasportoEffettiPartenza).ATTIVITATEPARTENZA
-                                    .Where(a => a.ANNULLATO == false && 
+                                    .Where(a => a.ANNULLATO == false &&
                                     a.RICHIESTATRASPORTOEFFETTI == true &&
-                                    a.IDANTICIPOSALDOTE==(decimal)EnumTipoAnticipoSaldoTE.Anticipo)
+                                    a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                                     .OrderByDescending(a => a.IDATEPARTENZA).Count();
                 return NumAttivazioni;
             }
@@ -829,7 +829,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var latep =
                     tep.ATTIVITATEPARTENZA.Where(
-                        a => a.ANNULLATO == false && a.ATTIVAZIONETRASPORTOEFFETTI == false && 
+                        a => a.ANNULLATO == false && a.ATTIVAZIONETRASPORTOEFFETTI == false &&
                         a.RICHIESTATRASPORTOEFFETTI == false &&
                         a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo)
                         .OrderByDescending(a => a.IDTEPARTENZA).ToList();
@@ -1189,16 +1189,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                                 #endregion
 
-
-
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                     "Attivazione trasporto effetti in partenza.", "ATTIVITATEPARTENZA", db,
                                     atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, atep.IDATEPARTENZA);
+
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
                                     dtce.ModificaInCompletatoCalendarioEvento(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza, db);
                                 }
-
 
                                 var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenzaAnticipo;
                                 var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenzaAnticipo;
@@ -1623,7 +1621,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
                 var tep = t.TEPARTENZA;
 
-                if (tep.IDTEPARTENZA>0)
+                if (tep.IDTEPARTENZA > 0)
                 {
                     TEPm = new TrasportoEffettiPartenzaModel()
                     {

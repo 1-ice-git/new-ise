@@ -567,21 +567,17 @@ namespace NewISE.Controllers
                                     {
                                         throw new Exception("Prima di inviare i flussi è necessario effettuare l'elaborazione di tutti i dipendenti interessati al calcolo mensile.");
                                     }
-
                                 }
 
                                 foreach (decimal teorico in lTeorici)
                                 {
                                     var dip = dte.EstrapolaDipendenteDaTeorico(teorico, db);
 
-
                                     if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElaborato) ?? false)
                                     {
                                         dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
                                     }
                                 }
-
-
 
                                 foreach (var dip in lDip)
                                 {
