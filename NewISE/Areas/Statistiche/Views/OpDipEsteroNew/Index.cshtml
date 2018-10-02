@@ -1,24 +1,11 @@
 ﻿
-
-@*<div class="row">
-    <div class="col-xs-12">
-        <div>
-            @Html.Action("Index", "DipEsteroLivelloNew")
-        </div>
-    </div>
-
-</div>*@
-
-
-
 <div id="dialog" class="text-center"></div>
-
 
 <div class="row">
     <div class="col-xs-12">
         <div class="form-group">
             <div class="panel panel-default">
-                <div class="panel-heading"><b>Dipendenti all'Estero per Livello</b></div>
+                <div class="panel-heading"><b>Dislocazione dei Dipendenti all'Estero</b></div>
                 <div class="panel-body">
 
                     <div class="col-xs-4 date">
@@ -46,12 +33,12 @@
                     </div>
 
 
-                        @*<div class="col-md-3">
+                    @*<div class="col-md-3">
                             <a href="#" onclick="callpartialRptOpIndSedeEstera()">Test </a>
 
                         </div>*@
 
-                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -92,7 +79,7 @@
              $("#dialog").css("background-color", "#ffffff");
 
 
-             var rotta = "/Statistiche/DipEsteroLivelloNew/RptDipEsteroLivello";
+             var rotta = "/Statistiche/OpDipEsteroNew/RptOpDipEstero";
 
              var data1 = $("#data1").datepicker().val()
              var data2 = $("#data2").datepicker().val()

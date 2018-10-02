@@ -1,27 +1,26 @@
-﻿using Microsoft.Reporting.WebForms;
-using NewISE.Areas.Statistiche.Models;
-using NewISE.EF;
-using NewISE.Models;
-using NewISE.Models.DBModel.dtObj;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.Models.DBModel.dtObj;
+using NewISE.EF;
+using NewISE.Areas.Statistiche.Models;
+using Microsoft.Reporting.WebForms;
 using System.Web.UI.WebControls;
+using NewISE.Models;
 
 namespace NewISE.Areas.Statistiche.Controllers
 {
-    public class DipEsteroLivelloNewController : Controller
+    public class OpDipEsteroNewController : Controller
     {
-        // GET: Statistiche/DipEsteroLivelloNew
+        // GET: Statistiche/OpDipEsteroNew
         public ActionResult Index()
         {
             return PartialView();
-
         }
 
-        public ActionResult RptDipEsteroLivello(string dtIni, string dtFin)
+        public ActionResult RptOpDipEstero(string dtIni, string dtFin)
         {
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
             List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
@@ -73,7 +72,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.Visible = true;
                     reportViewer.ProcessingMode = ProcessingMode.Local;
 
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptDipEsteroLivello.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptDipEstero.rdlc";
                     reportViewer.LocalReport.DataSources.Clear();
 
                     reportViewer.LocalReport.DataSources.Add(datasource);
@@ -97,7 +96,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView("RptDipEsteroLivello");
+            return PartialView("RptOpDipEstero");
         }
 
     }

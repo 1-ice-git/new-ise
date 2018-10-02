@@ -102,6 +102,41 @@ namespace NewISE.Areas.Statistiche.Models
 
         public IList<ElaborazioniModel> lElaborazioni { get; set; }
 
+        public string Ufficio { get; set; }
 
+        public string DescLivello { get; set; }
+
+        public DateTime dataPartenza { get; set; }
+
+        public DateTime dataRientro { get; set; }
+
+        public decimal valore { get; set; }
+
+        public decimal percentuale { get; set; }
+
+        public decimal indennita { get; set; }
+
+        public string ValutaUfficio { get; set; }
+
+        [Display(Name = "Indennita Base")]
+        public decimal IndennitaBase { get; set; }
+
+        [Display(Name = "Indennita Servizio")]
+        public decimal IndennitaServizio { get; set; }
+
+        [Display(Name = "Indennita Richiamo")]
+        public decimal IndennitaRichiamo { get; set; }
+
+        [Display(Name = "Indennita Personale")]
+        public decimal IndennitaPersonale { get; set; }
+
+        [Display(Name = "Pensione Coniuge")]
+        public decimal PensioneConiuge { get; set; }
+
+        [Display(Name = "Maggiorazioni Familiari")]
+        public decimal MaggiorazioniFamiliari { get; set; }
+
+        [Display(Name = "Prima Sistemazione")]
+        public decimal PrimaSistemazione { get; set; }
     }
 }

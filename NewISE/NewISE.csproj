@@ -4745,6 +4745,8 @@
     <Content Include="Areas\Statistiche\Views\TrasportoEffettiNew\SelezionaMeseAnno.cshtml" />
     <Content Include="Areas\Statistiche\Views\TrasportoEffettiNew\RptTrasportoEffetti.cshtml" />
     <Content Include="Areas\Statistiche\Views\DipEsteroLivelloNew\RptDipEsteroLivello.cshtml" />
+    <Content Include="Areas\Statistiche\Views\OpDipEsteroNew\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\OpDipEsteroNew\RptOpDipEstero.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -4995,6 +4997,7 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="Areas\Statistiche\Controllers\DipEsteroLivelloNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\IndennitaSedeEsteraController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\OpDipEsteroNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSospensioniController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StoriaDipendenteNewController.cs" />
@@ -6639,6 +6642,7 @@
     <Content Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptDipEstero.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptDipEsteroLivello.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptRiepiloghiMaggAbitazione.rdlc" />

@@ -64,7 +64,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return Json(new { results = ls2, err = "" });
         }
-
         public ActionResult SelezionaMeseAnno(int mese = 0, int anno = 0)
         {
             var rMeseAnno = new List<SelectListItem>();
@@ -125,7 +124,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView();
         }
-
         public ActionResult RptTrasportoEffetti(decimal dtIni, decimal dtFin)
         {
             List<TrasportoEffettiModel> rim = new List<TrasportoEffettiModel>();
