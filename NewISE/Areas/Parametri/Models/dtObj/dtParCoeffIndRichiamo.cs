@@ -505,8 +505,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             dtrp.AssociaRichiamo_CR(NuovoPrecedente.IDCOEFINDRICHIAMO, db);
                             dtrp.AssociaRiduzioni_CR(NuovoPrecedente.IDCOEFINDRICHIAMO, db);
                         }
-
-
                     }
 
                     using (objLogAttivita log = new objLogAttivita())

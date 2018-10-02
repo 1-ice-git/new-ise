@@ -252,7 +252,7 @@ namespace NewISE.Models.DBModel.dtObj
                 foreach (var l in livelli)
                 {
                     DateTime dtIniPerc = l.DATAINIZIOVALIDITA < dtIni ? dtIni : l.DATAINIZIOVALIDITA;
-                    DateTime dtFinPerc = l.DATAFINEVALIDITA >  dtFin ? dtFin : l.DATAFINEVALIDITA;
+                    DateTime dtFinPerc = l.DATAFINEVALIDITA > dtFin ? dtFin : l.DATAFINEVALIDITA;
 
                     var pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
                                                           a.DATAFINEVALIDITA >= dtIniPerc &&
@@ -1655,7 +1655,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 #region imposto lo stato su DA_ATTIVARE
                                 var mm = am.MAB;//.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderBy(a => a.IDMAB).First();// this.GetVariazioniMABPartenza(am.IDTRASFERIMENTO);
-                                if (mm.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
+                                if (mm.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
                                 {
                                     UpdateStatoMAB(mm.IDMAB, EnumStatoRecord.Da_Attivare, db);
                                 }

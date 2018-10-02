@@ -409,8 +409,16 @@ namespace NewISE.Models.DBModel.dtObj
             }
             else if (teorico?.IDELABTRASPEFFETTI > 0)
             {
-                dip = new DIPENDENTI();
-                dip = teorico.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI;
+                if (teorico.ELABTRASPEFFETTI?.IDTEPARTENZA > 0)
+                {
+                    dip = new DIPENDENTI();
+                    dip = teorico.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI;
+                }
+                else if (teorico.ELABTRASPEFFETTI?.IDTERIENTRO > 0)
+                {
+                    dip = new DIPENDENTI();
+                    dip = teorico.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI;
+                }
 
             }
             else if (teorico?.IDELABINDRICHIAMO > 0)
@@ -418,6 +426,11 @@ namespace NewISE.Models.DBModel.dtObj
                 dip = new DIPENDENTI();
                 dip = teorico.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI;
 
+            }
+            else if (teorico?.IDAUTOVOCIMANUALI > 0)
+            {
+                dip = new DIPENDENTI();
+                dip = teorico.AUTOMATISMOVOCIMANUALI.TRASFERIMENTO.DIPENDENTI;
             }
 
 
@@ -472,7 +485,16 @@ namespace NewISE.Models.DBModel.dtObj
                 else if (teorico?.IDELABTRASPEFFETTI > 0)
                 {
                     dip = new DIPENDENTI();
-                    dip = teorico.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI;
+
+                    if (teorico.ELABTRASPEFFETTI?.IDTEPARTENZA > 0)
+                    {
+                        dip = teorico.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI;
+                    }
+                    else if (teorico.ELABTRASPEFFETTI?.IDTERIENTRO > 0)
+                    {
+                        dip = teorico.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI;
+                    }
+
                     if (!lDip.Contains(dip))
                     {
                         lDip.Add(dip);
@@ -482,6 +504,15 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     dip = new DIPENDENTI();
                     dip = teorico.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI;
+                    if (!lDip.Contains(dip))
+                    {
+                        lDip.Add(dip);
+                    }
+                }
+                else if (teorico?.IDAUTOVOCIMANUALI > 0)
+                {
+                    dip = new DIPENDENTI();
+                    dip = teorico.AUTOMATISMOVOCIMANUALI.TRASFERIMENTO.DIPENDENTI;
                     if (!lDip.Contains(dip))
                     {
                         lDip.Add(dip);
@@ -958,6 +989,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #region Trasporto effetti
                     lLm.AddRange(this.PlmTrasportoEffettiPartenza(mae, db));
+                    lLm.AddRange(this.PlmTrasportoEffettiRientro(mae, db));
                     #endregion
 
                     #endregion
@@ -3156,7 +3188,8 @@ namespace NewISE.Models.DBModel.dtObj
                 db.TEORICI.Where(
                     a =>
                         a.ANNULLATO == false && a.INSERIMENTOMANUALE == false && a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
-                        a.ELABTRASPEFFETTI.ANNULLATO == false && a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                        a.ELABTRASPEFFETTI.ANNULLATO == false && a.ELABTRASPEFFETTI.IDTEPARTENZA > 0 &&
+                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
                         a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
                         a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
                         a.DIRETTO == false && a.IMPORTO > 0)
@@ -3226,6 +3259,92 @@ namespace NewISE.Models.DBModel.dtObj
 
             return lLm;
         }
+
+
+        private IList<LiquidazioneMensileViewModel> PlmTrasportoEffettiRientro(MESEANNOELABORAZIONE mae, ModelDBISE db)
+        {
+            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+
+            var lTeorici =
+                db.TEORICI.Where(
+                    a =>
+                        a.ANNULLATO == false && a.INSERIMENTOMANUALE == false && a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
+                        a.ELABTRASPEFFETTI.ANNULLATO == false && a.ELABTRASPEFFETTI.IDTERIENTRO > 0 &&
+                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                        a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
+                        a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                        a.DIRETTO == false && a.IMPORTO > 0)
+                    .OrderBy(a => a.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI.COGNOME)
+                    .ThenBy(a => a.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI.NOME)
+                    .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
+                    .ToList();
+
+            if (lTeorici?.Any() ?? false)
+            {
+                foreach (var teorico in lTeorici)
+                {
+                    var tr = teorico.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO;
+                    var dip = tr.DIPENDENTI;
+                    var tm = teorico.TIPOMOVIMENTO;
+                    var voce = teorico.VOCI;
+                    var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+                    var tv = teorico.VOCI.TIPOVOCE;
+                    var uf = tr.UFFICI;
+
+                    LiquidazioneMensileViewModel lm = new LiquidazioneMensileViewModel()
+                    {
+                        idTeorici = teorico.IDTEORICI,
+                        Nominativo = dip.COGNOME + " " + dip.NOME + " (" + dip.MATRICOLA + ")",
+                        Ufficio = uf.DESCRIZIONEUFFICIO + " (" + uf.CODICEUFFICIO + ")",
+                        TipoMovimento = new TipoMovimentoModel()
+                        {
+                            idTipoMovimento = tm.IDTIPOMOVIMENTO,
+                            TipoMovimento = tm.TIPOMOVIMENTO1,
+                            DescMovimento = tm.DESCMOVIMENTO
+                        },
+                        Voci = new VociModel()
+                        {
+                            idVoci = voce.IDVOCI,
+                            codiceVoce = voce.CODICEVOCE,
+                            descrizione = voce.DESCRIZIONE,
+                            TipoLiquidazione = new TipoLiquidazioneModel()
+                            {
+                                idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                descrizione = tl.DESCRIZIONE
+                            },
+                            TipoVoce = new TipoVoceModel()
+                            {
+                                idTipoVoce = tv.IDTIPOVOCE,
+                                descrizione = tv.DESCRIZIONE
+                            }
+                        },
+                        meseRiferimento = teorico.MESERIFERIMENTO,
+                        annoRiferimento = teorico.ANNORIFERIMENTO,
+                        Importo = teorico.IMPORTO,
+                        Elaborato = teorico.ELABORATO
+                    };
+
+                    if (teorico.INSERIMENTOMANUALE == true)
+                    {
+                        lm.tipoInserimento = EnumTipoInserimento.Manuale;
+                    }
+                    else
+                    {
+                        lm.tipoInserimento = EnumTipoInserimento.Software;
+                    }
+
+                    lLm.Add(lm);
+                }
+            }
+
+
+            return lLm;
+        }
+
+
+
+
+
         /// <summary>
         /// Preleva le liquidazione mensili per la prima sistemazione.
         /// </summary>
@@ -3469,8 +3588,6 @@ namespace NewISE.Models.DBModel.dtObj
         private void InsTrasportoEffetti(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
 
-
-
             var tePartenza = trasferimento.TEPARTENZA;
             var teRientro = trasferimento.TERIENTRO;
 
@@ -3540,7 +3657,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     EnumTipoMovimento tipoMov;
                                     decimal annoMeseDtIniElab =
                                         Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
-                                                          trasferimento.DATAPARTENZA.Month.ToString());
+                                                          trasferimento.DATAPARTENZA.Month.ToString().PadLeft(2, (char)'0'));
 
                                     if (annoMeseDtIniElab < annoMeseElab)
                                     {
@@ -3623,7 +3740,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             EnumTipoMovimento tipoMov;
                                             decimal annoMeseDtIniElab =
                                                 Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
-                                                                  trasferimento.DATAPARTENZA.Month.ToString());
+                                                                  trasferimento.DATAPARTENZA.Month.ToString().PadLeft(2, (char)'0'));
 
                                             if (annoMeseDtIniElab < annoMeseElab)
                                             {
@@ -3670,6 +3787,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                                 else
                                 {
+                                    ///Inserisco il saldo se non è stato ancora elaborato.
                                     ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                                     {
                                         IDTEPARTENZA = tePartenza.IDTEPARTENZA,
@@ -3692,7 +3810,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         EnumTipoMovimento tipoMov;
                                         decimal annoMeseDtIniElab =
                                             Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
-                                                              trasferimento.DATAPARTENZA.Month.ToString());
+                                                              trasferimento.DATAPARTENZA.Month.ToString().PadLeft(2, (char)'0'));
 
                                         if (annoMeseDtIniElab < annoMeseElab)
                                         {
@@ -3736,6 +3854,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
+                            ///Inserisco l'anticipo se ancora non elaborato.
                             ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                             {
                                 IDTEPARTENZA = tePartenza.IDTEPARTENZA,
@@ -3758,7 +3877,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 EnumTipoMovimento tipoMov;
                                 decimal annoMeseDtIniElab =
                                     Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
-                                                      trasferimento.DATAPARTENZA.Month.ToString());
+                                                      trasferimento.DATAPARTENZA.Month.ToString().PadLeft(2, (char)'0'));
 
                                 if (annoMeseDtIniElab < annoMeseElab)
                                 {
@@ -3856,7 +3975,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     EnumTipoMovimento tipoMov;
                                     decimal annoMeseDtIniElab =
                                         Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
-                                                          trasferimento.DATARIENTRO.Month.ToString());
+                                                          trasferimento.DATARIENTRO.Month.ToString().PadLeft(2, (char)'0'));
 
                                     if (annoMeseDtIniElab < annoMeseElab)
                                     {
@@ -3939,7 +4058,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             EnumTipoMovimento tipoMov;
                                             decimal annoMeseDtIniElab =
                                                 Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
-                                                                  trasferimento.DATARIENTRO.Month.ToString());
+                                                                  trasferimento.DATARIENTRO.Month.ToString().PadLeft(2, (char)'0'));
 
                                             if (annoMeseDtIniElab < annoMeseElab)
                                             {
@@ -4008,7 +4127,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         EnumTipoMovimento tipoMov;
                                         decimal annoMeseDtIniElab =
                                             Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
-                                                              trasferimento.DATARIENTRO.Month.ToString());
+                                                              trasferimento.DATARIENTRO.Month.ToString().PadLeft(2, (char)'0'));
 
                                         if (annoMeseDtIniElab < annoMeseElab)
                                         {
@@ -4075,7 +4194,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 EnumTipoMovimento tipoMov;
                                 decimal annoMeseDtIniElab =
                                     Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
-                                                      trasferimento.DATARIENTRO.Month.ToString());
+                                                      trasferimento.DATARIENTRO.Month.ToString().PadLeft(2, (char)'0'));
 
                                 if (annoMeseDtIniElab < annoMeseElab)
                                 {
@@ -6070,7 +6189,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var lcoefRichiamo =
                         richiamo.COEFFICIENTEINDRICHIAMO.Where(
                             a =>
-                                a.ANNULLATO == false && dataFineTrasf >= a.DATAFINEVALIDITA &&
+                                a.ANNULLATO == false && dataFineTrasf >= a.DATAINIZIOVALIDITA &&
                                 dataFineTrasf <= a.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
 
