@@ -9,6 +9,7 @@ using NewISE.Areas.Statistiche.Models;
 using Microsoft.Reporting.WebForms;
 using System.Web.UI.WebControls;
 using NewISE.Models;
+using NewISE.Models.DBModel;
 
 namespace NewISE.Areas.Statistiche.Controllers
 {
@@ -17,6 +18,42 @@ namespace NewISE.Areas.Statistiche.Controllers
         // GET: Statistiche/OpDipEsteroNew
         public ActionResult Index()
         {
+
+            List<SelectListItem> UfficiList = new List<SelectListItem>();
+            var r = new List<SelectListItem>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtUffici dtl = new dtUffici())
+                    {
+                        List<UfficiModel> llm = new List<UfficiModel>();
+                        llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
+                        if (llm != null && llm.Count > 0)
+                        {
+                            r = (from t in llm
+                                 select new SelectListItem()
+                                 {
+                                     Text = t.descUfficio,
+                                     Value = t.idUfficio.ToString()
+                                 }).ToList();
+
+                            r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+
+                        }
+                        ViewBag.UfficiList = r;
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
             return PartialView();
         }
 

@@ -18,10 +18,18 @@
 
                     <div class="col-xs-4 date">
 
-                        <div class="input-group input-append date">
+                        @*<div class="input-group input-append date">
                             <input type="text" class="form-control" id="data2" />
                             <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>*@
+
+                        
+                        <div class="input-group input-append date">
+                                
+                                @Html.DropDownList("idUfficio", ViewBag.UfficiList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+                        
                         </div>
+
                     </div>
 
                     <div class="col-xs-4 date">
@@ -116,6 +124,12 @@
 
              });
 
+         });
+
+         $("#idUfficio").select2({
+             placeholder: "Seleziona Ufficio",
+             allowClear: true,
+             language: "it"
          });
 
 </script>
