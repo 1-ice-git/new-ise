@@ -9,6 +9,9 @@ namespace NewISE.Areas.Statistiche.Models
     {
         public string codicequalifica { get; set; }
         public string qualifica { get; set; }
+        
+
+
 
     }
 }

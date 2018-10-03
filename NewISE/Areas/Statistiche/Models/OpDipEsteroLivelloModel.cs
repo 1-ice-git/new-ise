@@ -9,7 +9,7 @@ using System.Web;
 
 namespace NewISE.Areas.Statistiche.Models
 {
-    public class RptStoriaDipendenteNewModel
+    public class OpDipEsteroLivelloModel
     {
         [Key]
         public decimal idDipendente { get; set; }
@@ -90,6 +90,11 @@ namespace NewISE.Areas.Statistiche.Models
             return this.idDipendente > 0 ? true : false;
         }
 
+        public LivelloDipendenteModel Livello { get; set; }
+
+        public decimal IdLivello { get; set; }
+
+
         public IList<LivelloDipendenteModel> LivelloDipendenti { get; set; }
 
         public IList<CDCDipendentiModel> CdcDipendenti { get; set; }
@@ -106,7 +111,13 @@ namespace NewISE.Areas.Statistiche.Models
 
         public string DescLivello { get; set; }
 
+        public string ValutaUfficio { get; set; }
+
+        public decimal indennita { get; set; }
+
         public DateTime dataPartenza { get; set; }
+
+        public DateTime dataVariazione { get; set; }
 
         public DateTime dataRientro { get; set; }
 
@@ -114,33 +125,18 @@ namespace NewISE.Areas.Statistiche.Models
 
         public decimal percentuale { get; set; }
 
-        public decimal indennita { get; set; }
-
-        public string ValutaUfficio { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Lettera")]
+        public DateTime? dataLettera { get; set; }
 
         [Display(Name = "Indennita Base")]
         public decimal IndennitaBase { get; set; }
-
-        [Display(Name = "Indennita Servizio")]
-        public decimal IndennitaServizio { get; set; }
-
-        [Display(Name = "Indennita Richiamo")]
-        public decimal IndennitaRichiamo { get; set; }
-
+        
         [Display(Name = "Indennita Personale")]
         public decimal IndennitaPersonale { get; set; }
 
-        [Display(Name = "Pensione Coniuge")]
-        public decimal PensioneConiuge { get; set; }
-
-        [Display(Name = "Maggiorazioni Familiari")]
-        public decimal MaggiorazioniFamiliari { get; set; }
-
-        [Display(Name = "Prima Sistemazione")]
-        public decimal PrimaSistemazione { get; set; }
-
-        public DateTime dataVariazione { get; set; }
-
+        
 
     }
 }

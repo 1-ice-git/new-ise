@@ -130,7 +130,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView(dm);
         }
-
         public ActionResult RptStoriaDipendenteNew(decimal Nominativo)
         {
             List<StoriaDipendenteNewModel> rim = new List<StoriaDipendenteNewModel>();
@@ -146,23 +145,58 @@ namespace NewISE.Areas.Statistiche.Controllers
                         rim = dtStoriaDipendenteNew.GetStoriaDipendenteNew(Nominativo, db).ToList();
                     }
 
+                    string nome = "";
+                    string sede = "";
+                    string DataAssunzione = "";
+                    string DataPartenza = "";
+                    string DataRientro = "";
+                    string DataLettera = "";
+                    string valuta = "";
+
                     if (rim?.Any() ?? false)
                     {
                         foreach (var lm in rim)
                         {
                             RptStoriaDipendenteNewModel rptds = new RptStoriaDipendenteNewModel()
                             {
-                                matricola = lm.matricola,
-                                nome = lm.nome,
-                                cognome = lm.cognome
-
-
+                                //matricola = lm.matricola,
+                                //nome = lm.nome,
+                                //cognome = lm.cognome,
+                                nome = lm.cognome + " " + lm.nome + " (" + lm.matricola + ")",
+                                //nome = lm.cognome + " " + lm.nome,
+                                dataAssunzione = lm.dataAssunzione,
+                                dataVariazione = lm.dataVariazione,
+                                Ufficio = lm.Ufficio,
+                                DescLivello =  lm.DescLivello,
+                                dataPartenza = lm.dataPartenza,
+                                dataRientro = lm.dataRientro,
+                                valore = lm.valore,
+                                percentuale = lm.percentuale,
+                                indennita = lm.indennita,
+                                ValutaUfficio = lm.ValutaUfficio,
+                                IndennitaBase = lm.IndennitaBase,
+                                IndennitaPersonale = lm.IndennitaPersonale,
+                                IndennitaServizio = lm.IndennitaServizio,
+                                MaggiorazioniFamiliari = lm.MaggiorazioniFamiliari,
+                                PensioneConiuge = lm.PensioneConiuge,
+                                PrimaSistemazione = lm.PrimaSistemazione
                             };
 
                             rpt.Add(rptds);
+
+                            nome = lm.nome;
+                            sede = lm.Ufficio;
+                            DataAssunzione = Convert.ToString(lm.dataAssunzione);
+                            DataPartenza = Convert.ToString(lm.dataPartenza);
+                            DataRientro = Convert.ToString(lm.dataRientro);
+                            DataLettera = Convert.ToString(lm.dataLettera);
+                            valuta = lm.ValutaUfficio;
                         }
                     }
                     
+                   
+                    
+
                     ReportViewer reportViewer = new ReportViewer();
 
                     reportViewer.ProcessingMode = ProcessingMode.Local;
@@ -182,11 +216,24 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetStoriaDipendenteNew", rpt));
                     reportViewer.LocalReport.Refresh();
 
-                    
+                    string NomeMatricola = nome;
+                    string Sede = sede;
+                    var Data = DataPartenza;
+                    var Data1 = DataAssunzione;
+                    var Data2 = DataRientro;
+                    var Data3 = DataLettera;
+                    string Valuta = valuta;
 
                     ReportParameter[] parameterValues = new ReportParameter[]
                        {
-                        new ReportParameter ("Nominativo",Convert.ToString(Nominativo))
+                        new ReportParameter ("Nominativo",Convert.ToString(Nominativo)),
+                        new ReportParameter ("NomeMatricola",NomeMatricola),
+                        new ReportParameter ("Data",Data),
+                        new ReportParameter ("Data1",Data1),
+                        new ReportParameter ("Data2",Data2),
+                        new ReportParameter ("Data3",Data3),
+                        new ReportParameter ("Sede",Sede),
+                        new ReportParameter ("Valuta",Valuta)
                        };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
@@ -201,8 +248,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView("RptStoriaDipendenteNew");
         }
-
-
 
     }
 }

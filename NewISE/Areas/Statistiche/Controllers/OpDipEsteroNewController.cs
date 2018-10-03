@@ -1,52 +1,49 @@
-﻿using Microsoft.Reporting.WebForms;
-using NewISE.Areas.Statistiche.Models;
-using NewISE.EF;
-using NewISE.Models;
-using NewISE.Models.DBModel;
-using NewISE.Models.DBModel.dtObj;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.Models.DBModel.dtObj;
+using NewISE.EF;
+using NewISE.Areas.Statistiche.Models;
+using Microsoft.Reporting.WebForms;
 using System.Web.UI.WebControls;
-using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models;
+using NewISE.Models.DBModel;
 
 namespace NewISE.Areas.Statistiche.Controllers
 {
-    public class DipEsteroLivelloNewController : Controller
+    public class OpDipEsteroNewController : Controller
     {
-        // GET: Statistiche/DipEsteroLivelloNew
+        // GET: Statistiche/OpDipEsteroNew
         public ActionResult Index()
         {
-            List<SelectListItem> LivelliList = new List<SelectListItem>();
+            List<SelectListItem> UfficiList = new List<SelectListItem>();
             var r = new List<SelectListItem>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtParLivelli dtl = new dtParLivelli())
+                    using (dtUffici dtl = new dtUffici())
                     {
-                        List<LivelloModel> llm = new List<LivelloModel>();
-                        
-                        llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
+                        List<UfficiModel> llm = new List<UfficiModel>();
+                        llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
                         if (llm != null && llm.Count > 0)
                         {
                             r = (from t in llm
                                  select new SelectListItem()
                                  {
-                                     Text = t.DescLivello,
-                                     Value = t.idLivello.ToString()
+                                     Text = t.descUfficio,
+                                     Value = t.idUfficio.ToString()
                                  }).ToList();
 
                             r.Insert(0, new SelectListItem() { Text = "", Value = "" });
 
                         }
-
-                        ViewBag.LivelliList = r;
+                        ViewBag.UfficiList = r;
                     }
-                    
+
                 }
 
             }
@@ -59,41 +56,31 @@ namespace NewISE.Areas.Statistiche.Controllers
             return PartialView();
         }
 
-        public ActionResult RptDipEsteroLivello(string dtIni, string dtFin, decimal idLivello)
+        public ActionResult RptOpDipEstero(string dtIni, decimal idUfficio)
         {
-            List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
-            List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
+            List<OpDipEsteroLivelloModel> rim = new List<OpDipEsteroLivelloModel>();
+            List<RptDipEsteroLivelloModel> rpt = new List<RptDipEsteroLivelloModel>();
 
             try
             {
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    //using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
-                    //{
-                    //    rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
-                    //}
+                    using (dtOpDipEsteroNew dtOpDipEsteroNew = new dtOpDipEsteroNew())
+                    {
+                        rim = dtOpDipEsteroNew.GetOpDipEsteroNew(dtIni, idUfficio, db).ToList();
+                    }
 
                     if (rim?.Any() ?? false)
                     {
                         foreach (var lm in rim)
                         {
-                            //RptRiepiloghiIseMensileModel rptds = new RptRiepiloghiIseMensileModel()
-                            //{
-                            //    IdTeorici = lm.idTeorici,
-                            //    DescrizioneVoce = lm.Voci.descrizione,
-                            //    Nominativo = lm.Nominativo,
-                            //    Movimento = lm.TipoMovimento.DescMovimento,
-                            //    Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
-                            //    Voce = lm.Voci.codiceVoce,
-                            //    Inserimento = lm.tipoInserimento.ToString(),
-                            //    Importo = lm.Importo,
-                            //    Inviato = lm.Elaborato,
-                            //    meseRiferimento = lm.meseRiferimento
+                            RptDipEsteroLivelloModel rptds = new RptDipEsteroLivelloModel()
+                            {
+                               
+                            };
 
-                            //};
-
-                            //rpt.Add(rptds);
+                            rpt.Add(rptds);
                         }
                     }
 
@@ -111,7 +98,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.Visible = true;
                     reportViewer.ProcessingMode = ProcessingMode.Local;
 
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptDipEsteroLivello.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptDipEstero.rdlc";
                     reportViewer.LocalReport.DataSources.Clear();
 
                     reportViewer.LocalReport.DataSources.Add(datasource);
@@ -121,8 +108,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     // Nel caso in cui passo il DatePicker
                     ReportParameter[] parameterValues = new ReportParameter[]
                        {
-                            new ReportParameter ("Dal",Convert.ToString(dtIni)),
-                            new ReportParameter ("Al",Convert.ToString(dtFin))
+                            new ReportParameter ("Dal",Convert.ToString(dtIni))
                        };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
@@ -135,7 +121,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView("RptDipEsteroLivello");
+            return PartialView("RptOpDipEstero");
         }
 
     }

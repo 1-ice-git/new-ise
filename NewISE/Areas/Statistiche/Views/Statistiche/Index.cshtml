@@ -33,6 +33,7 @@
                 </div>
             </div>
 
+            <!--
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
@@ -53,11 +54,11 @@
                         <a href="#" class="list-group-item" onclick="callpartialOpUsoAbitazione();">Operazioni Effettuate - Uso Abitazione</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpCanoneAnticipato();">Operazioni Effettuate - Canone Anticipato</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpSpeseDiverse();">Operazioni Effettuate - Spese Diverse</a>
-                        <!--<a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazione();">Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</a>-->
+                        <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazione();">Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</a>
                     </div>
                 </div>
             </div>
-
+            -->
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
@@ -74,7 +75,7 @@
                         <a href="#" class="list-group-item" onclick="">Consuntivo dei Costi per codice Co. An.</a>
                         <a href="#" class="list-group-item" onclick="">Consuntivo spese di Avvicendamento</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroLivelloNew();">Dipendenti all'Estero per Livello</a>
-                        <a href="#" class="list-group-item" onclick="">Dislocazione dei dipendenti all'Estero</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroNew();">Dislocazione dei dipendenti all'Estero</a>
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Livello</a>
                         <a href="#" class="list-group-item" onclick="">Riepilogo Generale</a>
                         <a href="#" class="list-group-item" onclick="">Riepilogo per Ufficio</a>
@@ -787,7 +788,7 @@
 
             // Trasporto Effetti (Nuovo ISE)
             function callpartialOpTrasportoEffettiNew() {
-                debugger;
+                //debugger;
 
                 rotta = "/Statistiche/TrasportoEffettiNew/Index";
 
@@ -884,9 +885,40 @@
 
             // Operazioni Effettuate - Dipendenti all' Estero per Livello (Nuovo ISE)
             function callpartialOpDipEsteroLivelloNew() {
-                debugger;
+                //debugger;
 
                 rotta = "/Statistiche/DipEsteroLivelloNew/Index";
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {},
+                    dataType: 'html',
+                    beforeSend: function () {
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#divPartialView").empty();
+                        $("#divPartialView").html(result);
+                    },
+                    complete: function () {
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            }
+
+
+            // Operazioni Effettuate - Dislocazione dei Dipendenti all'Estero (Nuovo ISE)
+            function callpartialOpDipEsteroNew() {
+                //debugger;
+
+                rotta = "/Statistiche/OpDipEsteroNew/Index";
 
                 $.ajax({
                     type: "POST",
