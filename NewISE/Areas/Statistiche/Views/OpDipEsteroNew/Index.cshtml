@@ -26,7 +26,7 @@
                         
                         <div class="input-group input-append date">
                                 
-                                @Html.DropDownList("idUfficio", ViewBag.UfficiList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+                                @Html.DropDownList("idUfficio", ViewBag.UfficiList as IEnumerable<SelectListItem>, new { @id= "idUfficio", @class = "form-control select2 select2-select" })
                         
                         </div>
 
@@ -90,15 +90,14 @@
              var rotta = "/Statistiche/OpDipEsteroNew/RptOpDipEstero";
 
              var data1 = $("#data1").datepicker().val()
-             var data2 = $("#data2").datepicker().val()
-
+             var idUfficio = $("#idUfficio").val();
 
              $.ajax({
                  type: "POST",
                  url: rotta,
                  data: {
                      dtIni: data1,
-                     dtFin: data2
+                     idUfficio: idUfficio
                  },
                  dataType: 'html',
                  beforeSend: function () {

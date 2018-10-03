@@ -12,7 +12,7 @@
   <xs:element name="DataSetStoriaDipendenteNew" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetStoriaDipendenteNew" msprop:Generator_UserDSName="DataSetStoriaDipendenteNew">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="matricola" msprop:Generator_ColumnVarNameInTable="columnmatricola" msprop:Generator_ColumnPropNameInRow="matricola" msprop:Generator_ColumnPropNameInTable="matricolaColumn" msprop:Generator_UserColumnName="matricola" type="xs:string" minOccurs="0" />
@@ -41,6 +41,7 @@
               <xs:element name="PensioneConiuge" msprop:Generator_ColumnVarNameInTable="columnPensioneConiuge" msprop:Generator_ColumnPropNameInRow="PensioneConiuge" msprop:Generator_ColumnPropNameInTable="PensioneConiugeColumn" msprop:Generator_UserColumnName="PensioneConiuge" type="xs:string" minOccurs="0" />
               <xs:element name="MaggiorazioniFamiliari" msprop:Generator_ColumnVarNameInTable="columnMaggiorazioniFamiliari" msprop:Generator_ColumnPropNameInRow="MaggiorazioniFamiliari" msprop:Generator_ColumnPropNameInTable="MaggiorazioniFamiliariColumn" msprop:Generator_UserColumnName="MaggiorazioniFamiliari" type="xs:string" minOccurs="0" />
               <xs:element name="PrimaSistemazione" msprop:Generator_ColumnVarNameInTable="columnPrimaSistemazione" msprop:Generator_ColumnPropNameInRow="PrimaSistemazione" msprop:Generator_ColumnPropNameInTable="PrimaSistemazioneColumn" msprop:Generator_UserColumnName="PrimaSistemazione" type="xs:string" minOccurs="0" />
+              <xs:element name="dataVariazione" msprop:Generator_ColumnVarNameInTable="columndataVariazione" msprop:Generator_ColumnPropNameInRow="dataVariazione" msprop:Generator_ColumnPropNameInTable="dataVariazioneColumn" msprop:Generator_UserColumnName="dataVariazione" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

@@ -2,6 +2,7 @@
 using NewISE.Areas.Statistiche.Models;
 using NewISE.EF;
 using NewISE.Models;
+using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using NewISE.Areas.Parametri.Models.dtObj;
 
 namespace NewISE.Areas.Statistiche.Controllers
 {
@@ -17,11 +19,47 @@ namespace NewISE.Areas.Statistiche.Controllers
         // GET: Statistiche/DipEsteroLivelloNew
         public ActionResult Index()
         {
-            return PartialView();
+            List<SelectListItem> LivelliList = new List<SelectListItem>();
+            var r = new List<SelectListItem>();
 
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtParLivelli dtl = new dtParLivelli())
+                    {
+                        List<LivelloModel> llm = new List<LivelloModel>();
+                        
+                        llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
+                        if (llm != null && llm.Count > 0)
+                        {
+                            r = (from t in llm
+                                 select new SelectListItem()
+                                 {
+                                     Text = t.DescLivello,
+                                     Value = t.idLivello.ToString()
+                                 }).ToList();
+
+                            r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+
+                        }
+
+                        ViewBag.LivelliList = r;
+                    }
+                    
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+            return PartialView();
         }
 
-        public ActionResult RptDipEsteroLivello(string dtIni, string dtFin)
+        public ActionResult RptDipEsteroLivello(string dtIni, string dtFin, decimal idLivello)
         {
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
             List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
@@ -40,22 +78,22 @@ namespace NewISE.Areas.Statistiche.Controllers
                     {
                         foreach (var lm in rim)
                         {
-                            RptRiepiloghiIseMensileModel rptds = new RptRiepiloghiIseMensileModel()
-                            {
-                                IdTeorici = lm.idTeorici,
-                                DescrizioneVoce = lm.Voci.descrizione,
-                                Nominativo = lm.Nominativo,
-                                Movimento = lm.TipoMovimento.DescMovimento,
-                                Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
-                                Voce = lm.Voci.codiceVoce,
-                                Inserimento = lm.tipoInserimento.ToString(),
-                                Importo = lm.Importo,
-                                Inviato = lm.Elaborato,
-                                meseRiferimento = lm.meseRiferimento
+                            //RptRiepiloghiIseMensileModel rptds = new RptRiepiloghiIseMensileModel()
+                            //{
+                            //    IdTeorici = lm.idTeorici,
+                            //    DescrizioneVoce = lm.Voci.descrizione,
+                            //    Nominativo = lm.Nominativo,
+                            //    Movimento = lm.TipoMovimento.DescMovimento,
+                            //    Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
+                            //    Voce = lm.Voci.codiceVoce,
+                            //    Inserimento = lm.tipoInserimento.ToString(),
+                            //    Importo = lm.Importo,
+                            //    Inviato = lm.Elaborato,
+                            //    meseRiferimento = lm.meseRiferimento
 
-                            };
+                            //};
 
-                            rpt.Add(rptds);
+                            //rpt.Add(rptds);
                         }
                     }
 

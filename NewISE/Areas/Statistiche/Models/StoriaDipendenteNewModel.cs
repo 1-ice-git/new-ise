@@ -114,8 +114,10 @@ namespace NewISE.Areas.Statistiche.Models
         public string ValutaUfficio { get; set; }
 
         public decimal indennita { get; set; }
-        
+
         public DateTime dataPartenza { get; set; }
+
+        public DateTime dataVariazione { get; set; }
 
         public DateTime dataRientro { get; set; }
 
@@ -151,6 +153,6 @@ namespace NewISE.Areas.Statistiche.Models
 
         [Display(Name = "Prima Sistemazione")]
         public decimal PrimaSistemazione { get; set; }
-
+        
     }
 }

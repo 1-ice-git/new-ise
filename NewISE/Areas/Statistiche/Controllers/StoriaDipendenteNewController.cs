@@ -130,7 +130,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView(dm);
         }
-
         public ActionResult RptStoriaDipendenteNew(decimal Nominativo)
         {
             List<StoriaDipendenteNewModel> rim = new List<StoriaDipendenteNewModel>();
@@ -166,6 +165,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 nome = lm.cognome + " " + lm.nome + " (" + lm.matricola + ")",
                                 //nome = lm.cognome + " " + lm.nome,
                                 dataAssunzione = lm.dataAssunzione,
+                                dataVariazione = lm.dataVariazione,
                                 Ufficio = lm.Ufficio,
                                 DescLivello =  lm.DescLivello,
                                 dataPartenza = lm.dataPartenza,
@@ -248,8 +248,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView("RptStoriaDipendenteNew");
         }
-
-
 
     }
 }

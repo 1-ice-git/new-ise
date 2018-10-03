@@ -18,7 +18,6 @@ namespace NewISE.Areas.Statistiche.Controllers
         // GET: Statistiche/OpDipEsteroNew
         public ActionResult Index()
         {
-
             List<SelectListItem> UfficiList = new List<SelectListItem>();
             var r = new List<SelectListItem>();
 
@@ -57,38 +56,28 @@ namespace NewISE.Areas.Statistiche.Controllers
             return PartialView();
         }
 
-        public ActionResult RptOpDipEstero(string dtIni, string dtFin)
+        public ActionResult RptOpDipEstero(string dtIni, decimal idUfficio)
         {
-            List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
-            List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
+            List<OpDipEsteroLivelloModel> rim = new List<OpDipEsteroLivelloModel>();
+            List<RptDipEsteroLivelloModel> rpt = new List<RptDipEsteroLivelloModel>();
 
             try
             {
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    //using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
-                    //{
-                    //    rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
-                    //}
+                    using (dtOpDipEsteroNew dtOpDipEsteroNew = new dtOpDipEsteroNew())
+                    {
+                        rim = dtOpDipEsteroNew.GetOpDipEsteroNew(dtIni, idUfficio, db).ToList();
+                    }
 
                     if (rim?.Any() ?? false)
                     {
                         foreach (var lm in rim)
                         {
-                            RptRiepiloghiIseMensileModel rptds = new RptRiepiloghiIseMensileModel()
+                            RptDipEsteroLivelloModel rptds = new RptDipEsteroLivelloModel()
                             {
-                                IdTeorici = lm.idTeorici,
-                                DescrizioneVoce = lm.Voci.descrizione,
-                                Nominativo = lm.Nominativo,
-                                Movimento = lm.TipoMovimento.DescMovimento,
-                                Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
-                                Voce = lm.Voci.codiceVoce,
-                                Inserimento = lm.tipoInserimento.ToString(),
-                                Importo = lm.Importo,
-                                Inviato = lm.Elaborato,
-                                meseRiferimento = lm.meseRiferimento
-
+                               
                             };
 
                             rpt.Add(rptds);
@@ -119,8 +108,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     // Nel caso in cui passo il DatePicker
                     ReportParameter[] parameterValues = new ReportParameter[]
                        {
-                            new ReportParameter ("Dal",Convert.ToString(dtIni)),
-                            new ReportParameter ("Al",Convert.ToString(dtFin))
+                            new ReportParameter ("Dal",Convert.ToString(dtIni))
                        };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);

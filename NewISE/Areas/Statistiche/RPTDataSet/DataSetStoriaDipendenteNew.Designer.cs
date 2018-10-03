@@ -331,6 +331,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             private global::System.Data.DataColumn columnPrimaSistemazione;
             
+            private global::System.Data.DataColumn columndataVariazione;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -574,6 +576,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn dataVariazioneColumn {
+                get {
+                    return this.columndataVariazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -635,7 +645,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         string IndennitaServizio, 
                         string PensioneConiuge, 
                         string MaggiorazioniFamiliari, 
-                        string PrimaSistemazione) {
+                        string PrimaSistemazione, 
+                        string dataVariazione) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         matricola,
@@ -663,7 +674,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         IndennitaServizio,
                         PensioneConiuge,
                         MaggiorazioniFamiliari,
-                        PrimaSistemazione};
+                        PrimaSistemazione,
+                        dataVariazione};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -712,6 +724,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.columnPensioneConiuge = base.Columns["PensioneConiuge"];
                 this.columnMaggiorazioniFamiliari = base.Columns["MaggiorazioniFamiliari"];
                 this.columnPrimaSistemazione = base.Columns["PrimaSistemazione"];
+                this.columndataVariazione = base.Columns["dataVariazione"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -769,6 +782,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnMaggiorazioniFamiliari);
                 this.columnPrimaSistemazione = new global::System.Data.DataColumn("PrimaSistemazione", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrimaSistemazione);
+                this.columndataVariazione = new global::System.Data.DataColumn("dataVariazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndataVariazione);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1330,6 +1345,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string dataVariazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.dataVariazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'dataVariazione\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.dataVariazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsmatricolaNull() {
                 return this.IsNull(this.tableDataTable1.matricolaColumn);
             }
@@ -1638,6 +1669,18 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPrimaSistemazioneNull() {
                 this[this.tableDataTable1.PrimaSistemazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsdataVariazioneNull() {
+                return this.IsNull(this.tableDataTable1.dataVariazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetdataVariazioneNull() {
+                this[this.tableDataTable1.dataVariazioneColumn] = global::System.Convert.DBNull;
             }
         }
         

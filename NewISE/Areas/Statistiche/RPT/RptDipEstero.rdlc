@@ -9,7 +9,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Periodo di riferimento:</Value>
+                <Value>Situazione al:</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -41,7 +41,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>="dal  " &amp; Parameters!Dal.Value</Value>
+                <Value>=Parameters!Dal.Value</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -55,36 +55,6 @@
         <Width>2.62364cm</Width>
         <ZIndex>1</ZIndex>
         <ToolTip>Dal </ToolTip>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox6">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>="al  " &amp; Parameters!Al.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>0.42761cm</Top>
-        <Left>8.41691cm</Left>
-        <Height>0.6cm</Height>
-        <Width>2.79477cm</Width>
-        <ZIndex>2</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -114,7 +84,7 @@
         <Left>21.1411cm</Left>
         <Height>0.6cm</Height>
         <Width>3.90423cm</Width>
-        <ZIndex>3</ZIndex>
+        <ZIndex>2</ZIndex>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
 ="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
         <Style>
@@ -174,7 +144,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>DIPENDENTI ALL'ESTERO PER LIVELLO</Value>
+                  <Value>DISLOCAZIONE DEI DIPENDENTI ALL'ESTERO</Value>
                   <Style>
                     <FontStyle>Normal</FontStyle>
                     <FontSize>14pt</FontSize>
@@ -233,10 +203,6 @@
   <AutoRefresh>0</AutoRefresh>
   <ReportParameters>
     <ReportParameter Name="Dal">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Al">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>

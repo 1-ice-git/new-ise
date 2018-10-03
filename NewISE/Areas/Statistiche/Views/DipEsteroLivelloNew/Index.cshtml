@@ -21,7 +21,7 @@
                 <div class="panel-heading"><b>Dipendenti all'Estero per Livello</b></div>
                 <div class="panel-body">
 
-                    <div class="col-xs-4 date">
+                    <div class="col-xs-3 date">
 
                         <div class="input-group input-append date">
                             <input type="text" class="form-control" id="data1" />
@@ -29,7 +29,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-4 date">
+                    <div class="col-xs-3 date">
 
                         <div class="input-group input-append date">
                             <input type="text" class="form-control" id="data2" />
@@ -37,19 +37,27 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-4 date">
-                        <button class="btn btn-small btn-default" id="opener">
-                            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                    <div class="col-xs-3 date">
+                        <div class="input-group input-append date">
 
-                            Stampa
-                        </button>
+                            @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @id = "idLivello", @class = "form-control select2 select2-select" })
+
+                        </div>
                     </div>
+
+                        <div class="col-xs-2 date">
+                            <button class="btn btn-small btn-default" id="opener">
+                                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+
+                                Stampa
+                            </button>
+                        </div>
 
 
                         @*<div class="col-md-3">
-                            <a href="#" onclick="callpartialRptOpIndSedeEstera()">Test </a>
+                <a href="#" onclick="callpartialRptOpIndSedeEstera()">Test </a>
 
-                        </div>*@
+            </div>*@
 
                     </div>
             </div>
@@ -97,13 +105,15 @@
              var data1 = $("#data1").datepicker().val()
              var data2 = $("#data2").datepicker().val()
 
+             var idLivello = $("#idLivello").val();
 
              $.ajax({
                  type: "POST",
                  url: rotta,
                  data: {
                      dtIni: data1,
-                     dtFin: data2
+                     dtFin: data2,
+                     idLivello: idLivello
                  },
                  dataType: 'html',
                  beforeSend: function () {
@@ -129,6 +139,14 @@
 
              });
 
+         });
+
+
+         $("#idLivello").select2({
+             placeholder: "Seleziona il Livello",
+             allowClear: true,
+             width: "150px",
+             language: "it"
          });
 
 </script>
