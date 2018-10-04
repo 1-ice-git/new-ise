@@ -12,7 +12,7 @@ namespace NewISE.Models.DBModel
         public decimal idTipoVoce { get; set; }
         [Required(ErrorMessage = "Il valore è richiesto")]
         [StringLength(100, ErrorMessage = "Sono ammessi un massimo di 100 caratteri.")]
-        [Display(Name = "Descrizione")]
+        [Display(Name = "Inserimento")]
         public string descrizione { get; set; }
 
     }

@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
+@using NewISE.Models.Tools
 <link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
 @{
@@ -50,9 +51,16 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                @if (item.dataFineValidita == Utility.DataFineStop())
+                {
+                    <td style="text-align:center;"></td>
+                }
+                else
+                {
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaPrimoSegretario)
                 </td>

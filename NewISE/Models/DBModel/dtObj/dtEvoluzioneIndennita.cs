@@ -47,68 +47,9 @@ namespace NewISE.Models.DBModel.dtObj
                             RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
 
                             dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
-
-                            //IndennitaBaseModel xx = new IndennitaBaseModel();
-
-                            //var tm = dttrasf.GetTrasferimentoById(idTrasferimento);
-
-                            //using (dtRuoloUfficio dtru = new dtRuoloUfficio())
-                            //{
-                            //    tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                            //    tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-
-                            //    tm.RuoloUfficio.DescrizioneRuolo = tm.RuoloUfficio.DescrizioneRuolo;
-                                
-                            //    libm.Add(xx);
-                            //}
-
-
-
+                            
                         }
                     }
-
-
-
-                    //using (dtTrasferimento dttrasf = new dtTrasferimento())
-                    //{
-                    //    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
-                    //    {
-                    //        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
-
-                    //        dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
-
-                    //        libm = (from e in ll
-                    //                select new IndennitaBaseModel()
-                    //                {
-                    //                    idIndennitaBase = e.IDINDENNITABASE,
-                    //                    idLivello = e.IDLIVELLO,
-                    //                    //dataInizioValidita = e.DATAINIZIOVALIDITA,
-                    //                    //dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                    //                    valore = e.VALORE,
-                    //                    valoreResponsabile = e.VALORERESP,
-                    //                    dataAggiornamento = e.DATAAGGIORNAMENTO,
-                    //                    annullato = e.ANNULLATO,
-                    //                    Livello = new LivelloModel()
-                    //                    {
-                    //                        idLivello = e.LIVELLI.IDLIVELLO,
-                    //                        DescLivello = e.LIVELLI.LIVELLO
-                    //                    },
-                    //                    RuoloUfficio = new RuoloUfficioModel()
-                    //                    {
-                    //                        idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio,
-                    //                        DescrizioneRuolo = rdm.RuoloUfficio.DescrizioneRuolo
-                    //                    },
-
-                    //                }).ToList();
-
-
-
-
-                    //    }
-                    //}
-
-
-
                     foreach (var ib in ll)
                     {
                         DateTime dtVar = new DateTime();
@@ -141,7 +82,10 @@ namespace NewISE.Models.DBModel.dtObj
                             if (dv < Utility.DataFineStop())
                             {
                                 DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-
+                                if (lDateVariazioni[j+1]== Utility.DataFineStop())
+                                {
+                                    dvSucc = lDateVariazioni[j + 1];
+                                }
                                 using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                 {
                                     IndennitaBaseModel xx = new IndennitaBaseModel();
@@ -273,7 +217,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #endregion
 
-
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                     if (lDateVariazioni?.Any() ?? false)
@@ -286,6 +229,10 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
+                                if (lDateVariazioni[j + 1] == Utility.DataFineStop())
+                                {
+                                    dvSucc = lDateVariazioni[j + 1];
+                                }
                                 using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                 {
                                         EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
@@ -490,6 +437,11 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
+                                if (lDateVariazioni[j + 1] == Utility.DataFineStop())
+                                {
+                                    dvSucc = lDateVariazioni[j + 1];
+                                }
+
                                 using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                 {
                                     EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
@@ -692,6 +644,11 @@ namespace NewISE.Models.DBModel.dtObj
                             if (dv < Utility.DataFineStop())
                             {
                                 DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                if (lDateVariazioni[j + 1] == Utility.DataFineStop())
+                                {
+                                    dvSucc = lDateVariazioni[j + 1];
+                                }
 
                                 using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                 {
@@ -1140,13 +1097,16 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
+                                if (lDateVariazioni[j + 1] == Utility.DataFineStop())
+                                {
+                                    dvSucc = lDateVariazioni[j + 1];
+                                }
+
                                 using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                 {
                                     EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-
                                     xx.dataInizioValidita = dv;
                                     xx.dataFineValidita = dvSucc;
-
                                     xx.IndennitaPrimoSegretario = ci.IndennitaPrimoSegretario;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     eim.Add(xx);
@@ -1756,18 +1716,16 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
+
+
                                 using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                 {
                                     EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-
                                     xx.dataInizioValidita = dv;
                                     xx.dataFineValidita = dvSucc;
                                     xx.IndennitaBase = ci.IndennitaDiBase;
-                                    
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
-                                    
-                                    
                                     xx.IndennitaRichiamo = ci.IndennitaRichiamoLordo;
 
                                     eim.Add(xx);

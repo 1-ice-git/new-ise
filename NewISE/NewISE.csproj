@@ -4721,6 +4721,17 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSetStoriaDipendenteNew.xsc">
       <DependentUpon>DataSetStoriaDipendenteNew.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiVoci.xsc">
+      <DependentUpon>DataSetRiepiloghiVoci.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiVoci.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetRiepiloghiVoci.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiVoci.xss">
+      <DependentUpon>DataSetRiepiloghiVoci.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSetStoriaDipendenteNew.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -5028,6 +5039,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetRiepiloghiMaggAbitazione.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiVoci.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetRiepiloghiVoci.xsd</DependentUpon>
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSetStoriaDipendenteNew.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -5752,6 +5768,7 @@
     <Compile Include="Models\DBModel\RptMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\RptMaggiorazioniConiuge.cs" />
     <Compile Include="Models\DBModel\RptMaggiorazioniFigli.cs" />
+    <Compile Include="Models\DBModel\RptRiepilogoVociModel.cs" />
     <Compile Include="Models\DBModel\SelectDocVc.cs" />
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />

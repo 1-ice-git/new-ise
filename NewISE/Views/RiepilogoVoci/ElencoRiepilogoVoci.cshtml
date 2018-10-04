@@ -29,38 +29,60 @@
 <table id="tbRiepilogoVoci" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th class="text-center">
+            @*<th class="text-center">
                 @Html.DisplayNameFor(model => model.dataOperazione)
-            </th>
+            </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.descrizione)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.importo)
+                @Html.DisplayNameFor(model => model.TipoMovimento.DescMovimento)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Voci.codiceVoce)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.TipoVoce.descrizione)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.TipoLiquidazione.descrizione)
             </th>
-           
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.MeseAnnoRiferimento)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.importo)
+            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td style="text-align:center;">
+                @*<td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataOperazione)
-                </td>
+                </td>*@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.descrizione)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.importo)
+                    @Html.DisplayFor(modelItem => item.TipoMovimento.DescMovimento)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.TipoVoce.descrizione)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.TipoLiquidazione.descrizione)
                 </td>
-
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.TipoLiquidazione.descrizione)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.importo)
+                </td>
             </tr>
         }
     </tbody>

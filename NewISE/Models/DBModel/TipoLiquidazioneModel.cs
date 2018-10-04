@@ -10,7 +10,7 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idTipoLiquidazione { get; set; }
-        [Display(Name = "Descrizione")]
+        [Display(Name = "Liquidazione")]
         [StringLength(50, ErrorMessage = "E' consentito inserire un massimo di 50 caratteri.")]
         [Required(ErrorMessage = "Il valore è richiesto.")]
         public string descrizione { get; set; }

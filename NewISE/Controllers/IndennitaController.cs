@@ -318,9 +318,13 @@ namespace NewISE.Controllers
                                         {
                                             DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
+                                            if (lDateVariazioni[j + 1] == Utility.DataFineStop())
+                                            {
+                                                dvSucc = lDateVariazioni[j + 1];
+                                            }
+
                                             using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                             {
-                                                //IndennitaBaseModel xx = new IndennitaBaseModel();
                                                 RptIndennitaBaseModel rpts = new RptIndennitaBaseModel()
                                                 {
                                                     IndennitaBase = ci.IndennitaDiBase,
@@ -330,29 +334,6 @@ namespace NewISE.Controllers
                                                 };
 
                                                 rpt.Add(rpts);
-
-                                                //xx.dataInizioValidita = dv;
-                                                //xx.dataFineValidita = dvSucc;
-                                                //xx.valore = ci.IndennitaDiBase;
-
-                                                //var DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString();
-                                                //var DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString();
-
-                                                //var IndennitaBase = ci.IndennitaDiBase;
-                                                //var test = ci.IndennitaDiBase.ToString();
-                                                //var PercentualeDisagio = ci.PercentualeDisagio;
-                                                //var CoefficienteSede = ci.CoefficienteDiSede;
-                                                //var IndennitaServizio = ci.IndennitaDiServizio;
-
-                                                ////string myString2 = Convert.ToString(IndennitaBase).ToString();
-                                                ////char[] characters = myString2.ToArray();
-
-                                                //indennitaBase[j] = ci.IndennitaDiBase.ToString("0.00");
-                                                //dataInizioValidita[j] = Convert.ToDateTime(dv).ToShortDateString();
-                                                //dataFineValidita[j] = Convert.ToDateTime(dvSucc).ToShortDateString();
-
-
-
                                             }
                                         }
                                     }
@@ -970,8 +951,6 @@ namespace NewISE.Controllers
 
             
         }
-
-
 
         #endregion
 

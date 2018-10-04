@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class RiepiloVociModel
+    public class RptRiepilogoVociModel
     {
         [Key]
-        
+
         [DataType(DataType.Date)]
         [Display(Name = "Data Operazione")]
         public DateTime dataOperazione { get; set; }
@@ -16,29 +18,38 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Importo")]
         public decimal importo { get; set; }
 
-        [Display(Name = "Descrizione Voce")]
+        [Display(Name = "Voce")]
         public string descrizione { get; set; }
-        
+
+        [Display(Name = "Ind. Sist. Lorda ")]
+        public string indPrimaSist { get; set; }
+
+        [Display(Name = "Ind. Sist. Lorda ")]
+        public string indSistLorda { get; set; }
+
         public TipoLiquidazioneModel TipoLiquidazione { get; set; }
+
+        public string Liquidazione { get; set; }
+        
+        public TipoMovimentoModel TipoMovimento { get; set; }
 
         [Display(Name = "Movimento")]
         public string movimento { get; set; }
 
-        [Display(Name = "Movimento")]
-        public TipoMovimentoModel TipoMovimento { get; set; }
-
         public TipoVoceModel TipoVoce { get; set; }
 
-        [Display(Name = "Voce")]
-        public string voce { get; set; }
+        public string Voce { get; set; }
 
+        public string Inserimento { get; set; }
+        
         public VociModel Voci { get; set; }
 
         public decimal meseRiferimento { get; set; }
 
         public decimal annoRiferimento { get; set; }
 
-        public decimal annomeseRiferimento { get; set; }
+        public string meseAnnoRiferimento { get; set; }
+
         
         public decimal giorni { get; set; }
 
