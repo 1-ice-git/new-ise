@@ -1496,6 +1496,7 @@
           <Property Name="DIRETTO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
           <Property Name="IDAUTOVOCIMANUALI" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -4817,6 +4818,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_T_T">
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_T_D">
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6612,6 +6627,10 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
           </AssociationSet>
+          <AssociationSet Name="R_T_T" Association="Self.R_T_T">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
           <AssociationSet Name="R_T_T_D" Association="Self.R_T_T_D">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="TRASF_DOC" EntitySet="TRASF_DOC" />
@@ -7522,6 +7541,10 @@
           <AssociationSet Name="R_ST_T" Association="DBISE.R_ST_T">
             <End Role="STATOTRASFERIMENTO" EntitySet="STATOTRASFERIMENTO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_T" Association="DBISE.R_T_T">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_TM_T" Association="DBISE.R_TM_T">
             <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
@@ -9220,6 +9243,7 @@
           <Property Name="DIRETTO" Type="Boolean" Nullable="false" />
           <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDAUTOVOCIMANUALI" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_AVM_T" FromRole="TEORICI" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_T" FromRole="TEORICI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
@@ -9227,6 +9251,7 @@
           <NavigationProperty Name="FLUSSICEDOLINO" Relationship="DBISE.R_T_FC" FromRole="TEORICI" ToRole="FLUSSICEDOLINO" />
           <NavigationProperty Name="MESEANNOELABORAZIONE" Relationship="DBISE.R_MAE_T" FromRole="TEORICI" ToRole="MESEANNOELABORAZIONE" />
           <NavigationProperty Name="OA" Relationship="DBISE.R_T_OA" FromRole="TEORICI" ToRole="OA" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_T" FromRole="TEORICI" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISE.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
           <NavigationProperty Name="VOCI" Relationship="DBISE.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.ELABIND_TEORICI" FromRole="TEORICI" ToRole="ELABINDENNITA" />
@@ -9440,6 +9465,7 @@
           <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISE.R_T_RD" FromRole="TRASFERIMENTO" ToRole="RUOLODIPENDENTE" />
           <NavigationProperty Name="SOSPENSIONE" Relationship="DBISE.R_TRASF_SOSP" FromRole="TRASFERIMENTO" ToRole="SOSPENSIONE" />
           <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="DBISE.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISE.R_T_T" FromRole="TRASFERIMENTO" ToRole="TEORICI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISE.R_T_TEP" FromRole="TRASFERIMENTO" ToRole="TEPARTENZA" />
           <NavigationProperty Name="TERIENTRO" Relationship="DBISE.R_T_TER" FromRole="TRASFERIMENTO" ToRole="TERIENTRO" />
           <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISE.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
@@ -11536,6 +11562,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_T_T">
+          <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TM_T">
           <End Type="DBISE.TIPOMOVIMENTO" Role="TIPOMOVIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -13116,6 +13156,7 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDAUTOVOCIMANUALI" ColumnName="IDAUTOVOCIMANUALI" />
                 <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
                 <ScalarProperty Name="DIRETTO" ColumnName="DIRETTO" />

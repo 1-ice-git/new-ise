@@ -97,42 +97,7 @@
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    //$("#percentuale").autoNumeric('init',
-    //{
-    //    aSep: '.',
-    //    aDec: ',',
-    //    aSign: ''
-    //});
 
-    //$("#percentualeResponsabile").autoNumeric('init',
-    //{
-    //    aSep: '.',
-    //    aDec: ',',
-    //    aSign: ''
-    //});
-
-    $('form').submit(function () {
-        //debugger;
-        //var form = $(this);
-        //$('input.number').each(function (i) {
-        //    //debugger;
-        //    var self = $(this);
-        //    try {
-        //        var v = self.autoNumeric('get');
-        //        //self.autoNumeric('destroy');
-        //        var n = v.replace(".", ",");
-        //        self.val(n);
-        //    } catch (err) {
-        //        console.log("Non è un campo autonumeric: " + self.attr("name"));
-        //    }
-        //});
-        return true;
-    });
-
-    $.validator.methods.range = function (value, element, param) {
-        var globalizedValue = value.replace(",", ".");
-        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-    };
 
     $.validator.methods.number = function (value, element) {
         //debugger;

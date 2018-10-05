@@ -60,7 +60,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.valore, htmlAttributes: new { @class = "control-label col-xs-2" })
             <div class="col-xs-10">
-                @Html.EditorFor(model => model.valore, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.EditorFor(model => model.valore, new { htmlAttributes = new { @class = "form-control" } })*@
+                <input type="text" id="valoreUI" value="" class="form-control ignore" />
+                <input type="hidden" id="valore" name="valore" value="" />
                 @Html.ValidationMessageFor(model => model.valore, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -82,37 +84,48 @@
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    anElement = new AutoNumeric('#valore', autoNumericOptionsEuroOttoDec);
+    anElement = new AutoNumeric('#valoreUI', autoNumericOptionsEuroOttoDec);
 
-
-    $('form').submit(function () {
+    $("#valoreUI").blur(function () {
         //debugger;
-        var form = $(this);
-        $('input.number').each(function (i) {
-            //debugger;
-            var self = $(this);
-            try {
-                //var v = self.autoNumeric('get');
-                var v = self.getNumber();
-                //self.autoNumeric('destroy');
-                var n = v.toString().replace(".", ",");
-                self.val(n);
-            } catch (err) {
-                console.log("Non è un campo autonumeric: " + self.attr("name"));
-            }
-        });
-        return true;
+        var val = anElement.getNumber();
+        $("#valore").val(val.toString().replace(".", ","));
     });
 
-    $.validator.methods.range = function (value, element, param) {
-        var globalizedValue = value.replace(",", ".");
-        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-    };
+    //$('form').submit(function () {
+    //    //debugger;
+    //    var form = $(this);
+    //    $('input .number').each(function (i) {
+    //        //debugger;
+    //        var self = $(this);
+    //        try {
+    //            //var v = self.autoNumeric('get');
+    //            var v = self.getNumber();
+    //            //self.autoNumeric('destroy');
+    //            var n = v.toString().replace(".", ",");
+    //            self.val(n);
+    //        } catch (err) {
+    //            console.log("Non è un campo autonumeric: " + self.attr("name"));
+    //        }
+    //    });
+    //    return true;
+    //});
+
+    //$.validator.methods.range = function (value, element, param) {
+    //    var globalizedValue = value.replace(",", ".");
+    //    return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+    //};
 
     $.validator.methods.number = function (value, element) {
         //debugger;
-        return this.optional(element) || !isNaN(Globalize.parseFloat(value));
-    };
+        var val = value.replace(".", ",");
+        return this.optional(element) || !isNaN(Globalize.parseFloat(val));
+    }
+
+    $.validator.setDefaults({
+        ignore: ".ignore" // validate all hidden select elements
+    });
+
 
     $('#dataInizioValidita').datepicker({
         inline: true,

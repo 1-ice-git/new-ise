@@ -15,14 +15,14 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult IndennitaSistemazione(bool escludiAnnullati, decimal idLivello = 0,bool aggiornaTutto=false)
+        public ActionResult IndennitaSistemazione(bool escludiAnnullati, decimal idLivello = 0, bool aggiornaTutto = false)
         {
-            ViewBag.escludiAnnullati = escludiAnnullati;           
+            ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();
             List<TipoTrasferimentoModel> llm = new List<TipoTrasferimentoModel>();
             try
             {
-                idLivello=CaricaComboTipoTrasferimento(idLivello);
+                idLivello = CaricaComboTipoTrasferimento(idLivello);
                 List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
                 using (dtParIndSist dtib = new dtParIndSist())
                 {
@@ -39,7 +39,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         public decimal CaricaComboTipoTrasferimento(decimal idTipoTrasf = 0)
         {
-          //  List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            //  List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             var r = new List<SelectListItem>();
             List<TipoTrasferimentoModel> llm = new List<TipoTrasferimentoModel>();
             using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
@@ -123,7 +123,8 @@ namespace NewISE.Areas.Parametri.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciIndennitaSistemazione(IndennitaSistemazioneModel ibm, bool escludiAnnullati,bool aggiornaTutto=false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciIndennitaSistemazione(IndennitaSistemazioneModel ibm, bool escludiAnnullati, bool aggiornaTutto = false)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
@@ -134,15 +135,15 @@ namespace NewISE.Areas.Parametri.Controllers
                     {
                         dtib.SetIndennitaSistemazione(ibm, aggiornaTutto);
                     }
-                    
-                    decimal idtipTras=CaricaComboTipoTrasferimento(ibm.idTipoTrasferimento);
+
+                    decimal idtipTras = CaricaComboTipoTrasferimento(ibm.idTipoTrasferimento);
                     List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
                     using (dtParIndSist dtib = new dtParIndSist())
                     {
                         ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndSistemNonAnnullato(idtipTras);
                         libm = dtib.getListIndennitaSistemazione(idtipTras, escludiAnnullati).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
-                    return PartialView("IndennitaSistemazione",libm);
+                    return PartialView("IndennitaSistemazione", libm);
                     //   return RedirectToAction("IndennitaSistemazione", new { escludiAnnullati = escludiAnnullati, idTipoTrasferimento = ibm.idTipoTrasferimento });
                 }
                 else
@@ -173,7 +174,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     dtib.DelIndennitaSistemazione(idIndSist);
                 }
-               
+
                 idTipoTrasferimento = CaricaComboTipoTrasferimento(idTipoTrasferimento);
                 List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
                 using (dtParIndSist dtib = new dtParIndSist())

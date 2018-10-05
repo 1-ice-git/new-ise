@@ -117,6 +117,7 @@ namespace NewISE.Areas.Parametri.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "1, 2")]
+        [ValidateAntiForgeryToken]
         public ActionResult InserisciValuta(ValuteModel ibm)
         {
             var r = new List<SelectListItem>();

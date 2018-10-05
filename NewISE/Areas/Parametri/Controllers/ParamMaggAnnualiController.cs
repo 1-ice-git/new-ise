@@ -19,7 +19,7 @@ namespace NewISE.Areas.Parametri.Controllers
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
-           
+
             try
             {
                 idLivello = CaricaCombo(idLivello);
@@ -36,9 +36,9 @@ namespace NewISE.Areas.Parametri.Controllers
             ViewBag.escludiAnnullati = escludiAnnullati;
             return PartialView(libm);
         }
-        
+
         decimal CaricaCombo(decimal idLivello)
-        {            
+        {
             var r = new List<SelectListItem>();
             List<UfficiModel> llm = new List<UfficiModel>();
             using (dtUffici dtl = new dtUffici())
@@ -122,7 +122,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneAnnuale(MaggiorazioniAnnualiModel ibm, bool escludiAnnullati = true,bool aggiornaTutto = false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciMaggiorazioneAnnuale(MaggiorazioniAnnualiModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();
@@ -139,7 +140,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAnnualiNonAnnullato(idUfficio);
                         libm = dtib.getListMaggiorazioneAnnuale(idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
-                    return PartialView("MaggiorazioniAnnuali",libm);
+                    return PartialView("MaggiorazioniAnnuali", libm);
                 }
                 else
                 {
@@ -173,7 +174,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAnnualiNonAnnullato(idUfficio);
                     libm = dtib.getListMaggiorazioneAnnuale(idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
-                return PartialView("MaggiorazioniAnnuali",libm);
+                return PartialView("MaggiorazioniAnnuali", libm);
             }
             catch (Exception ex)
             {

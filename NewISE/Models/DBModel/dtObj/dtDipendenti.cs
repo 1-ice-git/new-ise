@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.Enumeratori;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -565,9 +566,13 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
+
+                dtIniRicalcoli = Utility.GetDataInizioMese(dtIniRicalcoli);
+
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                 var d = t.DIPENDENTI;
+
                 if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
                 {
                     d.DATAINIZIORICALCOLI = dtIniRicalcoli;

@@ -84,7 +84,8 @@ namespace NewISE.Areas.Parametri.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciCondivisioneMAB(percCondivisioneMABModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciCondivisioneMAB(percCondivisioneMABModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -95,7 +96,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtCondivisioneMAB dtib = new dtCondivisioneMAB())
                     {
-                        dtib.SetCondivisioneMAB(ibm,aggiornaTutto);
+                        dtib.SetCondivisioneMAB(ibm, aggiornaTutto);
                     }
                     using (dtCondivisioneMAB dtib = new dtCondivisioneMAB())
                     {
@@ -106,7 +107,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     //return RedirectToAction("PrimoSegretario", new { escludiAnnullati = escludiAnnullati, idIndPrimoSegr = ibm.idIndPrimoSegr });
                 }
                 else
-                {                    
+                {
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaCondivisioneMAB", ibm);
                 }
@@ -128,7 +129,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     dtib.DelIndennitaPrimoSegretario(idIndPrimoSegr);
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndCondivisioneMABAnnullato();
-                    libm = dtib.getListCondivisioneMAB(escludiAnnullati).OrderBy(a=>a.dataFineValidita).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    libm = dtib.getListCondivisioneMAB(escludiAnnullati).OrderBy(a => a.dataFineValidita).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
                 return PartialView("PercCondivisioneMAB", libm);
             }

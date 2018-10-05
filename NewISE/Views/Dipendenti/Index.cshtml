@@ -1512,7 +1512,7 @@
     }
 
     function MenuViaggiCongedo(idTrasferimento) {
-        // debugger;
+        //debugger;
         var rotta = "/ViaggiCongedo/VerificaViaggiCongedo";
 
         var valoreRitorno = 0;
@@ -1561,11 +1561,10 @@
     }
 
     function ViaggiCongedoPermesso() {
-        //    debugger;
-        //   debugger;
+        //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
-        //rotta = "/ViaggiCongedo/PreventiviDiViaggio";
         rotta = "/ViaggiCongedo/ElencoPreventiviDiViaggio";
+
         $.ajax({
             type: "POST",
             url: rotta,

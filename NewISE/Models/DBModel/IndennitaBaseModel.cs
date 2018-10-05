@@ -34,11 +34,11 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il valore è richiesto.")]
         [Display(Name = "Importo")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
         [Display(Name = "Importo resp.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal valoreResponsabile { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
@@ -61,7 +61,7 @@ namespace NewISE.Models.DBModel
         public CoefficientiSedeModel CoefficenteSede { get; set; }
 
         public PercentualeDisagioModel PercentualeDisagio { get; set; }
-        
+
         public RiduzioniModel Riduzioni { get; set; }
 
         public dipInfoTrasferimentoModel dipInfoTrasferimento { get; set; }

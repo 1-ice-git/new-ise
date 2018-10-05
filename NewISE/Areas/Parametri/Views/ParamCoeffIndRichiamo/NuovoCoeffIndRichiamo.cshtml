@@ -29,20 +29,11 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @*@Html.HiddenFor(model => model.idCoefIndRichiamo)*@
+
 
         <input type="hidden" id="escludiAnnullati" name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
         <input type="hidden" id="aggiornaTutto" name="aggiornaTutto" />
-        @*<div class="form-group">
-                <div class="col-xs-2 text-right">
-                    <label>Km </label>
-                </div>
-                <div class="col-xs-10">
-                    <div class="panel panel-default">
-                        <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@CoeffIndRichiamo.ToString()</label>
-                    </div>
-                </div>
-            </div>*@
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -51,39 +42,24 @@
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
             <div id="divChkAgg" class="col-xs-5">
-                <div style="display:inline-block;">
-                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                <div style="display: inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick=" AggiornaTutto() " />
                 </div>
-                <div style="vertical-align:middle; display:inline-block;">
+                <div style="vertical-align: middle; display: inline-block;">
                     <label>Aggiorna tutto</label>
                 </div>
             </div>
         </div>
 
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
         <div class="form-group ">
             @Html.LabelFor(model => model.coefficienteRichiamo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.coefficienteRichiamo, new { htmlAttributes = new { @class = "form-control number" } })
+                <input type="text" id="coefficienteRichiamoUI" class="form-control ignore" />
+                <input type="hidden" id="coefficienteRichiamo" name="coefficienteRichiamo" />
+
                 @Html.ValidationMessageFor(model => model.coefficienteRichiamo, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.coefficienteIndBase, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.coefficienteIndBase, new { htmlAttributes = new { @class = "form-control number" } })
-                    @Html.ValidationMessageFor(model => model.coefficienteIndBase, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
 
 
         <div class="form-group">
@@ -123,85 +99,25 @@
 
 <script type="text/javascript">
 
-     @*@foreach(var e in errori)
-    {
-        if(e.Value.Errors.Count>0)
-        {
-            @:DialogModalError('True');
-            break;
-        }
-    }*@
-
-    //$('#formCoeffIndRichiamo').submit(function () {
-    // //   debugger;
-    //    var form = $(this);
-    //    if (!form.valid()) {
-    //        DialogModalError('True');
-    //    }
-    //});
-
-    //function DialogModalError(err) {
-    //    //debugger;
-    //    if (err == 'True') {
-    //        $('#myModalErrorModel').modal('toggle');
-    //    }
-    //}
-
 
     Globalize.culture("it-IT");
 
-    //$("#valore").autoNumeric('init',
-    //{
-    //    aSep: '.',
-    //    aDec: ',',
-    //    aSign: ''
-    //});
+    anElement = new AutoNumeric('#coefficienteRichiamoUI', autoNumericOptionsEuroOttoDec);
 
-    //$("#valoreResponsabile").autoNumeric('init',
-    //{
-    //    aSep: '.',
-    //    aDec: ',',
-    //    aSign: ''
-    //});
-
-    anElement = new AutoNumeric('#valore', autoNumericOptionsEuroOttoDec);
-
-    anElementResp = new AutoNumeric('#valoreResponsabile', autoNumericOptionsEuroOttoDec);
-
-    $('form').submit(function () {
+    $("#coefficienteRichiamoUI").blur(function () {
         //debugger;
-        //var form = $(this);
-        try {
-            $('input.number').each(function (i) {
-                //debugger;
-                var self = $(this);
-                try {
-                    var v = self.getNumber();
-                    //self.autoNumeric('destroy');
-                    var n = v.toString().replace(".", ",");
-                    self.val(n);
-                } catch (err) {
-                    console.log("Non è un campo autonumeric: " + self.attr("name"));
-                }
-            });
-            return true;
-        }
-        catch (e) {
-            //debugger;
-
-        }
-
+        var val = anElement.getNumber();
+        $("#coefficienteRichiamo").val(val.toString().replace(".", ","));
     });
-
-    $.validator.methods.range = function (value, element, param) {
-        var globalizedValue = value.replace(",", ".");
-        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-    };
 
     $.validator.methods.number = function (value, element) {
         //debugger;
         return this.optional(element) || !isNaN(Globalize.parseFloat(value));
     };
+
+    $.validator.setDefaults({
+        ignore: ".ignore"
+    });
 
     $('#dataInizioValidita').datepicker({
         inline: true,

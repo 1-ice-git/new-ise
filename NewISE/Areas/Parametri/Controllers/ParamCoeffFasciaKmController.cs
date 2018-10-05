@@ -15,7 +15,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
         //public ActionResult CoefficienteFasciaKm(bool escludiAnnullati, decimal idDefKm = 0)
-        public ActionResult CoefficienteFasciaKm(bool escludiAnnullati, decimal idLivello = 0,decimal idUfficio=0)
+        public ActionResult CoefficienteFasciaKm(bool escludiAnnullati, decimal idLivello = 0, decimal idUfficio = 0)
         {
             List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -25,12 +25,12 @@ namespace NewISE.Areas.Parametri.Controllers
                 CaricaComboGruppoFKM(idUfficio, idLivello);
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                 {
-                    if(idLivello == 0)
+                    if (idLivello == 0)
                     {
                         var x = (IEnumerable<SelectListItem>)ViewBag.FasciaKM;
-                        if(x.Count()!=0)
+                        if (x.Count() != 0)
                             idLivello = Convert.ToDecimal(x.First().Value);
-                    }                   
+                    }
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idLivello);
                     libm = dtib.getListCoeffFasciaKm(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
@@ -78,9 +78,9 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             ViewBag.FasciaKM = r_fkm;
         }
-        public void CaricaComboGruppoFKM(decimal idLivelloGFKM=0,decimal idLivello_FKM=0)
+        public void CaricaComboGruppoFKM(decimal idLivelloGFKM = 0, decimal idLivello_FKM = 0)
         {
-            var r = new List<SelectListItem>() ;
+            var r = new List<SelectListItem>();
             List<GruppoFKMModel> llg = new List<GruppoFKMModel>();
             using (dtGruppoFKM dtl = new dtGruppoFKM())
             {
@@ -130,23 +130,23 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Value = t.idfKm.ToString()
                              }).ToList();
 
-                        if (idLivello_FKM == 0)
+                    if (idLivello_FKM == 0)
+                    {
+                        r_fkm.First().Selected = true;
+                        idLivello_FKM = Convert.ToDecimal(r_fkm.First().Value);
+                    }
+                    else
+                    {
+                        var temp = r_fkm.Where(a => a.Value == idLivello_FKM.ToString()).ToList();
+                        if (temp.Count == 0)
                         {
                             r_fkm.First().Selected = true;
                             idLivello_FKM = Convert.ToDecimal(r_fkm.First().Value);
+
                         }
                         else
-                        {
-                            var temp = r_fkm.Where(a => a.Value == idLivello_FKM.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r_fkm.First().Selected = true;
-                                idLivello_FKM = Convert.ToDecimal(r_fkm.First().Value);
-
-                            }
-                            else
-                                r_fkm.Where(a => a.Value == idLivello_FKM.ToString()).First().Selected = true;
-                        }
+                            r_fkm.Where(a => a.Value == idLivello_FKM.ToString()).First().Selected = true;
+                    }
                 }
                 ViewBag.FasciaKM = r_fkm;
             }
@@ -185,24 +185,24 @@ namespace NewISE.Areas.Parametri.Controllers
                             r.Where(a => a.Value == idLivelloGFKM.ToString()).First().Selected = true;
                     }
                 }
-                ViewBag.GruppoFKM = r;                
+                ViewBag.GruppoFKM = r;
             }
         }
         //AggiornaListaFasciaKmDalGruppo
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult AggiornaListaFasciaKmDalGruppo(decimal idGruppoFKm,bool escludiAnnullati=true)//,decimal idLivello_FKM=0)
+        public ActionResult AggiornaListaFasciaKmDalGruppo(decimal idGruppoFKm, bool escludiAnnullati = true)//,decimal idLivello_FKM=0)
         {
-            
+
             List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
             var r = new List<SelectListItem>();
             List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
             try
             {
-                
+
                 CaricaComboGruppoFKM(idGruppoFKm, 0);
                 IEnumerable<SelectListItem> FasciaKM = (IEnumerable<SelectListItem>)ViewBag.FasciaKM;
-                decimal idLivello_FKM = Convert.ToDecimal(FasciaKM.Where(x => x.Selected).FirstOrDefault().Value);               
+                decimal idLivello_FKM = Convert.ToDecimal(FasciaKM.Where(x => x.Selected).FirstOrDefault().Value);
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idLivello_FKM);
@@ -220,16 +220,16 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult CoefficienteFasciaKmLivello(decimal idGruppoFKm,decimal idFKm, bool escludiAnnullati)
+        public ActionResult CoefficienteFasciaKmLivello(decimal idGruppoFKm, decimal idFKm, bool escludiAnnullati)
         {
             List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
             var r = new List<SelectListItem>();
             List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
             try
             {
-                CaricaComboGruppoFKM(idGruppoFKm,idFKm);
+                CaricaComboGruppoFKM(idGruppoFKm, idFKm);
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
-                {                   
+                {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idFKm);
                     libm = dtib.getListCoeffFasciaKm(idFKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
@@ -245,7 +245,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovoCoeffFasciakm(decimal idGruppoFKm, bool escludiAnnullati,decimal idFKm=0)
+        public ActionResult NuovoCoeffFasciakm(decimal idGruppoFKm, bool escludiAnnullati, decimal idFKm = 0)
         {
             CoeffFasciaKmModel ibm = new CoeffFasciaKmModel();
             try
@@ -263,7 +263,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciCoeffFasciaKm(CoeffFasciaKmModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false,decimal idGruppoFKm=0,decimal id_DefKm = 0)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciCoeffFasciaKm(CoeffFasciaKmModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false, decimal idGruppoFKm = 0, decimal id_DefKm = 0)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();
@@ -281,8 +282,8 @@ namespace NewISE.Areas.Parametri.Controllers
                     CaricaComboGruppoFKM(idGruppoFKm, id_DefKm);
                     using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                     {
-                            ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(id_DefKm);
-                            libm = dtib.getListCoeffFasciaKm(id_DefKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(id_DefKm);
+                        libm = dtib.getListCoeffFasciaKm(id_DefKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("CoefficienteFasciaKm", libm);
                     //return RedirectToAction("CoefficienteFasciaKm", new { escludiAnnullati = escludiAnnullati, idDefKm = ibm.idDefKm });
@@ -302,7 +303,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaCoeffFasciaKm(bool escludiAnnullati, decimal idCfKm, decimal idDefKm,decimal idGruppoFKm)
+        public ActionResult EliminaCoeffFasciaKm(bool escludiAnnullati, decimal idCfKm, decimal idDefKm, decimal idGruppoFKm)
         {
             try
             {
