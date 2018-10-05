@@ -289,6 +289,8 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columnSaldoContrOmniComprensivoPartenza;
             
+            private global::System.Data.DataColumn columnPercentualeFasciaKmP;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -364,6 +366,14 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercentualeFasciaKmPColumn {
+                get {
+                    return this.columnPercentualeFasciaKmP;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -399,14 +409,15 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaSistemazioneLorda, string AnticipoContrOmniComprensivoPartenza, string SaldoContrOmniComprensivoPartenza) {
+            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaSistemazioneLorda, string AnticipoContrOmniComprensivoPartenza, string SaldoContrOmniComprensivoPartenza, string PercentualeFasciaKmP) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DataInizioValidita,
                         DataFineValidita,
                         IndennitaSistemazioneLorda,
                         AnticipoContrOmniComprensivoPartenza,
-                        SaldoContrOmniComprensivoPartenza};
+                        SaldoContrOmniComprensivoPartenza,
+                        PercentualeFasciaKmP};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -434,6 +445,7 @@ namespace NewISE.Views.Dataset {
                 this.columnIndennitaSistemazioneLorda = base.Columns["IndennitaSistemazioneLorda"];
                 this.columnAnticipoContrOmniComprensivoPartenza = base.Columns["AnticipoContrOmniComprensivoPartenza"];
                 this.columnSaldoContrOmniComprensivoPartenza = base.Columns["SaldoContrOmniComprensivoPartenza"];
+                this.columnPercentualeFasciaKmP = base.Columns["PercentualeFasciaKmP"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -449,6 +461,8 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnAnticipoContrOmniComprensivoPartenza);
                 this.columnSaldoContrOmniComprensivoPartenza = new global::System.Data.DataColumn("SaldoContrOmniComprensivoPartenza", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSaldoContrOmniComprensivoPartenza);
+                this.columnPercentualeFasciaKmP = new global::System.Data.DataColumn("PercentualeFasciaKmP", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentualeFasciaKmP);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -675,6 +689,23 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PercentualeFasciaKmP {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercentualeFasciaKmPColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercentualeFasciaKmP\' nella tabella \'DataTable1\' è DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PercentualeFasciaKmPColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDataInizioValiditaNull() {
                 return this.IsNull(this.tableDataTable1.DataInizioValiditaColumn);
             }
@@ -731,6 +762,18 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetSaldoContrOmniComprensivoPartenzaNull() {
                 this[this.tableDataTable1.SaldoContrOmniComprensivoPartenzaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercentualeFasciaKmPNull() {
+                return this.IsNull(this.tableDataTable1.PercentualeFasciaKmPColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercentualeFasciaKmPNull() {
+                this[this.tableDataTable1.PercentualeFasciaKmPColumn] = global::System.Convert.DBNull;
             }
         }
         

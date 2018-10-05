@@ -2922,8 +2922,9 @@ namespace NewISE.Controllers
                                                 DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda,
                                                 AnticipoContrOmniComprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza,
-                                                SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza
-
+                                                SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza,
+                                                PercentualeFasciaKmP =  ci.PercentualeFKMPartenza
+                                                
                                             };
 
                                             rpt.Add(rpts);
@@ -3027,10 +3028,8 @@ namespace NewISE.Controllers
 
 
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-
-
+                            
                             List<DateTime> lDateVariazioni = new List<DateTime>();
-
 
                             #region Variazioni Percentuale Fascia Km
 
@@ -3085,7 +3084,8 @@ namespace NewISE.Controllers
                                                 DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 IndennitaRichiamo = ci.IndennitaRichiamoLordo,
                                                 AnticipoContrOmniComprensivoRientro = ci.AnticipoContributoOmnicomprensivoPartenza,
-                                                SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza
+                                                SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza,
+                                                PercentualeFasciaKmR = ci.PercentualeFKMRientro
                                                                                                
                                             };
 
