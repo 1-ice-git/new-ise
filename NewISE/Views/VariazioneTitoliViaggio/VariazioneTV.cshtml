@@ -1,0 +1,683 @@
+﻿@using NewISE.Models.DBModel
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+}
+
+<link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
+
+<div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+    <div class="row">
+        <div class="col-xs-12" style="text-align:center">
+            <h4><strong>RICHIESTA TITOLI VIAGGIO</strong></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li class="active" role="presentation">
+                    <a id="tabElaborazioneTV"
+                       aria-controls="TV_Elaborazioni"
+                       data-toggle="tab"
+                       href="#TV_Elaborazioni"
+                       role="tab">Elaborazione</a>
+                </li>
+                <li role="presentation">
+                    <a id="tabTVCompletati"
+                       aria-controls="TV_Completati"
+                       data-toggle="tab"
+                       href="#TV_Completati"
+                       role="tab">Completati</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="active tab-pane" id="TV_Elaborazioni">
+                    <div id="divElaborazioneTV">
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="TV_Completati">
+                    <div id="divPassaportiTV">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalNotificaRichiestaVariazioneTV" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaVariazioneTVLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaRichiestaVariazioneTV">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotificaRichiestaVariazioneTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaVariazioneTV();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaRichiestaVariazioneTV" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaVariazioneTVLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaRichiestaVariazioneTV">
+                    <label>Procedere con l'attivazione della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazioneRichiestaVariazioneTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaVariazioneTV();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaRichiestaVariazioneTV" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaVariazioneTVLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaRichiestaVariazioneTV">
+                    <label>Procedere con l'annullamento della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnullaRichiestaVariazioneTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaVariazioneTV();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="InserisciDocTVModal" tabindex="-1" role="dialog" aria-labelledby="InserisciDocTVModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelTVLabel">Documento Titolo Viaggio</h3>
+            </div>
+            <div class="modal-body text-info" style="font-size: 1em;">
+                <div id="divDocPP" class="modal-body alert alert-info text-info">
+                    <p id="viewDocumentoTV">
+                        <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btInserisciDocTV" type="button" class="btn btn-info" onclick="SalvaDocTV(@idTrasferimento);">Salva</button>
+                <button id="btAnnullaDocTV" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        localStorage.setItem('lastActiveTab', $(this).attr('href'));
+        var lastTab = localStorage.getItem('lastActiveTab');
+        if (lastTab) {
+            $('[href="' + lastTab + '"]').tab('show');
+        }
+        var x = e.target.id;
+        if(x=="tabElaborazioneTV")
+        {
+            ElaborazioneTV();
+        } else {
+            TVCompletato();
+        }
+
+    });
+
+    ElaborazioneTV();
+
+    //GestionePulsantiNotificaAttivaAnnullaVariazioneTV();
+
+
+    function GestionePulsantiNotificaAttiva_VariazioneTV() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/GestionePulsantiNotificaAttiva_VariazioneTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPusantiNotificaAndConcludiTV_var").empty();
+                $("#divPusantiNotificaAndConcludiTV_var").html(result);
+                // $('#tabs').tabs({ selected: 0 });
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+
+
+
+    @*function GestionePulsantiNotificaAttiva_VariazioneTV() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/GestionePulsantiNotificaAttiva_VariazioneTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    var admin = result.admin;
+                    var richiediNotifica = result.richiediNotifica;
+                    var richiediAnnulla = result.richiediAnnulla;
+                    var richiediAttivazione = result.richiediAttivazione;
+                    var inLavorazione = result.inLavorazione;
+                    var trasfAnnullato=result.trasfAnnullato;
+
+                    $("#btNotificaRichiestaVariazioneTV").attr("disabled", "disabled");
+                    $("#btNotificaRichiestaVariazioneTV").addClass("disabled");
+
+                    $("#btNotificaRichiestaVariazioneTV").removeAttr("hidden");
+                    $("#btNotificaRichiestaVariazioneTV").removeClass("hidden");
+
+                    //se amministratore vedo i pulsanti altrimenti solo notifica
+                    if (admin) {
+                        $("#btAttivaRichiestaVariazioneTV").attr("disabled", "disabled");
+                        $("#btAttivaRichiestaVariazioneTV").addClass("disabled");
+
+                        $("#btAnnullaRichiestaVariazioneTV").attr("disabled", "disabled");
+                        $("#btAnnullaRichiestaVariazioneTV").addClass("disabled");
+
+                        $("#btAttivaRichiestaVariazioneTV").removeAttr("hidden");
+                        $("#btAttivaRichiestaVariazioneTV").removeClass("hidden");
+
+                        $("#btAnnullaRichiestaVariazioneTV").removeAttr("hidden");
+                        $("#btAnnullaRichiestaVariazioneTV").removeClass("hidden");
+                    }
+
+                    //Se risulta in lavorazione abilito il pulsante notifica
+                    if (inLavorazione && richiediNotifica && trasfAnnullato==false) {
+                        $("#btNotificaRichiestaVariazioneTV").removeAttr("disabled");
+                        $("#btNotificaRichiestaVariazioneTV").removeClass("disabled");
+                    } else {
+                        if (admin) {
+                            if (richiediAttivazione && trasfAnnullato==false) {
+                                $("#btAttivaRichiestaVariazioneTV").removeAttr("disabled");
+                                $("#btAttivaRichiestaVariazioneTV").removeClass("disabled");
+                                $("#btAnnullaRichiestaVariazioneTV").removeAttr("disabled");
+                                $("#btAnnullaRichiestaVariazioneTV").removeClass("disabled");
+                            } else {
+                                if (richiediNotifica && trasfAnnullato==false) {
+                                    $("#btNotificaRichiestaVariazioneTV").removeAttr("disabled");
+                                    $("#btNotificaRichiestaVariazioneTV").removeClass("disabled");
+                                }
+                            }
+                        }
+                    }
+                    //GestioneAttivitaTrasferimento();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }*@
+
+
+    function ElaborazioneTV() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/ElaborazioneTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divElaborazioneTV").empty();
+                $("#divElaborazioneTV").html(result);
+                // $('#tabs').tabs({ selected: 0 });
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+
+    function ElencoVariazioneTV() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/ElencoVariazioneTV";
+        var idTitoliViaggio = @idTitoliViaggio;
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTitoliViaggio: idTitoliViaggio},
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divVariazioneTV").empty();
+                $("#divVariazioneTV").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ModalNotificaRichiestaVariazioneTV() {
+        //debugger;
+        $('#ModalNotificaRichiestaVariazioneTV').modal().show();
+    }
+
+    function ModalAnnullaRichiestaVariazioneTV() {
+        //debugger;
+        MessaggioAnnullaRichiestaVariazioneTV();
+        $('#ModalAnnullaRichiestaVariazioneTV').modal().show();
+    }
+
+    function ModalAttivaRichiestaVariazioneTV() {
+        //debugger;
+        $('#ModalAttivaRichiestaVariazioneTV').modal().show();
+    }
+
+    $("#ModalNotificaRichiestaVariazioneTV").on('hide.bs.modal', function () {
+        //debugger;
+        //$('.modal-backdrop').hide();
+        $(this).data('bs.modal', null);
+    });
+
+    $("#ModalAnnullaRichiestaVariazioneTV").on('hide.bs.modal', function () {
+        //debugger;
+        //$('.modal-backdrop').hide();
+        $(this).data('bs.modal', null);
+    });
+
+
+    function ConfermaNotificaRichiestaVariazioneTV() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/ConfermaNotificaRichiestaVariazioneTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ElaborazioneTV();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAnnullaRichiestaVariazioneTV() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/ConfermaAnnullaRichiestaVariazioneTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var testoAnnullaTV = $('#FullDescription').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio, msg:testoAnnullaTV },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ElaborazioneTV();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaAttivaRichiestaVariazioneTV() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/ConfermaAttivaRichiestaVariazioneTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ElaborazioneTV();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function MessaggioAnnullaRichiestaVariazioneTV() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/MessaggioAnnullaVariazioneTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaVariazioneTV").empty();
+                $("#viewAnnullaRichiestaVariazioneTV").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    function InserisciVariazioneDoc(idAttivazioneTitoloViaggio, idFamiliare, idParentela, idTipoDoc, idConiugeTV, idFigliTV) {
+        //debugger;
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var rotta = "/VariazioneTitoliViaggio/DocumentoTV";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idTitoliViaggio: idTitoliViaggio,
+                idFamiliare: idFamiliare,
+                idAttivazione: idAttivazioneTitoloViaggio,
+                idParentela: idParentela,
+                idTipoDoc: idTipoDoc,
+                idConiugeTV:idConiugeTV,
+                idFigliTV:idFigliTV
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                $('#InserisciDocTVModal').modal('show');
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewDocumentoTV").empty();
+                $("#viewDocumentoTV").html(result);
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    function SalvaDocTV(idTrasferimento) {
+
+        //debugger;
+        var datiForm = new FormData();
+        var rotta = "/VariazioneTitoliViaggio/InserisciDocumentoTV";
+
+        var idTipoDocumentoTV = parseInt($("#hiIdTipoDocTV").val());
+        var idFamiliareTV = parseInt($("#hiIdFamiliareTV").val());
+        var idParentelaTV = parseInt($("#hiIdParentelaTV").val());
+        var idAttivazioneTV = parseInt($("#hiIdAttivazioneTV").val());
+        var idConiugeTV = parseInt($("#hiIdConiugeTV").val());
+        var idFigliTV = parseInt($("#hiIdFigliTV").val());
+
+        var file = $("#file")[0].files[0];
+
+        if (ValidazioneTV(idTrasferimento)) {
+
+            datiForm.append("idTrasferimento", idTrasferimento);
+            datiForm.append("idTipoDocumento", idTipoDocumentoTV);
+            datiForm.append("file", file);
+            datiForm.append("idFamiliare", idFamiliareTV);
+            datiForm.append("idParentela", idParentelaTV);
+            datiForm.append("idAttivazione", idAttivazioneTV);
+            datiForm.append("idFigliTV", idFigliTV);
+            datiForm.append("idConiugeTV", idConiugeTV);
+
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: datiForm, //I dati, forniti sotto forma di oggetto FormData
+                dataType: 'json',
+                cache: false,
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    //Blocca();
+                },
+                processData: false, //Serve per NON far convertire l’oggetto
+                //FormData in una stringa, preservando il file
+                contentType: false, //Serve per NON far inserire automaticamente
+                //un content type errato
+                success: function (result) {
+                    //debugger;
+                    if (result.err != "" && result.err != undefined) {
+                        MsgErroreJson(result.err);
+                    }
+                    else {
+                        //MsgErroreJson(result.msg);
+                        //ElaborazioneTV();
+                        CloseTimeModalTV(idTrasferimento);
+                    }
+
+                },
+                complete: function () {
+                    //$("#btUpload").removeAttr("disabled");
+
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    $("#btInserisciDocTV").removeAttr("disabled");
+                    $("#btInserisciDocTV ").removeClass("disabled");
+                    $("#btAnnullaDocTV").removeAttr("disabled");
+                    $("#btAnnullaDocTV").removeClass("disabled");
+                    var msg = error.responseText;
+                    MsgErroreJson(msg);
+                }
+            });
+        }
+        else {
+            $("#btInserisciDocTV").removeAttr("disabled");
+            $("#btInserisciDocTV").removeClass("disabled");
+            $("#btAnnullaDocTV").removeAttr("disabled");
+            $("#btAnnullaDocTV").removeClass("disabled");
+        }
+    }
+
+    function CloseTimeModalTV(idTrasferimento) {
+        debugger;
+        $("#btInserisciDocTV").attr("disabled", "disabled");
+        $("#btInserisciDocTV").addClass("disabled");
+        $("#btAnnullaDocTV").attr("disabled", "disabled");
+        $("#btAnnullaDocTV").addClass("disabled");
+        setTimeout(CloseModalFileTV(idTrasferimento), 2000);
+    }
+
+    function CloseModalFileTV(idTrasferimento) {
+        debugger;
+        $('#InserisciDocTVModal').modal('hide');
+        setTimeout(ElaborazioneTV(), 1000);
+    }
+
+    function ValidazioneTV(idTrasferimento) {
+        //debugger;
+        var ret = false;
+        var c1 = false;
+        var c2 = false;
+        var c3 = false;
+
+        var file = $("#file").val();
+
+        if (idTrasferimento > 0) {
+            if (file != null && file != undefined && file != "") {
+                $("#divFile").removeClass('BordoRosso');
+                c3 = true;
+            }
+            else {
+                $("#divFile").addClass('BordoRosso');
+                c3 = false;
+            }
+
+            if (c3) {
+                ret = true;
+            }
+            else {
+                ret = false;
+            }
+        }
+
+        return ret;
+    }
+
+</script>

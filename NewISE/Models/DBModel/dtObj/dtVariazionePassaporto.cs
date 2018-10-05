@@ -3249,17 +3249,18 @@ namespace NewISE.Models.DBModel.dtObj
                 dm.idDocumenti = d_new.IDDOCUMENTO;
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo documento (passaporto).", "Documenti", db, ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
 
-                //aggiorno il documento esistente
+                //elimino il documento sostituito
                 d_old = db.DOCUMENTI.Find(idDocumentoOld);
                 if (d_old.IDDOCUMENTO > 0)
                 {
-                    d_old.MODIFICATO = true;
-                    d_old.FK_IDDOCUMENTO = d_new.IDDOCUMENTO;
+                    db.DOCUMENTI.Remove(d_old);
+                    //d_old.MODIFICATO = true;
+                    //d_old.FK_IDDOCUMENTO = d_new.IDDOCUMENTO;
 
-                    if (db.SaveChanges() > 0)
-                    {
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modificato documento con FK_idDocumento (passaporto).", "Documenti", db, ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, d_old.IDDOCUMENTO);
-                    }
+                    //if (db.SaveChanges() > 0)
+                    //{
+                    //    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modificato documento con FK_idDocumento (passaporto).", "Documenti", db, ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, d_old.IDDOCUMENTO);
+                    //}
                 }
             }
         }

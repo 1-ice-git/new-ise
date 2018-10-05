@@ -20,14 +20,9 @@ namespace NewISE.Controllers
 
         public ActionResult VariazionePassaporto(decimal idTrasferimento)
         {
-            //leggo in che fase mi trovo
             using (dtVariazionePassaporto dtvp = new dtVariazionePassaporto())
             {
-                //decimal idFasePassaportiCorrente = (decimal)dtvp.GetFasePassaporti_Corrente(idTrasferimento);
-
                 ViewData.Add("idTrasferimento", idTrasferimento);
-                //ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
-
                 return PartialView();
             }
 

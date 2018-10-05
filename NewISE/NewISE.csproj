@@ -5060,6 +5060,7 @@
     <Compile Include="Controllers\IndennitaController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
     <Compile Include="Controllers\RiepilogoVociController.cs" />
+    <Compile Include="Controllers\VariazioneTitoliViaggioController.cs" />
     <Compile Include="Controllers\VariazioneTrasportoEffettiController.cs" />
     <Compile Include="Controllers\VariazionePassaportoController.cs" />
     <Compile Include="Controllers\ViaggiCongedoController.cs" />
@@ -5451,6 +5452,7 @@
     <Compile Include="Models\DBModel\dtObj\dtRiepiloghiMaggAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepilogoVoci.cs" />
     <Compile Include="Models\DBModel\dtObj\dtStoriaDipendenteNew.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtVariazioneTitoliViaggio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioneTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtViaggiCongedo.cs" />
@@ -5933,6 +5935,7 @@
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\ElencoVociManualiViewModel.cs" />
+    <Compile Include="Models\ViewModel\GestPulsantiVariazioneTVModel.cs" />
     <Compile Include="Models\ViewModel\NoValidateAttribute.cs" />
     <Compile Include="Models\ViewModel\PagatoCondivisoMABViewModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
@@ -6509,6 +6512,14 @@
     <Content Include="Views\Elaborazioni\ElencoVociManuali.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\NuovoDocumentoVariazioneTER.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\MessaggioAnnullaVariazioneTER.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\VariazioneTV.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\ElencoVariazioneTV.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\ElaborazioneTV.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\GestionePulsantiNotificaAttiva_VariazioneTV.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\AltriDatiFamiliariConiuge.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\AltriDatiFamiliariFiglio.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\MessaggioAnnullaVariazioneTV.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\DocumentoTV.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

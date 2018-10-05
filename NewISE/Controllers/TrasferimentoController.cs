@@ -2437,10 +2437,56 @@ namespace NewISE.Controllers
             {
                 return Json(new { err = ex.Message });
             }
+        }
+
+        public JsonResult VerificaTitoliViaggio(decimal idTrasferimento)
+        {
+            try
+            {
+                if (idTrasferimento.Equals(null))
+                {
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
+                }
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+                    if (trm != null && trm.HasValue())
+                    {
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                        {
+
+                            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                            {
+                                decimal idTitoloViaggio = dttv.GetIdTitoliViaggio(idTrasferimento);
+
+                                if (idTitoloViaggio.ToString() != null)
+                                {
+                                    return Json(new { idTitoloViaggio = idTitoloViaggio.ToString() });
+                                }
+                                else
+                                {
+                                    return Json(new { idTitoloViaggio = 0 });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { idTitoloViaggio = 0 });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { idTitoloViaggio = 0 });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
 
 
         }
-
 
 
     }
