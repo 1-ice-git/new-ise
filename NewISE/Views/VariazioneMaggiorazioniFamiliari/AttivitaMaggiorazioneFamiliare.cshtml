@@ -273,6 +273,7 @@
                 if (result.err == "") {
                     PulsantiNotificaAttivaMagFam();
                     ElencoFamiliari();
+                    InfoTrasferimento(idMagFam);
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -557,7 +558,7 @@
                 if (result.err == "") {
                     $('#AnnullaModifichePensioneModal').modal('hide');
                     AggiornaElencoPensioni(idConiuge);
-                    
+
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -598,7 +599,7 @@
                     if (result.err == "") {
                         $('#CessazionePensioneModal').modal('hide');
                         AggiornaElencoPensioni(idConiuge);
-                    
+
                     } else {
                         ErroreElaborazioneAjax(result.err);
                     }

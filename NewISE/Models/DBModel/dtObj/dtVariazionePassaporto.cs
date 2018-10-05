@@ -1650,6 +1650,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAAGGIORNAMENTO = DateTime.Now
                                             };
                                             db.CONIUGEPASSAPORTO.Add(cp);
+                                            c_p.ANNULLATO = true;
 
                                             if (db.SaveChanges() <= 0)
                                             {
@@ -1703,6 +1704,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 DATAAGGIORNAMENTO = DateTime.Now
                                             };
                                             db.FIGLIPASSAPORTO.Add(fp);
+                                            f_p.ANNULLATO = true;
 
                                             if (db.SaveChanges() <= 0)
                                             {

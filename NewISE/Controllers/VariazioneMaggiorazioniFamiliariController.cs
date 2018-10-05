@@ -202,6 +202,7 @@ namespace NewISE.Controllers
             bool siPensioniConiuge = false;
 
             var solaLettura = 0;
+            decimal idTrasferimento = 0;
 
             using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
             {
@@ -219,6 +220,8 @@ namespace NewISE.Controllers
                 {
                     visualizzaGestModifiche = false;
                 }
+
+                idTrasferimento = dtvmf.GetIdTrasferimento(idMaggiorazioniFamiliari);
             }
 
             List<VariazioneElencoFamiliariModel> lefm = new List<VariazioneElencoFamiliariModel>();
@@ -328,6 +331,7 @@ namespace NewISE.Controllers
                 ViewData.Add("visualizzaGestModifiche", visualizzaGestModifiche);
 
                 ViewData.Add("trasfSolaLettura", trasfSolaLettura);
+                ViewData.Add("idTrasferimento", idTrasferimento);
 
                 ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
                 var lefm_ordinata = lefm.OrderBy(a => a.parentela).ThenByDescending(a => a.dataInizio).ToList();

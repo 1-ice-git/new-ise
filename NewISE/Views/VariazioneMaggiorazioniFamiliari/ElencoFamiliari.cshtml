@@ -6,12 +6,13 @@
 
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
     bool trasfSolaLettura = Convert.ToBoolean(ViewData["trasfSolaLettura"]);
     bool check_nuovo_coniuge = Convert.ToBoolean(ViewData["check_nuovo_coniuge"]);
     bool check_nuovo_figlio = Convert.ToBoolean(ViewData["check_nuovo_figlio"]);
     bool visualizzaGestModifiche = Convert.ToBoolean(ViewData["visualizzaGestModifiche"]);
-    
+
 }
 
 @Html.Hidden("hiEliminaConiuge")
@@ -404,7 +405,7 @@
     });
 
     PulsantiNotificaAttivaMagFam();
-
+    
     function EliminaConiuge(idConiuge) {
         $('#DelConiugeModal').modal('show');
         $('#hiEliminaConiuge').val(idConiuge);

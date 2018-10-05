@@ -482,7 +482,7 @@ namespace NewISE.Models.DBModel.dtObj
                         .Where(a => a.ANNULLATO == false &&
                                     a.RICHIEDITITOLOVIAGGIO == false &&
                                     a.IDATTIVAZIONETITOLIVIAGGIO == atv_partenza.IDATTIVAZIONETITOLIVIAGGIO)
-                                    .ToList();
+                        .ToList();
 
             //li replico su CONIUGETITIOLIVIAGGIO e li associo alla nuova attivazione
             if (lc_tv?.Any() ?? false)

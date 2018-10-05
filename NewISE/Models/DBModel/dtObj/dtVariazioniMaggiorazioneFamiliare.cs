@@ -536,94 +536,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                                 #endregion
 
-                                //#region titoli viaggio
-                                ////replico eventuali titoli di viaggio del coniuge e li riassocio
-                                //var lctv = db.CONIUGE.Find(cm.idConiuge).CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
-                                //if (lctv?.Any() ?? false)
-                                //{
-                                //    foreach (var ctv in lctv)
-                                //    {
-                                //        ctv.ANNULLATO = true;
-                                //        if (db.SaveChanges() > 0)
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                                //                "Annullamento record Coniuge Titoli Viaggio", "CONIUGETITOLIVIAGGIO", db,
-                                //                ctv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ctv.IDCONIUGETITOLIVIAGGIO);
-                                //        }
-                                //        else
-                                //        {
-                                //            throw new Exception("Errore in fase di annullamento del titolo viaggio coniuge.");
-                                //        }
-                                //        //replica titolo di viaggio e associa il nuovo coniuge
-                                //        CONIUGETITOLIVIAGGIO ctv_new = new CONIUGETITOLIVIAGGIO()
-                                //        {
-                                //            IDTITOLOVIAGGIO = ctv.IDTITOLOVIAGGIO,
-                                //            IDATTIVAZIONETITOLIVIAGGIO = ctv.IDATTIVAZIONETITOLIVIAGGIO,
-                                //            RICHIEDITITOLOVIAGGIO = ctv.RICHIEDITITOLOVIAGGIO,
-                                //            DATAAGGIORNAMENTO = DateTime.Now,
-                                //            ANNULLATO = false
-                                //        };
-                                //        //------------------------
-                                //        newc.CONIUGETITOLIVIAGGIO.Add(ctv_new);
-                                //        if (db.SaveChanges() > 0)
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                                //                "Inserimento record Coniuge Titoli Viaggio.", "CONIUGETITOLIVIAGGIO", db,
-                                //                ctv_new.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ctv_new.IDATTIVAZIONETITOLIVIAGGIO);
-                                //        }
-                                //        else
-                                //        {
-                                //            throw new Exception("Errore in fase di inserimento titolo viaggio coniuge.");
-                                //        }
-
-                                //    }
-
-                                //}
-                                //#endregion
-
-                                //#region passaporti
-                                ////replico eventuali passaporti e li associo al nuovo coniuge
-                                //var lcp = db.CONIUGE.Find(cm.idConiuge).CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false).ToList();
-                                //if (lcp?.Any() ?? false)
-                                //{
-                                //    foreach (var cp in lcp)
-                                //    {
-                                //        cp.ANNULLATO = true;
-                                //        if (db.SaveChanges() > 0)
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                                //                "Annullamento record Coniuge Passaporto", "CONIUGEPASSAPORTO", db,
-                                //                cp.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, cp.IDCONIUGEPASSAPORTO);
-                                //        }
-                                //        else
-                                //        {
-                                //            throw new Exception("Errore in fase di annullamento del passaporto coniuge.");
-                                //        }
-                                //        //replica passaporto associato al nuovo coniuge
-                                //        CONIUGEPASSAPORTO cp_new = new CONIUGEPASSAPORTO()
-                                //        {
-                                //            IDPASSAPORTI = cp.IDPASSAPORTI,
-                                //            IDATTIVAZIONIPASSAPORTI = cp.IDATTIVAZIONIPASSAPORTI,
-                                //            INCLUDIPASSAPORTO = cp.INCLUDIPASSAPORTO,
-                                //            DATAAGGIORNAMENTO = DateTime.Now,
-                                //            ANNULLATO = false
-                                //        };
-                                //        //------------------------
-                                //        newc.CONIUGEPASSAPORTO.Add(cp_new);
-                                //        if (db.SaveChanges() > 0)
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                                //                "Inserimento record Coniuge Passaporto.", "CONIUGEPASSAPORTO", db,
-                                //                cp_new.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, cp_new.IDATTIVAZIONIPASSAPORTI);
-                                //        }
-                                //        else
-                                //        {
-                                //            throw new Exception("Errore in fase di inserimento passaporto coniuge.");
-                                //        }
-                                //    }
-                                //}
-                                //#endregion
-
                             }
                             else
                             {
@@ -646,6 +558,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 //associa le percentuali maggiorazioni
                                 using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                                 {
+                                    //rimuove e riaesegue associazione perc magg coniuge
+                                    dtpc.RimuoviAssociazione_Coniuge_PercentualeMagConiuge(cm.idConiuge, db);
 
                                     List<PercentualeMagConiugeModel> lpmcm =
                                         dtpc.GetListaPercentualiMagConiugeByRangeDate(cm.idTipologiaConiuge, dtIni, dtFin, db)
@@ -757,7 +671,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     foreach (var pmcm in lpmcm)
                                     {
-                                        dtpc.AssociaPercentualeMaggiorazioneConiuge(cm.idConiuge, pmcm.idPercentualeConiuge, db);
+                                        dtpc.AssociaPercentualeMaggiorazioneConiuge(new_idconiuge, pmcm.idPercentualeConiuge, db);
                                     }
                                 }
                                 else
@@ -767,93 +681,6 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             #endregion
 
-                            //#region titoli viaggio
-                            ////replico eventuali titoli di viaggio del coniuge e li riassocio
-                            //var lctv = db.CONIUGE.Find(cm.idConiuge).CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
-                            //if (lctv?.Any() ?? false)
-                            //{
-                            //    foreach (var ctv in lctv)
-                            //    {
-                            //        ctv.ANNULLATO = true;
-                            //        if (db.SaveChanges() > 0)
-                            //        {
-                            //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                            //                "Annullamento record Coniuge Titoli Viaggio", "CONIUGETITOLIVIAGGIO", db,
-                            //                ctv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ctv.IDCONIUGETITOLIVIAGGIO);
-                            //        }
-                            //        else
-                            //        {
-                            //            throw new Exception("Errore in fase di annullamento del titolo viaggio coniuge.");
-                            //        }
-                            //        //replica titolo di viaggio e associa il nuovo coniuge
-                            //        CONIUGETITOLIVIAGGIO ctv_new = new CONIUGETITOLIVIAGGIO()
-                            //        {
-                            //            IDTITOLOVIAGGIO = ctv.IDTITOLOVIAGGIO,
-                            //            IDATTIVAZIONETITOLIVIAGGIO = ctv.IDATTIVAZIONETITOLIVIAGGIO,
-                            //            RICHIEDITITOLOVIAGGIO = ctv.RICHIEDITITOLOVIAGGIO,
-                            //            DATAAGGIORNAMENTO = DateTime.Now,
-                            //            ANNULLATO = false
-                            //        };
-                            //        //------------------------
-                            //        newc.CONIUGETITOLIVIAGGIO.Add(ctv_new);
-                            //        if (db.SaveChanges() > 0)
-                            //        {
-                            //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                            //                "Inserimento record Coniuge Titoli Viaggio.", "CONIUGETITOLIVIAGGIO", db,
-                            //                ctv_new.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ctv_new.IDATTIVAZIONETITOLIVIAGGIO);
-                            //        }
-                            //        else
-                            //        {
-                            //            throw new Exception("Errore in fase di inserimento titolo viaggio coniuge.");
-                            //        }
-
-                            //    }
-
-                            //}
-                            //#endregion
-
-                            //#region passaporti
-                            ////replico eventuali passaporti e li associo al nuovo coniuge
-                            //var lcp = db.CONIUGE.Find(cm.idConiuge).CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false).ToList();
-                            //if (lcp?.Any() ?? false)
-                            //{
-                            //    foreach (var cp in lcp)
-                            //    {
-                            //        cp.ANNULLATO = true;
-                            //        if (db.SaveChanges() > 0)
-                            //        {
-                            //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                            //                "Annullamento record Coniuge Passaporto", "CONIUGEPASSAPORTO", db,
-                            //                cp.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, cp.IDCONIUGEPASSAPORTO);
-                            //        }
-                            //        else
-                            //        {
-                            //            throw new Exception("Errore in fase di annullamento del passaporto coniuge.");
-                            //        }
-                            //        //replica passaporto associato al nuovo coniuge
-                            //        CONIUGEPASSAPORTO cp_new = new CONIUGEPASSAPORTO()
-                            //        {
-                            //            IDPASSAPORTI = cp.IDPASSAPORTI,
-                            //            IDATTIVAZIONIPASSAPORTI = cp.IDATTIVAZIONIPASSAPORTI,
-                            //            INCLUDIPASSAPORTO = cp.INCLUDIPASSAPORTO,
-                            //            DATAAGGIORNAMENTO = DateTime.Now,
-                            //            ANNULLATO = false
-                            //        };
-                            //        //------------------------
-                            //        newc.CONIUGEPASSAPORTO.Add(cp_new);
-                            //        if (db.SaveChanges() > 0)
-                            //        {
-                            //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                            //                "Inserimento record Coniuge Passaporto.", "CONIUGEPASSAPORTO", db,
-                            //                cp_new.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, cp_new.IDATTIVAZIONIPASSAPORTI);
-                            //        }
-                            //        else
-                            //        {
-                            //            throw new Exception("Errore in fase di inserimento passaporto coniuge.");
-                            //        }
-                            //    }
-                            //}
-                            //#endregion
                         }
 
                     }
@@ -1147,99 +974,12 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                                 #endregion
 
-                                //#region titoli viaggio
-                                ////replico eventuali titoli di viaggio del figlio e li riassocio
-                                //var lftv = db.FIGLI.Find(fm.idFigli).FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
-                                //if (lftv?.Any() ?? false)
-                                //{
-                                //    foreach (var ftv in lftv)
-                                //    {
-                                //        ftv.ANNULLATO = true;
-                                //        if (db.SaveChanges() > 0)
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                                //                "Annullamento record Figli Titoli Viaggio", "CONIUGETITOLIVIAGGIO", db,
-                                //                ftv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ftv.IDFIGLITITOLIVIAGGIO);
-                                //        }
-                                //        else
-                                //        {
-                                //            throw new Exception("Errore in fase di inserimento titolo viaggio figli.");
-                                //        }
-                                //        //replica titolo di viaggio e associa il nuovo figlio
-                                //        FIGLITITOLIVIAGGIO ftv_new = new FIGLITITOLIVIAGGIO()
-                                //        {
-                                //            IDTITOLOVIAGGIO = ftv.IDTITOLOVIAGGIO,
-                                //            IDATTIVAZIONETITOLIVIAGGIO = ftv.IDATTIVAZIONETITOLIVIAGGIO,
-                                //            RICHIEDITITOLOVIAGGIO = ftv.RICHIEDITITOLOVIAGGIO,
-                                //            DATAAGGIORNAMENTO = DateTime.Now,
-                                //            ANNULLATO = false
-                                //        };
-                                //        //------------------------
-                                //        newf.FIGLITITOLIVIAGGIO.Add(ftv_new);
-                                //        if (db.SaveChanges() > 0)
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                                //                "Inserimento record Figli Titoli Viaggio.", "FIGLITITOLIVIAGGIO", db,
-                                //                ftv_new.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ftv_new.IDATTIVAZIONETITOLIVIAGGIO);
 
-                                //        }
-                                //        else
-                                //        {
-                                //            throw new Exception("Errore in fase di inserimento titolo viaggio figli.");
-                                //        }
-
-                                //    }
-                                //}
-                                //#endregion
-
-                                //#region passaporti
-                                ////replico eventuali passaporti e li associo al nuovo figlio
-                                //var lfp = db.FIGLI.Find(fm.idFigli).FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false).ToList();
-                                //if (lfp?.Any() ?? false)
-                                //{
-                                //    foreach (var fp in lfp)
-                                //    {
-                                //        fp.ANNULLATO = true;
-                                //        if (db.SaveChanges() > 0)
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                                //                "Annullamento record Figli Passaporto", "FIGLIPASSAPORTO", db,
-                                //                fp.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, fp.IDFIGLIPASSAPORTO);
-                                //        }
-                                //        else
-                                //        {
-                                //            throw new Exception("Errore in fase di annullamento del passaporto figlio.");
-                                //        }
-                                //        //replica passaporto associato al nuovo coniuge
-                                //        FIGLIPASSAPORTO fp_new = new FIGLIPASSAPORTO()
-                                //        {
-                                //            IDPASSAPORTI = fp.IDPASSAPORTI,
-                                //            IDATTIVAZIONIPASSAPORTI = fp.IDATTIVAZIONIPASSAPORTI,
-                                //            INCLUDIPASSAPORTO = fp.INCLUDIPASSAPORTO,
-                                //            DATAAGGIORNAMENTO = DateTime.Now,
-                                //            ANNULLATO = false
-                                //        };
-                                //        newf.FIGLIPASSAPORTO.Add(fp_new);
-                                //        if (db.SaveChanges() > 0)
-                                //        {
-                                //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                                //                "Inserimento record Figli Passaporto.", "FIGLIPASSAPORTO", db,
-                                //                fp_new.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, fp_new.IDATTIVAZIONIPASSAPORTI);
-                                //        }
-                                //        else
-                                //        {
-                                //            throw new Exception("Errore in fase di inserimento passaporto figli.");
-                                //        }
-
-                                //    }
-
-                                //}
-                                //#endregion
 
                             }
                             else
                             {
-                                #region altri dati familiari
+                                #region edit figlio
                                 f.DATAINIZIOVALIDITA = fm.dataInizio.Value;
                                 f.DATAFINEVALIDITA = dtFin;
                                 f.IDTIPOLOGIAFIGLIO = (decimal)fm.idTipologiaFiglio;
@@ -1259,6 +999,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 //associa le percentuali maggiorazioni
                                 using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
                                 {
+                                    dtpf.RimuoviAssociazione_Figlio_PercentualeMagFigli(fm.idFigli, db);
 
                                     List<PercentualeMagFigliModel> lpmfm = dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db).ToList();
 
@@ -1334,7 +1075,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     foreach (var pmfm in lpmfm)
                                     {
-                                        dtpf.AssociaPercentualeMaggiorazioneFigli(fm.idFigli, pmfm.idPercMagFigli, db);
+                                        dtpf.AssociaPercentualeMaggiorazioneFigli(new_idfiglio, pmfm.idPercMagFigli, db);
                                     }
                                 }
                                 else
@@ -1343,97 +1084,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                             }
                             #endregion
-
-                            //#region titoli viaggio
-                            ////replico eventuali titoli di viaggio del figlio e li riassocio
-                            //var lftv = db.FIGLI.Find(fm.idFigli).FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
-                            //if (lftv?.Any() ?? false)
-                            //{
-                            //    foreach (var ftv in lftv)
-                            //    {
-                            //        ftv.ANNULLATO = true;
-                            //        if (db.SaveChanges() > 0)
-                            //        {
-                            //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                            //                "Annullamento record Figli Titoli Viaggio", "CONIUGETITOLIVIAGGIO", db,
-                            //                ftv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ftv.IDFIGLITITOLIVIAGGIO);
-                            //        }
-                            //        else
-                            //        {
-                            //            throw new Exception("Errore in fase di inserimento titolo viaggio figli.");
-                            //        }
-                            //        //replica titolo di viaggio e associa il nuovo figlio
-                            //        FIGLITITOLIVIAGGIO ftv_new = new FIGLITITOLIVIAGGIO()
-                            //        {
-                            //            IDTITOLOVIAGGIO = ftv.IDTITOLOVIAGGIO,
-                            //            IDATTIVAZIONETITOLIVIAGGIO = ftv.IDATTIVAZIONETITOLIVIAGGIO,
-                            //            RICHIEDITITOLOVIAGGIO = ftv.RICHIEDITITOLOVIAGGIO,
-                            //            DATAAGGIORNAMENTO = DateTime.Now,
-                            //            ANNULLATO = false
-                            //        };
-                            //        //------------------------
-                            //        newf.FIGLITITOLIVIAGGIO.Add(ftv_new);
-                            //        if (db.SaveChanges() > 0)
-                            //        {
-                            //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                            //                "Inserimento record Figli Titoli Viaggio.", "FIGLITITOLIVIAGGIO", db,
-                            //                ftv_new.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ftv_new.IDATTIVAZIONETITOLIVIAGGIO);
-
-                            //        }
-                            //        else
-                            //        {
-                            //            throw new Exception("Errore in fase di inserimento titolo viaggio figli.");
-                            //        }
-
-                            //    }
-
-                            //}
-                            //#endregion
-
-                            //#region passaporti
-                            ////replico eventuali passaporti e li associo al nuovo figlio
-                            //var lfp = db.FIGLI.Find(fm.idFigli).FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false).ToList();
-                            //if (lfp?.Any() ?? false)
-                            //{
-                            //    foreach (var fp in lfp)
-                            //    {
-                            //        fp.ANNULLATO = true;
-                            //        if (db.SaveChanges() > 0)
-                            //        {
-                            //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                            //                "Annullamento record Figli Passaporto", "FIGLIPASSAPORTO", db,
-                            //                fp.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, fp.IDFIGLIPASSAPORTO);
-                            //        }
-                            //        else
-                            //        {
-                            //            throw new Exception("Errore in fase di annullamento del passaporto figlio.");
-                            //        }
-                            //        //replica passaporto associato al nuovo coniuge
-                            //        FIGLIPASSAPORTO fp_new = new FIGLIPASSAPORTO()
-                            //        {
-                            //            IDPASSAPORTI = fp.IDPASSAPORTI,
-                            //            IDATTIVAZIONIPASSAPORTI = fp.IDATTIVAZIONIPASSAPORTI,
-                            //            INCLUDIPASSAPORTO = fp.INCLUDIPASSAPORTO,
-                            //            DATAAGGIORNAMENTO = DateTime.Now,
-                            //            ANNULLATO = false
-                            //        };
-                            //        //------------------------
-                            //        newf.FIGLIPASSAPORTO.Add(fp_new);
-                            //        if (db.SaveChanges() > 0)
-                            //        {
-                            //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                            //                "Inserimento record Figli Passaporto.", "FIGLIPASSAPORTO", db,
-                            //                fp_new.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, fp_new.IDATTIVAZIONIPASSAPORTI);
-                            //        }
-                            //        else
-                            //        {
-                            //            throw new Exception("Errore in fase di inserimento passaporto figli.");
-                            //        }
-
-                            //    }
-
-                            //}
-                            //#endregion
 
                         }
                     }
