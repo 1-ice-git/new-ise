@@ -5675,7 +5675,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     a.ANNORIFERIMENTO == dataInizioCiclo.Year &&
                                     a.MESERIFERIMENTO == dataInizioCiclo.Month &&
                                     a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
-                                    a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
+                                    a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
                                 .ToList();
 
                         if (lTeoriciOld?.Any() ?? false)
@@ -7918,7 +7918,7 @@ namespace NewISE.Models.DBModel.dtObj
             var lElabIndSistemazione =
                 primaSistemazione.ELABINDSISTEMAZIONE.Where(
                     a =>
-                        a.ANNULLATO == false && (a.SALDO == true || a.UNICASOLUZIONE == true) && a.CONGUAGLIO == false)
+                        a.ANNULLATO == false && (a.SALDO == true || a.UNICASOLUZIONE == true))
                     .OrderBy(a => a.IDINDSISTLORDA)
                     .ToList();
 
@@ -7931,7 +7931,7 @@ namespace NewISE.Models.DBModel.dtObj
                             a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                             a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                             a.ELABORATO == true && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
-                            a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == primaSistemazione.IDPRIMASISTEMAZIONE)
+                            a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
                         .ToList();
 
                 #region Saldo e unica soluzione

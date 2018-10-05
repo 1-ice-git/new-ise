@@ -59,13 +59,16 @@
                     @if (Model != null)
                     {
                         <div style="width:120px;">
-                            @Html.TextBoxFor(model => model.importoPensione, string.Format("{0:N2}", Model.importoPensione), new { @class = "form-control text-right" })
+                            @*@Html.TextBoxFor(model => model.importoPensione, string.Format("{0:N2}", Model.importoPensione), new { @class = "form-control text-right" })*@
+                            <input type="text" id="importoPensioneUI" class="form-control text-right ignore" value="@Model.importoPensione.ToString("N2")" />
+                            <input type="hidden" id="importoPensione" name="importoPensione" />
                         </div>
                     }
                     else
                     {
                         <div style="width:120px;">
-                            @Html.TextBoxFor(model => model.importoPensione, new { @class = "form-control text-right" })
+                            <input type="text" id="importoPensioneUI" class="form-control text-right" value="" />
+                            <input type="hidden" id="importoPensione" name="importoPensione" />
                         </div>
                     }
 
@@ -119,7 +122,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                                            break;
+                            break;
         }
 
     }
@@ -140,8 +143,8 @@
             DialogModalError('True');
         }
         else {
-            var ip = importoPensione.getNumber();
-            $("#importoPensione").val(ip.toString().replace(".", ","));
+            //var ip = importoPensione.getNumber();
+            //$("#importoPensione").val(ip.toString().replace(".", ","));
             //$("#importoPensione").val(ip);
         }
 
@@ -161,14 +164,15 @@
         changeYear: true,
     });
 
-    //$("#importoPensione").autoNumeric('init',
-    //{
-    //    aSep: '.',
-    //    aDec: ',',
-    //    aSign: ''
-    //});
 
-    importoPensione = new AutoNumeric('#importoPensione', autoNumericOptionsEuroOttoDec);
+    importoPensione = new AutoNumeric('#importoPensioneUI', autoNumericOptionsEuroOttoDec);
+
+    $("#importoPensioneUI").blur(function () {
+        //debugger;
+        var val = importoPensione.getNumber();
+        $("#importoPensione").val(val.toString().replace(".", ","));
+    });
+
 
 
     $.culture = Globalize.culture("it-IT");
@@ -179,5 +183,9 @@
     $.validator.methods.number = function (value, element) {
         return this.optional(element) || !isNaN(Globalize.parseFloat(value));
     };
+
+    $.validator.setDefaults({
+        ignore: ".ignore"
+    });
 
 </script>
