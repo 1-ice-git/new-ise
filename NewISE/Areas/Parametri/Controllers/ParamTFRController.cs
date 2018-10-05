@@ -125,6 +125,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
+        [ValidateAntiForgeryToken]
         public ActionResult InserisciTFR(TFRModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;

@@ -17,7 +17,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult PercentualeMaggAbitazione(bool escludiAnnullati, decimal idLivello = 0, decimal idUfficio = 0)
         {
-            
+
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
             List<UfficiModel> llm1 = new List<UfficiModel>();
@@ -54,7 +54,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAbitazioneNonAnnullato(tmp[0],tmp[1]);
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAbitazioneNonAnnullato(tmp[0], tmp[1]);
                     libm = dtib.getListMaggiorazioneAbitazione(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
@@ -70,7 +70,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult NuovaPercentualeMaggiorazioneAbitazione(decimal idLivello, decimal idUfficio, bool escludiAnnullati)
         {
-            var r = new List<SelectListItem>();            
+            var r = new List<SelectListItem>();
             try
             {
                 using (dtLivelli dtl = new dtLivelli())
@@ -97,7 +97,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneAbitazione(PercMaggAbitazModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciMaggiorazioneAbitazione(PercMaggAbitazModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -107,17 +108,17 @@ namespace NewISE.Areas.Parametri.Controllers
                 if (ModelState.IsValid)
                 {
                     using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
-                    {                        
+                    {
                         dtib.SetMaggiorazioneAbitazione(ibm, aggiornaTutto);
                     }
-                    decimal[] tmp = AggiornaListaPerCombo(ibm.idLivello,ibm.idUfficio);
+                    decimal[] tmp = AggiornaListaPerCombo(ibm.idLivello, ibm.idUfficio);
                     using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                     {
                         ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAbitazioneNonAnnullato(tmp[0], tmp[1]);
                         libm = dtib.getListMaggiorazioneAbitazione(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
-                    return PartialView("PercentualeMaggAbitazione",libm);
-                  //  return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
+                    return PartialView("PercentualeMaggAbitazione", libm);
+                    //  return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
                 }
                 else
                 {
@@ -141,7 +142,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaMaggiorazioneAbitazione(bool escludiAnnullati, decimal idLivello, decimal idPercMabAbitaz,decimal idUfficio)
+        public ActionResult EliminaMaggiorazioneAbitazione(bool escludiAnnullati, decimal idLivello, decimal idPercMabAbitaz, decimal idUfficio)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
@@ -164,77 +165,77 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-        decimal[] AggiornaListaPerCombo(decimal idLivello, decimal idUfficio )
-        {  
+        decimal[] AggiornaListaPerCombo(decimal idLivello, decimal idUfficio)
+        {
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
             List<UfficiModel> llm1 = new List<UfficiModel>();
-           
-                using (dtLivelli dtl = new dtLivelli())
-                {
-                    llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.DescLivello,
-                                 Value = t.idLivello.ToString()
-                             }).ToList();
 
-                        if (idLivello == 0)
+            using (dtLivelli dtl = new dtLivelli())
+            {
+                llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
+                if (llm != null && llm.Count > 0)
+                {
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.DescLivello,
+                             Value = t.idLivello.ToString()
+                         }).ToList();
+
+                    if (idLivello == 0)
+                    {
+                        r.First().Selected = true;
+                        idLivello = Convert.ToDecimal(r.First().Value);
+                    }
+                    else
+                    {
+                        var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                        if (temp.Count == 0)
                         {
                             r.First().Selected = true;
                             idLivello = Convert.ToDecimal(r.First().Value);
                         }
                         else
-                        {
-                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idLivello = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                        }
+                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                     }
-                    ViewBag.LivelliList = r;
                 }
-                r = new List<SelectListItem>();
-                using (dtUffici dtl1 = new dtUffici())
+                ViewBag.LivelliList = r;
+            }
+            r = new List<SelectListItem>();
+            using (dtUffici dtl1 = new dtUffici())
+            {
+                llm1 = dtl1.GetUffici().OrderBy(a => a.descUfficio).ToList();
+
+                if (llm1 != null && llm1.Count > 0)
                 {
-                    llm1 = dtl1.GetUffici().OrderBy(a => a.descUfficio).ToList();
+                    r = (from t in llm1
+                         select new SelectListItem()
+                         {
+                             Text = t.descUfficio,
+                             Value = t.idUfficio.ToString()
+                         }).ToList();
 
-                    if (llm1 != null && llm1.Count > 0)
+                    if (idUfficio == 0)
                     {
-                        r = (from t in llm1
-                             select new SelectListItem()
-                             {
-                                 Text = t.descUfficio,
-                                 Value = t.idUfficio.ToString()
-                             }).ToList();
-
-                        if (idUfficio == 0)
+                        r.First().Selected = true;
+                        idUfficio = Convert.ToDecimal(r.First().Value);
+                    }
+                    else
+                    {
+                        var temp = r.Where(a => a.Value == idUfficio.ToString()).ToList();
+                        if (temp.Count == 0)
                         {
                             r.First().Selected = true;
                             idUfficio = Convert.ToDecimal(r.First().Value);
                         }
                         else
-                        {
-                            var temp = r.Where(a => a.Value == idUfficio.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idUfficio = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
-                        }
+                            r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
                     }
-                    ViewBag.UfficiList = r;
                 }
-            return new decimal[] { idLivello, idUfficio };
+                ViewBag.UfficiList = r;
             }
+            return new decimal[] { idLivello, idUfficio };
+        }
     }
 }

@@ -2049,8 +2049,8 @@ namespace NewISE.Models.DBModel.dtObj
                 TrasferimentoModel tm = new TrasferimentoModel()
                 {
                     idTrasferimento = t.IDTRASFERIMENTO,
-                    dataPartenza=t.DATAPARTENZA,
-                    dataRientro=t.DATARIENTRO                        
+                    dataPartenza = t.DATAPARTENZA,
+                    dataRientro = t.DATARIENTRO
                 };
                 #endregion
 
@@ -2278,7 +2278,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             //ricalcola perc magg coniuge
                             DateTime dtIni = c.DATAINIZIOVALIDITA;
-                            DateTime dtFin = c.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:c.DATAFINEVALIDITA;
+                            DateTime dtFin = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA;
 
                             List<PercentualeMagConiugeModel> lpmcm =
                                 dtpc.GetListaPercentualiMagConiugeByRangeDate((EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE, dtIni, dtFin, db)
@@ -2319,7 +2319,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             //ricalcola perc magg figli
                             DateTime dtIni = f.DATAINIZIOVALIDITA;
-                            DateTime dtFin = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA;
+                            DateTime dtFin = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA;
 
                             List<PercentualeMagFigliModel> lpmfm =
                                 dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db)
@@ -2348,7 +2348,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                             DateTime dtIni = f.DATAINIZIOVALIDITA;
-                            DateTime dtFin = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA;
+                            DateTime dtFin = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA;
 
                             List<IndennitaPrimoSegretModel> lipsm =
                                 dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
@@ -3583,19 +3583,22 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
+                                    ///Imposto la data di inzio ricalcoli alla data di inzio trasferimento per il trasferimento in corso.
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, t.DATAPARTENZA, db);
+
 
                                     var d = db.DIPENDENTI.Find(t.IDDIPENDENTE);
-                                    var lt_prec = d.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato).OrderByDescending(a=>a.IDTRASFERIMENTO).ToList();
-                                    if(lt_prec?.Any()??false)
+                                    var lt_prec = d.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato).OrderByDescending(a => a.IDTRASFERIMENTO).ToList();
+                                    if (lt_prec?.Any() ?? false)
                                     {
                                         var t_prec = lt_prec.First();
-    
+
                                         t_prec.DATAAGGIORNAMENTO = DateTime.Now;
                                         var r = t_prec.RICHIAMO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDRICHIAMO).ToList();
                                         if (r.Count() == 0)
                                         {
                                             t_prec.DATARIENTRO = dataPartenzaEffettiva.AddDays(-1);
-    
+
                                             if (db.SaveChanges() <= 0)
                                             {
                                                 throw new Exception("Errore: Impossibile completare l'attivazione del trasferimento. Data Rientro del trasferimento precedente non modificata.");
@@ -3605,7 +3608,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             dtd.DataInizioRicalcoliDipendente(t_prec.IDTRASFERIMENTO, t_prec.DATARIENTRO, db);
                                         }
                                     }
-    
+
                                     using (dtUffici dtu = new dtUffici())
                                     {
                                         var dip = dtd.GetDipendenteByID(t.IDDIPENDENTE);

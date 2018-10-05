@@ -203,6 +203,7 @@ namespace NewISE.Controllers
                 {
                     if (dipendenti?.Any() ?? false)
                     {
+
                         dte.Elaborazione(dipendenti, idAnnoMeseElaborato);
                     }
                 }
@@ -476,7 +477,7 @@ namespace NewISE.Controllers
                                                         t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
                                                         t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
                                                         t.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS) &&
-                                                       t.DIRETTO == false
+                                                       t.DIRETTO == false && t.INSERIMENTOMANUALE == false
                                                  select t.IDTEORICI).ToList();
 
                             if (lt1?.Any() ?? false)
@@ -552,6 +553,27 @@ namespace NewISE.Controllers
                             }
                             #endregion
 
+
+                            #region Lettura dati Richiamo
+                            List<decimal> lt6 = (from t in db.TEORICI
+                                                 where t.ANNULLATO == false &&
+                                                       t.IDMESEANNOELAB == idAnnoMeseElaborato &&
+                                                       t.ELABINDRICHIAMO.ANNULLATO == false &&
+                                                       (t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Rientro_Lordo_086_381 ||
+                                                        t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
+                                                        t.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
+                                                        t.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI) &&
+                                                       t.DIRETTO == false && t.INSERIMENTOMANUALE == false
+                                                 select t.IDTEORICI).ToList();
+
+                            if (lt6?.Any() ?? false)
+                            {
+                                lTeorici.AddRange(lt6);
+                            }
+                            #endregion
+
+
+
                             lTeorici = lTeorici.OrderBy(a => a).ToList();
 
                             List<ElencoDipendentiDaCalcolareModel> ledcm = new List<ElencoDipendentiDaCalcolareModel>();
@@ -578,13 +600,19 @@ namespace NewISE.Controllers
                                         dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
                                     }
                                 }
-
-                                foreach (var dip in lDip)
+                                using (dtDipendenti dtd = new dtDipendenti())
                                 {
-                                    dte.SetPeriodoElaborazioniDipendente(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
+                                    foreach (var dip in lDip)
+                                    {
+                                        dte.SetPeriodoElaborazioniDipendente(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
+                                        dtd.SetLastMeseElabDataInizioRicalcoli(dip.IDDIPENDENTE, idAnnoMeseElaborato, db, true);
+                                    }
                                 }
 
+
                                 dte.ChiudiPeridoElaborazione(idAnnoMeseElaborato, db);
+
+
 
                             }
 

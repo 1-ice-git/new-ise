@@ -181,6 +181,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
+        [ValidateAntiForgeryToken]
         public ActionResult InserisciCoefficientiSede(CoefficientiSedeModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();

@@ -89,6 +89,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
+        [ValidateAntiForgeryToken]
         public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -96,6 +97,7 @@ namespace NewISE.Areas.Parametri.Controllers
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             try
             {
+
                 if (ModelState.IsValid)
                 {
                     using (dtParIndennitaBase dtib = new dtParIndennitaBase())
