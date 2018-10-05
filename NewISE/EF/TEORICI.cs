@@ -38,6 +38,7 @@ namespace NewISE.EF
         public bool DIRETTO { get; set; }
         public Nullable<decimal> IDINDSISTLORDA { get; set; }
         public Nullable<decimal> IDAUTOVOCIMANUALI { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
     
         public virtual AUTOMATISMOVOCIMANUALI AUTOMATISMOVOCIMANUALI { get; set; }
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
@@ -46,6 +47,7 @@ namespace NewISE.EF
         public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
         public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
         public virtual OA OA { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
         public virtual VOCI VOCI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

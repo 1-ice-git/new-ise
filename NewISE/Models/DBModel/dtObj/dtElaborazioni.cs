@@ -1511,6 +1511,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             TEORICI teorici = new TEORICI()
                                             {
+                                                IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                                                 IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                                 IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                                 IDMESEANNOELAB = mae.idMeseAnnoElab,
@@ -1707,7 +1708,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             TEORICI teorici = new TEORICI()
                             {
-
+                                IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                                 IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                 IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                 IDMESEANNOELAB = mae.idMeseAnnoElab,
@@ -1910,6 +1911,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     TEORICI teorici = new TEORICI()
                                     {
+                                        IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                                         IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                         IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                         IDMESEANNOELAB = mae.idMeseAnnoElab,
@@ -2320,6 +2322,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 TEORICI t = new TEORICI()
                                 {
+                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     IDVOCI = vm.IDVOCI,
                                     IDTIPOMOVIMENTO = (decimal)tm,
@@ -3204,6 +3207,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 t = new TEORICI()
                                                 {
+                                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                                     IDVOCI = (decimal)EnumVociContabili.MAB,
                                                     IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
@@ -3222,6 +3226,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 t = new TEORICI()
                                                 {
+                                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                                     IDVOCI = (decimal)EnumVociContabili.MAB,
                                                     IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
@@ -4057,6 +4062,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     TEORICI t = new TEORICI()
                                     {
+                                        IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDTIPOMOVIMENTO = (decimal)tipoMov,
                                         IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                         IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -4158,6 +4164,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 TEORICI t = new TEORICI()
                                                 {
+                                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                                     IDTIPOMOVIMENTO = (decimal)tipoMov,
                                                     IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -4228,6 +4235,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             TEORICI t = new TEORICI()
                                             {
+                                                IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                                 IDTIPOMOVIMENTO = (decimal)tipoMov,
                                                 IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                                 IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -4289,6 +4297,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 TEORICI t = new TEORICI()
                                 {
+                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDTIPOMOVIMENTO = (decimal)tipoMov,
                                     IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -4388,6 +4397,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     TEORICI t = new TEORICI()
                                     {
+                                        IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDTIPOMOVIMENTO = (decimal)tipoMov,
                                         IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                         IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -4490,6 +4500,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 TEORICI t = new TEORICI()
                                                 {
+                                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                                     IDTIPOMOVIMENTO = (decimal)tipoMov,
                                                     IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -4559,6 +4570,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             TEORICI t = new TEORICI()
                                             {
+                                                IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                                 IDTIPOMOVIMENTO = (decimal)tipoMov,
                                                 IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                                 IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -4620,6 +4632,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 TEORICI t = new TEORICI()
                                 {
+                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDTIPOMOVIMENTO = (decimal)tipoMov,
                                     IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -5284,6 +5297,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 TEORICI t = new TEORICI()
                                 {
+                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     IDVOCI = (decimal)EnumVociContabili.MAB,
                                     IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
@@ -5778,6 +5792,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 TEORICI teorico = new TEORICI()
                                 {
+                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDTIPOMOVIMENTO = (decimal)tipoMov,
                                     IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
@@ -6550,6 +6565,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             TEORICI teorico = new TEORICI()
                             {
+                                IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                 IDTIPOMOVIMENTO = (decimal)tipoMov,
                                 IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
@@ -6827,6 +6843,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     TEORICI teorici = new TEORICI()
                                     {
+                                        IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
                                         IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                         IDVOCI = (decimal)EnumVociContabili.Ind_Richiamo_IRI,
@@ -6857,6 +6874,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     #region Lordo
                                     TEORICI teoriciLordo = new TEORICI()
                                     {
+                                        IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
                                         IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                         IDVOCI = (decimal)EnumVociCedolino.Rientro_Lordo_086_381,
@@ -6883,6 +6901,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     #region Netto
                                     TEORICI teoriciNetto = new TEORICI()
                                     {
+                                        IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
                                         IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                         IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
@@ -6909,6 +6928,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     #region Detrazioni
                                     TEORICI teoriciDetrazioni = new TEORICI()
                                     {
+                                        IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
                                         IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                         IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
@@ -7070,6 +7090,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                         TEORICI teoriciLordo = new TEORICI()
                         {
+
+                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
                             IDTIPOMOVIMENTO = (decimal)tipoMov,
                             IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
@@ -7098,6 +7120,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                         TEORICI teoriciNetto = new TEORICI()
                         {
+
+                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
                             IDTIPOMOVIMENTO = (decimal)tipoMov,
                             IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
@@ -7126,6 +7150,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         TEORICI teoriciDetrazioni = new TEORICI()
                         {
+                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
                             IDTIPOMOVIMENTO = (decimal)tipoMov,
                             IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
@@ -7475,6 +7500,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         TEORICI teorico = new TEORICI()
                                         {
+                                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                             IDTIPOMOVIMENTO = (decimal)tipoMov,
                                             IDVOCI = (decimal)EnumVociContabili.MAB,
                                             IDMESEANNOELAB = MeseAnnoElaborato.IDMESEANNOELAB,
@@ -7635,6 +7661,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         TEORICI teorico = new TEORICI()
                                         {
+                                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                             IDTIPOMOVIMENTO = (decimal)tipoMov,
                                             IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
                                             IDMESEANNOELAB = meseAnnoElaborato.IDMESEANNOELAB,
@@ -7757,6 +7784,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 TEORICI t = new TEORICI()
                                 {
+                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDTIPOMOVIMENTO = (decimal)tipoMov,
                                     IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -7844,6 +7872,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 TEORICI t = new TEORICI()
                                 {
+                                    IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDTIPOMOVIMENTO = (decimal)tipoMov,
                                     IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
@@ -8097,6 +8126,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     TEORICI teorici = new TEORICI()
                                     {
+                                        IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
                                         IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
                                         IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
@@ -8307,6 +8337,7 @@ namespace NewISE.Models.DBModel.dtObj
                         #region Contabilità
                         TEORICI teorici = new TEORICI()
                         {
+                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
                             IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
                             IDVOCI = (decimal)EnumVociContabili.Ind_Richiamo_IRI,
@@ -8337,6 +8368,7 @@ namespace NewISE.Models.DBModel.dtObj
                         #region Lordo
                         TEORICI teoriciLordo = new TEORICI()
                         {
+                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
                             IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
                             IDVOCI = (decimal)EnumVociCedolino.Rientro_Lordo_086_381,
@@ -8363,6 +8395,7 @@ namespace NewISE.Models.DBModel.dtObj
                         #region Netto
                         TEORICI teoriciNetto = new TEORICI()
                         {
+                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
                             IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
                             IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
