@@ -13,7 +13,7 @@ namespace NewISE.Models.DBModel
     public class ElencoTitoliViaggioModel
     {
         public decimal idAttivazioneTitoloViaggio { get; set; }
-        public decimal idFamiliare { get; set; }///ID del figlio, del coniuge o del dipendente
+        public decimal idFamiliare { get; set; }///ID del figlio, del coniuge
         public decimal? idTitoloViaggio { get; set; }
         public string Nominativo { get; set; }
         [Display(Name = "Cod. Fisc.")]
@@ -26,11 +26,28 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFine { get; set; }
         [Display(Name = "Parentela")]
         public EnumParentela parentela { get; set; }
+
+        public decimal idParentela { get; set; }
+
         public decimal idAltriDati { get; set; }
+
+        public decimal idDocIdentita { get; set; }
+
+        public decimal idDocCartaImbarco { get; set; }
+
+        public decimal idDoctitoloViaggio { get; set; }
+
+        public bool esisteDocCartaImbarco { get; set; }
+
+        public bool esisteDoctitoloViaggio { get; set; }
 
         [Display(Name = "Richiedi")]
         [DefaultValue(false)]
         public bool RichiediTitoloViaggio { get; set; }
+
+        public decimal idFigliTitoloViaggio { get; set; }
+
+        public decimal idConiugeTitoloViaggio { get; set; }
 
     }
 }

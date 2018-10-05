@@ -1,0 +1,110 @@
+﻿@using NewISE.Models.Tools
+@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+
+@model NewISE.Models.ViewModel.GestPulsantiVariazioneTVModel
+
+@{
+    bool admin = Utility.Amministratore();
+}
+
+@Html.Hidden("HidAttivazioneTV", Model.idAttivazioneTV)
+
+<div class="row">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:15px ">
+
+        @if (Model.statoTrasferimento != EnumStatoTraferimento.Annullato)
+        {
+            if (Model.attivazioneRichiesta == false)
+            {
+                if (Model.notificaRichiesta == false)
+                {
+                    if (Model.coniugeIncluso || Model.figliIncluso)
+                    {
+                        <button class="btn btn-default btn-sm " id="btNotificaRichiestaVariazioneTV" onclick="ModalNotificaRichiestaVariazioneTV();">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Notifica richiesta
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaVariazioneTV">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Notifica richiesta
+                        </button>
+                    }
+                    if (admin)
+                    {
+                        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaRichiestaVariazioneTV">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Attiva richiesta
+                        </button>
+                        <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaVariazioneTV">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Annulla richiesta
+                        </button>
+                    }
+                }
+                else
+                {
+                    <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaVariazioneTV">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Notifica richiesta
+                    </button>
+
+                    if (admin)
+                    {
+                        <button class="btn btn-default btn-sm " id="btAttivaRichiestaVariazioneTV" onclick="ModalAttivaRichiestaVariazioneTV(@Model.idAttivazioneTV);">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Attiva richiesta
+                        </button>
+                        <button class="btn btn-default btn-sm " id="btAnnullaRichiestaVariazioneTV" onclick="ModalAnnullaRichiestaVariazioneTV(@Model.idAttivazioneTV);">
+                            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                            Annulla richiesta
+                        </button>
+                    }
+                }
+            }
+            else
+            {
+                <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaVariazioneTV">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                if (admin)
+                {
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAttivaRichiestaVariazioneTV">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Completa richiesta
+                    </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaVariazioneTV">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+                }
+
+            }
+
+        }
+        else
+        {
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaVariazioneTV">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Notifica richiesta
+            </button>
+            if (admin)
+            {
+                <button class="btn btn-default btn-sm disabled" disabled id="btAttivaRichiestaVariazioneTV">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Completa richiesta
+                </button>
+                <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaVariazioneTV">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Annulla richiesta
+                </button>
+            }
+
+        }
+    </div>
+</div>
+
