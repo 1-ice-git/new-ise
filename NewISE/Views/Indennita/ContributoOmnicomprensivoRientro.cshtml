@@ -40,6 +40,9 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.SaldoContributoOmnicomprensivoPartenza)
             </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PercentualeFasciaKmR)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -61,6 +64,9 @@
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.SaldoContributoOmnicomprensivoPartenza)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.PercentualeFasciaKmR)
                 </td>
             </tr>
         }

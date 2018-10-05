@@ -73,13 +73,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                <span class="glyphicon glyphicon-folder-close">
-                                </span>&nbsp;&nbsp;Indennità mensili
+                            <a data-toggle="collapse" data-parent="#accordion" href="#PrimoMenù">
+                                <span class="glyphicon glyphicon-file">
+                                </span>Indennità mensili
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse">
+                    <div id="PrimoMenù" class="panel-collapse collapse">
                         
                         <div class="list-group">
                             <div class="list-group">
@@ -111,13 +111,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#SecondoMenu">
                                 <span class="glyphicon glyphicon-file">
-                                </span>&nbsp;&nbsp;Indennità una tantum
+                                </span>Indennità una tantum
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseFour" class="panel-collapse collapse">
+                    <div id="SecondoMenu" class="panel-collapse collapse">
                         @*<div class="list-group">
 
                             <div class="list-group">
@@ -141,15 +141,15 @@
                                 <div class="list-group-item">
                                     @Ajax.ActionLink("Indennità di Sistemazione Lorda", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                                 </div>
-                                <div class="list-group-item">
+                                @*<div class="list-group-item" style="visibility:hidden">
                                     @Ajax.ActionLink("Indennità di Sistemazione Netta (Anticipo o Saldo)", "IndennitadiSistemazioneNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                                </div>
+                                </div>*@
                                 <div class="list-group-item">
                                     @Ajax.ActionLink("Indennità di Richiamo Lorda", "IndennitadiRichiamoLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                                 </div>
-                                <div class="list-group-item">
+                                @*<div class="list-group-item" style="visibility:hidden">
                                     @Ajax.ActionLink("Indennità di Richiamo Netta", "IndennitadiRichiamoNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                                </div>
+                                </div>*@
                                 <div class="list-group-item">
                                     @Ajax.ActionLink("Contributo Omnicomprensivo Trasferimento", "ContributoOmnicomprensivoTrasferimento", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                                 </div>

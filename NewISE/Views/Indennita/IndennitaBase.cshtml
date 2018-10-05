@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
 @using NewISE.Models.Enumeratori
+@using NewISE.Models.Tools
 
 <link href="~/Views/Content/NoScroller.css" rel="stylesheet" />
 
@@ -45,6 +46,7 @@
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
             <th class="text-center">
+
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th class="text-center">
@@ -90,9 +92,17 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
+
+                @if (item.dataFineValidita == Utility.DataFineStop())
+                {
+                    <td style="text-align:center;"></td>
+                }
+                else
+                { 
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
+                }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.valore)
                 </td>
@@ -286,7 +296,7 @@
      });
 
      function RptIndennitaBase() {
-         debugger;
+         //debugger;
          var rotta = "/Indennita/RptIndennitaBase";
 
          var idTrasferimento = 0;

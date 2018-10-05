@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetRiepiloghiVoci" targetNamespace="http://tempuri.org/DataSetRiepiloghiVoci.xsd" xmlns:mstns="http://tempuri.org/DataSetRiepiloghiVoci.xsd" xmlns="http://tempuri.org/DataSetRiepiloghiVoci.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetRiepiloghiVoci" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetRiepiloghiVoci" msprop:Generator_UserDSName="DataSetRiepiloghiVoci">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="dataOperazione" msprop:Generator_ColumnVarNameInTable="columndataOperazione" msprop:Generator_ColumnPropNameInRow="dataOperazione" msprop:Generator_ColumnPropNameInTable="dataOperazioneColumn" msprop:Generator_UserColumnName="dataOperazione" type="xs:string" minOccurs="0" />
+              <xs:element name="descrizione" msprop:Generator_ColumnVarNameInTable="columndescrizione" msprop:Generator_ColumnPropNameInRow="descrizione" msprop:Generator_ColumnPropNameInTable="descrizioneColumn" msprop:Generator_UserColumnName="descrizione" type="xs:string" minOccurs="0" />
+              <xs:element name="Importo" msprop:Generator_ColumnVarNameInTable="columnImporto" msprop:Generator_ColumnPropNameInRow="Importo" msprop:Generator_ColumnPropNameInTable="ImportoColumn" msprop:Generator_UserColumnName="Importo" type="xs:string" minOccurs="0" />
+              <xs:element name="Liquidazione" msprop:Generator_ColumnVarNameInTable="columnLiquidazione" msprop:Generator_ColumnPropNameInRow="Liquidazione" msprop:Generator_ColumnPropNameInTable="LiquidazioneColumn" msprop:Generator_UserColumnName="Liquidazione" type="xs:string" minOccurs="0" />
+              <xs:element name="Voce" msprop:Generator_ColumnVarNameInTable="columnVoce" msprop:Generator_ColumnPropNameInRow="Voce" msprop:Generator_ColumnPropNameInTable="VoceColumn" msprop:Generator_UserColumnName="Voce" type="xs:string" minOccurs="0" />
+              <xs:element name="movimento" msprop:Generator_ColumnVarNameInTable="columnmovimento" msprop:Generator_ColumnPropNameInRow="movimento" msprop:Generator_ColumnPropNameInTable="movimentoColumn" msprop:Generator_UserColumnName="movimento" type="xs:string" minOccurs="0" />
+              <xs:element name="meseAnnoRiferimento" msprop:Generator_ColumnVarNameInTable="columnmeseAnnoRiferimento" msprop:Generator_ColumnPropNameInRow="meseAnnoRiferimento" msprop:Generator_ColumnPropNameInTable="meseAnnoRiferimentoColumn" msprop:Generator_UserColumnName="meseAnnoRiferimento" type="xs:string" minOccurs="0" />
+              <xs:element name="Inserimento" msprop:Generator_ColumnVarNameInTable="columnInserimento" msprop:Generator_ColumnPropNameInRow="Inserimento" msprop:Generator_ColumnPropNameInTable="InserimentoColumn" msprop:Generator_UserColumnName="Inserimento" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

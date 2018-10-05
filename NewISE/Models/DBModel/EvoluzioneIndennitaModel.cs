@@ -14,11 +14,26 @@ namespace NewISE.Models.DBModel
         public decimal idPercentualeDisagio { get; set; }
 
         [Display(Name = "Coefficiente di Sede")]
+        //[DisplayFormat(DataFormatString="{0:0.00000}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal CoefficienteSede { get; set; }
 
+        
         [Display(Name = "Percentuale di Disagio")]
+        //[DisplayFormat(DataFormatString = "{0:0.00}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal PercentualeDisagio { get; set; }
 
+        [Display(Name = "Percentuale Fascia Km Partenza")]
+        //[DisplayFormat(DataFormatString = "{0:0.00}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
+        public decimal PercentualeFasciaKmP { get; set; }
+
+        [Display(Name = "Percentuale Fascia Km Rientro")]
+        //[DisplayFormat(DataFormatString = "{0:0.00}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
+        public decimal PercentualeFasciaKmR { get; set; }
+        
         [Display(Name = "Indennita Base")]
         public decimal IndennitaBase { get; set; }
 
@@ -56,6 +71,7 @@ namespace NewISE.Models.DBModel
         public decimal IndennitaSistemazioneLorda { get; set; }
 
         [Display(Name = "Coefficiente di Maggiorazione")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal CoefficientediMaggiorazione { get; set; }
 
         [Display(Name = "Anticipo Contr.Omnicomprensivo Partenza")]
