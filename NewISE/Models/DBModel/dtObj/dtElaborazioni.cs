@@ -1523,6 +1523,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 ELABORATO = false,
                                                 DIRETTO = true,
                                                 ANNULLATO = false
+
                                             };
 
                                             eis.TEORICI.Add(teorici);
@@ -3297,7 +3298,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                  a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                                                  a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                                  a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
-                                                 a.DIRETTO == false && a.IMPORTO > 0 &&
+                                                 a.DIRETTO == false && a.IMPORTO != 0 &&
                                                  a.ELABMAB.Any(b => b.ANNULLATO == false))
                 .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
                 .ToList();
@@ -3380,7 +3381,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                  a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                                                  a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                                  a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
-                                                 a.DIRETTO == false && a.IMPORTO > 0 &&
+                                                 a.DIRETTO == false && a.IMPORTO != 0 &&
                                                  a.ELABINDENNITA.Any(b => b.ANNULLATO == false))
                 .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
                 .ToList();
@@ -3466,7 +3467,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
                         a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
                         a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
-                        a.DIRETTO == false && a.IMPORTO > 0)
+                        a.DIRETTO == false && a.IMPORTO != 0)
                     .OrderBy(a => a.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI.NOME)
                     .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
@@ -3563,7 +3564,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
                         a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
                         a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
-                        a.DIRETTO == false && a.IMPORTO > 0)
+                        a.DIRETTO == false && a.IMPORTO != 0)
                     .OrderBy(a => a.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI.NOME)
                     .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
@@ -3661,7 +3662,7 @@ namespace NewISE.Models.DBModel.dtObj
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI) &&
-                         a.DIRETTO == false && a.IMPORTO > 0 &&
+                         a.DIRETTO == false && a.IMPORTO != 0 &&
                          a.ELABINDRICHIAMO.ANNULLATO == false && a.ELABINDRICHIAMO.IDRICHIAMO > 0)
                     .OrderBy(a => a.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI.NOME)
@@ -3754,7 +3755,7 @@ namespace NewISE.Models.DBModel.dtObj
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
                          a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS) &&
-                         a.DIRETTO == false && a.IMPORTO > 0 &&
+                         a.DIRETTO == false && a.IMPORTO != 0 &&
                          a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0)
                     .OrderBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.NOME)
@@ -3839,7 +3840,7 @@ namespace NewISE.Models.DBModel.dtObj
                     a =>
                         a.ANNULLATO == false &&
                         a.IDMESEANNOELAB == mae.IDMESEANNOELAB && a.INSERIMENTOMANUALE == true && a.IDAUTOVOCIMANUALI > 0 &&
-                         a.DIRETTO == false && a.IMPORTO > 0)
+                         a.DIRETTO == false && a.IMPORTO != 0)
                     .OrderBy(a => a.AUTOMATISMOVOCIMANUALI.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.AUTOMATISMOVOCIMANUALI.TRASFERIMENTO.DIPENDENTI.NOME)
                     .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
@@ -4683,9 +4684,43 @@ namespace NewISE.Models.DBModel.dtObj
                 dataInizioElaborazione = dataInizioTrasferimento;
             }
 
-            if (dataFineTrasferimento < dataFineElaborazione)
+            var ltPercepite =
+                db.TEORICI.Where(
+                    a =>
+                        a.ANNULLATO == false && a.ELABORATO == true && a.DIRETTO == false &&
+                        a.INSERIMENTOMANUALE == false &&
+                        a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                        a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
+                    .OrderBy(a => a.ANNORIFERIMENTO)
+                    .ThenBy(a => a.MESERIFERIMENTO)
+                    .ToList();
+
+            if (ltPercepite?.Any() ?? false)
             {
-                dataFineElaborazione = dataFineTrasferimento;
+                var ultimoTeoricoPercepito = ltPercepite.Last();
+                DateTime dtFineMabPercepita = Utility.GetDtFineMese(
+                    Convert.ToDateTime("01/" +
+                                       ultimoTeoricoPercepito.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0') +
+                                       "/" + ultimoTeoricoPercepito.ANNORIFERIMENTO
+                        ));
+
+                var elabMab = ultimoTeoricoPercepito.ELABMAB.Where(a => a.ANNULLATO == false && a.)
+
+                if (dataFineTrasferimento < dtFineMabPercepita)
+                {
+                    dataFineElaborazione = dataFineTrasferimento;
+                }
+                else
+                {
+                    dataFineElaborazione = dtFineMabPercepita;
+                }
+            }
+            else
+            {
+                if (dataFineTrasferimento < dataFineElaborazione)
+                {
+                    dataFineElaborazione = dataFineTrasferimento;
+                }
             }
 
 
@@ -4697,9 +4732,6 @@ namespace NewISE.Models.DBModel.dtObj
                 DateTime dataFineCiclo = Utility.GetDtFineMese(dataIniCiclo);
 
                 decimal progMax = db.Database.SqlQuery<decimal>("SELECT SEQ_MAB.nextval PROG_MAX FROM dual").First();
-
-
-
 
                 for (int i = 1; i <= numeroCicli; i++)
                 {
@@ -4731,11 +4763,12 @@ namespace NewISE.Models.DBModel.dtObj
                     var lteoriciOld =
                         db.TEORICI.Where(
                             a =>
-                                a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                                a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.MAB && a.INSERIMENTOMANUALE == false &&
                                 a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                 a.ANNORIFERIMENTO == dataIniCiclo.Year &&
                                 a.MESERIFERIMENTO == dataIniCiclo.Month &&
-                                a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
+                                a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
+                            //a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
                             .ToList();
 
                     List<DateTime> lDateVariazioni = new List<DateTime>();
@@ -5204,45 +5237,15 @@ namespace NewISE.Models.DBModel.dtObj
                                                             ANNUALE = ci.AnticipoAnnualeMAB,
                                                             PROGRESSIVO = progMax,
                                                             DATAOPERAZIONE = DateTime.Now,
-                                                            ANNULLATO = false,
-                                                            //ELABDATIFIGLI = new List<ELABDATIFIGLI>()
-                                                            //{
+                                                            ANNULLATO = false
 
-                                                            //}
 
                                                         };
 
 
                                                         lElabMabNew.Add(emab);
 
-                                                        //magMab.ELABMAB.Add(emab);
 
-                                                        //int n = db.SaveChanges();
-
-                                                        //if (n > 0)
-                                                        //{
-                                                        //    lElabMabNew.Add(emab);
-
-                                                        //    foreach (var df in ci.lDatiFigli)
-                                                        //    {
-                                                        //        ELABDATIFIGLI edf = new ELABDATIFIGLI()
-                                                        //        {
-                                                        //            IDELABMAB = emab.IDELABMAB,
-                                                        //            INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
-                                                        //            PERCENTUALEMAGGIORAZIONEFIGLI = df.percentualeMaggiorazioniFligli
-                                                        //        };
-
-                                                        //        emab.ELABDATIFIGLI.Add(edf);
-                                                        //    }
-
-                                                        //    int h = db.SaveChanges();
-
-
-                                                        //}
-                                                        //else
-                                                        //{
-                                                        //    throw new Exception("Impossibile inserire l'informazione di elaborazione MAB.");
-                                                        //}
 
                                                     }
                                                 }
@@ -5257,7 +5260,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             decimal conguaglioMab = importoMabNewTot - sumImportoMabOld;
 
-                            if (conguaglioMab != 0)
+                            if (Math.Round(conguaglioMab, 3) != 0)
                             {
 
 
@@ -5340,6 +5343,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     db.SaveChanges();
                                 }
                             }
+
                         }
                     }
                 }
@@ -7434,9 +7438,10 @@ namespace NewISE.Models.DBModel.dtObj
                                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
                                         a.ANNORIFERIMENTO == dtIni.Year &&
                                         a.MESERIFERIMENTO == dtIni.Month &&
-                                        a.ELABMAB.Any(
-                                            b =>
-                                                b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
+                                        a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
+                                    //a.ELABMAB.Any(
+                                    //    b =>
+                                    //        b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
                                     .ToList();
 
                             if (ltOld?.Any() ?? false)
@@ -7594,9 +7599,10 @@ namespace NewISE.Models.DBModel.dtObj
                                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
                                         a.ANNORIFERIMENTO == dtIni.Year &&
                                         a.MESERIFERIMENTO == dtIni.Month &&
-                                        a.ELABINDENNITA.Any(
-                                            b =>
-                                                b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
+                                        a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
+                                    //a.ELABINDENNITA.Any(
+                                    //    b =>
+                                    //        b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
                                     .ToList();
 
                             if (ltOld?.Any() ?? false)

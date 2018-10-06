@@ -635,10 +635,10 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 int i = db.SaveChanges();
 
-                if (i <= 0)
-                {
-                    throw new Exception("Impossibile resettare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
-                }
+                //if (i <= 0)
+                //{
+                //    throw new Exception("Impossibile resettare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                //}
             }
         }
         /// <summary>
