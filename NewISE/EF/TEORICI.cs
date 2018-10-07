@@ -39,6 +39,7 @@ namespace NewISE.EF
         public Nullable<decimal> IDINDSISTLORDA { get; set; }
         public Nullable<decimal> IDAUTOVOCIMANUALI { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
+        public decimal GIORNI { get; set; }
     
         public virtual AUTOMATISMOVOCIMANUALI AUTOMATISMOVOCIMANUALI { get; set; }
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
