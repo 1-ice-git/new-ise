@@ -17,7 +17,6 @@ namespace NewISE.Models.DBModel
         //[DisplayFormat(DataFormatString="{0:0.00000}")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal CoefficienteSede { get; set; }
-
         
         [Display(Name = "Percentuale di Disagio")]
         //[DisplayFormat(DataFormatString = "{0:0.00}")]
@@ -55,6 +54,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Maggiorazioni Coniuge")]
         public decimal MaggiorazioneConiuge { get; set; }
 
+        [Display(Name = "Maggiorazione Abitazione")]
+        public decimal MaggiorazioneAbitazione { get; set; }
+
         [Display(Name = "Maggiorazioni Figli")]
         public decimal MaggiorazioniFigli { get; set; }
 
@@ -89,6 +91,8 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Tasso fisso di ragguaglio")]
         public decimal TassoFissoRagguaglio { get; set; }
 
+        [Display(Name = "Canone MAB")]
+        public decimal CanoneMAB { get; set; }
 
         [Display(Name = "Data Test")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

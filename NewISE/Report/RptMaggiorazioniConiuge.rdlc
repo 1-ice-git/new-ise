@@ -594,7 +594,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!PercentualeMaggiorazioniConiuge.Value,5)</Value>
+                              <Value>=FormatNumber(Fields!PercentualeMaggiorazioniConiuge.Value,2)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
