@@ -28,13 +28,16 @@
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaPersonale)
+                @Html.DisplayNameFor(model => model.CoeffIndSistemazione)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.CoefficientediMaggiorazione)
+                @Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaSistemazioneLorda)
+                @Html.DisplayNameFor(model => model.IndennitaSistemazione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
             </th>
         </tr>
     </thead>
@@ -47,15 +50,17 @@
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaPersonale)
+                    @Html.DisplayFor(modelItem => item.CoeffIndSistemazione)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.CoefficientediMaggiorazione)
+                    @Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaSistemazioneLorda)
+                    @Html.DisplayFor(modelItem => item.IndennitaSistemazione)
                 </td>
-                
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)
+                </td>
             </tr>
         }
     </tbody>

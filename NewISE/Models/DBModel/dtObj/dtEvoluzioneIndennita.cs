@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.Models.Enumeratori;
+using NewISE.Models.ViewModel;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -1151,8 +1152,26 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
 
+
+                    //PercentualeAnticipoRichiesto
+                    AnticipiViewModel anticipi = new AnticipiViewModel();
+
+
+                    using (dtAnticipi dta = new dtAnticipi())
+                    {
+                        var aa = trasferimento.PRIMASITEMAZIONE.ATTIVITAANTICIPI
+                                .Where(a => a.ANNULLATO == false
+                                    && a.ATTIVARICHIESTA
+                                    && a.NOTIFICARICHIESTA)
+                                    .OrderBy(a => a.IDATTIVITAANTICIPI).ToList().First();
+
+                        anticipi = dta.GetAnticipi(aa.IDATTIVITAANTICIPI, db);
+
+                    }
+
+
                     #endregion
-                    
+
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                     if (lDateVariazioni?.Any() ?? false)
@@ -1184,7 +1203,12 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
                                     xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
                                     xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
-                                    
+
+                                    xx.PercentualeAnticipoRichiesto = anticipi.PercentualeAnticipoRichiesto;
+                                    xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
+                                    xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
+                                    xx.CoeffIndSistemazione = ci.CoefficienteIndennitaSistemazione;
+                                    xx.PercentualeRiduzionePrimaSistemazione = ci.PercentualeRiduzionePrimaSistemazione;
 
                                     eim.Add(xx);
                                     
@@ -1218,7 +1242,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                     List<DateTime> lDateVariazioni = new List<DateTime>();
 
-
                     #region Variazioni Indennità di Sistemazione
 
                     var ll =
@@ -1250,7 +1273,25 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #endregion
 
-                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
+                    //PercentualeAnticipoRichiesto
+                    AnticipiViewModel anticipi = new AnticipiViewModel();
+           
+
+                    using (dtAnticipi dta = new dtAnticipi())
+                    {
+                        var aa = trasferimento.PRIMASITEMAZIONE.ATTIVITAANTICIPI
+                                .Where(a => a.ANNULLATO == false 
+                                    && a.ATTIVARICHIESTA 
+                                    && a.NOTIFICARICHIESTA)
+                                    .OrderBy(a => a.IDATTIVITAANTICIPI).ToList().First();
+
+                        anticipi = dta.GetAnticipi(aa.IDATTIVITAANTICIPI, db);
+
+                    }
+
+
+
+                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                     if (lDateVariazioni?.Any() ?? false)
                     {
@@ -1279,10 +1320,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                     xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                    xx.PercentualeAnticipoRichiesto = anticipi.PercentualeAnticipoRichiesto;
                                     xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
-                                    xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
-                                    xx.IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda;
-                                    
+                                    xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
+                                    xx.CoeffIndSistemazione = ci.CoefficienteIndennitaSistemazione;
+                                    xx.PercentualeRiduzionePrimaSistemazione = ci.PercentualeRiduzionePrimaSistemazione;
                                     eim.Add(xx);
 
                                 }
@@ -1379,7 +1421,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
                                     xx.PercentualeFasciaKmP = ci.PercentualeFKMPartenza;
                                     xx.PercentualeFasciaKmR = ci.PercentualeFKMRientro;
-                                    xx.IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda;
+                                    xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
                                     xx.AnticipoContributoOmnicomprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza;
                                     xx.SaldoContributoOmnicomprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza;
                                     
@@ -1481,7 +1523,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
                                     xx.PercentualeFasciaKmP = ci.PercentualeFKMPartenza;
                                     xx.PercentualeFasciaKmR = ci.PercentualeFKMRientro;
-                                    xx.IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda;
+                                    xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
                                     xx.IndennitaRichiamo = ci.IndennitaRichiamoLordo;
                                     xx.AnticipoContributoOmnicomprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza;
                                     xx.SaldoContributoOmnicomprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza;

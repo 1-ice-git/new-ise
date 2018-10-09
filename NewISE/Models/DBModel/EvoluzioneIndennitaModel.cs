@@ -32,6 +32,12 @@ namespace NewISE.Models.DBModel
         //[DisplayFormat(DataFormatString = "{0:0.00}")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal PercentualeFasciaKmR { get; set; }
+
+        [Display(Name = "Coeff. Ind. Prima Sistemazione")]
+        public decimal CoeffIndSistemazione { get; set; }
+
+        [Display(Name = "Perc. Rid. Prima Sistemazione")]
+        public decimal PercentualeRiduzionePrimaSistemazione { get; set; }
         
         [Display(Name = "Indennita Base")]
         public decimal IndennitaBase { get; set; }
@@ -66,11 +72,11 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Indennità Primo Segretario")]
         public decimal IndennitaPrimoSegretario { get; set; }
 
-        [Display(Name = "Anticipo Indennità di Sistemazione Lorda")]
+        [Display(Name = "Ind. Prima Sist. con esclusione Magg. Fam.")]
         public decimal IndennitaSistemazioneAnticipabileLorda { get; set; }
 
-        [Display(Name = "Indennità di Sistemazione Lorda")]
-        public decimal IndennitaSistemazioneLorda { get; set; }
+        [Display(Name = "Indennità di Sistemazione")]
+        public decimal IndennitaSistemazione { get; set; }
 
         [Display(Name = "Coefficiente di Maggiorazione")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
@@ -91,6 +97,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Tasso fisso di ragguaglio")]
         public decimal TassoFissoRagguaglio { get; set; }
 
+        [Display(Name = "Percentuale Anticipo Richiesto")]
+        public decimal PercentualeAnticipoRichiesto { get; set; }
+        
         [Display(Name = "Canone MAB")]
         public decimal CanoneMAB { get; set; }
 

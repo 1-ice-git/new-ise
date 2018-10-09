@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-md-12">
         <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
-            <h4>Anticipo Indennità di Sistemazione Lorda</h4>
+            <h4>Anticipo Indennità di Prima Sistemazione</h4>
 
 
 
@@ -29,15 +29,82 @@
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaServizio)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.CoefficientediMaggiorazione)
+                @Html.DisplayNameFor(model => model.CoeffIndSistemazione)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)
             </th>
-           
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.IndennitaSistemazione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PercentualeRiduzionePrimaSistemazione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CoeffIndSistemazione)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.IndennitaSistemazione)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.PercentualeRiduzionePrimaSistemazione)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-12">
+        <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
+            <h4>Saldo Indennità di Prima Sistemazione</h4>
+
+
+
+        </div>
+    </div>
+</div>
+
+<table id="tbSaldoIndennitadiSistemazioneLorda" class="display" cellspacing="0">
+    <thead>
+        <tr>
+
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.IndennitaServizio)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.IndennitaSistemazione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PercentualeRiduzionePrimaSistemazione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -51,16 +118,22 @@
                     @Html.DisplayFor(modelItem => item.IndennitaServizio)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.CoefficientediMaggiorazione)
-                </td>
-                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)
                 </td>
-                
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.IndennitaSistemazione)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.PercentualeRiduzionePrimaSistemazione)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
 
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
@@ -118,7 +191,46 @@
         "order": [[0, "asc"]]
     });
 
+    $('#tbSaldoIndennitadiSistemazioneLorda').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": false,
 
+                }
+        ],
+        "order": [[0, "asc"]]
+    });
 
 
     // Report tbAnticipoIndennitadiSistemazioneLorda

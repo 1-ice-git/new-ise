@@ -5015,9 +5015,11 @@
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StoriaDipendenteNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiNewController.cs" />
+    <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\OpDipEsteroLivelloModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiIseMensileModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiMaggAbitazioneModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptDipEsteroLivelloNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptOpDipEsteroLivelloModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiIseMensileModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiMaggAbitazioneModel.cs" />
@@ -5440,6 +5442,7 @@
     <Compile Include="Models\DBModel\bsObj\VariazioniIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtDipEsteroLivello.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtEvoluzioneIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaPersonale.cs" />

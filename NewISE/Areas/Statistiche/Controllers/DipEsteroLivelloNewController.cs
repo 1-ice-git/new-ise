@@ -59,41 +59,33 @@ namespace NewISE.Areas.Statistiche.Controllers
             return PartialView();
         }
 
-        public ActionResult RptDipEsteroLivello(string dtIni, string dtFin, decimal idLivello)
+        public ActionResult RptDipEsteroLivello(DateTime dtIni, DateTime dtFin, decimal idLivello)
         {
-            List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
-            List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
+            List<DipEsteroLivelloNewModel> rim = new List<DipEsteroLivelloNewModel>();
+            List<RptDipEsteroLivelloNewModel> rpt = new List<RptDipEsteroLivelloNewModel>();
 
             try
             {
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    //using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
-                    //{
-                    //    rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
-                    //}
+                    using (dtDipEsteroLivello dtDipEsteroLivello = new dtDipEsteroLivello())
+                    {
+                        rim = dtDipEsteroLivello.DipEsteroLivelloNew(dtIni, dtFin, idLivello, db).ToList();
+                    }
 
                     if (rim?.Any() ?? false)
                     {
                         foreach (var lm in rim)
                         {
-                            //RptRiepiloghiIseMensileModel rptds = new RptRiepiloghiIseMensileModel()
-                            //{
-                            //    IdTeorici = lm.idTeorici,
-                            //    DescrizioneVoce = lm.Voci.descrizione,
-                            //    Nominativo = lm.Nominativo,
-                            //    Movimento = lm.TipoMovimento.DescMovimento,
-                            //    Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
-                            //    Voce = lm.Voci.codiceVoce,
-                            //    Inserimento = lm.tipoInserimento.ToString(),
-                            //    Importo = lm.Importo,
-                            //    Inviato = lm.Elaborato,
-                            //    meseRiferimento = lm.meseRiferimento
+                            RptDipEsteroLivelloNewModel rptds = new RptDipEsteroLivelloNewModel()
+                            {
+                                
+                                nominativo = lm.cognome + " " + lm.nome + " (" + lm.matricola + ")",
+                            };
 
-                            //};
 
-                            //rpt.Add(rptds);
+                            rpt.Add(rptds);
                         }
                     }
 
