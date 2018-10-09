@@ -71,7 +71,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             try
             {
-
                 //Decimal AnnoMeseAttuale = Convert.ToDecimal(DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString().PadLeft(2, (char)'0'));
 
                 using (ModelDBISE db = new ModelDBISE())
