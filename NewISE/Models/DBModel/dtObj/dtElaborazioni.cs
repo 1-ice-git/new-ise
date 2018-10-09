@@ -1692,8 +1692,18 @@ namespace NewISE.Models.DBModel.dtObj
                     eis.PERCENTUALEMAGCONIUGE, eis.PENSIONECONIUGE, eis.ELABDATIFIGLI,
                     out primaSistemazioneAnticipabile, out primaSistemazioneUnicaSoluzione, out outMaggiorazioniFamiliari);
 
+                decimal ImponibilePrevidenziale = 0;
 
-                var ImponibilePrevidenziale = primaSistemazioneUnicaSoluzione - detrazioni.VALORE;
+                if (primaSistemazioneUnicaSoluzione < (detrazioni.VALORE * 2))
+                {
+                    ImponibilePrevidenziale = primaSistemazioneUnicaSoluzione - (primaSistemazioneUnicaSoluzione / 2);
+                }
+                else
+                {
+                    ImponibilePrevidenziale = primaSistemazioneUnicaSoluzione - detrazioni.VALORE;
+                }
+
+
                 var RitenutePrevidenziali = ImponibilePrevidenziale * aliqPrev.VALORE / 100;
 
                 var dip = t.DIPENDENTI;
@@ -3962,8 +3972,17 @@ namespace NewISE.Models.DBModel.dtObj
         private decimal NettoPrimaSistemazione(int matricola, decimal imponibileLordo, decimal aliqPrev, decimal detrazioni, out decimal outAliqIse)
         {
             decimal ret = 0;
+            decimal ImponibilePrevidenziale = 0;
 
-            var ImponibilePrevidenziale = imponibileLordo - detrazioni;
+            if (imponibileLordo < (detrazioni * 2))
+            {
+                ImponibilePrevidenziale = imponibileLordo - (imponibileLordo / 2);
+            }
+            else
+            {
+                ImponibilePrevidenziale = imponibileLordo - detrazioni;
+            }
+
             var RitenutePrevidenziali = ImponibilePrevidenziale * aliqPrev / 100;
 
             using (dtAliquotaISE dtai = new dtAliquotaISE())
@@ -3977,7 +3996,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 ret = Netto;
             }
-
 
             return ret;
         }
