@@ -41,6 +41,7 @@ namespace NewISE.EF
         public bool ABILITATO { get; set; }
         public System.DateTime DATAINIZIORICALCOLI { get; set; }
         public bool NOSISTEMA { get; set; }
+        public bool RICALCOLARE { get; set; }
     
         public virtual CDCGEPE CDCGEPE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

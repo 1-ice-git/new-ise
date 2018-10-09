@@ -47,11 +47,12 @@
 
         //$('#notificaModal').modal().show();
 
+        var idAnnoMeseElab = $("#mesiAnniElaborati").val();
 
         $.ajax({
             url: rotta,
             type: "post", //Le info testuali saranno passate in POST
-            //data: { idSospensione: idSospensione, idTrasferimento: idTrasferimento },
+            data: { idAnnoMeseElab: idAnnoMeseElab },
             dataType: 'html',
             async: true,
             beforeSend: function () {

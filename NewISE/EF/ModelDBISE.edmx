@@ -508,6 +508,7 @@
           <Property Name="ABILITATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="date" Nullable="false" />
           <Property Name="NOSISTEMA" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="RICALCOLARE" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="DOC_ATEP">
           <Key>
@@ -8288,6 +8289,7 @@
           <Property Name="ABILITATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
           <Property Name="NOSISTEMA" Type="Boolean" Nullable="false" />
+          <Property Name="RICALCOLARE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CDCGEPE" Relationship="DBISE.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
           <NavigationProperty Name="DESTINATARI" Relationship="DBISE.R_DIP_DEST" FromRole="DIPENDENTI" ToRole="DESTINATARI" />
           <NavigationProperty Name="ELABORAZIONI" Relationship="DBISE.R_D_E" FromRole="DIPENDENTI" ToRole="ELABORAZIONI" />
@@ -12372,6 +12374,7 @@
           <EntitySetMapping Name="DIPENDENTI">
             <EntityTypeMapping TypeName="DBISE.DIPENDENTI">
               <MappingFragment StoreEntitySet="DIPENDENTI">
+                <ScalarProperty Name="RICALCOLARE" ColumnName="RICALCOLARE" />
                 <ScalarProperty Name="NOSISTEMA" ColumnName="NOSISTEMA" />
                 <ScalarProperty Name="DATAINIZIORICALCOLI" ColumnName="DATAINIZIORICALCOLI" />
                 <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />

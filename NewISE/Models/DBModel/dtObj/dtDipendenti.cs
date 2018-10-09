@@ -578,6 +578,8 @@ namespace NewISE.Models.DBModel.dtObj
                     d.DATAINIZIORICALCOLI = dtIniRicalcoli;
                 }
 
+                d.RICALCOLARE = true;
+
                 if (saveDb)
                 {
                     int i = db.SaveChanges();
@@ -605,13 +607,15 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="idTrasferimento"></param>
         /// <param name="db"></param>
         /// <param name="saveDB">Se vero salva immediatamente la modifica effettuata sul database.</param>
-        public void ResetDataInizioRicalcoli(decimal idTrasferimento, ModelDBISE db, bool saveDB = false)
+        public void ResetDataInizioRicalcoli(decimal idTrasferimento, ModelDBISE db, bool saveDB = false, bool ricalcolare = false)
         {
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
             var d = t.DIPENDENTI;
 
             d.DATAINIZIORICALCOLI = t.DATAPARTENZA;
+
+            d.RICALCOLARE = ricalcolare;
 
             if (saveDB)
             {
@@ -630,7 +634,7 @@ namespace NewISE.Models.DBModel.dtObj
             var mae = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
 
             d.DATAINIZIORICALCOLI = Convert.ToDateTime("01/" + mae.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + mae.ANNO);
-
+            d.RICALCOLARE = false;
             if (saveDB)
             {
                 int i = db.SaveChanges();
