@@ -2235,6 +2235,7 @@ namespace NewISE.Controllers
                 {
                     dtt.AnnullaTrasf(idTrasferimento, testoAnnullaTrasf);
                     ltrasf = dtt.LeggiElencoTrasferimenti(idTrasferimento);
+
                 }
             }
             catch (Exception ex)

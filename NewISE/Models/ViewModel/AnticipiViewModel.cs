@@ -14,7 +14,7 @@ namespace NewISE.Models.ViewModel
         public decimal ImportoPrevisto { get; set; }
         [Display(Name = "% Richiesta")]
         public decimal PercentualeAnticipoRichiesto { get; set; }
-        [Display(Name = "Imp. Percepito Lordo")]
+        [Display(Name = "Imp. Richiesto Lordo")]
         public string ImportoPercepito { get; set; }
 
     }

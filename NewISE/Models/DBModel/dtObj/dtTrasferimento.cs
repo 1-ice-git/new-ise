@@ -3708,6 +3708,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     dtce.AnnullaMessaggioEvento(t.IDTRASFERIMENTO, EnumFunzioniEventi.AttivaTrasferimento, db);
                                 }
+
+                                using (dtElaborazioni dte = new dtElaborazioni())
+                                {
+                                    dte.ConguagliaAnticipoPrimaSistemazioneDaAnnullaTrasf(t.IDTRASFERIMENTO, db);
+                                }
                             }
                         }
                     }

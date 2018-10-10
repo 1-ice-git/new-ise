@@ -1499,6 +1499,7 @@
           <Property Name="IDAUTOVOCIMANUALI" Type="number" Precision="38" Scale="0" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DETRAZIONIAPPLICATE" Type="number" Precision="18" Scale="8" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -9248,6 +9249,7 @@
           <Property Name="IDAUTOVOCIMANUALI" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DETRAZIONIAPPLICATE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_AVM_T" FromRole="TEORICI" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_T" FromRole="TEORICI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
@@ -13161,6 +13163,7 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="DETRAZIONIAPPLICATE" ColumnName="DETRAZIONIAPPLICATE" />
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDAUTOVOCIMANUALI" ColumnName="IDAUTOVOCIMANUALI" />
