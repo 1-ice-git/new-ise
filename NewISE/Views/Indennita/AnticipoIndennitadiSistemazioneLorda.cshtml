@@ -10,6 +10,7 @@
 @Html.Hidden("hidTrasferimento")
 <div id="dialog" title=""></div>
 
+@*Anticipo Indennità di Prima Sistemazione*@
 <div class="row">
     <div class="col-md-12">
         <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
@@ -21,282 +22,384 @@
     </div>
 </div>
 
-<table id="tbAnticipoIndennitadiSistemazioneLorda" class="display" cellspacing="0">
-    <thead>
-        <tr>
-            
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.CoeffIndSistemazione)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaSistemazione)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.PercentualeRiduzionePrimaSistemazione)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="table-responsive-sm">
+    <table cellspacing="0" class="table table-striped" >
+        <thead>
             <tr>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.CoeffIndSistemazione)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaSistemazione)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.PercentualeRiduzionePrimaSistemazione)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)
-                </td>
+                <th>&nbsp;</th>
+                <th>@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
+                <th>@Html.DisplayNameFor(model => model.IndennitaServizio)</th>
+                <th>@Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)</th>
+                <th>@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
 
-<div class="row">
-    <div class="col-md-12">
-        <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
-            <h4>Saldo Indennità di Prima Sistemazione</h4>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IndennitaServizio)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                </tr>
+                <tr class="comment"><td colspan="4">&nbsp;</td></tr>
+
+            }
+        </tbody>
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Detrazione</th>
+                <th>Imp. Previdenziale </th>
+                <th>Aliq Previd </th>
+                <th>Contr. Previd </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+            }
+        </tbody>
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Imp. Fiscale</th>
+                <th>Aliq. Fisc. (Provvisoria) </th>
+                <th>Ritenuta Fiscale (salvo Conguaglio) </th>
+                <th>Indennità Sistemazione netta </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td>@Html.DisplayFor(modelItem => item.AliquotaFiscale)</td>
+                    <td></td>
+                    <td>@Html.DisplayFor(modelItem => item.Importo)</td>
+                </tr>
+                <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+            }
+        </tbody>
+        
+    </table>
+</div>
 
 
+ @*Anticipo Indennità di Prima Sistemazione
+    <div class="row">
+        <div class="col-md-12">
+            <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
+                <h4>Saldo Indennità di Prima Sistemazione</h4>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive-sm">
+        <table cellspacing="0" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
+                    <th>@Html.DisplayNameFor(model => model.IndennitaPersonale)</th>
+                    <th>@Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)</th>
+                    <th>@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                    </tr>
+                    <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+                }
+            </tbody>
+
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Detrazione</th>
+                    <th>Imp. Previdenziale </th>
+                    <th>Aliq Previd </th>
+                    <th>Contr. Previd </th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                    </tr>
+                    <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+                }
+            </tbody>
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Imp. Fiscale</th>
+                    <th>Aliq. Fisc. (Provvisoria) </th>
+                    <th>Ritenuta Fiscale (salvo Conguaglio) </th>
+                    <th>Indennità Sistemazione netta </th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                    </tr>
+                    <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+                }
+            </tbody>
+
+        </table>
+    </div>
+*@
+
+    <div class="row">
+        <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+
+            <button class="btn btn-default btn-sm" id="opener">
+                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                Stampa
+            </button>
 
         </div>
     </div>
-</div>
 
-<table id="tbSaldoIndennitadiSistemazioneLorda" class="display" cellspacing="0">
-    <thead>
-        <tr>
+    <br />
 
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaServizio)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaSistemazione)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.PercentualeRiduzionePrimaSistemazione)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaServizio)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaSistemazione)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.PercentualeRiduzionePrimaSistemazione)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <script type="text/javascript">
 
-
-<div class="row">
-    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-
-        <button class="btn btn-default btn-sm" id="opener">
-            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-            Stampa
-        </button>
-
-    </div>
-</div>
-
-<br />
-
-<script type="text/javascript">
-
-    $('#tbAnticipoIndennitadiSistemazioneLorda').DataTable({
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-        },
-        "info": false,
-        "lengthChange": false,
-        "pageLength": 5,
-        "searching": false,
-        "paging": true,
-        "bJQueryUI": true,
-        "sDom": 'lfrtip',
-        "columnDefs": [
-                {
-                    "targets": 'no-sort',
-                    "orderable": false,
-
+        $('#tbAnticipoSaldoIndennitadiSistemazioneLorda').DataTable({
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
                 }
-        ],
-        "order": [[0, "asc"]]
-    });
-
-    $('#tbSaldoIndennitadiSistemazioneLorda').DataTable({
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
             },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-        },
-        "info": false,
-        "lengthChange": false,
-        "pageLength": 5,
-        "searching": false,
-        "paging": true,
-        "bJQueryUI": true,
-        "sDom": 'lfrtip',
-        "columnDefs": [
-                {
-                    "targets": 'no-sort',
-                    "orderable": false,
+            "info": false,
+            "lengthChange": false,
+            "pageLength": 5,
+            "searching": false,
+            "paging": true,
+            "bJQueryUI": true,
+            "sDom": 'lfrtip',
+            "columnDefs": [
+                    {
+                        "targets": 'no-sort',
+                        "orderable": false,
 
-                }
-        ],
-        "order": [[0, "asc"]]
-    });
-
-
-    // Report tbAnticipoIndennitadiSistemazioneLorda
-    var windowWidth = $(window).width();
-    var windowHeight = $(window).height();
-
-    $(function () {
-        $("#dialog").dialog({
-            autoOpen: false,
-            show: {
-                //effect: "blind",
-                //duration: 1000
-            },
-            hide: {
-                //effect: "explode",
-                //duration: 1000
-            },
-            close: function (event, ui) {
-                $('.container').removeClass("NoOverflow");
-            },
-            height: windowHeight, width: windowWidth
-
-
+                    }
+            ],
+            "order": [[0, "asc"]]
         });
 
-        $("#opener").on("click", function () {
-            $('.container').addClass("NoOverflow");
-
-            $("#dialog").dialog("open");
-            $("#dialog").css("background-color", "#ffffff");
-
-            var rotta = "/Indennita/RptAnticipoIndennitadiSistemazioneLorda";
-
-            var idTrasferimento = $("#hidTrasferimento").val();
-
-
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { idTrasferimento: idTrasferimento },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    $("#dialog").empty();
-
+        $('#tbAnticipoIndennitadiSistemazioneLorda').DataTable({
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
                 },
-                success: function (result) {
-                    //debugger;
-                    $("#dialog").html(result);
-
-
-                },
-                complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
                 }
+            },
+            "info": false,
+            "lengthChange": false,
+            "pageLength": 5,
+            "searching": false,
+            "paging": true,
+            "bJQueryUI": true,
+            "sDom": 'lfrtip',
+            "columnDefs": [
+                    {
+                        "targets": 'no-sort',
+                        "orderable": false,
+
+                    }
+            ],
+            "order": [[0, "asc"]]
+        });
+
+        $('#tbSaldoIndennitadiSistemazioneLorda').DataTable({
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+            },
+            "info": false,
+            "lengthChange": false,
+            "pageLength": 5,
+            "searching": false,
+            "paging": true,
+            "bJQueryUI": true,
+            "sDom": 'lfrtip',
+            "columnDefs": [
+                    {
+                        "targets": 'no-sort',
+                        "orderable": false,
+
+                    }
+            ],
+            "order": [[0, "asc"]]
+        });
+
+
+        // Report tbAnticipoIndennitadiSistemazioneLorda
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).height();
+
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                show: {
+                    //effect: "blind",
+                    //duration: 1000
+                },
+                hide: {
+                    //effect: "explode",
+                    //duration: 1000
+                },
+                close: function (event, ui) {
+                    $('.container').removeClass("NoOverflow");
+                },
+                height: windowHeight, width: windowWidth
+
 
             });
 
+            $("#opener").on("click", function () {
+                $('.container').addClass("NoOverflow");
+
+                $("#dialog").dialog("open");
+                $("#dialog").css("background-color", "#ffffff");
+
+                var rotta = "/Indennita/RptAnticipoIndennitadiSistemazioneLorda";
+
+                var idTrasferimento = $("#hidTrasferimento").val();
+
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: { idTrasferimento: idTrasferimento },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").html(result);
+
+
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+
+                });
+
+            });
         });
-    });
 
 
 
@@ -305,6 +408,6 @@
 
 
 
-</script>
+    </script>
 
 

@@ -78,6 +78,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Indennità di Sistemazione")]
         public decimal IndennitaSistemazione { get; set; }
 
+        [Display(Name = "Indennità di Sistemazione Netta")]
+        public decimal IndennitaSistemazioneNetta { get; set; }
+
         [Display(Name = "Coefficiente di Maggiorazione")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal CoefficientediMaggiorazione { get; set; }
@@ -102,6 +105,19 @@ namespace NewISE.Models.DBModel
         
         [Display(Name = "Canone MAB")]
         public decimal CanoneMAB { get; set; }
+
+        [Display(Name = "Importo1")]
+        public decimal Importo1 { get; set; }
+
+        [Display(Name = "Importo2")]
+        public decimal Importo2 { get; set; }
+
+        [Display(Name = "Importo3")]
+        public decimal Importo3 { get; set; }
+
+        [Display(Name = "Aliquota Fiscale")]
+        public decimal AliquotaFiscale { get; set; }
+
 
         [Display(Name = "Data Test")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
@@ -167,6 +183,60 @@ namespace NewISE.Models.DBModel
         {
             return idIndennitaBase > 0 ? true : false;
         }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Data Operazione")]
+        public DateTime dataOperazione { get; set; }
+
+        [Display(Name = "Importo")]
+        public decimal importo { get; set; }
+
+        [Display(Name = "Descrizione Voce")]
+        public string descrizione { get; set; }
+
+        public TipoLiquidazioneModel TipoLiquidazione { get; set; }
+
+        [Display(Name = "Movimento")]
+        public string movimento { get; set; }
+
+        [Display(Name = "Movimento")]
+        public TipoMovimentoModel TipoMovimento { get; set; }
+
+        public TipoVoceModel TipoVoce { get; set; }
+
+        [Display(Name = "Voce")]
+        public string voce { get; set; }
+
+        public VociModel Voci { get; set; }
+
+        public decimal meseRiferimento { get; set; }
+
+        public decimal annoRiferimento { get; set; }
+
+        public decimal annomeseRiferimento { get; set; }
+
+        public decimal giorni { get; set; }
+
+        [Required(ErrorMessage = "Il campo è richiesto.")]
+        [DefaultValue(0)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal Importo { get; set; }
+
+        [Display(Name = "Elab.")]
+        [DefaultValue(false)]
+        public bool Elaborato { get; set; }
+
+
+        public string MeseAnnoRiferimento
+        {
+            get
+            {
+                return meseRiferimento.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + annoRiferimento;
+            }
+
+        }
+
+        public decimal idMeseAnnoElaborato { get; set; }
 
     }
 }

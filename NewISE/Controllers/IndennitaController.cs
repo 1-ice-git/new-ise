@@ -2416,6 +2416,7 @@ namespace NewISE.Controllers
         public ActionResult AnticipoIndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
 
             try
             {
@@ -2426,6 +2427,8 @@ namespace NewISE.Controllers
 
                 }
 
+
+               
 
                 ViewBag.idTrasferimento = idTrasferimento;
 
