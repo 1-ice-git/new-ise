@@ -508,6 +508,7 @@
           <Property Name="ABILITATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="date" Nullable="false" />
           <Property Name="NOSISTEMA" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="RICALCOLARE" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="DOC_ATEP">
           <Key>
@@ -1498,6 +1499,7 @@
           <Property Name="IDAUTOVOCIMANUALI" Type="number" Precision="38" Scale="0" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DETRAZIONIAPPLICATE" Type="number" Precision="18" Scale="8" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -8288,6 +8290,7 @@
           <Property Name="ABILITATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
           <Property Name="NOSISTEMA" Type="Boolean" Nullable="false" />
+          <Property Name="RICALCOLARE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CDCGEPE" Relationship="DBISE.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
           <NavigationProperty Name="DESTINATARI" Relationship="DBISE.R_DIP_DEST" FromRole="DIPENDENTI" ToRole="DESTINATARI" />
           <NavigationProperty Name="ELABORAZIONI" Relationship="DBISE.R_D_E" FromRole="DIPENDENTI" ToRole="ELABORAZIONI" />
@@ -9246,6 +9249,7 @@
           <Property Name="IDAUTOVOCIMANUALI" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DETRAZIONIAPPLICATE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_AVM_T" FromRole="TEORICI" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_T" FromRole="TEORICI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
@@ -12372,6 +12376,7 @@
           <EntitySetMapping Name="DIPENDENTI">
             <EntityTypeMapping TypeName="DBISE.DIPENDENTI">
               <MappingFragment StoreEntitySet="DIPENDENTI">
+                <ScalarProperty Name="RICALCOLARE" ColumnName="RICALCOLARE" />
                 <ScalarProperty Name="NOSISTEMA" ColumnName="NOSISTEMA" />
                 <ScalarProperty Name="DATAINIZIORICALCOLI" ColumnName="DATAINIZIORICALCOLI" />
                 <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
@@ -13158,6 +13163,7 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="DETRAZIONIAPPLICATE" ColumnName="DETRAZIONIAPPLICATE" />
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDAUTOVOCIMANUALI" ColumnName="IDAUTOVOCIMANUALI" />

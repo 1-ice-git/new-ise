@@ -23,6 +23,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
 
     //}
+
+
+    public class PrimaSistemazione
+    {
+
+    }
+
+
     public class DatiFigli
     {
         public decimal indennitaPrimoSegretario { get; set; }

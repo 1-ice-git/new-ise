@@ -1139,7 +1139,7 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult ElencoVociManuali()
+        public ActionResult ElencoVociManuali(decimal idAnnoMeseElab)
         {
             List<ElencoVociManualiViewModel> levm = new List<ElencoVociManualiViewModel>();
 
@@ -1147,7 +1147,7 @@ namespace NewISE.Controllers
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-                    levm = dte.PrelevaLeVociManualiDaElaborare().ToList();
+                    levm = dte.PrelevaLeVociManualiDaElaborare(idAnnoMeseElab).ToList();
                 }
             }
             catch (Exception ex)

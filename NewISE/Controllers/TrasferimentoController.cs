@@ -564,7 +564,7 @@ namespace NewISE.Controllers
                     new
                     {
                         err = errore,
-                        abilitaElimina=abilitaElimina,
+                        abilitaElimina = abilitaElimina,
                         abilitaNotifica = abilitaNotifica,
                         abilitaNuovoTrasferimento = abilitaNuovoTrasferimento,
                         abilitaSalva = abilitaSalva,
@@ -1235,7 +1235,6 @@ namespace NewISE.Controllers
                                         dtua.SetAutorizzaUtenteTrasferito(trm.idDipendente, db);
                                     }
 
-
                                     if (idTrasferimentoOld > 0)
                                     {
                                         dttr.TerminaTrasferimento(idTrasferimentoOld, trm.dataPartenza, db);
@@ -1252,7 +1251,6 @@ namespace NewISE.Controllers
                                         };
 
                                         dtps.InserisciPrimaSistemazione(psm, db);
-
                                     }
                                     #endregion
 
@@ -1439,7 +1437,7 @@ namespace NewISE.Controllers
                                         //////
                                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                         {
-                                         
+
                                             rdm = dtrd.InserisciRuoloDipendentePartenza(trm, db);
 
                                         }
@@ -1757,11 +1755,12 @@ namespace NewISE.Controllers
                         idTrasferimentoPrecedente = last_t.idTrasferimento;
                     }
 
-                    return Json(new {
-                                msg = "",
-                                listaTrasferimenti = ltrasf,
-                                idTrasferimentoPrecedente=idTrasferimentoPrecedente
-                            });
+                    return Json(new
+                    {
+                        msg = "",
+                        listaTrasferimenti = ltrasf,
+                        idTrasferimentoPrecedente = idTrasferimentoPrecedente
+                    });
                 }
             }
             catch (Exception ex)
@@ -1834,10 +1833,11 @@ namespace NewISE.Controllers
                                     using (dtRichiamo dtr = new dtRichiamo())
                                     {
                                         var r = dtr.GetRichiamoByIdTrasf(idTrasferimento);
-                                        if(r.IdRichiamo>0)
+                                        if (r.IdRichiamo > 0)
                                         {
                                             return Json(new { RientroAbilitato = 1 });
-                                        }else
+                                        }
+                                        else
                                         {
                                             return Json(new { RientroAbilitato = 0 });
                                         }
@@ -2235,6 +2235,7 @@ namespace NewISE.Controllers
                 {
                     dtt.AnnullaTrasf(idTrasferimento, testoAnnullaTrasf);
                     ltrasf = dtt.LeggiElencoTrasferimenti(idTrasferimento);
+
                 }
             }
             catch (Exception ex)
@@ -2361,7 +2362,7 @@ namespace NewISE.Controllers
                                 {
                                     TrasportoEffettiPartenzaModel TEPartenzamam = dtte.GetTEPartenzaModel(idTrasferimento, db);
 
-                                    if (TEPartenzamam.idTEPartenza>0)
+                                    if (TEPartenzamam.idTEPartenza > 0)
                                     {
                                         return Json(new { idTEPartenza = TEPartenzamam.idTEPartenza.ToString() });
                                     }

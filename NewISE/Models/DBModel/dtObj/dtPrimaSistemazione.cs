@@ -92,7 +92,6 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             this.AssociaIndennitaSistemazione(psm.idPrimaSistemazione, ism.idIndSist, db);
                         }
-
                     }
                 }
                 else
