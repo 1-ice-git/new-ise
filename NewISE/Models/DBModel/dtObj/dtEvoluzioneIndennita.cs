@@ -1111,8 +1111,7 @@ namespace NewISE.Models.DBModel.dtObj
         public IList<EvoluzioneIndennitaModel> GetAnticipoIndennitaSistemazioneEvoluzione(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
-            //List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
-
+           
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -1146,18 +1145,41 @@ namespace NewISE.Models.DBModel.dtObj
 
                         var teorico = lTeorici.First();
                         var AliquotaFiscale = teorico.ALIQUOTAFISCALE;
-
                         var importo = teorico.ELABINDSISTEMAZIONE;
                         var idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB;
                         var tm = teorico.TIPOMOVIMENTO;
                         var voce = teorico.VOCI;
                         var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                         var tv = teorico.VOCI.TIPOVOCE;
+                        var detrazione = teorico.DETRAZIONIAPPLICATE;
 
-                        
+                        ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                        var lacDetr =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+
+                        if (lacDetr?.Any() ?? false)
+                        {
+                            detrazioni = lacDetr.First();
+
+                            var AliquotaPrevid = detrazioni.VALORE;
+
+
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                        }
+
 
                         List<DateTime> lDateVariazioni = new List<DateTime>();
-                    
 
                         #region Variazioni Indennità di Sistemazione
 
@@ -1207,7 +1229,6 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     #endregion
-                    
 
                         lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
@@ -1247,6 +1268,12 @@ namespace NewISE.Models.DBModel.dtObj
                                         xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
                                         xx.CoeffIndSistemazione = ci.CoefficienteIndennitaSistemazione;
                                         xx.PercentualeRiduzionePrimaSistemazione = ci.PercentualeRiduzionePrimaSistemazione;
+                                        xx.Detrazione = teorico.DETRAZIONIAPPLICATE;
+                                        xx.AliquotaPrevid = detrazioni.VALORE;
+                                        xx.ImpPrevid = ci.IndennitaSistemazioneAnticipabileLorda - teorico.DETRAZIONIAPPLICATE;
+                                        xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        xx.ImpFiscale = xx.ImpPrevid - xx.ContrPrevid;
+                                        xx.RitenutaFiscale = xx.ImpFiscale * teorico.ALIQUOTAFISCALE / 100;
 
                                         eim.Add(xx);
 

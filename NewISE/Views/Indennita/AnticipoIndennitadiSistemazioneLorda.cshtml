@@ -63,10 +63,11 @@
 
                 <tr>
                     <td>&nbsp;</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>@Html.DisplayFor(modelItem => item.Detrazione)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ImpPrevid)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AliquotaPrevid)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ContrPrevid)</td>
+                    
                 </tr>
                 <tr class="comment"><td colspan="5">&nbsp;</td></tr>
 
@@ -87,9 +88,9 @@
 
                 <tr>
                     <td>&nbsp;</td>
-                    <td></td>
+                    <td>@Html.DisplayFor(modelItem => item.ImpFiscale)</td>
                     <td>@Html.DisplayFor(modelItem => item.AliquotaFiscale)</td>
-                    <td></td>
+                    <td>@Html.DisplayFor(modelItem => item.RitenutaFiscale)</td>
                     <td>@Html.DisplayFor(modelItem => item.Importo)</td>
                 </tr>
                 <tr class="comment"><td colspan="5">&nbsp;</td></tr>
