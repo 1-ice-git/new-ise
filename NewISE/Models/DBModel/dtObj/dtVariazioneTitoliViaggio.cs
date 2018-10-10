@@ -49,7 +49,10 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         #region ciclo attivazione documenti TV
-                        var ldtv = atv.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();
+                        var ldtv = atv.DOCUMENTI.Where(a => a.MODIFICATO == false && 
+                                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
+                                                            (a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Titolo_Viaggio ||
+                                                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco)).ToList();
                         foreach (var dtv in ldtv)
                         {
                             dtv.IDSTATORECORD = (decimal)EnumStatoRecord.Da_Attivare;
@@ -138,6 +141,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (atv.NOTIFICARICHIESTA == true)
                     {
+                        #region attiva attivazione
                         atv.ATTIVAZIONERICHIESTA = true;
                         atv.DATAATTIVAZIONERICHIESTA = DateTime.Now;
                         atv.DATAAGGIORNAMENTO = DateTime.Now;
@@ -148,19 +152,83 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             throw new Exception("Errore: Impossibile completare l'attivazione dei titoli di viaggio.");
                         }
+                        #endregion
 
-                        #region ciclo attivazione documenti TV
-                        var ldtv = atv.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
-                        foreach (var dtv in ldtv)
+                        #region nuova attivazione
+                        var new_att = GetAttivazioneTV(atv.IDTITOLOVIAGGIO, db);
+                        #endregion
+
+                        #region coniuge
+                        var lctv_da_attivare = atv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false &&
+                                                      a.RICHIEDITITOLOVIAGGIO).ToList();
+                        foreach(var ctv_da_attivare in lctv_da_attivare)
                         {
-                            dtv.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
-                            if (db.SaveChanges() <= 0)
+                            #region coniuge TV
+                            var new_ctv = new CONIUGETITOLIVIAGGIO()
                             {
-                                throw new Exception("Errore durante il ciclo di attivazione titoli viaggio (attiva documenti)");
+                                IDTITOLOVIAGGIO=ctv_da_attivare.IDTITOLOVIAGGIO,
+                                IDATTIVAZIONETITOLIVIAGGIO=new_att.IDATTIVAZIONETITOLIVIAGGIO,
+                                RICHIEDITITOLOVIAGGIO=ctv_da_attivare.RICHIEDITITOLOVIAGGIO,
+                                DATAAGGIORNAMENTO=DateTime.Now,
+                                ANNULLATO=ctv_da_attivare.ANNULLATO
+                            };
+                            new_att.CONIUGETITOLIVIAGGIO.Add(new_ctv);
+                            if(db.SaveChanges()<0)
+                            {
+                                throw new Exception("Errore nella attivazione Titolo Viaggio Coniuge.");
                             }
+                            #endregion
+
+                            #region associa coniuge coniugeTV
+                            var lc = ctv_da_attivare.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDSTATORECORD).ToList();
+                            if(lc?.Any()??false)
+                            {
+                                var c = lc.First();
+                                AssociaConiugeTitoloViaggio(c.IDCONIUGE, new_ctv.IDCONIUGETITOLIVIAGGIO, db);
+                            }
+                            else
+                            {
+                                throw new Exception("Errore coniuge titoli viaggio. Coniuge non trovato.");
+                            }
+                            #endregion
                         }
                         #endregion
 
+                        #region figli
+                        var lftv_da_attivare = atv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false &&
+                                                      a.RICHIEDITITOLOVIAGGIO).ToList();
+                        foreach (var ftv_da_attivare in lftv_da_attivare)
+                        {
+                            #region figli TV
+                            var new_ftv = new FIGLITITOLIVIAGGIO()
+                            {
+                                IDTITOLOVIAGGIO = ftv_da_attivare.IDTITOLOVIAGGIO,
+                                IDATTIVAZIONETITOLIVIAGGIO = new_att.IDATTIVAZIONETITOLIVIAGGIO,
+                                RICHIEDITITOLOVIAGGIO = ftv_da_attivare.RICHIEDITITOLOVIAGGIO,
+                                DATAAGGIORNAMENTO = DateTime.Now,
+                                ANNULLATO = ftv_da_attivare.ANNULLATO
+                            };
+                            new_att.FIGLITITOLIVIAGGIO.Add(new_ftv);
+                            if (db.SaveChanges() < 0)
+                            {
+                                throw new Exception("Errore nella attivazione Titolo Viaggio Figlio.");
+                            }
+                            #endregion
+
+                            #region associa figlio figliTV
+                            var lf = ftv_da_attivare.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDSTATORECORD).ToList();
+                            if (lf?.Any() ?? false)
+                            {
+                                var f = lf.First();
+                                AssociaFigliTitoloViaggio(f.IDFIGLI, new_ftv.IDFIGLITITOLIVIAGGIO, db);
+                            }
+                            else
+                            {
+                                throw new Exception("Errore figli titoli viaggio. Figlio non trovato.");
+                            }
+                            #endregion
+                        }
+                        #endregion
 
 
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
@@ -187,16 +255,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         string messaggioAttiva = "";
                                         string oggettoAttiva = "";
 
-                                        if (ldtv.Count() == 0)
-                                        {
-                                            messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaInizialeTitoliViaggio;
-                                            oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaInizialeTitoloViaggio;
-                                        }
-                                        else
-                                        {
-                                            messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaSuccessivaTitoliViaggio;
-                                            oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaSuccessivaTitoloViaggio;
-                                        }
+                                        messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaInizialeTitoliViaggio;
+                                        oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaInizialeTitoloViaggio;
 
                                         EmailTrasferimento.EmailAttiva(t.idTrasferimento,
                                                             oggettoAttiva,
@@ -218,6 +278,164 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+        public void AttivaRichiestaDocumentiTV(decimal idAttivazioneTV, ModelDBISE db)
+        {
+            db.Database.BeginTransaction();
+
+            try
+            {
+
+
+                var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTV);
+
+                var ultima_att = GetUltimaAttivazioneVariazioneAttivata(atv.IDTITOLOVIAGGIO, db);
+
+                if (atv?.IDATTIVAZIONETITOLIVIAGGIO > 0)
+                {
+                    if (atv.NOTIFICARICHIESTA == true)
+                    {
+                        atv.ATTIVAZIONERICHIESTA = true;
+                        atv.DATAATTIVAZIONERICHIESTA = DateTime.Now;
+                        atv.DATAAGGIORNAMENTO = DateTime.Now;
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Errore: Impossibile completare l'attivazione dei titoli di viaggio.");
+                        }
+
+                        #region ciclo attivazione documenti TV
+                        var ldtv = atv.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                        foreach (var dtv in ldtv)
+                        {
+                            dtv.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore durante il ciclo di attivazione titoli viaggio (attiva documenti)");
+                            }
+                        }
+                        #endregion
+
+                        #region crea attivazione
+                        var atv_new = CreaAttivazioneTV(atv.IDTITOLOVIAGGIO, db);
+                        #endregion
+
+                        #region crea coniugeTV non richiesti
+                        var lctv = ultima_att.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO == false).ToList();
+                        foreach (var ctv in lctv)
+                        {
+
+                            var lconiuge = ctv.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDCONIUGE).ToList();
+                            if (lconiuge?.Any() ?? false)
+                            {
+                                var coniuge = lconiuge.First();
+
+                                CONIUGETITOLIVIAGGIO ctv_new = new CONIUGETITOLIVIAGGIO()
+                                {
+                                    IDTITOLOVIAGGIO = atv_new.IDTITOLOVIAGGIO,
+                                    IDATTIVAZIONETITOLIVIAGGIO = atv_new.IDATTIVAZIONETITOLIVIAGGIO,
+                                    RICHIEDITITOLOVIAGGIO = false,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    ANNULLATO = false
+                                };
+                                atv_new.CONIUGETITOLIVIAGGIO.Add(ctv_new);
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di creazione del titolo di viaggio del coniuge " + coniuge.NOME.ToString() + " " + coniuge.COGNOME.ToString());
+                                }
+
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                    "Inserimento titolo viaggio coniuge.", "CONIUGETITOLOVIAGGIO", db, atv_new.IDTITOLOVIAGGIO,
+                                    ctv_new.IDCONIUGETITOLIVIAGGIO);
+
+                                AssociaConiugeTitoloViaggio(coniuge.IDCONIUGE, ctv_new.IDCONIUGETITOLIVIAGGIO, db);
+                            }
+                        }
+                        #endregion
+
+                        #region crea figliTV non richiesti
+                        var lftv = ultima_att.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO == false).ToList();
+                        foreach (var ftv in lftv)
+                        {
+
+                            var lfigli = ftv.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDFIGLI).ToList();
+                            if (lfigli?.Any() ?? false)
+                            {
+                                var figli = lfigli.First();
+
+                                FIGLITITOLIVIAGGIO ftv_new = new FIGLITITOLIVIAGGIO()
+                                {
+                                    IDTITOLOVIAGGIO = atv_new.IDTITOLOVIAGGIO,
+                                    IDATTIVAZIONETITOLIVIAGGIO = atv_new.IDATTIVAZIONETITOLIVIAGGIO,
+                                    RICHIEDITITOLOVIAGGIO = false,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    ANNULLATO = false
+                                };
+                                atv_new.FIGLITITOLIVIAGGIO.Add(ftv_new);
+                                if (db.SaveChanges() <= 0)
+                                {
+                                    throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + figli.NOME.ToString() + " " + figli.COGNOME.ToString());
+                                }
+
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                    "Inserimento titolo viaggio figli.", "FIGLITITOLOVIAGGIO", db, atv_new.IDTITOLOVIAGGIO,
+                                    ftv_new.IDFIGLITITOLIVIAGGIO);
+
+                                AssociaFigliTitoloViaggio(figli.IDFIGLI, ftv_new.IDFIGLITITOLIVIAGGIO, db);
+                            }
+                        }
+                        #endregion
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                            "Attivazione titoli di viaggio.", "ATTIVAZIONITITOLIVIAGGIO", db,
+                            atv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, atv.IDATTIVAZIONETITOLIVIAGGIO);
+                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        {
+                            dtce.ModificaInCompletatoCalendarioEvento(atv.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTitoliViaggio, db);
+                        }
+
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                using (dtUffici dtu = new dtUffici())
+                                {
+                                    var t = dtt.GetTrasferimentoByIdTitoloViaggio(atv.IDTITOLOVIAGGIO);
+
+                                    if (t?.idTrasferimento > 0)
+                                    {
+                                        var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                        var uff = dtu.GetUffici(t.idUfficio);
+
+                                        string messaggioAttiva = "";
+                                        string oggettoAttiva = "";
+
+                                        messaggioAttiva = Resources.msgEmail.MessaggioAttivaRichiestaSuccessivaTitoliViaggio;
+                                        oggettoAttiva = Resources.msgEmail.OggettoAttivaRichiestaSuccessivaTitoloViaggio;
+
+                                        EmailTrasferimento.EmailAttiva(t.idTrasferimento,
+                                                            oggettoAttiva,
+                                                            string.Format(messaggioAttiva, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString()),
+                                                            db);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                db.Database.CurrentTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
+
 
 
         public void PreSetTitoloViaggio(decimal idTrasferimento, ModelDBISE db)
@@ -419,11 +637,13 @@ namespace NewISE.Models.DBModel.dtObj
             return letvm;
         }
 
-        public void AggiungiConiugeTV(CONIUGE c, ModelDBISE db)
+
+
+        public void AggiungiConiugeTV(CONIUGE c, ATTIVAZIONETITOLIVIAGGIO atv, ModelDBISE db)
         {
             var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
             var tv=t.TITOLIVIAGGIO;
-            var atv = GetAttivazioneTV(tv.IDTITOLOVIAGGIO, db);
+            //var atv = GetAttivazioneTV(tv.IDTITOLOVIAGGIO, db);
             
             var new_ctv = new CONIUGETITOLIVIAGGIO()
             {
@@ -442,11 +662,11 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AggiungiFiglioTV(FIGLI f, ModelDBISE db)
+        public void AggiungiFiglioTV(FIGLI f, ATTIVAZIONETITOLIVIAGGIO atv, ModelDBISE db)
         {
             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
             var tv = t.TITOLIVIAGGIO;
-            var atv = GetAttivazioneTV(tv.IDTITOLOVIAGGIO, db);
+            //var atv = GetAttivazioneTV(tv.IDTITOLOVIAGGIO, db);
 
             var new_ftv = new FIGLITITOLIVIAGGIO()
             {
@@ -472,20 +692,18 @@ namespace NewISE.Models.DBModel.dtObj
             var tv = db.TITOLIVIAGGIO.Find(atv.IDTITOLOVIAGGIO);
             var t = tv.TRASFERIMENTO;
             var mf = t.MAGGIORAZIONIFAMILIARI;
+            var atv_ctv = atv.CONIUGETITOLIVIAGGIO.Count();
+            var atv_ftv = atv.FIGLITITOLIVIAGGIO.Count();
 
             //legge attivazione di partenza
-            var atv_partenza = GetAttivazioneTVPartenza(atv.IDTITOLOVIAGGIO, db);
+            //var atv_partenza = GetAttivazioneTVPartenza(atv.IDTITOLOVIAGGIO, db);
 
-            #region eventuali CONIUGI senza titolo viaggio su ATV partenza
-            //elenco
-            var lc_tv = tv.CONIUGETITOLIVIAGGIO
-                        .Where(a => a.ANNULLATO == false &&
-                                    a.RICHIEDITITOLOVIAGGIO == false &&
-                                    a.IDATTIVAZIONETITOLIVIAGGIO == atv_partenza.IDATTIVAZIONETITOLIVIAGGIO)
+            #region elenco CONIUGI su attivazione da notificare
+            var lc_tv = atv.CONIUGETITOLIVIAGGIO
+                        .Where(a => a.ANNULLATO == false)
                         .ToList();
 
-            //li replico su CONIUGETITIOLIVIAGGIO e li associo alla nuova attivazione
-            if (lc_tv?.Any() ?? false)
+            if (lc_tv.Count()>0)
             {
                 foreach (var c_tv in lc_tv)
                 {
@@ -496,232 +714,109 @@ namespace NewISE.Models.DBModel.dtObj
                                         .ToList();
                     if (lconiuge?.Any() ?? false)
                     {
-                        var coniuge = lconiuge.First();
+                        var c = lconiuge.First();
 
-                        AggiungiConiugeTV(coniuge, db);
 
-                        //var ctv = new CONIUGETITOLIVIAGGIO()
-                        //{
-                        //    IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
-                        //    IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                        //    RICHIEDITITOLOVIAGGIO = c_tv.RICHIEDITITOLOVIAGGIO,
-                        //    ANNULLATO = c_tv.ANNULLATO,
-                        //    DATAAGGIORNAMENTO = DateTime.Now
-                        //};
-                        //coniuge.CONIUGETITOLIVIAGGIO.Add(ctv);
+                        var lcdoc = c_tv.DOCUMENTI
+                                            .Where(a =>
+                                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                    (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco)
+                                                    )
+                                            .ToList();
 
-                        //if (db.SaveChanges() <= 0)
-                        //{
-                        //    throw new Exception("Errore nella fase di creazione di coniugetitoloviaggio.");
-                        //}
+                        if (lcdoc.Count() == 0)
+                        {
+                            var lDocIdentita = c_tv.DOCUMENTI
+                                                .Where(a =>
+                                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                                                .OrderByDescending(a => a.IDDOCUMENTO).ToList();
 
-                        ////AssociaConiugePassaportoConiuge(cp.IDCONIUGEPASSAPORTO, coniuge.IDCONIUGE, db);
+                            decimal idDocIdentita = 0;
+                            if (lDocIdentita.Count() > 0)
+                            {
+                                idDocIdentita = lDocIdentita.First().IDDOCUMENTO;
+                            }
 
-                        //var lDocIdentita = c_tv.DOCUMENTI.Where(a =>
-                        //    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
-                        //    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+                            ElencoTitoliViaggioModel coniuge_no_tv = new ElencoTitoliViaggioModel()
+                            {
+                                idFamiliare = c.IDCONIUGE,
+                                Nominativo = c.NOME + " " + c.COGNOME,
+                                CodiceFiscale = c.CODICEFISCALE,
+                                dataInizio = c.DATAINIZIOVALIDITA,
+                                dataFine = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA,
+                                parentela = EnumParentela.Coniuge,
+                                idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
+                                RichiediTitoloViaggio = c_tv.RICHIEDITITOLOVIAGGIO,
+                                idAttivazioneTitoloViaggio = c_tv.IDATTIVAZIONETITOLIVIAGGIO,
+                                idTitoloViaggio = c_tv.IDTITOLOVIAGGIO,
+                                idDocIdentita = idDocIdentita
+                            };
 
-                        //if (lDocIdentita.Count > 0)
-                        //{
-                        //    foreach (var docIdentita in lDocIdentita)
-                        //    {
-                        //        AssociaDocumento_ConiugeTV(ctv.IDCONIUGETITOLIVIAGGIO, docIdentita.IDDOCUMENTO, db);
-                        //    }
-                        //}
+                            letvm.Add(coniuge_no_tv);
+                        }
                     }
                 }
             }
             #endregion
 
-            #region eventuali figli senza titolo viaggio su ATV partenza
-            //elenco
-            var lf_tv = tv.FIGLITITOLIVIAGGIO
-                        .Where(a => a.ANNULLATO == false &&
-                                    a.RICHIEDITITOLOVIAGGIO == false &&
-                                    a.IDATTIVAZIONETITOLIVIAGGIO == atv_partenza.IDATTIVAZIONETITOLIVIAGGIO)
-                                    .ToList();
+            #region elenco FIGLI su attivazione da notificare
+            var lf_tv = atv.FIGLITITOLIVIAGGIO
+                        .Where(a => a.ANNULLATO == false)
+                        .ToList();
 
-            //li replico su FIGLIOTITIOLIVIAGGIO e li associo alla nuova attivazione
-            if (lf_tv?.Any() ?? false)
+            if (lf_tv.Count() > 0)
             {
                 foreach (var f_tv in lf_tv)
                 {
-                    var lfigli = f_tv.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                                        a.DATAINIZIOVALIDITA < t.DATARIENTRO)
+                    var lfigli = f_tv.FIGLI.Where(a =>
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                            a.DATAINIZIOVALIDITA < t.DATARIENTRO)
                                         .OrderByDescending(a => a.IDFIGLI)
                                         .ToList();
                     if (lfigli?.Any() ?? false)
                     {
-                        var figli = lfigli.First();
-
-                        AggiungiFiglioTV(figli, db);
-
-                        //var ftv = new FIGLITITOLIVIAGGIO()
-                        //{
-                        //    IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
-                        //    IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                        //    RICHIEDITITOLOVIAGGIO = f_tv.RICHIEDITITOLOVIAGGIO,
-                        //    ANNULLATO = f_tv.ANNULLATO,
-                        //    DATAAGGIORNAMENTO = DateTime.Now
-                        //};
-                        //figli.FIGLITITOLIVIAGGIO.Add(ftv);
-
-                        //if (db.SaveChanges() <= 0)
-                        //{
-                        //    throw new Exception("Errore nella fase di creazione di figlititoloviaggio.");
-                        //}
-
-                        ////AssociaConiugePassaportoConiuge(cp.IDCONIUGEPASSAPORTO, coniuge.IDCONIUGE, db);
-
-                        //var lDocIdentita = f_tv.DOCUMENTI.Where(a =>
-                        //    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
-                        //    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-
-                        //if (lDocIdentita.Count > 0)
-                        //{
-                        //    foreach (var docIdentita in lDocIdentita)
-                        //    {
-                        //        AssociaDocumento_FigliTV(ftv.IDFIGLITITOLIVIAGGIO, docIdentita.IDDOCUMENTO, db);
-                        //    }
-                        //}
-                    }
-                }
-            }
-            #endregion
-
-
-            #region elenco coniugi
-            //coniuge eventualmente aggiunti
-            var lc = mf.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-            foreach(var c in lc)
-            {
-                var ctv = c.CONIUGETITOLIVIAGGIO;
-                if(ctv.Count()==0)
-                {
-                    AggiungiConiugeTV(c, db);
-                }
-            }
-
-            lc_tv = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false &&
-                                    a.IDATTIVAZIONETITOLIVIAGGIO != atv_partenza.IDATTIVAZIONETITOLIVIAGGIO)
-                .ToList();
-
-            foreach (var c_tv in lc_tv)
-            {
-                var lconiuge = c_tv.CONIUGE
-                                    .Where(a => 
-                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                                a.DATAINIZIOVALIDITA < t.DATARIENTRO)
-                                    .OrderByDescending(a => a.IDCONIUGE)
-                                    .ToList();
-
-                if (lconiuge?.Any() ?? false)
-                {
-                    var lcdoc = c_tv.DOCUMENTI
-                                        .Where(a => 
-                                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato &&
-                                                (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco)
-                                               )
-                                        .ToList();
-                    if (lcdoc.Count() == 0)
-                    {
-                        var c = lconiuge.First();
-                        var lDocIdentita = c_tv.DOCUMENTI
-                                            .Where(a => 
-                                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
-                                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-                                            .OrderByDescending(a=>a.IDDOCUMENTO).ToList();
-    
-                        decimal idDocIdentita=0;
-                        if(lDocIdentita.Count()>0)
-                        {
-                            idDocIdentita = lDocIdentita.First().IDDOCUMENTO;
-                        }
-
-                        ElencoTitoliViaggioModel coniuge_no_tv = new ElencoTitoliViaggioModel()
-                        {
-                            idFamiliare = c.IDCONIUGE,
-                            Nominativo = c.NOME + " " + c.COGNOME,
-                            CodiceFiscale = c.CODICEFISCALE,
-                            dataInizio = c.DATAINIZIOVALIDITA,
-                            dataFine = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA,
-                            parentela = EnumParentela.Coniuge,
-                            idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
-                            RichiediTitoloViaggio = c_tv.RICHIEDITITOLOVIAGGIO,
-                            idAttivazioneTitoloViaggio = c_tv.IDATTIVAZIONETITOLIVIAGGIO,
-                            idTitoloViaggio = c_tv.IDTITOLOVIAGGIO,
-                            idDocIdentita=idDocIdentita
-                        };
-    
-                        letvm.Add(coniuge_no_tv);
-                    }
-                }
-            }
-            #endregion
-
-            #region elenco figli
-            //figli eventualmente aggiunti
-            var lf = mf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-            foreach (var f in lf)
-            {
-                var ftv = f.FIGLITITOLIVIAGGIO;
-                if (ftv.Count() == 0)
-                {
-                    AggiungiFiglioTV(f, db);
-                }
-            }
-
-            lf_tv = tv.FIGLITITOLIVIAGGIO
-                            .Where(a => 
-                                    a.ANNULLATO == false &&
-                                    a.IDATTIVAZIONETITOLIVIAGGIO != atv_partenza.IDATTIVAZIONETITOLIVIAGGIO)
-                            .ToList();
-
-            foreach (var f_tv in lf_tv)
-            {
-                var lfigli = f_tv.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                                    a.DATAINIZIOVALIDITA < t.DATARIENTRO)
-                                            .OrderByDescending(a => a.IDFIGLI)
-                                            .ToList();
-                if (lfigli?.Any() ?? false)
-                {
-                    var lfdoc = f_tv.DOCUMENTI
-                                        .Where(a => 
-                                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato &&
-                                                (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco)
-                                               )
-                                        .ToList();
-                    if (lfdoc.Count() == 0)
-                    {
                         var f = lfigli.First();
-                        var lDocIdentita = f_tv.DOCUMENTI
-                                                    .Where(a => 
+
+
+                        var lfdoc = f_tv.DOCUMENTI
+                                            .Where(a =>
+                                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                    (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco)
+                                                    )
+                                            .ToList();
+
+                        if (lfdoc.Count() == 0)
+                        {
+                            var lDocIdentita = f_tv.DOCUMENTI
+                                                .Where(a =>
                                                             a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
                                                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-                                                    .OrderByDescending(a => a.IDDOCUMENTO).ToList();
+                                                .OrderByDescending(a => a.IDDOCUMENTO).ToList();
 
-                        decimal idDocIdentita = 0;
-                        if (lDocIdentita.Count() > 0)
-                        {
-                            idDocIdentita = lDocIdentita.First().IDDOCUMENTO;
+                            decimal idDocIdentita = 0;
+                            if (lDocIdentita.Count() > 0)
+                            {
+                                idDocIdentita = lDocIdentita.First().IDDOCUMENTO;
+                            }
+
+                            ElencoTitoliViaggioModel figli_no_tv = new ElencoTitoliViaggioModel()
+                            {
+                                idFamiliare = f.IDFIGLI,
+                                Nominativo = f.NOME + " " + f.COGNOME,
+                                CodiceFiscale = f.CODICEFISCALE,
+                                dataInizio = f.DATAINIZIOVALIDITA,
+                                dataFine = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA,
+                                parentela = EnumParentela.Figlio,
+                                idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
+                                RichiediTitoloViaggio = f_tv.RICHIEDITITOLOVIAGGIO,
+                                idAttivazioneTitoloViaggio = f_tv.IDATTIVAZIONETITOLIVIAGGIO,
+                                idTitoloViaggio = f_tv.IDTITOLOVIAGGIO,
+                                idDocIdentita = idDocIdentita
+                            };
+
+                            letvm.Add(figli_no_tv);
                         }
-
-                        ElencoTitoliViaggioModel figlio_no_tv = new ElencoTitoliViaggioModel()
-                        {
-                            idFamiliare = f.IDFIGLI,
-                            Nominativo = f.NOME + " " + f.COGNOME,
-                            CodiceFiscale = f.CODICEFISCALE,
-                            dataInizio = f.DATAINIZIOVALIDITA,
-                            dataFine = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA,
-                            parentela = EnumParentela.Figlio,
-                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
-                            RichiediTitoloViaggio = f_tv.RICHIEDITITOLOVIAGGIO,
-                            idAttivazioneTitoloViaggio = f_tv.IDATTIVAZIONETITOLIVIAGGIO,
-                            idTitoloViaggio = f_tv.IDTITOLOVIAGGIO,
-                            idDocIdentita = idDocIdentita
-                        };
-
-                        letvm.Add(figlio_no_tv);
                     }
                 }
             }
@@ -736,120 +831,142 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
+                var att_attivata = GetUltimaAttivazioneVariazioneAttivata(atv.IDTITOLOVIAGGIO, db);
+
                 //var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTV);
                 var tv = atv.TITOLIVIAGGIO;
                 var t = tv.TRASFERIMENTO;
                 var mf = t.MAGGIORAZIONIFAMILIARI;
-                var att_partenza = GetAttivazioneTVPartenza(tv.IDTITOLOVIAGGIO, db);
 
-                #region lista coniugi attivi
-                var lc = mf.CONIUGE.Where(a =>
-                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                        a.DATAINIZIOVALIDITA <= t.DATARIENTRO)
-                        .OrderBy(a => a.IDCONIUGE).ToList();
+                //var att_partenza = GetAttivazioneTVPartenza(tv.IDTITOLOVIAGGIO, db);
 
-                if (lc?.Any() ?? false)
+                #region lista coniugi da notificare
+                var lctv =atv.CONIUGETITOLIVIAGGIO.Where(a =>
+                        a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO)
+                        .OrderBy(a => a.IDCONIUGETITOLIVIAGGIO).ToList();
+
+                if (lctv?.Any() ?? false)
                 {
                     //coniugi con TV richiesti
-                    foreach (var c in lc)
+                    foreach (var ctv in lctv)
                     {
-                        var lctv = c.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO).ToList();
-                        if (lctv?.Any() ?? false)
+                        var lc = ctv.CONIUGE.Where(a => a.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato).OrderByDescending(a=>a.IDCONIUGE).ToList();
+                        if (lc?.Any() ?? false)
                         {
-                            var ctv = lctv.First();
-                            if (ctv.IDATTIVAZIONETITOLIVIAGGIO != att_partenza.IDATTIVAZIONETITOLIVIAGGIO)
+                            var c = lc.First();
+                            //if (ctv.IDATTIVAZIONETITOLIVIAGGIO != att_partenza.IDATTIVAZIONETITOLIVIAGGIO)
+                            //{
+                            var lDocCartaImbarcoConiuge = atv.DOCUMENTI
+                                        .Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco &&
+                                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                                        .OrderByDescending(a=>a.IDDOCUMENTO)
+                                        .ToList();
+
+                            var lDocTitoloViaggioConiuge = atv.DOCUMENTI
+                                        .Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio &&
+                                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
+                                        .OrderByDescending(a => a.IDDOCUMENTO)
+                                        .ToList();
+
+                            decimal idDocCartaImbarcoConiuge = 0;
+                            if (lDocCartaImbarcoConiuge?.Any() ?? false)
                             {
-                                var lDocCartaImbarcoConiuge = ctv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a=>a.IDDOCUMENTO).ToList();
-                                var lDocTitoloViaggioConiuge = ctv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a => a.IDDOCUMENTO).ToList();
-                                decimal idDocCartaImbarcoConiuge = 0;
-                                if (lDocCartaImbarcoConiuge?.Any() ?? false)
-                                {
-                                    idDocCartaImbarcoConiuge = lDocCartaImbarcoConiuge.First().IDDOCUMENTO;
-                                }
-                                decimal idDocTitoloViaggioConiuge = 0;
-                                if (lDocTitoloViaggioConiuge?.Any() ?? false)
-                                {
-                                    idDocTitoloViaggioConiuge = lDocTitoloViaggioConiuge.First().IDDOCUMENTO;
-                                }
-                                ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
-                                {
-                                    idFamiliare = c.IDCONIUGE,
-                                    Nominativo = c.NOME + " " + c.COGNOME,
-                                    CodiceFiscale = c.CODICEFISCALE,
-                                    dataInizio = c.DATAINIZIOVALIDITA,
-                                    dataFine = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA,
-                                    parentela = EnumParentela.Coniuge,
-                                    idParentela=(decimal)EnumParentela.Coniuge,
-                                    idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
-                                    //RichiediTitoloViaggio = ctv.RICHIEDITITOLOVIAGGIO,
-                                    idAttivazioneTitoloViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                                    idTitoloViaggio = atv.IDTITOLOVIAGGIO,
-                                    esisteDocCartaImbarco = idDocCartaImbarcoConiuge > 0 ? true : false,
-                                    esisteDoctitoloViaggio = idDocTitoloViaggioConiuge > 0 ? true : false,
-                                    idConiugeTitoloViaggio=ctv.IDCONIUGETITOLIVIAGGIO,
-                                    idFigliTitoloViaggio=0,
-                                    idDoctitoloViaggio=idDocTitoloViaggioConiuge,
-                                    idDocCartaImbarco=idDocCartaImbarcoConiuge
-                                };
-                                letvm.Add(etvcm);
+                                idDocCartaImbarcoConiuge = lDocCartaImbarcoConiuge.First().IDDOCUMENTO;
                             }
+                            decimal idDocTitoloViaggioConiuge = 0;
+                            if (lDocTitoloViaggioConiuge?.Any() ?? false)
+                            {
+                                idDocTitoloViaggioConiuge = lDocTitoloViaggioConiuge.First().IDDOCUMENTO;
+                            }
+                            ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
+                            {
+                                idFamiliare = c.IDCONIUGE,
+                                Nominativo = c.NOME + " " + c.COGNOME,
+                                CodiceFiscale = c.CODICEFISCALE,
+                                dataInizio = c.DATAINIZIOVALIDITA,
+                                dataFine = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA,
+                                parentela = EnumParentela.Coniuge,
+                                idParentela=(decimal)EnumParentela.Coniuge,
+                                idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
+                                //RichiediTitoloViaggio = ctv.RICHIEDITITOLOVIAGGIO,
+                                idAttivazioneTitoloViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                                idTitoloViaggio = atv.IDTITOLOVIAGGIO,
+                                esisteDocCartaImbarco = idDocCartaImbarcoConiuge > 0 ? true : false,
+                                esisteDoctitoloViaggio = idDocTitoloViaggioConiuge > 0 ? true : false,
+                                idConiugeTitoloViaggio=ctv.IDCONIUGETITOLIVIAGGIO,
+                                idFigliTitoloViaggio=0,
+                                idDoctitoloViaggio=idDocTitoloViaggioConiuge,
+                                idDocCartaImbarco=idDocCartaImbarcoConiuge
+                            };
+                            letvm.Add(etvcm);
+                            //}
+                        }
+                        else
+                        {
+                            throw new Exception("Errore Coniuge non trovato su ConiugeTitoloViaggio");
                         }
                     }
                 }
                 #endregion
 
                 #region lista figli attivi
-                var lf = mf.FIGLI.Where(a =>
-                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                        a.DATAINIZIOVALIDITA <= t.DATARIENTRO)
-                        .OrderBy(a => a.IDFIGLI).ToList();
+                var lftv = atv.FIGLITITOLIVIAGGIO.Where(a =>
+                        a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO)
+                        .OrderBy(a => a.IDFIGLITITOLIVIAGGIO)
+                        .ToList();
 
-                if (lf?.Any() ?? false)
+                if (lftv?.Any() ?? false)
                 {
-                    foreach (var f in lf)
+                    foreach (var ftv in lftv)
                     {
-                        var lftv = f.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO).ToList();
+                        var lf = ftv.FIGLI.Where(a => a.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato)
+                            .OrderByDescending(a=>a.IDFIGLI)
+                            .ToList();
 
-                        if (lftv?.Any() ?? false)
+                        if (lf?.Any() ?? false)
                         {
-                            var ftv = lftv.First();
-                            if (ftv.IDATTIVAZIONETITOLIVIAGGIO != att_partenza.IDATTIVAZIONETITOLIVIAGGIO)
+                            var f = lf.First();
+                            //if (ftv.IDATTIVAZIONETITOLIVIAGGIO != att_partenza.IDATTIVAZIONETITOLIVIAGGIO)
+                            //{
+                            var lDocCartaImbarcoFigli = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a=>a.IDDOCUMENTO).ToList();
+                            var lDocTitoloViaggioFigli = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a => a.IDDOCUMENTO).ToList();
+                            decimal idDocCartaImbarcoFigli = 0;
+                            if (lDocCartaImbarcoFigli?.Any() ?? false)
                             {
-                                var lDocCartaImbarcoFigli = ftv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a=>a.IDDOCUMENTO).ToList();
-                                var lDocTitoloViaggioFigli = ftv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a => a.IDDOCUMENTO).ToList();
-                                decimal idDocCartaImbarcoFigli = 0;
-                                if (lDocCartaImbarcoFigli?.Any() ?? false)
-                                {
-                                    idDocCartaImbarcoFigli = lDocCartaImbarcoFigli.First().IDDOCUMENTO;
-                                }
-                                decimal idDocTitoloViaggioFigli = 0;
-                                if (lDocTitoloViaggioFigli?.Any() ?? false)
-                                {
-                                    idDocTitoloViaggioFigli = lDocTitoloViaggioFigli.First().IDDOCUMENTO;
-                                }
-                                ElencoTitoliViaggioModel etvfm = new ElencoTitoliViaggioModel()
-                                {
-                                    idFamiliare = f.IDFIGLI,
-                                    Nominativo = f.NOME + " " + f.COGNOME,
-                                    CodiceFiscale = f.CODICEFISCALE,
-                                    dataInizio = f.DATAINIZIOVALIDITA,
-                                    dataFine = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA,
-                                    parentela = EnumParentela.Figlio,
-                                    idParentela=(decimal)EnumParentela.Figlio,
-                                    idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
-                                    RichiediTitoloViaggio = ftv.RICHIEDITITOLOVIAGGIO,
-                                    idAttivazioneTitoloViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                                    idTitoloViaggio = atv.IDTITOLOVIAGGIO,
-                                    esisteDocCartaImbarco = idDocCartaImbarcoFigli > 0 ? true : false,
-                                    esisteDoctitoloViaggio = idDocTitoloViaggioFigli > 0 ? true : false,
-                                    idFigliTitoloViaggio=ftv.IDFIGLITITOLIVIAGGIO,
-                                    idConiugeTitoloViaggio=0,
-                                    idDocCartaImbarco= idDocCartaImbarcoFigli,
-                                    idDoctitoloViaggio= idDocTitoloViaggioFigli
-
-                                };
-                                letvm.Add(etvfm);
+                                idDocCartaImbarcoFigli = lDocCartaImbarcoFigli.First().IDDOCUMENTO;
                             }
+                            decimal idDocTitoloViaggioFigli = 0;
+                            if (lDocTitoloViaggioFigli?.Any() ?? false)
+                            {
+                                idDocTitoloViaggioFigli = lDocTitoloViaggioFigli.First().IDDOCUMENTO;
+                            }
+                            ElencoTitoliViaggioModel etvfm = new ElencoTitoliViaggioModel()
+                            {
+                                idFamiliare = f.IDFIGLI,
+                                Nominativo = f.NOME + " " + f.COGNOME,
+                                CodiceFiscale = f.CODICEFISCALE,
+                                dataInizio = f.DATAINIZIOVALIDITA,
+                                dataFine = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA,
+                                parentela = EnumParentela.Figlio,
+                                idParentela=(decimal)EnumParentela.Figlio,
+                                idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
+                                RichiediTitoloViaggio = ftv.RICHIEDITITOLOVIAGGIO,
+                                idAttivazioneTitoloViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                                idTitoloViaggio = atv.IDTITOLOVIAGGIO,
+                                esisteDocCartaImbarco = idDocCartaImbarcoFigli > 0 ? true : false,
+                                esisteDoctitoloViaggio = idDocTitoloViaggioFigli > 0 ? true : false,
+                                idFigliTitoloViaggio=ftv.IDFIGLITITOLIVIAGGIO,
+                                idConiugeTitoloViaggio=0,
+                                idDocCartaImbarco= idDocCartaImbarcoFigli,
+                                idDoctitoloViaggio= idDocTitoloViaggioFigli
+
+                            };
+                            letvm.Add(etvfm);
+                            //}
+                        }
+                        else
+                        {
+                            throw new Exception("Errore Figlio non trovato su FiglioTitoloViaggio");
                         }
                     }
                 }
@@ -868,7 +985,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var t = atv.TITOLIVIAGGIO.TRASFERIMENTO;
                 var mf = t.MAGGIORAZIONIFAMILIARI;
-                var ultima_att = GetUltimaAttivazioneVariazioneAttivata(atv.IDTITOLOVIAGGIO, db);
+                //var ultima_att = GetUltimaAttivazioneVariazioneAttivata(atv.IDTITOLOVIAGGIO, db);
 
                 //var ldtv = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio && a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
                 
@@ -878,7 +995,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 #region coniugi
                 //lista documenti titoli viaggio coniuge da attivare
-                var lctv = ultima_att.CONIUGETITOLIVIAGGIO
+                var lctv = atv.CONIUGETITOLIVIAGGIO
                             .Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO)
                             .OrderByDescending(a => a.IDCONIUGETITOLIVIAGGIO)
                             .ToList();
@@ -932,7 +1049,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 #region figli 
                 //lista documenti titoli viaggio coniuge da attivare
-                var lftv = ultima_att.FIGLITITOLIVIAGGIO
+                var lftv = atv.FIGLITITOLIVIAGGIO
                                 .Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO)
                                 .OrderByDescending(a => a.IDFIGLITITOLIVIAGGIO)
                                 .ToList();
@@ -976,7 +1093,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idAttivazioneTitoloViaggio = ftv.IDATTIVAZIONETITOLIVIAGGIO,
                         idTitoloViaggio = ftv.IDTITOLOVIAGGIO,
                         idDocCartaImbarco = idDocCartaImbarcoFigli,
-                        idDoctitoloViaggio = idDocCartaImbarcoFigli,
+                        idDoctitoloViaggio = idDocTitoloViaggioFigli,
                         idConiugeTitoloViaggio = 0,
                         idFigliTitoloViaggio = ftv.IDFIGLITITOLIVIAGGIO
                     };
@@ -988,6 +1105,151 @@ namespace NewISE.Models.DBModel.dtObj
 
             return letvm;
         }
+
+        public List<ElencoTitoliViaggioModel> ElencoTVDocumentiAttivati(decimal idTitoliViaggio)
+        {
+            List<ElencoTitoliViaggioModel> letvm = new List<ElencoTitoliViaggioModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
+                var t = tv.TRASFERIMENTO;
+
+                #region titoliviaggio coniuge attivati
+                var lctv = tv.CONIUGETITOLIVIAGGIO
+                            .Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO)
+                            .OrderByDescending(a => a.IDCONIUGETITOLIVIAGGIO)
+                            .ToList();
+
+                foreach (var ctv in lctv)
+                {
+                    var lctvdoc = ctv.DOCUMENTI
+                                .Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.MODIFICATO == false &&
+                                    (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio))
+                                .ToList();
+
+                    decimal idDocCartaImbarcoConiuge = 0;
+                    decimal idDocTitoloViaggioConiuge = 0;
+                    decimal idattDocConiuge = 0;
+                    foreach (var ctvdoc in lctvdoc)
+                    {
+                        if (ctvdoc.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco)
+                        {
+                            idDocCartaImbarcoConiuge = ctvdoc.IDDOCUMENTO;
+                        }
+                        if (ctvdoc.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio)
+                        {
+                            idDocTitoloViaggioConiuge = ctvdoc.IDDOCUMENTO;
+                        }
+                        var lattdoc = ctvdoc.ATTIVAZIONETITOLIVIAGGIO
+                                            .Where(a => a.ANNULLATO == false &&
+                                                    a.NOTIFICARICHIESTA && a.ATTIVAZIONERICHIESTA).ToList();
+                        if(lattdoc?.Any()??false)
+                        {
+                            var attdoc = lattdoc.First();
+                            idattDocConiuge = attdoc.IDATTIVAZIONETITOLIVIAGGIO;
+                        }
+                    }
+
+                    if (idattDocConiuge > 0)
+                    {
+                        var c = ctv.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                    a.DATAINIZIOVALIDITA <= t.DATARIENTRO
+                                                ).ToList().First();
+                        ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
+                        {
+                            idFamiliare = c.IDCONIUGE,
+                            Nominativo = c.NOME + " " + c.COGNOME,
+                            CodiceFiscale = c.CODICEFISCALE,
+                            dataInizio = c.DATAINIZIOVALIDITA,
+                            dataFine = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA,
+                            parentela = EnumParentela.Coniuge,
+                            idAltriDati = c.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
+                            //RichiediTitoloViaggio = ctv.RICHIEDITITOLOVIAGGIO,
+                            //idAttivazioneTitoloViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                            idTitoloViaggio = idTitoliViaggio,
+                            idConiugeTitoloViaggio = ctv.IDCONIUGETITOLIVIAGGIO,
+                            idFigliTitoloViaggio = 0,
+                            idDoctitoloViaggio = idDocTitoloViaggioConiuge,
+                            idDocCartaImbarco = idDocCartaImbarcoConiuge
+                        };
+                        letvm.Add(etvcm);
+                    }
+                }
+                #endregion
+
+
+
+                #region titoli viaggio figli attivati
+                var lftv = tv.FIGLITITOLIVIAGGIO
+                                .Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO)
+                                .OrderByDescending(a => a.IDFIGLITITOLIVIAGGIO)
+                                .ToList();
+
+                foreach (var ftv in lftv)
+                {
+                    var lftvdoc = ftv.DOCUMENTI
+                                .Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.MODIFICATO == false &&
+                                    (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio))
+                                .ToList();
+
+                    decimal idDocCartaImbarcoFigli = 0;
+                    decimal idDocTitoloViaggioFigli = 0;
+                    decimal idattDocFigli = 0;
+                    foreach (var ftvdoc in lftvdoc)
+                    {
+                        if (ftvdoc.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco)
+                        {
+                            idDocCartaImbarcoFigli = ftvdoc.IDDOCUMENTO;
+                        }
+                        if (ftvdoc.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio)
+                        {
+                            idDocTitoloViaggioFigli = ftvdoc.IDDOCUMENTO;
+                        }
+                        var lattdoc = ftvdoc.ATTIVAZIONETITOLIVIAGGIO
+                                        .Where(a => a.ANNULLATO == false &&
+                                                a.NOTIFICARICHIESTA && a.ATTIVAZIONERICHIESTA).ToList();
+                        if (lattdoc?.Any() ?? false)
+                        {
+                            var attdoc = lattdoc.First();
+                            idattDocFigli = attdoc.IDATTIVAZIONETITOLIVIAGGIO;
+                        }
+                    }
+
+                    if (idattDocFigli > 0)
+                    {
+
+                        var f = ftv.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                    a.DATAINIZIOVALIDITA <= t.DATARIENTRO)
+                                                .ToList().First();
+
+                        ElencoTitoliViaggioModel etvfm = new ElencoTitoliViaggioModel()
+                        {
+                            idFamiliare = f.IDFIGLI,
+                            Nominativo = f.NOME + " " + f.COGNOME,
+                            CodiceFiscale = f.CODICEFISCALE,
+                            dataInizio = f.DATAINIZIOVALIDITA,
+                            dataFine = f.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : f.DATAFINEVALIDITA,
+                            parentela = EnumParentela.Figlio,
+                            idAltriDati = f.ALTRIDATIFAM.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDALTRIDATIFAM).ToList().First().IDALTRIDATIFAM,
+                            //RichiediTitoloViaggio = ftv.RICHIEDITITOLOVIAGGIO,
+                            //idAttivazioneTitoloViaggio = ftv.IDATTIVAZIONETITOLIVIAGGIO,
+                            idTitoloViaggio = ftv.IDTITOLOVIAGGIO,
+                            idDocCartaImbarco = idDocCartaImbarcoFigli,
+                            idDoctitoloViaggio = idDocCartaImbarcoFigli,
+                            idConiugeTitoloViaggio = 0,
+                            idFigliTitoloViaggio = ftv.IDFIGLITITOLIVIAGGIO
+                        };
+                        letvm.Add(etvfm);
+                    }
+                }
+                #endregion
+            }
+
+
+            return letvm;
+        }
+
 
         public decimal GetIdTitoliViaggio(decimal idTrasferimento)
 
@@ -1010,8 +1272,13 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 ATTIVAZIONETITOLIVIAGGIO atv_notificata = new ATTIVAZIONETITOLIVIAGGIO();
-                var latv_notificate = db.TITOLIVIAGGIO.Find(idTitoloViaggio).ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true && a.ATTIVAZIONERICHIESTA == false)
-                    .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+                var latv_notificate = db.TITOLIVIAGGIO.Find(idTitoloViaggio)
+                                        .ATTIVAZIONETITOLIVIAGGIO
+                                        .Where(a => a.ANNULLATO == false && 
+                                                    a.NOTIFICARICHIESTA == true && 
+                                                    a.ATTIVAZIONERICHIESTA == false)
+                                        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO)
+                                        .ToList();
                 if (latv_notificate?.Any() ?? false)
                 {
                     atv_notificata = latv_notificate.First();
@@ -1094,223 +1361,354 @@ namespace NewISE.Models.DBModel.dtObj
                 
             var NumAttivazioni = 0;
             NumAttivazioni = db.TITOLIVIAGGIO.Find(idTitoliViaggio).ATTIVAZIONETITOLIVIAGGIO
-                                .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true)
-                                .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).Count();
+                                .Where(a => a.ANNULLATO == false && a.ATTIVAZIONERICHIESTA)
+                                .Count();
             return NumAttivazioni;
             //}
         }
 
+        //public ATTIVAZIONETITOLIVIAGGIO GetAttivazioneTV_old(decimal idTitoliViaggio, ModelDBISE db)
+        //{
+        //        ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO();
+
+        //        var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
+        //        if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+        //        {
+        //            var latv = tv.ATTIVAZIONETITOLIVIAGGIO
+        //                    .Where(a => a.ANNULLATO == false)
+        //                    .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+        //            if (latv?.Any() ?? false)
+        //            {
+        //                atv = latv.First();
+
+        //                #region commento
+        //                //var mf = tv.TRASFERIMENTO.MAGGIORAZIONIFAMILIARI;
+
+        //                //#region elenco coniugi
+        //                ////verifico se su ConiugeTitoloViaggio esistono i record relativi ai coniugi residenti
+        //                ////che non hanno richiesto TV
+        //                ////(se non esistono li creo)
+        //                //var ultima_amf = tv.TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM
+        //                //                    .Where(a => a.ANNULLATO == false && 
+        //                //                                a.ATTIVAZIONEMAGFAM && 
+        //                //                                a.RICHIESTAATTIVAZIONE)
+        //                //                    .OrderByDescending(a=>a.IDATTIVAZIONEMAGFAM)
+        //                //                    .First();
+        //                //var lctv = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
+
+        //                //if (lctv.Count() > 0)
+        //                //{
+        //                //    //var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente && a.MODIFICATO==false).ToList();
+        //                //    var lc = amf.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
+        //                //    if (lc?.Any() ?? false)
+        //                //    {
+        //                //        foreach (var c in lc)
+        //                //        {
+        //                //            //creo titolo viaggio coniuge
+        //                //            CONIUGETITOLIVIAGGIO ctv = new CONIUGETITOLIVIAGGIO()
+        //                //            {
+        //                //                IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
+        //                //                IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                //                RICHIEDITITOLOVIAGGIO = false,
+        //                //                DATAAGGIORNAMENTO = DateTime.Now,
+        //                //                ANNULLATO = false
+        //                //            };
+        //                //            db.CONIUGETITOLIVIAGGIO.Add(ctv);
+        //                //            if (db.SaveChanges() <= 0)
+        //                //            {
+        //                //                throw new Exception("Errore nella fase di creazione del titolo di viaggio del coniuge " + c.NOME.ToString() + " " + c.COGNOME.ToString());
+        //                //            }
+        //                //            else
+        //                //            {
+        //                //                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+        //                //                    "Inserimento titolo viaggio coniuge.", "CONIUGETITOLOVIAGGIO", db, idTitoliViaggio,
+        //                //                    ctv.IDCONIUGETITOLIVIAGGIO);
+
+        //                //                AssociaConiugeTitoloViaggio(c.IDCONIUGE, ctv.IDCONIUGETITOLIVIAGGIO, db);
+        //                //            }
+        //                //        }
+        //                //    }
+        //                //}
+        //                //#endregion
+
+        //                //var lftv = tv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO==false).ToList();
+        //                //if (lftv.Count() == 0)
+        //                //{
+        //                //    //cerco eventuali figli residenti e ne creo il titolo di viaggio
+        //                //    //var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente) && a.MODIFICATO==false).ToList();
+        //                //    var lf = amf.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
+        //                //    if (lf?.Any() ?? false)
+        //                //    {
+        //                //        foreach (var f in lf)
+        //                //        {
+        //                //            //creo titolo viaggio figlio
+        //                //            FIGLITITOLIVIAGGIO ftv = new FIGLITITOLIVIAGGIO()
+        //                //            {
+        //                //                IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
+        //                //                IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                //                RICHIEDITITOLOVIAGGIO = false,
+        //                //                DATAAGGIORNAMENTO = DateTime.Now,
+        //                //                ANNULLATO = false
+        //                //            };
+        //                //            db.FIGLITITOLIVIAGGIO.Add(ftv);
+        //                //            if (db.SaveChanges() <= 0)
+        //                //            {
+        //                //                throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + f.NOME.ToString() + " " + f.COGNOME.ToString());
+        //                //            }
+        //                //            else
+        //                //            {
+        //                //                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+        //                //                    "Inserimento titolo viaggio figli.", "FIGLITITOLIVIAGGIO", db, idTitoliViaggio,
+        //                //                    ftv.IDFIGLITITOLIVIAGGIO);
+
+        //                //                AssociaFigliTitoloViaggio(f.IDFIGLI, ftv.IDFIGLITITOLIVIAGGIO, db);
+        //                //            }
+        //                //        }
+
+        //                //    }
+        //                //}
+        //                //}
+        //                //else
+        //                //{
+        //                //    //se non esiste una attivazione di titolo di viaggio (la prima volta non esiste)
+        //                //    //ne creo una 
+        //                //    //e creo un titolo di viaggio richiedente (esiste sempre)
+        //                //    //e un titolo di viaggio per ogni familiare della maggiorazione familiare richiesta
+        //                //    //che sia residente (coniugetitoliviaggio, figlititoliviaggio) 
+        //                #endregion
+
+        //                if (atv.ATTIVAZIONERICHIESTA)
+        //                {
+        //                    ATTIVAZIONETITOLIVIAGGIO new_atv = new ATTIVAZIONETITOLIVIAGGIO()
+        //                    {
+        //                        IDTITOLOVIAGGIO = idTitoliViaggio,
+        //                        NOTIFICARICHIESTA = false,
+        //                        DATANOTIFICARICHIESTA = null,
+        //                        ATTIVAZIONERICHIESTA = false,
+        //                        DATAATTIVAZIONERICHIESTA = null,
+        //                        DATAAGGIORNAMENTO = DateTime.Now,
+        //                        ANNULLATO = false
+        //                    };
+        //                    db.ATTIVAZIONETITOLIVIAGGIO.Add(new_atv);
+
+        //                    if (db.SaveChanges() <= 0)
+        //                    {
+        //                        throw new Exception("Errore nella fase di creazione dell'attivazione titolo di viaggio.");
+        //                    }
+
+
+        //                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+        //                        "Inserimento attivazione titoli di viaggio.", "ATTIVAZIONETITOLIVIAGGIO", db, idTitoliViaggio,
+        //                        new_atv.IDATTIVAZIONETITOLIVIAGGIO);
+
+        //                    #region commento
+        //                    atv = new_atv;
+
+        //                    ////verifico se è stata fatta almeno una attivazione
+        //                    var num_attivazioni = GetNumAttivazioniTV(idTitoliViaggio, db);
+
+        //                if (num_attivazioni == 1)
+        //                {
+        //                    var att_partenza = GetAttivazioneTVPartenza(idTitoliViaggio, db);
+
+        //                    #region coniugetitoliviaggio
+        //                    var lctv = att_partenza.CONIUGETITOLIVIAGGIO
+        //                                .Where(a => a.RICHIEDITITOLOVIAGGIO == false &&
+        //                                a.ANNULLATO == false)
+        //                                .ToList();
+        //                    if (lctv?.Any() ?? false)
+        //                    {
+        //                        foreach (var ctv in lctv)
+        //                        {
+        //                            var lconiuge = ctv.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+        //                            if (lconiuge?.Any() ?? false)
+        //                            {
+        //                                var coniuge = lconiuge.First();
+
+        //                                //creo titolo viaggio coniuge
+        //                                CONIUGETITOLIVIAGGIO ctv_new = new CONIUGETITOLIVIAGGIO()
+        //                                {
+        //                                    IDTITOLOVIAGGIO = new_atv.IDTITOLOVIAGGIO,
+        //                                    IDATTIVAZIONETITOLIVIAGGIO = new_atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                                    RICHIEDITITOLOVIAGGIO = false,
+        //                                    DATAAGGIORNAMENTO = DateTime.Now,
+        //                                    ANNULLATO = false
+        //                                };
+        //                                new_atv.CONIUGETITOLIVIAGGIO.Add(ctv_new);
+        //                                if (db.SaveChanges() <= 0)
+        //                                {
+        //                                    throw new Exception("Errore nella fase di creazione del titolo di viaggio del coniuge " + coniuge.NOME.ToString() + " " + coniuge.COGNOME.ToString());
+        //                                }
+
+        //                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+        //                                        "Inserimento titolo viaggio coniuge.", "CONIUGETITOLOVIAGGIO", db, idTitoliViaggio,
+        //                                        ctv_new.IDCONIUGETITOLIVIAGGIO);
+
+        //                                AssociaConiugeTitoloViaggio(coniuge.IDCONIUGE, ctv_new.IDCONIUGETITOLIVIAGGIO, db);
+
+        //                            }
+        //                            else
+        //                            {
+        //                                throw new Exception("Errore associazione Coniuge e ConiugeTitoliViaggio. Coniuge non trovato.");
+        //                            }
+        //                        }
+        //                    }
+        //                    #endregion
+
+        //                    #region figli titoliviaggio
+        //                    var lftv = att_partenza.FIGLITITOLIVIAGGIO
+        //                               .Where(a => a.RICHIEDITITOLOVIAGGIO == false &&
+        //                               a.ANNULLATO == false)
+        //                               .ToList();
+        //                    if (lftv?.Any() ?? false)
+        //                    {
+        //                        foreach (var ftv in lftv)
+        //                        {
+        //                            var lfigli = ftv.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+        //                            if (lfigli?.Any() ?? false)
+        //                            {
+        //                                var figli = lfigli.First();
+
+        //                                //creo titolo viaggio figli
+        //                                FIGLITITOLIVIAGGIO ftv_new = new FIGLITITOLIVIAGGIO()
+        //                                {
+        //                                    IDTITOLOVIAGGIO = new_atv.IDTITOLOVIAGGIO,
+        //                                    IDATTIVAZIONETITOLIVIAGGIO = new_atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                                    RICHIEDITITOLOVIAGGIO = false,
+        //                                    DATAAGGIORNAMENTO = DateTime.Now,
+        //                                    ANNULLATO = false
+        //                                };
+        //                                new_atv.FIGLITITOLIVIAGGIO.Add(ftv_new);
+        //                                if (db.SaveChanges() <= 0)
+        //                                {
+        //                                    throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + figli.NOME.ToString() + " " + figli.COGNOME.ToString());
+        //                                }
+
+        //                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+        //                                        "Inserimento titolo viaggio figli.", "FIGLITITOLOVIAGGIO", db, idTitoliViaggio,
+        //                                        ftv_new.IDFIGLITITOLIVIAGGIO);
+
+        //                                AssociaFigliTitoloViaggio(figli.IDFIGLI, ftv_new.IDFIGLITITOLIVIAGGIO, db);
+
+        //                            }
+        //                            else
+        //                            {
+        //                                throw new Exception("Errore associazione Figli e FigliTitoliViaggio. Figlio non trovato.");
+        //                            }
+        //                        }
+        //                    }
+        //                    #endregion
+
+        //                }
+        //                else
+        //                {
+
+        //                    //cerco eventuali figli residenti creati successivamente e ne creo il titolo di viaggio
+        //                    //var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
+        //                    //    var lf = amf.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
+        //                    //    if (lf?.Any() ?? false)
+        //                    //    {
+        //                    //        foreach (var f in lf)
+        //                    //        {
+        //                    //            //creo titolo viaggio figlio
+        //                    //            FIGLITITOLIVIAGGIO ftv = new FIGLITITOLIVIAGGIO()
+        //                    //            {
+        //                    //                IDTITOLOVIAGGIO = new_atv.IDTITOLOVIAGGIO,
+        //                    //                IDATTIVAZIONETITOLIVIAGGIO = new_atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                    //                RICHIEDITITOLOVIAGGIO = false,
+        //                    //                DATAAGGIORNAMENTO = DateTime.Now,
+        //                    //                ANNULLATO = false
+        //                    //            };
+        //                    //            db.FIGLITITOLIVIAGGIO.Add(ftv);
+        //                    //            if (db.SaveChanges() <= 0)
+        //                    //            {
+        //                    //                throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + f.NOME.ToString() + " " + f.COGNOME.ToString());
+        //                    //            }
+        //                    //            else
+        //                    //            {
+        //                    //                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+        //                    //                    "Inserimento titolo viaggio figli.", "FIGLITITOLIVIAGGIO", db, idTitoliViaggio,
+        //                    //                    ftv.IDFIGLITITOLIVIAGGIO);
+        //                    //                AssociaFigliTitoloViaggio(f.IDFIGLI, ftv.IDFIGLITITOLIVIAGGIO, db);
+        //                    //            }
+
+        //                    //        }
+        //                    //    }
+        //                    //}
+        //                    #endregion
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return atv;
+
+        //}
+
         public ATTIVAZIONETITOLIVIAGGIO GetAttivazioneTV(decimal idTitoliViaggio, ModelDBISE db)
         {
-                ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO();
+            ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO();
 
-                var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
-                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+            var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
+            if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+            {
+                var latv = tv.ATTIVAZIONETITOLIVIAGGIO
+                        .Where(a => a.ANNULLATO == false)
+                        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+                if (latv?.Any() ?? false)
                 {
-                    var latv = tv.ATTIVAZIONETITOLIVIAGGIO
-                            .Where(a => a.ANNULLATO == false)
-                            .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
-                    if (latv?.Any() ?? false)
+                    atv = latv.First();
+
+                    if (atv.ATTIVAZIONERICHIESTA)
                     {
-                        atv = latv.First();
-
-                        #region commento
-                        //var mf = tv.TRASFERIMENTO.MAGGIORAZIONIFAMILIARI;
-
-                        //#region elenco coniugi
-                        ////verifico se su ConiugeTitoloViaggio esistono i record relativi ai coniugi residenti
-                        ////che non hanno richiesto TV
-                        ////(se non esistono li creo)
-                        //var ultima_amf = tv.TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM
-                        //                    .Where(a => a.ANNULLATO == false && 
-                        //                                a.ATTIVAZIONEMAGFAM && 
-                        //                                a.RICHIESTAATTIVAZIONE)
-                        //                    .OrderByDescending(a=>a.IDATTIVAZIONEMAGFAM)
-                        //                    .First();
-                        //var lctv = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
-
-                        //if (lctv.Count() > 0)
-                        //{
-                        //    //var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente && a.MODIFICATO==false).ToList();
-                        //    var lc = amf.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
-                        //    if (lc?.Any() ?? false)
-                        //    {
-                        //        foreach (var c in lc)
-                        //        {
-                        //            //creo titolo viaggio coniuge
-                        //            CONIUGETITOLIVIAGGIO ctv = new CONIUGETITOLIVIAGGIO()
-                        //            {
-                        //                IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
-                        //                IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                        //                RICHIEDITITOLOVIAGGIO = false,
-                        //                DATAAGGIORNAMENTO = DateTime.Now,
-                        //                ANNULLATO = false
-                        //            };
-                        //            db.CONIUGETITOLIVIAGGIO.Add(ctv);
-                        //            if (db.SaveChanges() <= 0)
-                        //            {
-                        //                throw new Exception("Errore nella fase di creazione del titolo di viaggio del coniuge " + c.NOME.ToString() + " " + c.COGNOME.ToString());
-                        //            }
-                        //            else
-                        //            {
-                        //                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                        //                    "Inserimento titolo viaggio coniuge.", "CONIUGETITOLOVIAGGIO", db, idTitoliViaggio,
-                        //                    ctv.IDCONIUGETITOLIVIAGGIO);
-
-                        //                AssociaConiugeTitoloViaggio(c.IDCONIUGE, ctv.IDCONIUGETITOLIVIAGGIO, db);
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                        //#endregion
-
-                        //var lftv = tv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO==false).ToList();
-                        //if (lftv.Count() == 0)
-                        //{
-                        //    //cerco eventuali figli residenti e ne creo il titolo di viaggio
-                        //    //var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente) && a.MODIFICATO==false).ToList();
-                        //    var lf = amf.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
-                        //    if (lf?.Any() ?? false)
-                        //    {
-                        //        foreach (var f in lf)
-                        //        {
-                        //            //creo titolo viaggio figlio
-                        //            FIGLITITOLIVIAGGIO ftv = new FIGLITITOLIVIAGGIO()
-                        //            {
-                        //                IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
-                        //                IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                        //                RICHIEDITITOLOVIAGGIO = false,
-                        //                DATAAGGIORNAMENTO = DateTime.Now,
-                        //                ANNULLATO = false
-                        //            };
-                        //            db.FIGLITITOLIVIAGGIO.Add(ftv);
-                        //            if (db.SaveChanges() <= 0)
-                        //            {
-                        //                throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + f.NOME.ToString() + " " + f.COGNOME.ToString());
-                        //            }
-                        //            else
-                        //            {
-                        //                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                        //                    "Inserimento titolo viaggio figli.", "FIGLITITOLIVIAGGIO", db, idTitoliViaggio,
-                        //                    ftv.IDFIGLITITOLIVIAGGIO);
-
-                        //                AssociaFigliTitoloViaggio(f.IDFIGLI, ftv.IDFIGLITITOLIVIAGGIO, db);
-                        //            }
-                        //        }
-
-                        //    }
-                        //}
-                        //}
-                        //else
-                        //{
-                        //    //se non esiste una attivazione di titolo di viaggio (la prima volta non esiste)
-                        //    //ne creo una 
-                        //    //e creo un titolo di viaggio richiedente (esiste sempre)
-                        //    //e un titolo di viaggio per ogni familiare della maggiorazione familiare richiesta
-                        //    //che sia residente (coniugetitoliviaggio, figlititoliviaggio) 
-                        #endregion
-
-                        if (atv.ATTIVAZIONERICHIESTA)
+                        ATTIVAZIONETITOLIVIAGGIO new_atv = new ATTIVAZIONETITOLIVIAGGIO()
                         {
-                            ATTIVAZIONETITOLIVIAGGIO new_atv = new ATTIVAZIONETITOLIVIAGGIO()
-                            {
-                                IDTITOLOVIAGGIO = idTitoliViaggio,
-                                NOTIFICARICHIESTA = false,
-                                DATANOTIFICARICHIESTA = null,
-                                ATTIVAZIONERICHIESTA = false,
-                                DATAATTIVAZIONERICHIESTA = null,
-                                DATAAGGIORNAMENTO = DateTime.Now,
-                                ANNULLATO = false
-                            };
-                            db.ATTIVAZIONETITOLIVIAGGIO.Add(new_atv);
+                            IDTITOLOVIAGGIO = idTitoliViaggio,
+                            NOTIFICARICHIESTA = false,
+                            DATANOTIFICARICHIESTA = null,
+                            ATTIVAZIONERICHIESTA = false,
+                            DATAATTIVAZIONERICHIESTA = null,
+                            DATAAGGIORNAMENTO = DateTime.Now,
+                            ANNULLATO = false
+                        };
+                        db.ATTIVAZIONETITOLIVIAGGIO.Add(new_atv);
 
-                            if (db.SaveChanges() <= 0)
-                            {
-                                throw new Exception("Errore nella fase di creazione dell'attivazione titolo di viaggio.");
-                            }
-
-
-                            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                                "Inserimento attivazione titoli di viaggio.", "ATTIVAZIONETITOLIVIAGGIO", db, idTitoliViaggio,
-                                new_atv.IDATTIVAZIONETITOLIVIAGGIO);
-
-                            #region commento
-                            //    atv = new_atv;
-
-                            ////verifico se è stata fatta almeno una attivazione
-                            //var richiesta = this.richiestaEseguita(idTitoliViaggio);
-
-                            //if (richiesta == false)
-                            //{
-                            //    //cerco eventuali coniugi residenti e ne creo il titolo di viaggio
-                            //    var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true & a.RICHIESTAATTIVAZIONE == true).First();
-
-                            //    var lc = amf.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
-                            //    if (lc?.Any() ?? false)
-                            //    {
-                            //        foreach (var c in lc)
-                            //        {
-                            //            //creo titolo viaggio coniuge
-                            //            CONIUGETITOLIVIAGGIO ctv = new CONIUGETITOLIVIAGGIO()
-                            //            {
-                            //                IDTITOLOVIAGGIO = new_atv.IDTITOLOVIAGGIO,
-                            //                IDATTIVAZIONETITOLIVIAGGIO = new_atv.IDATTIVAZIONETITOLIVIAGGIO,
-                            //                RICHIEDITITOLOVIAGGIO = false,
-                            //                DATAAGGIORNAMENTO = DateTime.Now,
-                            //                ANNULLATO = false
-                            //            };
-                            //            db.CONIUGETITOLIVIAGGIO.Add(ctv);
-                            //            if (db.SaveChanges() <= 0)
-                            //            {
-                            //                throw new Exception("Errore nella fase di creazione del titolo di viaggio del coniuge " + c.NOME.ToString() + " " + c.COGNOME.ToString());
-                            //            }
-                            //            else
-                            //            {
-                            //                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                            //                    "Inserimento titolo viaggio coniuge.", "CONIUGETITOLOVIAGGIO", db, idTitoliViaggio,
-                            //                    ctv.IDCONIUGETITOLIVIAGGIO);
-                            //                AssociaConiugeTitoloViaggio(c.IDCONIUGE, ctv.IDCONIUGETITOLIVIAGGIO, db);
-                            //            }
-                            //        }
-                            //    }
-
-                            //    //cerco eventuali figli residenti e ne creo il titolo di viaggio
-                            //    //var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
-                            //    var lf = amf.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
-                            //    if (lf?.Any() ?? false)
-                            //    {
-                            //        foreach (var f in lf)
-                            //        {
-                            //            //creo titolo viaggio figlio
-                            //            FIGLITITOLIVIAGGIO ftv = new FIGLITITOLIVIAGGIO()
-                            //            {
-                            //                IDTITOLOVIAGGIO = new_atv.IDTITOLOVIAGGIO,
-                            //                IDATTIVAZIONETITOLIVIAGGIO = new_atv.IDATTIVAZIONETITOLIVIAGGIO,
-                            //                RICHIEDITITOLOVIAGGIO = false,
-                            //                DATAAGGIORNAMENTO = DateTime.Now,
-                            //                ANNULLATO = false
-                            //            };
-                            //            db.FIGLITITOLIVIAGGIO.Add(ftv);
-                            //            if (db.SaveChanges() <= 0)
-                            //            {
-                            //                throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + f.NOME.ToString() + " " + f.COGNOME.ToString());
-                            //            }
-                            //            else
-                            //            {
-                            //                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                            //                    "Inserimento titolo viaggio figli.", "FIGLITITOLIVIAGGIO", db, idTitoliViaggio,
-                            //                    ftv.IDFIGLITITOLIVIAGGIO);
-                            //                AssociaFigliTitoloViaggio(f.IDFIGLI, ftv.IDFIGLITITOLIVIAGGIO, db);
-                            //            }
-
-                            //        }
-                            //    }
-                            //}
-                            #endregion
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception("Errore nella fase di creazione dell'attivazione titolo di viaggio.");
                         }
+
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                            "Inserimento attivazione titoli di viaggio.", "ATTIVAZIONETITOLIVIAGGIO", db, idTitoliViaggio,
+                            new_atv.IDATTIVAZIONETITOLIVIAGGIO);
+
+                        atv = new_atv;
+                        
                     }
                 }
-                return atv;
+            }
+            return atv;
+
+        }
+
+
+        public ATTIVAZIONETITOLIVIAGGIO GetAttivazioneTVRichiesta(decimal idTitoliViaggio, ModelDBISE db)
+        {
+            ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO();
+
+            var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
+            if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+            {
+                var latv = tv.ATTIVAZIONETITOLIVIAGGIO
+                        .Where(a => a.ANNULLATO == false)
+                        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+
+                if (latv?.Any() ?? false)
+                {
+                    atv = latv.First();
+                }
+            }
+            return atv;
 
         }
 
@@ -1335,21 +1733,21 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public bool richiestaEseguita(decimal idTitoliViaggio)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                decimal NumAttivazioni = this.GetNumAttivazioniTV(idTitoliViaggio, db);
-                if (NumAttivazioni == 0)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
+        //public bool richiestaEseguita(decimal idTitoliViaggio)
+        //{
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        decimal NumAttivazioni = this.GetNumAttivazioniTV(idTitoliViaggio, db);
+        //        if (NumAttivazioni == 0)
+        //        {
+        //            return false;
+        //        }
+        //        else
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //}
 
 
 
@@ -1368,6 +1766,8 @@ namespace NewISE.Models.DBModel.dtObj
                             var tvc = db.CONIUGE.Find(idFamiliare)
                                         .CONIUGETITOLIVIAGGIO
                                         .Where(a => a.ANNULLATO == false)
+                                        .OrderByDescending(a=>a.IDCONIUGETITOLIVIAGGIO)
+                                        .ToList()
                                         .First();
                             var stato_c = tvc.RICHIEDITITOLOVIAGGIO;
                             if (stato_c)
@@ -1395,7 +1795,9 @@ namespace NewISE.Models.DBModel.dtObj
                         case EnumParentela.Figlio:
                             var tvf = db.FIGLI.Find(idFamiliare)
                                     .FIGLITITOLIVIAGGIO
-                                    .Where(a => a.ANNULLATO == false)
+                                    .Where(a => a.ANNULLATO == false).
+                                    OrderByDescending(a=>a.IDFIGLITITOLIVIAGGIO)
+                                    .ToList()
                                     .First();
                             var stato_f = tvf.RICHIEDITITOLOVIAGGIO;
                             if (stato_f)
@@ -2118,6 +2520,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         if (atv_Old.NOTIFICARICHIESTA == true && atv_Old.ATTIVAZIONERICHIESTA == false && atv_Old.ANNULLATO == false)
                         {
+                            #region annulla attivazione precedente
                             atv_Old.ANNULLATO = true;
                             atv_Old.DATAAGGIORNAMENTO = DateTime.Now;
 
@@ -2132,9 +2535,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 "Annullamento della riga per il ciclo di attivazione dei titoli di viaggio",
                                 "ATTIVAZIONITITOLIVIAGGIO", db, atv_Old.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO,
                                 atv_Old.IDATTIVAZIONETITOLIVIAGGIO);
+                            #endregion
 
                             var idTrasferimento = atv_Old.IDTITOLOVIAGGIO;
 
+                            #region crea nuova attivazione
                             ATTIVAZIONETITOLIVIAGGIO atv_New = new ATTIVAZIONETITOLIVIAGGIO()
                             {
                                 IDTITOLOVIAGGIO = atv_Old.IDTITOLOVIAGGIO,
@@ -2157,23 +2562,25 @@ namespace NewISE.Models.DBModel.dtObj
                                 "Inserimento di una nuova riga per il ciclo di attivazione relativo ai titoli di viaggio.",
                                 "ATTIVAZIONITITOLIVIAGGIO", db, atv_New.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO,
                                 atv_New.IDATTIVAZIONETITOLIVIAGGIO);
+                            #endregion
 
                             List<DOCUMENTI> lcdoc_Old = new List<DOCUMENTI>();
                             List<DOCUMENTI> lfdoc_Old = new List<DOCUMENTI>();
 
-                            #region Coniuge
+                            #region annullo Coniuge se presente
                             var lctv_Old =
                                 atv_Old.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false)
-                                    .OrderBy(a => a.IDCONIUGETITOLIVIAGGIO);
+                                    .OrderBy(a => a.IDCONIUGETITOLIVIAGGIO).ToList();
                             if (lctv_Old?.Any() ?? false)
                             {
                                 foreach (var ctv_Old in lctv_Old)
                                 {
                                     var lc = ctv_Old.CONIUGE.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
-                                    if(lc?.Any()??false)
+                                    if (lc?.Any() ?? false)
                                     {
                                         var c = lc.First();
 
+                                        #region coniuge TV
                                         CONIUGETITOLIVIAGGIO ctv_New = new CONIUGETITOLIVIAGGIO()
                                         {
                                             IDTITOLOVIAGGIO = ctv_Old.IDTITOLOVIAGGIO,
@@ -2196,11 +2603,18 @@ namespace NewISE.Models.DBModel.dtObj
                                                     "CONIUGETITOLIVIAGGIO", db,
                                                     atv_New.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO,
                                                     ctv_New.IDCONIUGETITOLIVIAGGIO);
+                                        #endregion
 
-                                        lcdoc_Old = ctv_Old.DOCUMENTI.Where(
-                                                                       a => a.MODIFICATO == false && a.IDSTATORECORD==(decimal)EnumStatoRecord.Da_Attivare &&
-                                                                       (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio))
-                                                                       .OrderBy(a => a.DATAINSERIMENTO).ToList();
+
+                                        #region documenti
+                                        lcdoc_Old = ctv_Old.DOCUMENTI
+                                                            .Where(a =>
+                                                                    a.MODIFICATO == false &&
+                                                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare &&
+                                                                    (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio)
+                                                                    )
+                                                            .OrderBy(a => a.DATAINSERIMENTO)
+                                                            .ToList();
 
                                         if (lcdoc_Old?.Any() ?? false)
                                         {
@@ -2236,15 +2650,18 @@ namespace NewISE.Models.DBModel.dtObj
                                                 AssociaDocumento_ConiugeTV(ctv_New.IDCONIUGETITOLIVIAGGIO, cdoc_New.IDDOCUMENTO, db);
                                             }
                                         }
+                                        #endregion
                                     }
+
                                 }
                             }
                             #endregion
 
-                            #region figli
+
+                            #region annullo figli se presenti
                             var lftv_Old =
                                 atv_Old.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false)
-                                    .OrderBy(a => a.IDFIGLITITOLIVIAGGIO);
+                                    .OrderBy(a => a.IDFIGLITITOLIVIAGGIO).ToList();
 
                             if (lftv_Old?.Any() ?? false)
                             {
@@ -2254,6 +2671,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     if (lf?.Any() ?? false)
                                     {
                                         var f = lf.First();
+
+                                        #region figli TV
                                         FIGLITITOLIVIAGGIO ftv_New = new FIGLITITOLIVIAGGIO()
                                         {
                                             IDTITOLOVIAGGIO = ftv_Old.IDTITOLOVIAGGIO,
@@ -2277,7 +2696,9 @@ namespace NewISE.Models.DBModel.dtObj
                                                     "FIGLITITOLIVIAGGIO", db,
                                                     atv_New.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO,
                                                     ftv_New.IDFIGLITITOLIVIAGGIO);
+                                        #endregion
 
+                                        #region documenti TV
                                         lfdoc_Old = ftv_Old.DOCUMENTI.Where(
                                                                        a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare &&
                                                                        (a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco || a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio))
@@ -2317,6 +2738,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 AssociaDocumento_FigliTV(ftv_New.IDFIGLITITOLIVIAGGIO, fdoc_New.IDDOCUMENTO, db);
                                             }
                                         }
+                                        #endregion
                                     }
                                 }
                             }
@@ -2406,7 +2828,11 @@ namespace NewISE.Models.DBModel.dtObj
 
             var atv = db.ATTIVAZIONETITOLIVIAGGIO.Find(idAttivazioneTV);
 
-            var ld = atv.DOCUMENTI.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato).ToList();
+            var ld = atv.DOCUMENTI.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato &&
+                                                (a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Carta_Imbarco ||
+                                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio)
+                                        )
+                                    .ToList();
             if(ld?.Any()??false)
             {
                 esistono = true;
@@ -2423,6 +2849,13 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
+                var ultima_att = GetUltimaAttivazioneVariazioneAttivata(idTitoliViaggio, db);
+                bool verificaDoc = false;
+                if (ultima_att.IDATTIVAZIONETITOLIVIAGGIO > 0)
+                {
+                    verificaDoc = VerificaDocumentiAttivazioneTV(ultima_att.IDATTIVAZIONETITOLIVIAGGIO, db);
+                }
+
                 var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
                 var t = tv.TRASFERIMENTO;
 
@@ -2435,70 +2868,120 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (atv.NOTIFICARICHIESTA == false)
                 {
-                    var lctv = atv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO).ToList();
+                    #region coniuge TV
+                    var lctv = atv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
 
+                    gp.coniugeIncluso = false;
                     if (lctv?.Any() ?? false)
                     {
                         gp.coniugeIncluso = true;
+                        foreach (var ctv in lctv)
+                        {
+                            if (ctv.RICHIEDITITOLOVIAGGIO == false)
+                            {
+                                gp.coniugeIncluso = false;
+                            }
+                            if(verificaDoc==false)
+                            {
+                                var lctvdoc_ci = ctv.DOCUMENTI.Where(a =>
+                                                      a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco &&
+                                                      a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                                var lctvdoc_tv = ctv.DOCUMENTI.Where(a =>
+                                                      a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio &&
+                                                      a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                                if(lctvdoc_ci.Count()==0 || lctvdoc_tv.Count()==0)
+                                {
+                                    gp.coniugeIncluso = false;
+                                }
+                            }
+                        }
                     }
+                    #endregion
 
-                    var lftv = atv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.RICHIEDITITOLOVIAGGIO).ToList();
+                    #region figliTV
+                    var lftv = atv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
 
+                    gp.figliIncluso = false ;
                     if (lftv?.Any() ?? false)
                     {
                         gp.figliIncluso = true;
+                        foreach (var ftv in lftv)
+                        {
+                            if (ftv.RICHIEDITITOLOVIAGGIO == false)
+                            {
+                                gp.figliIncluso = false;
+                            }
+                            if (verificaDoc==false)
+                            {
+                                var lftvdoc_ci = ftv.DOCUMENTI.Where(a =>
+                                                      a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco &&
+                                                      a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                                var lftvdoc_tv = ftv.DOCUMENTI.Where(a =>
+                                                      a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio &&
+                                                      a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
+                                if (lftvdoc_ci.Count() == 0 || lftvdoc_tv.Count() == 0)
+                                {
+                                    gp.figliIncluso = false;
+                                }
+                            }
+                        }
                     }
+                    #endregion
 
+                    #region commento
                     //se non ho figliTV e coniugeTV associati significa che sto nella fase di invio solo documenti
-                    if (gp.coniugeIncluso == false && gp.figliIncluso == false)
-                    {
-                        var ultima_att = GetUltimaAttivazioneVariazioneAttivata(idTitoliViaggio, db);
+                    //if (lctv.Count()==0 && lftv.Count()==0)
+                    //{
+                    //    var ultima_att = GetUltimaAttivazioneVariazioneAttivata(idTitoliViaggio, db);
 
-                        var lctv_richiesti = ultima_att.CONIUGETITOLIVIAGGIO.Where(a => a.RICHIEDITITOLOVIAGGIO).ToList();
-                        var lftv_richiesti = ultima_att.FIGLITITOLIVIAGGIO.Where(a => a.RICHIEDITITOLOVIAGGIO).ToList();
+                    //    var lctv_richiesti = ultima_att.CONIUGETITOLIVIAGGIO.Where(a => a.RICHIEDITITOLOVIAGGIO && a.ANNULLATO==false).ToList();
+                    //    var lftv_richiesti = ultima_att.FIGLITITOLIVIAGGIO.Where(a => a.RICHIEDITITOLOVIAGGIO && a.ANNULLATO==false).ToList();
 
-                        var siDoc_coniuge = true;
-                        foreach (var ctv_richiesti in lctv_richiesti)
-                        {
-                            var ldoc_titoloviaggio = ctv_richiesti.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio).ToList();
-                            if (ldoc_titoloviaggio.Count() == 0)
-                            {
-                                siDoc_coniuge = false;
-                            }
-                            var ldoc_cartaimbarco = ctv_richiesti.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco).ToList();
-                            if (ldoc_cartaimbarco.Count() == 0)
-                            {
-                                siDoc_coniuge = false;
-                            }
-                        }
-                        var siDoc_figli = true;
-                        foreach (var ftv_richiesti in lftv_richiesti)
-                        {
-                            var ldoc_titoloviaggio = ftv_richiesti.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio).ToList();
-                            if (ldoc_titoloviaggio.Count() == 0)
-                            {
-                                siDoc_figli = false;
-                            }
-                            var ldoc_cartaimbarco = ftv_richiesti.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco).ToList();
-                            if (ldoc_cartaimbarco.Count() == 0)
-                            {
-                                siDoc_figli = false;
-                            }
-                        }
+                    //    var siDoc_coniuge = false;
+                    //    foreach (var ctv_richiesti in lctv_richiesti)
+                    //    {
+                    //        siDoc_coniuge = true;
+                    //        var ldoc_titoloviaggio = ctv_richiesti.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio).ToList();
+                    //        if (ldoc_titoloviaggio.Count() == 0)
+                    //        {
+                    //            siDoc_coniuge = false;
+                    //        }
+                    //        var ldoc_cartaimbarco = ctv_richiesti.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco).ToList();
+                    //        if (ldoc_cartaimbarco.Count() == 0)
+                    //        {
+                    //            siDoc_coniuge = false;
+                    //        }
+                    //    }
+                    //    var siDoc_figli = false;
+                    //    foreach (var ftv_richiesti in lftv_richiesti)
+                    //    {
+                    //        siDoc_figli = true;
+                    //        var ldoc_titoloviaggio = ftv_richiesti.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio).ToList();
+                    //        if (ldoc_titoloviaggio.Count() == 0)
+                    //        {
+                    //            siDoc_figli = false;
+                    //        }
+                    //        var ldoc_cartaimbarco = ftv_richiesti.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco).ToList();
+                    //        if (ldoc_cartaimbarco.Count() == 0)
+                    //        {
+                    //            siDoc_figli = false;
+                    //        }
+                    //    }
 
-                        if (siDoc_coniuge)
-                        {
-                            gp.coniugeIncluso = true;
-                        }
-                        if (siDoc_figli)
-                        {
-                            gp.figliIncluso = true;
-                        }
-                    }
+                    //    if (siDoc_coniuge)
+                    //    {
+                    //        gp.coniugeIncluso = true;
+                    //    }
+                    //    if (siDoc_figli)
+                    //    {
+                    //        gp.figliIncluso = true;
+                    //    }
+                    //}
+                    #endregion
                 }
                 gp.statoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO;
-                
-                //}
+
+            
             }
 
             return gp;
@@ -2537,7 +3020,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     var ctv = lctv.First();
                                     var dcl = ctv.DOCUMENTI.Where(a => a.MODIFICATO == false && 
                                                 a.IDTIPODOCUMENTO == idTipoDocumento &&
-                                                a.IDSTATORECORD==(decimal)EnumStatoRecord.Attivato)
+                                                a.IDSTATORECORD==(decimal)EnumStatoRecord.In_Lavorazione)
                                                 .ToList();
                                     if (dcl?.Any() ?? false)
                                     {
@@ -2564,7 +3047,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     var ftv = lftv.First();
                                     var dftvl = ftv.DOCUMENTI.Where(a => a.MODIFICATO == false && 
                                                                         a.IDTIPODOCUMENTO == idTipoDocumento &&
-                                                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
+                                                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
                                                             .ToList();
 
                                     if (dftvl?.Any() ?? false)

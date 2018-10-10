@@ -1,8 +1,10 @@
 ﻿@model NewISE.Models.DBModel.AltriDatiFamConiugeModel
+@using NewISE.Models.Enumeratori
 
 @{
     decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
     decimal idAttivazioneTV = Convert.ToDecimal(ViewData["idAttivazioneTV"]);
+    decimal idTabTV = Convert.ToDecimal(ViewData["idTabTV"]);
 }
 
 <div>
@@ -87,9 +89,18 @@
 </div>
 <hr />
 
-<p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElaborazioneTV", "VariazioneTitoliViaggio", new { idTitoliViaggio = idTitoliViaggio }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divElaborazioneTV", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
-</p>
+@if (idTabTV == (decimal)EnumTabTitoloViaggio.Elaborazione)
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElaborazioneTV", "VariazioneTitoliViaggio", new { idTitoliViaggio = idTitoliViaggio }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divElaborazioneTV", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+else
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoTV_Completati", "VariazioneTitoliViaggio", new { idTitoliViaggio = idTitoliViaggio }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTVCompletati", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
 
 
 

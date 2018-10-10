@@ -1,5 +1,6 @@
 ﻿@using NewISE.Models.DBModel
 @using NewISE.Models.Enumeratori
+@using NewISE.Models.Tools
 @model IEnumerable<NewISE.Models.DBModel.ElencoTitoliViaggioModel>
 
 @{
@@ -12,6 +13,7 @@
     EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
     decimal idTipoDocTitoloViaggio = (decimal)EnumTipoDoc.Titolo_Viaggio;
     decimal idTipoDocCartaImbarco = (decimal)EnumTipoDoc.Carta_Imbarco;
+    decimal idTabTV = (decimal)EnumTabTitoloViaggio.Elaborazione;
 }
 
 
@@ -72,7 +74,7 @@
                         <td class="text-center">
                             @Html.DisplayFor(modelItem => item.dataInizio)
                         </td>
-                        @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
+                        @if (item.dataFine.HasValue && item.dataFine.Value < Utility.DataFineStop())
                         {
                             <td class="text-center">
                                 @Html.DisplayFor(modelItem => item.dataFine)
@@ -204,7 +206,7 @@
                                                             </a>
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocTitoloViaggio,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio);" id="linkdocTitoloViaggio">
+                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocTitoloViaggio,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio,@item.idDoctitoloViaggio);" id="linkdocTitoloViaggio">
                                                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci Titolo Viaggio @Html.DisplayFor(modelItem => item.parentela)" />
                                                             </a>
                                                         </td>
@@ -219,7 +221,7 @@
                                                             <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Titolo viaggio @Html.DisplayFor(modelItem => item.parentela)" />
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocTitoloViaggio,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio);" id="linkdocTitoloViaggio">
+                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocTitoloViaggio,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio,0);" id="linkdocTitoloViaggio">
                                                                 <img src="~/Immagini/Plus_Green.png" width="17" title="Inserisci Titolo Viaggio @Html.DisplayFor(modelItem => item.parentela)" />
                                                             </a>
                                                         </td>
@@ -238,7 +240,7 @@
                                                             </a>
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocCartaImbarco ,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio);" id="linkdocCartaImbarco">
+                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocCartaImbarco ,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio,@item.idDocCartaImbarco);" id="linkdocCartaImbarco">
                                                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
                                                             </a>
                                                         </td>
@@ -253,7 +255,7 @@
                                                             <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocCartaImbarco,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio);" id="linkdocCartaImbarco">
+                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocCartaImbarco,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio,0);" id="linkdocCartaImbarco">
                                                                 <img src="~/Immagini/Plus_Green.png" width="17" title="Inserisci Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
                                                             </a>
                                                         </td>
@@ -359,7 +361,7 @@
             success: function (result) {
                 //debugger;
                 if (result.errore === "") {
-                    GestionePulsantiNotificaAttiva_VariazioneTV();
+                    ElaborazioneTV();
                 } else {
                     ErroreElaborazioneAjax(result.msg);
                 }
@@ -380,12 +382,13 @@
     function AltriDatiFamiliariConiuge(idFamiliare) {
         //debugger;
         var idTitoliViaggio = parseInt('@idTitoliViaggio');
-        var rotta = "/VarizioneTitoliViaggio/AltriDatiFamiliariConiuge";
+        var idTabTV = parseInt('@idTabTV');
+        var rotta = "/VariazioneTitoliViaggio/AltriDatiFamiliariConiuge";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: {idTitoliViaggio:idTitoliViaggio,idConiuge: idFamiliare },
+            data: {idTitoliViaggio:idTitoliViaggio,idConiuge: idFamiliare, idTabTV:idTabTV },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -415,12 +418,13 @@
     function AltriDatiFamiliariFiglio(idFamiliare) {
         //debugger;
         var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var idTabTV = parseInt('@idTabTV');
         var rotta = "/VariazioneTitoliViaggio/AltriDatiFamiliariFiglio";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idTitoliViaggio: idTitoliViaggio, idFiglio: idFamiliare },
+            data: { idTitoliViaggio: idTitoliViaggio, idFiglio: idFamiliare, idTabTV: idTabTV },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -446,7 +450,7 @@
         });
     }
 
-  
+
 
 </script>
 

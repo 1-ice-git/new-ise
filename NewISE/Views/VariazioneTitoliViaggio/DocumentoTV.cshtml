@@ -10,6 +10,7 @@
     decimal idParentela = Convert.ToDecimal(ViewData["idParentela"]);
     decimal idConiugeTV = Convert.ToDecimal(ViewData["idConiugeTV"]);
     decimal idFigliTV = Convert.ToDecimal(ViewData["idFigliTV"]);
+    decimal idDocTV = Convert.ToDecimal(ViewData["idDocTV"]);
 }
 
 @using System.Web.Optimization;
@@ -34,7 +35,7 @@
     @Html.Hidden("hiIdAttivazioneTV", idAttivazione)
     @Html.Hidden("hiIdConiugeTV", idConiugeTV)
     @Html.Hidden("hiIdFigliTV", idFigliTV)
-
+    @Html.Hidden("hiIdDocTV", idDocTV)
 
     <div class="form-group ">
         <div class="col-xs-12">

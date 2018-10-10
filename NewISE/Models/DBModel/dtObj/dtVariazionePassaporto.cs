@@ -1629,7 +1629,6 @@ namespace NewISE.Models.DBModel.dtObj
                                                         a.INCLUDIPASSAPORTO == false &&
                                                         a.IDATTIVAZIONIPASSAPORTI == ultima_ap_richiesta.IDATTIVAZIONIPASSAPORTI)
                                                         .ToList();
-
                                 //li replico su CONIUGEPASSAPORTO e li associo alla nuova attivazione Fase 1
                                 if (lc_p?.Any() ?? false)
                                 {
@@ -1651,7 +1650,6 @@ namespace NewISE.Models.DBModel.dtObj
                                             };
                                             db.CONIUGEPASSAPORTO.Add(cp);
                                             c_p.ANNULLATO = true;
-
                                             if (db.SaveChanges() <= 0)
                                             {
                                                 throw new Exception("Errore nella fase di creazione di coniugepassaporto (richiesta).");
@@ -1738,7 +1736,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             #region elenco coniugi
                             decimal ordine = 100;
-                            var lc_ap = ap.CONIUGEPASSAPORTO.ToList();
+                            var lc_ap = ap.CONIUGEPASSAPORTO.Where(a=>a.ANNULLATO==false).ToList();
 
                             foreach (var c_ap in lc_ap)
                             {
@@ -1775,19 +1773,19 @@ namespace NewISE.Models.DBModel.dtObj
                                         idFasePassaporti = (decimal)EnumFasePassaporti.Richiesta_Passaporti
                                     };
 
-                                    lConiuge.Add(coniuge_no_pp);
+                                    lefm.Add(coniuge_no_pp);
 
                                     ordine++;
                                 }
 
-                                lefm.AddRange(lConiuge);
+                                //lefm.AddRange(lConiuge);
                             
                             }
                             #endregion
 
                             #region elenco figli
 
-                            var lf_ap = ap.FIGLIPASSAPORTO.ToList();
+                            var lf_ap = ap.FIGLIPASSAPORTO.Where(a=>a.ANNULLATO==false).ToList();
 
                             foreach (var f_ap in lf_ap)
                             {
@@ -1824,13 +1822,13 @@ namespace NewISE.Models.DBModel.dtObj
                                         attivato = ap.PRATICACONCLUSA,
                                         idFasePassaporti = (decimal)EnumFasePassaporti.Richiesta_Passaporti
                                     };
-    
-                                    lFiglio.Add(figli_no_pp);
+
+                                    lefm.Add(figli_no_pp);
     
                                     ordine++;
                                 }
 
-                                lefm.AddRange(lFiglio);
+                                //lefm.AddRange(lFiglio);
                             }
                             #endregion
 

@@ -25,9 +25,9 @@
                 </li>
                 <li role="presentation">
                     <a id="tabTVCompletati"
-                       aria-controls="TV_Completati"
+                       aria-controls="TVCompletati"
                        data-toggle="tab"
-                       href="#TV_Completati"
+                       href="#TVCompletati"
                        role="tab">Completati</a>
                 </li>
             </ul>
@@ -36,8 +36,8 @@
                     <div id="divElaborazioneTV">
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="TV_Completati">
-                    <div id="divPassaportiTV">
+                <div role="tabpanel" class="tab-pane" id="TVCompletati">
+                    <div id="divTVCompletati">
                     </div>
                 </div>
             </div>
@@ -149,7 +149,7 @@
         {
             ElaborazioneTV();
         } else {
-            TVCompletato();
+            TVCompletati();
         }
 
     });
@@ -513,7 +513,7 @@
     }
 
 
-    function InserisciVariazioneDoc(idAttivazioneTitoloViaggio, idFamiliare, idParentela, idTipoDoc, idConiugeTV, idFigliTV) {
+    function InserisciVariazioneDoc(idAttivazioneTitoloViaggio, idFamiliare, idParentela, idTipoDoc, idConiugeTV, idFigliTV,idDocTV) {
         //debugger;
         var idTitoliViaggio = parseInt('@idTitoliViaggio');
         var rotta = "/VariazioneTitoliViaggio/DocumentoTV";
@@ -528,7 +528,8 @@
                 idParentela: idParentela,
                 idTipoDoc: idTipoDoc,
                 idConiugeTV:idConiugeTV,
-                idFigliTV:idFigliTV
+                idFigliTV:idFigliTV,
+                idDocTV:idDocTV
             },
             dataType: 'html',
             async: false,
@@ -569,6 +570,7 @@
         var idAttivazioneTV = parseInt($("#hiIdAttivazioneTV").val());
         var idConiugeTV = parseInt($("#hiIdConiugeTV").val());
         var idFigliTV = parseInt($("#hiIdFigliTV").val());
+        var idDocTV = parseInt($("#hiIdDocTV").val());
 
         var file = $("#file")[0].files[0];
 
@@ -582,6 +584,7 @@
             datiForm.append("idAttivazione", idAttivazioneTV);
             datiForm.append("idFigliTV", idFigliTV);
             datiForm.append("idConiugeTV", idConiugeTV);
+            datiForm.append("idDocTV", idDocTV);
 
             $.ajax({
                 url: rotta,
@@ -636,7 +639,7 @@
     }
 
     function CloseTimeModalTV(idTrasferimento) {
-        debugger;
+        //debugger;
         $("#btInserisciDocTV").attr("disabled", "disabled");
         $("#btInserisciDocTV").addClass("disabled");
         $("#btAnnullaDocTV").attr("disabled", "disabled");
@@ -645,7 +648,7 @@
     }
 
     function CloseModalFileTV(idTrasferimento) {
-        debugger;
+        //debugger;
         $('#InserisciDocTVModal').modal('hide');
         setTimeout(ElaborazioneTV(), 1000);
     }
@@ -678,6 +681,117 @@
         }
 
         return ret;
+    }
+
+
+
+    function AltriDatiFamiliariConiuge(idFamiliare) {
+        //debugger;
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var rotta = "/VariazioneTitoliViaggio/AltriDatiFamiliariConiuge";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {idTitoliViaggio:idTitoliViaggio,idConiuge: idFamiliare },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divElaborazioneTV").empty();
+                $("#divElaborazioneTV").html(result);
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariFiglio(idFamiliare) {
+        //debugger;
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var rotta = "/VariazioneTitoliViaggio/AltriDatiFamiliariFiglio";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTitoliViaggio: idTitoliViaggio, idFiglio: idFamiliare },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divElaborazioneTV").empty();
+                $("#divElaborazioneTV").html(result);
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+
+    function TVCompletati() {
+        //debugger;
+        var rotta = "/VariazioneTitoliViaggio/TVCompletati";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTVCompletati").empty();
+                $("#divTVCompletati").html(result);
+                // $('#tabs').tabs({ selected: 0 });
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
     }
 
 </script>

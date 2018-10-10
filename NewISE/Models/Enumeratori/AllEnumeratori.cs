@@ -273,4 +273,11 @@ namespace NewISE.Models.Enumeratori
         Detrazioni_DET = 1,
         Previdenziali_PREV = 2
     }
+
+    public enum EnumTabTitoloViaggio
+    {
+        Elaborazione = 1,
+        Completati = 2
+    }
+
 }

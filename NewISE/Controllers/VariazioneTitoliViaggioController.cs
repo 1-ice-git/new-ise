@@ -46,6 +46,13 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+        public ActionResult TVCompletati(decimal idTitoliViaggio)
+        {
+            ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+
+            return PartialView();
+        }
+
         [HttpPost]
         public ActionResult ElencoVariazioneTV(decimal idTitoliViaggio)
         {
@@ -150,6 +157,32 @@ namespace NewISE.Controllers
             }
         }
 
+
+        [HttpPost]
+        public ActionResult ElencoTV_Completati(decimal idTitoliViaggio)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtVariazioneTitoliViaggi dtvtv = new dtVariazioneTitoliViaggi())
+                    {
+                        List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
+
+                        //elenco di tutti i familiari con documanti TV attivati
+                        ltvm = dtvtv.ElencoTVDocumentiAttivati(idTitoliViaggio);
+                        ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+
+                        return PartialView(ltvm);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
         [HttpPost]
         public ActionResult ElencoUploadVariazioneTV(decimal idTitoliViaggio)
         {
@@ -232,7 +265,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariConiuge(decimal idTitoliViaggio, decimal idConiuge)
+        public ActionResult AltriDatiFamiliariConiuge(decimal idTitoliViaggio, decimal idConiuge, decimal idTabTV)
         {
             AltriDatiFamConiugeModel adfcm = new AltriDatiFamConiugeModel();
             TitoloViaggioModel tvm = new TitoloViaggioModel();
@@ -252,6 +285,7 @@ namespace NewISE.Controllers
 
                         ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                         ViewData.Add("idAttivazioneTV", idAttivazioneTV);
+                        ViewData.Add("idTabTV", idTabTV);
 
                         using (dtConiuge dtc = new dtConiuge())
                         {
@@ -298,7 +332,7 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult AltriDatiFamiliariFiglio(decimal idTitoliViaggio, decimal idFiglio)
+        public ActionResult AltriDatiFamiliariFiglio(decimal idTitoliViaggio, decimal idFiglio,decimal idTabTV)
         {
             AltriDatiFamFiglioModel adffm = new AltriDatiFamFiglioModel();
             TitoloViaggioModel tvm = new TitoloViaggioModel();
@@ -318,6 +352,7 @@ namespace NewISE.Controllers
 
                         ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                         ViewData.Add("idAttivazioneTV", idAttivazioneTV);
+                        ViewData.Add("idTabTV", idTabTV);
 
                         using (dtFigli dtf = new dtFigli())
                         {
@@ -441,7 +476,13 @@ namespace NewISE.Controllers
                     {
                         decimal idAttivazione = dtvtv.GetAttivazioneTV(idTitoliViaggio, db).IDATTIVAZIONETITOLIVIAGGIO;
 
-                        dtvtv.AttivaRichiestaTV(idAttivazione, db);
+                        if(dtvtv.VerificaDocumentiAttivazioneTV(idAttivazione,db))
+                        {
+                            dtvtv.AttivaRichiestaDocumentiTV(idAttivazione, db);
+                        }else
+                        {
+                            dtvtv.AttivaRichiestaTV(idAttivazione, db);
+                        }
                     }
                 }
             }
@@ -529,7 +570,8 @@ namespace NewISE.Controllers
                                         decimal idParentela, 
                                         decimal idTipoDoc,
                                         decimal idConiugeTV,
-                                        decimal idFigliTV)
+                                        decimal idFigliTV,
+                                        decimal idDocTV)
         {
             TrasferimentoModel trm = new TrasferimentoModel();
             try
@@ -550,6 +592,7 @@ namespace NewISE.Controllers
                         ViewData.Add("idConiugeTV", idConiugeTV);
                         ViewData.Add("idFigliTV", idFigliTV);
                         ViewData.Add("DescDocumento", DescDocumento);
+                        ViewData.Add("idDocTV", idDocTV);
 
                         return PartialView(trm);
                     }
@@ -570,7 +613,8 @@ namespace NewISE.Controllers
                                     decimal idAttivazione, 
                                     decimal idParentela,
                                     decimal idConiugeTV,
-                                    decimal idFigliTV)
+                                    decimal idFigliTV,
+                                    decimal idDocTV)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -606,13 +650,13 @@ namespace NewISE.Controllers
                                 if (dimensioneConsentita)
                                 {
                                     //verifica se il documento è gia presente ritornando l'eventuale id
-                                    decimal idDocumentoEsistente = dtvtv.VerificaEsistenzaDocumentoTV(idTrasferimento, idTipoDocumento, idParentela, idFamiliare);
+                                    //decimal idDocumentoEsistente = dtvtv.VerificaEsistenzaDocumentoTV(idTrasferimento, idTipoDocumento, idParentela, idFamiliare);
+                                    decimal idDocumentoEsistente = idDocTV;
 
                                     if (idDocumentoEsistente > 0)
                                     {
                                         //se già esiste lo sostituisco (imposto modificato=true su quello esistente e ne inserisco una altro)
                                         dtvtv.SostituisciDocumentoTV(ref dm, idDocumentoEsistente, idAttivazione, db);
-
                                     }
                                     else
                                     {
