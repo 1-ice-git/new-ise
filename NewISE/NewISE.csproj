@@ -6520,6 +6520,8 @@
     <Content Include="Views\VariazioneTitoliViaggio\AltriDatiFamiliariFiglio.cshtml" />
     <Content Include="Views\VariazioneTitoliViaggio\MessaggioAnnullaVariazioneTV.cshtml" />
     <Content Include="Views\VariazioneTitoliViaggio\DocumentoTV.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\TVCompletati.cshtml" />
+    <Content Include="Views\VariazioneTitoliViaggio\ElencoTV_Completati.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

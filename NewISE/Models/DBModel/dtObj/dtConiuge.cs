@@ -538,9 +538,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 //}
 
-
-
-
             }
         }
         /// <summary>
