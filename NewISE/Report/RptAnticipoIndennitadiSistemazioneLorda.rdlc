@@ -9,7 +9,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Nominativo</Value>
+                <Value>Spettante al </Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -19,10 +19,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>0.73259cm</Top>
+        <Top>1.16502cm</Top>
         <Left>0.38364cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.30789cm</Width>
+        <Width>6.40146cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -48,10 +48,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Top>0.73259cm</Top>
-        <Left>3.74477cm</Left>
+        <Top>1.16502cm</Top>
+        <Left>6.89975cm</Left>
         <Height>0.6cm</Height>
-        <Width>4.16655cm</Width>
+        <Width>4.71335cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -70,7 +70,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Data Inzio Trasferimento</Value>
+                <Value>Indennità di Servizio all'estero dal</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -80,10 +80,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>0.73259cm</Top>
-        <Left>13.9319cm</Left>
+        <Top>0.38863cm</Top>
+        <Left>0.4101cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.52833cm</Width>
+        <Width>6.375cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -110,10 +110,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox11</rd:DefaultName>
-        <Top>0.73259cm</Top>
-        <Left>19.56606cm</Left>
+        <Top>0.38863cm</Top>
+        <Left>6.89975cm</Left>
         <Height>0.6cm</Height>
-        <Width>4.74863cm</Width>
+        <Width>4.71335cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -152,7 +152,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>2.11001cm</Top>
+        <Top>3.47526cm</Top>
         <Left>0.38364cm</Left>
         <Height>1.81709cm</Height>
         <Width>23.93105cm</Width>
@@ -526,7 +526,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>ANTICIPO INDENNITA' DI SISTEMAZIONE LORDA</Value>
+                  <Value>INDENNITA' DI PRIMA SISTEMAZIONE </Value>
                   <Style>
                     <FontSize>14pt</FontSize>
                     <FontWeight>Bold</FontWeight>

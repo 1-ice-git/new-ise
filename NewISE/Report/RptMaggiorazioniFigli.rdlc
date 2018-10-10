@@ -594,7 +594,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!PercentualeMaggiorazioniFigli.Value,5)</Value>
+                              <Value>=FormatNumber(Fields!PercentualeMaggiorazioniFigli.Value,2)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -676,7 +676,7 @@
         <Top>5.50016cm</Top>
         <Left>0.43656cm</Left>
         <Height>1.2cm</Height>
-        <Width>23.8876cm</Width>
+        <Width>23.88761cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
