@@ -186,10 +186,21 @@ namespace NewISE.Models.DBModel.dtObj
             //    u.PERCENTUALEDISAGIO.Where(
             //        a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAFINEVALIDITA <= dtFin)
             //        .OrderBy(a => a.DATAINIZIOVALIDITA);
-            var lpd =
-               u.PERCENTUALEDISAGIO.Where(
-                   a => a.ANNULLATO == false && dtIni>=a.DATAINIZIOVALIDITA && a.DATAFINEVALIDITA <= dtFin)
-                   .OrderBy(a => a.DATAINIZIOVALIDITA);
+            List<PERCENTUALEDISAGIO> lpd = new List<PERCENTUALEDISAGIO>();
+            if (dtFin == Utility.DataFineStop())
+            {
+                lpd =
+                u.PERCENTUALEDISAGIO.Where(
+                    a => a.ANNULLATO == false && dtIni >= a.DATAINIZIOVALIDITA)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            }else
+            {
+                lpd =
+                u.PERCENTUALEDISAGIO.Where(
+                    a => a.ANNULLATO == false && dtIni >= a.DATAINIZIOVALIDITA && a.DATAFINEVALIDITA >= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+            }
 
             if (lpd?.Any() ?? false)
             {

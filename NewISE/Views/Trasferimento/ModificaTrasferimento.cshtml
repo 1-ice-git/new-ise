@@ -86,6 +86,7 @@
 @Html.Hidden("habilitaNuovoTrasferimento", abilitaNuovoTrasferimento)
 @Html.Hidden("habilitaSalva", abilitaSalva)
 @Html.Hidden("htrasfSucc", trasfSucc)
+@Html.Hidden("hmatricola", vMatricola)
 
 <div class="form-horizontal">
     @using (@Ajax.BeginForm("ConfermaModificaTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formEditTrasf" }))
@@ -277,25 +278,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="eliminaModal" tabindex="-2" role="dialog" aria-labelledby="eliminaModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="eliminaModelLabel">Eliminazione del Trasferimento</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1.5em;">
-                <p>Procedere con l'eliminazione del trasferimento?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal" onclick="EliminaTrasferimento();">Conferma Eliminazione</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <div class="modal fade" id="inviaDocModal" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
@@ -686,82 +668,6 @@
     }
 
 
-    function EliminaTrasferimento() {
-        //debugger;
-        var rotta = "/Trasferimento/EliminaTrasferimento";
-        var idTrasferimento = parseInt($("#idTrasferimento").val());
-        var matricola = parseInt("@vMatricola");
-
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                idTrasferimento: idTrasferimento,
-                matricola:matricola
-            },
-            dataType: 'json',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                Blocca();
-
-            },
-            success: function (result) {
-                //debugger;
-
-                if (result.msg == "") {
-                    $('#habilitaNotifica').val(false);
-                    $('#habilitaElimina').val(false);
-                    //DialogInfo(result.msg);
-
-                    //if(result.idTrasferimentoPrecedente>0)
-                    //{
-                    //    LetturaParametriGestioneTrasferimento();
-                    //    $('#hidTrasferimento').val(result.idTrasferimentoPrecedente);
-                    //    //GestioneAttivitaTrasferimento();
-                    //    InfoTrasferimento(result.idTrasferimentoPrecedente);
-                    //    //GestioneMenu();
-                    //    GestioneAbilitazioneMenu(result.idTrasferimentoPrecedente);
-                    //    //MenuDaVisualizzare();
-                    //    //ElencoTrasferimento();
-                    //    var list = result.listaTrasferimenti;
-                    //    $("#ElencolistaTrasferimento").select2();
-                    //    $('#ElencolistaTrasferimento').html('');
-                    //    $.each(list, function(key, val) {
-                    //        $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
-                    //    });
-                    //}
-                    //RicaricaInfoTrasferimento();
-                    //AbilitaDisabilitaCoan();
-
-                    //AbilitaMenuGestioneTrasferimento(idTrasferimento);
-
-                    //disabilitaControlli();
-
-                    ResetFiltraDipendente();
-
-                }
-                else {
-
-                    var err = result.err;
-                    ErroreElaborazioneAjax(err);
-                }
-            },
-            complete: function () {
-
-                Sblocca();
-            },
-            error: function (error) {
-                //debugger;
-                Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-
-        });
-    }
 
     function RicaricaInfoTrasferimento() {
         //debugger;

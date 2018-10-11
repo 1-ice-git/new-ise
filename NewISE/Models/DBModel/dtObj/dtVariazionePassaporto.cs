@@ -1528,60 +1528,6 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public PassaportoRichiedenteModel GetPassaportoRichiedenteByID(decimal id)
-        {
-            PassaportoRichiedenteModel prm = new PassaportoRichiedenteModel();
-
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var pr = db.PASSAPORTORICHIEDENTE.Find(id);
-
-                prm = new PassaportoRichiedenteModel()
-                {
-                    idPassaportoRichiedente = pr.IDPASSAPORTORICHIEDENTE,
-                    //idPassaporti = pr.IDPASSAPORTI,
-                    //EscludiPassaporto = pr.ESCLUDIPASSAPORTO,
-                    //DataEscludiPassapor
-                    dataAggiornamento = pr.DATAAGGIORNAMENTO,
-                    annullato = pr.ANNULLATO
-                };
-            }
-
-            return prm;
-        }
-
-
-        public void SetEscludiPassaportoRichiedente(decimal idPassaportoRichiedente, ref bool chk)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var pr = db.PASSAPORTORICHIEDENTE.Find(idPassaportoRichiedente);
-                //pr.ESCLUDIPASSAPORTO = true;
-                //pr.DATAESCLUDIPASSAPORTO = DateTime.Now;
-                pr.DATAAGGIORNAMENTO = DateTime.Now;
-
-                int i = db.SaveChanges();
-
-                if (i > 0)
-                {
-                    //chk = pr.ESCLUDIPASSAPORTO;
-                    //decimal idTrasferimento = pr.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO;
-                    //Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                    //        "Esclusione del richiedente dalla richiesta del passaporto/visto.", "PASSAPORTORICHIEDENTE", db,
-                    //        idTrasferimento, pr.IDPASSAPORTORICHIEDENTE);
-                }
-                else
-                {
-                    throw new Exception("Non è stato possibile modificare lo stato di escludi passaporto per il richiedente.");
-
-                }
-
-
-            }
-        }
-
-
-
         public IList<ElencoFamiliariPassaportoModel> GetFamiliariRichiestaPassaporto(decimal idTrasferimento)
         {
             List<ElencoFamiliariPassaportoModel> lefm = new List<ElencoFamiliariPassaportoModel>();

@@ -485,6 +485,39 @@ namespace NewISE.Controllers
                 {
                     using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                     {
+                        try
+                        {
+                            dtvmf.VerificaDataInizioConiuge(cm.idMaggiorazioniFamiliari, cm.dataInizio.Value);
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", ex.Message);
+                            using (dtTipologiaConiuge dttc = new dtTipologiaConiuge())
+                            {
+                                List<SelectListItem> lTipologiaConiuge = new List<SelectListItem>();
+
+                                var r = new List<SelectListItem>();
+
+                                var ltcm = dttc.GetListTipologiaConiuge();
+
+                                if (ltcm != null && ltcm.Count > 0)
+                                {
+                                    r = (from t in ltcm
+                                         select new SelectListItem()
+                                         {
+                                             Text = t.tipologiaConiuge,
+                                             Value = t.idTipologiaConiuge.ToString()
+                                         }).ToList();
+                                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                                }
+
+                                lTipologiaConiuge = r;
+
+                                ViewBag.lTipologiaConiuge = lTipologiaConiuge;
+                            }
+                            return PartialView("ModificaConiuge", cm);
+                        }
+
                         dtvmf.ModificaConiuge(cm);
                     }
                 }
@@ -2409,9 +2442,13 @@ namespace NewISE.Controllers
                     {
                         using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                         {
+                            dtvmf.VerificaDataInizioConiuge(idMaggiorazioniFamiliari, cm.dataInizio.Value);
+                    
                             dtvmf.InserisciConiugeVarMagFam(cm, idMaggiorazioniFamiliari, idAttivazioneMagFam);
                         }
                     }
+
+
                     catch (Exception ex)
                     {
                         ModelState.AddModelError("", ex.Message);

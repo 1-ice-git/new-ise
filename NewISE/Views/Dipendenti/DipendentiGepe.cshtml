@@ -61,6 +61,11 @@
 <div id="divElencoTrasferimento" style="margin-top: 70px;">
 </div>
 
+
+
+
+
+
 <script type="text/javascript">
     //debugger;
     $("#hMatricola").val($("#Nominativo").val());
@@ -68,6 +73,7 @@
     $("#Nominativo").change(function () {
         //debugger;
         ResetFiltraDipendente();
+        //ElencoTrasferimento();
     });
 
     function ResetFiltraDipendente() {
@@ -116,5 +122,62 @@
         width: '300'
 
     });
+
+
+    function EliminaTrasferimento() {
+        //debugger;
+        var rotta = "/Trasferimento/EliminaTrasferimento";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        //var matricola = parseInt("vMatricola");
+        var matricola = parseInt($("#hmatricola").val());
+
+        
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento,
+                matricola: matricola
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.msg == "") {
+                    $('#habilitaNotifica').val(false);
+                    $('#habilitaElimina').val(false);
+
+                    ResetFiltraDipendente();
+
+                }
+                else {
+
+                    var err = result.err;
+                    ErroreElaborazioneAjax(err);
+                }
+            },
+            complete: function () {
+
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
 
 </script>
