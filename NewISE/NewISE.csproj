@@ -4759,6 +4759,7 @@
     <Content Include="Areas\Statistiche\Views\OpDipEsteroNew\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\OpDipEsteroNew\RptOpDipEstero.cshtml" />
     <Content Include="ClassDiagram1.cd" />
+    <Content Include="ClassDiagram2.cd" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>

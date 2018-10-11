@@ -2705,7 +2705,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 cm.dataAggiornamento = DateTime.Now;
                                 DateTime dtIni = cm.dataInizio.Value;
-                                DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : tm.dataRientro.Value;
+                                DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
                                 cm.dataFine = dtFin;
 
                                 decimal new_idconiuge = dtvmf.SetConiuge(ref cm, db, cm.idAttivazioneMagFam);
@@ -2763,7 +2763,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 fm.dataAggiornamento = DateTime.Now;
                                 DateTime dtIni = fm.dataInizio.Value;
-                                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : tm.dataRientro.Value;
+                                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
                                 fm.dataFine = dtFin;
 
                                 decimal new_idfiglio = dtvmf.SetFiglio(ref fm, db, fm.idAttivazioneMagFam);
@@ -5968,6 +5968,30 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
+        public void VerificaDataInizioConiuge(decimal idMaggiorazioniFamiliari, DateTime dtInizio)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                    var lc_old = mf.CONIUGE.Where(a =>
+                                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                        a.DATAFINEVALIDITA < Utility.DataFineStop()).OrderByDescending(a => a.IDCONIUGE).ToList();
+                    if (lc_old?.Any() ?? false)
+                    {
+                        var c_old = lc_old.First();
+                        if (dtInizio <= c_old.DATAFINEVALIDITA)
+                        {
+                            throw new Exception(string.Format("La data inizio validita deve essere superiore alla data fine validita del conuiuge precedente. ({0})", c_old.DATAFINEVALIDITA.ToShortDateString()));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

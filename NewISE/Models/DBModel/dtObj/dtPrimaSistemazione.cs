@@ -75,7 +75,6 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void InserisciPrimaSistemazione(PrimaSistemazioneModel psm, ModelDBISE db)
         {
-
             using (dtTrasferimento dttr = new dtTrasferimento())
             {
                 var trm = dttr.GetTrasferimentoById(psm.idPrimaSistemazione, db);
@@ -88,9 +87,15 @@ namespace NewISE.Models.DBModel.dtObj
 
                         var lism = dtis.GetListIndennitaSistemazione((EnumTipoTrasferimento)trm.idTipoTrasferimento, trm.dataPartenza, db);
 
-                        foreach (var ism in lism)
+                        if (lism?.Any() ?? false)
                         {
-                            this.AssociaIndennitaSistemazione(psm.idPrimaSistemazione, ism.idIndSist, db);
+                            foreach (var ism in lism)
+                            {
+                                this.AssociaIndennitaSistemazione(psm.idPrimaSistemazione, ism.idIndSist, db);
+                            }
+                        }else
+                        {
+                            throw new Exception("Indennita Prima Sistemazione non trovata.");
                         }
                     }
                 }
@@ -98,11 +103,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     throw new Exception("Nessun trasferimento rilevato per l'inserimento della prima sistemazione.");
                 }
-
-
             }
-
-
         }
 
         public void AssociaIndennitaSistemazione(decimal idPrimaSitemazione, decimal idIndennitaSitemazione, ModelDBISE db)

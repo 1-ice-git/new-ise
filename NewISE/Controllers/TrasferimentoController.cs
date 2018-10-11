@@ -1199,12 +1199,22 @@ namespace NewISE.Controllers
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
                         bool ret = false;
-
+                        string matr = matricola.ToString();
+                        var t = dtt.GetTrasferimentoById(idTrasferimentoOld);
+                        if(t.idStatoTrasferimento==EnumStatoTraferimento.Annullato)
+                        {
+                            var trasfTerminato = dtt.GetUltimoTrasferimentoTerminatoByMatricola(matr);
+                            if(trasfTerminato.idTrasferimento>0)
+                            {
+                                idTrasferimentoOld = trasfTerminato.idTrasferimento;
+                            }
+                        }
+                        
                         ret = dtt.VerificaDataInizioTrasferimentoNew(idTrasferimentoOld, trm.dataPartenza);
 
                         if (ret)
                         {
-                            ModelState.AddModelError("", "Impossibile inserire un nuovo trasferimento che abbia la data di partenza inferiore e/o uguale alla data di partenza del trasferimento precedente.");
+                            ModelState.AddModelError("", "Impossibile inserire un nuovo trasferimento che abbia la data di partenza inferiore e/o uguale alla data di partenza oppure minore della data rientro del trasferimento precedente.");
                         }
 
                     }
@@ -1736,31 +1746,43 @@ namespace NewISE.Controllers
         {
             try
             {
-                using (dtTrasferimento dtt = new dtTrasferimento())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    var ltrasf = new List<SelectListItem>();
-                    //var ltrasf = new IList<TrasferimentoModel>();
-
-
-                    dtt.EliminaTrasferimento(idTrasferimento);
-
-                    decimal idTrasferimentoPrecedente = 0;
-
-                    ltrasf = dtt.LeggiElencoTrasferimentiByMatricola(matricola);
-
-                    if (ltrasf.Count() > 0)
+                    using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        var last_t = dtt.GetUltimoTrasferimentoByMatricola(Convert.ToString(matricola));
+                        var ltrasf = new List<SelectListItem>();
+                        //var ltrasf = new IList<TrasferimentoModel>();
 
-                        idTrasferimentoPrecedente = last_t.idTrasferimento;
+
+                        dtt.EliminaTrasferimento(idTrasferimento, db);
+
+                        decimal idTrasferimentoPrecedente = 0;
+
+                        ltrasf = dtt.LeggiElencoTrasferimentiByMatricola(matricola);
+
+                        if (ltrasf.Count() > 0)
+                        {
+                            var last_t = dtt.GetUltimoTrasferimentoTerminatoByMatricola(Convert.ToString(matricola));
+
+                            idTrasferimentoPrecedente = last_t.idTrasferimento;
+                            using (dtRichiamo dtr = new dtRichiamo())
+                            {
+                                var rm = dtr.GetRichiamoByIdTrasf(idTrasferimentoPrecedente);
+                                if (rm.IdRichiamo > 0 == false)
+                                {
+                                    dtt.RipristinaTrasferimento(idTrasferimentoPrecedente,db);
+                                }
+                            }
+                        }
+
+                        return Json(new
+                        {
+                            msg = "",
+                            listaTrasferimenti = ltrasf,
+                            idTrasferimentoPrecedente = idTrasferimentoPrecedente
+                        });
                     }
-
-                    return Json(new
-                    {
-                        msg = "",
-                        listaTrasferimenti = ltrasf,
-                        idTrasferimentoPrecedente = idTrasferimentoPrecedente
-                    });
+                    
                 }
             }
             catch (Exception ex)

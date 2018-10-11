@@ -123,7 +123,7 @@
                             @if (faseRichiesta)
                             {
                                 <td class="text-center">
-                                    @if (statoTrasferimento == EnumStatoTraferimento.Annullato)
+                                    @if (statoTrasferimento == EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Terminato)
                                     {
                                         if (item.RichiediTitoloViaggio)
                                         {
@@ -164,7 +164,7 @@
                        
                             @if (faseRichiestaDocumenti)
                             {
-                                if (statoTrasferimento != EnumStatoTraferimento.Annullato)
+                                if (statoTrasferimento != EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Terminato)
                                 {
                                     if (richiestaDocumentiEseguita)
                                     {

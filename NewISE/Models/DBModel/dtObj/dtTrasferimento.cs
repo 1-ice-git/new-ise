@@ -87,8 +87,10 @@ namespace NewISE.Models.DBModel.dtObj
                         ret = true;
                     }
                 }
-
-
+                if(tOld.DATARIENTRO<Utility.DataFineStop() && tOld.DATARIENTRO>=dtTrasfNew)
+                {
+                    ret = true;
+                }
             }
 
             return ret;
@@ -960,6 +962,51 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
+        public TrasferimentoModel GetUltimoTrasferimentoTerminatoByMatricola(string matricola)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+            int matr = Convert.ToInt16(matricola);
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
+                if (ldp?.Any() ?? false)
+                {
+                    var lt =
+                        ldp.First()
+                            .TRASFERIMENTO.Where(
+                                a => a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                            .OrderByDescending(a=>a.DATAPARTENZA)
+                            .ToList();
+
+                    if (lt?.Any() ?? false)
+                    {
+                        var t = lt.First();
+
+                        tm = new TrasferimentoModel()
+                        {
+                            idTrasferimento = t.IDTRASFERIMENTO,
+                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                            idUfficio = t.IDUFFICIO,
+                            idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
+                            idDipendente = t.IDDIPENDENTE,
+                            idTipoCoan = t.IDTIPOCOAN,
+                            dataPartenza = t.DATAPARTENZA,
+                            dataRientro = t.DATARIENTRO,
+                            coan = t.COAN,
+                            protocolloLettera = t.PROTOCOLLOLETTERA,
+                            dataLettera = t.DATALETTERA,
+                            notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                            dataAggiornamento = t.DATAAGGIORNAMENTO,
+
+                        };
+                    }
+                }
+            }
+
+            return tm;
+        }
+
+
 
         public TrasferimentoModel GetUltimoSoloTrasferimentoByMatricola(string matricola)
         {
@@ -1323,31 +1370,40 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void EliminaTrasferimento(decimal idTrasferimento)
+        public void EliminaTrasferimento(decimal idTrasferimento, ModelDBISE db)
         {
 
             try
             {
-                using (ModelDBISE db = new ModelDBISE())
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                db.TRASFERIMENTO.Remove(t);
+                if (db.SaveChanges() <= 0)
                 {
-                    try
+                    throw new Exception("Errore in fase di eliminazione trasferimento.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void RipristinaTrasferimento(decimal idTrasferimento, ModelDBISE db)
+        {
+            try
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                if (t.DATARIENTRO < Utility.DataFineStop())
+                {
+                    t.DATARIENTRO = Utility.DataFineStop();
+                    t.IDSTATOTRASFERIMENTO = (decimal)EnumStatoTraferimento.Attivo;
+                    if (db.SaveChanges() <= 0)
                     {
-                        db.Database.BeginTransaction();
-
-                        var t = db.TRASFERIMENTO.Find(idTrasferimento);
-
-                        db.TRASFERIMENTO.Remove(t);
-                        if (db.SaveChanges() <= 0)
-                        {
-                            throw new Exception("Errore in fase di eliminazione trasferimento.");
-                        }
-
-                        db.Database.CurrentTransaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        db.Database.CurrentTransaction.Rollback();
-                        throw ex;
+                        throw new Exception("Errore in fase di ripristino trasferimento precedente.");
                     }
                 }
             }
@@ -3019,6 +3075,33 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
                 }
 
+                #region allinea data fine trasf precedente se non ha richiamo
+                var ltrasf = LeggiElencoTrasferimenti(tm.idTrasferimento);
+                if(ltrasf.Count()>0)
+                {
+                    using (dtDipendenti dtd = new dtDipendenti())
+                    {
+                        var d = dtd.GetDipendenteByIDTrasf(tm.idTrasferimento);
+                        var last_t = GetUltimoTrasferimentoTerminatoByMatricola(Convert.ToString(d.matricola));
+
+                        using (dtRichiamo dtr = new dtRichiamo())
+                        {
+                            var rm = dtr.GetRichiamoByIdTrasf(last_t.idTrasferimento);
+                            if(!(rm.IdRichiamo>0))
+                            {
+                                DateTime dtFine_TrasfPrec = t.DATAPARTENZA.AddDays(-1);
+                                var t_prec = db.TRASFERIMENTO.Find(last_t.idTrasferimento);
+                                t_prec.DATARIENTRO = dtFine_TrasfPrec;
+                                if(db.SaveChanges()<=0)
+                                {
+                                    throw new Exception("Errore di aggiornamento data rientro trasferimento precedente.");
+                                }
+                            }
+                        }
+                    }
+                }
+                #endregion
+
             }
             catch (Exception ex)
             {
@@ -3578,6 +3661,19 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 if (dataPartenzaOriginale != dataPartenzaEffettiva)
                                 {
+                                    var d = t.DIPENDENTI;
+                                    var trasfTerminato = GetUltimoTrasferimentoTerminatoByMatricola(d.MATRICOLA.ToString());
+                                    if(trasfTerminato.idTrasferimento>0)
+                                    {
+                                        if (trasfTerminato.dataPartenza >= dataPartenzaEffettiva)
+                                        {
+                                            throw new Exception(string.Format("Impossibile inserire un trasferimento con data partenza inferiore o uguale alla data partenza del trasferimento precedente. ({0})", trasfTerminato.dataPartenza.ToShortDateString()));
+                                        }
+                                        if (trasfTerminato.dataRientro >= dataPartenzaEffettiva)
+                                        {
+                                            throw new Exception(string.Format("Impossibile inserire un trasferimento con data partenza inferiore o uguale alla data rientro del trasferimento precedente. ({0})", trasfTerminato.dataRientro.Value.ToShortDateString()));
+                                        }
+                                    }
                                     AllineaDateIni_Trasferimento(t, dataPartenzaOriginale, db);
                                 }
 
@@ -3585,7 +3681,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     ///Imposto la data di inzio ricalcoli alla data di inzio trasferimento per il trasferimento in corso.
                                     dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, t.DATAPARTENZA, db);
-
 
                                     var d = db.DIPENDENTI.Find(t.IDDIPENDENTE);
                                     var lt_prec = d.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato).OrderByDescending(a => a.IDTRASFERIMENTO).ToList();
@@ -3693,21 +3788,44 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 throw new Exception("Errore: Impossibile completare l'annullamento del trasferimento.");
                             }
-                            else
-                            {
-                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                                    "Annullamento trasferimento.", "TRASFERIMENTO", db,
-                                    t.IDTRASFERIMENTO, t.IDTRASFERIMENTO);
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                "Annullamento trasferimento.", "TRASFERIMENTO", db,
+                                t.IDTRASFERIMENTO, t.IDTRASFERIMENTO);
 
-                                EmailTrasferimento.EmailAnnulla(t.IDTRASFERIMENTO,
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                var d = dtd.GetDipendenteByID(t.IDDIPENDENTE);
+                                decimal matricola = d.matricola;
+                                var ltrasf = LeggiElencoTrasferimentiByMatricola(matricola);
+                                decimal idTrasferimentoPrecedente = 0;
+
+                                if (ltrasf.Count() > 0)
+                                {
+                                    var last_t = GetUltimoTrasferimentoTerminatoByMatricola (Convert.ToString(matricola));
+
+                                    idTrasferimentoPrecedente = last_t.idTrasferimento;
+                                    if (idTrasferimentoPrecedente > 0)
+                                    {
+                                        using (dtRichiamo dtr = new dtRichiamo())
+                                        {
+                                            var rm = dtr.GetRichiamoByIdTrasf(idTrasferimentoPrecedente);
+                                            if (rm.IdRichiamo > 0 == false)
+                                            {
+                                                RipristinaTrasferimento(idTrasferimentoPrecedente, db);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            EmailTrasferimento.EmailAnnulla(t.IDTRASFERIMENTO,
                                                                 Resources.msgEmail.OggettoAnnullamentoTrasferimento,
                                                                 testoAnnullaTrasf,
                                                                 db);
-                                //this.EmailAnnullaTrasf(t.IDTRASFERIMENTO, testoAnnullaTrasf, db);
-                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                                {
-                                    dtce.AnnullaMessaggioEvento(t.IDTRASFERIMENTO, EnumFunzioniEventi.AttivaTrasferimento, db);
-                                }
+                            //this.EmailAnnullaTrasf(t.IDTRASFERIMENTO, testoAnnullaTrasf, db);
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                            {
+                                dtce.AnnullaMessaggioEvento(t.IDTRASFERIMENTO, EnumFunzioniEventi.AttivaTrasferimento, db);
 
                                 using (dtElaborazioni dte = new dtElaborazioni())
                                 {

@@ -182,9 +182,20 @@ namespace NewISE.Controllers
                     TrasferimentoModel trm = dtt.GetTrasferimentoById(idTrasferimento);
                     if (trm != null)
                     {
-                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
                         {
                             tmp = 1;
+                        }
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                        {
+                            using (dtRichiamo dtr = new dtRichiamo())
+                            {
+                                var rm = dtr.GetRichiamoByIdTrasf(idTrasferimento);
+                                if(rm.IdRichiamo>0)
+                                {
+                                    tmp = 1;
+                                }
+                            }
                         }
                     }
                 }
