@@ -136,11 +136,11 @@
                             <div class="list-group">
 
                                 <div class="list-group-item">
-                                    @Ajax.ActionLink("Indennità di Prima Sistemazione", "AnticipoIndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                    @Ajax.ActionLink("Anticipo Indennità di Prima Sistemazione", "AnticipoIndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                                 </div>
-                                @*<div class="list-group-item">
-                                    @Ajax.ActionLink("Indennità di Sistemazione Lorda", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                                </div>*@
+                               <div class="list-group-item">
+                                    @Ajax.ActionLink("Saldo Indennità di Prima Sistemazione", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                                </div>
                                 @*<div class="list-group-item" style="visibility:hidden">
                                     @Ajax.ActionLink("Indennità di Sistemazione Netta (Anticipo o Saldo)", "IndennitadiSistemazioneNetta", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                                 </div>*@

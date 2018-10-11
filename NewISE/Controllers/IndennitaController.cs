@@ -2442,7 +2442,7 @@ namespace NewISE.Controllers
         }
         public ActionResult RptAnticipoIndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
-
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             List<RptAnticipoIndennitàdiSistemazione_Lorda> rpt = new List<RptAnticipoIndennitàdiSistemazione_Lorda>();
 
             try
@@ -2464,108 +2464,58 @@ namespace NewISE.Controllers
                             string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                             string Livello = liv1.Livello.DescLivello;
                             string Ufficio = tm.Ufficio.descUfficio;
-
-
+                            
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                             var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
+                            
 
-                            List<DateTime> lDateVariazioni = new List<DateTime>();
-
-                            #region Variazioni Indennità di Sistemazione
-
-                            var ll =
-                                db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
-                                .Where(a => a.ANNULLATO == false)
-                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                            foreach (var ib in ll)
+                            using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                             {
-                                DateTime dtVar = new DateTime();
+                                eim = dtei.GetAnticipoIndennitaSistemazioneEvoluzione(idTrasferimento).ToList();
 
-                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = ib.DATAINIZIOVALIDITA;
-                                }
-
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    lDateVariazioni.Sort();
-                                }
                             }
 
-                            #endregion
 
-                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                            if (lDateVariazioni?.Any() ?? false)
+                            if (eim?.Any() ?? false)
                             {
-                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                foreach (var lm in eim)
                                 {
-                                    DateTime dv = lDateVariazioni[j];
-
-                                    if (dv < Utility.DataFineStop())
+                                    RptAnticipoIndennitàdiSistemazione_Lorda rptds = new RptAnticipoIndennitàdiSistemazione_Lorda()
                                     {
-                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+                                        dataInizioValidita = lm.dataInizioValidita,
+                                        dataFineValidita = lm.dataFineValidita,
+                                        IndennitaServizio = lm.IndennitaServizio,
+                                        AliquotaFiscale = lm.AliquotaFiscale,
+                                        AliquotaPrevid = lm.AliquotaPrevid,
+                                        RitenutaFiscale = lm.RitenutaFiscale,
+                                        ImpFiscale = lm.ImpFiscale,
+                                        ContrPrevid = lm.ContrPrevid,
+                                        ImpPrevid = lm.ImpPrevid,
+                                        Detrazione = lm.Detrazione,
+                                        PercentualeRiduzionePrimaSistemazione = lm.PercentualeRiduzionePrimaSistemazione,
+                                        CoeffIndSistemazione = lm.CoeffIndSistemazione,
+                                        IndennitaSistemazione = lm.IndennitaSistemazione,
+                                        IndennitaSistemazioneAnticipabileLorda = lm.IndennitaSistemazioneAnticipabileLorda,
+                                        PercentualeAnticipoRichiesto = lm.PercentualeAnticipoRichiesto,
+                                        Importo = lm.Importo,
+                                        CoefficientediMaggiorazione = lm.CoefficientediMaggiorazione,
+                                        TotaleMaggiorazioniFamiliari = lm.TotaleMaggiorazioniFamiliari,
+                                        MaggiorazioniFigli = lm.MaggiorazioniFigli,
+                                        MaggiorazioneConiuge = lm.MaggiorazioneConiuge,
+                                        PercentualeMaggiorazioniFigli = lm.PercentualeMaggiorazioniFigli,
+                                        PercentualeMaggConiuge = lm.PercentualeMaggConiuge,
+                                        IndennitaPrimoSegretario = lm.IndennitaPrimoSegretario,
+                                        IndennitaPersonale = lm.IndennitaPersonale,
+                                        PercentualeDisagio = lm.PercentualeDisagio,
+                                        IndennitaBase = lm.IndennitaBase
 
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
-                                        {
 
-                                            RptAnticipoIndennitàdiSistemazione_Lorda rpts = new RptAnticipoIndennitàdiSistemazione_Lorda()
-                                            {
-                                                
-                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                IndennitaServizio = ci.IndennitaDiServizio,
-                                                CoefficenteMaggiorazione =ci.CoefficienteIndennitaSistemazione,
-                                                AnticipoIndSistemazioneLorda = ci.IndennitaSistemazioneAnticipabileLorda
+                                    };
 
-                                            };
+                                    rpt.Add(rptds);
 
-                                            rpt.Add(rpts);
-                                            
-                                        }
-
-                                    }
                                 }
                             }
-
-
-
-
-                            //ReportViewer reportViewer = new ReportViewer();
-
-                            //reportViewer.ProcessingMode = ProcessingMode.Local;
-                            //reportViewer.SizeToReportContent = true;
-                            //reportViewer.Width = Unit.Percentage(100);
-                            //reportViewer.Height = Unit.Percentage(100);
-
-                            ////var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                            //reportViewer.Visible = true;
-                            //reportViewer.ProcessingMode = ProcessingMode.Local;
-                            //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptAnticipoIndennitadiSistemazioneLorda.rdlc";
-                            //reportViewer.LocalReport.DataSources.Clear();
-                            ////reportViewer.LocalReport.DataSources.Add(datasource);
-
-                            //reportViewer.LocalReport.Refresh();
-                            //reportViewer.ShowReportBody = true;
-
-                            //ReportParameter[] parameterValues = new ReportParameter[]
-                            //{
-                            //    new ReportParameter ("Nominativo",Nominativo),
-                            //    new ReportParameter ("Livello",Livello),
-                            //    new ReportParameter ("Decorrenza",Decorrenza),
-                            //    new ReportParameter ("Ufficio",Ufficio)
-
-                            //};
-
-                            //reportViewer.LocalReport.SetParameters(parameterValues);
-                            //ViewBag.ReportViewer = reportViewer;
 
                             ReportViewer reportViewer = new ReportViewer();
 
@@ -2614,13 +2564,14 @@ namespace NewISE.Controllers
         public ActionResult IndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
 
             try
             {
 
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
-                    eim = dtei.GetIndennitaSistemazioneLordaEvoluzione(idTrasferimento).ToList();
+                    eim = dtei.GetAnticipoIndennitaSistemazioneEvoluzione(idTrasferimento).ToList();
 
                 }
 
@@ -2637,7 +2588,9 @@ namespace NewISE.Controllers
         }
         public ActionResult RptIndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
-            List<RptIndSistemazioneLordaModel> rpt = new List<RptIndSistemazioneLordaModel>();
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+            List<RptAnticipoIndennitàdiSistemazione_Lorda> rpt = new List<RptAnticipoIndennitàdiSistemazione_Lorda>();
+
 
 
             try
@@ -2663,101 +2616,120 @@ namespace NewISE.Controllers
                         var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                         var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
 
-                        List<DateTime> lDateVariazioni = new List<DateTime>();
+                            //List<DateTime> lDateVariazioni = new List<DateTime>();
 
 
-                        #region Variazioni Indennità di Sistemazione
+                            //#region Variazioni Indennità di Sistemazione
 
-                        var ll =
-                            db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
-                            .Where(a => a.ANNULLATO == false)
-                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                            //var ll =
+                            //    db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
+                            //    .Where(a => a.ANNULLATO == false)
+                            //    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
 
-                        foreach (var ib in ll)
-                        {
-                            DateTime dtVar = new DateTime();
+                            //foreach (var ib in ll)
+                            //{
+                            //    DateTime dtVar = new DateTime();
 
-                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            //    if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            //    {
+                            //        dtVar = trasferimento.DATAPARTENZA;
+                            //    }
+                            //    else
+                            //    {
+                            //        dtVar = ib.DATAINIZIOVALIDITA;
+                            //    }
+
+
+                            //    if (!lDateVariazioni.Contains(dtVar))
+                            //    {
+                            //        lDateVariazioni.Add(dtVar);
+                            //        lDateVariazioni.Sort();
+                            //    }
+                            //}
+
+                            //#endregion
+
+                            //lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                            //if (lDateVariazioni?.Any() ?? false)
+                            //{
+                            //    for (int j = 0; j < lDateVariazioni.Count; j++)
+                            //    {
+                            //        DateTime dv = lDateVariazioni[j];
+
+                            //        if (dv < Utility.DataFineStop())
+                            //        {
+                            //            DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                            //            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                            //            {
+                            //                    RptIndSistemazioneLordaModel rpts = new RptIndSistemazioneLordaModel()
+                            //                    {
+
+                            //                        DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                            //                        IndennitaPersonale = ci.IndennitaPersonale,
+                            //                        CoefficenteMaggiorazione = ci.CoefficienteIndennitaSistemazione,
+                            //                        IndSistemazioneLorda = ci.IndennitaSistemazioneLorda
+
+                            //                    };
+
+                            //                    rpt.Add(rpts);
+
+                            //                }
+
+                            //        }
+                            //    }
+                            //}
+
+                            using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                             {
-                                dtVar = trasferimento.DATAPARTENZA;
+                                eim = dtei.GetAnticipoIndennitaSistemazioneEvoluzione(idTrasferimento).ToList();
+
                             }
-                            else
+
+
+                            if (eim?.Any() ?? false)
                             {
-                                dtVar = ib.DATAINIZIOVALIDITA;
-                            }
-
-
-                            if (!lDateVariazioni.Contains(dtVar))
-                            {
-                                lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
-                            }
-                        }
-
-                        #endregion
-
-                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                        if (lDateVariazioni?.Any() ?? false)
-                        {
-                            for (int j = 0; j < lDateVariazioni.Count; j++)
-                            {
-                                DateTime dv = lDateVariazioni[j];
-
-                                if (dv < Utility.DataFineStop())
+                                foreach (var lm in eim)
                                 {
-                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-
-                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    RptAnticipoIndennitàdiSistemazione_Lorda rptds = new RptAnticipoIndennitàdiSistemazione_Lorda()
                                     {
-                                            RptIndSistemazioneLordaModel rpts = new RptIndSistemazioneLordaModel()
-                                            {
+                                        dataInizioValidita = lm.dataInizioValidita,
+                                        dataFineValidita = lm.dataFineValidita,
+                                        IndennitaServizio = lm.IndennitaServizio,
+                                        AliquotaFiscale = lm.AliquotaFiscale,
+                                        AliquotaPrevid = lm.AliquotaPrevid,
+                                        RitenutaFiscale = lm.RitenutaFiscale,
+                                        ImpFiscale = lm.ImpFiscale,
+                                        ContrPrevid = lm.ContrPrevid,
+                                        ImpPrevid = lm.ImpPrevid,
+                                        Detrazione = lm.Detrazione,
+                                        PercentualeRiduzionePrimaSistemazione = lm.PercentualeRiduzionePrimaSistemazione,
+                                        CoeffIndSistemazione = lm.CoeffIndSistemazione,
+                                        IndennitaSistemazione = lm.IndennitaSistemazione,
+                                        IndennitaSistemazioneAnticipabileLorda = lm.IndennitaSistemazioneAnticipabileLorda,
+                                        PercentualeAnticipoRichiesto = lm.PercentualeAnticipoRichiesto,
+                                        Importo = lm.Importo,
+                                        CoefficientediMaggiorazione = lm.CoefficientediMaggiorazione,
+                                        TotaleMaggiorazioniFamiliari = lm.TotaleMaggiorazioniFamiliari,
+                                        MaggiorazioniFigli = lm.MaggiorazioniFigli,
+                                        MaggiorazioneConiuge = lm.MaggiorazioneConiuge,
+                                        PercentualeMaggiorazioniFigli = lm.PercentualeMaggiorazioniFigli,
+                                        PercentualeMaggConiuge = lm.PercentualeMaggConiuge,
+                                        IndennitaPrimoSegretario = lm.IndennitaPrimoSegretario,
+                                        IndennitaPersonale = lm.IndennitaPersonale,
+                                        PercentualeDisagio = lm.PercentualeDisagio,
+                                        IndennitaBase = lm.IndennitaBase
 
-                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                IndennitaPersonale = ci.IndennitaPersonale,
-                                                CoefficenteMaggiorazione = ci.CoefficienteIndennitaSistemazione,
-                                                IndSistemazioneLorda = ci.IndennitaSistemazioneLorda
 
-                                            };
+                                    };
 
-                                            rpt.Add(rpts);
-
-                                        }
+                                    rpt.Add(rptds);
 
                                 }
                             }
-                        }
 
-
-                            //ReportViewer reportViewer = new ReportViewer();
-
-                            //reportViewer.ProcessingMode = ProcessingMode.Local;
-                            //reportViewer.SizeToReportContent = true;
-                            //reportViewer.Width = Unit.Percentage(100);
-                            //reportViewer.Height = Unit.Percentage(100);
-
-                            ////var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                            //reportViewer.Visible = true;
-                            //reportViewer.ProcessingMode = ProcessingMode.Local;
-                            //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
-                            //reportViewer.LocalReport.DataSources.Clear();
-                            ////reportViewer.LocalReport.DataSources.Add(datasource);
-
-                            //reportViewer.LocalReport.Refresh();
-                            //reportViewer.ShowReportBody = true;
-
-                            //ReportParameter[] parameterValues = new ReportParameter[]
-                            //{
-                            //    new ReportParameter ("Nominativo",Nominativo),
-                            //    new ReportParameter ("Livello",Livello),
-                            //    new ReportParameter ("Decorrenza",Decorrenza),
-                            //    new ReportParameter ("Ufficio",Ufficio)
-
-                            //};
-
-                            //reportViewer.LocalReport.SetParameters(parameterValues);
-                            //ViewBag.ReportViewer = reportViewer;
 
                             ReportViewer reportViewer = new ReportViewer();
 
@@ -2766,7 +2738,7 @@ namespace NewISE.Controllers
                             reportViewer.Width = Unit.Percentage(100);
                             reportViewer.Height = Unit.Percentage(100);
 
-                            var datasource = new ReportDataSource("DataSetIndennitàdiSistemazioneLorda");
+                            var datasource = new ReportDataSource("DataSetAnticipoIndennitàdiSistemazioneLorda");
 
                             reportViewer.Visible = true;
                             reportViewer.ProcessingMode = ProcessingMode.Local;
@@ -2774,7 +2746,7 @@ namespace NewISE.Controllers
                             reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitadiSistemazioneLorda.rdlc";
                             reportViewer.LocalReport.DataSources.Clear();
                             reportViewer.LocalReport.DataSources.Add(datasource);
-                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitàdiSistemazioneLorda", rpt));
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetAnticipoIndennitàdiSistemazioneLorda", rpt));
                             reportViewer.LocalReport.Refresh();
 
                             List<ReportParameter> parameterValues = new List<ReportParameter>();

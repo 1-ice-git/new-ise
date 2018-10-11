@@ -1153,6 +1153,8 @@ namespace NewISE.Models.DBModel.dtObj
                         var tv = teorico.VOCI.TIPOVOCE;
                         var detrazione = teorico.DETRAZIONIAPPLICATE;
 
+
+
                         ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
 
                         var lacDetr =
@@ -1189,27 +1191,28 @@ namespace NewISE.Models.DBModel.dtObj
                             .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
 
-                    foreach (var ib in ll)
-                    {
-                        DateTime dtVar = new DateTime();
-
-                        if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                        foreach (var ib in ll)
                         {
-                            dtVar = trasferimento.DATAPARTENZA;
-                        }
-                        else
-                        {
-                            dtVar = ib.DATAINIZIOVALIDITA;
-                        }
+                            DateTime dtVar = new DateTime();
+
+                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = ib.DATAINIZIOVALIDITA;
+                            }
 
 
-                        if (!lDateVariazioni.Contains(dtVar))
-                        {
-                            lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
+                            }
                         }
-                    }
-                    #endregion
+
+                        #endregion
 
                         #region Anticipi Percentuale Richiesta
 
@@ -1245,7 +1248,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                     {
                                         EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-
+                                        
                                         xx.dataInizioValidita = dv;
                                         xx.dataFineValidita = dvSucc;
                                         xx.IndennitaBase = ci.IndennitaDiBase;

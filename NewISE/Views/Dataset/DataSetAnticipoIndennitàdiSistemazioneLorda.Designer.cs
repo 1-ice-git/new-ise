@@ -279,13 +279,57 @@ namespace NewISE.Views.Dataset {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class DataTable1DataTable : global::System.Data.TypedTableBase<DataTable1Row> {
             
-            private global::System.Data.DataColumn columnDataInizioValidita;
+            private global::System.Data.DataColumn columndataInizioValidita;
+            
+            private global::System.Data.DataColumn columndataFineValidita;
             
             private global::System.Data.DataColumn columnIndennitaServizio;
             
-            private global::System.Data.DataColumn columnCoefficenteMaggiorazione;
+            private global::System.Data.DataColumn columnAliquotaFiscale;
             
-            private global::System.Data.DataColumn columnAnticipoIndSistemazioneLorda;
+            private global::System.Data.DataColumn columnAliquotaPrevid;
+            
+            private global::System.Data.DataColumn columnRitenutaFiscale;
+            
+            private global::System.Data.DataColumn columnImpFiscale;
+            
+            private global::System.Data.DataColumn columnContrPrevid;
+            
+            private global::System.Data.DataColumn columnImpPrevid;
+            
+            private global::System.Data.DataColumn columnDetrazione;
+            
+            private global::System.Data.DataColumn columnPercentualeRiduzionePrimaSistemazione;
+            
+            private global::System.Data.DataColumn columnCoeffIndSistemazione;
+            
+            private global::System.Data.DataColumn columnIndennitaSistemazione;
+            
+            private global::System.Data.DataColumn columnIndennitaSistemazioneAnticipabileLorda;
+            
+            private global::System.Data.DataColumn columnPercentualeAnticipoRichiesto;
+            
+            private global::System.Data.DataColumn columnImporto;
+            
+            private global::System.Data.DataColumn columnCoefficientediMaggiorazione;
+            
+            private global::System.Data.DataColumn columnTotaleMaggiorazioniFamiliari;
+            
+            private global::System.Data.DataColumn columnMaggiorazioniFigli;
+            
+            private global::System.Data.DataColumn columnMaggiorazioneConiuge;
+            
+            private global::System.Data.DataColumn columnPercentualeMaggiorazioniFigli;
+            
+            private global::System.Data.DataColumn columnPercentualeMaggConiuge;
+            
+            private global::System.Data.DataColumn columnIndennitaPrimoSegretario;
+            
+            private global::System.Data.DataColumn columnIndennitaPersonale;
+            
+            private global::System.Data.DataColumn columnPercentualeDisagio;
+            
+            private global::System.Data.DataColumn columnIndennitaBase;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -322,9 +366,17 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DataInizioValiditaColumn {
+            public global::System.Data.DataColumn dataInizioValiditaColumn {
                 get {
-                    return this.columnDataInizioValidita;
+                    return this.columndataInizioValidita;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn dataFineValiditaColumn {
+                get {
+                    return this.columndataFineValidita;
                 }
             }
             
@@ -338,17 +390,185 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CoefficenteMaggiorazioneColumn {
+            public global::System.Data.DataColumn AliquotaFiscaleColumn {
                 get {
-                    return this.columnCoefficenteMaggiorazione;
+                    return this.columnAliquotaFiscale;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn AnticipoIndSistemazioneLordaColumn {
+            public global::System.Data.DataColumn AliquotaPrevidColumn {
                 get {
-                    return this.columnAnticipoIndSistemazioneLorda;
+                    return this.columnAliquotaPrevid;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RitenutaFiscaleColumn {
+                get {
+                    return this.columnRitenutaFiscale;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ImpFiscaleColumn {
+                get {
+                    return this.columnImpFiscale;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ContrPrevidColumn {
+                get {
+                    return this.columnContrPrevid;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ImpPrevidColumn {
+                get {
+                    return this.columnImpPrevid;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DetrazioneColumn {
+                get {
+                    return this.columnDetrazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercentualeRiduzionePrimaSistemazioneColumn {
+                get {
+                    return this.columnPercentualeRiduzionePrimaSistemazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CoeffIndSistemazioneColumn {
+                get {
+                    return this.columnCoeffIndSistemazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IndennitaSistemazioneColumn {
+                get {
+                    return this.columnIndennitaSistemazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IndennitaSistemazioneAnticipabileLordaColumn {
+                get {
+                    return this.columnIndennitaSistemazioneAnticipabileLorda;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercentualeAnticipoRichiestoColumn {
+                get {
+                    return this.columnPercentualeAnticipoRichiesto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ImportoColumn {
+                get {
+                    return this.columnImporto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CoefficientediMaggiorazioneColumn {
+                get {
+                    return this.columnCoefficientediMaggiorazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TotaleMaggiorazioniFamiliariColumn {
+                get {
+                    return this.columnTotaleMaggiorazioniFamiliari;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MaggiorazioniFigliColumn {
+                get {
+                    return this.columnMaggiorazioniFigli;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MaggiorazioneConiugeColumn {
+                get {
+                    return this.columnMaggiorazioneConiuge;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercentualeMaggiorazioniFigliColumn {
+                get {
+                    return this.columnPercentualeMaggiorazioniFigli;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercentualeMaggConiugeColumn {
+                get {
+                    return this.columnPercentualeMaggConiuge;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IndennitaPrimoSegretarioColumn {
+                get {
+                    return this.columnIndennitaPrimoSegretario;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IndennitaPersonaleColumn {
+                get {
+                    return this.columnIndennitaPersonale;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercentualeDisagioColumn {
+                get {
+                    return this.columnPercentualeDisagio;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IndennitaBaseColumn {
+                get {
+                    return this.columnIndennitaBase;
                 }
             }
             
@@ -389,13 +609,61 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string IndennitaServizio, string CoefficenteMaggiorazione, string AnticipoIndSistemazioneLorda) {
+            public DataTable1Row AddDataTable1Row(
+                        string dataInizioValidita, 
+                        string dataFineValidita, 
+                        string IndennitaServizio, 
+                        string AliquotaFiscale, 
+                        string AliquotaPrevid, 
+                        string RitenutaFiscale, 
+                        string ImpFiscale, 
+                        string ContrPrevid, 
+                        string ImpPrevid, 
+                        string Detrazione, 
+                        string PercentualeRiduzionePrimaSistemazione, 
+                        string CoeffIndSistemazione, 
+                        string IndennitaSistemazione, 
+                        string IndennitaSistemazioneAnticipabileLorda, 
+                        string PercentualeAnticipoRichiesto, 
+                        string Importo, 
+                        string CoefficientediMaggiorazione, 
+                        string TotaleMaggiorazioniFamiliari, 
+                        string MaggiorazioniFigli, 
+                        string MaggiorazioneConiuge, 
+                        string PercentualeMaggiorazioniFigli, 
+                        string PercentualeMaggConiuge, 
+                        string IndennitaPrimoSegretario, 
+                        string IndennitaPersonale, 
+                        string PercentualeDisagio, 
+                        string IndennitaBase) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        DataInizioValidita,
+                        dataInizioValidita,
+                        dataFineValidita,
                         IndennitaServizio,
-                        CoefficenteMaggiorazione,
-                        AnticipoIndSistemazioneLorda};
+                        AliquotaFiscale,
+                        AliquotaPrevid,
+                        RitenutaFiscale,
+                        ImpFiscale,
+                        ContrPrevid,
+                        ImpPrevid,
+                        Detrazione,
+                        PercentualeRiduzionePrimaSistemazione,
+                        CoeffIndSistemazione,
+                        IndennitaSistemazione,
+                        IndennitaSistemazioneAnticipabileLorda,
+                        PercentualeAnticipoRichiesto,
+                        Importo,
+                        CoefficientediMaggiorazione,
+                        TotaleMaggiorazioniFamiliari,
+                        MaggiorazioniFigli,
+                        MaggiorazioneConiuge,
+                        PercentualeMaggiorazioniFigli,
+                        PercentualeMaggConiuge,
+                        IndennitaPrimoSegretario,
+                        IndennitaPersonale,
+                        PercentualeDisagio,
+                        IndennitaBase};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -418,23 +686,89 @@ namespace NewISE.Views.Dataset {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnDataInizioValidita = base.Columns["DataInizioValidita"];
+                this.columndataInizioValidita = base.Columns["dataInizioValidita"];
+                this.columndataFineValidita = base.Columns["dataFineValidita"];
                 this.columnIndennitaServizio = base.Columns["IndennitaServizio"];
-                this.columnCoefficenteMaggiorazione = base.Columns["CoefficenteMaggiorazione"];
-                this.columnAnticipoIndSistemazioneLorda = base.Columns["AnticipoIndSistemazioneLorda"];
+                this.columnAliquotaFiscale = base.Columns["AliquotaFiscale"];
+                this.columnAliquotaPrevid = base.Columns["AliquotaPrevid"];
+                this.columnRitenutaFiscale = base.Columns["RitenutaFiscale"];
+                this.columnImpFiscale = base.Columns["ImpFiscale"];
+                this.columnContrPrevid = base.Columns["ContrPrevid"];
+                this.columnImpPrevid = base.Columns["ImpPrevid"];
+                this.columnDetrazione = base.Columns["Detrazione"];
+                this.columnPercentualeRiduzionePrimaSistemazione = base.Columns["PercentualeRiduzionePrimaSistemazione"];
+                this.columnCoeffIndSistemazione = base.Columns["CoeffIndSistemazione"];
+                this.columnIndennitaSistemazione = base.Columns["IndennitaSistemazione"];
+                this.columnIndennitaSistemazioneAnticipabileLorda = base.Columns["IndennitaSistemazioneAnticipabileLorda"];
+                this.columnPercentualeAnticipoRichiesto = base.Columns["PercentualeAnticipoRichiesto"];
+                this.columnImporto = base.Columns["Importo"];
+                this.columnCoefficientediMaggiorazione = base.Columns["CoefficientediMaggiorazione"];
+                this.columnTotaleMaggiorazioniFamiliari = base.Columns["TotaleMaggiorazioniFamiliari"];
+                this.columnMaggiorazioniFigli = base.Columns["MaggiorazioniFigli"];
+                this.columnMaggiorazioneConiuge = base.Columns["MaggiorazioneConiuge"];
+                this.columnPercentualeMaggiorazioniFigli = base.Columns["PercentualeMaggiorazioniFigli"];
+                this.columnPercentualeMaggConiuge = base.Columns["PercentualeMaggConiuge"];
+                this.columnIndennitaPrimoSegretario = base.Columns["IndennitaPrimoSegretario"];
+                this.columnIndennitaPersonale = base.Columns["IndennitaPersonale"];
+                this.columnPercentualeDisagio = base.Columns["PercentualeDisagio"];
+                this.columnIndennitaBase = base.Columns["IndennitaBase"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnDataInizioValidita = new global::System.Data.DataColumn("DataInizioValidita", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDataInizioValidita);
+                this.columndataInizioValidita = new global::System.Data.DataColumn("dataInizioValidita", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndataInizioValidita);
+                this.columndataFineValidita = new global::System.Data.DataColumn("dataFineValidita", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndataFineValidita);
                 this.columnIndennitaServizio = new global::System.Data.DataColumn("IndennitaServizio", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnIndennitaServizio);
-                this.columnCoefficenteMaggiorazione = new global::System.Data.DataColumn("CoefficenteMaggiorazione", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCoefficenteMaggiorazione);
-                this.columnAnticipoIndSistemazioneLorda = new global::System.Data.DataColumn("AnticipoIndSistemazioneLorda", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAnticipoIndSistemazioneLorda);
+                this.columnAliquotaFiscale = new global::System.Data.DataColumn("AliquotaFiscale", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAliquotaFiscale);
+                this.columnAliquotaPrevid = new global::System.Data.DataColumn("AliquotaPrevid", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAliquotaPrevid);
+                this.columnRitenutaFiscale = new global::System.Data.DataColumn("RitenutaFiscale", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRitenutaFiscale);
+                this.columnImpFiscale = new global::System.Data.DataColumn("ImpFiscale", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnImpFiscale);
+                this.columnContrPrevid = new global::System.Data.DataColumn("ContrPrevid", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnContrPrevid);
+                this.columnImpPrevid = new global::System.Data.DataColumn("ImpPrevid", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnImpPrevid);
+                this.columnDetrazione = new global::System.Data.DataColumn("Detrazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDetrazione);
+                this.columnPercentualeRiduzionePrimaSistemazione = new global::System.Data.DataColumn("PercentualeRiduzionePrimaSistemazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentualeRiduzionePrimaSistemazione);
+                this.columnCoeffIndSistemazione = new global::System.Data.DataColumn("CoeffIndSistemazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCoeffIndSistemazione);
+                this.columnIndennitaSistemazione = new global::System.Data.DataColumn("IndennitaSistemazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIndennitaSistemazione);
+                this.columnIndennitaSistemazioneAnticipabileLorda = new global::System.Data.DataColumn("IndennitaSistemazioneAnticipabileLorda", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIndennitaSistemazioneAnticipabileLorda);
+                this.columnPercentualeAnticipoRichiesto = new global::System.Data.DataColumn("PercentualeAnticipoRichiesto", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentualeAnticipoRichiesto);
+                this.columnImporto = new global::System.Data.DataColumn("Importo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnImporto);
+                this.columnCoefficientediMaggiorazione = new global::System.Data.DataColumn("CoefficientediMaggiorazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCoefficientediMaggiorazione);
+                this.columnTotaleMaggiorazioniFamiliari = new global::System.Data.DataColumn("TotaleMaggiorazioniFamiliari", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotaleMaggiorazioniFamiliari);
+                this.columnMaggiorazioniFigli = new global::System.Data.DataColumn("MaggiorazioniFigli", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMaggiorazioniFigli);
+                this.columnMaggiorazioneConiuge = new global::System.Data.DataColumn("MaggiorazioneConiuge", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMaggiorazioneConiuge);
+                this.columnPercentualeMaggiorazioniFigli = new global::System.Data.DataColumn("PercentualeMaggiorazioniFigli", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentualeMaggiorazioniFigli);
+                this.columnPercentualeMaggConiuge = new global::System.Data.DataColumn("PercentualeMaggConiuge", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentualeMaggConiuge);
+                this.columnIndennitaPrimoSegretario = new global::System.Data.DataColumn("IndennitaPrimoSegretario", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIndennitaPrimoSegretario);
+                this.columnIndennitaPersonale = new global::System.Data.DataColumn("IndennitaPersonale", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIndennitaPersonale);
+                this.columnPercentualeDisagio = new global::System.Data.DataColumn("PercentualeDisagio", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentualeDisagio);
+                this.columnIndennitaBase = new global::System.Data.DataColumn("IndennitaBase", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIndennitaBase);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -577,18 +911,34 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string DataInizioValidita {
+            public string dataInizioValidita {
                 get {
                     try {
-                        return ((string)(this[this.tableDataTable1.DataInizioValiditaColumn]));
+                        return ((string)(this[this.tableDataTable1.dataInizioValiditaColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DataInizioValidita\' nella tabella \'DataTable1\' è DBNull." +
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'dataInizioValidita\' nella tabella \'DataTable1\' è DBNull." +
                                 "", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.DataInizioValiditaColumn] = value;
+                    this[this.tableDataTable1.dataInizioValiditaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string dataFineValidita {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.dataFineValiditaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'dataFineValidita\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.dataFineValiditaColumn] = value;
                 }
             }
             
@@ -610,48 +960,408 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string CoefficenteMaggiorazione {
+            public string AliquotaFiscale {
                 get {
                     try {
-                        return ((string)(this[this.tableDataTable1.CoefficenteMaggiorazioneColumn]));
+                        return ((string)(this[this.tableDataTable1.AliquotaFiscaleColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CoefficenteMaggiorazione\' nella tabella \'DataTable1\' è D" +
-                                "BNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'AliquotaFiscale\' nella tabella \'DataTable1\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.CoefficenteMaggiorazioneColumn] = value;
+                    this[this.tableDataTable1.AliquotaFiscaleColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string AnticipoIndSistemazioneLorda {
+            public string AliquotaPrevid {
                 get {
                     try {
-                        return ((string)(this[this.tableDataTable1.AnticipoIndSistemazioneLordaColumn]));
+                        return ((string)(this[this.tableDataTable1.AliquotaPrevidColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'AnticipoIndSistemazioneLorda\' nella tabella \'DataTable1\'" +
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'AliquotaPrevid\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.AliquotaPrevidColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string RitenutaFiscale {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.RitenutaFiscaleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'RitenutaFiscale\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.RitenutaFiscaleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ImpFiscale {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.ImpFiscaleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ImpFiscale\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.ImpFiscaleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ContrPrevid {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.ContrPrevidColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ContrPrevid\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.ContrPrevidColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ImpPrevid {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.ImpPrevidColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ImpPrevid\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.ImpPrevidColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Detrazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.DetrazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Detrazione\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.DetrazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PercentualeRiduzionePrimaSistemazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercentualeRiduzionePrimaSistemazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercentualeRiduzionePrimaSistemazione\' nella tabella \'Da" +
+                                "taTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PercentualeRiduzionePrimaSistemazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CoeffIndSistemazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.CoeffIndSistemazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CoeffIndSistemazione\' nella tabella \'DataTable1\' è DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.CoeffIndSistemazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string IndennitaSistemazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.IndennitaSistemazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IndennitaSistemazione\' nella tabella \'DataTable1\' è DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.IndennitaSistemazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string IndennitaSistemazioneAnticipabileLorda {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.IndennitaSistemazioneAnticipabileLordaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IndennitaSistemazioneAnticipabileLorda\' nella tabella \'D" +
+                                "ataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.IndennitaSistemazioneAnticipabileLordaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PercentualeAnticipoRichiesto {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercentualeAnticipoRichiestoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercentualeAnticipoRichiesto\' nella tabella \'DataTable1\'" +
                                 " è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.AnticipoIndSistemazioneLordaColumn] = value;
+                    this[this.tableDataTable1.PercentualeAnticipoRichiestoColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsDataInizioValiditaNull() {
-                return this.IsNull(this.tableDataTable1.DataInizioValiditaColumn);
+            public string Importo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.ImportoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Importo\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.ImportoColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetDataInizioValiditaNull() {
-                this[this.tableDataTable1.DataInizioValiditaColumn] = global::System.Convert.DBNull;
+            public string CoefficientediMaggiorazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.CoefficientediMaggiorazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CoefficientediMaggiorazione\' nella tabella \'DataTable1\' " +
+                                "è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.CoefficientediMaggiorazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TotaleMaggiorazioniFamiliari {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.TotaleMaggiorazioniFamiliariColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TotaleMaggiorazioniFamiliari\' nella tabella \'DataTable1\'" +
+                                " è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.TotaleMaggiorazioniFamiliariColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string MaggiorazioniFigli {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.MaggiorazioniFigliColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MaggiorazioniFigli\' nella tabella \'DataTable1\' è DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.MaggiorazioniFigliColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string MaggiorazioneConiuge {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.MaggiorazioneConiugeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MaggiorazioneConiuge\' nella tabella \'DataTable1\' è DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.MaggiorazioneConiugeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PercentualeMaggiorazioniFigli {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercentualeMaggiorazioniFigliColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercentualeMaggiorazioniFigli\' nella tabella \'DataTable1" +
+                                "\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PercentualeMaggiorazioniFigliColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PercentualeMaggConiuge {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercentualeMaggConiugeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercentualeMaggConiuge\' nella tabella \'DataTable1\' è DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PercentualeMaggConiugeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string IndennitaPrimoSegretario {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.IndennitaPrimoSegretarioColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IndennitaPrimoSegretario\' nella tabella \'DataTable1\' è D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.IndennitaPrimoSegretarioColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string IndennitaPersonale {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.IndennitaPersonaleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IndennitaPersonale\' nella tabella \'DataTable1\' è DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.IndennitaPersonaleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PercentualeDisagio {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercentualeDisagioColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercentualeDisagio\' nella tabella \'DataTable1\' è DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PercentualeDisagioColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string IndennitaBase {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.IndennitaBaseColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IndennitaBase\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.IndennitaBaseColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsdataInizioValiditaNull() {
+                return this.IsNull(this.tableDataTable1.dataInizioValiditaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetdataInizioValiditaNull() {
+                this[this.tableDataTable1.dataInizioValiditaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsdataFineValiditaNull() {
+                return this.IsNull(this.tableDataTable1.dataFineValiditaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetdataFineValiditaNull() {
+                this[this.tableDataTable1.dataFineValiditaColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -668,26 +1378,278 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCoefficenteMaggiorazioneNull() {
-                return this.IsNull(this.tableDataTable1.CoefficenteMaggiorazioneColumn);
+            public bool IsAliquotaFiscaleNull() {
+                return this.IsNull(this.tableDataTable1.AliquotaFiscaleColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCoefficenteMaggiorazioneNull() {
-                this[this.tableDataTable1.CoefficenteMaggiorazioneColumn] = global::System.Convert.DBNull;
+            public void SetAliquotaFiscaleNull() {
+                this[this.tableDataTable1.AliquotaFiscaleColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsAnticipoIndSistemazioneLordaNull() {
-                return this.IsNull(this.tableDataTable1.AnticipoIndSistemazioneLordaColumn);
+            public bool IsAliquotaPrevidNull() {
+                return this.IsNull(this.tableDataTable1.AliquotaPrevidColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetAnticipoIndSistemazioneLordaNull() {
-                this[this.tableDataTable1.AnticipoIndSistemazioneLordaColumn] = global::System.Convert.DBNull;
+            public void SetAliquotaPrevidNull() {
+                this[this.tableDataTable1.AliquotaPrevidColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRitenutaFiscaleNull() {
+                return this.IsNull(this.tableDataTable1.RitenutaFiscaleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRitenutaFiscaleNull() {
+                this[this.tableDataTable1.RitenutaFiscaleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsImpFiscaleNull() {
+                return this.IsNull(this.tableDataTable1.ImpFiscaleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetImpFiscaleNull() {
+                this[this.tableDataTable1.ImpFiscaleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsContrPrevidNull() {
+                return this.IsNull(this.tableDataTable1.ContrPrevidColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetContrPrevidNull() {
+                this[this.tableDataTable1.ContrPrevidColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsImpPrevidNull() {
+                return this.IsNull(this.tableDataTable1.ImpPrevidColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetImpPrevidNull() {
+                this[this.tableDataTable1.ImpPrevidColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDetrazioneNull() {
+                return this.IsNull(this.tableDataTable1.DetrazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDetrazioneNull() {
+                this[this.tableDataTable1.DetrazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercentualeRiduzionePrimaSistemazioneNull() {
+                return this.IsNull(this.tableDataTable1.PercentualeRiduzionePrimaSistemazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercentualeRiduzionePrimaSistemazioneNull() {
+                this[this.tableDataTable1.PercentualeRiduzionePrimaSistemazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCoeffIndSistemazioneNull() {
+                return this.IsNull(this.tableDataTable1.CoeffIndSistemazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCoeffIndSistemazioneNull() {
+                this[this.tableDataTable1.CoeffIndSistemazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIndennitaSistemazioneNull() {
+                return this.IsNull(this.tableDataTable1.IndennitaSistemazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIndennitaSistemazioneNull() {
+                this[this.tableDataTable1.IndennitaSistemazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIndennitaSistemazioneAnticipabileLordaNull() {
+                return this.IsNull(this.tableDataTable1.IndennitaSistemazioneAnticipabileLordaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIndennitaSistemazioneAnticipabileLordaNull() {
+                this[this.tableDataTable1.IndennitaSistemazioneAnticipabileLordaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercentualeAnticipoRichiestoNull() {
+                return this.IsNull(this.tableDataTable1.PercentualeAnticipoRichiestoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercentualeAnticipoRichiestoNull() {
+                this[this.tableDataTable1.PercentualeAnticipoRichiestoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsImportoNull() {
+                return this.IsNull(this.tableDataTable1.ImportoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetImportoNull() {
+                this[this.tableDataTable1.ImportoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCoefficientediMaggiorazioneNull() {
+                return this.IsNull(this.tableDataTable1.CoefficientediMaggiorazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCoefficientediMaggiorazioneNull() {
+                this[this.tableDataTable1.CoefficientediMaggiorazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTotaleMaggiorazioniFamiliariNull() {
+                return this.IsNull(this.tableDataTable1.TotaleMaggiorazioniFamiliariColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTotaleMaggiorazioniFamiliariNull() {
+                this[this.tableDataTable1.TotaleMaggiorazioniFamiliariColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMaggiorazioniFigliNull() {
+                return this.IsNull(this.tableDataTable1.MaggiorazioniFigliColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMaggiorazioniFigliNull() {
+                this[this.tableDataTable1.MaggiorazioniFigliColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMaggiorazioneConiugeNull() {
+                return this.IsNull(this.tableDataTable1.MaggiorazioneConiugeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMaggiorazioneConiugeNull() {
+                this[this.tableDataTable1.MaggiorazioneConiugeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercentualeMaggiorazioniFigliNull() {
+                return this.IsNull(this.tableDataTable1.PercentualeMaggiorazioniFigliColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercentualeMaggiorazioniFigliNull() {
+                this[this.tableDataTable1.PercentualeMaggiorazioniFigliColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercentualeMaggConiugeNull() {
+                return this.IsNull(this.tableDataTable1.PercentualeMaggConiugeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercentualeMaggConiugeNull() {
+                this[this.tableDataTable1.PercentualeMaggConiugeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIndennitaPrimoSegretarioNull() {
+                return this.IsNull(this.tableDataTable1.IndennitaPrimoSegretarioColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIndennitaPrimoSegretarioNull() {
+                this[this.tableDataTable1.IndennitaPrimoSegretarioColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIndennitaPersonaleNull() {
+                return this.IsNull(this.tableDataTable1.IndennitaPersonaleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIndennitaPersonaleNull() {
+                this[this.tableDataTable1.IndennitaPersonaleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercentualeDisagioNull() {
+                return this.IsNull(this.tableDataTable1.PercentualeDisagioColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercentualeDisagioNull() {
+                this[this.tableDataTable1.PercentualeDisagioColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIndennitaBaseNull() {
+                return this.IsNull(this.tableDataTable1.IndennitaBaseColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIndennitaBaseNull() {
+                this[this.tableDataTable1.IndennitaBaseColumn] = global::System.Convert.DBNull;
             }
         }
         
