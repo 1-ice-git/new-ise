@@ -97,10 +97,9 @@ namespace NewISE.Controllers
                         TrasferimentoModel trm = dtt.GetTrasferimentoById(idTrasferimento);
                         if (trm != null)
                         {
-                            var ltrasf = dtt.GetListaTrasferimentoByMatricola(trm.Dipendente.matricola);
-                            if (ltrasf?.Any() ?? false)
+                            var ultimo_trasf = dtt.GetUltimoTrasferimentoValidoByMatricola(trm.Dipendente.matricola.ToString());
+                            if (ultimo_trasf.idTrasferimento>0)
                             {
-                                var ultimo_trasf = ltrasf.First();
                                 if (ultimo_trasf.idTrasferimento != idTrasferimento)
                                 {
                                     solaLettura = true;

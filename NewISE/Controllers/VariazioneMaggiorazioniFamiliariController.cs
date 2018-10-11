@@ -224,6 +224,12 @@ namespace NewISE.Controllers
                 idTrasferimento = dtvmf.GetIdTrasferimento(idMaggiorazioniFamiliari);
             }
 
+            TrasferimentoModel tm = new TrasferimentoModel();
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                tm = dtt.GetTrasferimentoById(idTrasferimento);
+            }
+
             List<VariazioneElencoFamiliariModel> lefm = new List<VariazioneElencoFamiliariModel>();
 
             try
@@ -264,7 +270,7 @@ namespace NewISE.Controllers
                                             FK_idFamiliare = e.FK_idConiuge
                                         };
                                         lefm.Add(efm);
-                                        if (efm.dataFine == Utility.DataFineStop())
+                                        if (efm.dataFine == tm.dataRientro)
                                         {
                                             check_nuovo_coniuge = 0;
                                         }
@@ -314,10 +320,10 @@ namespace NewISE.Controllers
                                             FK_idFamiliare = e.FK_IdFigli
                                         };
                                         lefm.Add(efm);
-                                        if (efm.dataFine == Utility.DataFineStop())
-                                        {
-                                            check_nuovo_figlio = 0;
-                                        }
+                                        //if (efm.dataFine == Utility.DataFineStop())
+                                        //{
+                                        //    check_nuovo_figlio = 0;
+                                        //}
                                     }
                                 }
                             }

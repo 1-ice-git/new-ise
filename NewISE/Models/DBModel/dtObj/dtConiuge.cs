@@ -75,7 +75,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             if (cm.dataInizio > t.DATARIENTRO)
                             {
-                                vr = new ValidationResult(string.Format("La Data Inizio Validità non può essere superiore alla data rientro d trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                                vr = new ValidationResult(string.Format("La Data Inizio Validità non può essere superiore alla data rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
                             }
                             else
                             {

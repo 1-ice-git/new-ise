@@ -23,7 +23,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var t = db.CONIUGE.Find(idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                var c = db.CONIUGE.Find(idConiuge);
+                var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 if (dataInizioPensione < t.DATAPARTENZA)
                 {
@@ -32,6 +33,14 @@ namespace NewISE.Models.DBModel.dtObj
                 if (dataInizioPensione > t.DATARIENTRO)
                 {
                     throw new Exception(string.Format("La data d'inizio validità per la pensione non può essere superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                }
+                var lp = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI == false)
+                                .OrderByDescending(a => a.DATAINIZIO)
+                                .ToList();
+                if(lp?.Any()??false)
+                {
+                    var p = lp.First();
+
                 }
             }
 
@@ -691,18 +700,21 @@ namespace NewISE.Models.DBModel.dtObj
                                 #region replico record e lo nascondo
                                 pcmPrecedente.NascondiRecord(db);
 
-                                pcmLav = new PensioneConiugeModel()
+                                if (pcmPrecedente.dataInizioValidita != dataRientro)
                                 {
+                                    pcmLav = new PensioneConiugeModel()
+                                    {
 
-                                    importoPensione = pcmPrecedente.importoPensione,
-                                    dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                    dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
-                                    dataAggiornamento = DateTime.Now,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    FK_idPensione = pcmPrecedente.FK_idPensione,
-                                    nascondi = false
-                                };
-                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                        importoPensione = pcmPrecedente.importoPensione,
+                                        dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                        dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                        dataAggiornamento = DateTime.Now,
+                                        idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        FK_idPensione = pcmPrecedente.FK_idPensione,
+                                        nascondi = false
+                                    };
+                                    SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                }
                                 #endregion
 
                                 #region creo record

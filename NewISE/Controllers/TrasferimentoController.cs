@@ -1203,10 +1203,11 @@ namespace NewISE.Controllers
                         var t = dtt.GetTrasferimentoById(idTrasferimentoOld);
                         if(t.idStatoTrasferimento==EnumStatoTraferimento.Annullato)
                         {
-                            var trasfTerminato = dtt.GetUltimoTrasferimentoTerminatoByMatricola(matr);
-                            if(trasfTerminato.idTrasferimento>0)
+                            //var trasfTerminato = dtt.GetUltimoTrasferimentoTerminatoByMatricola(matr);
+                            var trasfPrercedente = dtt.GetUltimoTrasferimentoValidoByMatricola(matr);
+                            if(trasfPrercedente.idTrasferimento>0)
                             {
-                                idTrasferimentoOld = trasfTerminato.idTrasferimento;
+                                idTrasferimentoOld = trasfPrercedente.idTrasferimento;
                             }
                         }
                         
@@ -1861,7 +1862,14 @@ namespace NewISE.Controllers
                                         }
                                         else
                                         {
-                                            return Json(new { RientroAbilitato = 0 });
+                                            if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                                            {
+                                                return Json(new { RientroAbilitato = 1 });
+                                            }
+                                            else
+                                            {
+                                                return Json(new { RientroAbilitato = 0 });
+                                            }
                                         }
                                     }
                                 }

@@ -1006,6 +1006,51 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
+        public TrasferimentoModel GetUltimoTrasferimentoValidoByMatricola(string matricola)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+            int matr = Convert.ToInt16(matricola);
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
+                if (ldp?.Any() ?? false)
+                {
+                    var lt =
+                        ldp.First()
+                            .TRASFERIMENTO.Where(
+                                a => a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato)
+                            .OrderByDescending(a => a.DATAPARTENZA)
+                            .ToList();
+
+                    if (lt?.Any() ?? false)
+                    {
+                        var t = lt.First();
+
+                        tm = new TrasferimentoModel()
+                        {
+                            idTrasferimento = t.IDTRASFERIMENTO,
+                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                            idUfficio = t.IDUFFICIO,
+                            idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
+                            idDipendente = t.IDDIPENDENTE,
+                            idTipoCoan = t.IDTIPOCOAN,
+                            dataPartenza = t.DATAPARTENZA,
+                            dataRientro = t.DATARIENTRO,
+                            coan = t.COAN,
+                            protocolloLettera = t.PROTOCOLLOLETTERA,
+                            dataLettera = t.DATALETTERA,
+                            notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                            dataAggiornamento = t.DATAAGGIORNAMENTO,
+
+                        };
+                    }
+                }
+            }
+
+            return tm;
+        }
+
+
 
 
         public TrasferimentoModel GetUltimoSoloTrasferimentoByMatricola(string matricola)
@@ -3669,9 +3714,16 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             throw new Exception(string.Format("Impossibile inserire un trasferimento con data partenza inferiore o uguale alla data partenza del trasferimento precedente. ({0})", trasfTerminato.dataPartenza.ToShortDateString()));
                                         }
-                                        if (trasfTerminato.dataRientro >= dataPartenzaEffettiva)
+                                        using (dtRichiamo dtr = new dtRichiamo())
                                         {
-                                            throw new Exception(string.Format("Impossibile inserire un trasferimento con data partenza inferiore o uguale alla data rientro del trasferimento precedente. ({0})", trasfTerminato.dataRientro.Value.ToShortDateString()));
+                                            var rm = dtr.GetRichiamoByIdTrasf(trasfTerminato.idTrasferimento);
+                                            if (rm.IdRichiamo > 0)
+                                            {
+                                                if (trasfTerminato.dataRientro >= dataPartenzaEffettiva)
+                                                {
+                                                    throw new Exception(string.Format("Impossibile inserire un trasferimento con data partenza inferiore o uguale alla data rientro del trasferimento precedente. ({0})", trasfTerminato.dataRientro.Value.ToShortDateString()));
+                                                }
+                                            }
                                         }
                                     }
                                     AllineaDateIni_Trasferimento(t, dataPartenzaOriginale, db);
