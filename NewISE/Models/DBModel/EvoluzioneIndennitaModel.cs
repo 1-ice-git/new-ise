@@ -131,6 +131,7 @@ namespace NewISE.Models.DBModel
         public decimal ContrPrevid { get; set; }
 
         [Display(Name = "ImpFiscale")]
+
         public decimal ImpFiscale { get; set; }
 
         [Display(Name = "RitenutaFiscale")]
@@ -206,6 +207,7 @@ namespace NewISE.Models.DBModel
         public DateTime dataOperazione { get; set; }
 
         [Display(Name = "Importo")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal importo { get; set; }
 
         [Display(Name = "Descrizione Voce")]
@@ -234,8 +236,8 @@ namespace NewISE.Models.DBModel
 
         public decimal giorni { get; set; }
 
-        [Required(ErrorMessage = "Il campo è richiesto.")]
-        [DefaultValue(0)]
+        [Display(Name = "Indennità di Prima Sistemazione Netta")]
+   
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Importo { get; set; }
 

@@ -1123,21 +1123,32 @@ namespace NewISE.Models.DBModel.dtObj
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
                     var ps = t.PRIMASITEMAZIONE;
                     
+                   // var lTeorici =
+                   //     db.TEORICI.Where(
+                   //     a =>
+                   //     a.ANNULLATO == false &&
+                   //     a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                   //     (a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380 ||
+                   //     a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
+                   //     a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
+                   //     a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS) &&
+                   //     a.DIRETTO == false && a.IMPORTO > 0 &&
+                   //     a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0)
+                   //.OrderBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.COGNOME)
+                   //.ThenBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.NOME)
+                   //.ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
+                   //.ToList();
+
+
                     var lTeorici =
                         db.TEORICI.Where(
-                        a =>
-                        a.ANNULLATO == false &&
-                        a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
-                        (a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380 ||
-                        a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
-                        a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
-                        a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS) &&
-                        a.DIRETTO == false && a.IMPORTO > 0 &&
-                        a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0)
-                   .OrderBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.COGNOME)
-                   .ThenBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.NOME)
-                   .ThenBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
-                   .ToList();
+                            a =>
+                                a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                                (a.ELABINDSISTEMAZIONE.ANTICIPO == true) &&
+                                 a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS)
+                             .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
+                             .ToList();
+
 
 
                     if (lTeorici?.Any() ?? false)
@@ -1146,15 +1157,15 @@ namespace NewISE.Models.DBModel.dtObj
                         var teorico = lTeorici.First();
                         var AliquotaFiscale = teorico.ALIQUOTAFISCALE;
                         var importo = teorico.ELABINDSISTEMAZIONE;
+                        var saldo = teorico.ELABINDSISTEMAZIONE.SALDO;
+                        var unicasoluzione = teorico.ELABINDSISTEMAZIONE.UNICASOLUZIONE;
                         var idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB;
                         var tm = teorico.TIPOMOVIMENTO;
                         var voce = teorico.VOCI;
                         var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                         var tv = teorico.VOCI.TIPOVOCE;
                         var detrazione = teorico.DETRAZIONIAPPLICATE;
-
-
-
+                        
                         ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
 
                         var lacDetr =
@@ -1298,6 +1309,377 @@ namespace NewISE.Models.DBModel.dtObj
                 throw;
             }
         }
+        public IList<EvoluzioneIndennitaModel> GetSaldoIndennitaSistemazioneEvoluzione(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
+
+                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var ps = t.PRIMASITEMAZIONE;
+                    
+
+                    var lTeorici =
+                        db.TEORICI.Where(
+                            a =>
+                                a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                                (a.ELABINDSISTEMAZIONE.SALDO == true) &&
+                                 a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS)
+                             .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
+                             .ToList();
+
+
+
+                    if (lTeorici?.Any() ?? false)
+                    {
+
+                        var teorico = lTeorici.First();
+                        var AliquotaFiscale = teorico.ALIQUOTAFISCALE;
+                        var importo = teorico.ELABINDSISTEMAZIONE;
+                        var saldo = teorico.ELABINDSISTEMAZIONE.SALDO;
+                        var unicasoluzione = teorico.ELABINDSISTEMAZIONE.UNICASOLUZIONE;
+                        var idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB;
+                        var tm = teorico.TIPOMOVIMENTO;
+                        var voce = teorico.VOCI;
+                        var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+                        var tv = teorico.VOCI.TIPOVOCE;
+                        var detrazione = teorico.DETRAZIONIAPPLICATE;
+
+                        ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                        var lacDetr =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+
+                        if (lacDetr?.Any() ?? false)
+                        {
+                            detrazioni = lacDetr.First();
+
+                            var AliquotaPrevid = detrazioni.VALORE;
+
+
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                        }
+
+
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                        #region Variazioni Indennità di Sistemazione
+
+                        var ll =
+                            db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
+                            .Where(a => a.ANNULLATO == false)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                        foreach (var ib in ll)
+                        {
+                            DateTime dtVar = new DateTime();
+
+                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = ib.DATAINIZIOVALIDITA;
+                            }
+
+
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
+                            }
+                        }
+
+                        #endregion
+
+                        #region Anticipi Percentuale Richiesta
+
+                        AnticipiViewModel anticipi = new AnticipiViewModel();
+
+
+                        using (dtAnticipi dta = new dtAnticipi())
+                        {
+                            var aa = trasferimento.PRIMASITEMAZIONE.ATTIVITAANTICIPI
+                                    .Where(a => a.ANNULLATO == false
+                                        && a.ATTIVARICHIESTA
+                                        && a.NOTIFICARICHIESTA)
+                                        .OrderBy(a => a.IDATTIVITAANTICIPI).ToList().First();
+
+                            anticipi = dta.GetAnticipi(aa.IDATTIVITAANTICIPI, db);
+
+                        }
+
+                        #endregion
+
+                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                        if (lDateVariazioni?.Any() ?? false)
+                        {
+                            for (int j = 0; j < lDateVariazioni.Count; j++)
+                            {
+                                DateTime dv = lDateVariazioni[j];
+
+                                if (dv < Utility.DataFineStop())
+                                {
+                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    {
+                                        EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
+
+                                        xx.dataInizioValidita = dv;
+                                        xx.dataFineValidita = dvSucc;
+                                        xx.IndennitaBase = ci.IndennitaDiBase;
+                                        xx.PercentualeDisagio = ci.PercentualeDisagio;
+                                        xx.CoefficienteSede = ci.CoefficienteDiSede;
+                                        xx.IndennitaServizio = ci.IndennitaDiServizio;
+                                        xx.IndennitaPersonale = ci.IndennitaPersonale;
+                                        xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
+                                        xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
+                                        xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
+                                        xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
+                                        xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
+                                        xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                        xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
+                                        xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
+                                        xx.Importo = teorico.IMPORTO;
+                                        xx.AliquotaFiscale = teorico.ALIQUOTAFISCALE;
+                                        xx.PercentualeAnticipoRichiesto = anticipi.PercentualeAnticipoRichiesto;
+                                        xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
+                                        xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
+                                        xx.CoeffIndSistemazione = ci.CoefficienteIndennitaSistemazione;
+                                        xx.PercentualeRiduzionePrimaSistemazione = ci.PercentualeRiduzionePrimaSistemazione;
+                                        xx.Detrazione = teorico.DETRAZIONIAPPLICATE;
+                                        xx.AliquotaPrevid = detrazioni.VALORE;
+                                        xx.ImpPrevid = ci.IndennitaSistemazioneAnticipabileLorda - teorico.DETRAZIONIAPPLICATE;
+                                        xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        xx.ImpFiscale = xx.ImpPrevid - xx.ContrPrevid;
+                                        xx.RitenutaFiscale = xx.ImpFiscale * teorico.ALIQUOTAFISCALE / 100;
+
+                                        eim.Add(xx);
+
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
+                return eim;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public IList<EvoluzioneIndennitaModel> GetUnicaSoluzioneIndennitaSistemazioneEvoluzione(decimal idTrasferimento)
+        {
+            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
+
+                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var ps = t.PRIMASITEMAZIONE;
+
+
+                    var lTeorici =
+                        db.TEORICI.Where(
+                            a =>
+                                a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                                (a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true) &&
+                                 a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS)
+                             .OrderBy(a => a.ANNORIFERIMENTO)
+                             .ThenBy(a => a.MESERIFERIMENTO)
+                             .ToList();
+
+
+
+                    if (lTeorici?.Any() ?? false)
+                    {
+
+                        var teorico = lTeorici.First();
+                        var AliquotaFiscale = teorico.ALIQUOTAFISCALE;
+                        var importo = teorico.ELABINDSISTEMAZIONE;
+                        var saldo = teorico.ELABINDSISTEMAZIONE.SALDO;
+                        var unicasoluzione = teorico.ELABINDSISTEMAZIONE.UNICASOLUZIONE;
+                        var idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB;
+                        var tm = teorico.TIPOMOVIMENTO;
+                        var voce = teorico.VOCI;
+                        var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+                        var tv = teorico.VOCI.TIPOVOCE;
+                        var detrazione = teorico.DETRAZIONIAPPLICATE;
+
+                        ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                        var lacDetr =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+
+                        if (lacDetr?.Any() ?? false)
+                        {
+                            detrazioni = lacDetr.First();
+
+                            var AliquotaPrevid = detrazioni.VALORE;
+
+
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                        }
+
+
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                        #region Variazioni Indennità di Sistemazione
+
+                        var ll =
+                            db.TRASFERIMENTO.Find(idTrasferimento).TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE
+                            .Where(a => a.ANNULLATO == false)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                        foreach (var ib in ll)
+                        {
+                            DateTime dtVar = new DateTime();
+
+                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = ib.DATAINIZIOVALIDITA;
+                            }
+
+
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
+                            }
+                        }
+
+                        #endregion
+
+                        #region Anticipi Percentuale Richiesta
+
+                        AnticipiViewModel anticipi = new AnticipiViewModel();
+
+
+                        using (dtAnticipi dta = new dtAnticipi())
+                        {
+                            var aa = trasferimento.PRIMASITEMAZIONE.ATTIVITAANTICIPI
+                                    .Where(a => a.ANNULLATO == false
+                                        && a.ATTIVARICHIESTA
+                                        && a.NOTIFICARICHIESTA)
+                                        .OrderBy(a => a.IDATTIVITAANTICIPI).ToList().First();
+
+                            anticipi = dta.GetAnticipi(aa.IDATTIVITAANTICIPI, db);
+
+                        }
+
+                        #endregion
+
+                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                        if (lDateVariazioni?.Any() ?? false)
+                        {
+                            for (int j = 0; j < lDateVariazioni.Count; j++)
+                            {
+                                DateTime dv = lDateVariazioni[j];
+
+                                if (dv < Utility.DataFineStop())
+                                {
+                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    {
+                                        EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
+
+                                        xx.dataInizioValidita = dv;
+                                        xx.dataFineValidita = dvSucc;
+                                        xx.IndennitaBase = ci.IndennitaDiBase;
+                                        xx.PercentualeDisagio = ci.PercentualeDisagio;
+                                        xx.CoefficienteSede = ci.CoefficienteDiSede;
+                                        xx.IndennitaServizio = ci.IndennitaDiServizio;
+                                        xx.IndennitaPersonale = ci.IndennitaPersonale;
+                                        xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
+                                        xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
+                                        xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
+                                        xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
+                                        xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
+                                        xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
+                                        xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
+                                        xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
+                                        xx.Importo = teorico.IMPORTO;
+                                        xx.AliquotaFiscale = teorico.ALIQUOTAFISCALE;
+                                        xx.PercentualeAnticipoRichiesto = anticipi.PercentualeAnticipoRichiesto;
+                                        xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
+                                        xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
+                                        xx.CoeffIndSistemazione = ci.CoefficienteIndennitaSistemazione;
+                                        xx.PercentualeRiduzionePrimaSistemazione = ci.PercentualeRiduzionePrimaSistemazione;
+                                        xx.Detrazione = teorico.DETRAZIONIAPPLICATE;
+                                        xx.AliquotaPrevid = detrazioni.VALORE;
+                                        xx.ImpPrevid = ci.IndennitaSistemazioneAnticipabileLorda - teorico.DETRAZIONIAPPLICATE;
+                                        xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        xx.ImpFiscale = xx.ImpPrevid - xx.ContrPrevid;
+                                        xx.RitenutaFiscale = xx.ImpFiscale * teorico.ALIQUOTAFISCALE / 100;
+
+                                        eim.Add(xx);
+
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
+                return eim;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public IList<EvoluzioneIndennitaModel> GetIndennitaSistemazioneLordaEvoluzione(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
@@ -1384,11 +1766,6 @@ namespace NewISE.Models.DBModel.dtObj
                         //liq = dta.PrelevaLiquidazioniMensili(bb.MESEANNOELABORAZIONE, db);
                         
                     }
-
-                   
-
-
-
 
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
 

@@ -6525,6 +6525,8 @@
     <Content Include="Views\VariazioneTitoliViaggio\DocumentoTV.cshtml" />
     <Content Include="Views\VariazioneTitoliViaggio\TVCompletati.cshtml" />
     <Content Include="Views\VariazioneTitoliViaggio\ElencoTV_Completati.cshtml" />
+    <Content Include="Views\Indennita\UnicaSoluzioneIndennitadiPrimaSistemazione.cshtml" />
+    <Content Include="Views\Indennita\RptUnicaSoluzioneIndennitadiPrimaSistemazione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6706,6 +6708,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptTrasportoEffetti.rdlc" />
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
+    <EmbeddedResource Include="Report\RptUnicaSoluzioneIndennitadiPrimaSistemazione.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
