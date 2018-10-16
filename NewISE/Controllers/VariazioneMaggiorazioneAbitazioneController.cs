@@ -1570,23 +1570,6 @@ namespace NewISE.Controllers
                                     }
                                     catch (Exception ex)
                                     {
-                                        //ModelState.AddModelError("verDataMAB", ex.Message);
-                                        //var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                                        //mabvm.idTrasferimento = idTrasferimento;
-
-                                        //mabvm.dataInizioMAB = tm.dataPartenza;
-                                        //mabvm.dataFineMAB = tm.dataRientro.Value;
-
-                                        //var aa = dtvma.GetMaggiorazioneAnnuale_var(mabvm, db);
-                                        //if (aa.IDMAGANNUALI > 0)
-                                        //{
-                                        //    mabvm.annualita = true;
-                                        //}
-                                        //ViewData.Add("idTrasferimento", idTrasferimento);
-
-                                        //return PartialView("NuovaMAB_var", mabvm);
-
                                         return Json(new {ErrorMessage = ex.Message });
                                     }
 

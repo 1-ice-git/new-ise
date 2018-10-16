@@ -119,6 +119,10 @@
       <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.WebForms.DLL</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.11.0.0\lib\net20\Microsoft.SqlServer.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -4760,6 +4764,19 @@
     <Content Include="Areas\Statistiche\Views\OpDipEsteroNew\RptOpDipEstero.cshtml" />
     <Content Include="ClassDiagram1.cd" />
     <Content Include="ClassDiagram2.cd" />
+    <Content Include="Areas\Statistiche\Views\CostiCoan\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\CostiCoan\RptCostiCoan.cshtml" />
+    <Content Include="Areas\Statistiche\RPTDataSet\dsCostiCoan.xsc">
+      <DependentUpon>dsCostiCoan.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\dsCostiCoan.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCostiCoan.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsCostiCoan.xss">
+      <DependentUpon>dsCostiCoan.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -4962,6 +4979,9 @@
     <Content Include="Scripts\ViewScripts\VariazioneMaggiorazioneAbitazione.js" />
     <Content Include="Scripts\ViewScripts\MaggiorazioneAbitazione.js" />
     <Content Include="Scripts\_Layout.js" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial110.dll" />
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial110.dll" />
     <Content Include="Template\HtmlPage1.html" />
     <Content Include="Views\Content\NoScroller.css" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
@@ -5011,11 +5031,13 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
     <Compile Include="Areas\Statistiche\Controllers\DipEsteroLivelloNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\IndennitaSedeEsteraController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\CostiCoanController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\OpDipEsteroNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSospensioniController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StoriaDipendenteNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiNewController.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptCostiCoanModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\OpDipEsteroLivelloModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiIseMensileModel.cs" />
@@ -5057,6 +5079,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetTrasportoEffetti.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\dsCostiCoan.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCostiCoan.xsd</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AnticipiController.cs" />
     <Compile Include="Controllers\ElaborazioniController.cs" />
@@ -5449,6 +5476,7 @@
     <Compile Include="Models\DBModel\dtObj\dtEvoluzioneIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaPersonale.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtCostiCoan.cs" />
     <Compile Include="Models\DBModel\dtObj\dtOpDipEsteroNew.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtReportTrasportoEffetti.cs" />
@@ -5936,6 +5964,7 @@
     <Compile Include="Models\Tools\EmailElaborazione.cs" />
     <Compile Include="Models\Tools\EmailTrasferimento.cs" />
     <Compile Include="Models\Tools\EmailCredenziali.cs" />
+    <Compile Include="Areas\Statistiche\Models\ElencoCoanModel.cs" />
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\ElencoVociManualiViewModel.cs" />
@@ -6009,6 +6038,7 @@
     </Compile>
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioniDiretteRpt.cs" />
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioneMensileElabRpt.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -6697,6 +6727,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Report\Elaborazioni\rptLiquidazioniMensili.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptCostiCoan.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptDipEstero.rdlc" />
