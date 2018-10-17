@@ -71,7 +71,7 @@
                 <div id="Terzomenu" class="panel-collapse collapse">
                     <div class="list-group">
 
-                        <a href="#" class="list-group-item" onclick="">Consuntivo dei Costi</a>
+                        <a href="#" class="list-group-item" onclick="callpartialCosti()">Consuntivo dei Costi</a>
                         <a href="#" class="list-group-item" onclick="callpartialCostiCoan()">Consuntivo dei Costi per codice Co. An.</a>
                         <a href="#" class="list-group-item" onclick="">Consuntivo spese di Avvicendamento</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroLivelloNew();">Dipendenti all'Estero per Livello</a>
@@ -975,6 +975,32 @@
         });
     }
 
+    function callpartialCosti() {
+        //debugger;
+        rotta = "/Statistiche/Costi/Index";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
 
 
 </script>

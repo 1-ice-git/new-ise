@@ -4769,6 +4769,17 @@
     <Content Include="Areas\Statistiche\RPTDataSet\dsCostiCoan.xsc">
       <DependentUpon>dsCostiCoan.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsCosti.xsc">
+      <DependentUpon>dsCosti.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\dsCosti.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCosti.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsCosti.xss">
+      <DependentUpon>dsCosti.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\dsCostiCoan.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -4777,6 +4788,8 @@
     <Content Include="Areas\Statistiche\RPTDataSet\dsCostiCoan.xss">
       <DependentUpon>dsCostiCoan.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\Views\Costi\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\Costi\RptCosti.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -5029,6 +5042,7 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\CostiController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\DipEsteroLivelloNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\IndennitaSedeEsteraController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\CostiCoanController.cs" />
@@ -5037,6 +5051,7 @@
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StoriaDipendenteNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiNewController.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptCostiModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiCoanModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\OpDipEsteroLivelloModel.cs" />
@@ -5079,6 +5094,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetTrasportoEffetti.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\dsCosti.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCosti.xsd</DependentUpon>
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\dsCostiCoan.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -5471,6 +5491,7 @@
     <Compile Include="Models\DBModel\bsObj\VariazioniIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtCosti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtDipEsteroLivello.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtEvoluzioneIndennita.cs" />
@@ -6730,6 +6751,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Areas\Statistiche\RPT\RptCostiCoan.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptCosti.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptDipEstero.rdlc" />
