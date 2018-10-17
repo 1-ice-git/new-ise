@@ -85,7 +85,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 data_trasferimento = lm.data_trasferimento,
                                 data_rientro = lm.data_rientro,
                                 sede = lm.sede,
-                                qualifica = lm.qualifica
+                                qualifica = lm.qualifica,
+                                ruolo_dipendente = lm.ruolo_dipendente
                             };
 
 

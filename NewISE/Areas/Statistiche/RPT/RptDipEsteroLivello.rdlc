@@ -134,6 +134,9 @@
               <Width>2.5cm</Width>
             </TablixColumn>
             <TablixColumn>
+              <Width>4.00812cm</Width>
+            </TablixColumn>
+            <TablixColumn>
               <Width>7.7745cm</Width>
             </TablixColumn>
             <TablixColumn>
@@ -143,7 +146,7 @@
               <Width>3.87583cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>7.45782cm</Width>
+              <Width>3.19803cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -169,6 +172,39 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox11</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox3">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Ruolo Dipendente</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox3</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -352,6 +388,36 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
+                    <Textbox Name="ruolo_dipendente">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!ruolo_dipendente.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>ruolo_dipendente</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
                     <Textbox Name="nominativo">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -485,6 +551,7 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -501,7 +568,7 @@
         <Top>2.2987cm</Top>
         <Left>0.61595cm</Left>
         <Height>1.2cm</Height>
-        <Width>24.42938cm</Width>
+        <Width>24.17771cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -647,6 +714,10 @@
         </Field>
         <Field Name="qualifica">
           <DataField>qualifica</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ruolo_dipendente">
+          <DataField>ruolo_dipendente</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
