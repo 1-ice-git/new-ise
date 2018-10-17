@@ -582,11 +582,6 @@
                       <GroupExpression>=Fields!Matricola.Value</GroupExpression>
                     </GroupExpressions>
                   </Group>
-                  <SortExpressions>
-                    <SortExpression>
-                      <Value>=Fields!Matricola.Value</Value>
-                    </SortExpression>
-                  </SortExpressions>
                   <TablixHeader>
                     <Size>1.80835cm</Size>
                     <CellContents>
@@ -665,6 +660,7 @@
                               <PaddingBottom>2pt</PaddingBottom>
                             </Style>
                           </Textbox>
+                          <rd:Selected>true</rd:Selected>
                         </CellContents>
                       </TablixHeader>
                       <TablixMembers>
@@ -1113,7 +1109,7 @@
         <DataSetName>dsCosti</DataSetName>
         <Top>0.3463cm</Top>
         <Height>3.00854cm</Height>
-        <Width>27.6783cm</Width>
+        <Width>27.67831cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1458,8 +1454,8 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="Matricola">
-          <DataField>Matricola</DataField>
+        <Field Name="Ufficio">
+          <DataField>Ufficio</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Nominativo">
@@ -1470,8 +1466,8 @@
           <DataField>Livello</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Ufficio">
-          <DataField>Ufficio</DataField>
+        <Field Name="Matricola">
+          <DataField>Matricola</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Descrizione">

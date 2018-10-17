@@ -20,17 +20,17 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("dsCostiCoan")]
+    [global::System.Xml.Serialization.XmlRootAttribute("dsCostiUfficio")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class dsCostiCoan : global::System.Data.DataSet {
+    public partial class dsCostiUfficio : global::System.Data.DataSet {
         
-        private dtCostiCoanDataTable tabledtCostiCoan;
+        private dtCostiUfficioDataTable tabledtCostiUfficio;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public dsCostiCoan() {
+        public dsCostiUfficio() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected dsCostiCoan(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected dsCostiUfficio(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -54,8 +54,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["dtCostiCoan"] != null)) {
-                    base.Tables.Add(new dtCostiCoanDataTable(ds.Tables["dtCostiCoan"]));
+                if ((ds.Tables["dtCostiUfficio"] != null)) {
+                    base.Tables.Add(new dtCostiUfficioDataTable(ds.Tables["dtCostiUfficio"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public dtCostiCoanDataTable dtCostiCoan {
+        public dtCostiUfficioDataTable dtCostiUfficio {
             get {
-                return this.tabledtCostiCoan;
+                return this.tabledtCostiUfficio;
             }
         }
         
@@ -127,7 +127,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            dsCostiCoan cln = ((dsCostiCoan)(base.Clone()));
+            dsCostiUfficio cln = ((dsCostiUfficio)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -152,8 +152,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["dtCostiCoan"] != null)) {
-                    base.Tables.Add(new dtCostiCoanDataTable(ds.Tables["dtCostiCoan"]));
+                if ((ds.Tables["dtCostiUfficio"] != null)) {
+                    base.Tables.Add(new dtCostiUfficioDataTable(ds.Tables["dtCostiUfficio"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tabledtCostiCoan = ((dtCostiCoanDataTable)(base.Tables["dtCostiCoan"]));
+            this.tabledtCostiUfficio = ((dtCostiUfficioDataTable)(base.Tables["dtCostiUfficio"]));
             if ((initTable == true)) {
-                if ((this.tabledtCostiCoan != null)) {
-                    this.tabledtCostiCoan.InitVars();
+                if ((this.tabledtCostiUfficio != null)) {
+                    this.tabledtCostiUfficio.InitVars();
                 }
             }
         }
@@ -199,18 +199,18 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "dsCostiCoan";
+            this.DataSetName = "dsCostiUfficio";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/dsCostiCoan.xsd";
+            this.Namespace = "http://tempuri.org/dsCostiUfficio.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tabledtCostiCoan = new dtCostiCoanDataTable();
-            base.Tables.Add(this.tabledtCostiCoan);
+            this.tabledtCostiUfficio = new dtCostiUfficioDataTable();
+            base.Tables.Add(this.tabledtCostiUfficio);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializedtCostiCoan() {
+        private bool ShouldSerializedtCostiUfficio() {
             return false;
         }
         
@@ -225,7 +225,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            dsCostiCoan ds = new dsCostiCoan();
+            dsCostiUfficio ds = new dsCostiUfficio();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -270,22 +270,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void dtCostiCoanRowChangeEventHandler(object sender, dtCostiCoanRowChangeEvent e);
+        public delegate void dtCostiUfficioRowChangeEventHandler(object sender, dtCostiUfficioRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class dtCostiCoanDataTable : global::System.Data.TypedTableBase<dtCostiCoanRow> {
-            
-            private global::System.Data.DataColumn columnNominativo;
+        public partial class dtCostiUfficioDataTable : global::System.Data.TypedTableBase<dtCostiUfficioRow> {
             
             private global::System.Data.DataColumn columnUfficio;
             
-            private global::System.Data.DataColumn columnLivello;
-            
             private global::System.Data.DataColumn columnMatricola;
+            
+            private global::System.Data.DataColumn columnNominativo;
+            
+            private global::System.Data.DataColumn columnLivello;
             
             private global::System.Data.DataColumn columnDescrizione;
             
@@ -293,8 +293,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtCostiCoanDataTable() {
-                this.TableName = "dtCostiCoan";
+            public dtCostiUfficioDataTable() {
+                this.TableName = "dtCostiUfficio";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -302,7 +302,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal dtCostiCoanDataTable(global::System.Data.DataTable table) {
+            internal dtCostiUfficioDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -319,17 +319,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected dtCostiCoanDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected dtCostiUfficioDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn NominativoColumn {
-                get {
-                    return this.columnNominativo;
-                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -342,17 +334,25 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn LivelloColumn {
+            public global::System.Data.DataColumn MatricolaColumn {
                 get {
-                    return this.columnLivello;
+                    return this.columnMatricola;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn MatricolaColumn {
+            public global::System.Data.DataColumn NominativoColumn {
                 get {
-                    return this.columnMatricola;
+                    return this.columnNominativo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn LivelloColumn {
+                get {
+                    return this.columnLivello;
                 }
             }
             
@@ -383,59 +383,50 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtCostiCoanRow this[int index] {
+            public dtCostiUfficioRow this[int index] {
                 get {
-                    return ((dtCostiCoanRow)(this.Rows[index]));
+                    return ((dtCostiUfficioRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event dtCostiCoanRowChangeEventHandler dtCostiCoanRowChanging;
+            public event dtCostiUfficioRowChangeEventHandler dtCostiUfficioRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event dtCostiCoanRowChangeEventHandler dtCostiCoanRowChanged;
+            public event dtCostiUfficioRowChangeEventHandler dtCostiUfficioRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event dtCostiCoanRowChangeEventHandler dtCostiCoanRowDeleting;
+            public event dtCostiUfficioRowChangeEventHandler dtCostiUfficioRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event dtCostiCoanRowChangeEventHandler dtCostiCoanRowDeleted;
+            public event dtCostiUfficioRowChangeEventHandler dtCostiUfficioRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AdddtCostiCoanRow(dtCostiCoanRow row) {
+            public void AdddtCostiUfficioRow(dtCostiUfficioRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtCostiCoanRow AdddtCostiCoanRow(string Nominativo, string Ufficio, string Livello, int Matricola, string Descrizione, decimal Importo) {
-                dtCostiCoanRow rowdtCostiCoanRow = ((dtCostiCoanRow)(this.NewRow()));
+            public dtCostiUfficioRow AdddtCostiUfficioRow(string Ufficio, string Matricola, string Nominativo, string Livello, string Descrizione, string Importo) {
+                dtCostiUfficioRow rowdtCostiUfficioRow = ((dtCostiUfficioRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        Nominativo,
                         Ufficio,
-                        Livello,
                         Matricola,
+                        Nominativo,
+                        Livello,
                         Descrizione,
                         Importo};
-                rowdtCostiCoanRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowdtCostiCoanRow);
-                return rowdtCostiCoanRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtCostiCoanRow FindByNominativoUfficioLivello(string Nominativo, string Ufficio, string Livello) {
-                return ((dtCostiCoanRow)(this.Rows.Find(new object[] {
-                            Nominativo,
-                            Ufficio,
-                            Livello})));
+                rowdtCostiUfficioRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowdtCostiUfficioRow);
+                return rowdtCostiUfficioRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                dtCostiCoanDataTable cln = ((dtCostiCoanDataTable)(base.Clone()));
+                dtCostiUfficioDataTable cln = ((dtCostiUfficioDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -443,16 +434,16 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new dtCostiCoanDataTable();
+                return new dtCostiUfficioDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnNominativo = base.Columns["Nominativo"];
                 this.columnUfficio = base.Columns["Ufficio"];
-                this.columnLivello = base.Columns["Livello"];
                 this.columnMatricola = base.Columns["Matricola"];
+                this.columnNominativo = base.Columns["Nominativo"];
+                this.columnLivello = base.Columns["Livello"];
                 this.columnDescrizione = base.Columns["Descrizione"];
                 this.columnImporto = base.Columns["Importo"];
             }
@@ -460,51 +451,44 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnNominativo = new global::System.Data.DataColumn("Nominativo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnNominativo);
                 this.columnUfficio = new global::System.Data.DataColumn("Ufficio", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUfficio);
+                this.columnMatricola = new global::System.Data.DataColumn("Matricola", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMatricola);
+                this.columnNominativo = new global::System.Data.DataColumn("Nominativo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNominativo);
                 this.columnLivello = new global::System.Data.DataColumn("Livello", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLivello);
-                this.columnMatricola = new global::System.Data.DataColumn("Matricola", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnMatricola);
                 this.columnDescrizione = new global::System.Data.DataColumn("Descrizione", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescrizione);
-                this.columnImporto = new global::System.Data.DataColumn("Importo", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnImporto = new global::System.Data.DataColumn("Importo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnImporto);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("dtCostiCoanKey1", new global::System.Data.DataColumn[] {
-                                this.columnNominativo,
-                                this.columnUfficio,
-                                this.columnLivello}, true));
-                this.columnNominativo.AllowDBNull = false;
-                this.columnUfficio.AllowDBNull = false;
-                this.columnLivello.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtCostiCoanRow NewdtCostiCoanRow() {
-                return ((dtCostiCoanRow)(this.NewRow()));
+            public dtCostiUfficioRow NewdtCostiUfficioRow() {
+                return ((dtCostiUfficioRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new dtCostiCoanRow(builder);
+                return new dtCostiUfficioRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(dtCostiCoanRow);
+                return typeof(dtCostiUfficioRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.dtCostiCoanRowChanged != null)) {
-                    this.dtCostiCoanRowChanged(this, new dtCostiCoanRowChangeEvent(((dtCostiCoanRow)(e.Row)), e.Action));
+                if ((this.dtCostiUfficioRowChanged != null)) {
+                    this.dtCostiUfficioRowChanged(this, new dtCostiUfficioRowChangeEvent(((dtCostiUfficioRow)(e.Row)), e.Action));
                 }
             }
             
@@ -512,8 +496,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.dtCostiCoanRowChanging != null)) {
-                    this.dtCostiCoanRowChanging(this, new dtCostiCoanRowChangeEvent(((dtCostiCoanRow)(e.Row)), e.Action));
+                if ((this.dtCostiUfficioRowChanging != null)) {
+                    this.dtCostiUfficioRowChanging(this, new dtCostiUfficioRowChangeEvent(((dtCostiUfficioRow)(e.Row)), e.Action));
                 }
             }
             
@@ -521,8 +505,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.dtCostiCoanRowDeleted != null)) {
-                    this.dtCostiCoanRowDeleted(this, new dtCostiCoanRowChangeEvent(((dtCostiCoanRow)(e.Row)), e.Action));
+                if ((this.dtCostiUfficioRowDeleted != null)) {
+                    this.dtCostiUfficioRowDeleted(this, new dtCostiUfficioRowChangeEvent(((dtCostiUfficioRow)(e.Row)), e.Action));
                 }
             }
             
@@ -530,14 +514,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.dtCostiCoanRowDeleting != null)) {
-                    this.dtCostiCoanRowDeleting(this, new dtCostiCoanRowChangeEvent(((dtCostiCoanRow)(e.Row)), e.Action));
+                if ((this.dtCostiUfficioRowDeleting != null)) {
+                    this.dtCostiUfficioRowDeleting(this, new dtCostiUfficioRowChangeEvent(((dtCostiUfficioRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemovedtCostiCoanRow(dtCostiCoanRow row) {
+            public void RemovedtCostiUfficioRow(dtCostiUfficioRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -546,7 +530,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                dsCostiCoan ds = new dsCostiCoan();
+                dsCostiUfficio ds = new dsCostiUfficio();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -564,7 +548,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "dtCostiCoanDataTable";
+                attribute2.FixedValue = "dtCostiUfficioDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -608,36 +592,62 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class dtCostiCoanRow : global::System.Data.DataRow {
+        public partial class dtCostiUfficioRow : global::System.Data.DataRow {
             
-            private dtCostiCoanDataTable tabledtCostiCoan;
+            private dtCostiUfficioDataTable tabledtCostiUfficio;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal dtCostiCoanRow(global::System.Data.DataRowBuilder rb) : 
+            internal dtCostiUfficioRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tabledtCostiCoan = ((dtCostiCoanDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Nominativo {
-                get {
-                    return ((string)(this[this.tabledtCostiCoan.NominativoColumn]));
-                }
-                set {
-                    this[this.tabledtCostiCoan.NominativoColumn] = value;
-                }
+                this.tabledtCostiUfficio = ((dtCostiUfficioDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Ufficio {
                 get {
-                    return ((string)(this[this.tabledtCostiCoan.UfficioColumn]));
+                    try {
+                        return ((string)(this[this.tabledtCostiUfficio.UfficioColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Ufficio\' in table \'dtCostiUfficio\' is DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tabledtCostiCoan.UfficioColumn] = value;
+                    this[this.tabledtCostiUfficio.UfficioColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Matricola {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtCostiUfficio.MatricolaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Matricola\' in table \'dtCostiUfficio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtCostiUfficio.MatricolaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Nominativo {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtCostiUfficio.NominativoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Nominativo\' in table \'dtCostiUfficio\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtCostiUfficio.NominativoColumn] = value;
                 }
             }
             
@@ -645,26 +655,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Livello {
                 get {
-                    return ((string)(this[this.tabledtCostiCoan.LivelloColumn]));
-                }
-                set {
-                    this[this.tabledtCostiCoan.LivelloColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int Matricola {
-                get {
                     try {
-                        return ((int)(this[this.tabledtCostiCoan.MatricolaColumn]));
+                        return ((string)(this[this.tabledtCostiUfficio.LivelloColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Matricola\' in table \'dtCostiCoan\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Livello\' in table \'dtCostiUfficio\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledtCostiCoan.MatricolaColumn] = value;
+                    this[this.tabledtCostiUfficio.LivelloColumn] = value;
                 }
             }
             
@@ -673,67 +672,103 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string Descrizione {
                 get {
                     try {
-                        return ((string)(this[this.tabledtCostiCoan.DescrizioneColumn]));
+                        return ((string)(this[this.tabledtCostiUfficio.DescrizioneColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Descrizione\' in table \'dtCostiCoan\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Descrizione\' in table \'dtCostiUfficio\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledtCostiCoan.DescrizioneColumn] = value;
+                    this[this.tabledtCostiUfficio.DescrizioneColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal Importo {
+            public string Importo {
                 get {
                     try {
-                        return ((decimal)(this[this.tabledtCostiCoan.ImportoColumn]));
+                        return ((string)(this[this.tabledtCostiUfficio.ImportoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Importo\' in table \'dtCostiCoan\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Importo\' in table \'dtCostiUfficio\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledtCostiCoan.ImportoColumn] = value;
+                    this[this.tabledtCostiUfficio.ImportoColumn] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsUfficioNull() {
+                return this.IsNull(this.tabledtCostiUfficio.UfficioColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetUfficioNull() {
+                this[this.tabledtCostiUfficio.UfficioColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsMatricolaNull() {
-                return this.IsNull(this.tabledtCostiCoan.MatricolaColumn);
+                return this.IsNull(this.tabledtCostiUfficio.MatricolaColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetMatricolaNull() {
-                this[this.tabledtCostiCoan.MatricolaColumn] = global::System.Convert.DBNull;
+                this[this.tabledtCostiUfficio.MatricolaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNominativoNull() {
+                return this.IsNull(this.tabledtCostiUfficio.NominativoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNominativoNull() {
+                this[this.tabledtCostiUfficio.NominativoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsLivelloNull() {
+                return this.IsNull(this.tabledtCostiUfficio.LivelloColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetLivelloNull() {
+                this[this.tabledtCostiUfficio.LivelloColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDescrizioneNull() {
-                return this.IsNull(this.tabledtCostiCoan.DescrizioneColumn);
+                return this.IsNull(this.tabledtCostiUfficio.DescrizioneColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDescrizioneNull() {
-                this[this.tabledtCostiCoan.DescrizioneColumn] = global::System.Convert.DBNull;
+                this[this.tabledtCostiUfficio.DescrizioneColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsImportoNull() {
-                return this.IsNull(this.tabledtCostiCoan.ImportoColumn);
+                return this.IsNull(this.tabledtCostiUfficio.ImportoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetImportoNull() {
-                this[this.tabledtCostiCoan.ImportoColumn] = global::System.Convert.DBNull;
+                this[this.tabledtCostiUfficio.ImportoColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -741,22 +776,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class dtCostiCoanRowChangeEvent : global::System.EventArgs {
+        public class dtCostiUfficioRowChangeEvent : global::System.EventArgs {
             
-            private dtCostiCoanRow eventRow;
+            private dtCostiUfficioRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtCostiCoanRowChangeEvent(dtCostiCoanRow row, global::System.Data.DataRowAction action) {
+            public dtCostiUfficioRowChangeEvent(dtCostiUfficioRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtCostiCoanRow Row {
+            public dtCostiUfficioRow Row {
                 get {
                     return this.eventRow;
                 }

@@ -4790,6 +4790,19 @@
     </Content>
     <Content Include="Areas\Statistiche\Views\Costi\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\Costi\RptCosti.cshtml" />
+    <Content Include="Areas\Statistiche\Views\CostiUfficio\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\CostiUfficio\RptCostiUfficio.cshtml" />
+    <Content Include="Areas\Statistiche\RPTDataSet\dsCostiUfficio.xsc">
+      <DependentUpon>dsCostiUfficio.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\dsCostiUfficio.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCostiUfficio.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsCostiUfficio.xss">
+      <DependentUpon>dsCostiUfficio.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -5042,6 +5055,7 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\CostiUfficioController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\CostiController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\DipEsteroLivelloNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\IndennitaSedeEsteraController.cs" />
@@ -5051,6 +5065,7 @@
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StoriaDipendenteNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiNewController.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptCostiUfficioModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiCoanModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloNewModel.cs" />
@@ -5104,6 +5119,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsCostiCoan.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\dsCostiUfficio.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCostiUfficio.xsd</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AnticipiController.cs" />
     <Compile Include="Controllers\ElaborazioniController.cs" />
@@ -5492,6 +5512,7 @@
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniProvScol.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCosti.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtCostiUfficio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtDipEsteroLivello.cs" />
     <Compile Include="Models\DBModel\dtObj\dtElaborazioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtEvoluzioneIndennita.cs" />
@@ -6756,12 +6777,27 @@
     <Content Include="Areas\Statistiche\RPT\RptCosti.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptDipEstero.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptDipEsteroLivello.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptRiepiloghiMaggAbitazione.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendenteNew.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptTrasportoEffetti.rdlc" />
+    <Content Include="Areas\Statistiche\RPT\RptDipEstero.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptDipEsteroLivello.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptRiepiloghiIseMensile.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptRiepiloghiMaggAbitazione.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptStoriaDipendenteNew.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptTrasportoEffetti.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptCostiUfficio.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
   </ItemGroup>

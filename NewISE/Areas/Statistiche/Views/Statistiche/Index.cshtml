@@ -73,6 +73,7 @@
 
                         <a href="#" class="list-group-item" onclick="callpartialCosti()">Consuntivo dei Costi</a>
                         <a href="#" class="list-group-item" onclick="callpartialCostiCoan()">Consuntivo dei Costi per codice Co. An.</a>
+                        <a href="#" class="list-group-item" onclick="callpartialCostiUfficio()">Consuntivo dei Costi per Ufficio</a>
                         <a href="#" class="list-group-item" onclick="">Consuntivo spese di Avvicendamento</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroLivelloNew();">Dipendenti all'Estero per Livello</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroNew();">Dislocazione dei dipendenti all'Estero</a>
@@ -947,9 +948,7 @@
 
     function callpartialCostiCoan() {
         //debugger;
-
         rotta = "/Statistiche/CostiCoan/Index";
-
 
         $.ajax({
             type: "POST",
@@ -1002,5 +1001,32 @@
         });
     }
 
+    function callpartialCostiUfficio() {
+        //debugger;
+        rotta = "/Statistiche/CostiUfficio/Index";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
 
 </script>
