@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.dtObj.ModelliCalcolo;
+using NewISE.Areas.Statistiche.Models.dtObj;
 using NewISE.EF;
 using NewISE.Areas.Statistiche.Models;
 using Microsoft.Reporting.WebForms;
@@ -20,25 +21,14 @@ namespace NewISE.Areas.Statistiche.Controllers
         // GET: Statistiche/OpDipEsteroNew
         public ActionResult Index()
         {
-            int mese = 0;
-            int anno = 0;
-
             var r = new List<SelectListItem>();
-
             var rMeseAnno = new List<SelectListItem>();
             List<MeseAnnoElaborazioneModel> lmaem = new List<MeseAnnoElaborazioneModel>();
 
             try
             {
-                if (anno == 0)
-                {
-                    anno = DateTime.Now.Year;
-                }
-
-                if (mese == 0)
-                {
-                    mese = DateTime.Now.Month;
-                }
+                int anno = DateTime.Now.Year;
+                int mese = DateTime.Now.Month;
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
@@ -53,7 +43,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 Text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.mese) + "-" + item.anno.ToString("D4"),
                                 Value = item.idMeseAnnoElab.ToString()
                             });
-
                         }
 
                         if (rMeseAnno.Exists(a => a.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString("D4")))
@@ -75,15 +64,12 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     ViewData["listMesiAnniElaboratiDa"] = rMeseAnno;
                     ViewData["listMesiAnniElaboratiA"] = rMeseAnno;
-
                 }
-
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
 
             return PartialView();
         }

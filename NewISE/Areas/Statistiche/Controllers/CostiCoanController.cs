@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.dtObj.ModelliCalcolo;
 using NewISE.EF;
 using NewISE.Areas.Statistiche.Models;
+using NewISE.Areas.Statistiche.Models.dtObj;
+using NewISE.Models.DBModel.dtObj;
 using Microsoft.Reporting.WebForms;
 using System.Web.UI.WebControls;
 using NewISE.Models;
@@ -20,25 +21,14 @@ namespace NewISE.Areas.Statistiche.Controllers
         // GET: Statistiche/OpDipEsteroNew
         public ActionResult Index()
         {
-            int mese = 0;
-            int anno = 0;
-
             var r = new List<SelectListItem>();
-
             var rMeseAnno = new List<SelectListItem>();
             List<MeseAnnoElaborazioneModel> lmaem = new List<MeseAnnoElaborazioneModel>();
 
             try
             {
-                if (anno == 0)
-                {
-                    anno = DateTime.Now.Year;
-                }
-
-                if (mese == 0)
-                {
-                    mese = DateTime.Now.Month;
-                }
+                int anno = DateTime.Now.Year;
+                int mese = DateTime.Now.Month;
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
@@ -55,7 +45,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                                      Value = tcm.idElencoCoan
                                  }).ToList();
 
-                            //r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                             r.First().Selected = true;
                         }
                         ViewBag.ElencoCoanList = r;
@@ -67,13 +56,11 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                         foreach (var item in lmaem)
                         {
-
                             rMeseAnno.Add(new SelectListItem()
                             {
                                 Text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.mese) + "-" + item.anno.ToString("D4"),
                                 Value = item.idMeseAnnoElab.ToString()
                             });
-
                         }
 
                         if (rMeseAnno.Exists(a => a.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString("D4")))
@@ -90,20 +77,16 @@ namespace NewISE.Areas.Statistiche.Controllers
                         {
                             rMeseAnno.First().Selected = true;
                         }
-
                     }
 
                     ViewData["listMesiAnniElaboratiDa"] = rMeseAnno;
                     ViewData["listMesiAnniElaboratiA"] = rMeseAnno;
-
                 }
-
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
 
             return PartialView();
         }
@@ -131,8 +114,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                         ls2.Add(s2);
                     }
-
-
                 }
 
                 if (search != null && search != string.Empty)
@@ -174,9 +155,13 @@ namespace NewISE.Areas.Statistiche.Controllers
                     using (dtCostiCoan dtc = new dtCostiCoan())
                     {
                         lrpt = dtc.GetCostiCoan(meseDa, annoDa, meseA, annoA, codiceCoan, db).OrderBy(a => a.Nominativo).ToList(); ;
+                    }
+
+                    using (dtStatistiche dts = new dtStatistiche())
+                    {
                         if (codiceCoan.Length < 10)
                         {
-                            codiceCoan = dtc.GetDescrizioneCoan(EnumTipologiaCoan.Servizi_Istituzionali, db);
+                            codiceCoan = dts.GetDescrizioneCoan(EnumTipologiaCoan.Servizi_Istituzionali, db);
                         }
                     }
 
@@ -184,14 +169,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                     string strMeseAnnoA = "";
                     string strTotaleImporto = lrpt.Sum(a => a.Importo).ToString("#,##0.##");
 
-
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
                         strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
                         strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
                     }
-
-
 
                     ReportViewer reportViewer = new ReportViewer();
 
@@ -199,11 +181,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.SizeToReportContent = true;
                     reportViewer.Width = Unit.Percentage(100);
                     reportViewer.Height = Unit.Percentage(100);
-
                     reportViewer.Visible = true;
-
                     reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Areas/Statistiche/RPT/RptCostiCoan.rdlc";
-
                     reportViewer.LocalReport.DataSources.Clear();
                     reportViewer.LocalReport.Refresh();
 
@@ -215,17 +194,12 @@ namespace NewISE.Areas.Statistiche.Controllers
                             new ReportParameter ("paramTotaleImporto", strTotaleImporto)
                        };
 
-
                     reportViewer.LocalReport.SetParameters(parameterValues);
-
                     ReportDataSource _rsource = new ReportDataSource("dsCostiCoan", lrpt);
-
                     reportViewer.LocalReport.DataSources.Add(_rsource);
-
                     reportViewer.LocalReport.Refresh();
 
                     ViewBag.ReportViewer = reportViewer;
-
                 }
             }
             catch (Exception ex)

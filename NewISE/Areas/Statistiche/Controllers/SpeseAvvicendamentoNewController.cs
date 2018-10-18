@@ -16,7 +16,7 @@ using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Statistiche.Controllers
 {
-    public class CostiUfficioController : Controller
+    public class SpeseAvvicendamentoNewController : Controller
     {
         // GET: Statistiche/OpDipEsteroNew
         public ActionResult Index()
@@ -34,25 +34,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtUffici dtu = new dtUffici())
-                    {
-                        var lu = dtu.GetUffici();
-
-                        if (lu != null && lu.Count > 0)
-                        {
-                            r = (from u in lu
-                                 select new SelectListItem()
-                                 {
-                                     Text = u.descUfficio,
-                                     Value = u.idUfficio.ToString()
-                                 }).ToList();
-
-                            r.Insert(0, new SelectListItem() { Text = "(TUTTI)", Value = "0" });
-                            r.First().Selected = true;
-                        }
-                        ViewBag.ElencoUffici = r;
-                    }
-
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
                         lmaem = dte.PrelevaAnniMesiElaborati().ToList();
@@ -104,8 +85,6 @@ namespace NewISE.Areas.Statistiche.Controllers
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-
-
                     lmaem = dte.PrelevaAnniMesiElaborati().ToList();
 
                     foreach (var mae in lmaem)
@@ -115,31 +94,25 @@ namespace NewISE.Areas.Statistiche.Controllers
                             id = mae.idMeseAnnoElab.ToString(),
                             text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mae.mese) + "-" + mae.anno.ToString("D4"),
                         };
-
                         ls2.Add(s2);
                     }
-
-
                 }
 
                 if (search != null && search != string.Empty)
                 {
                     ls2 = ls2.Where(a => a.text.ToUpper().Contains(search.ToUpper())).ToList();
-
                 }
             }
             catch (Exception ex)
             {
-
                 return Json(new { results = new List<Select2Model>(), err = ex.Message });
             }
-
             return Json(new { results = ls2, err = "" });
         }
 
-        public ActionResult RptCostiUfficio(decimal meseAnnoDa, decimal meseAnnoA, decimal idUfficio)
+        public ActionResult RptSpeseAvvicendamento(decimal meseAnnoDa, decimal meseAnnoA)
         {
-            List<RptCostiUfficioModel> lrpt = new List<RptCostiUfficioModel>();
+            List<RptSpeseAvvicendamentoNewModel> lrpt = new List<RptSpeseAvvicendamentoNewModel>();
 
             try
             {
@@ -152,24 +125,16 @@ namespace NewISE.Areas.Statistiche.Controllers
                     decimal annoDa = annoMeseElabDa.ANNO;
                     decimal meseDa = annoMeseElabDa.MESE;
 
-
                     var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(meseAnnoA);
                     decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
                     decimal annoA = annoMeseElabA.ANNO;
                     decimal meseA = annoMeseElabA.MESE;
 
-                    using (dtCostiUfficio dtcu = new dtCostiUfficio())
+                    using (dtSpeseAvvicendamentoNew dtsa = new dtSpeseAvvicendamentoNew())
                     {
-                        lrpt = dtcu.GetCostiUfficio(meseDa, annoDa, meseA, annoA, idUfficio, db);
+                        lrpt = dtsa.GetSpeseAvvicendamento(meseDa, annoDa, meseA, annoA, db);
                     }
-                    string descUfficio = "TUTTI";
-                    if(idUfficio>0)
-                    {
-                        using (dtUffici dtu = new dtUffici())
-                        {
-                            descUfficio = dtu.GetUffici(idUfficio).descUfficio;
-                        }
-                    }
+
                     string strMeseAnnoDa = "";
                     string strMeseAnnoA = "";
                     string strTotaleImporto = lrpt.Sum(a => a.Importo).ToString("#,##0.##");
@@ -190,7 +155,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     reportViewer.Visible = true;
 
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Areas/Statistiche/RPT/RptCostiUfficio.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Areas/Statistiche/RPT/RptSpeseAvvicendamentoNew.rdlc";
 
                     reportViewer.LocalReport.DataSources.Clear();
                     reportViewer.LocalReport.Refresh();
@@ -199,14 +164,12 @@ namespace NewISE.Areas.Statistiche.Controllers
                        {
                             new ReportParameter ("paramMeseAnnoDa", strMeseAnnoDa),
                             new ReportParameter ("paramMeseAnnoA",strMeseAnnoA),
-                            new ReportParameter ("paramDescUfficio", descUfficio),
                             new ReportParameter ("paramTotaleImporto", strTotaleImporto)
                        };
 
-
                     reportViewer.LocalReport.SetParameters(parameterValues);
 
-                    ReportDataSource _rsource = new ReportDataSource("dsCostiUfficio", lrpt);
+                    ReportDataSource _rsource = new ReportDataSource("dsSpeseAvvicendamento", lrpt);
 
                     reportViewer.LocalReport.DataSources.Add(_rsource);
 
