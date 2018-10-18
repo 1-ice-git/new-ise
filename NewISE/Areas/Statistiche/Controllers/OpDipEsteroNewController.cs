@@ -56,10 +56,10 @@ namespace NewISE.Areas.Statistiche.Controllers
             return PartialView();
         }
 
-        public ActionResult RptOpDipEstero(string dtIni, decimal idUfficio)
+        public ActionResult RptOpDipEstero(DateTime dtIni, decimal idUfficio)
         {
-            List<OpDipEsteroLivelloModel> rim = new List<OpDipEsteroLivelloModel>();
-            List<RptDipEsteroLivelloModel> rpt = new List<RptDipEsteroLivelloModel>();
+            List<OpDipEsteroModel> rim = new List<OpDipEsteroModel>();
+            List<RptDipEsteroModel> rpt = new List<RptDipEsteroModel>();
 
             try
             {
@@ -75,9 +75,20 @@ namespace NewISE.Areas.Statistiche.Controllers
                     {
                         foreach (var lm in rim)
                         {
-                            RptDipEsteroLivelloModel rptds = new RptDipEsteroLivelloModel()
+                            RptDipEsteroModel rptds = new RptDipEsteroModel()
                             {
-                               
+                                sede = lm.sede,
+                                valuta = lm.valuta,
+                                //matricola = lm.matricola,
+                                nominativo = lm.nominativo,
+                                data_trasferimento = lm.data_trasferimento,
+                                qualifica = lm.qualifica,
+                                IndennitaPersonale = lm.IndennitaPersonale,
+                                PercMaggConiuge = lm.PercMaggConiuge,
+                                PercNumFigli = lm.PercNumFigli,
+                                MaggConiuge = lm.MaggConiuge,
+                                MaggFigli = lm.MaggFigli
+
                             };
 
                             rpt.Add(rptds);
@@ -93,7 +104,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.Width = Unit.Percentage(100);
                     reportViewer.Height = Unit.Percentage(100);
 
-                    var datasource = new ReportDataSource("DataSetDipEsteroLivello");
+                    var datasource = new ReportDataSource("DataSetDipEstero");
 
                     reportViewer.Visible = true;
                     reportViewer.ProcessingMode = ProcessingMode.Local;
@@ -102,7 +113,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.LocalReport.DataSources.Clear();
 
                     reportViewer.LocalReport.DataSources.Add(datasource);
-                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetDipEsteroLivello", rpt));
+                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetDipEstero", rpt));
                     reportViewer.LocalReport.Refresh();
 
                     // Nel caso in cui passo il DatePicker

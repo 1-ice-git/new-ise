@@ -26,5 +26,8 @@ namespace NewISE.Areas.Statistiche.Models
         [Display(Name = "Data Rientro")]
         public string data_rientro { get; set; }
 
+        [Display(Name = "Ruolo Dipendente")]
+        public string ruolo_dipendente { get; set; }
+
     }
 }

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetDipEstero" targetNamespace="http://tempuri.org/DataSetDipEstero.xsd" xmlns:mstns="http://tempuri.org/DataSetDipEstero.xsd" xmlns="http://tempuri.org/DataSetDipEstero.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetDipEstero" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetDipEstero" msprop:Generator_UserDSName="DataSetDipEstero">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="sede" msprop:Generator_ColumnVarNameInTable="columnsede" msprop:Generator_ColumnPropNameInRow="sede" msprop:Generator_ColumnPropNameInTable="sedeColumn" msprop:Generator_UserColumnName="sede" type="xs:string" minOccurs="0" />
+              <xs:element name="valuta" msprop:Generator_ColumnVarNameInTable="columnvaluta" msprop:Generator_ColumnPropNameInRow="valuta" msprop:Generator_ColumnPropNameInTable="valutaColumn" msprop:Generator_UserColumnName="valuta" type="xs:string" minOccurs="0" />
+              <xs:element name="matricola" msprop:Generator_ColumnVarNameInTable="columnmatricola" msprop:Generator_ColumnPropNameInRow="matricola" msprop:Generator_ColumnPropNameInTable="matricolaColumn" msprop:Generator_UserColumnName="matricola" type="xs:string" minOccurs="0" />
+              <xs:element name="nominativo" msprop:Generator_ColumnVarNameInTable="columnnominativo" msprop:Generator_ColumnPropNameInRow="nominativo" msprop:Generator_ColumnPropNameInTable="nominativoColumn" msprop:Generator_UserColumnName="nominativo" type="xs:string" minOccurs="0" />
+              <xs:element name="data_trasferimento" msprop:Generator_ColumnVarNameInTable="columndata_trasferimento" msprop:Generator_ColumnPropNameInRow="data_trasferimento" msprop:Generator_ColumnPropNameInTable="data_trasferimentoColumn" msprop:Generator_UserColumnName="data_trasferimento" type="xs:string" minOccurs="0" />
+              <xs:element name="qualifica" msprop:Generator_ColumnVarNameInTable="columnqualifica" msprop:Generator_ColumnPropNameInRow="qualifica" msprop:Generator_ColumnPropNameInTable="qualificaColumn" msprop:Generator_UserColumnName="qualifica" type="xs:string" minOccurs="0" />
+              <xs:element name="IndennitaPersonale" msprop:Generator_ColumnVarNameInTable="columnIndennitaPersonale" msprop:Generator_ColumnPropNameInRow="IndennitaPersonale" msprop:Generator_ColumnPropNameInTable="IndennitaPersonaleColumn" msprop:Generator_UserColumnName="IndennitaPersonale" type="xs:string" minOccurs="0" />
+              <xs:element name="PercMaggConiuge" msprop:Generator_ColumnVarNameInTable="columnPercMaggConiuge" msprop:Generator_ColumnPropNameInRow="PercMaggConiuge" msprop:Generator_ColumnPropNameInTable="PercMaggConiugeColumn" msprop:Generator_UserColumnName="PercMaggConiuge" type="xs:string" minOccurs="0" />
+              <xs:element name="PercMaggFigli" msprop:Generator_ColumnVarNameInTable="columnPercMaggFigli" msprop:Generator_ColumnPropNameInRow="PercMaggFigli" msprop:Generator_ColumnPropNameInTable="PercMaggFigliColumn" msprop:Generator_UserColumnName="PercMaggFigli" type="xs:string" minOccurs="0" />
+              <xs:element name="MaggConiuge" msprop:Generator_ColumnVarNameInTable="columnMaggConiuge" msprop:Generator_ColumnPropNameInRow="MaggConiuge" msprop:Generator_ColumnPropNameInTable="MaggConiugeColumn" msprop:Generator_UserColumnName="MaggConiuge" type="xs:string" minOccurs="0" />
+              <xs:element name="MaggFigli" msprop:Generator_ColumnVarNameInTable="columnMaggFigli" msprop:Generator_ColumnPropNameInRow="MaggFigli" msprop:Generator_ColumnPropNameInTable="MaggFigliColumn" msprop:Generator_UserColumnName="MaggFigli" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

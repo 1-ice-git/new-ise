@@ -10,11 +10,11 @@
 @Html.Hidden("hidTrasferimento")
 <div id="dialog" title=""></div>
 
-@*Anticipo Indennità di Prima Sistemazione*@
+
 <div class="row">
     <div class="col-md-12">
         <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
-            <h4>Saldo Indennità di Prima Sistemazione</h4>
+            <h4>Unica Soluzione Indennità di Prima Sistemazione</h4>
 
 
 
@@ -29,7 +29,7 @@
                 <th>&nbsp;</th>
                 <th>@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
                 <th>@Html.DisplayNameFor(model => model.IndennitaServizio)</th>
-                <th>@Html.DisplayNameFor(model => model.IndennitaPersonale)</th>                
+                <th>@Html.DisplayNameFor(model => model.IndennitaPersonale)</th>
                 <th>@Html.DisplayNameFor(model => model.IndennitaSistemazione)</th>
             </tr>
         </thead>
@@ -41,7 +41,7 @@
                     <td>&nbsp;</td>
                     <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
                     <td>@Html.DisplayFor(modelItem => item.IndennitaServizio)</td>
-                    <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>                    
+                    <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
                     <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazione)</td>
                 </tr>
                 <tr class="comment"><td colspan="4">&nbsp;</td></tr>
@@ -116,131 +116,14 @@
 
 <script type="text/javascript">
 
-        $('#tbAnticipoSaldoIndennitadiSistemazioneLorda').DataTable({
-            "language": {
-                "sEmptyTable": "Nessun dato presente nella tabella",
-                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "Visualizza _MENU_ elementi",
-                "sLoadingRecords": "Caricamento...",
-                "sProcessing": "Elaborazione...",
-                "sSearch": "Cerca:",
-                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-                "oPaginate": {
-                    "sFirst": "Inizio",
-                    "sPrevious": "Precedente",
-                    "sNext": "Successivo",
-                    "sLast": "Fine"
-                },
-                "oAria": {
-                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-                }
-            },
-            "info": false,
-            "lengthChange": false,
-            "pageLength": 5,
-            "searching": false,
-            "paging": true,
-            "bJQueryUI": true,
-            "sDom": 'lfrtip',
-            "columnDefs": [
-                    {
-                        "targets": 'no-sort',
-                        "orderable": false,
+        
 
-                    }
-            ],
-            "order": [[0, "asc"]]
-        });
+        
 
-        $('#tbAnticipoIndennitadiSistemazioneLorda').DataTable({
-            "language": {
-                "sEmptyTable": "Nessun dato presente nella tabella",
-                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "Visualizza _MENU_ elementi",
-                "sLoadingRecords": "Caricamento...",
-                "sProcessing": "Elaborazione...",
-                "sSearch": "Cerca:",
-                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-                "oPaginate": {
-                    "sFirst": "Inizio",
-                    "sPrevious": "Precedente",
-                    "sNext": "Successivo",
-                    "sLast": "Fine"
-                },
-                "oAria": {
-                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-                }
-            },
-            "info": false,
-            "lengthChange": false,
-            "pageLength": 5,
-            "searching": false,
-            "paging": true,
-            "bJQueryUI": true,
-            "sDom": 'lfrtip',
-            "columnDefs": [
-                    {
-                        "targets": 'no-sort',
-                        "orderable": false,
-
-                    }
-            ],
-            "order": [[0, "asc"]]
-        });
-
-        $('#tbSaldoIndennitadiSistemazioneLorda').DataTable({
-            "language": {
-                "sEmptyTable": "Nessun dato presente nella tabella",
-                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "Visualizza _MENU_ elementi",
-                "sLoadingRecords": "Caricamento...",
-                "sProcessing": "Elaborazione...",
-                "sSearch": "Cerca:",
-                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-                "oPaginate": {
-                    "sFirst": "Inizio",
-                    "sPrevious": "Precedente",
-                    "sNext": "Successivo",
-                    "sLast": "Fine"
-                },
-                "oAria": {
-                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-                }
-            },
-            "info": false,
-            "lengthChange": false,
-            "pageLength": 5,
-            "searching": false,
-            "paging": true,
-            "bJQueryUI": true,
-            "sDom": 'lfrtip',
-            "columnDefs": [
-                    {
-                        "targets": 'no-sort',
-                        "orderable": false,
-
-                    }
-            ],
-            "order": [[0, "asc"]]
-        });
+        
 
 
-        // Report tbAnticipoIndennitadiSistemazioneLorda
+        // Report Unica Soluzione Indennita di Prima Sistemazione
         var windowWidth = $(window).width();
         var windowHeight = $(window).height();
 
@@ -269,7 +152,7 @@
                 $("#dialog").dialog("open");
                 $("#dialog").css("background-color", "#ffffff");
 
-                var rotta = "/Indennita/RptIndennitadiSistemazioneLorda";
+                var rotta = "/Indennita/RptUnicaSoluzioneIndennitadiPrimaSistemazione";
 
                 var idTrasferimento = $("#hidTrasferimento").val();
 
@@ -313,5 +196,6 @@
 
 
 </script>
+
 
 

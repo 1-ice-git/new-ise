@@ -118,6 +118,24 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Aliquota Fiscale")]
         public decimal AliquotaFiscale { get; set; }
 
+        [Display(Name = "Detrazione")]
+        public decimal Detrazione { get; set; }
+
+        [Display(Name = "AliquotaPrevid")]
+        public decimal AliquotaPrevid { get; set; }
+
+        [Display(Name = "ImpPrevid")]
+        public decimal ImpPrevid { get; set; }
+
+        [Display(Name = "ContrPrevid")]
+        public decimal ContrPrevid { get; set; }
+
+        [Display(Name = "ImpFiscale")]
+
+        public decimal ImpFiscale { get; set; }
+
+        [Display(Name = "RitenutaFiscale")]
+        public decimal RitenutaFiscale { get; set; }
 
         [Display(Name = "Data Test")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
@@ -189,6 +207,7 @@ namespace NewISE.Models.DBModel
         public DateTime dataOperazione { get; set; }
 
         [Display(Name = "Importo")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal importo { get; set; }
 
         [Display(Name = "Descrizione Voce")]
@@ -217,8 +236,8 @@ namespace NewISE.Models.DBModel
 
         public decimal giorni { get; set; }
 
-        [Required(ErrorMessage = "Il campo è richiesto.")]
-        [DefaultValue(0)]
+        [Display(Name = "Indennità di Prima Sistemazione Netta")]
+   
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Importo { get; set; }
 

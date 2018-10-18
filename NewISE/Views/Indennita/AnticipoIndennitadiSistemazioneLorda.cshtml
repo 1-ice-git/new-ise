@@ -22,171 +22,78 @@
     </div>
 </div>
 
-<div class="table-responsive-sm">
-    <table cellspacing="0" class="table table-striped" >
-        <thead>
-            <tr>
-                <th>&nbsp;</th>
-                <th>@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
-                <th>@Html.DisplayNameFor(model => model.IndennitaServizio)</th>
-                <th>@Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)</th>
-                <th>@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
 
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
-                    <td>@Html.DisplayFor(modelItem => item.IndennitaServizio)</td>
-                    <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
-                    <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
-                </tr>
-                <tr class="comment"><td colspan="4">&nbsp;</td></tr>
-
-            }
-        </tbody>
-        <thead>
-            <tr>
-                <th>&nbsp;</th>
-                <th>Detrazione</th>
-                <th>Imp. Previdenziale </th>
-                <th>Aliq Previd </th>
-                <th>Contr. Previd </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-
-                <tr>
-                    <td>&nbsp;</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="comment"><td colspan="5">&nbsp;</td></tr>
-
-            }
-        </tbody>
-        <thead>
-            <tr>
-                <th>&nbsp;</th>
-                <th>Imp. Fiscale</th>
-                <th>Aliq. Fisc. (Provvisoria) </th>
-                <th>Ritenuta Fiscale (salvo Conguaglio) </th>
-                <th>Indennità Sistemazione netta </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-
-                <tr>
-                    <td>&nbsp;</td>
-                    <td></td>
-                    <td>@Html.DisplayFor(modelItem => item.AliquotaFiscale)</td>
-                    <td></td>
-                    <td>@Html.DisplayFor(modelItem => item.Importo)</td>
-                </tr>
-                <tr class="comment"><td colspan="5">&nbsp;</td></tr>
-
-            }
-        </tbody>
-        
-    </table>
-</div>
-
-
- @*Anticipo Indennità di Prima Sistemazione
-    <div class="row">
-        <div class="col-md-12">
-            <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
-                <h4>Saldo Indennità di Prima Sistemazione</h4>
-
-
-
-            </div>
-        </div>
-    </div>
 
     <div class="table-responsive-sm">
         <table cellspacing="0" class="table table-striped">
             <thead>
                 <tr>
-                    <th>&nbsp;</th>
-                    <th>@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
-                    <th>@Html.DisplayNameFor(model => model.IndennitaPersonale)</th>
-                    <th>@Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)</th>
-                    <th>@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
+                    <th class="text-center">&nbsp;</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.IndennitaServizio)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
-                {
+            {
 
                     <tr>
-                        <td>&nbsp;</td>
-                        <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
-                        <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                        <td style="text-align:center;">&nbsp;</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.IndennitaServizio)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
                     </tr>
-                    <tr class="comment"><td colspan="5">&nbsp;</td></tr>
-
-                }
-            </tbody>
-
-            <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>Detrazione</th>
-                    <th>Imp. Previdenziale </th>
-                    <th>Aliq Previd </th>
-                    <th>Contr. Previd </th>
-                </tr>
-            </thead>
-
-
-            <tbody>
-                @foreach (var item in Model)
-                {
-
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
-                        <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
-                    </tr>
-                    <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+                    <tr class="comment"><td colspan="4">&nbsp;</td></tr>
 
                 }
             </tbody>
             <thead>
                 <tr>
                     <th>&nbsp;</th>
-                    <th>Imp. Fiscale</th>
-                    <th>Aliq. Fisc. (Provvisoria) </th>
-                    <th>Ritenuta Fiscale (salvo Conguaglio) </th>
-                    <th>Indennità Sistemazione netta </th>
+                    <th class="text-center">Detrazione</th>
+                    <th class="text-center">Imp. Previdenziale </th>
+                    <th class="text-center">Aliq Previd </th>
+                    <th class="text-center">Contr. Previd </th>
                 </tr>
             </thead>
-
-
             <tbody>
                 @foreach (var item in Model)
-                {
+            {
 
                     <tr>
                         <td>&nbsp;</td>
-                        <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
-                        <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
-                        <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.Detrazione)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.ImpPrevid)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.AliquotaPrevid)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.ContrPrevid)</td>
+
+                    </tr>
+                    <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+                }
+            </tbody>
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th class="text-center">Imp. Fiscale</th>
+                    <th class="text-center">Aliq. Fisc. (Provvisoria) </th>
+                    <th class="text-center">Ritenuta Fiscale (salvo Conguaglio) </th>
+                    <th class="text-center">Indennità di Prima Sistemazione (netto) </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+            {
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.ImpFiscale)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.AliquotaFiscale)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.RitenutaFiscale)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.Importo)</td>
                     </tr>
                     <tr class="comment"><td colspan="5">&nbsp;</td></tr>
 
@@ -195,7 +102,103 @@
 
         </table>
     </div>
-*@
+
+
+    @*Anticipo Indennità di Prima Sistemazione
+        <div class="row">
+            <div class="col-md-12">
+                <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
+                    <h4>Saldo Indennità di Prima Sistemazione</h4>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive-sm">
+            <table cellspacing="0" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
+                        <th>@Html.DisplayNameFor(model => model.IndennitaPersonale)</th>
+                        <th>@Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)</th>
+                        <th>@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                        </tr>
+                        <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+                    }
+                </tbody>
+
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Detrazione</th>
+                        <th>Imp. Previdenziale </th>
+                        <th>Aliq Previd </th>
+                        <th>Contr. Previd </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                        </tr>
+                        <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+                    }
+                </tbody>
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Imp. Fiscale</th>
+                        <th>Aliq. Fisc. (Provvisoria) </th>
+                        <th>Ritenuta Fiscale (salvo Conguaglio) </th>
+                        <th>Indennità Sistemazione netta </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                            <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                        </tr>
+                        <tr class="comment"><td colspan="5">&nbsp;</td></tr>
+
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    *@
 
     <div class="row">
         <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">

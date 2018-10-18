@@ -81,7 +81,12 @@ namespace NewISE.Areas.Statistiche.Controllers
                             RptDipEsteroLivelloNewModel rptds = new RptDipEsteroLivelloNewModel()
                             {
                                 
-                                nominativo = lm.cognome + " " + lm.nome + " (" + lm.matricola + ")",
+                                nominativo = lm.nominativo,
+                                data_trasferimento = lm.data_trasferimento,
+                                data_rientro = lm.data_rientro,
+                                sede = lm.sede,
+                                qualifica = lm.qualifica,
+                                ruolo_dipendente = lm.ruolo_dipendente
                             };
 
 

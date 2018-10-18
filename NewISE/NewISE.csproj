@@ -4685,6 +4685,17 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSetDipEsteroLivello.xsc">
       <DependentUpon>DataSetDipEsteroLivello.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetDipEstero.xsc">
+      <DependentUpon>DataSetDipEstero.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSetDipEstero.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetDipEstero.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetDipEstero.xss">
+      <DependentUpon>DataSetDipEstero.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSetDipEsteroLivello.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -5070,9 +5081,11 @@
     <Compile Include="Areas\Statistiche\Models\RptCostiCoanModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\OpDipEsteroLivelloModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\OpDipEsteroModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiIseMensileModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RiepiloghiMaggAbitazioneModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptDipEsteroLivelloNewModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptDipEsteroModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptOpDipEsteroLivelloModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiIseMensileModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiMaggAbitazioneModel.cs" />
@@ -5080,6 +5093,11 @@
     <Compile Include="Areas\Statistiche\Models\RptTrasportoEffettiModel.cs" />
     <Compile Include="Areas\Statistiche\Models\StoriaDipendenteNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\TrasportoEffettiModel.cs" />
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSetDipEstero.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetDipEstero.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSetDipEsteroLivello.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -6598,6 +6616,8 @@
     <Content Include="Views\VariazioneTitoliViaggio\DocumentoTV.cshtml" />
     <Content Include="Views\VariazioneTitoliViaggio\TVCompletati.cshtml" />
     <Content Include="Views\VariazioneTitoliViaggio\ElencoTV_Completati.cshtml" />
+    <Content Include="Views\Indennita\UnicaSoluzioneIndennitadiPrimaSistemazione.cshtml" />
+    <Content Include="Views\Indennita\RptUnicaSoluzioneIndennitadiPrimaSistemazione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6800,6 +6820,7 @@
     </Content>
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
+    <EmbeddedResource Include="Report\RptUnicaSoluzioneIndennitadiPrimaSistemazione.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

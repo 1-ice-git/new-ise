@@ -20,9 +20,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("DataSetDipEsteroLivello")]
+    [global::System.Xml.Serialization.XmlRootAttribute("DataSetDipEstero")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class DataSetDipEsteroLivello : global::System.Data.DataSet {
+    public partial class DataSetDipEstero : global::System.Data.DataSet {
         
         private DataTable1DataTable tableDataTable1;
         
@@ -30,7 +30,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public DataSetDipEsteroLivello() {
+        public DataSetDipEstero() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected DataSetDipEsteroLivello(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected DataSetDipEstero(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -127,7 +127,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            DataSetDipEsteroLivello cln = ((DataSetDipEsteroLivello)(base.Clone()));
+            DataSetDipEstero cln = ((DataSetDipEstero)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -199,9 +199,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "DataSetDipEsteroLivello";
+            this.DataSetName = "DataSetDipEstero";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/DataSetDipEsteroLivello.xsd";
+            this.Namespace = "http://tempuri.org/DataSetDipEstero.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
             this.tableDataTable1 = new DataTable1DataTable();
@@ -225,7 +225,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            DataSetDipEsteroLivello ds = new DataSetDipEsteroLivello();
+            DataSetDipEstero ds = new DataSetDipEstero();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -279,17 +279,27 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class DataTable1DataTable : global::System.Data.TypedTableBase<DataTable1Row> {
             
-            private global::System.Data.DataColumn columnnominativo;
-            
             private global::System.Data.DataColumn columnsede;
+            
+            private global::System.Data.DataColumn columnvaluta;
+            
+            private global::System.Data.DataColumn columnmatricola;
+            
+            private global::System.Data.DataColumn columnnominativo;
             
             private global::System.Data.DataColumn columndata_trasferimento;
             
-            private global::System.Data.DataColumn columndata_rientro;
-            
             private global::System.Data.DataColumn columnqualifica;
             
-            private global::System.Data.DataColumn columnruolo_dipendente;
+            private global::System.Data.DataColumn columnIndennitaPersonale;
+            
+            private global::System.Data.DataColumn columnPercMaggConiuge;
+            
+            private global::System.Data.DataColumn columnPercMaggFigli;
+            
+            private global::System.Data.DataColumn columnMaggConiuge;
+            
+            private global::System.Data.DataColumn columnMaggFigli;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -326,17 +336,33 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn nominativoColumn {
+            public global::System.Data.DataColumn sedeColumn {
                 get {
-                    return this.columnnominativo;
+                    return this.columnsede;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn sedeColumn {
+            public global::System.Data.DataColumn valutaColumn {
                 get {
-                    return this.columnsede;
+                    return this.columnvaluta;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn matricolaColumn {
+                get {
+                    return this.columnmatricola;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn nominativoColumn {
+                get {
+                    return this.columnnominativo;
                 }
             }
             
@@ -350,14 +376,6 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn data_rientroColumn {
-                get {
-                    return this.columndata_rientro;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn qualificaColumn {
                 get {
                     return this.columnqualifica;
@@ -366,9 +384,41 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ruolo_dipendenteColumn {
+            public global::System.Data.DataColumn IndennitaPersonaleColumn {
                 get {
-                    return this.columnruolo_dipendente;
+                    return this.columnIndennitaPersonale;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercMaggConiugeColumn {
+                get {
+                    return this.columnPercMaggConiuge;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercMaggFigliColumn {
+                get {
+                    return this.columnPercMaggFigli;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MaggConiugeColumn {
+                get {
+                    return this.columnMaggConiuge;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MaggFigliColumn {
+                get {
+                    return this.columnMaggFigli;
                 }
             }
             
@@ -409,15 +459,20 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string nominativo, string sede, string data_trasferimento, string data_rientro, string qualifica, string ruolo_dipendente) {
+            public DataTable1Row AddDataTable1Row(string sede, string valuta, string matricola, string nominativo, string data_trasferimento, string qualifica, string IndennitaPersonale, string PercMaggConiuge, string PercMaggFigli, string MaggConiuge, string MaggFigli) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        nominativo,
                         sede,
+                        valuta,
+                        matricola,
+                        nominativo,
                         data_trasferimento,
-                        data_rientro,
                         qualifica,
-                        ruolo_dipendente};
+                        IndennitaPersonale,
+                        PercMaggConiuge,
+                        PercMaggFigli,
+                        MaggConiuge,
+                        MaggFigli};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -440,29 +495,44 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnnominativo = base.Columns["nominativo"];
                 this.columnsede = base.Columns["sede"];
+                this.columnvaluta = base.Columns["valuta"];
+                this.columnmatricola = base.Columns["matricola"];
+                this.columnnominativo = base.Columns["nominativo"];
                 this.columndata_trasferimento = base.Columns["data_trasferimento"];
-                this.columndata_rientro = base.Columns["data_rientro"];
                 this.columnqualifica = base.Columns["qualifica"];
-                this.columnruolo_dipendente = base.Columns["ruolo_dipendente"];
+                this.columnIndennitaPersonale = base.Columns["IndennitaPersonale"];
+                this.columnPercMaggConiuge = base.Columns["PercMaggConiuge"];
+                this.columnPercMaggFigli = base.Columns["PercMaggFigli"];
+                this.columnMaggConiuge = base.Columns["MaggConiuge"];
+                this.columnMaggFigli = base.Columns["MaggFigli"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnnominativo = new global::System.Data.DataColumn("nominativo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnnominativo);
                 this.columnsede = new global::System.Data.DataColumn("sede", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnsede);
+                this.columnvaluta = new global::System.Data.DataColumn("valuta", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnvaluta);
+                this.columnmatricola = new global::System.Data.DataColumn("matricola", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmatricola);
+                this.columnnominativo = new global::System.Data.DataColumn("nominativo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnominativo);
                 this.columndata_trasferimento = new global::System.Data.DataColumn("data_trasferimento", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndata_trasferimento);
-                this.columndata_rientro = new global::System.Data.DataColumn("data_rientro", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columndata_rientro);
                 this.columnqualifica = new global::System.Data.DataColumn("qualifica", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnqualifica);
-                this.columnruolo_dipendente = new global::System.Data.DataColumn("ruolo_dipendente", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnruolo_dipendente);
+                this.columnIndennitaPersonale = new global::System.Data.DataColumn("IndennitaPersonale", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIndennitaPersonale);
+                this.columnPercMaggConiuge = new global::System.Data.DataColumn("PercMaggConiuge", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercMaggConiuge);
+                this.columnPercMaggFigli = new global::System.Data.DataColumn("PercMaggFigli", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercMaggFigli);
+                this.columnMaggConiuge = new global::System.Data.DataColumn("MaggConiuge", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMaggConiuge);
+                this.columnMaggFigli = new global::System.Data.DataColumn("MaggFigli", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMaggFigli);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -530,7 +600,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                DataSetDipEsteroLivello ds = new DataSetDipEsteroLivello();
+                DataSetDipEstero ds = new DataSetDipEstero();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -605,22 +675,6 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string nominativo {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.nominativoColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'nominativo\' nella tabella \'DataTable1\' è DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.nominativoColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string sede {
                 get {
                     try {
@@ -632,6 +686,54 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 }
                 set {
                     this[this.tableDataTable1.sedeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string valuta {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.valutaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'valuta\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.valutaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string matricola {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.matricolaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'matricola\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.matricolaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string nominativo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.nominativoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'nominativo\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.nominativoColumn] = value;
                 }
             }
             
@@ -654,22 +756,6 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string data_rientro {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.data_rientroColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'data_rientro\' nella tabella \'DataTable1\' è DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.data_rientroColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string qualifica {
                 get {
                     try {
@@ -686,30 +772,83 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ruolo_dipendente {
+            public string IndennitaPersonale {
                 get {
                     try {
-                        return ((string)(this[this.tableDataTable1.ruolo_dipendenteColumn]));
+                        return ((string)(this[this.tableDataTable1.IndennitaPersonaleColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ruolo_dipendente\' nella tabella \'DataTable1\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IndennitaPersonale\' nella tabella \'DataTable1\' è DBNull." +
+                                "", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.ruolo_dipendenteColumn] = value;
+                    this[this.tableDataTable1.IndennitaPersonaleColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsnominativoNull() {
-                return this.IsNull(this.tableDataTable1.nominativoColumn);
+            public string PercMaggConiuge {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercMaggConiugeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercMaggConiuge\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PercMaggConiugeColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetnominativoNull() {
-                this[this.tableDataTable1.nominativoColumn] = global::System.Convert.DBNull;
+            public string PercMaggFigli {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercMaggFigliColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercMaggFigli\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PercMaggFigliColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string MaggConiuge {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.MaggConiugeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MaggConiuge\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.MaggConiugeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string MaggFigli {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.MaggFigliColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MaggFigli\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.MaggFigliColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -726,6 +865,42 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsvalutaNull() {
+                return this.IsNull(this.tableDataTable1.valutaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetvalutaNull() {
+                this[this.tableDataTable1.valutaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsmatricolaNull() {
+                return this.IsNull(this.tableDataTable1.matricolaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetmatricolaNull() {
+                this[this.tableDataTable1.matricolaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsnominativoNull() {
+                return this.IsNull(this.tableDataTable1.nominativoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetnominativoNull() {
+                this[this.tableDataTable1.nominativoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Isdata_trasferimentoNull() {
                 return this.IsNull(this.tableDataTable1.data_trasferimentoColumn);
             }
@@ -734,18 +909,6 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setdata_trasferimentoNull() {
                 this[this.tableDataTable1.data_trasferimentoColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Isdata_rientroNull() {
-                return this.IsNull(this.tableDataTable1.data_rientroColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setdata_rientroNull() {
-                this[this.tableDataTable1.data_rientroColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -762,14 +925,62 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Isruolo_dipendenteNull() {
-                return this.IsNull(this.tableDataTable1.ruolo_dipendenteColumn);
+            public bool IsIndennitaPersonaleNull() {
+                return this.IsNull(this.tableDataTable1.IndennitaPersonaleColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setruolo_dipendenteNull() {
-                this[this.tableDataTable1.ruolo_dipendenteColumn] = global::System.Convert.DBNull;
+            public void SetIndennitaPersonaleNull() {
+                this[this.tableDataTable1.IndennitaPersonaleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercMaggConiugeNull() {
+                return this.IsNull(this.tableDataTable1.PercMaggConiugeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercMaggConiugeNull() {
+                this[this.tableDataTable1.PercMaggConiugeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercMaggFigliNull() {
+                return this.IsNull(this.tableDataTable1.PercMaggFigliColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercMaggFigliNull() {
+                this[this.tableDataTable1.PercMaggFigliColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMaggConiugeNull() {
+                return this.IsNull(this.tableDataTable1.MaggConiugeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMaggConiugeNull() {
+                this[this.tableDataTable1.MaggConiugeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMaggFigliNull() {
+                return this.IsNull(this.tableDataTable1.MaggFigliColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMaggFigliNull() {
+                this[this.tableDataTable1.MaggFigliColumn] = global::System.Convert.DBNull;
             }
         }
         
