@@ -138,7 +138,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 {
                     using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
                     {
-                        rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
+                        //rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
                     }
 
                     if (rim?.Any() ?? false)

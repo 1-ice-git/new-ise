@@ -34,6 +34,13 @@ namespace NewISE.Areas.Statistiche.Models
         public string data_operazione { get; set; }
         [Display(Name = "Indennità Personale")]
         public string indennita_personale { get; set; }
+
+        [Display(Name = "Prima Sistemazione")]
+        public string prima_sistemazione { get; set; }
+
+        [Display(Name = "Richiamo")]
+        public string richiamo { get; set; }        
+
         [Display(Name = "Sist. /Rientro Lorda")]
         public string anticipo { get; set; }
 
