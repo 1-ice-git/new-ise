@@ -48,6 +48,7 @@ namespace NewISE.Models.DBModel.dtObj
             //               a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera).ToList();
 
             
+
             var lTeorici =
                    db.TEORICI.Where(
                        a =>
