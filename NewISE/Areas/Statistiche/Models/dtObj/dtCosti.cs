@@ -6,10 +6,11 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
+using NewISE.Models.DBModel.dtObj;
 
-namespace NewISE.Models.DBModel.dtObj
+namespace NewISE.Areas.Statistiche.Models.dtObj
 {
-    public class dtCostiUfficio : IDisposable
+    public class dtCosti : IDisposable
     {
 
         public void Dispose()
@@ -17,11 +18,12 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public List<RptCostiUfficioModel> GetCostiUfficio(decimal MeseDa, decimal AnnoDa, decimal MeseA, decimal AnnoA, decimal idUfficio, ModelDBISE db)
+
+        public List<RptCostiModel> GetCosti(decimal MeseDa, decimal AnnoDa, decimal MeseA, decimal AnnoA, ModelDBISE db)
         {
             try
             {
-                List<RptCostiUfficioModel> lrptcum = new List<RptCostiUfficioModel>();
+                List<RptCostiModel> lrptcm = new List<RptCostiModel>();
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
@@ -34,23 +36,12 @@ namespace NewISE.Models.DBModel.dtObj
                     DateTime dtIni = Convert.ToDateTime("01/" + strMeseDa + "/" + AnnoDa.ToString());
                     DateTime dtFin = Utility.GetDtFineMese(Convert.ToDateTime("01/" + strMeseA + "/" + AnnoA.ToString()));
 
-                    #region Elenco Trasferimenti nel range in base al coan
-                    if (idUfficio >0)
-                    {
-                        lt = db.TRASFERIMENTO.Where(a =>
-                                                        a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                                                        a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin &&
-                                                        a.IDUFFICIO == idUfficio)
-                                                    .ToList();
-                    }
-                    else
-                    {
-                        lt = db.TRASFERIMENTO.Where(a =>
-                                    a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                                    a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin)
-                                .ToList();
 
-                    }
+                    #region Elenco Trasferimenti nel range
+                    lt = db.TRASFERIMENTO.Where(a =>
+                                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                            a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin)
+                                        .ToList();
                     #endregion
 
 
@@ -61,18 +52,21 @@ namespace NewISE.Models.DBModel.dtObj
                         var nome = d.NOME;
                         var cognome = d.COGNOME;
                         var matricola = d.MATRICOLA;
-                        var ufficio = t.UFFICI.DESCRIZIONEUFFICIO;
+                        var codiceufficio = t.UFFICI.CODICEUFFICIO;
+                        var ufficio = t.UFFICI.DESCRIZIONEUFFICIO + " (" + codiceufficio + ")";
+                        decimal idVoci = 0;
+
                         if (matricola == 3367)
                         {
                             var a = 0;
                         }
 
                         #region elenco livelli x trasferimento
-                        var llivdip = t.INDENNITA.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false &&
-                                                                                a.DATAFINEVALIDITA >= dtIni &&
-                                                                                a.DATAINIZIOVALIDITA <= dtFin
-                                                                        )
-                                            .ToList();
+                        var llivdip = t.INDENNITA.LIVELLIDIPENDENTI
+                                                    .Where(a => a.ANNULLATO == false &&
+                                                                a.DATAFINEVALIDITA >= dtIni &&
+                                                                a.DATAINIZIOVALIDITA <= dtFin)
+                                                    .ToList();
                         #endregion
 
                         #region ciclo livelli
@@ -84,13 +78,14 @@ namespace NewISE.Models.DBModel.dtObj
                             var annoMeseFine = Convert.ToDecimal(AnnoA.ToString() + MeseA.ToString().PadLeft(2, (char)'0'));
 
                             #region INDENNITA
+                            idVoci = (decimal)EnumVociContabili.Ind_Sede_Estera;
                             lteorici = t.TEORICI.Where(a =>
                                                                 a.ELABINDENNITA.Any(b => b.IDLIVELLO == livdip.IDLIVELLO) &&
                                                                 a.ANNULLATO == false &&
                                                                 a.DIRETTO == false &&
                                                                 a.ELABORATO == true &&
                                                                 a.INSERIMENTOMANUALE == false &&
-                                                                a.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
+                                                                a.IDVOCI == idVoci &&
                                                                 a.VOCI.IDTIPOLIQUIDAZIONE==(decimal)EnumTipoLiquidazione.Contabilità &&
                                                                 Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
                                                                                     a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
@@ -104,28 +99,30 @@ namespace NewISE.Models.DBModel.dtObj
                                 var importo = lteorici.Sum(a => a.IMPORTO);
                                 var descLivello = livdip.LIVELLI.LIVELLO;
 
-                                RptCostiUfficioModel rptcum = new RptCostiUfficioModel()
+                                RptCostiModel rptcm = new RptCostiModel()
                                 {
                                     Matricola = matricola,
                                     Nominativo = cognome + " " + nome,
                                     Livello = descLivello,
                                     Ufficio = ufficio,
-                                    Descrizione = GetDescrizioneVoci((decimal)EnumVociContabili.Ind_Sede_Estera, db),
+                                    CodiceUfficio=codiceufficio,
+                                    Descrizione = GetDescrizioneVoci(idVoci, db),
                                     Importo = importo
                                 };
-                                lrptcum.Add(rptcum);
+                                lrptcm.Add(rptcm);
 
                             }
                             #endregion
 
                             #region MAB
+                            idVoci = (decimal)EnumVociContabili.MAB;
                             lteorici = t.TEORICI.Where(a =>
                                                                 a.ELABMAB.Any(b => b.IDLIVELLO == livdip.IDLIVELLO) &&
                                                                 a.ANNULLATO == false &&
                                                                 a.DIRETTO == false &&
                                                                 a.ELABORATO == true &&
                                                                 a.INSERIMENTOMANUALE == false &&
-                                                                a.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                                                                a.IDVOCI == idVoci &&
                                                                 a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                                                 Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
                                                                                     a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
@@ -139,99 +136,30 @@ namespace NewISE.Models.DBModel.dtObj
                                 var importo = lteorici.Sum(a => a.IMPORTO);
                                 var descLivello = livdip.LIVELLI.LIVELLO;
 
-                                RptCostiUfficioModel rptcum = new RptCostiUfficioModel()
+                                RptCostiModel rptcm = new RptCostiModel()
                                 {
                                     Matricola = matricola,
                                     Nominativo = cognome + " " + nome,
                                     Livello = descLivello,
                                     Ufficio = ufficio,
-                                    Descrizione = GetDescrizioneVoci((decimal)EnumVociContabili.MAB, db),
+                                    CodiceUfficio = codiceufficio,
+                                    Descrizione = GetDescrizioneVoci(idVoci, db),
                                     Importo = importo
                                 };
-                                lrptcum.Add(rptcum);
+                                lrptcm.Add(rptcm);
 
                             }
                             #endregion
 
-
                             #region PRIMA SISTEMAZIONE
+                            idVoci = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380;
                             lteorici = t.TEORICI.Where(a =>
                                                                 a.ELABINDSISTEMAZIONE?.IDLIVELLO == livdip.IDLIVELLO &&
                                                                 a.ANNULLATO == false &&
                                                                 //a.DIRETTO == false &&
                                                                 a.ELABORATO == true &&
                                                                 a.INSERIMENTOMANUALE == false &&
-                                                                a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
-                                                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                                                Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                                                                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-                                                                Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                                                                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-                                                    .OrderBy(a => a.ANNORIFERIMENTO)
-                                                    .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-                            if (lteorici?.Any() ?? false)
-                            {
-                                var importo = lteorici.Sum(a => a.IMPORTO);
-                                var descLivello = livdip.LIVELLI.LIVELLO;
-
-                                RptCostiUfficioModel rptcum = new RptCostiUfficioModel()
-                                {
-                                    Matricola = matricola,
-                                    Nominativo = cognome + " " + nome,
-                                    Livello = descLivello,
-                                    Ufficio = ufficio,
-                                    Descrizione = GetDescrizioneVoci((decimal)EnumVociContabili.Ind_Prima_Sist_IPS, db),
-                                    Importo = importo
-                                };
-                                lrptcum.Add(rptcum);
-
-                            }
-                            #endregion
-
-                            #region RICHIAMO
-                            lteorici = t.TEORICI.Where(a =>
-                                                                a.ELABINDRICHIAMO?.IDLIVELLO == livdip.IDLIVELLO &&
-                                                                a.ANNULLATO == false &&
-                                                                a.DIRETTO == false &&
-                                                                a.ELABORATO == true &&
-                                                                a.INSERIMENTOMANUALE == false &&
-                                                                a.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI &&
-                                                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                                                Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                                                                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-                                                                Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                                                                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-                                                    .OrderBy(a => a.ANNORIFERIMENTO)
-                                                    .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-                            if (lteorici?.Any() ?? false)
-                            {
-                                var importo = lteorici.Sum(a => a.IMPORTO);
-                                var descLivello = livdip.LIVELLI.LIVELLO;
-
-                                RptCostiUfficioModel rptcum = new RptCostiUfficioModel()
-                                {
-                                    Matricola = matricola,
-                                    Nominativo = cognome + " " + nome,
-                                    Livello = descLivello,
-                                    Ufficio = ufficio,
-                                    Descrizione = GetDescrizioneVoci((decimal)EnumVociContabili.Ind_Richiamo_IRI, db),
-                                    Importo = importo
-                                };
-                                lrptcum.Add(rptcum);
-
-                            }
-                            #endregion
-
-                            #region TRASPORTO EFFETTI
-                            lteorici = t.TEORICI.Where(a =>
-                                                                a.ELABTRASPEFFETTI?.IDLIVELLO == livdip.IDLIVELLO &&
-                                                                a.ANNULLATO == false &&
-                                                                a.DIRETTO == false &&
-                                                                a.ELABORATO == true &&
-                                                                a.INSERIMENTOMANUALE == false &&
-                                                                a.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                                                                a.IDVOCI == idVoci &&
                                                                 a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
                                                                 Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
                                                                                     a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
@@ -245,16 +173,91 @@ namespace NewISE.Models.DBModel.dtObj
                                 var importo = lteorici.Sum(a => a.IMPORTO);
                                 var descLivello = livdip.LIVELLI.LIVELLO;
 
-                                RptCostiUfficioModel rptcum = new RptCostiUfficioModel()
+                                RptCostiModel rptcm = new RptCostiModel()
                                 {
                                     Matricola = matricola,
                                     Nominativo = cognome + " " + nome,
                                     Livello = descLivello,
                                     Ufficio = ufficio,
-                                    Descrizione = GetDescrizioneVoci((decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131, db),
+                                    CodiceUfficio = codiceufficio,
+                                    Descrizione = GetDescrizioneVoci(idVoci, db),
                                     Importo = importo
                                 };
-                                lrptcum.Add(rptcum);
+                                lrptcm.Add(rptcm);
+
+                            }
+                            #endregion
+
+                            #region RICHIAMO
+                            idVoci = (decimal)EnumVociContabili.Ind_Richiamo_IRI;
+                            lteorici = t.TEORICI.Where(a =>
+                                                                a.ELABINDRICHIAMO?.IDLIVELLO == livdip.IDLIVELLO &&
+                                                                a.ANNULLATO == false &&
+                                                                a.DIRETTO == false &&
+                                                                a.ELABORATO == true &&
+                                                                a.INSERIMENTOMANUALE == false &&
+                                                                a.IDVOCI == idVoci &&
+                                                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                                                Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
+                                                                                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
+                                                                Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
+                                                                                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
+                                                    .OrderBy(a => a.ANNORIFERIMENTO)
+                                                    .ThenBy(a => a.MESERIFERIMENTO).ToList();
+
+                            if (lteorici?.Any() ?? false)
+                            {
+                                var importo = lteorici.Sum(a => a.IMPORTO);
+                                var descLivello = livdip.LIVELLI.LIVELLO;
+
+                                RptCostiModel rptcm = new RptCostiModel()
+                                {
+                                    Matricola = matricola,
+                                    Nominativo = cognome + " " + nome,
+                                    Livello = descLivello,
+                                    Ufficio = ufficio,
+                                    CodiceUfficio = codiceufficio,
+                                    Descrizione = GetDescrizioneVoci(idVoci, db),
+                                    Importo = importo
+                                };
+                                lrptcm.Add(rptcm);
+
+                            }
+                            #endregion
+
+                            #region TRASPORTO EFFETTI
+                            idVoci = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131;
+                            lteorici = t.TEORICI.Where(a =>
+                                                                a.ELABTRASPEFFETTI?.IDLIVELLO == livdip.IDLIVELLO &&
+                                                                a.ANNULLATO == false &&
+                                                                a.DIRETTO == false &&
+                                                                a.ELABORATO == true &&
+                                                                a.INSERIMENTOMANUALE == false &&
+                                                                a.IDVOCI == idVoci &&
+                                                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                                                Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
+                                                                                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
+                                                                Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
+                                                                                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
+                                                    .OrderBy(a => a.ANNORIFERIMENTO)
+                                                    .ThenBy(a => a.MESERIFERIMENTO).ToList();
+
+                            if (lteorici?.Any() ?? false)
+                            {
+                                var importo = lteorici.Sum(a => a.IMPORTO);
+                                var descLivello = livdip.LIVELLI.LIVELLO;
+
+                                RptCostiModel rptcm = new RptCostiModel()
+                                {
+                                    Matricola = matricola,
+                                    Nominativo = cognome + " " + nome,
+                                    Livello = descLivello,
+                                    Ufficio = ufficio,
+                                    CodiceUfficio = codiceufficio,
+                                    Descrizione = GetDescrizioneVoci(idVoci, db),
+                                    Importo = importo
+                                };
+                                lrptcm.Add(rptcm);
 
                             }
                             #endregion
@@ -265,7 +268,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     #endregion
                 }
-                return lrptcum;
+                return lrptcm;
             }
             catch(Exception ex)
             {

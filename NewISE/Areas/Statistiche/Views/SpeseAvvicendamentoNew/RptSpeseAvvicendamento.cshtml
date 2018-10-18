@@ -1,0 +1,11 @@
+﻿@using ReportViewerForMvc;
+@using Microsoft.Reporting.WebForms;
+
+<div class="text-center">
+    @Html.ReportViewer(
+    ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer,
+    new { scrolling = "no" })
+</div>
+
+
+
