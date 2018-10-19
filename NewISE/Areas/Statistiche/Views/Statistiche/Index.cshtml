@@ -77,12 +77,12 @@
                         <a href="#" class="list-group-item" onclick="callpartialSpeseAvvicendamentoNew()">Consuntivo Spese di Avvicendamento</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroLivelloNew();">Dipendenti all'Estero per Livello</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroNew();">Dislocazione dei dipendenti all'Estero</a>
-                        <a href="#" class="list-group-item" onclick="">Riepilogo per Livello</a>
-                        <a href="#" class="list-group-item" onclick="">Riepilogo Generale</a>
-                        <a href="#" class="list-group-item" onclick="">Riepilogo per Ufficio</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpRiepilogoLivello()">Riepilogo per Livello</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpRiepilogo()">Riepilogo Generale</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpRiepilogoUfficio()">Riepilogo per Ufficio</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpIndSedeEsteraNew();">Riepilogo delle operazioni effettuate - Indennità di sede estera</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazioneNew();">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
-                        <a href="#" class="list-group-item" onclick="callpartialOpTrasportoEffettiNew();">Trasporto Effetti</a>
+                        <a href="#" class="list-group-item" onclick="callpartialOpTrasportoEffettiNew();">Riepilogo delle operazioni effettuate - Trasporto Effetti</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpSospensioniNew();">Sospensioni</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpStoriaDipendenteNew()">Storia del Dipendente</a>
                         
@@ -1056,4 +1056,90 @@
             }
         });
     }
+
+    function callpartialRiepilogoLivello() {
+        //debugger;
+        rotta = "/Statistiche/RiepilogoLivello/Index";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    function callpartialRiepilogo() {
+        //debugger;
+        rotta = "/Statistiche/Riepilogo/Index";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    function callpartialRiepilogoUfficio() {
+        //debugger;
+        rotta = "/Statistiche/RiepilogoUfficio/Index";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+
 </script>

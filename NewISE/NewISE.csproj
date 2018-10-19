@@ -5563,7 +5563,7 @@
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtReportTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepiloghiIseMensile.cs" />
-    <Compile Include="Models\DBModel\dtObj\dtRiepiloghiMaggAbitazione.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtRiepiloghiMaggAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepilogoVoci.cs" />
     <Compile Include="Models\DBModel\dtObj\dtStoriaDipendenteNew.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioneTitoliViaggio.cs" />
