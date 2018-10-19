@@ -61,5 +61,13 @@ namespace NewISE.Areas.Statistiche.Models
 
         [Display(Name = "Richiamo")]
         public string richiamo { get; set; }
+
+        public decimal mese { get; set; }
+
+        public decimal anno { get; set; }
+
+        public string riferimento { get; set; }
+
+        public string elaborazione { get; set; }
     }
 }

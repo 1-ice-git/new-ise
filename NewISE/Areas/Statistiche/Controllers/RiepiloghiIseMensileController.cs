@@ -160,11 +160,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                         
                     }
 
-
                     string strMeseAnnoDa = "";
                     string strMeseAnnoA = "";
                     
-
 
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
@@ -193,7 +191,10 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 Nominativo = lm.Nominativo,
                                 qualifica = lm.qualifica,
                                 indennita_personale = lm.indennita_personale,
-                                prima_sistemazione = lm.prima_sistemazione
+                                prima_sistemazione = lm.prima_sistemazione,
+                                riferimento = lm.riferimento,
+                                elaborazione = strMeseAnnoDa + " " + strMeseAnnoA
+
 
                             };
 

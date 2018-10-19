@@ -303,6 +303,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             private global::System.Data.DataColumn columnrichiamo;
             
+            private global::System.Data.DataColumn columnriferimento;
+            
+            private global::System.Data.DataColumn columnelaborazione;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataSetRiepiloghiIseMensileDataTable() {
@@ -434,6 +438,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn riferimentoColumn {
+                get {
+                    return this.columnriferimento;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn elaborazioneColumn {
+                get {
+                    return this.columnelaborazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -469,7 +489,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileRow AddDataSetRiepiloghiIseMensileRow(string Importo, string Voce, string Liquidazione, string Movimento, string DescrizioneVoce, string Nominativo, string Ufficio, string matricola, string qualifica, string indennita_personale, string prima_sistemazione, string richiamo) {
+            public DataSetRiepiloghiIseMensileRow AddDataSetRiepiloghiIseMensileRow(string Importo, string Voce, string Liquidazione, string Movimento, string DescrizioneVoce, string Nominativo, string Ufficio, string matricola, string qualifica, string indennita_personale, string prima_sistemazione, string richiamo, string riferimento, string elaborazione) {
                 DataSetRiepiloghiIseMensileRow rowDataSetRiepiloghiIseMensileRow = ((DataSetRiepiloghiIseMensileRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Importo,
@@ -483,7 +503,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         qualifica,
                         indennita_personale,
                         prima_sistemazione,
-                        richiamo};
+                        richiamo,
+                        riferimento,
+                        elaborazione};
                 rowDataSetRiepiloghiIseMensileRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataSetRiepiloghiIseMensileRow);
                 return rowDataSetRiepiloghiIseMensileRow;
@@ -518,6 +540,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.columnindennita_personale = base.Columns["indennita_personale"];
                 this.columnprima_sistemazione = base.Columns["prima_sistemazione"];
                 this.columnrichiamo = base.Columns["richiamo"];
+                this.columnriferimento = base.Columns["riferimento"];
+                this.columnelaborazione = base.Columns["elaborazione"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -547,6 +571,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnprima_sistemazione);
                 this.columnrichiamo = new global::System.Data.DataColumn("richiamo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnrichiamo);
+                this.columnriferimento = new global::System.Data.DataColumn("riferimento", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnriferimento);
+                this.columnelaborazione = new global::System.Data.DataColumn("elaborazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnelaborazione);
                 this.ExtendedProperties.Add("Generator_TablePropName", "_DataSetRiepiloghiIseMensile");
                 this.ExtendedProperties.Add("Generator_UserTableName", "DataSetRiepiloghiIseMensile");
             }
@@ -895,6 +923,40 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string riferimento {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.riferimentoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'riferimento\' nella tabella \'DataSetRiepiloghiIseMensile\'" +
+                                " è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataSetRiepiloghiIseMensile.riferimentoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string elaborazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.elaborazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'elaborazione\' nella tabella \'DataSetRiepiloghiIseMensile" +
+                                "\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataSetRiepiloghiIseMensile.elaborazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsImportoNull() {
                 return this.IsNull(this.tableDataSetRiepiloghiIseMensile.ImportoColumn);
             }
@@ -1035,6 +1097,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetrichiamoNull() {
                 this[this.tableDataSetRiepiloghiIseMensile.richiamoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsriferimentoNull() {
+                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.riferimentoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetriferimentoNull() {
+                this[this.tableDataSetRiepiloghiIseMensile.riferimentoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IselaborazioneNull() {
+                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.elaborazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetelaborazioneNull() {
+                this[this.tableDataSetRiepiloghiIseMensile.elaborazioneColumn] = global::System.Convert.DBNull;
             }
         }
         

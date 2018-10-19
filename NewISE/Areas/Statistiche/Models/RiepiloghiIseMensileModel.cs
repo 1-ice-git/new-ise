@@ -74,6 +74,14 @@ namespace NewISE.Areas.Statistiche.Models
 
         public string Ufficio { get; set; }
 
+        public decimal mese { get; set; }
+
+        public decimal anno { get; set; }
+
+        public string elaborazione { get; set; }
+
+        public string riferimento { get; set; }
+        
         public decimal meseRiferimento { get; set; }
 
         public decimal annoRiferimento { get; set; }
