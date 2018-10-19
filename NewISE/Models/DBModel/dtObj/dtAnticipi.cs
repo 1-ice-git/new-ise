@@ -489,7 +489,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 using (dtElaborazioni dte = new dtElaborazioni())
                                 {
-                                    dte.InviaAnticipoPrimaSistemazioneContabilita(idAttivitaAnticipi, db);
+                                    dte.InviaAnticipoPrimaSistemazione(idAttivitaAnticipi, db);
                                 }
 
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,

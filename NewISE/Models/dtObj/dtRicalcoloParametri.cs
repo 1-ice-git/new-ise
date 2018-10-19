@@ -381,12 +381,19 @@ namespace NewISE.Models.dtObj
                         a =>
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
                             a.DATARIENTRO >= ib.DATAINIZIOVALIDITA && a.DATAPARTENZA <= ib.DATAFINEVALIDITA &&
-                            a.DIPENDENTI.LIVELLIDIPENDENTI.Where(
+                            a.DIPENDENTI.LIVELLIDIPENDENTI.Any(
                                 b =>
                                     b.ANNULLATO == false && b.IDLIVELLO == ib.IDLIVELLO &&
                                     b.DATAFINEVALIDITA >= ib.DATAINIZIOVALIDITA &&
-                                    b.DATAINIZIOVALIDITA <= ib.DATAFINEVALIDITA).Any())
+                                    b.DATAINIZIOVALIDITA <= ib.DATAFINEVALIDITA))
                         .OrderBy(a => a.DATAPARTENZA)
+                        .ToList();
+
+                var d =
+                    db.LIVELLIDIPENDENTI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.IDLIVELLO == ib.IDLIVELLO &&
+                            a.DATAFINEVALIDITA >= ib.DATAINIZIOVALIDITA && a.DATAINIZIOVALIDITA <= ib.DATAFINEVALIDITA)
                         .ToList();
 
                 if (lTrsferimento?.Any() ?? false)

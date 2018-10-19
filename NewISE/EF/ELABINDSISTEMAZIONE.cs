@@ -24,6 +24,7 @@ namespace NewISE.EF
     
         public decimal IDINDSISTLORDA { get; set; }
         public decimal IDPRIMASISTEMAZIONE { get; set; }
+        public decimal IDLIVELLO { get; set; }
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal PERCENTUALEDISAGIO { get; set; }
@@ -34,11 +35,11 @@ namespace NewISE.EF
         public bool ANTICIPO { get; set; }
         public bool SALDO { get; set; }
         public bool UNICASOLUZIONE { get; set; }
+        public decimal IMPORTOLORDO { get; set; }
         public decimal PERCANTSALDOUNISOL { get; set; }
+        public bool CONGUAGLIO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal IDLIVELLO { get; set; }
-        public bool CONGUAGLIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }

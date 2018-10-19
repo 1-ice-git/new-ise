@@ -39,6 +39,19 @@
 
 <script type="text/javascript">
 
+    function ValorizzazioneIniziale() {
+        //debugger;
+        var valore = $("#mesiAnniElaborati").val();
+        DipendentiDaElaborare(valore);
+        DatiLiquidazioniDirette(valore);
+        DatiLiquidazioniMensili(valore);
+        PulsantiInvioElaborazione(valore);
+        GesionePulsanteCalcola();
+        //GestionePulsanteInviaFlussiMensili();
+        VerificaChiusuraMese(valore);
+        //debugger;
+        //VerificaDipendentiInvioFlussiMensili(valore);
+    }
 
     $("#mesiAnniElaborati").select2({
         placeholder: "Seleziona il mese-anno",
@@ -196,19 +209,7 @@
         });
     }
 
-    function ValorizzazioneIniziale() {
-        //debugger;
-        var valore = $("#mesiAnniElaborati").val();
-        DipendentiDaElaborare(valore);
-        DatiLiquidazioniDirette(valore);
-        DatiLiquidazioniMensili(valore);
-        PulsantiInvioElaborazione(valore);
-        GesionePulsanteCalcola();
-        //GestionePulsanteInviaFlussiMensili();
-        VerificaChiusuraMese(valore);
-        //debugger;
-        //VerificaDipendentiInvioFlussiMensili(valore);
-    }
+
 
 
 

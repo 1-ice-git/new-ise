@@ -27,7 +27,11 @@ namespace NewISE.Controllers
 
         private void ListeComboNuovoTrasf(out List<SelectListItem> lTipoTrasferimento, out List<SelectListItem> lUffici, out List<SelectListItem> lRuoloUfficio, out List<SelectListItem> lTipologiaCoan, out List<SelectListItem> lFasciaKM)
         {
-            var r = new List<SelectListItem>();
+            var r1 = new List<SelectListItem>();
+            var r2 = new List<SelectListItem>();
+            var r3 = new List<SelectListItem>();
+            var r4 = new List<SelectListItem>();
+            var r5 = new List<SelectListItem>();
 
             using (dtTipoTrasferimento dttt = new dtTipoTrasferimento())
             {
@@ -35,16 +39,16 @@ namespace NewISE.Controllers
 
                 if (ltt != null && ltt.Count > 0)
                 {
-                    r = (from t in ltt
-                         select new SelectListItem()
-                         {
-                             Text = t.descTipoTrasf,
-                             Value = t.idTipoTrasferimento.ToString()
-                         }).ToList();
-                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                    r1 = (from t in ltt
+                          select new SelectListItem()
+                          {
+                              Text = t.descTipoTrasf,
+                              Value = t.idTipoTrasferimento.ToString()
+                          }).ToList();
+                    r1.Insert(0, new SelectListItem() { Text = "", Value = "" });
                 }
 
-                lTipoTrasferimento = r;
+                lTipoTrasferimento = r1;
             }
 
             using (dtUffici dtl = new dtUffici())
@@ -53,17 +57,17 @@ namespace NewISE.Controllers
 
                 if (llm != null && llm.Count > 0)
                 {
-                    r = (from t in llm
-                         select new SelectListItem()
-                         {
-                             Text = t.descUfficio,
-                             Value = t.idUfficio.ToString()
-                         }).ToList();
+                    r2 = (from t in llm
+                          select new SelectListItem()
+                          {
+                              Text = t.descUfficio,
+                              Value = t.idUfficio.ToString()
+                          }).ToList();
 
-                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                    r2.Insert(0, new SelectListItem() { Text = "", Value = "" });
                 }
 
-                lUffici = r;
+                lUffici = r2;
             }
 
             using (dtRuoloUfficio dtru = new dtRuoloUfficio())
@@ -72,17 +76,17 @@ namespace NewISE.Controllers
 
                 if (lru != null && lru.Count > 0)
                 {
-                    r = (from t in lru
-                         select new SelectListItem()
-                         {
-                             Text = t.DescrizioneRuolo,
-                             Value = t.idRuoloUfficio.ToString()
-                         }).ToList();
+                    r3 = (from t in lru
+                          select new SelectListItem()
+                          {
+                              Text = t.DescrizioneRuolo,
+                              Value = t.idRuoloUfficio.ToString()
+                          }).ToList();
 
-                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                    r3.Insert(0, new SelectListItem() { Text = "", Value = "" });
                 }
 
-                lRuoloUfficio = r;
+                lRuoloUfficio = r3;
             }
 
             using (dtTipologiaCoan dttc = new dtTipologiaCoan())
@@ -91,17 +95,17 @@ namespace NewISE.Controllers
 
                 if (ltc != null && ltc.Count > 0)
                 {
-                    r = (from t in ltc
-                         select new SelectListItem()
-                         {
-                             Text = t.descrizione,
-                             Value = t.idTipoCoan.ToString()
-                         }).ToList();
+                    r4 = (from t in ltc
+                          select new SelectListItem()
+                          {
+                              Text = t.descrizione,
+                              Value = t.idTipoCoan.ToString()
+                          }).ToList();
 
-                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                    r4.Insert(0, new SelectListItem() { Text = "", Value = "" });
                 }
 
-                lTipologiaCoan = r;
+                lTipologiaCoan = r4;
             }
 
 
@@ -111,17 +115,17 @@ namespace NewISE.Controllers
 
                 if (lfkm?.Any() ?? false)
                 {
-                    r = (from t in lfkm
-                         select new SelectListItem()
-                         {
-                             Text = t.KM,
-                             Value = t.idFKM.ToString()
-                         }).ToList();
+                    r5 = (from t in lfkm
+                          select new SelectListItem()
+                          {
+                              Text = t.KM,
+                              Value = t.idFKM.ToString()
+                          }).ToList();
 
-                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                    r5.Insert(0, new SelectListItem() { Text = "", Value = "" });
                 }
 
-                lFasciaKM = r;
+                lFasciaKM = r5;
             }
 
 

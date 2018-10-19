@@ -51,6 +51,8 @@ namespace NewISE.Controllers
                     importoPercepito = dta.CalcolaImportoPercepito(idAttivitaAnticipi, percRichiesta);
                 }
 
+
+
             }
             catch (Exception ex)
             {

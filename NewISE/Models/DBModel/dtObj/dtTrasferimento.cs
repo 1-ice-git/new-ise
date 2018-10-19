@@ -66,6 +66,82 @@ namespace NewISE.Models.DBModel.dtObj
 
             return vr;
         }
+
+
+
+        public TrasferimentoModel GetTrasferimentoByIdTeorico(decimal idTeorico)
+        {
+
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TEORICI.Find(idTeorico).TRASFERIMENTO;
+
+                TrasferimentoModel tm = new TrasferimentoModel()
+                {
+                    idTrasferimento = t.IDTRASFERIMENTO,
+                    idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                    idUfficio = t.IDUFFICIO,
+                    idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
+                    idDipendente = t.IDDIPENDENTE,
+                    idTipoCoan = t.IDTIPOCOAN,
+                    dataPartenza = t.DATAPARTENZA,
+                    dataRientro = t.DATARIENTRO,
+                    coan = t.COAN,
+                    protocolloLettera = t.PROTOCOLLOLETTERA,
+                    notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                    dataAggiornamento = t.DATAAGGIORNAMENTO,
+                    TipoTrasferimento = new TipoTrasferimentoModel()
+                    {
+                        idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                        descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                    },
+                    Ufficio = new UfficiModel()
+                    {
+                        idUfficio = t.UFFICI.IDUFFICIO,
+                        descUfficio = t.UFFICI.DESCRIZIONEUFFICIO,
+                        codiceUfficio = t.UFFICI.CODICEUFFICIO,
+                        pagatoValutaUfficio = t.UFFICI.PAGATOVALUTAUFFICIO
+                    },
+                    StatoTrasferimento = new StatoTrasferimentoModel()
+                    {
+                        idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                        descrizioneStatoTrasferimento = t.STATOTRASFERIMENTO.DESCRIZIONE
+                    },
+                    Dipendente = new DipendentiModel()
+                    {
+                        idDipendente = t.DIPENDENTI.IDDIPENDENTE,
+                        cognome = t.DIPENDENTI.COGNOME,
+                        nome = t.DIPENDENTI.NOME,
+                        matricola = t.DIPENDENTI.MATRICOLA,
+                        dataAssunzione = t.DIPENDENTI.DATAASSUNZIONE,
+                        dataCessazione = t.DIPENDENTI.DATACESSAZIONE,
+                        indirizzo = t.DIPENDENTI.INDIRIZZO,
+                        cap = t.DIPENDENTI.CAP,
+                        citta = t.DIPENDENTI.CITTA,
+                        provincia = t.DIPENDENTI.PROVINCIA,
+                        email = t.DIPENDENTI.EMAIL,
+                        telefono = t.DIPENDENTI.TELEFONO,
+                        fax = t.DIPENDENTI.FAX,
+                        abilitato = t.DIPENDENTI.ABILITATO,
+                        dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI,
+                        ricalcolare = t.DIPENDENTI.RICALCOLARE,
+
+                    },
+                    TipoCoan = new TipologiaCoanModel()
+                    {
+                        idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
+                        descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
+                    }
+
+                };
+
+
+                return tm;
+            }
+        }
+
+
         /// <summary>
         /// 
         /// </summary>

@@ -24,20 +24,20 @@ namespace NewISE.EF
     
         public decimal IDELABIND { get; set; }
         public decimal IDTRASFINDENNITA { get; set; }
+        public decimal IDLIVELLO { get; set; }
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal PERCENTUALEDISAGIO { get; set; }
         public decimal PERCENTUALEMAGCONIUGE { get; set; }
+        public decimal PENSIONECONIUGE { get; set; }
+        public decimal ALIQUOTAFISCALE { get; set; }
         public System.DateTime DAL { get; set; }
         public System.DateTime AL { get; set; }
+        public decimal GIORNI { get; set; }
+        public decimal GIORNISOSPENSIONE { get; set; }
+        public decimal PROGRESSIVO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal PENSIONECONIUGE { get; set; }
-        public decimal GIORNISOSPENSIONE { get; set; }
-        public decimal IDLIVELLO { get; set; }
-        public decimal PROGRESSIVO { get; set; }
-        public decimal ALIQUOTAFISCALE { get; set; }
-        public decimal GIORNI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
