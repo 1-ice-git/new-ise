@@ -81,6 +81,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _percentualeMAB = 0;
         private decimal _canoneMab = 0;
         private decimal _tassoCambio = 0;
+        private VALUTE _valutaMab = new VALUTE();
         private bool _anticipoAnnualeMAB = false;
         private bool _condivisioneMAB = false;
         private bool _pagatoMAB = false;
@@ -187,6 +188,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal CanoneMAB => _canoneMab;
         [ReadOnly(true)]
         public decimal TassoCambio => _tassoCambio;
+        [ReadOnly(true)]
+        public VALUTE ValutaMAB => _valutaMab;
         [ReadOnly(true)]
         public bool AnticipoAnnualeMAB => _anticipoAnnualeMAB;
         [ReadOnly(true)]
@@ -399,6 +402,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 var cmab = lcmab.First();
 
                 _canoneMab = cmab.IMPORTOCANONE;
+                _valutaMab = cmab.VALUTE;
 
                 this.PrelevaTFRMAB(cmab);
 

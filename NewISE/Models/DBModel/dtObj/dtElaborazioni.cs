@@ -1797,7 +1797,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     ContributoAggiuntivo cam = new ContributoAggiuntivo();
 
-                                    cam.contrubutoAggiuntivo = ca.VALORE;
+                                    cam.contributoAggiuntivo = ca.VALORE;
                                     cam.massimaleContributoAggiuntivo = mca.VALORE;
 
                                     var saldoNetto = this.NettoPrimaSistemazione(dip.MATRICOLA, SaldoLordo,
@@ -1841,6 +1841,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                     ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                                     ALIQUOTAFISCALE = outAliqIse,
                                                     DETRAZIONIAPPLICATE = detrazioniApplicate,
+                                                    CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                                    MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                                     IMPORTO = saldoNetto,
                                                     DATAOPERAZIONE = DateTime.Now,
                                                     ELABORATO = false,
@@ -1862,6 +1864,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                     ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                                     ALIQUOTAFISCALE = outAliqIse,
                                                     DETRAZIONIAPPLICATE = detrazioniApplicate,
+                                                    CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                                    MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                                     IMPORTO = saldoNetto,
                                                     DATAOPERAZIONE = DateTime.Now,
                                                     ELABORATO = false,
@@ -1914,6 +1918,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                 ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                                 ALIQUOTAFISCALE = 0,
                                                 DETRAZIONIAPPLICATE = 0,
+                                                CONTRIBUTOAGGIUNTIVO = 0,
+                                                MASSIMALECA = 0,
                                                 IMPORTO = SaldoLordo,
                                                 DATAOPERAZIONE = DateTime.Now,
                                                 ANNULLATO = false,
@@ -1946,6 +1952,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                 ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                                 ALIQUOTAFISCALE = outAliqIse,
                                                 DETRAZIONIAPPLICATE = detrazioniApplicate,
+                                                CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                                MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                                 IMPORTO = saldoNetto,
                                                 DATAOPERAZIONE = DateTime.Now,
                                                 ANNULLATO = false,
@@ -1978,6 +1986,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                 ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                                 ALIQUOTAFISCALE = outAliqIse,
                                                 DETRAZIONIAPPLICATE = detrazioniApplicate,
+                                                CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                                MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                                 IMPORTO = detrazioniApplicate,
                                                 DATAOPERAZIONE = DateTime.Now,
                                                 ANNULLATO = false,
@@ -2190,7 +2200,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 ContributoAggiuntivo cam = new ContributoAggiuntivo();
 
-                cam.contrubutoAggiuntivo = ca.VALORE;
+                cam.contributoAggiuntivo = ca.VALORE;
                 cam.massimaleContributoAggiuntivo = cam.massimaleContributoAggiuntivo;
 
                 var USNetto = this.NettoPrimaSistemazione(dip.MATRICOLA, USLordo,
@@ -2243,6 +2253,8 @@ namespace NewISE.Models.DBModel.dtObj
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = 0,
                             DETRAZIONIAPPLICATE = 0,
+                            CONTRIBUTOAGGIUNTIVO = 0,
+                            MASSIMALECA = 0,
                             IMPORTO = USLordo,
                             DATAOPERAZIONE = DateTime.Now,
                             ANNULLATO = false,
@@ -2275,6 +2287,8 @@ namespace NewISE.Models.DBModel.dtObj
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = outAliqIse,
                             DETRAZIONIAPPLICATE = detrazioniApplicate,
+                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
                             IMPORTO = USNetto,
                             DATAOPERAZIONE = DateTime.Now,
                             ANNULLATO = false,
@@ -2306,6 +2320,8 @@ namespace NewISE.Models.DBModel.dtObj
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = outAliqIse,
                             DETRAZIONIAPPLICATE = detrazioniApplicate,
+                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
                             IMPORTO = detrazioniApplicate,
                             DATAOPERAZIONE = DateTime.Now,
                             ANNULLATO = false,
@@ -2335,6 +2351,8 @@ namespace NewISE.Models.DBModel.dtObj
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = outAliqIse,
                             DETRAZIONIAPPLICATE = detrazioniApplicate,
+                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
                             IMPORTO = USNetto,
                             DATAOPERAZIONE = DateTime.Now,
                             ELABORATO = false,
@@ -2561,7 +2579,7 @@ namespace NewISE.Models.DBModel.dtObj
                     decimal outDetrazioniApplicate = 0;
 
                     ContributoAggiuntivo cam = new ContributoAggiuntivo();
-                    cam.contrubutoAggiuntivo = ca.VALORE;
+                    cam.contributoAggiuntivo = ca.VALORE;
                     cam.massimaleContributoAggiuntivo = mca.VALORE;
 
                     decimal SaldoLordo = primaSistemazioneUnicaSoluzione;// - AnticipoLordoPercepito;
@@ -2596,6 +2614,8 @@ namespace NewISE.Models.DBModel.dtObj
                         ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                         ALIQUOTAFISCALE = 0,
                         DETRAZIONIAPPLICATE = 0,
+                        CONTRIBUTOAGGIUNTIVO = 0,
+                        MASSIMALECA = 0,
                         IMPORTO = SaldoLordo,
                         DATAOPERAZIONE = DateTime.Now,
                         ANNULLATO = false,
@@ -2628,6 +2648,8 @@ namespace NewISE.Models.DBModel.dtObj
                         ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                         ALIQUOTAFISCALE = outAliqIse,
                         DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                        CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                        MASSIMALECA = cam.massimaleContributoAggiuntivo,
                         IMPORTO = SaldoNetto,
                         DATAOPERAZIONE = DateTime.Now,
                         ANNULLATO = false,
@@ -2659,6 +2681,8 @@ namespace NewISE.Models.DBModel.dtObj
                         ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                         ALIQUOTAFISCALE = outAliqIse,
                         DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                        CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                        MASSIMALECA = cam.massimaleContributoAggiuntivo,
                         IMPORTO = outDetrazioniApplicate,
                         DATAOPERAZIONE = DateTime.Now,
                         ANNULLATO = false,
@@ -2706,6 +2730,8 @@ namespace NewISE.Models.DBModel.dtObj
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = outAliqIse,
                             DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
                             IMPORTO = SaldoNetto,
                             DATAOPERAZIONE = DateTime.Now,
                             ANNULLATO = false,
@@ -2941,6 +2967,10 @@ namespace NewISE.Models.DBModel.dtObj
                         decimal outAliqIse = 0;
                         decimal outDetrazioniApplicate = 0;
 
+                        ContributoAggiuntivo cam = new ContributoAggiuntivo();
+                        cam.contributoAggiuntivo = ca.VALORE;
+                        cam.massimaleContributoAggiuntivo = mca.VALORE;
+
                         //decimal SaldoLordo = (primaSistemazioneAnticipabile * (PercentualeRestante / 100)) + outMaggiorazioniFamiliari;
 
                         //decimal AnticipoNettoPercepito = teoricoAP.IMPORTO;
@@ -2949,7 +2979,7 @@ namespace NewISE.Models.DBModel.dtObj
                         decimal SaldoLordo = primaSistemazioneUnicaSoluzione - AnticipoLordoPercepito;
 
                         var SaldoNetto = this.NettoPrimaSistemazione(dip.MATRICOLA, SaldoLordo,
-                            aliqPrev.VALORE, detrazioni.VALORE, teoricoAP.DETRAZIONIAPPLICATE, out outAliqIse, out outDetrazioniApplicate);
+                            aliqPrev.VALORE, detrazioni.VALORE, teoricoAP.DETRAZIONIAPPLICATE, cam, out outAliqIse, out outDetrazioniApplicate);
 
                         eis.IMPORTOLORDO = SaldoLordo;
 
@@ -2978,6 +3008,8 @@ namespace NewISE.Models.DBModel.dtObj
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = 0,
                             DETRAZIONIAPPLICATE = 0,
+                            CONTRIBUTOAGGIUNTIVO = 0,
+                            MASSIMALECA = 0,
                             IMPORTO = SaldoLordo,
                             DATAOPERAZIONE = DateTime.Now,
                             ANNULLATO = false,
@@ -3011,6 +3043,8 @@ namespace NewISE.Models.DBModel.dtObj
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = outAliqIse,
                             DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
                             IMPORTO = SaldoNetto,
                             DATAOPERAZIONE = DateTime.Now,
                             ANNULLATO = false,
@@ -3043,6 +3077,8 @@ namespace NewISE.Models.DBModel.dtObj
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                             ALIQUOTAFISCALE = outAliqIse,
                             DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
                             IMPORTO = outDetrazioniApplicate,
                             DATAOPERAZIONE = DateTime.Now,
                             ANNULLATO = false,
@@ -3078,6 +3114,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                                 ALIQUOTAFISCALE = outAliqIse,
                                 DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                 IMPORTO = SaldoNetto,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false,
@@ -3255,6 +3293,50 @@ namespace NewISE.Models.DBModel.dtObj
 
                             this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, aliqPrev.IDALIQCONTR, db);
 
+                            ALIQUOTECONTRIBUTIVE ca = new ALIQUOTECONTRIBUTIVE();
+
+                            var lca =
+                                db.ALIQUOTECONTRIBUTIVE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                        t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                    .ToList();
+
+                            if (lca?.Any() ?? false)
+                            {
+                                ca = lca.First();
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Non è presente il contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                            }
+
+                            this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, ca.IDALIQCONTR, db);
+
+                            ALIQUOTECONTRIBUTIVE mca = new ALIQUOTECONTRIBUTIVE();
+
+                            var lmca =
+                                db.ALIQUOTECONTRIBUTIVE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                        t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                    .ToList();
+
+                            if (lmca?.Any() ?? false)
+                            {
+                                mca = lca.First();
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                            }
+
+                            this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, mca.IDALIQCONTR, db);
+
                             CalcoliIndennita.ElaboraPrimaSistemazione(eis.INDENNITABASE, eis.COEFFICENTESEDE,
                                 eis.PERCENTUALEDISAGIO, eis.PERCENTUALERIDUZIONE, eis.COEFFICENTEINDSIST,
                                 eis.PERCENTUALEMAGCONIUGE, eis.PENSIONECONIUGE, eis.ELABDATIFIGLI,
@@ -3268,12 +3350,16 @@ namespace NewISE.Models.DBModel.dtObj
                             decimal outAliqIse = 0;
                             decimal outDetrazioniApplicate = 0;
 
+                            ContributoAggiuntivo cam = new ContributoAggiuntivo();
+                            cam.contributoAggiuntivo = ca.VALORE;
+                            cam.massimaleContributoAggiuntivo = mca.VALORE;
+
                             var anticipoLordo = primaSistemazioneAnticipabile * (eis.PERCANTSALDOUNISOL / 100);
 
                             eis.IMPORTOLORDO = anticipoLordo;
 
                             var anticipoNetto = this.NettoPrimaSistemazione(dip.MATRICOLA, anticipoLordo,
-                                aliqPrev.VALORE, detrazioni.VALORE, 0, out outAliqIse, out outDetrazioniApplicate);
+                                aliqPrev.VALORE, detrazioni.VALORE, 0, cam, out outAliqIse, out outDetrazioniApplicate);
 
                             //var anticipoLordo = primaSistemazioneAnticipabile * (eis.PERCANTSALDOUNISOL / 100);
 
@@ -3318,6 +3404,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                         ALIQUOTAFISCALE = outAliqIse,
                                         DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                        CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                        MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                         IMPORTO = anticipoNetto,
                                         DATAOPERAZIONE = DateTime.Now,
                                         ELABORATO = false,
@@ -3365,6 +3453,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                         ALIQUOTAFISCALE = 0,
                                         DETRAZIONIAPPLICATE = 0,
+                                        CONTRIBUTOAGGIUNTIVO = 0,
+                                        MASSIMALECA = 0,
                                         IMPORTO = anticipoLordo,
                                         DATAOPERAZIONE = DateTime.Now,
                                         ANNULLATO = false,
@@ -3398,6 +3488,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                         ALIQUOTAFISCALE = outAliqIse,
                                         DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                        CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                        MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                         IMPORTO = anticipoNetto,
                                         DATAOPERAZIONE = DateTime.Now,
                                         ANNULLATO = false,
@@ -3430,6 +3522,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
                                         ALIQUOTAFISCALE = outAliqIse,
                                         DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                        CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                        MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                         IMPORTO = outDetrazioniApplicate,
                                         DATAOPERAZIONE = DateTime.Now,
                                         ANNULLATO = false,
@@ -4741,6 +4835,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 {
                                                     using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                                     {
+                                                        
                                                         using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                                         {
                                                             ELABMAB emab = new ELABMAB()
@@ -4753,6 +4848,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
                                                                 CANONELOCAZIONE = ci.CanoneMAB,
                                                                 TASSOFISSORAGGUAGLIO = ci.TassoCambio,
+                                                                IDVALUTA = ci.ValutaMAB.IDVALUTA,
                                                                 PERCMAB = ci.PercentualeMAB,
                                                                 DAL = dv,
                                                                 AL = dvSucc,
@@ -5715,7 +5811,7 @@ namespace NewISE.Models.DBModel.dtObj
                 ImponibilePrevidenziale = imponibileLordo - detrazioneApplicate;
             }
 
-            decimal ImponibileCA = (ImponibilePrevidenziale - ca.massimaleContributoAggiuntivo) * (ca.contrubutoAggiuntivo / 100);
+            decimal ImponibileCA = (ImponibilePrevidenziale - ca.massimaleContributoAggiuntivo) * (ca.contributoAggiuntivo / 100);
 
             var RitenutePrevidenziali = (ImponibilePrevidenziale * aliqPrev / 100) + ImponibileCA;
 
@@ -5745,7 +5841,7 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="detrazioni"></param>
         /// <param name="outAliqIse"></param>
         /// <returns></returns>
-        private decimal NettoIndennitaRichiamo(int matricola, decimal imponibileLordo, decimal aliqPrev, decimal detrazioni, decimal detrazioniUsufruite, out decimal outAliqIse, out decimal detrazioniApplicate)
+        private decimal NettoIndennitaRichiamo(int matricola, decimal imponibileLordo, decimal aliqPrev, decimal detrazioni, decimal detrazioniUsufruite, ContributoAggiuntivo ca, out decimal outAliqIse, out decimal detrazioniApplicate)
         {
             decimal ret = 0;
             outAliqIse = 0;
@@ -5774,7 +5870,9 @@ namespace NewISE.Models.DBModel.dtObj
                 ImponibilePrevidenziale = imponibileLordo - detrazioniApplicate;
             }
 
-            var RitenutePrevidenziali = ImponibilePrevidenziale * aliqPrev / 100;
+            decimal ImponibileCA = (ImponibilePrevidenziale - ca.massimaleContributoAggiuntivo) * (ca.contributoAggiuntivo / 100); 
+
+            var RitenutePrevidenziali = (ImponibilePrevidenziale * aliqPrev / 100) + ImponibileCA;
 
             var imponibileFiscale = ImponibilePrevidenziale - RitenutePrevidenziali;
 
@@ -7068,6 +7166,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                             PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
                                                             CANONELOCAZIONE = ci.CanoneMAB,
                                                             TASSOFISSORAGGUAGLIO = ci.TassoCambio,
+                                                            IDVALUTA = ci.ValutaMAB.IDVALUTA,
                                                             PERCMAB = ci.PercentualeMAB,
                                                             DAL = dv,
                                                             AL = dvSucc,
@@ -8447,14 +8546,67 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, aliqPrev.IDALIQCONTR, db);
 
+
+                                        ALIQUOTECONTRIBUTIVE ca = new ALIQUOTECONTRIBUTIVE();
+
+                                        var lca =
+                                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                                a =>
+                                                    a.ANNULLATO == false &&
+                                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                                    dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                                .ToList();
+
+                                        if (lca?.Any() ?? false)
+                                        {
+                                            ca = lca.First();
+                                        }
+                                        else
+                                        {
+                                            throw new Exception(
+                                                "Non è presente il contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                                        }
+
+                                        this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, ca.IDALIQCONTR, db);
+
+                                        ALIQUOTECONTRIBUTIVE mca = new ALIQUOTECONTRIBUTIVE();
+
+                                        var lmca =
+                                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                                a =>
+                                                    a.ANNULLATO == false &&
+                                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                                    dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                                .ToList();
+
+                                        if (lmca?.Any() ?? false)
+                                        {
+                                            mca = lca.First();
+                                        }
+                                        else
+                                        {
+                                            throw new Exception(
+                                                "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                                        }
+
+                                        this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, mca.IDALIQCONTR, db);
+
+
                                         var dip = trasferimento.DIPENDENTI;
 
                                         decimal outAliqIse = 0;
                                         decimal outDetrazioniApplicate = 0;
                                         decimal indennitaRichiamoLordo = ci.IndennitaRichiamoLordo;
 
+                                        ContributoAggiuntivo cam = new ContributoAggiuntivo()
+                                        {
+                                            contributoAggiuntivo = ca.VALORE,
+                                            massimaleContributoAggiuntivo = mca.VALORE
+                                        };
+
+
                                         var NettoRichiamo = this.NettoIndennitaRichiamo(dip.MATRICOLA, indennitaRichiamoLordo,
-                                            aliqPrev.VALORE, detrazioni.VALORE, 0, out outAliqIse, out outDetrazioniApplicate);
+                                            aliqPrev.VALORE, detrazioni.VALORE, 0, cam, out outAliqIse, out outDetrazioniApplicate);
 
                                         #region Contabilita
 
@@ -8469,6 +8621,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             ANNORIFERIMENTO = dataFineTrasf.Year,
                                             ALIQUOTAFISCALE = outAliqIse,
                                             DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                             IMPORTO = NettoRichiamo,
                                             DATAOPERAZIONE = DateTime.Now,
                                             ELABORATO = false,
@@ -8503,6 +8657,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             ANNORIFERIMENTO = dataFineTrasf.Year,
                                             ALIQUOTAFISCALE = 0,
                                             DETRAZIONIAPPLICATE = 0,
+                                            CONTRIBUTOAGGIUNTIVO = 0,
+                                            MASSIMALECA = 0,
                                             IMPORTO = indennitaRichiamoLordo,
                                             DATAOPERAZIONE = DateTime.Now,
                                             ANNULLATO = false,
@@ -8532,6 +8688,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             ANNORIFERIMENTO = dataFineTrasf.Year,
                                             ALIQUOTAFISCALE = outAliqIse,
                                             DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                             IMPORTO = NettoRichiamo,
                                             DATAOPERAZIONE = DateTime.Now,
                                             ANNULLATO = false,
@@ -8560,8 +8718,10 @@ namespace NewISE.Models.DBModel.dtObj
                                             MESERIFERIMENTO = dataFineTrasf.Month,
                                             ANNORIFERIMENTO = dataFineTrasf.Year,
                                             ALIQUOTAFISCALE = outAliqIse,
-                                            IMPORTO = outDetrazioniApplicate,
                                             DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                            CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                            MASSIMALECA = cam.massimaleContributoAggiuntivo,
+                                            IMPORTO = outDetrazioniApplicate,                                            
                                             DATAOPERAZIONE = DateTime.Now,
                                             ANNULLATO = false,
                                             GIORNI = 0
@@ -8715,7 +8875,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             ContributoAggiuntivo ca = new ContributoAggiuntivo();
 
-                            ca.contrubutoAggiuntivo = contributoAggiuntivo.VALORE;
+                            ca.contributoAggiuntivo = contributoAggiuntivo.VALORE;
                             ca.massimaleContributoAggiuntivo = massimaleCA.VALORE;
 
 
@@ -8748,6 +8908,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                                 ALIQUOTAFISCALE = 0,
                                 DETRAZIONIAPPLICATE = 0,
+                                CONTRIBUTOAGGIUNTIVO = 0,
+                                MASSIMALECA = 0,
                                 IMPORTO = indPsAnticipabileLorda,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false,
@@ -8780,6 +8942,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                                 ALIQUOTAFISCALE = outAliqIse,
                                 DETRAZIONIAPPLICATE = detrazioniApplicate,
+                                CONTRIBUTOAGGIUNTIVO = ca.contributoAggiuntivo,
+                                MASSIMALECA = ca.massimaleContributoAggiuntivo,
                                 IMPORTO = Netto,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false,
@@ -8811,6 +8975,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                                 ALIQUOTAFISCALE = outAliqIse,
                                 DETRAZIONIAPPLICATE = detrazioniApplicate,
+                                CONTRIBUTOAGGIUNTIVO = ca.contributoAggiuntivo,
+                                MASSIMALECA = ca.massimaleContributoAggiuntivo,
                                 IMPORTO = detrazioniApplicate,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false,
@@ -9385,6 +9551,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         PERCENTUALEMAGCONIUGE = emab.PERCENTUALEMAGCONIUGE,
                                         CANONELOCAZIONE = emab.CANONELOCAZIONE,
                                         TASSOFISSORAGGUAGLIO = emab.TASSOFISSORAGGUAGLIO,
+                                        IDVALUTA = emab.IDVALUTA,
                                         PERCMAB = emab.PERCMAB,
                                         DAL = dtIni,
                                         AL = dtFin,
@@ -10033,6 +10200,49 @@ namespace NewISE.Models.DBModel.dtObj
 
                             this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, aliqPrev.IDALIQCONTR, db);
 
+                            ALIQUOTECONTRIBUTIVE ca = new ALIQUOTECONTRIBUTIVE();
+
+                            var lca =
+                                db.ALIQUOTECONTRIBUTIVE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                        trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                    .ToList();
+
+                            if (lca?.Any() ?? false)
+                            {
+                                ca = lca.First();
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Non è presente il contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                            }
+
+                            this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, ca.IDALIQCONTR, db);
+
+                            ALIQUOTECONTRIBUTIVE mca = new ALIQUOTECONTRIBUTIVE();
+
+                            var lmca =
+                                db.ALIQUOTECONTRIBUTIVE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                        trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                    .ToList();
+
+                            if (lmca?.Any() ?? false)
+                            {
+                                mca = lca.First();
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                            }
+
+                            this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, mca.IDALIQCONTR, db);
 
                             CalcoliIndennita.ElaboraPrimaSistemazione(eisOld.INDENNITABASE, eisOld.COEFFICENTESEDE,
                                 eisOld.PERCENTUALEDISAGIO, eisOld.PERCENTUALERIDUZIONE, eisOld.COEFFICENTEINDSIST,
@@ -10049,17 +10259,18 @@ namespace NewISE.Models.DBModel.dtObj
 
                             decimal outAliqIseNew = 0;
                             decimal outDetrazioniApplicateNew = 0;
-                            //decimal outAliqIseOld = 0;
-                            //decimal outDetrazioniApplicateOld = 0;
+
+                            ContributoAggiuntivo cam = new ContributoAggiuntivo();
+                            cam.contributoAggiuntivo = ca.VALORE;
+                            cam.massimaleContributoAggiuntivo = cam.massimaleContributoAggiuntivo;
+
 
 
                             decimal nettoNew = this.NettoPrimaSistemazione(dip.MATRICOLA,
                                 outPrimaSistemazioneUnicaSoluzioneNew,
-                                aliqPrev.VALORE, detrazioni.VALORE, 0, out outAliqIseNew, out outDetrazioniApplicateNew);
+                                aliqPrev.VALORE, detrazioni.VALORE, 0, cam, out outAliqIseNew, out outDetrazioniApplicateNew);
 
-                            //decimal nettoOld = this.NettoPrimaSistemazione(dip.MATRICOLA,
-                            //    outPrimaSistemazioneUnicaSoluzioneOld,
-                            //    aliqPrev.VALORE, detrazioni.VALORE, out outAliqIseOld, out outDetrazioniApplicateOld);
+                            
 
 
                             decimal conguaglioNetto = nettoNew - nettoOld;
@@ -10077,6 +10288,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
                                     ALIQUOTAFISCALE = outAliqIseNew,
                                     DETRAZIONIAPPLICATE = outDetrazioniApplicateNew,
+                                    CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                    MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                     IMPORTO = conguaglioNetto,
                                     DATAOPERAZIONE = DateTime.Now,
                                     ELABORATO = false,
@@ -10280,11 +10493,63 @@ namespace NewISE.Models.DBModel.dtObj
 
                             this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, aliqPrev.IDALIQCONTR, db);
 
+                            ALIQUOTECONTRIBUTIVE ca = new ALIQUOTECONTRIBUTIVE();
+
+                            var lca =
+                                db.ALIQUOTECONTRIBUTIVE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                        dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                    .ToList();
+
+                            if (lca?.Any() ?? false)
+                            {
+                                ca = lca.First();
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Non è presente il contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                            }
+
+                            this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, ca.IDALIQCONTR, db);
+
+                            ALIQUOTECONTRIBUTIVE mca = new ALIQUOTECONTRIBUTIVE();
+
+                            var lmca =
+                                db.ALIQUOTECONTRIBUTIVE.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                        dataFineTrasf >= a.DATAINIZIOVALIDITA && dataFineTrasf <= a.DATAFINEVALIDITA)
+                                    .ToList();
+
+                            if (lmca?.Any() ?? false)
+                            {
+                                mca = lca.First();
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                            }
+
+                            this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, mca.IDALIQCONTR, db);
+
                             decimal outAliqIse = 0;
                             decimal outDetrazioniApplicate = 0;
 
+
+                            ContributoAggiuntivo cam = new ContributoAggiuntivo()
+                            {
+                                contributoAggiuntivo = ca.VALORE,
+                                massimaleContributoAggiuntivo = mca.VALORE
+                            };
+
+
                             var congNettoRichiamo = this.NettoIndennitaRichiamo(dip.MATRICOLA, congRicLordo,
-                                aliqPrev.VALORE, 0, 0, out outAliqIse, out outDetrazioniApplicate);
+                                aliqPrev.VALORE, 0, 0, cam, out outAliqIse, out outDetrazioniApplicate);
 
                             #region Contabilità
                             TEORICI teorici = new TEORICI()
@@ -10298,6 +10563,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 ANNORIFERIMENTO = dataFineTrasf.Year,
                                 ALIQUOTAFISCALE = outAliqIse,
                                 DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                 IMPORTO = congNettoRichiamo,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ELABORATO = false,
@@ -10331,6 +10598,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 ANNORIFERIMENTO = dataFineTrasf.Year,
                                 ALIQUOTAFISCALE = 0,
                                 DETRAZIONIAPPLICATE = 0,
+                                CONTRIBUTOAGGIUNTIVO = 0,
+                                MASSIMALECA = 0,
                                 IMPORTO = congRicLordo,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false,
@@ -10360,6 +10629,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 ANNORIFERIMENTO = dataFineTrasf.Year,
                                 ALIQUOTAFISCALE = outAliqIse,
                                 DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                 IMPORTO = congNettoRichiamo,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false,
@@ -10389,6 +10660,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 ANNORIFERIMENTO = dataFineTrasf.Year,
                                 ALIQUOTAFISCALE = outAliqIse,
                                 DETRAZIONIAPPLICATE = outDetrazioniApplicate,
+                                CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
+                                MASSIMALECA = cam.massimaleContributoAggiuntivo,
                                 IMPORTO = outDetrazioniApplicate,
                                 DATAOPERAZIONE = DateTime.Now,
                                 ANNULLATO = false,

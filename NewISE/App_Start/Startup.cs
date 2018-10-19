@@ -28,7 +28,7 @@ namespace NewISE.App_Start
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/LoginGoogle"),
+                LoginPath = new PathString("/Account/Login"),
 
                 //Provider = new CookieAuthenticationProvider
                 //{
