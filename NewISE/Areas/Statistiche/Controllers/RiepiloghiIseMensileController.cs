@@ -140,9 +140,34 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
+
+                    var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(dtIni);
+                    decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    decimal annoDa = annoMeseElabDa.ANNO;
+                    decimal meseDa = annoMeseElabDa.MESE;
+
+
+                    var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(dtFin);
+                    decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    decimal annoA = annoMeseElabA.ANNO;
+                    decimal meseA = annoMeseElabA.MESE;
+
+
                     using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
-                    {   
-                        rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
+                    {
+                        //rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
+                        rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(meseDa, annoDa, meseA, annoA, db).ToList();
+                        
+                    }
+
+                    string strMeseAnnoDa = "";
+                    string strMeseAnnoA = "";
+                    
+
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
+                        strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
                     }
 
                     if (rim?.Any() ?? false)
@@ -151,28 +176,37 @@ namespace NewISE.Areas.Statistiche.Controllers
                         {
                             RptRiepiloghiIseMensileModel rptds = new RptRiepiloghiIseMensileModel()
                             {
-                                IdTeorici = lm.idTeorici,
-                                DescrizioneVoce = lm.Voci.descrizione,
+                                //IdTeorici = lm.idTeorici,
+                                //DescrizioneVoce = lm.Voci.descrizione,
+                                //Nominativo = lm.Nominativo,
+                                //Movimento = lm.TipoMovimento.DescMovimento,
+                                //Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
+                                //Voce = lm.Voci.codiceVoce,
+                                //Inserimento = lm.tipoInserimento.ToString(),
+                                //Importo = lm.Importo,
+                                //Inviato = lm.Elaborato,
+                                //meseRiferimento = lm.meseRiferimento,
+                                Ufficio = lm.Ufficio,
+                                //matricola= lm.matricola,
                                 Nominativo = lm.Nominativo,
-                                Movimento = lm.TipoMovimento.DescMovimento,
-                                Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
-                                Voce = lm.Voci.codiceVoce,
-                                Inserimento = lm.tipoInserimento.ToString(),
-                                Importo = lm.Importo,
-                                Inviato = lm.Elaborato,
-                                meseRiferimento = lm.meseRiferimento
-                                 
+                                qualifica = lm.qualifica,
+                                indennita_personale = lm.indennita_personale,
+                                prima_sistemazione = lm.prima_sistemazione,
+                                riferimento = lm.riferimento,
+                                elaborazione = strMeseAnnoDa + " " + strMeseAnnoA
+
+
                             };
 
                             rpt.Add(rptds);
                         }
                     }
 
-                var annoMeseElab = db.MESEANNOELABORAZIONE.Find(dtIni);
-                decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                //var annoMeseElab = db.MESEANNOELABORAZIONE.Find(dtIni);
+                //decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
 
-                var annoMeseElab1 = db.MESEANNOELABORAZIONE.Find(dtFin);
-                decimal annoMese1 = Convert.ToDecimal(annoMeseElab1.ANNO.ToString() + annoMeseElab1.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                //var annoMeseElab1 = db.MESEANNOELABORAZIONE.Find(dtFin);
+                //decimal annoMese1 = Convert.ToDecimal(annoMeseElab1.ANNO.ToString() + annoMeseElab1.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
 
                 ReportViewer reportViewer = new ReportViewer();
 
@@ -203,8 +237,11 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 ReportParameter[] parameterValues = new ReportParameter[]
                    {
-                        new ReportParameter ("Dal",Convert.ToString(annoMese)),
-                        new ReportParameter ("Al",Convert.ToString(annoMese1))
+                        //new ReportParameter ("Dal",Convert.ToString(annoMese)),
+                        //new ReportParameter ("Al",Convert.ToString(annoMese1))
+                        new ReportParameter ("paramMeseAnnoDa", strMeseAnnoDa),
+                        new ReportParameter ("paramMeseAnnoA",strMeseAnnoA),
+
                    };
 
                 reportViewer.LocalReport.SetParameters(parameterValues);

@@ -49,9 +49,25 @@ namespace NewISE.Areas.Statistiche.Models
         public bool Inviato { get; set; }
         public string Nominativo { get; set; }
 
+        public string Ufficio { get; set; }
+
         public TipoMovimentoModel TipoMovimento { get; set; }
 
         [Display(Name = "Movimentazione")]
         public EnumTipoInserimento tipoInserimento { get; set; }
+
+        [Display(Name = "Prima Sistemazione")]
+        public string prima_sistemazione { get; set; }
+
+        [Display(Name = "Richiamo")]
+        public string richiamo { get; set; }
+
+        public decimal mese { get; set; }
+
+        public decimal anno { get; set; }
+
+        public string riferimento { get; set; }
+
+        public string elaborazione { get; set; }
     }
 }
