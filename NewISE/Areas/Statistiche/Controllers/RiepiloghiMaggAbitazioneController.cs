@@ -110,8 +110,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                         rMeseAnno.First().Selected = true;
                     }
                 }
-                ViewData["ElencoMesiAnniElaborati"] = rMeseAnno;
-                ViewData["ElencoMesiAnniElaborati1"] = rMeseAnno;
+                ViewData["ElencoMesiAnniElaboratiDa"] = rMeseAnno;
+                ViewData["ElencoMesiAnniElaboratiA"] = rMeseAnno;
             }
             catch (Exception ex)
             {
@@ -119,9 +119,9 @@ namespace NewISE.Areas.Statistiche.Controllers
             }
             return PartialView();
         }
+
         public ActionResult RptRiepiloghiMaggAbitazione(decimal idElabIni, decimal idElabFin)
         {
-            //List<RiepiloghiMaggAbitazioneModel> rim = new List<RiepiloghiMaggAbitazioneModel>();
             List<RptRiepiloghiMaggAbitazioneModel> rpt = new List<RptRiepiloghiMaggAbitazioneModel>();
 
             try
@@ -129,50 +129,30 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    //var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(dtIni);
-                    //decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
-                    //decimal annoDa = annoMeseElabDa.ANNO;
-                    //decimal meseDa = annoMeseElabDa.MESE;
-
-
-                    //var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(dtFin);
-                    //decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
-                    //decimal annoA = annoMeseElabA.ANNO;
-                    //decimal meseA = annoMeseElabA.MESE;
-
-                    using (dtRiepiloghiMaggAbitazione dtr = new dtRiepiloghiMaggAbitazione())
-                    {
-                        rpt = dtr.GetRiepiloghiMaggAbitazione(idElabIni, idElabFin, db).ToList();
-                    }
-
-                    //if (rim?.Any() ?? false)
-                    //{
-                    //    foreach (var lm in rim)
-                    //    {
-                    //        RptRiepiloghiMaggAbitazioneModel rptds = new RptRiepiloghiMaggAbitazioneModel()
-                    //        {
-                    //            IdTeorici = lm.idTeorici,
-                    //            DescrizioneVoce = lm.Voci.descrizione,
-                    //            Nominativo = lm.Nominativo,
-                    //            Movimento = lm.TipoMovimento.DescMovimento,
-                    //            Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
-                    //            Voce = lm.Voci.codiceVoce,
-                    //            Inserimento = lm.tipoInserimento.ToString(),
-                    //            Importo = lm.Importo,
-                    //            Inviato = lm.Elaborato,
-                    //            meseRiferimento = lm.meseRiferimento
-
-                    //        };
-
-                    //        rpt.Add(rptds);
-                    //    }
-                    //}
-
                     var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(idElabIni);
                     decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    decimal annoDa = annoMeseElabDa.ANNO;
+                    decimal meseDa = annoMeseElabDa.MESE;
+
 
                     var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(idElabFin);
                     decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    decimal annoA = annoMeseElabA.ANNO;
+                    decimal meseA = annoMeseElabA.MESE;
+
+                    using (dtRiepiloghiMaggAbitazione dtr = new dtRiepiloghiMaggAbitazione())
+                    {
+                        rpt = dtr.GetRiepiloghiMaggAbitazione(idElabIni, idElabFin, annoDa, meseDa, annoA, meseA, db).ToList();
+                    }
+
+                    string strMeseAnnoDa = "";
+                    string strMeseAnnoA = "";
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
+                        strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
+                    }
+
 
                     ReportViewer reportViewer = new ReportViewer();
 
@@ -196,8 +176,8 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     ReportParameter[] parameterValues = new ReportParameter[]
                     {
-                        new ReportParameter ("Dal",Convert.ToString(annoMeseDa)),
-                        new ReportParameter ("Al",Convert.ToString(annoMeseA))
+                        new ReportParameter ("Dal",strMeseAnnoDa),
+                        new ReportParameter ("Al",strMeseAnnoA)
                     };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);

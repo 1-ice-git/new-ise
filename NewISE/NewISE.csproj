@@ -5079,6 +5079,7 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepilogoLivelloController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\SpeseAvvicendamentoNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\CostiUfficioController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\CostiController.cs" />

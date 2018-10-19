@@ -12,36 +12,34 @@ namespace NewISE.Areas.Statistiche.Models
     public class RiepiloghiMaggAbitazioneModel
     {
         [Display(Name = "Matricola")]
-        public string Matricola { get; set; }
+        public string matricola { get; set; }
         [Display(Name = "Nominativo")]
-        public string Nominativo { get; set; }
+        public string nominativo { get; set; }
         [Display(Name = "Qualifica")]
-        public string Qualifica { get; set; }
+        public string qualifica { get; set; }
         [Display(Name = "Sede")]
-        public string Sede { get; set; }
+        public string sede { get; set; }
         [Display(Name = "Valuta")]
-        public string Valuta { get; set; }
+        public string valuta { get; set; }
         [Display(Name = "Codice Tipo Movimento")]
-        public string Codice_tipo_movimento { get; set; }
+        public string codice_tipo_movimento { get; set; }
         [Display(Name = "Tipo Movimento")]
-        public string Tipo_movimento { get; set; }
+        public string tipo_movimento { get; set; }
         [Display(Name = "Data Decorrenza")]
-        public string DataDecorrenza { get; set; }
+        public string data_decorrenza { get; set; }
         [Display(Name = "Data Lettera")]
-        public string DataLettera { get; set; }
+        public string data_lettera { get; set; }
         [Display(Name = "Data Operazione")]
-        public string DataOperazione { get; set; }
+        public string data_operazione { get; set; }
         [Display(Name = "Indennità Personale")]
         public string indennita_personale { get; set; }
         [Display(Name = "Sist. /Rientro Lorda")]
         public string anticipo { get; set; }
 
-        public decimal percApplicata { get; set; }
-
-        public decimal importoCanone { get; set; }
-
         [Key]
         public decimal idTeorici { get; set; }
+        [Required(ErrorMessage = "Il campo è richiesto.")]
+        public string Nominativo { get; set; }
 
         [Display(Name = "Voci")]
         public decimal idVoci { get; set; }

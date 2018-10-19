@@ -13,11 +13,13 @@ namespace NewISE.Areas.Statistiche.Models
         public string Matricola { get; set; }
         public string Nominativo { get; set; }
         public string Ufficio { get; set; }
-        public string DataPartenza { get; set; }
-        public string DataLettera { get; set; }
-        public string DataOperazione { get; set; }
+        public string MeseRiferimento { get; set; }
+        public string MeseElaborazione { get; set; }
+        public string Valuta { get; set; }
         public decimal percApplicata { get; set; }
         public decimal Canone { get; set; }
         public decimal Importo { get; set; }
+        public decimal numMeseRiferimento { get; set; }
+        public decimal numMeseElaborazione { get; set; }
     }
 }

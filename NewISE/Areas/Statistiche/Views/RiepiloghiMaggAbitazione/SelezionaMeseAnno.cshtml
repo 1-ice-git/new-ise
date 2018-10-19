@@ -8,26 +8,36 @@
                 <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione</b></div>
                 <div class="panel-body">
 
-                    <div class="col-xs-4 date">
-                        <div class="input-group input-append date">
-                            @Html.DropDownList("mesiAnniElaboratiDa", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiDa", @class = "form-control select2 select2-select js-data-example-ajax" })
-
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Mese Inizio Elaborazione:</strong>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Mese Fine Elaborazione:</strong>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-4 date">
+                            <div class="input-group input-append date">
+                                @Html.DropDownList("mesiAnniElaboratiDa", ViewData["ElencoMesiAnniElaboratiDa"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiDa", @class = "form-control select2 select2-select js-data-example-ajax" })
 
-                    <div class="col-xs-4 date">
-                        <div class="input-group input-append date">
-                            @Html.DropDownList("mesiAnniElaboratiA", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiA", @class = "form-control select2 select2-select js-data-example-ajax" })
-
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-xs-4 date">
-                        <div class="input-group input-append date">
-                            <button class="btn btn-small btn-default" id="opener">
-                                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-                                Stampa
-                            </button>
+                        <div class="col-xs-4 date">
+                            <div class="input-group input-append date">
+                                @Html.DropDownList("mesiAnniElaboratiA", ViewData["ElencoMesiAnniElaboratiA"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiA", @class = "form-control select2 select2-select js-data-example-ajax" })
+
+                            </div>
+                        </div>
+
+                        <div class="col-xs-4 date">
+                            <div class="input-group input-append date">
+                                <button class="btn btn-small btn-default" id="opener">
+                                    <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                                    Stampa
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
