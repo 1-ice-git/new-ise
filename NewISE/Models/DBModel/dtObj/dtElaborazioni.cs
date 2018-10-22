@@ -2171,7 +2171,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (lmca?.Any() ?? false)
                 {
-                    mca = lca.First();
+                    mca = lmca.First();
                 }
                 else
                 {
@@ -2201,7 +2201,7 @@ namespace NewISE.Models.DBModel.dtObj
                 ContributoAggiuntivo cam = new ContributoAggiuntivo();
 
                 cam.contributoAggiuntivo = ca.VALORE;
-                cam.massimaleContributoAggiuntivo = cam.massimaleContributoAggiuntivo;
+                cam.massimaleContributoAggiuntivo = mca.VALORE;
 
                 var USNetto = this.NettoPrimaSistemazione(dip.MATRICOLA, USLordo,
                     aliqPrev.VALORE, detrazioni.VALORE, 0, cam,
@@ -2941,7 +2941,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (lmca?.Any() ?? false)
                         {
-                            mca = lca.First();
+                            mca = lmca.First();
                         }
                         else
                         {
@@ -3327,7 +3327,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (lmca?.Any() ?? false)
                             {
-                                mca = lca.First();
+                                mca = lmca.First();
                             }
                             else
                             {
@@ -4835,7 +4835,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 {
                                                     using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                                     {
-                                                        
+
                                                         using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                                         {
                                                             ELABMAB emab = new ELABMAB()
@@ -5811,9 +5811,9 @@ namespace NewISE.Models.DBModel.dtObj
                 ImponibilePrevidenziale = imponibileLordo - detrazioneApplicate;
             }
 
-            decimal ImponibileCA = (ImponibilePrevidenziale - ca.massimaleContributoAggiuntivo) * (ca.contributoAggiuntivo / 100);
+            decimal contributoAggiuntivo = (ImponibilePrevidenziale - ca.massimaleContributoAggiuntivo) * (ca.contributoAggiuntivo / 100);
 
-            var RitenutePrevidenziali = (ImponibilePrevidenziale * aliqPrev / 100) + ImponibileCA;
+            var RitenutePrevidenziali = (ImponibilePrevidenziale * aliqPrev / 100) + (contributoAggiuntivo > 0 ? contributoAggiuntivo : 0);
 
             var imponibileFiscale = ImponibilePrevidenziale - RitenutePrevidenziali;
 
@@ -5870,9 +5870,9 @@ namespace NewISE.Models.DBModel.dtObj
                 ImponibilePrevidenziale = imponibileLordo - detrazioniApplicate;
             }
 
-            decimal ImponibileCA = (ImponibilePrevidenziale - ca.massimaleContributoAggiuntivo) * (ca.contributoAggiuntivo / 100); 
+            decimal contributoAggiuntivo = (ImponibilePrevidenziale - ca.massimaleContributoAggiuntivo) * (ca.contributoAggiuntivo / 100);
 
-            var RitenutePrevidenziali = (ImponibilePrevidenziale * aliqPrev / 100) + ImponibileCA;
+            var RitenutePrevidenziali = (ImponibilePrevidenziale * aliqPrev / 100) + (contributoAggiuntivo > 0 ? contributoAggiuntivo : 0);
 
             var imponibileFiscale = ImponibilePrevidenziale - RitenutePrevidenziali;
 
@@ -8581,7 +8581,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         if (lmca?.Any() ?? false)
                                         {
-                                            mca = lca.First();
+                                            mca = lmca.First();
                                         }
                                         else
                                         {
@@ -8721,7 +8721,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             DETRAZIONIAPPLICATE = outDetrazioniApplicate,
                                             CONTRIBUTOAGGIUNTIVO = cam.contributoAggiuntivo,
                                             MASSIMALECA = cam.massimaleContributoAggiuntivo,
-                                            IMPORTO = outDetrazioniApplicate,                                            
+                                            IMPORTO = outDetrazioniApplicate,
                                             DATAOPERAZIONE = DateTime.Now,
                                             ANNULLATO = false,
                                             GIORNI = 0
@@ -10234,7 +10234,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (lmca?.Any() ?? false)
                             {
-                                mca = lca.First();
+                                mca = lmca.First();
                             }
                             else
                             {
@@ -10262,7 +10262,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             ContributoAggiuntivo cam = new ContributoAggiuntivo();
                             cam.contributoAggiuntivo = ca.VALORE;
-                            cam.massimaleContributoAggiuntivo = cam.massimaleContributoAggiuntivo;
+                            cam.massimaleContributoAggiuntivo = mca.VALORE;
 
 
 
@@ -10270,7 +10270,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 outPrimaSistemazioneUnicaSoluzioneNew,
                                 aliqPrev.VALORE, detrazioni.VALORE, 0, cam, out outAliqIseNew, out outDetrazioniApplicateNew);
 
-                            
+
 
 
                             decimal conguaglioNetto = nettoNew - nettoOld;
@@ -10527,7 +10527,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (lmca?.Any() ?? false)
                             {
-                                mca = lca.First();
+                                mca = lmca.First();
                             }
                             else
                             {
