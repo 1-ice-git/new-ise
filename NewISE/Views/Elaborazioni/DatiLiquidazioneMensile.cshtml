@@ -13,7 +13,7 @@
         <div class="row">
 
             <div class="col-xs-1">
-                <a id="btLiquidazioniMensili" class="btn btn-small btn-default href="#" title="Stampa delle liquidazioni mensili">
+                <a id="btLiquidazioniMensili" class="btn btn-small btn-default" href="#" title="Stampa delle liquidazioni mensili">
                     <i aria-hidden="true" class="fa fa-2x fa-print"></i>
                 </a>
             </div>
@@ -62,7 +62,8 @@
                             <td>
                                 @Html.HiddenFor(modelItem => item.idTeorici)
                                 @Html.HiddenFor(modelItem => item.Elaborato)
-                                @Html.DisplayFor(modelItem => item.Nominativo)
+
+                                <a id="LinkDatiDip" href="#" onclick="ModaleDatiTrasf(@item.idTeorici);">@Html.DisplayFor(modelItem => item.Nominativo)</a>
                             </td>
                             <td style="text-align: center;">
                                 @Html.DisplayFor(modelItem => item.Voci.descrizione)

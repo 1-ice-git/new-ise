@@ -3899,6 +3899,8 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             this.InsPrimaSistemazioneSaldo(trasferimento, meseAnnoElaborazione, db);
 
+                            this.InsPrimaSistemazioneUnicaSoluzione(trasferimento, meseAnnoElaborazione, db);
+
                             this.InsIndennitaMensile(trasferimento, meseAnnoElaborazione, db);
 
                             this.InsTrasportoEffetti(trasferimento, meseAnnoElaborazione, db);
