@@ -880,7 +880,7 @@
         <DataSetName>DataSetRiepiloghiMaggAbitazione</DataSetName>
         <Top>3.59516cm</Top>
         <Height>1.2cm</Height>
-        <Width>27.78331cm</Width>
+        <Width>27.7833cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -892,7 +892,7 @@
     <Height>2.27083in</Height>
     <Style />
   </Body>
-  <Width>10.94652in</Width>
+  <Width>10.94873in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -903,7 +903,8 @@
           <Source>Embedded</Source>
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
-          <Top>0.3055cm</Top>
+          <Top>0.27904cm</Top>
+          <Left>0.02646cm</Left>
           <Height>2.05811cm</Height>
           <Width>4.02088cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
@@ -952,8 +953,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox25</rd:DefaultName>
-          <Top>0.3055cm</Top>
-          <Left>4.19727cm</Left>
+          <Top>0.27904cm</Top>
+          <Left>4.22373cm</Left>
           <Height>2.05811cm</Height>
           <Width>18.80037cm</Width>
           <ZIndex>1</ZIndex>
@@ -973,8 +974,8 @@
           <Source>Embedded</Source>
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
-          <Top>0.3055cm</Top>
-          <Left>23.17403cm</Left>
+          <Top>0.27904cm</Top>
+          <Left>23.20049cm</Left>
           <Height>2.05811cm</Height>
           <Width>4.60928cm</Width>
           <ZIndex>2</ZIndex>
@@ -998,7 +999,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>1.19062cm</Height>
+      <Height>1.19063cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>

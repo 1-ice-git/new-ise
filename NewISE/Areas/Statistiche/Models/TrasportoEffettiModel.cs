@@ -13,7 +13,7 @@ namespace NewISE.Areas.Statistiche.Models
     {
 
         [Display(Name = "Matricola")]
-        public string matricola { get; set; }
+        public decimal matricola { get; set; }
         [Display(Name = "Nominativo")]
         public string nominativo { get; set; }
         [Display(Name = "Qualifica")]
@@ -78,5 +78,14 @@ namespace NewISE.Areas.Statistiche.Models
                 return meseRiferimento.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + annoRiferimento;
             }
         }
+
+        public string MeseRiferimento { get; set; }
+        public string MeseElaborazione { get; set; }
+        public string Valuta { get; set; }
+        public decimal percApplicata { get; set; }
+        public decimal Canone { get; set; }
+
+        public decimal numMeseRiferimento { get; set; }
+        public decimal numMeseElaborazione { get; set; }
     }
 }

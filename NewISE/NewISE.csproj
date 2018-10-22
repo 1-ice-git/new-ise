@@ -4739,6 +4739,17 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiVoci.xsc">
       <DependentUpon>DataSetRiepiloghiVoci.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiSospensioni.xsc">
+      <DependentUpon>DataSetRiepiloghiSospensioni.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiSospensioni.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetRiepiloghiSospensioni.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiSospensioni.xss">
+      <DependentUpon>DataSetRiepiloghiSospensioni.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiVoci.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -4827,6 +4838,8 @@
     <Content Include="Areas\Statistiche\RPTDataSet\dsSpeseAvvicendamento.xss">
       <DependentUpon>dsSpeseAvvicendamento.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\SelezionaMeseAnno.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\RptRiepiloghiSospensioni.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -5093,6 +5106,8 @@
     <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiNewController.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtSpeseAvvicendamentoNew.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtStatistiche.cs" />
+    <Compile Include="Areas\Statistiche\Models\RiepiloghiSospensioniModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptRiepiloghiSospensioniModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptSpeseAvvicendamentoNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiUfficioModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiModel.cs" />
@@ -5130,6 +5145,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetRiepiloghiMaggAbitazione.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiSospensioni.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetRiepiloghiSospensioni.xsd</DependentUpon>
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSetRiepiloghiVoci.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -5565,6 +5585,7 @@
     <Compile Include="Models\DBModel\dtObj\dtReportTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepiloghiIseMensile.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtRiepiloghiMaggAbitazione.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtRiepiloghiSospensioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiepilogoVoci.cs" />
     <Compile Include="Models\DBModel\dtObj\dtStoriaDipendenteNew.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioneTitoliViaggio.cs" />
@@ -6844,6 +6865,7 @@
     <Content Include="Areas\Statistiche\RPT\RptSpeseAvvicendamentoNew.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptSospensioni.rdlc" />
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
     <EmbeddedResource Include="Report\RptUnicaSoluzioneIndennitadiPrimaSistemazione.rdlc" />

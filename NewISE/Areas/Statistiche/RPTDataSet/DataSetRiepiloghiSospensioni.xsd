@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetRiepiloghiSospensioni" targetNamespace="http://tempuri.org/DataSetRiepiloghiSospensioni.xsd" xmlns:mstns="http://tempuri.org/DataSetRiepiloghiSospensioni.xsd" xmlns="http://tempuri.org/DataSetRiepiloghiSospensioni.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetRiepiloghiSospensioni" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetRiepiloghiSospensioni" msprop:Generator_UserDSName="DataSetRiepiloghiSospensioni">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="idSospensione" msprop:Generator_ColumnVarNameInTable="columnidSospensione" msprop:Generator_ColumnPropNameInRow="idSospensione" msprop:Generator_ColumnPropNameInTable="idSospensioneColumn" msprop:Generator_UserColumnName="idSospensione" type="xs:string" minOccurs="0" />
+              <xs:element name="idTrasferimento" msprop:Generator_ColumnVarNameInTable="columnidTrasferimento" msprop:Generator_ColumnPropNameInRow="idTrasferimento" msprop:Generator_ColumnPropNameInTable="idTrasferimentoColumn" msprop:Generator_UserColumnName="idTrasferimento" type="xs:string" minOccurs="0" />
+              <xs:element name="DataInizioSospensione" msprop:Generator_ColumnVarNameInTable="columnDataInizioSospensione" msprop:Generator_ColumnPropNameInRow="DataInizioSospensione" msprop:Generator_ColumnPropNameInTable="DataInizioSospensioneColumn" msprop:Generator_UserColumnName="DataInizioSospensione" type="xs:string" minOccurs="0" />
+              <xs:element name="DataFineSospensione" msprop:Generator_ColumnVarNameInTable="columnDataFineSospensione" msprop:Generator_ColumnPropNameInRow="DataFineSospensione" msprop:Generator_ColumnPropNameInTable="DataFineSospensioneColumn" msprop:Generator_UserColumnName="DataFineSospensione" type="xs:string" minOccurs="0" />
+              <xs:element name="DataAggiornamento" msprop:Generator_ColumnVarNameInTable="columnDataAggiornamento" msprop:Generator_ColumnPropNameInRow="DataAggiornamento" msprop:Generator_ColumnPropNameInTable="DataAggiornamentoColumn" msprop:Generator_UserColumnName="DataAggiornamento" type="xs:string" minOccurs="0" />
+              <xs:element name="NumeroGiorni" msprop:Generator_ColumnVarNameInTable="columnNumeroGiorni" msprop:Generator_ColumnPropNameInRow="NumeroGiorni" msprop:Generator_ColumnPropNameInTable="NumeroGiorniColumn" msprop:Generator_UserColumnName="NumeroGiorni" type="xs:string" minOccurs="0" />
+              <xs:element name="TipoSospensione" msprop:Generator_ColumnVarNameInTable="columnTipoSospensione" msprop:Generator_ColumnPropNameInRow="TipoSospensione" msprop:Generator_ColumnPropNameInTable="TipoSospensioneColumn" msprop:Generator_UserColumnName="TipoSospensione" type="xs:string" minOccurs="0" />
+              <xs:element name="ANNULLATO" msprop:Generator_ColumnVarNameInTable="columnANNULLATO" msprop:Generator_ColumnPropNameInRow="ANNULLATO" msprop:Generator_ColumnPropNameInTable="ANNULLATOColumn" msprop:Generator_UserColumnName="ANNULLATO" type="xs:string" minOccurs="0" />
+              <xs:element name="idTipoSospensione" msprop:Generator_ColumnVarNameInTable="columnidTipoSospensione" msprop:Generator_ColumnPropNameInRow="idTipoSospensione" msprop:Generator_ColumnPropNameInTable="idTipoSospensioneColumn" msprop:Generator_UserColumnName="idTipoSospensione" type="xs:string" minOccurs="0" />
+              <xs:element name="Nominativo" msprop:Generator_ColumnVarNameInTable="columnNominativo" msprop:Generator_ColumnPropNameInRow="Nominativo" msprop:Generator_ColumnPropNameInTable="NominativoColumn" msprop:Generator_UserColumnName="Nominativo" type="xs:string" minOccurs="0" />
+              <xs:element name="Ufficio" msprop:Generator_ColumnVarNameInTable="columnUfficio" msprop:Generator_ColumnPropNameInRow="Ufficio" msprop:Generator_ColumnPropNameInTable="UfficioColumn" msprop:Generator_UserColumnName="Ufficio" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

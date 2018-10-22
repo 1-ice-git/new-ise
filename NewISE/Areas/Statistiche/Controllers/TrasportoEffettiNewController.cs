@@ -134,10 +134,33 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
+
+                    var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(dtIni);
+                    decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    decimal annoDa = annoMeseElabDa.ANNO;
+                    decimal meseDa = annoMeseElabDa.MESE;
+
+
+                    var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(dtFin);
+                    decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    decimal annoA = annoMeseElabA.ANNO;
+                    decimal meseA = annoMeseElabA.MESE;
+
+
                     using (dtReportTrasportoEffetti dtReportTrasportoEffetti = new dtReportTrasportoEffetti())
                     {
-                        rim = dtReportTrasportoEffetti.GetTrasportoEffetti(dtIni, dtFin, db).ToList();
+                        rim = dtReportTrasportoEffetti.GetTrasportoEffetti(dtIni, dtFin, annoDa, meseDa, annoA, meseA, db).ToList();
                     }
+
+
+                    string strMeseAnnoDa = "";
+                    string strMeseAnnoA = "";
+                    using (dtElaborazioni dte = new dtElaborazioni())
+                    {
+                        strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
+                        strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
+                    }
+
 
                     if (rim?.Any() ?? false)
                     {
@@ -145,16 +168,15 @@ namespace NewISE.Areas.Statistiche.Controllers
                         {
                             RptTrasportoEffettiModel rptds = new RptTrasportoEffettiModel()
                             {
-                                IdTeorici = lm.idTeorici,
-                                DescrizioneVoce = lm.Voci.descrizione,
+                                
+                                matricola = lm.matricola,
                                 Nominativo = lm.Nominativo,
-                                Movimento = lm.TipoMovimento.DescMovimento,
-                                Liquidazione = lm.Voci.TipoLiquidazione.descrizione,
-                                Voce = lm.Voci.codiceVoce,
-                                Inserimento = lm.tipoInserimento.ToString(),
                                 Importo = lm.Importo,
-                                Inviato = lm.Elaborato,
-                                meseRiferimento = lm.meseRiferimento
+                                sede = lm.Ufficio,
+                                MeseElaborazione = lm.MeseElaborazione,
+                                MeseRiferimento = lm.MeseRiferimento,
+                                numMeseElaborazione = lm.numMeseElaborazione,
+                                numMeseRiferimento = lm.numMeseRiferimento
 
                             };
 
@@ -189,8 +211,11 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     ReportParameter[] parameterValues = new ReportParameter[]
                        {
-                        new ReportParameter ("Dal",Convert.ToString(annoMese)),
-                        new ReportParameter ("Al",Convert.ToString(annoMese1))
+                            //new ReportParameter ("Dal",Convert.ToString(annoMese)),
+                            //new ReportParameter ("Al",Convert.ToString(annoMese1))
+                            new ReportParameter ("Dal",strMeseAnnoDa),
+                            new ReportParameter ("Al",strMeseAnnoA)
+
                        };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
