@@ -29,7 +29,8 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-        public IList<RiepiloghiIseMensileModel> GetRiepiloghiIseMensile(decimal MeseDa, decimal AnnoDa, decimal MeseA, decimal AnnoA, ModelDBISE db)
+        public IList<RiepiloghiIseMensileModel> GetRiepiloghiIseMensile(decimal idElabIni, decimal idElabFin, decimal MeseDa, decimal AnnoDa, decimal MeseA, decimal AnnoA, ModelDBISE db)
+
         {   
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
 
@@ -41,13 +42,26 @@ namespace NewISE.Models.DBModel.dtObj
 
             DateTime dtIni = Convert.ToDateTime("01/" + strMeseDa + "/" + AnnoDa.ToString());
             DateTime dtFin = Utility.GetDtFineMese(Convert.ToDateTime("01/" + strMeseA + "/" + AnnoA.ToString()));
-            
 
-            lt = db.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                                        a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin)
-                                        .ToList();
 
-            
+            //lt = db.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+            //                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
+            //                            a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin)
+            //                            .ToList();
+
+
+            var lTeorici =
+                   db.TEORICI.Where(
+                       a =>
+                           a.ANNULLATO == false &&
+                           a.ELABORATO == true &&
+                           a.IDMESEANNOELAB >= idElabIni &&
+                           a.IDMESEANNOELAB <= idElabFin &&
+                           a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                           a.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera)
+                        .ToList();
+
+
             foreach (var t in lt)
             {
                 var d = t.DIPENDENTI;
@@ -87,14 +101,6 @@ namespace NewISE.Models.DBModel.dtObj
                                                                             a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
                                             .OrderBy(a => a.ANNORIFERIMENTO)
                                             .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-
-
-
-
-
-
-
 
                     foreach (var teorici in lteorici)
                     {
@@ -329,11 +335,6 @@ namespace NewISE.Models.DBModel.dtObj
             //            }
             //    }
             //}
-
-
-
-
-
 
             return rim;
             

@@ -24,8 +24,9 @@ namespace NewISE.Models.DBModel.dtObj
             List<OpDipEsteroModel> rim = new List<OpDipEsteroModel>();
             
             var ltrasf = db.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                                               a.DATAPARTENZA >= dtIni &&
-                                               a.IDUFFICIO == idUfficio).ToList();
+                                                     a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
+                                                     a.DATAPARTENZA >= dtIni &&
+                                                     a.UFFICI.IDUFFICIO == idUfficio).ToList();
 
             var lvaluta = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == idUfficio
                         && a.ANNULLATO == false).ToList();
@@ -52,10 +53,9 @@ namespace NewISE.Models.DBModel.dtObj
                                          
                     var livello = ltrasf.First();
                     var xxx = livello.DIPENDENTI;
+                    
 
-
-
-
+                    #region Coefficente di Sede
                     // Coefficente di Sede
                     var lcoeff = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == dipendenti.UFFICI.IDUFFICIO);
                     if (!lcoeff?.Any() ?? false)
@@ -63,8 +63,9 @@ namespace NewISE.Models.DBModel.dtObj
                         throw new Exception("Errore: Coefficente di Sede non trovata");
                     }
                     var coeff = lcoeff.First();
+                    #endregion
 
-
+                    #region Percentuale di Disagio
                     // Percentuale di Disagio
                     var lperc = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == dipendenti.UFFICI.IDUFFICIO);
                     if (!lperc?.Any() ?? false)
@@ -73,7 +74,9 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     var perc = lperc.First();
+                    #endregion
 
+                    #region Indennità di Base
                     // Indennità di Base
                     var indennita = t.INDENNITA.INDENNITABASE.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDINDENNITABASE);
 
@@ -83,7 +86,9 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     var rindennita = indennita.First();
+                    #endregion
 
+                    #region Indennità di Prima Sistemazione
                     // Indennità Prima Sistemazione 
                     var Primaindennita = t.PRIMASITEMAZIONE.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDINDSIST);
 
@@ -93,8 +98,9 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     var rPrimaindennita = Primaindennita.First();
+                    #endregion
 
-
+                    #region Valuta Ufficio
                     // Valuta Ufficio
 
                     var ufficio = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == dipendenti.UFFICI.IDUFFICIO && a.ANNULLATO == false);
@@ -104,7 +110,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     var rufficio = ufficio.First();
-
+                    #endregion
 
                     // Gestione delle variazioni delle date
                     var Rtrasferimento = t.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
