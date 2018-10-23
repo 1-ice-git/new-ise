@@ -20,7 +20,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Magg. figli")]
         public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "La tipologia del figlio è richiesta.")]
-        [Display(Name = "Tipologia figlio")]
+        [Display(Name = "Tipologia")]
         public EnumTipologiaFiglio idTipologiaFiglio { get; set; }
 
         [Required(ErrorMessage = "Il nome è richiesto.")]
