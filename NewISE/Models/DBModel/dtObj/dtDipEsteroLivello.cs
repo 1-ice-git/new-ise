@@ -52,25 +52,15 @@ namespace NewISE.Models.DBModel.dtObj
 
                     DipEsteroLivelloNewModel ldvm = new DipEsteroLivelloNewModel()
                     {
-
                         nominativo = d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
                         data_trasferimento = Convert.ToDateTime(trasf.DATAPARTENZA).ToShortDateString(),
                         data_rientro = (trasf.DATARIENTRO < Utility.DataFineStop()) ? Convert.ToDateTime(trasf.DATARIENTRO).ToShortDateString() : null,
                         sede = ufficio,
                         qualifica = qualifica,
                         ruolo_dipendente = descruolo
-
-
-
                     };
-
                     rim.Add(ldvm);
-
-
-
-
                 }
-
             }
 
             return rim;
