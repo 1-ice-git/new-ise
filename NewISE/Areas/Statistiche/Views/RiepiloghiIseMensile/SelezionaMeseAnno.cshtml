@@ -187,15 +187,18 @@
         //var data1 = $("#data1").datepicker().val()
         //var data2 = $("#data2").datepicker().val()
 
-        var data1 = $("#mesiAnniElaborati").val();
-        var data2 = $("#mesiAnniElaborati1").val();
+        //var data1 = $("#mesiAnniElaborati").val();
+        //var data2 = $("#mesiAnniElaborati1").val();
+
+        var idElabIni = $("#mesiAnniElaboratiDa").val();
+        var idElabFin = $("#mesiAnniElaboratiA").val();
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                dtIni: data1,
-                dtFin: data2
+                idElabIni: idElabIni,
+                idElabFin: idElabFin
             },
             dataType: 'html',
             beforeSend: function () {

@@ -130,7 +130,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView();
         }
-        public ActionResult RptRiepiloghiIseMensile(decimal dtIni, decimal dtFin)
+        public ActionResult RptRiepiloghiIseMensile(decimal idElabIni, decimal idElabFin)
         {
             List<RiepiloghiIseMensileModel> rim = new List<RiepiloghiIseMensileModel>();
             List<RptRiepiloghiIseMensileModel> rpt = new List<RptRiepiloghiIseMensileModel>();
@@ -141,13 +141,13 @@ namespace NewISE.Areas.Statistiche.Controllers
                 using (ModelDBISE db = new ModelDBISE())
                 {
 
-                    var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(dtIni);
+                    var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(idElabIni);
                     decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
                     decimal annoDa = annoMeseElabDa.ANNO;
                     decimal meseDa = annoMeseElabDa.MESE;
 
 
-                    var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(dtFin);
+                    var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(idElabFin);
                     decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
                     decimal annoA = annoMeseElabA.ANNO;
                     decimal meseA = annoMeseElabA.MESE;
@@ -155,15 +155,13 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     using (dtRiepiloghiIseMensile dtRiepiloghiIseMensile = new dtRiepiloghiIseMensile())
                     {
-                        //rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(dtIni, dtFin, db).ToList();
-                        rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(meseDa, annoDa, meseA, annoA, db).ToList();
+                        
+                        rim = dtRiepiloghiIseMensile.GetRiepiloghiIseMensile(idElabIni, idElabFin, annoDa, meseDa, annoA, meseA, db).ToList();
                         
                     }
 
                     string strMeseAnnoDa = "";
                     string strMeseAnnoA = "";
-                    
-
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
                         strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
