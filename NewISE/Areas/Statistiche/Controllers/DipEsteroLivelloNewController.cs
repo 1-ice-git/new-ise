@@ -69,9 +69,9 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtDipEsteroLivello dtDipEsteroLivello = new dtDipEsteroLivello())
+                    using (dtDipEsteroLivello dtd = new dtDipEsteroLivello())
                     {
-                        rim = dtDipEsteroLivello.DipEsteroLivelloNew(dtIni, dtFin, idLivello, db).ToList();
+                        rim = dtd.DipEsteroLivelloNew(dtIni, dtFin, idLivello, db).ToList();
                     }
 
                     if (rim?.Any() ?? false)

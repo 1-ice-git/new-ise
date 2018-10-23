@@ -279,19 +279,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class DataSetRiepiloghiIseMensileDataTable : global::System.Data.TypedTableBase<DataSetRiepiloghiIseMensileRow> {
             
-            private global::System.Data.DataColumn columnImporto;
+            private global::System.Data.DataColumn columnnominativo;
             
-            private global::System.Data.DataColumn columnVoce;
-            
-            private global::System.Data.DataColumn columnLiquidazione;
-            
-            private global::System.Data.DataColumn columnMovimento;
-            
-            private global::System.Data.DataColumn columnDescrizioneVoce;
-            
-            private global::System.Data.DataColumn columnNominativo;
-            
-            private global::System.Data.DataColumn columnUfficio;
+            private global::System.Data.DataColumn columnufficio;
             
             private global::System.Data.DataColumn columnmatricola;
             
@@ -306,6 +296,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             private global::System.Data.DataColumn columnriferimento;
             
             private global::System.Data.DataColumn columnelaborazione;
+            
+            private global::System.Data.DataColumn columnnumannomeseelab;
+            
+            private global::System.Data.DataColumn columnnumannomeserif;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -342,57 +336,17 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ImportoColumn {
+            public global::System.Data.DataColumn nominativoColumn {
                 get {
-                    return this.columnImporto;
+                    return this.columnnominativo;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn VoceColumn {
+            public global::System.Data.DataColumn ufficioColumn {
                 get {
-                    return this.columnVoce;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn LiquidazioneColumn {
-                get {
-                    return this.columnLiquidazione;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn MovimentoColumn {
-                get {
-                    return this.columnMovimento;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DescrizioneVoceColumn {
-                get {
-                    return this.columnDescrizioneVoce;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn NominativoColumn {
-                get {
-                    return this.columnNominativo;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn UfficioColumn {
-                get {
-                    return this.columnUfficio;
+                    return this.columnufficio;
                 }
             }
             
@@ -454,6 +408,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn numannomeseelabColumn {
+                get {
+                    return this.columnnumannomeseelab;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn numannomeserifColumn {
+                get {
+                    return this.columnnumannomeserif;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -489,23 +459,20 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileRow AddDataSetRiepiloghiIseMensileRow(string Importo, string Voce, string Liquidazione, string Movimento, string DescrizioneVoce, string Nominativo, string Ufficio, string matricola, string qualifica, string indennita_personale, string prima_sistemazione, string richiamo, string riferimento, string elaborazione) {
+            public DataSetRiepiloghiIseMensileRow AddDataSetRiepiloghiIseMensileRow(string nominativo, string ufficio, string matricola, string qualifica, string indennita_personale, string prima_sistemazione, string richiamo, string riferimento, string elaborazione, string numannomeseelab, string numannomeserif) {
                 DataSetRiepiloghiIseMensileRow rowDataSetRiepiloghiIseMensileRow = ((DataSetRiepiloghiIseMensileRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        Importo,
-                        Voce,
-                        Liquidazione,
-                        Movimento,
-                        DescrizioneVoce,
-                        Nominativo,
-                        Ufficio,
+                        nominativo,
+                        ufficio,
                         matricola,
                         qualifica,
                         indennita_personale,
                         prima_sistemazione,
                         richiamo,
                         riferimento,
-                        elaborazione};
+                        elaborazione,
+                        numannomeseelab,
+                        numannomeserif};
                 rowDataSetRiepiloghiIseMensileRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataSetRiepiloghiIseMensileRow);
                 return rowDataSetRiepiloghiIseMensileRow;
@@ -528,13 +495,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnImporto = base.Columns["Importo"];
-                this.columnVoce = base.Columns["Voce"];
-                this.columnLiquidazione = base.Columns["Liquidazione"];
-                this.columnMovimento = base.Columns["Movimento"];
-                this.columnDescrizioneVoce = base.Columns["DescrizioneVoce"];
-                this.columnNominativo = base.Columns["Nominativo"];
-                this.columnUfficio = base.Columns["Ufficio"];
+                this.columnnominativo = base.Columns["nominativo"];
+                this.columnufficio = base.Columns["ufficio"];
                 this.columnmatricola = base.Columns["matricola"];
                 this.columnqualifica = base.Columns["qualifica"];
                 this.columnindennita_personale = base.Columns["indennita_personale"];
@@ -542,25 +504,17 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.columnrichiamo = base.Columns["richiamo"];
                 this.columnriferimento = base.Columns["riferimento"];
                 this.columnelaborazione = base.Columns["elaborazione"];
+                this.columnnumannomeseelab = base.Columns["numannomeseelab"];
+                this.columnnumannomeserif = base.Columns["numannomeserif"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnImporto = new global::System.Data.DataColumn("Importo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnImporto);
-                this.columnVoce = new global::System.Data.DataColumn("Voce", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnVoce);
-                this.columnLiquidazione = new global::System.Data.DataColumn("Liquidazione", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLiquidazione);
-                this.columnMovimento = new global::System.Data.DataColumn("Movimento", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnMovimento);
-                this.columnDescrizioneVoce = new global::System.Data.DataColumn("DescrizioneVoce", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDescrizioneVoce);
-                this.columnNominativo = new global::System.Data.DataColumn("Nominativo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnNominativo);
-                this.columnUfficio = new global::System.Data.DataColumn("Ufficio", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnUfficio);
+                this.columnnominativo = new global::System.Data.DataColumn("nominativo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnominativo);
+                this.columnufficio = new global::System.Data.DataColumn("ufficio", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnufficio);
                 this.columnmatricola = new global::System.Data.DataColumn("matricola", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnmatricola);
                 this.columnqualifica = new global::System.Data.DataColumn("qualifica", typeof(string), null, global::System.Data.MappingType.Element);
@@ -575,6 +529,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnriferimento);
                 this.columnelaborazione = new global::System.Data.DataColumn("elaborazione", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnelaborazione);
+                this.columnnumannomeseelab = new global::System.Data.DataColumn("numannomeseelab", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnumannomeseelab);
+                this.columnnumannomeserif = new global::System.Data.DataColumn("numannomeserif", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnumannomeserif);
                 this.ExtendedProperties.Add("Generator_TablePropName", "_DataSetRiepiloghiIseMensile");
                 this.ExtendedProperties.Add("Generator_UserTableName", "DataSetRiepiloghiIseMensile");
             }
@@ -719,120 +677,35 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Importo {
+            public string nominativo {
                 get {
                     try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.ImportoColumn]));
+                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.nominativoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Importo\' nella tabella \'DataSetRiepiloghiIseMensile\' è D" +
-                                "BNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataSetRiepiloghiIseMensile.ImportoColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Voce {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.VoceColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Voce\' nella tabella \'DataSetRiepiloghiIseMensile\' è DBNu" +
-                                "ll.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataSetRiepiloghiIseMensile.VoceColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Liquidazione {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.LiquidazioneColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Liquidazione\' nella tabella \'DataSetRiepiloghiIseMensile" +
-                                "\' è DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataSetRiepiloghiIseMensile.LiquidazioneColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Movimento {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.MovimentoColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Movimento\' nella tabella \'DataSetRiepiloghiIseMensile\' è" +
-                                " DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataSetRiepiloghiIseMensile.MovimentoColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string DescrizioneVoce {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.DescrizioneVoceColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DescrizioneVoce\' nella tabella \'DataSetRiepiloghiIseMens" +
-                                "ile\' è DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataSetRiepiloghiIseMensile.DescrizioneVoceColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Nominativo {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.NominativoColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Nominativo\' nella tabella \'DataSetRiepiloghiIseMensile\' " +
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'nominativo\' nella tabella \'DataSetRiepiloghiIseMensile\' " +
                                 "è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataSetRiepiloghiIseMensile.NominativoColumn] = value;
+                    this[this.tableDataSetRiepiloghiIseMensile.nominativoColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Ufficio {
+            public string ufficio {
                 get {
                     try {
-                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.UfficioColumn]));
+                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.ufficioColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'Ufficio\' nella tabella \'DataSetRiepiloghiIseMensile\' è D" +
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ufficio\' nella tabella \'DataSetRiepiloghiIseMensile\' è D" +
                                 "BNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataSetRiepiloghiIseMensile.UfficioColumn] = value;
+                    this[this.tableDataSetRiepiloghiIseMensile.ufficioColumn] = value;
                 }
             }
             
@@ -957,86 +830,60 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsImportoNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.ImportoColumn);
+            public string numannomeseelab {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.numannomeseelabColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'numannomeseelab\' nella tabella \'DataSetRiepiloghiIseMens" +
+                                "ile\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataSetRiepiloghiIseMensile.numannomeseelabColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetImportoNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.ImportoColumn] = global::System.Convert.DBNull;
+            public string numannomeserif {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.numannomeserifColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'numannomeserif\' nella tabella \'DataSetRiepiloghiIseMensi" +
+                                "le\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataSetRiepiloghiIseMensile.numannomeserifColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsVoceNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.VoceColumn);
+            public bool IsnominativoNull() {
+                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.nominativoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetVoceNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.VoceColumn] = global::System.Convert.DBNull;
+            public void SetnominativoNull() {
+                this[this.tableDataSetRiepiloghiIseMensile.nominativoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsLiquidazioneNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.LiquidazioneColumn);
+            public bool IsufficioNull() {
+                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.ufficioColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetLiquidazioneNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.LiquidazioneColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsMovimentoNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.MovimentoColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetMovimentoNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.MovimentoColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsDescrizioneVoceNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.DescrizioneVoceColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetDescrizioneVoceNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.DescrizioneVoceColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsNominativoNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.NominativoColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetNominativoNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.NominativoColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsUfficioNull() {
-                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.UfficioColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetUfficioNull() {
-                this[this.tableDataSetRiepiloghiIseMensile.UfficioColumn] = global::System.Convert.DBNull;
+            public void SetufficioNull() {
+                this[this.tableDataSetRiepiloghiIseMensile.ufficioColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1121,6 +968,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetelaborazioneNull() {
                 this[this.tableDataSetRiepiloghiIseMensile.elaborazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsnumannomeseelabNull() {
+                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.numannomeseelabColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetnumannomeseelabNull() {
+                this[this.tableDataSetRiepiloghiIseMensile.numannomeseelabColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsnumannomeserifNull() {
+                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.numannomeserifColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetnumannomeserifNull() {
+                this[this.tableDataSetRiepiloghiIseMensile.numannomeserifColumn] = global::System.Convert.DBNull;
             }
         }
         

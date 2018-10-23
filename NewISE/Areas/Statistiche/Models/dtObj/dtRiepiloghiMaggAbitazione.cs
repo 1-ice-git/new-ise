@@ -51,11 +51,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                    db.TEORICI.Where(
                        a =>
                            a.ANNULLATO == false &&
-                           a.ELABORATO == true &&
-                           //Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                           //                     a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-                           //Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                           //                    a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine &&
+                           a.ELABORATO == true &&                    
                            a.IDMESEANNOELAB >= idElabIni &&
                            a.IDMESEANNOELAB <= idElabFin &&
                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&

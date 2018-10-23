@@ -22,7 +22,7 @@
         <Top>0.40114cm</Top>
         <Left>0.54649cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.11449cm</Width>
+        <Width>2.54803cm</Width>
         <ToolTip>Periodo di riferimento</ToolTip>
         <Style>
           <Border>
@@ -51,9 +51,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>0.40114cm</Top>
-        <Left>5.76681cm</Left>
+        <Left>3.09452cm</Left>
         <Height>0.6cm</Height>
-        <Width>2.62364cm</Width>
+        <Width>2.75593cm</Width>
         <ZIndex>1</ZIndex>
         <ToolTip>Dal </ToolTip>
         <Style>
@@ -78,14 +78,16 @@
                 <Style />
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
-        <Top>0.42761cm</Top>
+        <Top>0.40114cm</Top>
         <Left>21.1411cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.90423cm</Width>
+        <Width>3.99054cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
 ="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
@@ -110,10 +112,10 @@
               <Width>1.5738cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5cm</Width>
+              <Width>6.53585cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.29375cm</Width>
+              <Width>2.28833cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.97083cm</Width>
@@ -125,7 +127,7 @@
               <Width>2.19696cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.77cm</Width>
+              <Width>3.32588cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -240,13 +242,15 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Data trasferimento</Value>
+                              <Value>Data Trasf.</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox11</rd:DefaultName>
@@ -273,13 +277,15 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Qualifica</Value>
+                              <Value>Livello</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox15</rd:DefaultName>
@@ -306,7 +312,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Magg Coniuge</Value>
+                              <Value>Magg. Coniuge</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -339,7 +345,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Magg Figli</Value>
+                              <Value>Magg. Figli</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -372,13 +378,15 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Indennita Personale</Value>
+                              <Value>Indennita Pers.</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox3</rd:DefaultName>
@@ -505,7 +513,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -537,7 +545,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -678,10 +686,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetDipEstero</DataSetName>
-        <Top>2.58974cm</Top>
+        <Top>1.31974cm</Top>
         <Left>0.54649cm</Left>
         <Height>1.2cm</Height>
-        <Width>24.49883cm</Width>
+        <Width>24.58515cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -690,10 +698,10 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>3.0625in</Height>
+    <Height>1.1875in</Height>
     <Style />
   </Body>
-  <Width>10.07552in</Width>
+  <Width>9.9401in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -773,7 +781,7 @@
           <Top>0.24094cm</Top>
           <Left>20.40077cm</Left>
           <Height>2.05811cm</Height>
-          <Width>4.60928cm</Width>
+          <Width>4.73087cm</Width>
           <ZIndex>2</ZIndex>
           <ToolTip>ISE - Indennità Sede Estera</ToolTip>
           <Style>
@@ -794,9 +802,140 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>2.54cm</Height>
+      <Height>1.27cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
+      <ReportItems>
+        <Textbox Name="Textbox18">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Pag.</Value>
+                  <Style>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox14</rd:DefaultName>
+          <Top>0.335cm</Top>
+          <Left>21.41519cm</Left>
+          <Height>0.6cm</Height>
+          <Width>1.19062cm</Width>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="PageNumber">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Globals!PageNumber</Value>
+                  <Style />
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Right</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>PageNumber</rd:DefaultName>
+          <Top>0.335cm</Top>
+          <Left>22.64108cm</Left>
+          <Height>0.6cm</Height>
+          <Width>0.93896cm</Width>
+          <ZIndex>1</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox19">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>di</Value>
+                  <Style>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox14</rd:DefaultName>
+          <Top>0.335cm</Top>
+          <Left>23.54477cm</Left>
+          <Height>0.6cm</Height>
+          <Width>0.52916cm</Width>
+          <ZIndex>2</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="TotalPages">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Globals!TotalPages</Value>
+                  <Style />
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>TotalPages</rd:DefaultName>
+          <Top>0.335cm</Top>
+          <Left>24.07393cm</Left>
+          <Height>0.6cm</Height>
+          <Width>1.05771cm</Width>
+          <ZIndex>3</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+      </ReportItems>
       <Style>
         <Border>
           <Style>None</Style>

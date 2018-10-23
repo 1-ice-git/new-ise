@@ -10,14 +10,14 @@
 
                     <div class="col-xs-4 date">
                         <div class="input-group input-append date">
-                            @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati", @class = "form-control select2 select2-select js-data-example-ajax" })
+                            @Html.DropDownList("mesiAnniElaboratiDa", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiDa", @class = "form-control select2 select2-select js-data-example-ajax" })
                             
                         </div>
                     </div>
 
                     <div class="col-xs-4 date">
                         <div class="input-group input-append date">
-                            @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati1", @class = "form-control select2 select2-select js-data-example-ajax" })
+                            @Html.DropDownList("mesiAnniElaboratiA", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiA", @class = "form-control select2 select2-select js-data-example-ajax" })
 
                         </div>
                     </div>
@@ -262,7 +262,7 @@
         });
     }
 
-    $("#mesiAnniElaborati").select2({
+    $("#mesiAnniElaboratiDa").select2({
         placeholder: "Seleziona la Data Dal",
         allowClear: true,
         language: "it",
@@ -272,7 +272,7 @@
     });
 
 
-    $("#mesiAnniElaborati1").select2({
+    $("#mesiAnniElaboratiA").select2({
         placeholder: "Seleziona la Data Al",
         allowClear: true,
         language: "it",

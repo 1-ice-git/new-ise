@@ -57,11 +57,6 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                         var ufficio = t.UFFICI.DESCRIZIONEUFFICIO + " (" + codiceufficio + ")";
                         decimal idVoci = 0;
 
-                        if (matricola == 3367)
-                        {
-                            var a = 0;
-                        }
-
                         #region elenco livelli x trasferimento
                         var llivdip = t.INDENNITA.LIVELLIDIPENDENTI
                                                     .Where(a => a.ANNULLATO == false &&
