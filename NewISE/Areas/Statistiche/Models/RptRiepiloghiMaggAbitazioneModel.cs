@@ -21,5 +21,6 @@ namespace NewISE.Areas.Statistiche.Models
         public decimal Importo { get; set; }
         public decimal numMeseRiferimento { get; set; }
         public decimal numMeseElaborazione { get; set; }
+        public decimal tfr { get; set; }
     }
 }

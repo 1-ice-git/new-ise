@@ -90,6 +90,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                         {
                             lt = db.TRASFERIMENTO.Where(a =>
                                                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
                                                             a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin &&
                                                             a.IDTIPOCOAN == (decimal)EnumTipologiaCoan.Servizi_Istituzionali)
                                                         .ToList();
@@ -98,6 +99,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                         {
                             lt = db.TRASFERIMENTO.Where(a =>
                                         a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
                                         a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin &&
                                         a.COAN == strCoan &&
                                         a.IDTIPOCOAN == (decimal)EnumTipologiaCoan.Servizi_Promozionali)
@@ -159,14 +161,6 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                     var importo = lteorici.Sum(a => a.IMPORTO);
                                     var descLivello = livdip.LIVELLI.LIVELLO;
                                     RptCostiCoanModel rptccm = SetCostiCoan(matricola, cognome, nome, descLivello, ufficio, idVoci, importo, db);
-                                    //{
-                                    //    Matricola = matricola,
-                                    //    Nominativo = cognome + " " + nome,
-                                    //    Livello = descLivello,
-                                    //    Ufficio = ufficio,
-                                    //    Descrizione = dts.GetDescrizioneVoci((decimal)EnumVociContabili.Ind_Sede_Estera, db),
-                                    //    Importo = importo
-                                    //};
                                     lrptccm.Add(rptccm);
 
                                 }
@@ -194,17 +188,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                     var importo = lteorici.Sum(a => a.IMPORTO);
                                     var descLivello = livdip.LIVELLI.LIVELLO;
                                     RptCostiCoanModel rptccm = SetCostiCoan(matricola, cognome, nome, descLivello, ufficio, idVoci, importo, db);
-                                    //RptCostiCoanModel rptccm = new RptCostiCoanModel()
-                                    //{
-                                    //    Matricola = matricola,
-                                    //    Nominativo = cognome + " " + nome,
-                                    //    Livello = descLivello,
-                                    //    Ufficio = ufficio,
-                                    //    Descrizione = dts.GetDescrizioneVoci((decimal)EnumVociContabili.MAB, db),
-                                    //    Importo = importo
-                                    //};
                                     lrptccm.Add(rptccm);
-
                                 }
                                 #endregion
 
@@ -232,17 +216,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                     var descLivello = livdip.LIVELLI.LIVELLO;
 
                                     RptCostiCoanModel rptccm = SetCostiCoan(matricola, cognome, nome, descLivello, ufficio, idVoci, importo, db);
-
-                                    //RptCostiCoanModel rptccm = new RptCostiCoanModel()
-                                    //{
-                                    //    Matricola = matricola,
-                                    //    Nominativo = cognome + " " + nome,
-                                    //    Livello = descLivello,
-                                    //    Ufficio = ufficio,
-                                    //    Descrizione = dts.GetDescrizioneVoci((decimal)EnumVociContabili.Ind_Prima_Sist_IPS, db),
-                                    //    Importo = importo
-                                    //};
-                                    //lrptccm.Add(rptccm);
+                                    lrptccm.Add(rptccm);
 
                                 }
                                 #endregion
@@ -269,16 +243,6 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                     var importo = lteorici.Sum(a => a.IMPORTO);
                                     var descLivello = livdip.LIVELLI.LIVELLO;
                                     RptCostiCoanModel rptccm = SetCostiCoan(matricola, cognome, nome, descLivello, ufficio, idVoci, importo, db);
-
-                                    //RptCostiCoanModel rptccm = new RptCostiCoanModel()
-                                    //{
-                                    //    Matricola = matricola,
-                                    //    Nominativo = cognome + " " + nome,
-                                    //    Livello = descLivello,
-                                    //    Ufficio = ufficio,
-                                    //    Descrizione = dts.GetDescrizioneVoci((decimal)EnumVociContabili.Ind_Richiamo_IRI, db),
-                                    //    Importo = importo
-                                    //};
                                     lrptccm.Add(rptccm);
 
                                 }
@@ -306,16 +270,6 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                     var importo = lteorici.Sum(a => a.IMPORTO);
                                     var descLivello = livdip.LIVELLI.LIVELLO;
                                     RptCostiCoanModel rptccm = SetCostiCoan(matricola, cognome, nome, descLivello, ufficio, idVoci, importo, db);
-
-                                    //RptCostiCoanModel rptccm = new RptCostiCoanModel()
-                                    //{
-                                    //    Matricola = matricola,
-                                    //    Nominativo = cognome + " " + nome,
-                                    //    Livello = descLivello,
-                                    //    Ufficio = ufficio,
-                                    //    Descrizione = dts.GetDescrizioneVoci((decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131, db),
-                                    //    Importo = importo
-                                    //};
                                     lrptccm.Add(rptccm);
 
                                 }

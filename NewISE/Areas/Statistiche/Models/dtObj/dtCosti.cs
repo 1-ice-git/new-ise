@@ -40,6 +40,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                     #region Elenco Trasferimenti nel range
                     lt = db.TRASFERIMENTO.Where(a =>
                                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
                                             a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin)
                                         .ToList();
                     #endregion

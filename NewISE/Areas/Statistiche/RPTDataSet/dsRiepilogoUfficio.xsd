@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsRiepilogoUfficio" targetNamespace="http://tempuri.org/dsRiepilogoUfficio.xsd" xmlns:mstns="http://tempuri.org/dsRiepilogoUfficio.xsd" xmlns="http://tempuri.org/dsRiepilogoUfficio.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsRiepilogoUfficio" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsRiepilogoUfficio" msprop:Generator_UserDSName="dsRiepilogoUfficio">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dsRiepilogoUfficio" msprop:Generator_TableClassName="dsRiepilogoUfficioDataTable" msprop:Generator_TableVarName="tabledsRiepilogoUfficio" msprop:Generator_RowChangedName="dsRiepilogoUfficioRowChanged" msprop:Generator_TablePropName="_dsRiepilogoUfficio" msprop:Generator_RowDeletingName="dsRiepilogoUfficioRowDeleting" msprop:Generator_RowChangingName="dsRiepilogoUfficioRowChanging" msprop:Generator_RowEvHandlerName="dsRiepilogoUfficioRowChangeEventHandler" msprop:Generator_RowDeletedName="dsRiepilogoUfficioRowDeleted" msprop:Generator_RowClassName="dsRiepilogoUfficioRow" msprop:Generator_UserTableName="dsRiepilogoUfficio" msprop:Generator_RowEvArgName="dsRiepilogoUfficioRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="codice" msprop:Generator_ColumnVarNameInTable="columncodice" msprop:Generator_ColumnPropNameInRow="codice" msprop:Generator_ColumnPropNameInTable="codiceColumn" msprop:Generator_UserColumnName="codice" type="xs:string" minOccurs="0" />
+              <xs:element name="descUfficio" msprop:Generator_ColumnVarNameInTable="columndescUfficio" msprop:Generator_ColumnPropNameInRow="descUfficio" msprop:Generator_ColumnPropNameInTable="descUfficioColumn" msprop:Generator_UserColumnName="descUfficio" type="xs:string" minOccurs="0" />
+              <xs:element name="numDipendenti" msprop:Generator_ColumnVarNameInTable="columnnumDipendenti" msprop:Generator_ColumnPropNameInRow="numDipendenti" msprop:Generator_ColumnPropNameInTable="numDipendentiColumn" msprop:Generator_UserColumnName="numDipendenti" type="xs:string" minOccurs="0" />
+              <xs:element name="AltreSpese" msprop:Generator_ColumnVarNameInTable="columnAltreSpese" msprop:Generator_ColumnPropNameInRow="AltreSpese" msprop:Generator_ColumnPropNameInTable="AltreSpeseColumn" msprop:Generator_UserColumnName="AltreSpese" type="xs:string" minOccurs="0" />
+              <xs:element name="IndRichiamo" msprop:Generator_ColumnVarNameInTable="columnIndRichiamo" msprop:Generator_ColumnPropNameInRow="IndRichiamo" msprop:Generator_ColumnPropNameInTable="IndRichiamoColumn" msprop:Generator_UserColumnName="IndRichiamo" type="xs:string" minOccurs="0" />
+              <xs:element name="IndPersonale" msprop:Generator_ColumnVarNameInTable="columnIndPersonale" msprop:Generator_ColumnPropNameInRow="IndPersonale" msprop:Generator_ColumnPropNameInTable="IndPersonaleColumn" msprop:Generator_UserColumnName="IndPersonale" type="xs:string" minOccurs="0" />
+              <xs:element name="IndMAB" msprop:Generator_ColumnVarNameInTable="columnIndMAB" msprop:Generator_ColumnPropNameInRow="IndMAB" msprop:Generator_ColumnPropNameInTable="IndMABColumn" msprop:Generator_UserColumnName="IndMAB" type="xs:string" minOccurs="0" />
+              <xs:element name="IndTE" msprop:Generator_ColumnVarNameInTable="columnIndTE" msprop:Generator_ColumnPropNameInRow="IndTE" msprop:Generator_ColumnPropNameInTable="IndTEColumn" msprop:Generator_UserColumnName="IndTE" type="xs:string" minOccurs="0" />
+              <xs:element name="IndPS" msprop:Generator_ColumnVarNameInTable="columnIndPS" msprop:Generator_ColumnPropNameInRow="IndPS" msprop:Generator_ColumnPropNameInTable="IndPSColumn" msprop:Generator_UserColumnName="IndPS" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
