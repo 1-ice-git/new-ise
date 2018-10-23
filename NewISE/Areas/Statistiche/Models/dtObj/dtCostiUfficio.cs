@@ -40,6 +40,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                     {
                         lt = db.TRASFERIMENTO.Where(a =>
                                                         a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                                        a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
                                                         a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin &&
                                                         a.IDUFFICIO == idUfficio)
                                                     .ToList();
@@ -48,6 +49,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                     {
                         lt = db.TRASFERIMENTO.Where(a =>
                                     a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                    a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
                                     a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin)
                                 .ToList();
 
@@ -71,10 +73,10 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                         }
 
                         #region elenco livelli x trasferimento
-                        var llivdip = t.INDENNITA.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false &&
-                                                                                a.DATAFINEVALIDITA >= dtIni &&
-                                                                                a.DATAINIZIOVALIDITA <= dtFin
-                                                                        )
+                        var llivdip = t.INDENNITA.LIVELLIDIPENDENTI
+                                            .Where(a => a.ANNULLATO == false &&
+                                                        a.DATAFINEVALIDITA >= dtIni &&
+                                                        a.DATAINIZIOVALIDITA <= dtFin)
                                             .ToList();
                         #endregion
 

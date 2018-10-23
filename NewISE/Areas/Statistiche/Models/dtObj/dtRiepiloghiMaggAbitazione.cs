@@ -106,7 +106,8 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                         percApplicata=elabmab.PERCMAB,
                         Importo = Teorici.IMPORTO,
                         numMeseElaborazione=numMeseElaborazione,
-                        numMeseRiferimento=numMeseRiferimento
+                        numMeseRiferimento=numMeseRiferimento,
+                        tfr=elabmab.TASSOFISSORAGGUAGLIO
                     };
 
                     rim.Add(ldvm);

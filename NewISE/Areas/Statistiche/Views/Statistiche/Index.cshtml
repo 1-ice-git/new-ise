@@ -77,9 +77,9 @@
                         <a href="#" class="list-group-item" onclick="callpartialSpeseAvvicendamentoNew()">Consuntivo Spese di Avvicendamento</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroLivelloNew();">Dipendenti all'Estero per Livello</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpDipEsteroNew();">Dislocazione dei dipendenti all'Estero</a>
-                        <a href="#" class="list-group-item" onclick="callpartialOpRiepilogoLivello()">Riepilogo per Livello</a>
-                        <a href="#" class="list-group-item" onclick="callpartialOpRiepilogo()">Riepilogo Generale</a>
-                        <a href="#" class="list-group-item" onclick="callpartialOpRiepilogoUfficio()">Riepilogo per Ufficio</a>
+                        <a href="#" class="list-group-item" onclick="callpartialRiepilogoLivello()">Riepilogo per Livello</a>
+                        <a href="#" class="list-group-item" onclick="callpartialRiepilogo()">Riepilogo Generale</a>
+                        <a href="#" class="list-group-item" onclick="callpartialRiepilogoUfficio()">Riepilogo per Ufficio</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpIndSedeEsteraNew();">Riepilogo delle operazioni effettuate - Indennità di sede estera</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpMaggAbitazioneNew();">Riepilogo delle operazioni effettuate - Maggiorazione Abitazione</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpTrasportoEffettiNew();">Riepilogo delle operazioni effettuate - Trasporto Effetti</a>
@@ -986,7 +986,7 @@
 
             },
             success: function (result) {
-                debugger;
+                //debugger;
                 $("#divPartialView").empty();
                 $("#divPartialView").html(result);
             },
@@ -1087,7 +1087,7 @@
 
     function callpartialRiepilogo() {
         //debugger;
-        rotta = "/Statistiche/Riepilogo/Index";
+        rotta = "/Statistiche/RiepilogoGenerale/Index";
 
         $.ajax({
             type: "POST",

@@ -4819,6 +4819,39 @@
     <Content Include="Areas\Statistiche\RPTDataSet\dsSpeseAvvicendamento.xsc">
       <DependentUpon>dsSpeseAvvicendamento.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsRiepilogoLivello.xsc">
+      <DependentUpon>dsRiepilogoLivello.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsRiepilogoGenerale.xsc">
+      <DependentUpon>dsRiepilogoGenerale.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\dsRiepilogoGenerale.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsRiepilogoGenerale.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsRiepilogoGenerale.xss">
+      <DependentUpon>dsRiepilogoGenerale.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\dsRiepilogoLivello.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsRiepilogoLivello.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsRiepilogoLivello.xss">
+      <DependentUpon>dsRiepilogoLivello.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsRiepilogoUfficio.xsc">
+      <DependentUpon>dsRiepilogoUfficio.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\dsRiepilogoUfficio.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsRiepilogoUfficio.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\dsRiepilogoUfficio.xss">
+      <DependentUpon>dsRiepilogoUfficio.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\dsSpeseAvvicendamento.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -4827,6 +4860,12 @@
     <Content Include="Areas\Statistiche\RPTDataSet\dsSpeseAvvicendamento.xss">
       <DependentUpon>dsSpeseAvvicendamento.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\Views\RiepilogoLivello\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepilogoLivello\RptRiepilogoLivello.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepilogoUfficio\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepilogoGenerale\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepilogoUfficio\RptRiepilogoUfficio.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepilogoGenerale\RptRiepilogoGenerale.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -5079,6 +5118,8 @@
     <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCondivisioneMAB.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepilogoGeneraleController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepilogoUfficioController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepilogoLivelloController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\SpeseAvvicendamentoNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\CostiUfficioController.cs" />
@@ -5091,8 +5132,14 @@
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiSpeseDiverseController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StoriaDipendenteNewController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\TrasportoEffettiNewController.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtRiepilogoGenerale.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtRiepilogoUfficio.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtRiepilogoLivello.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtSpeseAvvicendamentoNew.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtStatistiche.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptRiepilogoGeneraleModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptRiepilogoUfficioModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\RptRiepilogoLivelloModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptSpeseAvvicendamentoNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiUfficioModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiModel.cs" />
@@ -5160,6 +5207,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsCostiUfficio.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\dsRiepilogoGenerale.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsRiepilogoGenerale.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\dsRiepilogoLivello.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsRiepilogoLivello.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\dsRiepilogoUfficio.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsRiepilogoUfficio.xsd</DependentUpon>
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\dsSpeseAvvicendamento.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6842,6 +6904,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Areas\Statistiche\RPT\RptSpeseAvvicendamentoNew.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptRiepilogoLivello.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptRiepilogoUfficio.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Statistiche\RPT\RptRiepilogoGenerale.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />

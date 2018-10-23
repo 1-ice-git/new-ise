@@ -16,7 +16,7 @@ using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Statistiche.Controllers
 {
-    public class RiepilogoLivelloController : Controller
+    public class RiepilogoGeneraleController : Controller
     {
         public ActionResult Index()
         {
@@ -107,9 +107,9 @@ namespace NewISE.Areas.Statistiche.Controllers
             return Json(new { results = ls2, err = "" });
         }
 
-        public ActionResult RptRiepilogoLivello(decimal idMeseAnnoDa, decimal idMeseAnnoA)
+        public ActionResult RptRiepilogoGenerale(decimal idMeseAnnoDa, decimal idMeseAnnoA)
         {
-            List<RptRiepilogoLivelloModel> lrpt = new List<RptRiepilogoLivelloModel>();
+            List<RptRiepilogoGeneraleModel> lrpt = new List<RptRiepilogoGeneraleModel>();
 
             try
             {
@@ -125,9 +125,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                     decimal annoA = annoMeseElabA.ANNO;
                     decimal meseA = annoMeseElabA.MESE;
 
-                    using (dtRiepilogoLivello dtrl = new dtRiepilogoLivello())
+                    using (dtRiepilogoGenerale dtrg = new dtRiepilogoGenerale())
                     {
-                        lrpt = dtrl.GetRiepilogoLivello(meseDa, annoDa, meseA, annoA, db);
+                        lrpt = dtrg.GetRiepilogoGenerale(meseDa, annoDa, meseA, annoA, db);
                     }
 
 
@@ -147,7 +147,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.Width = Unit.Percentage(100);
                     reportViewer.Height = Unit.Percentage(100);
                     reportViewer.Visible = true;
-                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Areas/Statistiche/RPT/RptRiepilogoLivello.rdlc";
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Areas/Statistiche/RPT/RptRiepilogoGenerale.rdlc";
                     reportViewer.LocalReport.DataSources.Clear();
                     reportViewer.LocalReport.Refresh();
 
@@ -158,7 +158,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                        };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
-                    ReportDataSource _rsource = new ReportDataSource("dsRiepilogoLivello", lrpt);
+                    ReportDataSource _rsource = new ReportDataSource("dsRiepilogoGenerale", lrpt);
                     reportViewer.LocalReport.DataSources.Add(_rsource);
                     reportViewer.LocalReport.Refresh();
 
