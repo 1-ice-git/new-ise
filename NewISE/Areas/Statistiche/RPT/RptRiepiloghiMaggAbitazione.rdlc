@@ -1021,15 +1021,9 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetRiepiloghiMaggAbitazione</DataSetName>
-<<<<<<< HEAD
         <Top>2.00766cm</Top>
         <Height>1.5175cm</Height>
         <Width>27.78331cm</Width>
-=======
-        <Top>3.59516cm</Top>
-        <Height>1.2cm</Height>
-        <Width>27.7833cm</Width>
->>>>>>> DF_indennità
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -1041,11 +1035,7 @@
     <Height>1.54166in</Height>
     <Style />
   </Body>
-<<<<<<< HEAD
   <Width>10.93831in</Width>
-=======
-  <Width>10.94873in</Width>
->>>>>>> DF_indennità
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
