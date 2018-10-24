@@ -637,20 +637,15 @@ namespace NewISE.Models.DBModel.dtObj
                             AssociaAltriDatiFamiliariConiuge(new_idconiuge, idAdf, db);
                             #endregion
 
-                            #region documenti
-                            //riassocia documenti
+                            #region associa documenti
                             var ldc = db.CONIUGE.Find(cm.idConiuge).DOCUMENTI.Where(x => x.MODIFICATO == false && x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
                             foreach (var dc in ldc)
                             {
                                 this.Associa_Doc_Coniuge_ById(dc.IDDOCUMENTO, new_idconiuge, db);
-                                //this.AssociaDocumentoAttivazione(newmf.IDATTIVAZIONEMAGFAM, dc.IDDOCUMENTO, db);
                             }
-                            ////rimuovo precedenti associazioni di documenti in lavorazione al coniuge attivo
-                            //this.RimuoviAssociazione_Coniuge_DocumentiInLavorazione(cm.idConiuge, db);
                             #endregion
 
-                            #region pensioni
-                            //riassocia eventuali pensioni
+                            #region associa pensioni
                             var lpc = db.CONIUGE.Find(cm.idConiuge).PENSIONE.Where(x => x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
                             foreach (var pc in lpc)
                             {
@@ -658,11 +653,9 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             #endregion
 
-                            #region perc maggiorazioni
-                            //associa le percentuali maggiorazioni
+                            #region associa perc maggiorazioni
                             using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                             {
-
                                 List<PercentualeMagConiugeModel> lpmcm =
                                     dtpc.GetListaPercentualiMagConiugeByRangeDate(cm.idTipologiaConiuge, dtIni, dtFin, db)
                                         .ToList();
@@ -680,16 +673,12 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                             }
                             #endregion
-
                         }
-
                     }
-
                 }
             }
             catch (Exception ex)
             {
-                //db.Database.CurrentTransaction.Rollback();
                 throw ex;
             }
         }
@@ -1016,6 +1005,33 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                 }
                                 #endregion
+
+                                #region primo segretario
+                                //associa eventuali indennita primo segretario
+                                dtIni = fm.dataInizio.Value;
+                                dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+                                using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+                                {
+                                    dtips.RimuoviAssociazione_Figlio_IndennitaPrimoSegretario(fm.idFigli, db);
+
+
+                                    List<IndennitaPrimoSegretModel> lipsm =
+                                        dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                                    if (lipsm?.Any() ?? false)
+                                    {
+                                        foreach (var ipsm in lipsm)
+                                        {
+                                            dtips.AssociaIndennitaPrimoSegretarioFiglio(fm.idFigli, ipsm.idIndPrimoSegr, db);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
+                                    }
+                                }
+                                #endregion
                             }
                         }
                         else
@@ -1068,7 +1084,6 @@ namespace NewISE.Models.DBModel.dtObj
                             //associa le percentuali maggiorazioni
                             using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
                             {
-
                                 List<PercentualeMagFigliModel> lpmfm = dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db).ToList();
 
                                 if (lpmfm?.Any() ?? false)
@@ -1085,6 +1100,27 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             #endregion
 
+                            #region primo segretario
+                            //associa eventuali indennita primo segretario
+                            using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+                            {
+                                List<IndennitaPrimoSegretModel> lipsm =
+                                    dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                                if (lipsm?.Any() ?? false)
+                                {
+                                    foreach (var ipsm in lipsm)
+                                    {
+                                        dtips.AssociaIndennitaPrimoSegretarioFiglio(new_idfiglio, ipsm.idIndPrimoSegr, db);
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception(
+                                        "Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
+                                }
+                            }
+                            #endregion
                         }
                     }
                 }
@@ -2757,31 +2793,51 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
                         {
-                            using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                            using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
                             {
-                                var tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
-
-                                fm.dataAggiornamento = DateTime.Now;
-                                DateTime dtIni = fm.dataInizio.Value;
-                                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
-                                fm.dataFine = dtFin;
-
-                                decimal new_idfiglio = dtvmf.SetFiglio(ref fm, db, fm.idAttivazioneMagFam);
-
-
-                                IList<PercentualeMagFigliModel> lpmfm = dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db);
-
-                                if (lpmfm?.Any() ?? false)
+                                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                                 {
-                                    foreach (var pmfm in lpmfm)
+                                    var tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
+
+                                    fm.dataAggiornamento = DateTime.Now;
+                                    DateTime dtIni = fm.dataInizio.Value;
+                                    DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+                                    fm.dataFine = dtFin;
+
+                                    decimal new_idfiglio = dtvmf.SetFiglio(ref fm, db, fm.idAttivazioneMagFam);
+
+                                    IList<PercentualeMagFigliModel> lpmfm = dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db);
+
+                                    if (lpmfm?.Any() ?? false)
                                     {
-                                        dtpmf.AssociaPercentualeMaggiorazioneFigli(new_idfiglio, pmfm.idPercMagFigli, db);
+                                        foreach (var pmfm in lpmfm)
+                                        {
+                                            dtpmf.AssociaPercentualeMaggiorazioneFigli(new_idfiglio, pmfm.idPercMagFigli, db);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Non è presente nessuna percentuale del figlio.");
+                                    }
+
+                                    List<IndennitaPrimoSegretModel> lipsm =
+                                        dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                                    if (lipsm?.Any() ?? false)
+                                    {
+                                        foreach (var ipsm in lipsm)
+                                        {
+                                            dtips.AssociaIndennitaPrimoSegretarioFiglio(new_idfiglio, ipsm.idIndPrimoSegr, db);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
                                     }
                                 }
-                                else
-                                {
-                                    throw new Exception("Non è presente nessuna percentuale del figlio.");
-                                }
+
+
                             }
                         }
                     }
