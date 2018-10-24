@@ -42,11 +42,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             foreach (var Teorici in lTeorici)
             {
-                //var lelabtraspeffetti = Teorici.ELABTRASPEFFETTI.Where(a => a.ANNULLATO == false &&
-                //                                          a.DAL >= dtIni1 &&
-                //                                          a.AL <= dtFin1).ToList();
-
-               
                     
                     var tr = Teorici.TRASFERIMENTO;
                     var d = tr.DIPENDENTI;
@@ -72,7 +67,7 @@ namespace NewISE.Models.DBModel.dtObj
                    TrasportoEffettiModel ldvm = new TrasportoEffettiModel()
                    {
                         matricola = d.MATRICOLA,
-                        Nominativo = d.NOME + " " + d.COGNOME,
+                        Nominativo = d.COGNOME + " " + d.NOME,
                         Ufficio = uf.DESCRIZIONEUFFICIO,
                         Importo = Teorici.IMPORTO,
                         MeseElaborazione = strMeseAnnoElab,

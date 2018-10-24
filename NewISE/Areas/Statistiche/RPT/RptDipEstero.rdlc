@@ -165,6 +165,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -678,7 +679,9 @@
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <FixedData>true</FixedData>
               <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
             </TablixMember>
             <TablixMember>
               <Group Name="Dettagli" />
@@ -689,7 +692,7 @@
         <Top>1.31974cm</Top>
         <Left>0.54649cm</Left>
         <Height>1.2cm</Height>
-        <Width>24.58515cm</Width>
+        <Width>24.58514cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>

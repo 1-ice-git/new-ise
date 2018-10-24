@@ -524,6 +524,9 @@
                   </TablixMembers>
                 </TablixMember>
               </TablixMembers>
+              <FixedData>true</FixedData>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
             </TablixMember>
             <TablixMember>
               <Group Name="Matricola">
@@ -805,6 +808,7 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
+        <RepeatColumnHeaders>true</RepeatColumnHeaders>
         <DataSetName>dsSpeseAvvicendamento</DataSetName>
         <SortExpressions>
           <SortExpression>
@@ -813,7 +817,7 @@
         </SortExpressions>
         <Top>0.31433cm</Top>
         <Height>1.8cm</Height>
-        <Width>27.45829cm</Width>
+        <Width>27.45828cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1109,7 +1113,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>1.54313cm</Top>
+          <Top>1.54312cm</Top>
           <Left>25.01165cm</Left>
           <Height>0.6cm</Height>
           <Width>0.93896cm</Width>
@@ -1141,7 +1145,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>1.54313cm</Top>
+          <Top>1.54312cm</Top>
           <Left>23.78575cm</Left>
           <Height>0.6cm</Height>
           <Width>1.19062cm</Width>
@@ -1174,7 +1178,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>1.54313cm</Top>
+          <Top>1.54312cm</Top>
           <Left>25.95061cm</Left>
           <Height>0.6cm</Height>
           <Width>0.66145cm</Width>
@@ -1205,7 +1209,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>1.54313cm</Top>
+          <Top>1.54312cm</Top>
           <Left>26.64734cm</Left>
           <Height>0.6cm</Height>
           <Width>0.81549cm</Width>

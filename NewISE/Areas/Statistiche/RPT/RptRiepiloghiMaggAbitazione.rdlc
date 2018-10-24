@@ -2,105 +2,6 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Textbox Name="Textbox2">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Periodo di elaborazione:</Value>
-                <Style>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>0.89062cm</Top>
-        <Height>0.6cm</Height>
-        <Width>4.51445cm</Width>
-        <ToolTip>Periodo di riferimento</ToolTip>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <BackgroundColor>WhiteSmoke</BackgroundColor>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox4">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Parameters!Dal.Value &amp; " - " &amp; Parameters!Al.Value</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>0.89062cm</Top>
-        <Left>4.51445cm</Left>
-        <Height>0.6cm</Height>
-        <Width>7.99584cm</Width>
-        <ZIndex>1</ZIndex>
-        <ToolTip>Dal </ToolTip>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <BackgroundColor>WhiteSmoke</BackgroundColor>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox24">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>="Roma, " &amp; Today()</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox24</rd:DefaultName>
-        <Top>0.89062cm</Top>
-        <Left>23.85262cm</Left>
-        <Height>0.6cm</Height>
-        <Width>3.93069cm</Width>
-        <ZIndex>2</ZIndex>
-        <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
-="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <BackgroundColor>WhiteSmoke</BackgroundColor>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Tablix Name="Tablix3">
         <TablixBody>
           <TablixColumns>
@@ -716,7 +617,9 @@
                   </TablixMembers>
                 </TablixMember>
               </TablixMembers>
+              <FixedData>true</FixedData>
               <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
             </TablixMember>
             <TablixMember>
               <Group Name="Nominativo">
@@ -1020,11 +923,12 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
+        <FixedRowHeaders>true</FixedRowHeaders>
         <DataSetName>DataSetRiepiloghiMaggAbitazione</DataSetName>
-        <Top>2.00766cm</Top>
+        <Top>0.3175cm</Top>
+        <Left>0.02647cm</Left>
         <Height>1.5175cm</Height>
-        <Width>27.78331cm</Width>
-        <ZIndex>3</ZIndex>
+        <Width>27.7833cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1032,17 +936,13 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>1.54166in</Height>
+    <Height>0.83702in</Height>
     <Style />
   </Body>
-
-  <Width>10.93831in</Width>
-
-
-  
+  <Width>10.94873in</Width>
   <Page>
     <PageHeader>
-      <Height>2.54cm</Height>
+      <Height>3.62479cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1138,6 +1038,107 @@
             <PaddingBottom>5pt</PaddingBottom>
           </Style>
         </Image>
+        <Textbox Name="Textbox2">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Periodo di elaborazione:</Value>
+                  <Style>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox2</rd:DefaultName>
+          <Top>2.63687cm</Top>
+          <Left>0.02646cm</Left>
+          <Height>0.6cm</Height>
+          <Width>4.51445cm</Width>
+          <ZIndex>3</ZIndex>
+          <ToolTip>Periodo di riferimento</ToolTip>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox4">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Parameters!Dal.Value &amp; " - " &amp; Parameters!Al.Value</Value>
+                  <Style />
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox4</rd:DefaultName>
+          <Top>2.63687cm</Top>
+          <Left>4.54091cm</Left>
+          <Height>0.6cm</Height>
+          <Width>7.99584cm</Width>
+          <ZIndex>4</ZIndex>
+          <ToolTip>Dal </ToolTip>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox24">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>="Roma, " &amp; Today()</Value>
+                  <Style />
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Right</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox24</rd:DefaultName>
+          <Top>2.63687cm</Top>
+          <Left>23.85262cm</Left>
+          <Height>0.6cm</Height>
+          <Width>3.93069cm</Width>
+          <ZIndex>5</ZIndex>
+          <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
+="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
       </ReportItems>
       <Style>
         <Border>
@@ -1146,7 +1147,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>1.19063cm</Height>
+      <Height>2.05521cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1167,7 +1168,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>0.59063cm</Top>
+          <Top>1.27cm</Top>
           <Left>25.29275cm</Left>
           <Height>0.6cm</Height>
           <Width>0.93896cm</Width>
@@ -1199,7 +1200,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.59063cm</Top>
+          <Top>1.27cm</Top>
           <Left>24.06686cm</Left>
           <Height>0.6cm</Height>
           <Width>1.19062cm</Width>
@@ -1232,7 +1233,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.59063cm</Top>
+          <Top>1.27cm</Top>
           <Left>26.19644cm</Left>
           <Height>0.6cm</Height>
           <Width>0.52916cm</Width>
@@ -1263,7 +1264,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>0.59063cm</Top>
+          <Top>1.27cm</Top>
           <Left>26.7256cm</Left>
           <Height>0.6cm</Height>
           <Width>1.05771cm</Width>

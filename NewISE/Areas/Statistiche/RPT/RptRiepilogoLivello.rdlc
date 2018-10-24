@@ -78,6 +78,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -810,7 +811,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -979,7 +979,11 @@
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
           <TablixMembers>
-            <TablixMember />
+            <TablixMember>
+              <FixedData>true</FixedData>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
             <TablixMember>
               <Group Name="Details1" />
               <SortExpressions>
@@ -993,7 +997,7 @@
         <DataSetName>dsRiepilogoLivello</DataSetName>
         <Top>0.17639cm</Top>
         <Height>1.53542cm</Height>
-        <Width>27.62852cm</Width>
+        <Width>27.62854cm</Width>
         <Style>
           <Border>
             <Style>None</Style>

@@ -139,24 +139,19 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-
                     var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(idElabIni);
                     decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
                     decimal annoDa = annoMeseElabDa.ANNO;
                     decimal meseDa = annoMeseElabDa.MESE;
-
 
                     var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(idElabFin);
                     decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
                     decimal annoA = annoMeseElabA.ANNO;
                     decimal meseA = annoMeseElabA.MESE;
 
-
                     using (dtRiepiloghiIseMensile dtr= new dtRiepiloghiIseMensile())
                     {
-                        
                         rpt = dtr.GetRiepiloghiIseMensile(idElabIni, idElabFin,meseDa, annoDa, meseA,annoA, db).ToList();
-                        
                     }
 
                     string strMeseAnnoDa = "";
@@ -166,15 +161,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                         strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
                         strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
                     }
-
-                   
-                    
-
-                    //var annoMeseElab = db.MESEANNOELABORAZIONE.Find(dtIni);
-                    //decimal annoMese = Convert.ToDecimal(annoMeseElab.ANNO.ToString() + annoMeseElab.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
-
-                    //var annoMeseElab1 = db.MESEANNOELABORAZIONE.Find(dtFin);
-                    //decimal annoMese1 = Convert.ToDecimal(annoMeseElab1.ANNO.ToString() + annoMeseElab1.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
 
                     ReportViewer reportViewer = new ReportViewer();
 
@@ -195,33 +181,20 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiIseMensile", rpt));
                     reportViewer.LocalReport.Refresh();
 
-                    // Nel caso in cui passo il DatePicker
-                    //ReportParameter[] parameterValues = new ReportParameter[]
-                    //   {
-                    //        new ReportParameter ("Dal",Convert.ToString(dtIni)),
-                    //        new ReportParameter ("Al",Convert.ToString(dtFin))
-                    //   };
-
-
                     ReportParameter[] parameterValues = new ReportParameter[]
                     {
-                        //new ReportParameter ("Dal",Convert.ToString(annoMese)),
-                        //new ReportParameter ("Al",Convert.ToString(annoMese1))
                         new ReportParameter ("paramMeseAnnoDa", strMeseAnnoDa),
                         new ReportParameter ("paramMeseAnnoA",strMeseAnnoA),
+                    };
 
-                   };
-
-                reportViewer.LocalReport.SetParameters(parameterValues);
-                ViewBag.ReportViewer = reportViewer;
-
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
             return PartialView();
         }
 

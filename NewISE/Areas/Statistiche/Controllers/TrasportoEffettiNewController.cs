@@ -147,9 +147,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                     decimal meseA = annoMeseElabA.MESE;
 
 
-                    using (dtReportTrasportoEffetti dtReportTrasportoEffetti = new dtReportTrasportoEffetti())
+                    using (dtReportTrasportoEffetti dtR = new dtReportTrasportoEffetti())
                     {
-                        rim = dtReportTrasportoEffetti.GetTrasportoEffetti(dtIni, dtFin, annoDa, meseDa, annoA, meseA, db).ToList();
+                        rim = dtR.GetTrasportoEffetti(dtIni, dtFin, annoDa, meseDa, annoA, meseA, db).ToList();
                     }
 
 

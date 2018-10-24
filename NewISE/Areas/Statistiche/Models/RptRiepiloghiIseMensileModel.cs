@@ -14,7 +14,8 @@ namespace NewISE.Areas.Statistiche.Models
         public string nominativo { get; set; }
         public string qualifica { get; set; }
         public decimal indennita_personale { get; set; }
-        public decimal prima_sistemazione { get; set; }
+        public decimal prima_sistemazione_anticipo { get; set; }
+        public decimal prima_sistemazione_saldo { get; set; }
         public decimal richiamo { get; set; }
         public string riferimento { get; set; }
         public string elaborazione { get; set; }

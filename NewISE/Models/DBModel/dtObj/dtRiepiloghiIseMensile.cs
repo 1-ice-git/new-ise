@@ -31,7 +31,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
         public IList<RptRiepiloghiIseMensileModel> GetRiepiloghiIseMensile(decimal idElabIni, decimal idElabFin, decimal MeseDa, decimal AnnoDa, decimal MeseA, decimal AnnoA, ModelDBISE db)
 
-        {   
+        {
             List<RptRiepiloghiIseMensileModel> rim = new List<RptRiepiloghiIseMensileModel>();
 
             List<TRASFERIMENTO> lt = new List<TRASFERIMENTO>();
@@ -42,19 +42,19 @@ namespace NewISE.Models.DBModel.dtObj
             DateTime dtIni = Convert.ToDateTime("01/" + strMeseDa + "/" + AnnoDa.ToString());
             DateTime dtFin = Utility.GetDtFineMese(Convert.ToDateTime("01/" + strMeseA + "/" + AnnoA.ToString()));
 
-
-            lt = db.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+            lt = db.TRASFERIMENTO
+                            .Where(a => 
+                                        a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
                                         a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
-                                        a.DATARIENTRO >= dtIni && a.DATAPARTENZA <= dtFin)
-                                        .ToList();
+                                        a.DATARIENTRO >= dtIni && 
+                                        a.DATAPARTENZA <= dtFin)
+                            .ToList();
 
             foreach (var t in lt)
             {
                 var d = t.DIPENDENTI;
 
                 var uf = t.UFFICI;
-           
-
 
                 #region elenco livelli x trasferimento
                 var llivdip = t.INDENNITA.LIVELLIDIPENDENTI
@@ -67,51 +67,83 @@ namespace NewISE.Models.DBModel.dtObj
                 #region ciclo livelli
                 foreach (var livdip in llivdip)
                 {
-
                     var annoMeseInizio = Convert.ToDecimal(AnnoDa.ToString() + MeseDa.ToString().PadLeft(2, (char)'0'));
                     var annoMeseFine = Convert.ToDecimal(AnnoA.ToString() + MeseA.ToString().PadLeft(2, (char)'0'));
 
-                    var idVoci = (decimal)EnumVociContabili.Ind_Sede_Estera;
-
-
-                    #region indennita
-                    var lteorici =
-                    t.TEORICI.Where(a =>
-                                        a.ELABINDENNITA.Any(b => b.IDLIVELLO == livdip.IDLIVELLO) &&
+                    #region lista teorici per livello (tutte le indennita interessate)
+                    var lteorici = t.TEORICI.Where(a =>
                                         a.ANNULLATO == false &&
-                                        a.DIRETTO == false &&
                                         a.ELABORATO == true &&
                                         a.INSERIMENTOMANUALE == false &&
-                                        a.IDVOCI == idVoci &&
+                                        (
+                                            a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS || 
+                                            a.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera || 
+                                            a.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI
+                                        ) &&
                                         a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                         Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
                                                             a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
                                         Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
                                                             a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-                            .OrderBy(a => a.ANNORIFERIMENTO)
-                            .ThenBy(a => a.MESERIFERIMENTO).ToList();
+                            .GroupBy(a=> new {a.ANNORIFERIMENTO, a.MESERIFERIMENTO })
+                            .ToList();
+                    #endregion
 
-                    #region cicla teorici
+                    #region cicla i gruppi di anno/mese rif teorici
                     foreach (var teorici in lteorici)
                     {
-                      
-                        var tm = teorici.TIPOMOVIMENTO;
-                        var voce = teorici.VOCI;
-                        var tl = teorici.VOCI.TIPOLIQUIDAZIONE;
-                        var tv = teorici.VOCI.TIPOVOCE;
+                        decimal prima_sistemazione_anticipo = 0;
+                        decimal prima_sistemazione_saldo = 0;
+                        decimal indennita = 0;
+                        decimal richiamo = 0;
 
-                        var meseannoElab = db.MESEANNOELABORAZIONE.Find(teorici.IDMESEANNOELAB);
-                        var strMeseAnnoElab = "";
-                        var strMeseAnnoRif = "";
-                        using (dtElaborazioni dte = new dtElaborazioni())
+                        MESEANNOELABORAZIONE meseannoElab = new MESEANNOELABORAZIONE();
+                        string strMeseAnnoElab = "";
+                        string strMeseAnnoRif = "";
+                        decimal numMeseRiferimento = 0;
+                        decimal numMeseElaborazione = 0;
+
+                        #region cicla le singole righe di teorici
+                        foreach (var teorici_row in teorici)
                         {
-                            strMeseAnnoElab = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseannoElab.MESE) + " " + meseannoElab.ANNO.ToString();
-                            strMeseAnnoRif = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)teorici.MESERIFERIMENTO) + " " + teorici.ANNORIFERIMENTO.ToString();
-                        }
-                        decimal numMeseRiferimento = Convert.ToDecimal(teorici.ANNORIFERIMENTO.ToString() + teorici.MESERIFERIMENTO.ToString().ToString().PadLeft(2, (char)'0'));
-                        decimal numMeseElaborazione = Convert.ToDecimal(meseannoElab.ANNO.ToString() + meseannoElab.MESE.ToString().PadLeft(2, (char)'0'));
+                            if (teorici_row.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                    teorici_row.ELABINDSISTEMAZIONE?.IDLIVELLO == livdip.IDLIVELLO &&
+                                    teorici_row.ELABINDSISTEMAZIONE.ANTICIPO)
+                            {
+                                prima_sistemazione_anticipo = teorici_row.IMPORTO;
+                            }
 
-                        #region modello
+                            if (teorici_row.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                    teorici_row.ELABINDSISTEMAZIONE?.IDLIVELLO == livdip.IDLIVELLO &&
+                                    (teorici_row.ELABINDSISTEMAZIONE.SALDO || teorici_row.ELABINDSISTEMAZIONE.CONGUAGLIO))
+                            {
+                                prima_sistemazione_saldo = teorici_row.IMPORTO;
+                            }
+
+                            if (teorici_row.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
+                                teorici_row.DIRETTO == false &&
+                                teorici_row.ELABINDENNITA.Any(b => b.IDLIVELLO == livdip.IDLIVELLO))
+                            {
+                                indennita = teorici_row.IMPORTO;
+                            }
+
+                            if (teorici_row.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI &&
+                                teorici_row.ELABINDRICHIAMO?.IDLIVELLO == livdip.IDLIVELLO)
+
+                            {
+                                richiamo = teorici_row.IMPORTO;
+                            }
+
+                            meseannoElab = db.MESEANNOELABORAZIONE.Find(teorici_row.IDMESEANNOELAB);
+                            using (dtElaborazioni dte = new dtElaborazioni())
+                            {
+                                strMeseAnnoElab = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseannoElab.MESE) + " " + meseannoElab.ANNO.ToString();
+                                strMeseAnnoRif = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)teorici_row.MESERIFERIMENTO) + " " + teorici_row.ANNORIFERIMENTO.ToString();
+                            }
+                            numMeseRiferimento = Convert.ToDecimal(teorici_row.ANNORIFERIMENTO.ToString() + teorici_row.MESERIFERIMENTO.ToString().ToString().PadLeft(2, (char)'0'));
+                            numMeseElaborazione = Convert.ToDecimal(meseannoElab.ANNO.ToString() + meseannoElab.MESE.ToString().PadLeft(2, (char)'0'));
+                        }
+
                         RptRiepiloghiIseMensileModel rptisem = new RptRiepiloghiIseMensileModel()
                         {
                             nominativo = d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")",
@@ -119,415 +151,22 @@ namespace NewISE.Models.DBModel.dtObj
                             ufficio = uf.DESCRIZIONEUFFICIO,
                             riferimento = strMeseAnnoRif,
                             elaborazione = strMeseAnnoElab,
-                            indennita_personale = teorici.IMPORTO,
-                            numannomeseelab=numMeseElaborazione,
-                            numannomeserif=numMeseRiferimento
-                        };
-                        rim.Add(rptisem);
-
-                        #endregion
-
-                    }
-                    #endregion
-
-                    #endregion
-
-                    #region prima sistemazione
-                    lteorici = t.TEORICI.Where(a =>
-                                            a.ELABINDSISTEMAZIONE?.IDLIVELLO == livdip.IDLIVELLO &&
-                                            a.ANNULLATO == false &&
-                                            a.ELABORATO == true &&
-                                            a.INSERIMENTOMANUALE == false &&
-                                            a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
-                                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                            Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                                                a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-                                            Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                                                a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-                                .OrderBy(a => a.ANNORIFERIMENTO)
-                                .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-                    #region cicla teorici
-                    foreach (var teorici in lteorici)
-                    {
-
-                        var tm = teorici.TIPOMOVIMENTO;
-                        var voce = teorici.VOCI;
-                        var tl = teorici.VOCI.TIPOLIQUIDAZIONE;
-                        var tv = teorici.VOCI.TIPOVOCE;
-
-                        var meseannoElab = db.MESEANNOELABORAZIONE.Find(teorici.IDMESEANNOELAB);
-                        var strMeseAnnoElab = "";
-                        var strMeseAnnoRif = "";
-                        using (dtElaborazioni dte = new dtElaborazioni())
-                        {
-                            strMeseAnnoElab = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseannoElab.MESE) + " " + meseannoElab.ANNO.ToString();
-                            strMeseAnnoRif = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)teorici.MESERIFERIMENTO) + " " + teorici.ANNORIFERIMENTO.ToString();
-                        }
-                        decimal numMeseRiferimento = Convert.ToDecimal(teorici.ANNORIFERIMENTO.ToString() + teorici.MESERIFERIMENTO.ToString().ToString().PadLeft(2, (char)'0'));
-                        decimal numMeseElaborazione = Convert.ToDecimal(meseannoElab.ANNO.ToString() + meseannoElab.MESE.ToString().PadLeft(2, (char)'0'));
-
-
-
-
-                        #region modello
-                        RptRiepiloghiIseMensileModel rptisem = new RptRiepiloghiIseMensileModel()
-                        {
-                            nominativo = d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")",
-                            qualifica = livdip.LIVELLI.LIVELLO,
-                            ufficio = uf.DESCRIZIONEUFFICIO,
-                            riferimento = strMeseAnnoRif,
-                            elaborazione = strMeseAnnoElab,
-                            prima_sistemazione = teorici.IMPORTO,
+                            prima_sistemazione_anticipo = prima_sistemazione_anticipo,
+                            prima_sistemazione_saldo = prima_sistemazione_saldo,
+                            richiamo = richiamo,
+                            indennita_personale = indennita,
                             numannomeseelab = numMeseElaborazione,
                             numannomeserif = numMeseRiferimento
                         };
-                        rim.Add(rptisem);
-
+                        rim.Add(rptisem); 
                         #endregion
-
                     }
-                    #endregion
-                    #endregion
-
-                    #region richiamo
-                    lteorici = t.TEORICI.Where(a =>
-                                                        a.ELABINDRICHIAMO?.IDLIVELLO == livdip.IDLIVELLO &&
-                                                        a.ANNULLATO == false &&
-                                                        a.DIRETTO == false &&
-                                                        a.ELABORATO == true &&
-                                                        a.INSERIMENTOMANUALE == false &&
-                                                        a.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI &&
-                                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                                        Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                                                            a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-                                                        Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                                                            a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-                                            .OrderBy(a => a.ANNORIFERIMENTO)
-                                            .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-                    #region cicla teorici
-                    foreach (var teorici in lteorici)
-                    {
-
-                        var tm = teorici.TIPOMOVIMENTO;
-                        var voce = teorici.VOCI;
-                        var tl = teorici.VOCI.TIPOLIQUIDAZIONE;
-                        var tv = teorici.VOCI.TIPOVOCE;
-
-                        var meseannoElab = db.MESEANNOELABORAZIONE.Find(teorici.IDMESEANNOELAB);
-                        var strMeseAnnoElab = "";
-                        var strMeseAnnoRif = "";
-                        using (dtElaborazioni dte = new dtElaborazioni())
-                        {
-                            strMeseAnnoElab = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseannoElab.MESE) + " " + meseannoElab.ANNO.ToString();
-                            strMeseAnnoRif = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)teorici.MESERIFERIMENTO) + " " + teorici.ANNORIFERIMENTO.ToString();
-                        }
-                        decimal numMeseRiferimento = Convert.ToDecimal(teorici.ANNORIFERIMENTO.ToString() + teorici.MESERIFERIMENTO.ToString().ToString().PadLeft(2, (char)'0'));
-                        decimal numMeseElaborazione = Convert.ToDecimal(meseannoElab.ANNO.ToString() + meseannoElab.MESE.ToString().PadLeft(2, (char)'0'));
-
-                        #region modello
-                        RptRiepiloghiIseMensileModel rptisem = new RptRiepiloghiIseMensileModel()
-                        {
-                            nominativo = d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")",
-                            qualifica = livdip.LIVELLI.LIVELLO,
-                            ufficio = uf.DESCRIZIONEUFFICIO,
-                            riferimento = strMeseAnnoRif,
-                            elaborazione = strMeseAnnoElab,
-                            richiamo = teorici.IMPORTO,
-                            numannomeseelab = numMeseElaborazione,
-                            numannomeserif = numMeseRiferimento
-                        };
-                        rim.Add(rptisem);
-
-                        #endregion
-
-                    }
-                    #endregion
-
                     #endregion
                 }
-                #endregion
-
-
-
-
-
-
-
+                #endregion               
             }
+
             return rim;
-
-            #region commento
-            //#region elenco livelli x trasferimento
-            //var llivdip = t.INDENNITA.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false &&
-            //                                                        a.DATAFINEVALIDITA >= dtIni &&
-            //                                                        a.DATAINIZIOVALIDITA <= dtFin
-            //                                                )
-            //                    .ToList();
-            //#endregion
-
-            //#region ciclo livelli
-            //foreach (var livdip in llivdip)
-            //{
-            //    var liv = livdip.LIVELLI;
-
-            //    var annoMeseInizio = Convert.ToDecimal(AnnoDa.ToString() + MeseDa.ToString().PadLeft(2, (char)'0'));
-            //    var annoMeseFine = Convert.ToDecimal(AnnoA.ToString() + MeseA.ToString().PadLeft(2, (char)'0'));
-
-
-            //    lteorici = t.TEORICI.Where(a =>
-            //                                        a.ELABINDENNITA.Any(b => b.IDLIVELLO == livdip.IDLIVELLO && b.DAL >= dtIni && b.AL <= dtFin) &&
-            //                                        a.ANNULLATO == false &&
-            //                                        a.DIRETTO == false &&
-            //                                        a.ELABORATO == true &&
-            //                                        a.INSERIMENTOMANUALE == false &&
-            //                                        a.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
-            //                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-            //                                        Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-            //                                                            a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-            //                                        Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-            //                                                            a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-            //                            .OrderBy(a => a.ANNORIFERIMENTO)
-            //                            .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-            //    foreach (var teorici in lteorici)
-            //    {
-            //        var periodoelaborazione = teorici.DATAOPERAZIONE;
-
-            //        var mese = teorici.MESERIFERIMENTO;
-            //        var anno = teorici.ANNORIFERIMENTO;
-
-            //        var strMeseRif = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)teorici.MESERIFERIMENTO) + " " + teorici.ANNORIFERIMENTO.ToString();
-            //        var meseannoelab = db.MESEANNOELABORAZIONE.Find(teorici.IDMESEANNOELAB);
-
-            //        //var strMeseElab = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)teorici.IDMESEANNOELAB) + " " + teorici.IDMESEANNOELAB.ToString();
-
-
-            //        var Indennita = teorici.IMPORTO;
-            //        var descLivello = livdip.LIVELLI.LIVELLO;
-
-            //        var lelab = teorici.ELABINDENNITA.Where(a => a.ANNULLATO == false && a.DAL >= dtIni && a.AL <= dtFin).ToList();
-
-
-            //            RiepiloghiIseMensileModel ldvm = new RiepiloghiIseMensileModel()
-            //            {
-            //                Nominativo = cognome + " " + nome + " (" + matricola + ")",
-            //                qualifica = descLivello,
-            //                Ufficio = ufficio,
-            //                indennita_personale = Indennita.ToString(),
-            //                //riferimento = mese + " - " + anno,
-            //                riferimento = strMeseRif,
-            //                elaborazione = meseannoelab.MESE + " - " + meseannoelab.ANNO
-
-
-            //            };
-
-            //            rim.Add(ldvm);
-
-            //    }
-
-            //    #region PRIMA SISTEMAZIONE
-            //    lteorici = t.TEORICI.Where(a =>
-            //                                        a.ELABINDSISTEMAZIONE?.IDLIVELLO == livdip.IDLIVELLO &&
-
-            //                                        a.ANNULLATO == false &&
-            //                                        a.ELABORATO == true &&
-            //                                        a.INSERIMENTOMANUALE == false &&
-            //                                        a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
-            //                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-            //                                        Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-            //                                                            a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-            //                                        Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-            //                                                            a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-            //                            .OrderBy(a => a.ANNORIFERIMENTO)
-            //                            .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-            //    foreach (var teoriciprimasist in lteorici)
-            //    {
-            //        var mese = teoriciprimasist.MESERIFERIMENTO;
-            //        var anno = teoriciprimasist.ANNORIFERIMENTO;
-
-            //        var IndennitaPrimaSistemazione = teoriciprimasist.IMPORTO;
-            //        var descLivello = livdip.LIVELLI.LIVELLO;
-
-            //        var anticipo = teoriciprimasist.ELABINDSISTEMAZIONE.ANTICIPO;
-            //        var saldo = teoriciprimasist.ELABINDSISTEMAZIONE.SALDO;
-
-            //        var strMeseRif = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)teoriciprimasist.MESERIFERIMENTO) + " " + teoriciprimasist.ANNORIFERIMENTO.ToString();
-            //        var meseannoelab = db.MESEANNOELABORAZIONE.Find(teoriciprimasist.IDMESEANNOELAB);
-
-            //        RiepiloghiIseMensileModel ldvm = new RiepiloghiIseMensileModel()
-            //        {
-            //            Nominativo = cognome + " " + nome + " (" + matricola + ")",
-            //            qualifica = descLivello,
-            //            Ufficio = ufficio,
-            //            prima_sistemazione = IndennitaPrimaSistemazione.ToString(),
-            //            //riferimento = mese + " " + anno
-            //            riferimento = strMeseRif
-            //        };
-
-            //        rim.Add(ldvm);
-
-            //    }
-            //    #endregion
-
-            //    #region RICHIAMO
-            //    lteorici = t.TEORICI.Where(a =>
-            //                                        a.ELABINDRICHIAMO?.IDLIVELLO == livdip.IDLIVELLO &&
-            //                                        a.ANNULLATO == false &&
-            //                                        a.DIRETTO == false &&
-            //                                        a.ELABORATO == true &&
-            //                                        a.INSERIMENTOMANUALE == false &&
-            //                                        a.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI &&
-            //                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-            //                                        Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-            //                                                            a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-            //                                        Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-            //                                                            a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-            //                            .OrderBy(a => a.ANNORIFERIMENTO)
-            //                            .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-            //    foreach (var teoricirichiamo in lteorici)
-            //    {
-
-            //        var mese = teoricirichiamo.MESERIFERIMENTO;
-            //        var anno = teoricirichiamo.ANNORIFERIMENTO;
-
-            //        var IndennitaRichiamo = teoricirichiamo.IMPORTO;
-            //        var descLivello = livdip.LIVELLI.LIVELLO;
-
-            //        var strMeseRif = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)teoricirichiamo.MESERIFERIMENTO) + " " + teoricirichiamo.ANNORIFERIMENTO.ToString();
-            //        var meseannoelab = db.MESEANNOELABORAZIONE.Find(teoricirichiamo.IDMESEANNOELAB);
-
-            //        RiepiloghiIseMensileModel ldvm = new RiepiloghiIseMensileModel()
-            //        {   
-            //            Nominativo = cognome + " " + nome + " (" + matricola + ")",
-            //            qualifica = descLivello,
-            //            Ufficio = ufficio,
-            //            richiamo = IndennitaRichiamo.ToString(),
-            //            //riferimento = mese + " " + anno
-            //            riferimento = strMeseRif
-            //        };
-
-            //        rim.Add(ldvm);
-
-
-
-            //    }
-            //    #endregion
-
-
-
-            //}
-            //#endregion
-
-
-
-
-
-            // Sistema configurato con il DatePicker
-            //DateTime dataDal = Convert.ToDateTime(dtIni);
-            //DateTime dataAl = Convert.ToDateTime(dtFin);
-
-
-
-
-
-
-
-            //lt = db.TRASFERIMENTO.Where(a =>
-            //                                            a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-            //                                            a.DATARIENTRO >= Convert.ToDateTime(dtIni) && a.DATAPARTENZA <= Convert.ToDateTime(dtFin) )
-            //                                        .ToList();
-
-
-            //var lTeorici =
-            //       db.TEORICI.Where(
-            //           a =>
-            //               a.ANNULLATO == false &&
-            //               a.ELABORATO == true &&
-            //               a.IDMESEANNOELAB >= dtIni && 
-            //               a.IDMESEANNOELAB <= dtFin &&
-            //               a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-            //               a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera).ToList();
-
-
-
-            //if (lTeorici?.Any() ?? false)
-            //{
-            //    foreach (var t in lTeorici)
-            //    {   
-            //        var ltr = t.ELABINDENNITA.Where(
-            //           a =>
-            //               a.ANNULLATO == false
-            //            ).ToList();
-
-            //            foreach (var tr in ltr)
-            //            {
-            //                var dip = tr.INDENNITA.TRASFERIMENTO;
-            //                var dipendenti = tr.INDENNITA.TRASFERIMENTO.DIPENDENTI;
-
-            //                var eeee = tr.LIVELLI.LIVELLIDIPENDENTI.First();
-
-            //                var xxx = dipendenti.LIVELLIDIPENDENTI.First();
-
-            //            var yyy = xxx.LIVELLI.LIVELLIDIPENDENTI;
-
-            //                var uf = dip.UFFICI;
-            //                var tm = t.TIPOMOVIMENTO;
-            //                var voce = t.VOCI;
-            //                var tl = t.VOCI.TIPOLIQUIDAZIONE;
-            //                var tv = t.VOCI.TIPOVOCE;
-
-            //                var qualifica = dip.INDENNITA.LIVELLIDIPENDENTI;
-
-            //                var Qualifica = qualifica.First();
-            //                var qualifica1 = Qualifica.LIVELLI.LIVELLO;
-
-
-
-            //                    RiepiloghiIseMensileModel ldvm = new RiepiloghiIseMensileModel()
-            //                    {
-            //                        idTeorici = t.IDTEORICI,
-            //                        Nominativo = dipendenti.COGNOME + " " + dipendenti.NOME + " (" + dipendenti.MATRICOLA + ")",
-            //                        Ufficio = uf.DESCRIZIONEUFFICIO + " (" + uf.CODICEUFFICIO + ")",
-            //                        TipoMovimento = new TipoMovimentoModel()
-            //                        {
-            //                            idTipoMovimento = tm.IDTIPOMOVIMENTO,
-            //                            TipoMovimento = tm.TIPOMOVIMENTO1,
-            //                            DescMovimento = tm.DESCMOVIMENTO
-            //                        },
-            //                        Voci = new VociModel()
-            //                        {
-            //                            idVoci = voce.IDVOCI,
-            //                            codiceVoce = voce.CODICEVOCE,
-            //                            descrizione = voce.DESCRIZIONE,
-            //                            TipoLiquidazione = new TipoLiquidazioneModel()
-            //                            {
-            //                                idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
-            //                                descrizione = tl.DESCRIZIONE
-            //                            },
-            //                            TipoVoce = new TipoVoceModel()
-            //                            {
-            //                                idTipoVoce = tv.IDTIPOVOCE,
-            //                                descrizione = tv.DESCRIZIONE
-            //                            }
-            //                        },
-            //                        meseRiferimento = t.MESERIFERIMENTO,
-            //                        annoRiferimento = t.ANNORIFERIMENTO,                        
-            //                        Importo = t.IMPORTO,
-            //                        Elaborato = t.ELABORATO
-            //                    };
-
-            //                rim.Add(ldvm);
-            //            }
-            //    }
-            //} 
-            #endregion
-
-
-
         }
 
 

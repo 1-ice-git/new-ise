@@ -189,6 +189,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -523,17 +524,24 @@
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <FixedData>true</FixedData>
               <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
             </TablixMember>
             <TablixMember>
               <Group Name="Dettagli" />
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!Nominativo.Value</Value>
+                </SortExpression>
+              </SortExpressions>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetTrasportoEffetti</DataSetName>
         <Top>2.51037cm</Top>
         <Height>1.2cm</Height>
-        <Width>27.38644cm</Width>
+        <Width>27.38645cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
