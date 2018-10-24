@@ -131,21 +131,7 @@ namespace NewISE.Controllers
                     libm = dtd.GetIndennita(idTrasferimento).ToList();
                 }
 
-                // **************************************************************
-                //using (dtIndennitaBase dtib = new dtIndennitaBase())
-                //{
-                //    eim = dtib.GetIndennitaBaseComune(idTrasferimento).ToList();
-                //}
-                // **************************************************************
 
-                // **************************************************************
-                //using (dtEvoluzioneIndennita dtd = new dtEvoluzioneIndennita())
-                //{
-                //    eim = dtd.GetIndennitaEvoluzione(idTrasferimento).ToList();
-                //}
-                // **************************************************************
-
-                // **************************************************************
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
@@ -163,14 +149,14 @@ namespace NewISE.Controllers
                     using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                     {
                         lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
-                        //lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValdita).ThenBy(a => a.dataFineValidita).ToList();
+                        
 
                     }
                 }
-                // **************************************************************
+                
 
                 ViewBag.idTrasferimento = idTrasferimento;
-                //return PartialView("EvoluzioneIndennita", eim);
+                
                 return PartialView(libm);
 
             }
@@ -358,13 +344,9 @@ namespace NewISE.Controllers
 
                                 List<ReportParameter> parameterValues = new List<ReportParameter>();
                                     parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
-                                    parameterValues.Add(new ReportParameter("Ruolo", Ruolo));
                                     parameterValues.Add(new ReportParameter("Livello", Livello));
                                     parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
                                     parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
-                                    //parameterValues.Add(new ReportParameter("indennitaBase", indennitaBase));
-                                    //parameterValues.Add(new ReportParameter("dataInizioValidita", dataInizioValidita));
-                                    //parameterValues.Add(new ReportParameter("dataFineValidita", dataFineValidita));
 
                                 reportViewer.LocalReport.SetParameters(parameterValues);
                                 ViewBag.ReportViewer = reportViewer;
@@ -3027,13 +3009,14 @@ namespace NewISE.Controllers
                                             RptContributoOmnicomprensivoTrasferimentoModel rpts = new RptContributoOmnicomprensivoTrasferimentoModel()
                                             
                                             {
-
+                                                
                                                 DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
                                                 DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda,
                                                 AnticipoContrOmniComprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza,
                                                 SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza,
-                                                PercentualeFasciaKmP =  ci.PercentualeFKMPartenza
+                                                PercentualeFasciaKmP =  ci.PercentualeFKMPartenza,
+                                                dataPartenza = trasferimento.DATAPARTENZA
                                                 
                                             };
 
@@ -3189,12 +3172,12 @@ namespace NewISE.Controllers
 
                                             RptContributoOmnicomprensivoRientroModel rpts = new RptContributoOmnicomprensivoRientroModel()
                                             {
-                                            
+                                                dataRientro = trasferimento.DATARIENTRO,
                                                 DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
                                                 DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 IndennitaRichiamo = ci.IndennitaRichiamoLordo,
-                                                AnticipoContrOmniComprensivoRientro = ci.AnticipoContributoOmnicomprensivoPartenza,
-                                                SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza,
+                                                AnticipoContrOmniComprensivoRientro = ci.AnticipoContributoOmnicomprensivoRientro,
+                                                SaldoContrOmniComprensivoRientro = ci.SaldoContributoOmnicomprensivoRientro,
                                                 PercentualeFasciaKmR = ci.PercentualeFKMRientro
                                                                                                
                                             };

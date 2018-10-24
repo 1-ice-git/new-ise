@@ -18,5 +18,9 @@ namespace NewISE.Models.DBModel
         
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal PercentualeFasciaKmP { get; set; }
+
+        [Display(Name = "Data Partenza")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime dataPartenza { get; set; }
     }
 }

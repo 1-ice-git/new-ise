@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
+@using NewISE.Models.Tools
 <link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
 @{
@@ -26,19 +27,16 @@
         <tr>
 
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataFineValidita)
+                @Html.DisplayNameFor(model => model.dataRientro)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.IndennitaRichiamo)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.AnticipoContributoOmnicomprensivoPartenza)
+                @Html.DisplayNameFor(model => model.AnticipoContributoOmnicomprensivoRientro)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.SaldoContributoOmnicomprensivoPartenza)
+                @Html.DisplayNameFor(model => model.SaldoContributoOmnicomprensivoRientro)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.PercentualeFasciaKmR)
@@ -49,21 +47,24 @@
         @foreach (var item in Model)
         {
             <tr>
-
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                @if (item.dataFineValidita == Utility.DataFineStop())
+                {
+                    <td style="text-align:center;"></td>
+                }
+                else
+                {
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataRientro)
+                    </td>
+                }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaRichiamo)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.AnticipoContributoOmnicomprensivoPartenza)
+                    @Html.DisplayFor(modelItem => item.AnticipoContributoOmnicomprensivoRientro)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.SaldoContributoOmnicomprensivoPartenza)
+                    @Html.DisplayFor(modelItem => item.SaldoContributoOmnicomprensivoRientro)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.PercentualeFasciaKmR)

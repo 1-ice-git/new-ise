@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
+@using NewISE.Models.Tools
+
 <link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
 @{
@@ -25,13 +27,10 @@
     <thead>
         <tr>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
+                @Html.DisplayNameFor(model => model.dataPartenza)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataFineValidita)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaSistemazioneLorda)
+                @Html.DisplayNameFor(model => model.IndennitaSistemazione)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.AnticipoContributoOmnicomprensivoPartenza)
@@ -49,13 +48,10 @@
         {
             <tr>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                    @Html.DisplayFor(modelItem => item.dataPartenza)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaSistemazioneLorda)
+                    @Html.DisplayFor(modelItem => item.IndennitaSistemazione)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.AnticipoContributoOmnicomprensivoPartenza)
@@ -194,14 +190,6 @@
 
         });
     });
-
-
-
-
-
-
-
-
 </script>
 
 

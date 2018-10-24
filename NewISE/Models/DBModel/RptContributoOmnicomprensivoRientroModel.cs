@@ -12,11 +12,20 @@ namespace NewISE.Models.DBModel
         public string DataFineValidita { get; set; }
         public decimal IndennitaRichiamo { get; set; }
         public decimal AnticipoContrOmniComprensivoRientro { get; set; }
-        public decimal SaldoContrOmniComprensivoPartenza { get; set; }
+        public decimal SaldoContrOmniComprensivoRientro { get; set; }
 
         [Display(Name = "Percentuale Fascia Km Rientro")]
         
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal PercentualeFasciaKmR { get; set; }
+
+        [Display(Name = "Data Partenza")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime dataPartenza { get; set; }
+
+        [Display(Name = "Data Rientro")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
+        public DateTime dataRientro { get; set; }
+
     }
 }
