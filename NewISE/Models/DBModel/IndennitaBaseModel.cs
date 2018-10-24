@@ -69,6 +69,9 @@ namespace NewISE.Models.DBModel
         public EvoluzioneIndennitaModel EvoluzioneIndennita { get; set; }
 
 
+        public decimal IndennitaBase { get; set; }
+
+
         public bool HasValue()
         {
             return idIndennitaBase > 0 ? true : false;

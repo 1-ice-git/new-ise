@@ -4871,17 +4871,14 @@
     <Content Include="Areas\Statistiche\RPTDataSet\dsSpeseAvvicendamento.xss">
       <DependentUpon>dsSpeseAvvicendamento.xsd</DependentUpon>
     </Content>
-
     <Content Include="Areas\Statistiche\Views\RiepilogoLivello\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepilogoLivello\RptRiepilogoLivello.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepilogoUfficio\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepilogoGenerale\Index.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepilogoUfficio\RptRiepilogoUfficio.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepilogoGenerale\RptRiepilogoGenerale.cshtml" />
-
     <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\SelezionaMeseAnno.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\RptRiepiloghiSospensioni.cshtml" />
-
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -5153,15 +5150,12 @@
     <Compile Include="Areas\Statistiche\Models\dtObj\dtRiepilogoLivello.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtSpeseAvvicendamentoNew.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtStatistiche.cs" />
-
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiIseMensileModel_old.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepilogoGeneraleModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepilogoUfficioModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepilogoLivelloModel.cs" />
-
     <Compile Include="Areas\Statistiche\Models\RiepiloghiSospensioniModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptRiepiloghiSospensioniModel.cs" />
-
     <Compile Include="Areas\Statistiche\Models\RptSpeseAvvicendamentoNewModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiUfficioModel.cs" />
     <Compile Include="Areas\Statistiche\Models\RptCostiModel.cs" />
@@ -6934,7 +6928,6 @@
     <Content Include="Areas\Statistiche\RPT\RptSpeseAvvicendamentoNew.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-
     <Content Include="Areas\Statistiche\RPT\RptRiepilogoLivello.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -6944,9 +6937,7 @@
     <Content Include="Areas\Statistiche\RPT\RptRiepilogoGenerale.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptSospensioni.rdlc" />
-
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
     <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
     <EmbeddedResource Include="Report\RptUnicaSoluzioneIndennitadiPrimaSistemazione.rdlc" />
