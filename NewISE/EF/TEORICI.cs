@@ -22,25 +22,27 @@ namespace NewISE.EF
         }
     
         public decimal IDTEORICI { get; set; }
-        public decimal IDTIPOMOVIMENTO { get; set; }
-        public decimal IDVOCI { get; set; }
-        public Nullable<decimal> IDELABTRASPEFFETTI { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
         public decimal IDMESEANNOELAB { get; set; }
+        public decimal IDVOCI { get; set; }
+        public decimal IDTIPOMOVIMENTO { get; set; }
+        public Nullable<decimal> IDINDSISTLORDA { get; set; }
+        public Nullable<decimal> IDELABTRASPEFFETTI { get; set; }
+        public Nullable<decimal> IDELABINDRICHIAMO { get; set; }
+        public Nullable<decimal> IDAUTOVOCIMANUALI { get; set; }
         public decimal MESERIFERIMENTO { get; set; }
         public decimal ANNORIFERIMENTO { get; set; }
+        public decimal GIORNI { get; set; }
+        public decimal IMPORTO { get; set; }
         public decimal ALIQUOTAFISCALE { get; set; }
+        public decimal DETRAZIONIAPPLICATE { get; set; }
+        public decimal CONTRIBUTOAGGIUNTIVO { get; set; }
+        public decimal MASSIMALECA { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool INSERIMENTOMANUALE { get; set; }
-        public bool ANNULLATO { get; set; }
-        public decimal IMPORTO { get; set; }
         public bool ELABORATO { get; set; }
-        public Nullable<decimal> IDELABINDRICHIAMO { get; set; }
         public bool DIRETTO { get; set; }
-        public Nullable<decimal> IDINDSISTLORDA { get; set; }
-        public Nullable<decimal> IDAUTOVOCIMANUALI { get; set; }
-        public decimal IDTRASFERIMENTO { get; set; }
-        public decimal GIORNI { get; set; }
-        public decimal DETRAZIONIAPPLICATE { get; set; }
+        public bool ANNULLATO { get; set; }
     
         public virtual AUTOMATISMOVOCIMANUALI AUTOMATISMOVOCIMANUALI { get; set; }
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }

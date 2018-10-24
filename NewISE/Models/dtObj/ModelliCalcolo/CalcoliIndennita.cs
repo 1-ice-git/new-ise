@@ -81,6 +81,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _percentualeMAB = 0;
         private decimal _canoneMab = 0;
         private decimal _tassoCambio = 0;
+        private VALUTE _valutaMab = new VALUTE();
         private bool _anticipoAnnualeMAB = false;
         private bool _condivisioneMAB = false;
         private bool _pagatoMAB = false;
@@ -187,6 +188,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal CanoneMAB => _canoneMab;
         [ReadOnly(true)]
         public decimal TassoCambio => _tassoCambio;
+        [ReadOnly(true)]
+        public VALUTE ValutaMAB => _valutaMab;
         [ReadOnly(true)]
         public bool AnticipoAnnualeMAB => _anticipoAnnualeMAB;
         [ReadOnly(true)]
@@ -399,6 +402,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 var cmab = lcmab.First();
 
                 _canoneMab = cmab.IMPORTOCANONE;
+                _valutaMab = cmab.VALUTE;
 
                 this.PrelevaTFRMAB(cmab);
 
@@ -668,7 +672,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 var indServ = (((_indennitaDiBase * _coefficienteDiSede) +
                                 _indennitaDiBase) +
                                (((_indennitaDiBase * _coefficienteDiSede) +
-                                 _indennitaDiBase) / 100 * _percentualeDisagio));
+                                 _indennitaDiBase) * (_percentualeDisagio / 100)));
 
                 _indennitaDiServizio = Math.Round(indServ, 8);
             }
@@ -774,7 +778,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                             f.PERCENTUALEMAGFIGLI.Where(
                                 a =>
                                     a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                    _dtDatiParametri <= a.DATAFINEVALIDITA)
+                                    _dtDatiParametri <= a.DATAFINEVALIDITA && a.IDTIPOLOGIAFIGLIO == f.IDTIPOLOGIAFIGLIO)
                                 .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                         if (lpmf?.Any() ?? false)
@@ -800,11 +804,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                                                       _indennitaPrimoSegretario) +
                                                                      (((_indennitaPrimoSegretario *
                                                                         _coefficienteDiSede) +
-                                                                       _indennitaPrimoSegretario) /
-                                                                      100 * _coefficienteDiSede));
+                                                                       _indennitaPrimoSegretario)
+                                                                      * (_percentualeDisagio / 100)));
 
-                                _maggiorazioneFigli = _indennitaServizioPrimoSegretario *
-                                                      _percentualeMaggiorazioniFigli / 100;
+                                _maggiorazioneFigli += _indennitaServizioPrimoSegretario *
+                                                       _percentualeMaggiorazioniFigli / 100;
 
 
                                 datiFigli.indennitaPrimoSegretario = _indennitaPrimoSegretario;
@@ -877,17 +881,17 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                         var maggiorazione = _indennitaDiBase * _coefficienteDiSede;
                         _coefficenteIndennitaRichiamo = cr.COEFFICIENTERICHIAMO;
-                        var abbattimento = maggiorazione * _coefficenteIndennitaRichiamo;
+                        var abbattimento = (maggiorazione + _maggiorazioniFimailiri) * _coefficenteIndennitaRichiamo;
 
 
 
                         if (_percentualeRiduzioneRichiamo > 0)
                         {
-                            _indennitaRichiamoLordo = Math.Round(((abbattimento + _maggiorazioniFimailiri) * (_percentualeRiduzioneRichiamo / 100)), 8);
+                            _indennitaRichiamoLordo = Math.Round((abbattimento * (_percentualeRiduzioneRichiamo / 100)), 8);
                         }
                         else
                         {
-                            _indennitaRichiamoLordo = Math.Round(abbattimento + _maggiorazioniFimailiri, 8);
+                            _indennitaRichiamoLordo = Math.Round(abbattimento, 8);
                         }
                     }
                 }
@@ -1071,8 +1075,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         /// <returns></returns>
         public static void ElaboraPrimaSistemazione(decimal indennitaDiBase, decimal coefficenteDiSede, decimal percentualeDiDisagio, decimal percentualeRiduzione, decimal coefficenteIndSistemazione, decimal percentualeMagConiuge, decimal pensioneConiuge, ICollection<ELABDATIFIGLI> ledf, out decimal indPrimaSistemazioneAnticipabile, out decimal indPrimaSistemazioneUnicaSoluzione, out decimal maggiorazioniFamiliari)
         {
-
-
             decimal indServ = 0;
             //decimal maggiorazioniFamiliari = 0;
             decimal maggiorazioneConiuge = 0;
@@ -1084,7 +1086,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             indServ = (((indennitaDiBase * coefficenteDiSede) +
                         indennitaDiBase) +
                        (((indennitaDiBase * coefficenteDiSede) +
-                         indennitaDiBase) / 100 * percentualeDiDisagio));
+                         indennitaDiBase) * (percentualeDiDisagio / 100)));
 
             maggiorazioneConiuge = indServ * percentualeMagConiuge / 100;
 
@@ -1101,7 +1103,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     decimal indServPS = (((edf.INDENNITAPRIMOSEGRETARIO * coefficenteDiSede) +
                                           edf.INDENNITAPRIMOSEGRETARIO) +
                                          (((edf.INDENNITAPRIMOSEGRETARIO * coefficenteDiSede) +
-                                           edf.INDENNITAPRIMOSEGRETARIO) / 100 * percentualeDiDisagio));
+                                           edf.INDENNITAPRIMOSEGRETARIO) * (percentualeDiDisagio / 100)));
+
                     maggiorazioniFigli += indServPS * edf.PERCENTUALEMAGGIORAZIONEFIGLI / 100;
                 }
             }
@@ -1110,15 +1113,18 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
             if (percentualeRiduzione > 0)
             {
-                indPrimaSistemazioneAnticipabile = (coefficenteIndSistemazione * percentualeRiduzione) * indServ;
+                indPrimaSistemazioneAnticipabile = Math.Round((coefficenteIndSistemazione * indServ) * percentualeRiduzione, 8);
+                indPrimaSistemazioneUnicaSoluzione = Math.Round((coefficenteIndSistemazione * (indServ + maggiorazioniFamiliari)) * percentualeRiduzione, 8);
 
             }
             else
             {
-                indPrimaSistemazioneAnticipabile = coefficenteIndSistemazione * indServ;
+                indPrimaSistemazioneAnticipabile = Math.Round(coefficenteIndSistemazione * indServ, 8);
+                indPrimaSistemazioneUnicaSoluzione = Math.Round((coefficenteIndSistemazione * (indServ + maggiorazioniFamiliari)), 8);
             }
 
-            indPrimaSistemazioneUnicaSoluzione = Math.Round(indPrimaSistemazioneAnticipabile + maggiorazioniFamiliari, 8);
+
+
         }
 
         public decimal RateoIndennitaPersonale(int giorniRateo)

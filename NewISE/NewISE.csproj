@@ -5636,6 +5636,7 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ContributoAggiuntivo.cs" />
     <Compile Include="Models\DBModel\AttivazioniProvScolasticheModel.cs" />
     <Compile Include="Models\DBModel\AutomatismoVociManualiModel.cs" />
     <Compile Include="Models\DBModel\bsObj\VariazioniIndennita.cs" />

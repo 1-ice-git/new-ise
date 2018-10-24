@@ -271,7 +271,10 @@ namespace NewISE.Models.Enumeratori
     public enum EnumTipoAliquoteContributive
     {
         Detrazioni_DET = 1,
-        Previdenziali_PREV = 2
+        Previdenziali_PREV = 2,
+        ContributoAggiuntivo_CA = 3,
+        MassimaleContributoAggiuntivo_MCA = 4
+
     }
 
     public enum EnumTabTitoloViaggio

@@ -24,6 +24,7 @@ namespace NewISE.EF
     
         public decimal IDELABINDRICHIAMO { get; set; }
         public decimal IDRICHIAMO { get; set; }
+        public decimal IDLIVELLO { get; set; }
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal COEFFICENTEINDRICHIAMO { get; set; }
@@ -31,9 +32,8 @@ namespace NewISE.EF
         public decimal PERCMAGCONIUGE { get; set; }
         public decimal PENSIONECONIUGE { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
-        public bool ANNULLATO { get; set; }
-        public decimal IDLIVELLO { get; set; }
         public bool CONGUAGLIO { get; set; }
+        public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }

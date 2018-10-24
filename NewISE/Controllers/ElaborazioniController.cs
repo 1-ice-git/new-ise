@@ -48,6 +48,28 @@ namespace NewISE.Controllers
         }
 
 
+        public ActionResult DatiTrasferimentoDipendente(decimal idTeorico)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    tm = dtt.GetTrasferimentoByIdTeorico(idTeorico);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(tm);
+        }
+
+
         [HttpPost]
         public JsonResult VerificaFlussiDirettiDaInviare(decimal idAnnoMeseElaborato)
         {
@@ -85,7 +107,7 @@ namespace NewISE.Controllers
                         Select2Model s2 = new Select2Model()
                         {
                             id = mae.idMeseAnnoElab.ToString(),
-                            text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mae.mese) + "-" + mae.anno.ToString("D4"),
+                            text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mae.mese) + "-" + mae.anno.ToString(),
                         };
 
                         ls2.Add(s2);
@@ -132,28 +154,37 @@ namespace NewISE.Controllers
                     foreach (var item in lmaem)
                     {
 
+                        string nomeMese = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.mese) + "-" +
+                                          item.anno.ToString();
+
                         rMeseAnno.Add(new SelectListItem()
                         {
-                            Text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.mese) + "-" + item.anno.ToString("D4"),
+                            Text = nomeMese,
                             Value = item.idMeseAnnoElab.ToString()
                         });
 
                     }
 
-                    if (rMeseAnno.Exists(a => a.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString("D4")))
-                    {
-                        foreach (var item in rMeseAnno)
-                        {
-                            if (item.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString("D4"))
-                            {
-                                item.Selected = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        rMeseAnno.First().Selected = true;
-                    }
+                    //if (rMeseAnno.Exists(a => a.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString()))
+                    //{
+                    //    foreach (var item in rMeseAnno)
+                    //    {
+                    //        string nomeMese = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" +
+                    //                          anno.ToString();
+
+                    //        if (item.Text == nomeMese)
+                    //        {
+                    //            item.Selected = true;
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    rMeseAnno.First().Selected = true;
+
+                    //}
+
+                    rMeseAnno.First().Selected = true;
 
                 }
 
@@ -459,6 +490,11 @@ namespace NewISE.Controllers
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
+
+                    var te =
+                        db.TEORICI.Where(a => a.ANNULLATO == false && a.ELABINDSISTEMAZIONE.IDLIVELLO == 1).ToList();
+
+
                     db.Database.BeginTransaction();
 
                     using (dtElaborazioni dte = new dtElaborazioni())

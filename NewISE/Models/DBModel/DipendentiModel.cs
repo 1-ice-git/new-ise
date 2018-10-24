@@ -71,6 +71,10 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dataInizioRicalcoli { get; set; }
 
+        [Required]
+        [Display(Name = "Ricalcolo")]
+        public bool ricalcolare { get; set; }
+
         [Display(Name = "Abilitato")]
         public bool abilitato { get; set; }
 

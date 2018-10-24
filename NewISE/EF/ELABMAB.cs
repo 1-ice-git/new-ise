@@ -23,6 +23,9 @@ namespace NewISE.EF
         }
     
         public decimal IDELABMAB { get; set; }
+        public decimal IDTRASFINDENNITA { get; set; }
+        public decimal IDLIVELLO { get; set; }
+        public decimal IDVALUTA { get; set; }
         public decimal INDENNITABASE { get; set; }
         public decimal COEFFICENTESEDE { get; set; }
         public decimal PERCENTUALEDISAGIO { get; set; }
@@ -33,18 +36,17 @@ namespace NewISE.EF
         public decimal PERCMAB { get; set; }
         public System.DateTime DAL { get; set; }
         public System.DateTime AL { get; set; }
+        public decimal GIORNI { get; set; }
         public bool ANNUALE { get; set; }
+        public decimal PROGRESSIVO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal IDLIVELLO { get; set; }
-        public decimal GIORNI { get; set; }
-        public decimal PROGRESSIVO { get; set; }
-        public decimal IDTRASFINDENNITA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
+        public virtual VALUTE VALUTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

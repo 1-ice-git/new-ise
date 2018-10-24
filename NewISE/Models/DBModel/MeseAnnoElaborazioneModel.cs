@@ -12,10 +12,10 @@ namespace NewISE.Models.DBModel
         public decimal idMeseAnnoElab { get; set; }
         [Display(Name = "Mese")]
         [DisplayFormat(DataFormatString = "{0:00}")]
-        public int mese { get; set; }
+        public decimal mese { get; set; }
         [Display(Name = "Anno")]
         [DisplayFormat(DataFormatString = "{0:N0}")]
-        public int anno { get; set; }
+        public decimal anno { get; set; }
         [Display(Name = "Chiuso")]
         public bool chiuso { get; set; }
     }

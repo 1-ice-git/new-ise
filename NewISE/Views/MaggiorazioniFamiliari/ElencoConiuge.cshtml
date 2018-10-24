@@ -18,7 +18,7 @@
         }
         else
         {
-            @Ajax.ActionLink("Modifica Coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
+            @Ajax.ActionLink("Modifica", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
         }
 
     }

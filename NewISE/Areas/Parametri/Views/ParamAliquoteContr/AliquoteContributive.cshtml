@@ -14,7 +14,7 @@
 
     if (TempData["Aliquote"] != null)
     {
-        ViewBag.Aliquote= (IEnumerable<SelectListItem>)TempData["Aliquote"];
+        ViewBag.Aliquote = (IEnumerable<SelectListItem>)TempData["Aliquote"];
     }
 }
 <p>
@@ -26,7 +26,7 @@
         @Html.Label("lblAliquota", "Seleziona Aliquota ", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idTipoContributo",ViewBag.Aliquote as IEnumerable<SelectListItem>,
+                @Html.DropDownList("idTipoContributo", ViewBag.Aliquote as IEnumerable<SelectListItem>,
                new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVAliquota();", @onClick = "PrelevaPVAliquota();" })
             </div>
         </div>
@@ -46,7 +46,7 @@
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.aliquota)
-            </th>           
+            </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
@@ -75,12 +75,12 @@
                 }
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.aliquota)
-                </td>                
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                   
+
                     @using (dtAliquoteContr dtib = new dtAliquoteContr())
                     {
                         if (dtib.AliquoteContributiveAnnullato(item))
@@ -99,7 +99,7 @@
                             }
                         }
                     }
-                    
+
                 </td>
             </tr>
         }
@@ -141,7 +141,7 @@
         placeholder: "Seleziona Aliquota ",
         allowClear: true,
         language: "it",
-        width: '150'
+        width: '250'
 
     });
 
@@ -150,7 +150,7 @@
     $("#btnInsNuovaAliquota").button();
 
     function PrelevaPVAliquota() {
-       // debugger;
+        // debugger;
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
@@ -201,7 +201,7 @@
     }
 
     function NuoveAliquote() {
-      //  debugger;
+        //  debugger;
 
         var rotta = "/Parametri/ParamAliquoteContr/NuovaAliquotaContributiva";
         var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
@@ -213,7 +213,7 @@
             //return false;
             idTipoContributo = $("#hiTipoContributo").val();
         }
-        
+
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
@@ -254,10 +254,10 @@
     }
 
     function EliminaAliquota(id) {
-       // debugger;
+        // debugger;
         var rotta = "/Parametri/ParamAliquoteContr/EliminaAliquoteContributive";
 
-       // var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
+        // var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
         var idTipoContributo = parseInt($("#hiTipoContributo").val());
         if (isNaN(idTipoContributo)) {
             //$("#divPViewParametri").empty();
@@ -271,8 +271,8 @@
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
         }
-        
-        $('#dialog-confirm').dialog({            
+
+        $('#dialog-confirm').dialog({
             autoOpen: true,
             width: 400,
             buttons: [
@@ -286,7 +286,7 @@
                             data: { escludiAnnullati: chk, idTipoContributo: idTipoContributo, idAliqContr: id },
                             dataType: 'HTML',
                             cache: false,
-                            async:false,
+                            async: false,
                             beforeSend: function () {
                                 //debugger;
                                 //VerificaAutenticazione();

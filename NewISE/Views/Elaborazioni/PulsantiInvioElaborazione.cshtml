@@ -44,11 +44,31 @@
                 <h4 class="modal-title alert alert-info text-info" id="myModalLabelMensili">?</h4>
             </div>
             <div class="modal-body alert alert-info text-info">
-                <p id="msgModalInfoMensili" class="text-info">Confermare l'invio dei flussi mensili?</p>
+                <p id="msgModalInfoMensili" class="text-info">La conferma effettuerà il calcolo dei dipendenti prima di effettuare l'invio, Confermare?</p>
             </div>
             <div class="modal-footer">
-                <button id="btProcediMensili" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiMensili(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btProcediMensili" type="button" class="btn btn-info" data-dismiss="modal" onclick=" CalcolaElabPreInvioFlussiMensili(@idAnnoMeseElaborato); ">OK</button>
                 <button id="btAnnullaMensili" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalConfInviiMensili" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabelConfMensili">?</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfoConfMensili" class="text-info">Confermare l'invio dei flussi mensili?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcediConfMensili" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiMensili(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btAnnullaConfMensili" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
     </div>
@@ -111,7 +131,6 @@
 
         });
 
-
     }
 
     function VerificaFlussiDirettiDaInviare(idAnnoMeseElaborato) {
@@ -138,7 +157,6 @@
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
-
             },
             error: function (error) {
                 //debugger;
@@ -149,6 +167,65 @@
         });
 
         return vfd;
+    }
+
+    function CalcolaElabPreInvioFlussiMensili(idAnnoMeseElaborato) {
+        //debugger;
+
+        var rotta = "/Elaborazioni/CalcolaElaborazioneMensile";
+
+        //var lCheck = $('#TabElencoDipDaElaborare > tbody > tr > td > :checkbox');
+        var llDip = $('#TabElencoDipDaElaborare > tbody > tr > td > #item_idDipendente');
+        var lDip = new Array();
+
+        //var valore = $("#mesiAnniElaborati").val();
+
+        for (var i = 0; i < llDip.length; i++) {
+            var dip = llDip[parseInt(i)].value;
+            lDip.push(dip);
+        }
+
+        //debugger;
+
+        if (lDip.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { dipendenti: lDip, idAnnoMeseElaborato: idAnnoMeseElaborato },
+                dataType: 'html',
+                traditional: true,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#ContElencoElaborazioniMensili").empty();
+                    $("#ContElencoElaborazioniMensili").html(result);
+
+                    //RicercaDocumenti();
+
+                    $('#myModalConfInviiMensili').modal('toggle');
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
+
+            });
+        }
+
+
     }
 
     function InviaFlussiMensili(idAnnoMeseElaborato) {

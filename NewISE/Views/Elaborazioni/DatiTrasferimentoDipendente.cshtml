@@ -1,0 +1,40 @@
+﻿@using NewISE.Models.Tools
+@model NewISE.Models.DBModel.TrasferimentoModel
+<div class="row">
+    <div class="col-xs-12">
+        <div class="text-center">
+            <H3>@Model.Dipendente.Nominativo</H3>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="form-group">
+    <div class="col-xs-4">
+        <label class="control-label">Tipo trasf.</label>
+        <input type="text" class="form-control text-uppercase" readonly="readonly" value="@Model.TipoTrasferimento.descTipoTrasf" />
+    </div>
+    <div class="col-xs-4">
+        <label class="control-label">Ufficio</label>
+        <input type="text" class="form-control text-uppercase" readonly="readonly" value="@Model.Ufficio.descUfficio (@Model.Ufficio.codiceUfficio)" />
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-xs-4">
+        <label class="control-label">Data ini.</label>
+        <input type="text" class="form-control text-uppercase" readonly="readonly" value="@Model.dataPartenza.ToShortDateString()" />
+    </div>
+    <div class="col-xs-4">
+        <label class="control-label">Data fine trasf.</label>
+        @if (Model.dataRientro.HasValue && Model.dataRientro.Value < Utility.DataFineStop())
+            {
+            <input type="text" class="form-control text-uppercase" readonly="readonly" value="@Model.dataRientro.Value.ToShortDateString()" />
+        }
+        else
+        {
+            <input type="text" class="form-control text-uppercase" readonly="readonly" value="In corso..." />
+        }
+
+    </div>
+</div>
+

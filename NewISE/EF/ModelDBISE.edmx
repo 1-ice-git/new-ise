@@ -151,6 +151,7 @@
             <PropertyRef Name="IDATTIVAZIONEMAB" />
           </Key>
           <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="date" />
           <Property Name="ATTIVAZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -158,7 +159,6 @@
           <Property Name="DATAVARIAZIONE" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ATTIVAZIONETITOLIVIAGGIO">
           <Key>
@@ -366,8 +366,8 @@
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="IMPORTOCANONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="FK_IDCANONE" Type="number" Precision="38" Scale="0" />
           <Property Name="NASCONDI" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="FK_IDCANONE" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
@@ -507,8 +507,8 @@
           <Property Name="FAX" Type="varchar2" MaxLength="30" />
           <Property Name="ABILITATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="date" Nullable="false" />
-          <Property Name="NOSISTEMA" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="RICALCOLARE" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="NOSISTEMA" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="DOC_ATEP">
           <Key>
@@ -564,9 +564,9 @@
           <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
           <Property Name="INDENNITAPRIMOSEGRETARIO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEMAGGIORAZIONEFIGLI" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="ELABIND_TEORICI">
           <Key>
@@ -582,20 +582,20 @@
           </Key>
           <Property Name="IDELABIND" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTRASFINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEDISAGIO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEMAGCONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="PENSIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="ALIQUOTAFISCALE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DAL" Type="date" Nullable="false" />
           <Property Name="AL" Type="date" Nullable="false" />
+          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="GIORNISOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PROGRESSIVO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="PENSIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="GIORNISOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="PROGRESSIVO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="ALIQUOTAFISCALE" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABINDRICHIAMO">
           <Key>
@@ -603,6 +603,7 @@
           </Key>
           <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTEINDRICHIAMO" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -610,9 +611,8 @@
           <Property Name="PERCMAGCONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PENSIONECONIUGE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABINDSISTEMAZIONE">
           <Key>
@@ -620,6 +620,7 @@
           </Key>
           <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEDISAGIO" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -630,17 +631,20 @@
           <Property Name="ANTICIPO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="SALDO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="UNICASOLUZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="IMPORTOLORDO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCANTSALDOUNISOL" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABMAB">
           <Key>
             <PropertyRef Name="IDELABMAB" />
           </Key>
           <Property Name="IDELABMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTRASFINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INDENNITABASE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTESEDE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEDISAGIO" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -651,13 +655,11 @@
           <Property Name="PERCMAB" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DAL" Type="date" Nullable="false" />
           <Property Name="AL" Type="date" Nullable="false" />
+          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="PROGRESSIVO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="PROGRESSIVO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTRASFINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABORAZIONI">
           <Key>
@@ -675,14 +677,14 @@
           <Property Name="IDELABTRASPEFFETTI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" />
           <Property Name="IDTERIENTRO" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PERCENTUALEFK" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCENTUALEANTICIPOSALDO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANTICIPO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="SALDO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="EMAB_ALIQ">
           <Key>
@@ -969,7 +971,7 @@
           <Key>
             <PropertyRef Name="IDLIVELLO" />
           </Key>
-          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="LIVELLO" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="LIVELLIDIPENDENTI">
@@ -991,11 +993,11 @@
           <Property Name="IDLOG" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="clob" Nullable="false" />
           <Property Name="TABELLACOINVOLTA" Type="varchar2" MaxLength="60" />
           <Property Name="IDTABELLACOINVOLTA" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MAB">
           <Key>
@@ -1120,8 +1122,8 @@
           <Property Name="CONDIVISO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="PAGATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="FK_IDPAGATOCONDIVISO" Type="number" Precision="38" Scale="0" />
           <Property Name="NASCONDI" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="FK_IDPAGATOCONDIVISO" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="PAGCOND_PERCCOND">
           <Key>
@@ -1481,25 +1483,27 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDELABTRASPEFFETTI" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDMESEANNOELAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDELABTRASPEFFETTI" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDAUTOVOCIMANUALI" Type="number" Precision="38" Scale="0" />
           <Property Name="MESERIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNORIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ALIQUOTAFISCALE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="DETRAZIONIAPPLICATE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="CONTRIBUTOAGGIUNTIVO" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="MASSIMALECA" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="INSERIMENTOMANUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ELABORATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDELABINDRICHIAMO" Type="number" Precision="38" Scale="0" />
           <Property Name="DIRETTO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDINDSISTLORDA" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDAUTOVOCIMANUALI" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DETRAZIONIAPPLICATE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -1696,7 +1700,7 @@
           <Key>
             <PropertyRef Name="IDUFFICIO" />
           </Key>
-          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CODICEUFFICIO" Type="varchar2" MaxLength="4" Nullable="false" />
           <Property Name="DESCRIZIONEUFFICIO" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="PAGATOVALUTAUFFICIO" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -3647,6 +3651,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_L_EMAB">
+          <End Role="LIVELLI" Type="Self.LIVELLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIVELLI">
+              <PropertyRef Name="IDLIVELLO" />
+            </Principal>
+            <Dependent Role="ELABMAB">
+              <PropertyRef Name="IDLIVELLO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_L_ETE">
           <End Role="LIVELLI" Type="Self.LIVELLI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5507,6 +5525,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_V_EMAB">
+          <End Role="VALUTE" Type="Self.VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="ELABMAB">
+              <PropertyRef Name="IDVALUTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_V_T">
           <End Role="VOCI" Type="Self.VOCI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5560,18 +5592,6 @@
             </Principal>
             <Dependent Role="ATTIVAZIONIVIAGGICONGEDO">
               <PropertyRef Name="IDVIAGGIOCONGEDO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="RELATIONSHIP8">
-          <End Role="LIVELLI" Type="Self.LIVELLI" Multiplicity="1" />
-          <End Role="ELABMAB" Type="Self.ELABMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LIVELLI">
-              <PropertyRef Name="IDLIVELLO" />
-            </Principal>
-            <Dependent Role="ELABMAB">
-              <PropertyRef Name="IDLIVELLO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6294,6 +6314,10 @@
             <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="ELABINDSISTEMAZIONE" EntitySet="ELABINDSISTEMAZIONE" />
           </AssociationSet>
+          <AssociationSet Name="R_L_EMAB" Association="Self.R_L_EMAB">
+            <End Role="LIVELLI" EntitySet="LIVELLI" />
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_L_ETE" Association="Self.R_L_ETE">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="ELABTRASPEFFETTI" EntitySet="ELABTRASPEFFETTI" />
@@ -6826,6 +6850,10 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="CANONEMAB" EntitySet="CANONEMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_V_EMAB" Association="Self.R_V_EMAB">
+            <End Role="VALUTE" EntitySet="VALUTE" />
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_V_T" Association="Self.R_V_T">
             <End Role="VOCI" EntitySet="VOCI" />
             <End Role="TEORICI" EntitySet="TEORICI" />
@@ -6841,10 +6869,6 @@
           <AssociationSet Name="R_VC_AVC" Association="Self.R_VC_AVC">
             <End Role="VIAGGICONGEDO" EntitySet="VIAGGICONGEDO" />
             <End Role="ATTIVAZIONIVIAGGICONGEDO" EntitySet="ATTIVAZIONIVIAGGICONGEDO" />
-          </AssociationSet>
-          <AssociationSet Name="RELATIONSHIP8" Association="Self.RELATIONSHIP8">
-            <End Role="LIVELLI" EntitySet="LIVELLI" />
-            <End Role="ELABMAB" EntitySet="ELABMAB" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -7305,8 +7329,12 @@
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
           </AssociationSet>
-          <AssociationSet Name="RELATIONSHIP8" Association="DBISE.RELATIONSHIP8">
+          <AssociationSet Name="R_L_EMAB" Association="DBISE.R_L_EMAB">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
+            <End Role="ELABMAB" EntitySet="ELABMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_V_EMAB" Association="DBISE.R_V_EMAB">
+            <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="ELABMAB" EntitySet="ELABMAB" />
           </AssociationSet>
           <AssociationSet Name="R_MAE_E" Association="DBISE.R_MAE_E">
@@ -7933,6 +7961,7 @@
             <PropertyRef Name="IDATTIVAZIONEMAB" />
           </Key>
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
           <Property Name="ATTIVAZIONE" Type="Boolean" Nullable="false" />
@@ -7940,7 +7969,6 @@
           <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.R_AMAB_VMAB" FromRole="ATTIVAZIONEMAB" ToRole="ANTICIPOANNUALEMAB" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_AMAB_CMAB" FromRole="ATTIVAZIONEMAB" ToRole="CANONEMAB" />
           <NavigationProperty Name="MODIFICHE_MAB" Relationship="DBISE.R_AMAB_MAMAB" FromRole="ATTIVAZIONEMAB" ToRole="MODIFICHE_MAB" />
@@ -8154,8 +8182,8 @@
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="IMPORTOCANONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="FK_IDCANONE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
+          <Property Name="FK_IDCANONE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_CMAB" FromRole="CANONEMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANONEMAB1" Relationship="DBISE.R_CMAB_CMAB" FromRole="CANONEMAB" ToRole="CANONEMAB1" />
           <NavigationProperty Name="CANONEMAB2" Relationship="DBISE.R_CMAB_CMAB" FromRole="CANONEMAB1" ToRole="CANONEMAB" />
@@ -8289,8 +8317,8 @@
           <Property Name="FAX" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="ABILITATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
-          <Property Name="NOSISTEMA" Type="Boolean" Nullable="false" />
           <Property Name="RICALCOLARE" Type="Boolean" Nullable="false" />
+          <Property Name="NOSISTEMA" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CDCGEPE" Relationship="DBISE.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
           <NavigationProperty Name="DESTINATARI" Relationship="DBISE.R_DIP_DEST" FromRole="DIPENDENTI" ToRole="DESTINATARI" />
           <NavigationProperty Name="ELABORAZIONI" Relationship="DBISE.R_D_E" FromRole="DIPENDENTI" ToRole="ELABORAZIONI" />
@@ -8344,9 +8372,9 @@
           <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABIND" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDELABMAB" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDELABINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="INDENNITAPRIMOSEGRETARIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEMAGGIORAZIONEFIGLI" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="IDELABINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_EI_EDF" FromRole="ELABDATIFIGLI" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_EDF" FromRole="ELABDATIFIGLI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_EDF" FromRole="ELABDATIFIGLI" ToRole="ELABINDSISTEMAZIONE" />
@@ -8358,20 +8386,20 @@
           </Key>
           <Property Name="IDELABIND" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEMAGCONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DAL" Type="DateTime" Nullable="false" />
           <Property Name="AL" Type="DateTime" Nullable="false" />
+          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="GIORNISOSPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="GIORNISOSPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EI_EDF" FromRole="ELABINDENNITA" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_EI" FromRole="ELABINDENNITA" ToRole="INDENNITA" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EI" FromRole="ELABINDENNITA" ToRole="LIVELLI" />
@@ -8384,6 +8412,7 @@
           </Key>
           <Property Name="IDELABINDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTEINDRICHIAMO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
@@ -8391,9 +8420,8 @@
           <Property Name="PERCMAGCONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIR_EDF" FromRole="ELABINDRICHIAMO" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EIR_T" FromRole="ELABINDRICHIAMO" ToRole="TEORICI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EIR" FromRole="ELABINDRICHIAMO" ToRole="LIVELLI" />
@@ -8406,6 +8434,7 @@
           </Key>
           <Property Name="IDINDSISTLORDA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
@@ -8416,11 +8445,11 @@
           <Property Name="ANTICIPO" Type="Boolean" Nullable="false" />
           <Property Name="SALDO" Type="Boolean" Nullable="false" />
           <Property Name="UNICASOLUZIONE" Type="Boolean" Nullable="false" />
+          <Property Name="IMPORTOLORDO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCANTSALDOUNISOL" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIS_EDF" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EIS_T" FromRole="ELABINDSISTEMAZIONE" ToRole="TEORICI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EIS" FromRole="ELABINDSISTEMAZIONE" ToRole="LIVELLI" />
@@ -8432,6 +8461,9 @@
             <PropertyRef Name="IDELABMAB" />
           </Key>
           <Property Name="IDELABMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INDENNITABASE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="COEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
@@ -8442,16 +8474,15 @@
           <Property Name="PERCMAB" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DAL" Type="DateTime" Nullable="false" />
           <Property Name="AL" Type="DateTime" Nullable="false" />
+          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNUALE" Type="Boolean" Nullable="false" />
+          <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EMAB_EDF" FromRole="ELABMAB" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_EMAB" FromRole="ELABMAB" ToRole="INDENNITA" />
-          <NavigationProperty Name="LIVELLI" Relationship="DBISE.RELATIONSHIP8" FromRole="ELABMAB" ToRole="LIVELLI" />
+          <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EMAB" FromRole="ELABMAB" ToRole="LIVELLI" />
+          <NavigationProperty Name="VALUTE" Relationship="DBISE.R_V_EMAB" FromRole="ELABMAB" ToRole="VALUTE" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISE.EMAB_ALIQ" FromRole="ELABMAB" ToRole="ALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.EMAB_T" FromRole="ELABMAB" ToRole="TEORICI" />
         </EntityType>
@@ -8473,14 +8504,14 @@
           <Property Name="IDELABTRASPEFFETTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTEPARTENZA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDTERIENTRO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="PERCENTUALEFK" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCENTUALEANTICIPOSALDO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ANTICIPO" Type="Boolean" Nullable="false" />
           <Property Name="SALDO" Type="Boolean" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_ETE_T" FromRole="ELABTRASPEFFETTI" ToRole="TEORICI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_ETE" FromRole="ELABTRASPEFFETTI" ToRole="LIVELLI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISE.R_TEP_ETE" FromRole="ELABTRASPEFFETTI" ToRole="TEPARTENZA" />
@@ -8680,12 +8711,12 @@
           <Key>
             <PropertyRef Name="IDLIVELLO" />
           </Key>
-          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="LIVELLO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_L_EI" FromRole="LIVELLI" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_L_EIR" FromRole="LIVELLI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_L_EIS" FromRole="LIVELLI" ToRole="ELABINDSISTEMAZIONE" />
-          <NavigationProperty Name="ELABMAB" Relationship="DBISE.RELATIONSHIP8" FromRole="LIVELLI" ToRole="ELABMAB" />
+          <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_L_EMAB" FromRole="LIVELLI" ToRole="ELABMAB" />
           <NavigationProperty Name="ELABTRASPEFFETTI" Relationship="DBISE.R_L_ETE" FromRole="LIVELLI" ToRole="ELABTRASPEFFETTI" />
           <NavigationProperty Name="INDENNITABASE" Relationship="DBISE.R_L_I" FromRole="LIVELLI" ToRole="INDENNITABASE" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISE.R_L_PMAB" FromRole="LIVELLI" ToRole="PERCENTUALEMAB" />
@@ -8713,11 +8744,11 @@
           <Property Name="IDLOG" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITACRUD" Relationship="DBISE.R_AC_LA" FromRole="LOGATTIVITA" ToRole="ATTIVITACRUD" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_LA" FromRole="LOGATTIVITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_UL_LA" FromRole="LOGATTIVITA" ToRole="UTENTIAUTORIZZATI" />
@@ -8863,8 +8894,8 @@
           <Property Name="CONDIVISO" Type="Boolean" Nullable="false" />
           <Property Name="PAGATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="FK_IDPAGATOCONDIVISO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
+          <Property Name="FK_IDPAGATOCONDIVISO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="MAB" Relationship="DBISE.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB1" Relationship="DBISE.R_PCMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="PAGATOCONDIVISOMAB1" />
@@ -9231,25 +9262,27 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDELABTRASPEFFETTI" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDELABTRASPEFFETTI" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDELABINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDAUTOVOCIMANUALI" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="MESERIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNORIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="DETRAZIONIAPPLICATE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="CONTRIBUTOAGGIUNTIVO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="MASSIMALECA" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="INSERIMENTOMANUALE" Type="Boolean" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
-          <Property Name="IDELABINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DIRETTO" Type="Boolean" Nullable="false" />
-          <Property Name="IDINDSISTLORDA" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDAUTOVOCIMANUALI" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DETRAZIONIAPPLICATE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_AVM_T" FromRole="TEORICI" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_T" FromRole="TEORICI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
@@ -9486,7 +9519,7 @@
           <Key>
             <PropertyRef Name="IDUFFICIO" />
           </Key>
-          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CODICEUFFICIO" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="DESCRIZIONEUFFICIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PAGATOVALUTAUFFICIO" Type="Boolean" Nullable="false" />
@@ -9532,6 +9565,7 @@
           <Property Name="DESCRIZIONEVALUTA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="VALUTAUFFICIALE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_V_CMAB" FromRole="VALUTE" ToRole="CANONEMAB" />
+          <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_V_EMAB" FromRole="VALUTE" ToRole="ELABMAB" />
           <NavigationProperty Name="TFR" Relationship="DBISE.R_VALUTE_TFR" FromRole="VALUTE" ToRole="TFR" />
           <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISE.R_VALUTE_VALUFF" FromRole="VALUTE" ToRole="VALUTAUFFICIO" />
         </EntityType>
@@ -10730,8 +10764,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="RELATIONSHIP8">
-          <End Type="DBISE.LIVELLI" Role="LIVELLI" Multiplicity="1" />
+        <Association Name="R_L_EMAB">
+          <End Type="DBISE.LIVELLI" Role="LIVELLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LIVELLI">
@@ -10739,6 +10775,20 @@
             </Principal>
             <Dependent Role="ELABMAB">
               <PropertyRef Name="IDLIVELLO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_V_EMAB">
+          <End Type="DBISE.VALUTE" Role="VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.ELABMAB" Role="ELABMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="ELABMAB">
+              <PropertyRef Name="IDVALUTA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -12103,7 +12153,6 @@
           <EntitySetMapping Name="ATTIVAZIONEMAB">
             <EntityTypeMapping TypeName="DBISE.ATTIVAZIONEMAB">
               <MappingFragment StoreEntitySet="ATTIVAZIONEMAB">
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAVARIAZIONE" ColumnName="DATAVARIAZIONE" />
@@ -12111,6 +12160,7 @@
                 <ScalarProperty Name="ATTIVAZIONE" ColumnName="ATTIVAZIONE" />
                 <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />
                 <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -12274,8 +12324,8 @@
           <EntitySetMapping Name="CANONEMAB">
             <EntityTypeMapping TypeName="DBISE.CANONEMAB">
               <MappingFragment StoreEntitySet="CANONEMAB">
-                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="FK_IDCANONE" ColumnName="FK_IDCANONE" />
+                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="IMPORTOCANONE" ColumnName="IMPORTOCANONE" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
@@ -12376,8 +12426,8 @@
           <EntitySetMapping Name="DIPENDENTI">
             <EntityTypeMapping TypeName="DBISE.DIPENDENTI">
               <MappingFragment StoreEntitySet="DIPENDENTI">
-                <ScalarProperty Name="RICALCOLARE" ColumnName="RICALCOLARE" />
                 <ScalarProperty Name="NOSISTEMA" ColumnName="NOSISTEMA" />
+                <ScalarProperty Name="RICALCOLARE" ColumnName="RICALCOLARE" />
                 <ScalarProperty Name="DATAINIZIORICALCOLI" ColumnName="DATAINIZIORICALCOLI" />
                 <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
                 <ScalarProperty Name="FAX" ColumnName="FAX" />
@@ -12414,9 +12464,9 @@
           <EntitySetMapping Name="ELABDATIFIGLI">
             <EntityTypeMapping TypeName="DBISE.ELABDATIFIGLI">
               <MappingFragment StoreEntitySet="ELABDATIFIGLI">
-                <ScalarProperty Name="IDELABINDRICHIAMO" ColumnName="IDELABINDRICHIAMO" />
                 <ScalarProperty Name="PERCENTUALEMAGGIORAZIONEFIGLI" ColumnName="PERCENTUALEMAGGIORAZIONEFIGLI" />
                 <ScalarProperty Name="INDENNITAPRIMOSEGRETARIO" ColumnName="INDENNITAPRIMOSEGRETARIO" />
+                <ScalarProperty Name="IDELABINDRICHIAMO" ColumnName="IDELABINDRICHIAMO" />
                 <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
                 <ScalarProperty Name="IDELABIND" ColumnName="IDELABIND" />
                 <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
@@ -12427,20 +12477,20 @@
           <EntitySetMapping Name="ELABINDENNITA">
             <EntityTypeMapping TypeName="DBISE.ELABINDENNITA">
               <MappingFragment StoreEntitySet="ELABINDENNITA">
-                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
-                <ScalarProperty Name="ALIQUOTAFISCALE" ColumnName="ALIQUOTAFISCALE" />
-                <ScalarProperty Name="PROGRESSIVO" ColumnName="PROGRESSIVO" />
-                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
-                <ScalarProperty Name="GIORNISOSPENSIONE" ColumnName="GIORNISOSPENSIONE" />
-                <ScalarProperty Name="PENSIONECONIUGE" ColumnName="PENSIONECONIUGE" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="PROGRESSIVO" ColumnName="PROGRESSIVO" />
+                <ScalarProperty Name="GIORNISOSPENSIONE" ColumnName="GIORNISOSPENSIONE" />
+                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="AL" ColumnName="AL" />
                 <ScalarProperty Name="DAL" ColumnName="DAL" />
+                <ScalarProperty Name="ALIQUOTAFISCALE" ColumnName="ALIQUOTAFISCALE" />
+                <ScalarProperty Name="PENSIONECONIUGE" ColumnName="PENSIONECONIUGE" />
                 <ScalarProperty Name="PERCENTUALEMAGCONIUGE" ColumnName="PERCENTUALEMAGCONIUGE" />
                 <ScalarProperty Name="PERCENTUALEDISAGIO" ColumnName="PERCENTUALEDISAGIO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />
+                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
                 <ScalarProperty Name="IDELABIND" ColumnName="IDELABIND" />
               </MappingFragment>
@@ -12449,9 +12499,8 @@
           <EntitySetMapping Name="ELABINDRICHIAMO">
             <EntityTypeMapping TypeName="DBISE.ELABINDRICHIAMO">
               <MappingFragment StoreEntitySet="ELABINDRICHIAMO">
-                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
-                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="PENSIONECONIUGE" ColumnName="PENSIONECONIUGE" />
                 <ScalarProperty Name="PERCMAGCONIUGE" ColumnName="PERCMAGCONIUGE" />
@@ -12459,6 +12508,7 @@
                 <ScalarProperty Name="COEFFICENTEINDRICHIAMO" ColumnName="COEFFICENTEINDRICHIAMO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />
+                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
                 <ScalarProperty Name="IDELABINDRICHIAMO" ColumnName="IDELABINDRICHIAMO" />
               </MappingFragment>
@@ -12467,11 +12517,11 @@
           <EntitySetMapping Name="ELABINDSISTEMAZIONE">
             <EntityTypeMapping TypeName="DBISE.ELABINDSISTEMAZIONE">
               <MappingFragment StoreEntitySet="ELABINDSISTEMAZIONE">
-                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
-                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="PERCANTSALDOUNISOL" ColumnName="PERCANTSALDOUNISOL" />
+                <ScalarProperty Name="IMPORTOLORDO" ColumnName="IMPORTOLORDO" />
                 <ScalarProperty Name="UNICASOLUZIONE" ColumnName="UNICASOLUZIONE" />
                 <ScalarProperty Name="SALDO" ColumnName="SALDO" />
                 <ScalarProperty Name="ANTICIPO" ColumnName="ANTICIPO" />
@@ -12482,6 +12532,7 @@
                 <ScalarProperty Name="PERCENTUALEDISAGIO" ColumnName="PERCENTUALEDISAGIO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />
+                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
                 <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
               </MappingFragment>
@@ -12490,13 +12541,11 @@
           <EntitySetMapping Name="ELABMAB">
             <EntityTypeMapping TypeName="DBISE.ELABMAB">
               <MappingFragment StoreEntitySet="ELABMAB">
-                <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-                <ScalarProperty Name="PROGRESSIVO" ColumnName="PROGRESSIVO" />
-                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
-                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="PROGRESSIVO" ColumnName="PROGRESSIVO" />
                 <ScalarProperty Name="ANNUALE" ColumnName="ANNUALE" />
+                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="AL" ColumnName="AL" />
                 <ScalarProperty Name="DAL" ColumnName="DAL" />
                 <ScalarProperty Name="PERCMAB" ColumnName="PERCMAB" />
@@ -12507,6 +12556,9 @@
                 <ScalarProperty Name="PERCENTUALEDISAGIO" ColumnName="PERCENTUALEDISAGIO" />
                 <ScalarProperty Name="COEFFICENTESEDE" ColumnName="COEFFICENTESEDE" />
                 <ScalarProperty Name="INDENNITABASE" ColumnName="INDENNITABASE" />
+                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
+                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
+                <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
                 <ScalarProperty Name="IDELABMAB" ColumnName="IDELABMAB" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -12524,14 +12576,14 @@
           <EntitySetMapping Name="ELABTRASPEFFETTI">
             <EntityTypeMapping TypeName="DBISE.ELABTRASPEFFETTI">
               <MappingFragment StoreEntitySet="ELABTRASPEFFETTI">
-                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
-                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="SALDO" ColumnName="SALDO" />
                 <ScalarProperty Name="ANTICIPO" ColumnName="ANTICIPO" />
                 <ScalarProperty Name="PERCENTUALEANTICIPOSALDO" ColumnName="PERCENTUALEANTICIPOSALDO" />
                 <ScalarProperty Name="PERCENTUALEFK" ColumnName="PERCENTUALEFK" />
+                <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="IDTERIENTRO" ColumnName="IDTERIENTRO" />
                 <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
                 <ScalarProperty Name="IDELABTRASPEFFETTI" ColumnName="IDELABTRASPEFFETTI" />
@@ -12722,11 +12774,11 @@
           <EntitySetMapping Name="LOGATTIVITA">
             <EntityTypeMapping TypeName="DBISE.LOGATTIVITA">
               <MappingFragment StoreEntitySet="LOGATTIVITA">
-                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="IDTABELLACOINVOLTA" ColumnName="IDTABELLACOINVOLTA" />
                 <ScalarProperty Name="TABELLACOINVOLTA" ColumnName="TABELLACOINVOLTA" />
                 <ScalarProperty Name="DESCATTIVITASVOLTA" ColumnName="DESCATTIVITASVOLTA" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="IDATTIVITACRUD" ColumnName="IDATTIVITACRUD" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDLOG" ColumnName="IDLOG" />
@@ -12847,8 +12899,8 @@
           <EntitySetMapping Name="PAGATOCONDIVISOMAB">
             <EntityTypeMapping TypeName="DBISE.PAGATOCONDIVISOMAB">
               <MappingFragment StoreEntitySet="PAGATOCONDIVISOMAB">
-                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="FK_IDPAGATOCONDIVISO" ColumnName="FK_IDPAGATOCONDIVISO" />
+                <ScalarProperty Name="NASCONDI" ColumnName="NASCONDI" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="PAGATO" ColumnName="PAGATO" />
                 <ScalarProperty Name="CONDIVISO" ColumnName="CONDIVISO" />
@@ -13163,25 +13215,27 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
-                <ScalarProperty Name="DETRAZIONIAPPLICATE" ColumnName="DETRAZIONIAPPLICATE" />
-                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDAUTOVOCIMANUALI" ColumnName="IDAUTOVOCIMANUALI" />
-                <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
-                <ScalarProperty Name="DIRETTO" ColumnName="DIRETTO" />
-                <ScalarProperty Name="IDELABINDRICHIAMO" ColumnName="IDELABINDRICHIAMO" />
-                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
-                <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DIRETTO" ColumnName="DIRETTO" />
+                <ScalarProperty Name="ELABORATO" ColumnName="ELABORATO" />
                 <ScalarProperty Name="INSERIMENTOMANUALE" ColumnName="INSERIMENTOMANUALE" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="MASSIMALECA" ColumnName="MASSIMALECA" />
+                <ScalarProperty Name="CONTRIBUTOAGGIUNTIVO" ColumnName="CONTRIBUTOAGGIUNTIVO" />
+                <ScalarProperty Name="DETRAZIONIAPPLICATE" ColumnName="DETRAZIONIAPPLICATE" />
                 <ScalarProperty Name="ALIQUOTAFISCALE" ColumnName="ALIQUOTAFISCALE" />
+                <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
+                <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="ANNORIFERIMENTO" ColumnName="ANNORIFERIMENTO" />
                 <ScalarProperty Name="MESERIFERIMENTO" ColumnName="MESERIFERIMENTO" />
-                <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
+                <ScalarProperty Name="IDAUTOVOCIMANUALI" ColumnName="IDAUTOVOCIMANUALI" />
+                <ScalarProperty Name="IDELABINDRICHIAMO" ColumnName="IDELABINDRICHIAMO" />
                 <ScalarProperty Name="IDELABTRASPEFFETTI" ColumnName="IDELABTRASPEFFETTI" />
-                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
+                <ScalarProperty Name="IDINDSISTLORDA" ColumnName="IDINDSISTLORDA" />
                 <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
+                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
+                <ScalarProperty Name="IDMESEANNOELAB" ColumnName="IDMESEANNOELAB" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
               </MappingFragment>
             </EntityTypeMapping>

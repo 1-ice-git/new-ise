@@ -30,8 +30,8 @@ namespace NewISE.EF
         public bool CONDIVISO { get; set; }
         public bool PAGATO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public Nullable<decimal> FK_IDPAGATOCONDIVISO { get; set; }
         public bool NASCONDI { get; set; }
+        public Nullable<decimal> FK_IDPAGATOCONDIVISO { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         public virtual MAB MAB { get; set; }
