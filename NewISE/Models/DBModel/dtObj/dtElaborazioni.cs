@@ -2786,7 +2786,7 @@ namespace NewISE.Models.DBModel.dtObj
             var lTeoriciAP =
                 db.TEORICI.Where(
                     a =>
-                        a.ANNULLATO == false && a.DIRETTO == true && a.INSERIMENTOMANUALE == false &&
+                        a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                         a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
                         a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
@@ -2806,8 +2806,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a.ELABORATO == true && a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
                         a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
-                        a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.SALDO == true &&
-                        a.ELABINDSISTEMAZIONE.CONGUAGLIO == false);
+                        a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.SALDO == true);
 
                 if (saldoPercepito == false)
                 {
@@ -7246,12 +7245,31 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                 }
 
+                                EnumTipoMovimento tipoMov;
+
+                                decimal annoMeseElab =
+                                    Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
+                                                      meseAnnoElaborazione.MESE.ToString().PadLeft(2, '0'));
+                                decimal annoMeseRif =
+                                    Convert.ToDecimal(dataRiferimento.Year.ToString() +
+                                                      dataRiferimento.Month.ToString().PadLeft(2, '0'));
+
+
+                                if (annoMeseRif < annoMeseElab)
+                                {
+                                    tipoMov = EnumTipoMovimento.Conguaglio_C;
+                                }
+                                else
+                                {
+                                    tipoMov = EnumTipoMovimento.MeseCorrente_M;
+                                }
+
                                 TEORICI t = new TEORICI()
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     IDVOCI = (decimal)EnumVociContabili.MAB,
-                                    IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
                                     MESERIFERIMENTO = dataRiferimento.Month,
                                     ANNORIFERIMENTO = dataRiferimento.Year,
                                     IMPORTO = conguaglioMab,
