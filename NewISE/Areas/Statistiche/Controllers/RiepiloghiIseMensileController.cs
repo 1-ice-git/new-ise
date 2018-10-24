@@ -28,6 +28,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         {   
             return PartialView();
         }
+
         public JsonResult PrelevaMesiAnniElab(string search)
         {
             List<Select2Model> ls2 = new List<Select2Model>();
@@ -37,8 +38,6 @@ namespace NewISE.Areas.Statistiche.Controllers
             {
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
-
-
                     lmaem = dte.PrelevaAnniMesiElaborati().ToList();
 
                     foreach (var mae in lmaem)
@@ -51,15 +50,11 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                         ls2.Add(s2);
                     }
-
-
-
                 }
 
                 if (search != null && search != string.Empty)
                 {
                     ls2 = ls2.Where(a => a.text.ToUpper().Contains(search.ToUpper())).ToList();
-
                 }
             }
             catch (Exception ex)
@@ -93,13 +88,11 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     foreach (var item in lmaem)
                     {
-
                         rMeseAnno.Add(new SelectListItem()
                         {
                             Text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.mese) + "-" + item.anno.ToString("D4"),
                             Value = item.idMeseAnnoElab.ToString()
                         });
-
                     }
 
                     if (rMeseAnno.Exists(a => a.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString("D4")))
@@ -116,11 +109,10 @@ namespace NewISE.Areas.Statistiche.Controllers
                     {
                         rMeseAnno.First().Selected = true;
                     }
-
                 }
 
-                ViewData["ElencoMesiAnniElaborati"] = rMeseAnno;
-                ViewData["ElencoMesiAnniElaborati1"] = rMeseAnno;
+                ViewData["ElencoMesiAnniElaboratiDa"] = rMeseAnno;
+                ViewData["ElencoMesiAnniElaboratiA"] = rMeseAnno;
             }
             catch (Exception ex)
             {
@@ -136,7 +128,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             try
             {
-
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(idElabIni);

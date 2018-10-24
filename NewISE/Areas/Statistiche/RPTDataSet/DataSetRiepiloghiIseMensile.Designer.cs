@@ -303,6 +303,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             private global::System.Data.DataColumn columnprima_sistemazione_saldo;
             
+            private global::System.Data.DataColumn columnprima_sistemazione_unica_soluz;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataSetRiepiloghiIseMensileDataTable() {
@@ -434,6 +436,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn prima_sistemazione_unica_soluzColumn {
+                get {
+                    return this.columnprima_sistemazione_unica_soluz;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -469,7 +479,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataSetRiepiloghiIseMensileRow AddDataSetRiepiloghiIseMensileRow(string nominativo, string ufficio, string matricola, string qualifica, string indennita_personale, string prima_sistemazione_anticipo, string richiamo, string riferimento, string elaborazione, string numannomeseelab, string numannomeserif, string prima_sistemazione_saldo) {
+            public DataSetRiepiloghiIseMensileRow AddDataSetRiepiloghiIseMensileRow(string nominativo, string ufficio, string matricola, string qualifica, string indennita_personale, string prima_sistemazione_anticipo, string richiamo, string riferimento, string elaborazione, string numannomeseelab, string numannomeserif, string prima_sistemazione_saldo, string prima_sistemazione_unica_soluz) {
                 DataSetRiepiloghiIseMensileRow rowDataSetRiepiloghiIseMensileRow = ((DataSetRiepiloghiIseMensileRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         nominativo,
@@ -483,7 +493,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         elaborazione,
                         numannomeseelab,
                         numannomeserif,
-                        prima_sistemazione_saldo};
+                        prima_sistemazione_saldo,
+                        prima_sistemazione_unica_soluz};
                 rowDataSetRiepiloghiIseMensileRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataSetRiepiloghiIseMensileRow);
                 return rowDataSetRiepiloghiIseMensileRow;
@@ -518,6 +529,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.columnnumannomeseelab = base.Columns["numannomeseelab"];
                 this.columnnumannomeserif = base.Columns["numannomeserif"];
                 this.columnprima_sistemazione_saldo = base.Columns["prima_sistemazione_saldo"];
+                this.columnprima_sistemazione_unica_soluz = base.Columns["prima_sistemazione_unica_soluz"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -547,6 +559,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnnumannomeserif);
                 this.columnprima_sistemazione_saldo = new global::System.Data.DataColumn("prima_sistemazione_saldo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnprima_sistemazione_saldo);
+                this.columnprima_sistemazione_unica_soluz = new global::System.Data.DataColumn("prima_sistemazione_unica_soluz", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnprima_sistemazione_unica_soluz);
                 this.ExtendedProperties.Add("Generator_TablePropName", "_DataSetRiepiloghiIseMensile");
                 this.ExtendedProperties.Add("Generator_UserTableName", "DataSetRiepiloghiIseMensile");
             }
@@ -894,6 +908,23 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string prima_sistemazione_unica_soluz {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataSetRiepiloghiIseMensile.prima_sistemazione_unica_soluzColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'prima_sistemazione_unica_soluz\' in table \'DataSetRiepiloghi" +
+                                "IseMensile\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataSetRiepiloghiIseMensile.prima_sistemazione_unica_soluzColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsnominativoNull() {
                 return this.IsNull(this.tableDataSetRiepiloghiIseMensile.nominativoColumn);
             }
@@ -1034,6 +1065,18 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setprima_sistemazione_saldoNull() {
                 this[this.tableDataSetRiepiloghiIseMensile.prima_sistemazione_saldoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool Isprima_sistemazione_unica_soluzNull() {
+                return this.IsNull(this.tableDataSetRiepiloghiIseMensile.prima_sistemazione_unica_soluzColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Setprima_sistemazione_unica_soluzNull() {
+                this[this.tableDataSetRiepiloghiIseMensile.prima_sistemazione_unica_soluzColumn] = global::System.Convert.DBNull;
             }
         }
         

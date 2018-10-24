@@ -94,6 +94,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         decimal prima_sistemazione_anticipo = 0;
                         decimal prima_sistemazione_saldo = 0;
+                        decimal prima_sistemazione_unica_sol = 0;
                         decimal indennita = 0;
                         decimal richiamo = 0;
 
@@ -118,6 +119,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     (teorici_row.ELABINDSISTEMAZIONE.SALDO || teorici_row.ELABINDSISTEMAZIONE.CONGUAGLIO))
                             {
                                 prima_sistemazione_saldo = teorici_row.IMPORTO;
+                            }
+
+                            if (teorici_row.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                    teorici_row.ELABINDSISTEMAZIONE?.IDLIVELLO == livdip.IDLIVELLO &&
+                                    teorici_row.ELABINDSISTEMAZIONE.UNICASOLUZIONE)
+                            {
+                                prima_sistemazione_unica_sol = teorici_row.IMPORTO;
                             }
 
                             if (teorici_row.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
@@ -146,13 +154,14 @@ namespace NewISE.Models.DBModel.dtObj
 
                         RptRiepiloghiIseMensileModel rptisem = new RptRiepiloghiIseMensileModel()
                         {
-                            nominativo = d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")",
+                            nominativo = d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
                             qualifica = livdip.LIVELLI.LIVELLO,
                             ufficio = uf.DESCRIZIONEUFFICIO,
                             riferimento = strMeseAnnoRif,
                             elaborazione = strMeseAnnoElab,
                             prima_sistemazione_anticipo = prima_sistemazione_anticipo,
                             prima_sistemazione_saldo = prima_sistemazione_saldo,
+                            prima_sistemazione_unica_soluz=prima_sistemazione_unica_sol,
                             richiamo = richiamo,
                             indennita_personale = indennita,
                             numannomeseelab = numMeseElaborazione,
