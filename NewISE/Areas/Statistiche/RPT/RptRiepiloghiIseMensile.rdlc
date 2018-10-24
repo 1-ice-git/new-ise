@@ -1111,7 +1111,7 @@
         <DataSetName>DataSetRiepiloghiIseMensile</DataSetName>
         <Top>1.45203cm</Top>
         <Height>1.8cm</Height>
-        <Width>29.66684cm</Width>
+        <Width>29.66686cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -1123,7 +1123,7 @@
     <Height>1.42616in</Height>
     <Style />
   </Body>
-  <Width>11.67986in</Width>
+  <Width>11.67987in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
