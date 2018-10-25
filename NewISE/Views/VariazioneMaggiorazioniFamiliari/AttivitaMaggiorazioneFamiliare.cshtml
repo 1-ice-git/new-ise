@@ -346,7 +346,7 @@
                 VerificaAutenticazione();
             },
             success: function (result) {
-                debugger;
+                //debugger;
                 if (result.err == "") {
                     var admin = result.admin;
                     var rinuncia = result.rinuncia;
@@ -375,9 +375,8 @@
                                 siDocFormulari == false
                             )
                         ) {
-                        //blink('#lkFormulariVar');
                         //LINK ROSSO
-                        $("#lkFormulariVar").animate({ color: "#ff0000" });
+                        $('#lkFormulariVar').css('color', '#ff0000');
                     }
 
                     if (
@@ -389,9 +388,8 @@
                                 siDocFormulari == false
                             )
                         ) {
-                        //blink('#lkFormulariVar');
                         //LINK ROSSO
-                        $("#lkFormulariVar").animate({ color: "#ff0000" });
+                        $('#lkFormulariVar').css('color', '#ff0000');
                     }
 
                     if (
@@ -410,11 +408,17 @@
                                 datiFigli == false &&
                                 siDocFormulari
                             )
+                            ||
+                            (
+                                datiConiuge == false &&
+                                datiFigli == false &&
+                                siDocFormulari==false
+                            )
 
                         ) {
-                        //$('#lkFormulariVar').stop().fadeIn();
                         //RIPRISTINA COLORE LINK
-                        $("#lkFormulariVar").animate({ color: $("#lkFormulariVar").css('color') });
+                        $('#lkFormulariVar').removeAttr('style');
+
                     }
 
                     $("#btAttivaMagFam_Var").attr("disabled", "disabled");
