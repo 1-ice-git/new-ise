@@ -74,68 +74,6 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                 var annoMeseInizio = Convert.ToDecimal(AnnoDa.ToString() + MeseDa.ToString().PadLeft(2, (char)'0'));
                                 var annoMeseFine = Convert.ToDecimal(AnnoA.ToString() + MeseA.ToString().PadLeft(2, (char)'0'));
 
-                                //#region INDENNITA
-                                //idVoci = (decimal)EnumVociContabili.Ind_Sede_Estera;
-                                //idTipoLiquidazione = (decimal)EnumTipoLiquidazione.Contabilità;
-                                //lteorici = dts.GetIndennitaSedeEstera(
-                                //                                        t, 
-                                //                                        idVoci, 
-                                //                                        idTipoLiquidazione,
-                                //                                        livdip.IDLIVELLO,
-                                //                                        annoMeseInizio, 
-                                //                                        annoMeseFine, 
-                                //                                        db);
-
-                                //if (lteorici?.Any() ?? false)
-                                //{
-                                //    var importo = lteorici.Sum(a => a.IMPORTO);
-                                //    var descLivello = livdip.LIVELLI.LIVELLO;
-
-                                //    var rptsam = SetSpeseAvvicendamento(matricola, cognome, nome, descLivello, ufficio, idVoci, dataPartenza, importo, db);
-                                //    lrptsam.Add(rptsam);
-                                //}
-                                //#endregion
-
-                                //#region MAB
-                                //idVoci = (decimal)EnumVociContabili.MAB;
-                                //idTipoLiquidazione = (decimal)EnumTipoLiquidazione.Contabilità;
-                                //lteorici = dts.GetIndennitaMAB(t, livdip.IDLIVELLO, idVoci, idTipoLiquidazione, annoMeseInizio, annoMeseFine, db);
-                                ////lteorici = t.TEORICI.Where(a =>
-                                ////                                    a.ELABMAB.Any(b => b.IDLIVELLO == livdip.IDLIVELLO) &&
-                                ////                                    a.ANNULLATO == false &&
-                                ////                                    a.DIRETTO == false &&
-                                ////                                    a.ELABORATO == true &&
-                                ////                                    a.INSERIMENTOMANUALE == false &&
-                                ////                                    a.IDVOCI == idVoci &&
-                                ////                                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                ////                                    Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                ////                                                        a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-                                ////                                    Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                ////                                                        a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-                                ////                        .OrderBy(a => a.ANNORIFERIMENTO)
-                                ////                        .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-                                //if (lteorici?.Any() ?? false)
-                                //{
-                                //    var importo = lteorici.Sum(a => a.IMPORTO);
-                                //    var descLivello = livdip.LIVELLI.LIVELLO;
-
-                                //    RptSpeseAvvicendamentoNewModel rptsam = SetSpeseAvvicendamento(matricola, cognome, nome, descLivello, ufficio, idVoci, dataPartenza, importo, db);
-                                //    //RptCostiUfficioModel rptcum = new RptCostiUfficioModel()
-                                //    //{
-                                //    //    Matricola = matricola,
-                                //    //    Nominativo = cognome + " " + nome,
-                                //    //    Livello = descLivello,
-                                //    //    Ufficio = ufficio,
-                                //    //    Descrizione = GetDescrizioneVoci(idVoci, db),
-                                //    //    Importo = importo
-                                //    //};
-                                //    lrptsam.Add(rptsam);
-
-                                //}
-                                //#endregion
-
-
                                 #region PRIMA SISTEMAZIONE
                                 idVoci = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380;
                                 idTipoLiquidazione = (decimal)EnumTipoLiquidazione.Paghe;
@@ -151,46 +89,6 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
 
                                 }
                                 #endregion
-
-                                //#region RICHIAMO
-                                //idVoci = (decimal)EnumVociContabili.Ind_Richiamo_IRI;
-                                //idTipoLiquidazione = (decimal)EnumTipoLiquidazione.Contabilità;
-
-                                //lteorici = dts.GetIndennitaRichiamo(t, livdip.IDLIVELLO, idVoci, idTipoLiquidazione, annoMeseInizio, annoMeseFine, db);
-                                ////lteorici = t.TEORICI.Where(a =>
-                                ////                                    a.ELABINDRICHIAMO?.IDLIVELLO == livdip.IDLIVELLO &&
-                                ////                                    a.ANNULLATO == false &&
-                                ////                                    a.DIRETTO == false &&
-                                ////                                    a.ELABORATO == true &&
-                                ////                                    a.INSERIMENTOMANUALE == false &&
-                                ////                                    a.IDVOCI == idVoci &&
-                                ////                                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                ////                                    Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                ////                                                        a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
-                                ////                                    Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
-                                ////                                                        a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
-                                ////                        .OrderBy(a => a.ANNORIFERIMENTO)
-                                ////                        .ThenBy(a => a.MESERIFERIMENTO).ToList();
-
-                                //if (lteorici?.Any() ?? false)
-                                //{
-                                //    var importo = lteorici.Sum(a => a.IMPORTO);
-                                //    var descLivello = livdip.LIVELLI.LIVELLO;
-                                //    RptSpeseAvvicendamentoNewModel rptsam = SetSpeseAvvicendamento(matricola, cognome, nome, descLivello, ufficio, idVoci, dataPartenza, importo, db);
-
-                                //    //RptCostiUfficioModel rptcum = new RptCostiUfficioModel()
-                                //    //{
-                                //    //    Matricola = matricola,
-                                //    //    Nominativo = cognome + " " + nome,
-                                //    //    Livello = descLivello,
-                                //    //    Ufficio = ufficio,
-                                //    //    Descrizione = GetDescrizioneVoci(idVoci, db),
-                                //    //    Importo = importo
-                                //    //};
-                                //    lrptsam.Add(rptsam);
-
-                                //}
-                                //#endregion
 
                                 #region TRASPORTO EFFETTI PARTENZA
                                 idVoci = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131;

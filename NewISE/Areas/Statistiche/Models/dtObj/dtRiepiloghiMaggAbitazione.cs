@@ -42,9 +42,6 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
             DateTime dtIni = Convert.ToDateTime("01/" + strMeseDa + "/" + annoDa.ToString());
             DateTime dtFin = Utility.GetDtFineMese(Convert.ToDateTime("01/" + strMeseA + "/" + annoA.ToString()));
 
-            //decimal annoMeseInizio = Convert.ToDecimal(AnnoDa.ToString() + MeseDa.ToString().PadLeft(2, (char)'0'));
-            //decimal annoMeseFine = Convert.ToDecimal(AnnoA.ToString() + MeseA.ToString().PadLeft(2, (char)'0'));
-
             List<RptRiepiloghiMaggAbitazioneModel> rim = new List<RptRiepiloghiMaggAbitazioneModel>();
 
             var lTeorici =
@@ -67,8 +64,6 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
 
                 foreach (var elabmab in lelabmab)
                 {
-                    //var dip = elabmab.INDENNITA.TRASFERIMENTO;
-                    //var dipendenti = elabmab.INDENNITA.TRASFERIMENTO.DIPENDENTI;
                     var tr = elabmab.INDENNITA.TRASFERIMENTO;
                     var d = tr.DIPENDENTI;
 
@@ -77,6 +72,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                     var voce = Teorici.VOCI;
                     var tl = Teorici.VOCI.TIPOLIQUIDAZIONE;
                     var tv = Teorici.VOCI.TIPOVOCE;
+                    string valuta = "";
 
                     var meseannoElab = db.MESEANNOELABORAZIONE.Find(Teorici.IDMESEANNOELAB);
                     var strMeseAnnoElab = "";
@@ -89,7 +85,10 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                     decimal numMeseRiferimento = Convert.ToDecimal(Teorici.ANNORIFERIMENTO.ToString() + Teorici.MESERIFERIMENTO.ToString().ToString().PadLeft(2, (char)'0'));
                     decimal numMeseElaborazione = Convert.ToDecimal(meseannoElab.ANNO.ToString() + meseannoElab.MESE.ToString().PadLeft(2, (char)'0'));
 
-                    
+                    using (dtValute dtv = new dtValute())
+                    {
+                        valuta = dtv.GetValuta(elabmab.IDVALUTA).descrizioneValuta;
+                    }
 
                     RptRiepiloghiMaggAbitazioneModel ldvm = new RptRiepiloghiMaggAbitazioneModel()
                     {
@@ -97,13 +96,14 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                         Ufficio = uf.DESCRIZIONEUFFICIO,
                         Matricola = d.MATRICOLA.ToString(),
                         MeseElaborazione = strMeseAnnoElab,
-                        MeseRiferimento=strMeseAnnoRif,
-                        Canone=elabmab.CANONELOCAZIONE,
-                        percApplicata=elabmab.PERCMAB,
+                        MeseRiferimento = strMeseAnnoRif,
+                        Canone = elabmab.CANONELOCAZIONE,
+                        percApplicata = elabmab.PERCMAB,
                         Importo = Teorici.IMPORTO,
-                        numMeseElaborazione=numMeseElaborazione,
-                        numMeseRiferimento=numMeseRiferimento,
-                        tfr=elabmab.TASSOFISSORAGGUAGLIO
+                        numMeseElaborazione = numMeseElaborazione,
+                        numMeseRiferimento = numMeseRiferimento,
+                        tfr = elabmab.TASSOFISSORAGGUAGLIO,
+                        Valuta=valuta
                     };
 
                     rim.Add(ldvm);
