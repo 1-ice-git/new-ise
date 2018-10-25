@@ -10340,6 +10340,15 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     throw new Exception("Errore nella fase d'inderimento del conguaglio di prima sistemazione in contabilità.");
                                 }
+
+
+                                #region Cedolino
+
+                                #endregion
+
+
+
+
                             }
                             else
                             {
