@@ -1460,7 +1460,7 @@ namespace NewISE.Controllers
                                            out siDocIdentita, out datiNuovoConiuge, out datiNuoviFigli, out siDocFormulari, out siPensioniConiuge);
 
 
-                    if (((datiFigli || datiParziali == false || siDocIdentita || datiConiuge || siPensioniConiuge) && siDocFormulari) && richiestaAttivazione == false)
+                    if (((datiFigli || datiParziali == false || siDocIdentita || datiConiuge) && siDocFormulari) && richiestaAttivazione == false)
                     {
                         CheckNotifica = true;
                     }
@@ -1515,6 +1515,7 @@ namespace NewISE.Controllers
                         siDocConiuge = siDocNuovoConiuge,
                         siDocFigli = siDocNuoviFigli,
                         docFormulario = docFormulario,
+                        siDocFormulari = siDocFormulari,
                         inLavorazione = inLavorazione,
                         CheckNotifica = CheckNotifica,
                         trasfSolaLettura = trasfSolaLettura,

@@ -41,7 +41,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                         Select2Model s2 = new Select2Model()
                         {
                             id = mae.idMeseAnnoElab.ToString(),
-                            text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mae.mese) + "-" + mae.anno.ToString("D4"),
+                            text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mae.mese) + "-" + mae.anno.ToString(),
                         };
 
                         ls2.Add(s2);
@@ -91,17 +91,17 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                         rMeseAnno.Add(new SelectListItem()
                         {
-                            Text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.mese) + "-" + item.anno.ToString("D4"),
+                            Text = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)item.mese) + "-" + item.anno.ToString(),
                             Value = item.idMeseAnnoElab.ToString()
                         });
 
                     }
 
-                    if (rMeseAnno.Exists(a => a.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString("D4")))
+                    if (rMeseAnno.Exists(a => a.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString()))
                     {
                         foreach (var item in rMeseAnno)
                         {
-                            if (item.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString("D4"))
+                            if (item.Text == CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)mese) + "-" + anno.ToString())
                             {
                                 item.Selected = true;
                             }

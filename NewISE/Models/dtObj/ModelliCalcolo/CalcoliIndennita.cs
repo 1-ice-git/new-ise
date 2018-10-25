@@ -962,27 +962,34 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 var pfkm = lps.First();
                 _percentualeFKMPartenza = pfkm.COEFFICIENTEKM;
 
-                var lpa =
-                    _trasferimento.TEPARTENZA.PERCENTUALEANTICIPOTE.Where(
-                        a =>
-                            a.ANNULLATO == false && a.IDTIPOANTICIPOTE == (decimal)EnumTrasportoEffetti.Partenza &&
-                            _trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
-                            _trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
-                        .OrderByDescending(a => a.DATAINIZIOVALIDITA)
-                        .ToList();
-                if (lpa?.Any() ?? false)
+                var tePartenza = _trasferimento.TEPARTENZA;
+
+                if (tePartenza.ATTIVITATEPARTENZA.Any(a => a.ANNULLATO == false && a.RICHIESTATRASPORTOEFFETTI == true && a.ATTIVAZIONETRASPORTOEFFETTI == true))
                 {
-                    var pa = lpa.First();
-                    _percentualeAnticipoTEPartenza = pa.PERCENTUALE;
-                    _percentualeSaldoTEPartenza = 100 - _percentualeAnticipoTEPartenza;
+                    var lpa =
+                        tePartenza.PERCENTUALEANTICIPOTE.Where(
+                            a =>
+                                a.ANNULLATO == false && a.IDTIPOANTICIPOTE == (decimal)EnumTrasportoEffetti.Partenza &&
+                                _trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
+                                _trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
+                    if (lpa?.Any() ?? false)
+                    {
+                        var pa = lpa.First();
+                        _percentualeAnticipoTEPartenza = pa.PERCENTUALE;
+                        _percentualeSaldoTEPartenza = 100 - _percentualeAnticipoTEPartenza;
 
-                    _totaleContributoOmnicomprensivoPartenza = Math.Round(_indennitaSistemazione * (_percentualeFKMPartenza / 100), 8);
+                        _totaleContributoOmnicomprensivoPartenza = Math.Round(_indennitaSistemazione * (_percentualeFKMPartenza / 100), 8);
 
-                    _anticipoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivoPartenza * (_percentualeAnticipoTEPartenza / 100), 8);
+                        _anticipoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivoPartenza * (_percentualeAnticipoTEPartenza / 100), 8);
 
-                    _saldoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivoPartenza * (_percentualeSaldoTEPartenza / 100), 8);
+                        _saldoContributoOmnicomprensivoPartenza = Math.Round(_totaleContributoOmnicomprensivoPartenza * (_percentualeSaldoTEPartenza / 100), 8);
 
+                    }
                 }
+
+
 
 
             }
@@ -1011,27 +1018,35 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     var pfkm = lpfk.First();
                     _percentualeFKMRientro = pfkm.COEFFICIENTEKM;
 
-                    var lpa =
-                        _trasferimento.TERIENTRO.PERCENTUALEANTICIPOTE.Where(
-                            a =>
-                                a.ANNULLATO == false && a.IDTIPOANTICIPOTE == (decimal)EnumTrasportoEffetti.Rientro &&
-                                dataRientro >= a.DATAINIZIOVALIDITA &&
-                                dataRientro <= a.DATAFINEVALIDITA)
-                            .OrderByDescending(a => a.DATAINIZIOVALIDITA)
-                            .ToList();
-                    if (lpa?.Any() ?? false)
+                    var teRientro = _trasferimento.TERIENTRO;
+
+                    if (teRientro.ATTIVITATERIENTRO.Any(a => a.ANNULLATO == false && a.RICHIESTATRASPORTOEFFETTI == true && a.ATTIVAZIONETRASPORTOEFFETTI == true))
                     {
-                        var pa = lpa.First();
-                        _percentualeAnticipoTERientro = pa.PERCENTUALE;
-                        _percentualeSaldoTERientro = 100 - _percentualeAnticipoTERientro;
+                        var lpa =
+                            teRientro.PERCENTUALEANTICIPOTE.Where(
+                                a =>
+                                    a.ANNULLATO == false && a.IDTIPOANTICIPOTE == (decimal)EnumTrasportoEffetti.Rientro &&
+                                    dataRientro >= a.DATAINIZIOVALIDITA &&
+                                    dataRientro <= a.DATAFINEVALIDITA)
+                                .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                .ToList();
 
-                        _totaleContributoOmnicomprensivoRientro = _indennitaRichiamoLordo * (_percentualeFKMRientro / 100);
+                        if (lpa?.Any() ?? false)
+                        {
+                            var pa = lpa.First();
+                            _percentualeAnticipoTERientro = pa.PERCENTUALE;
+                            _percentualeSaldoTERientro = 100 - _percentualeAnticipoTERientro;
 
-                        _anticipoContributoOmnicomprensivoRientro = Math.Round((_totaleContributoOmnicomprensivoRientro * (_percentualeAnticipoTERientro / 100)), 8);
+                            _totaleContributoOmnicomprensivoRientro = _indennitaRichiamoLordo * (_percentualeFKMRientro / 100);
 
-                        _saldoContributoOmnicomprensivoRientro = Math.Round((_totaleContributoOmnicomprensivoRientro * (_percentualeSaldoTERientro / 100)), 8);
+                            _anticipoContributoOmnicomprensivoRientro = Math.Round((_totaleContributoOmnicomprensivoRientro * (_percentualeAnticipoTERientro / 100)), 8);
 
+                            _saldoContributoOmnicomprensivoRientro = Math.Round((_totaleContributoOmnicomprensivoRientro * (_percentualeSaldoTERientro / 100)), 8);
+
+                        }
                     }
+
+
                 }
 
 
