@@ -65,54 +65,6 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox3">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Regola di calcolo
-
-</Value>
-                <Style>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value />
-                <Style>
-                  <FontSize>9pt</FontSize>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>2.99716cm</Top>
-        <Left>0.35189cm</Left>
-        <Height>2.71667cm</Height>
-        <Width>23.87879cm</Width>
-        <ZIndex>2</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Textbox Name="Textbox6">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -134,7 +86,7 @@
         <Left>13.84756cm</Left>
         <Height>0.6cm</Height>
         <Width>5.52833cm</Width>
-        <ZIndex>3</ZIndex>
+        <ZIndex>2</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -165,7 +117,7 @@
         <Left>19.48172cm</Left>
         <Height>0.6cm</Height>
         <Width>4.74896cm</Width>
-        <ZIndex>4</ZIndex>
+        <ZIndex>3</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -198,7 +150,7 @@
         <Left>13.84756cm</Left>
         <Height>0.6cm</Height>
         <Width>5.45777cm</Width>
-        <ZIndex>5</ZIndex>
+        <ZIndex>4</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -229,7 +181,7 @@
         <Left>19.48172cm</Left>
         <Height>0.6cm</Height>
         <Width>4.74896cm</Width>
-        <ZIndex>6</ZIndex>
+        <ZIndex>5</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -260,7 +212,7 @@
         <Left>4.5485cm</Left>
         <Height>0.6cm</Height>
         <Width>4.11396cm</Width>
-        <ZIndex>7</ZIndex>
+        <ZIndex>6</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -293,7 +245,7 @@
         <Left>0.39423cm</Left>
         <Height>0.6cm</Height>
         <Width>3.94508cm</Width>
-        <ZIndex>8</ZIndex>
+        <ZIndex>7</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -309,19 +261,19 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>3.94508cm</Width>
+              <Width>3.93979cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.32315cm</Width>
+              <Width>4.31786cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.17229cm</Width>
+              <Width>5.167cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.5676cm</Width>
+              <Width>5.56231cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.85479cm</Width>
+              <Width>4.8495cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -352,6 +304,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>WhiteSmoke</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -384,6 +337,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>WhiteSmoke</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -416,6 +370,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>WhiteSmoke</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -448,6 +403,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>WhiteSmoke</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -480,6 +436,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>WhiteSmoke</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -566,7 +523,9 @@
                               <Style />
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CanoneLocazioneinValuta</rd:DefaultName>
@@ -596,7 +555,9 @@
                               <Style />
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CanoneLocazioneinEuro</rd:DefaultName>
@@ -626,7 +587,9 @@
                               <Style />
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>TassoFissoRagguaglio</rd:DefaultName>
@@ -667,11 +630,11 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetMaggiorazioneAbitazione</DataSetName>
-        <Top>6.79662cm</Top>
-        <Left>0.36777cm</Left>
+        <Top>3.5687cm</Top>
+        <Left>0.39423cm</Left>
         <Height>1.2cm</Height>
-        <Width>23.86291cm</Width>
-        <ZIndex>9</ZIndex>
+        <Width>23.83646cm</Width>
+        <ZIndex>8</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -679,7 +642,7 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>4.22119in</Height>
+    <Height>2.06494in</Height>
     <Style />
   </Body>
   <Width>9.70318in</Width>
@@ -694,9 +657,9 @@
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.21448cm</Top>
-          <Left>0.43656cm</Left>
+          <Left>0.39423cm</Left>
           <Height>2.14913cm</Height>
-          <Width>3.92921cm</Width>
+          <Width>3.97154cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -734,9 +697,9 @@
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
           <Top>0.21448cm</Top>
-          <Left>4.83426cm</Left>
+          <Left>4.79193cm</Left>
           <Height>2.14913cm</Height>
-          <Width>14.80093cm</Width>
+          <Width>14.84326cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -753,9 +716,9 @@
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.24094cm</Top>
-          <Left>19.81158cm</Left>
+          <Left>19.76925cm</Left>
           <Height>2.05811cm</Height>
-          <Width>4.60928cm</Width>
+          <Width>4.65161cm</Width>
           <ZIndex>2</ZIndex>
           <ToolTip>ISE - Indennità Sede Estera</ToolTip>
           <Style>
@@ -779,62 +742,6 @@
       <Height>2.54cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
-      <ReportItems>
-        <Textbox Name="Textbox22">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>I</Value>
-                  <Style>
-                    <FontStyle>Italic</FontStyle>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>ndennità di Servizio all'Estero</Value>
-                  <Style>
-                    <FontStyle>Italic</FontStyle>
-                    <FontSize>9pt</FontSize>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Left</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox22</rd:DefaultName>
-          <Top>0.97cm</Top>
-          <Left>0.22489cm</Left>
-          <Height>0.6cm</Height>
-          <Width>24.19629cm</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Line Name="Line1">
-          <Top>0.37042cm</Top>
-          <Left>0.22522cm</Left>
-          <Height>0cm</Height>
-          <Width>24.19564cm</Width>
-          <ZIndex>1</ZIndex>
-          <Style>
-            <Border>
-              <Style>Solid</Style>
-            </Border>
-          </Style>
-        </Line>
-      </ReportItems>
       <Style>
         <Border>
           <Style>None</Style>

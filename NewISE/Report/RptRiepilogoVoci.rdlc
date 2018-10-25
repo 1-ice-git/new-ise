@@ -20,7 +20,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox18</rd:DefaultName>
         <Top>0.55245cm</Top>
-        <Left>0.44778cm</Left>
+        <Left>0.54815cm</Left>
         <Height>0.6cm</Height>
         <Width>3.73278cm</Width>
         <Style>
@@ -52,7 +52,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.55245cm</Top>
-        <Left>4.35695cm</Left>
+        <Left>4.45732cm</Left>
         <Height>0.6cm</Height>
         <Width>5.10654cm</Width>
         <ZIndex>1</ZIndex>
@@ -71,7 +71,7 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>5.44446cm</Width>
+              <Width>5.02113cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.91792cm</Width>
@@ -89,7 +89,7 @@
               <Width>3.47896cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.45041cm</Width>
+              <Width>3.27727cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -356,7 +356,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!descrizione.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -388,7 +390,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Voce.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -420,7 +424,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Liquidazione.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -452,7 +458,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Inserimento.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -484,7 +492,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!movimento.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -516,7 +526,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!meseAnnoRiferimento.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -548,7 +560,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=FormatNumber(Fields!Importo.Value,2)</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -597,9 +611,9 @@
         </TablixRowHierarchy>
         <DataSetName>DataSetRiepiloghiVoci</DataSetName>
         <Top>2.27224cm</Top>
-        <Left>0.44778cm</Left>
+        <Left>0.54815cm</Left>
         <Height>1.2cm</Height>
-        <Width>22.8555cm</Width>
+        <Width>23.25903cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -625,7 +639,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>0.55245cm</Top>
-        <Left>14.18599cm</Left>
+        <Left>14.28636cm</Left>
         <Height>0.6cm</Height>
         <Width>4.3725cm</Width>
         <ZIndex>3</ZIndex>
@@ -657,7 +671,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>0.55245cm</Top>
-        <Left>18.62905cm</Left>
+        <Left>18.72942cm</Left>
         <Height>0.6cm</Height>
         <Width>4.67422cm</Width>
         <ZIndex>4</ZIndex>
@@ -675,7 +689,7 @@
     <Height>3.04791in</Height>
     <Style />
   </Body>
-  <Width>9.38027in</Width>
+  <Width>9.49055in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -686,10 +700,9 @@
           <Source>Embedded</Source>
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
-          <Top>0.24094cm</Top>
-          <Left>0.44778cm</Left>
-          <Height>2.05811cm</Height>
-          <Width>3.73278cm</Width>
+          <Top>0.19543cm</Top>
+          <Height>2.14913cm</Height>
+          <Width>3.97154cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -726,14 +739,14 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
-          <Top>0.24094cm</Top>
-          <Left>4.35695cm</Left>
-          <Height>2.05811cm</Height>
-          <Width>14.20154cm</Width>
+          <Top>0.19543cm</Top>
+          <Left>4.3977cm</Left>
+          <Height>2.14913cm</Height>
+          <Width>14.84326cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
-              <Style>None</Style>
+              <Style>Solid</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -745,10 +758,10 @@
           <Source>Embedded</Source>
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
-          <Top>0.24094cm</Top>
-          <Left>18.69399cm</Left>
+          <Top>0.22189cm</Top>
+          <Left>19.37502cm</Left>
           <Height>2.05811cm</Height>
-          <Width>4.60928cm</Width>
+          <Width>4.65161cm</Width>
           <ZIndex>2</ZIndex>
           <ToolTip>ISE - Indennità Sede Estera</ToolTip>
           <Style>
@@ -775,7 +788,7 @@
       <ReportItems>
         <Line Name="Line2">
           <Top>0.4572cm</Top>
-          <Left>0.44778cm</Left>
+          <Left>0.54815cm</Left>
           <Height>0cm</Height>
           <Width>23.25903cm</Width>
           <Style>
@@ -813,7 +826,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox22</rd:DefaultName>
           <Top>1.15521cm</Top>
-          <Left>0.44778cm</Left>
+          <Left>0.54815cm</Left>
           <Height>0.6cm</Height>
           <Width>23.25903cm</Width>
           <ZIndex>1</ZIndex>
