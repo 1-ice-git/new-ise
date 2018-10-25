@@ -673,7 +673,7 @@
         <Top>10.18277cm</Top>
         <Left>6.52307cm</Left>
         <Height>0.6cm</Height>
-        <Width>12.55762cm</Width>
+        <Width>12.24012cm</Width>
         <ZIndex>19</ZIndex>
         <Style>
           <Border>
@@ -899,7 +899,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>6.71643in</Height>
+    <Height>7.12268in</Height>
     <Style />
   </Body>
   <Width>7.57459in</Width>
@@ -1013,62 +1013,6 @@
       <Height>2.54cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
-      <ReportItems>
-        <Textbox Name="Textbox22">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>I</Value>
-                  <Style>
-                    <FontStyle>Italic</FontStyle>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>ndennità di Servizio all'Estero</Value>
-                  <Style>
-                    <FontStyle>Italic</FontStyle>
-                    <FontSize>9pt</FontSize>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox22</rd:DefaultName>
-          <Top>1.23275cm</Top>
-          <Left>0.46335cm</Left>
-          <Height>0.6cm</Height>
-          <Width>18.14991cm</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Line Name="Line1">
-          <Top>0.70725cm</Top>
-          <Left>0.46335cm</Left>
-          <Height>0cm</Height>
-          <Width>18.14991cm</Width>
-          <ZIndex>1</ZIndex>
-          <Style>
-            <Border>
-              <Style>Solid</Style>
-            </Border>
-          </Style>
-        </Line>
-      </ReportItems>
       <Style>
         <Border>
           <Style>None</Style>

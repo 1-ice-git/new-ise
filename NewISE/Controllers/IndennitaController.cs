@@ -1662,21 +1662,13 @@ namespace NewISE.Controllers
                     using (dtRuoloUfficio dtru = new dtRuoloUfficio())
                     {
                         tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                        tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
                         ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
 
                     }
 
-                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
-                    {
-                        dit.indennitaBase = ci.IndennitaDiBase;
-                        dit.indennitaServizio = ci.IndennitaDiServizio;
-                        dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
-                        dit.indennitaPersonale = ci.IndennitaPersonale;
-                        
-                        
-                    }
+                   
                 }
+
                 ViewBag.idTrasferimento = idTrasferimento;
 
 
@@ -1848,37 +1840,6 @@ namespace NewISE.Controllers
 
                                     reportViewer.LocalReport.SetParameters(parameterValues);
                                     ViewBag.ReportViewer = reportViewer;
-
-
-
-                                    //ReportViewer reportViewer = new ReportViewer();
-
-                                    //reportViewer.ProcessingMode = ProcessingMode.Local;
-                                    //reportViewer.SizeToReportContent = true;
-                                    //reportViewer.Width = Unit.Percentage(100);
-                                    //reportViewer.Height = Unit.Percentage(100);
-
-                                    ////var datasource = new ReportDataSource("DSRiepilogoVoci", lTeorici.ToList());
-                                    //reportViewer.Visible = true;
-                                    //reportViewer.ProcessingMode = ProcessingMode.Local;
-                                    //reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioneAbitazione.rdlc";
-                                    //reportViewer.LocalReport.DataSources.Clear();
-                                    ////reportViewer.LocalReport.DataSources.Add(datasource);
-
-                                    //reportViewer.LocalReport.Refresh();
-                                    //reportViewer.ShowReportBody = true;
-
-                                    //ReportParameter[] parameterValues = new ReportParameter[]
-                                    //{
-                                    //    new ReportParameter ("Nominativo",Nominativo),
-                                    //    new ReportParameter ("Livello",Livello),
-                                    //    new ReportParameter ("Decorrenza",Decorrenza),
-                                    //    new ReportParameter ("Ufficio",Ufficio)
-
-                                    //};
-
-                                    //reportViewer.LocalReport.SetParameters(parameterValues);
-                                    //ViewBag.ReportViewer = reportViewer;
                         }
                         }
                }
@@ -2166,34 +2127,7 @@ namespace NewISE.Controllers
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                             List<DateTime> lDateVariazioni = new List<DateTime>();
 
-                            //#region Variazioni Richiamo
-
-
-                            //var ll = db.COEFFICIENTEINDRICHIAMO.ToList();
-
-                            //foreach (var ib in ll)
-                            //{
-                            //    DateTime dtVar = new DateTime();
-
-                            //    if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                            //    {
-                            //        dtVar = trasferimento.DATAPARTENZA;
-                            //    }
-                            //    else
-                            //    {
-                            //        dtVar = ib.DATAINIZIOVALIDITA;
-                            //    }
-
-
-                            //    if (!lDateVariazioni.Contains(dtVar))
-                            //    {
-                            //        lDateVariazioni.Add(dtVar);
-                            //        lDateVariazioni.Sort();
-                            //    }
-                            //}
-
-                            //#endregion
-
+                            #region Variazioni Richiamo
                             var richiamo =
                                     trasferimento.RICHIAMO
                                     .Where(a => a.ANNULLATO == false)
@@ -2222,6 +2156,7 @@ namespace NewISE.Controllers
                                     }
                                 }
                             }
+                            #endregion
 
                             lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
@@ -2937,96 +2872,42 @@ namespace NewISE.Controllers
                 {
 
                     using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        ViewBag.idTrasferimento = idTrasferimento;
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
-
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
-
-
-                        var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-
-                        List<DateTime> lDateVariazioni = new List<DateTime>();
-
-
-                        #region Variazioni Percentuale Fascia Km
-
-                        var ll =
-                            db.PERCENTUALEFKM
-                            .Where(a => a.ANNULLATO == false)
-                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                        foreach (var ib in ll)
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
                         {
-                            DateTime dtVar = new DateTime();
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
+
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
+
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);      
+
+                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
                             {
-                                dtVar = trasferimento.DATAPARTENZA;
-                            }
-                            else
-                            {
-                                dtVar = ib.DATAINIZIOVALIDITA;
-                            }
 
-
-                            if (!lDateVariazioni.Contains(dtVar))
-                            {
-                                lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
-                            }
-                        }
-
-                        #endregion
-
-                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                        if (lDateVariazioni?.Any() ?? false)
-                        {
-                            for (int j = 0; j < lDateVariazioni.Count; j++)
-                            {
-                                DateTime dv = lDateVariazioni[j];
-
-                                if (dv < Utility.DataFineStop())
+                                RptContributoOmnicomprensivoTrasferimentoModel rpts = new RptContributoOmnicomprensivoTrasferimentoModel()
                                 {
-                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-
-                                        
-
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
-                                        {
-
-                                            RptContributoOmnicomprensivoTrasferimentoModel rpts = new RptContributoOmnicomprensivoTrasferimentoModel()
-                                            
-                                            {
+                                    IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda,
+                                    AnticipoContrOmniComprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza,
+                                    SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza,
+                                    PercentualeFasciaKmP =  ci.PercentualeFKMPartenza,
+                                    dataPartenza = trasferimento.DATAPARTENZA,
+                                    TotaleContributoOmnicomprensivoPartenza = ci.TotaleContributoOmnicomprensivoPartenza
                                                 
-                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
-                                                IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda,
-                                                AnticipoContrOmniComprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza,
-                                                SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza,
-                                                PercentualeFasciaKmP =  ci.PercentualeFKMPartenza,
-                                                dataPartenza = trasferimento.DATAPARTENZA
-                                                
-                                            };
+                                };
 
-                                            rpt.Add(rpts);
+                                rpt.Add(rpts);
 
-                                        }
-
-                                    }
                             }
-                        }
+                                        
                         
                             ReportViewer reportViewer = new ReportViewer();
 
@@ -3122,74 +3003,22 @@ namespace NewISE.Controllers
 
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                             
-                            List<DateTime> lDateVariazioni = new List<DateTime>();
-
-                            #region Variazioni Percentuale Fascia Km
-
-                            var ll =
-                                db.PERCENTUALEFKM
-                                .Where(a => a.ANNULLATO == false)
-                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                            foreach (var ib in ll)
+                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
                             {
-                                DateTime dtVar = new DateTime();
 
-                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                RptContributoOmnicomprensivoRientroModel rpts = new RptContributoOmnicomprensivoRientroModel()
                                 {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = ib.DATAINIZIOVALIDITA;
-                                }
-
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    lDateVariazioni.Sort();
-                                }
-                            }
-
-                            #endregion
-
-                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                            if (lDateVariazioni?.Any() ?? false)
-                            {
-                                for (int j = 0; j < lDateVariazioni.Count; j++)
-                                {
-                                    DateTime dv = lDateVariazioni[j];
-
-                                    if (dv < Utility.DataFineStop())
-                                    {
-                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
-                                        {
-
-                                            RptContributoOmnicomprensivoRientroModel rpts = new RptContributoOmnicomprensivoRientroModel()
-                                            {
-                                                dataRientro = trasferimento.DATARIENTRO,
-                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
-                                                IndennitaRichiamo = ci.IndennitaRichiamoLordo,
-                                                AnticipoContrOmniComprensivoRientro = ci.AnticipoContributoOmnicomprensivoRientro,
-                                                SaldoContrOmniComprensivoRientro = ci.SaldoContributoOmnicomprensivoRientro,
-                                                PercentualeFasciaKmR = ci.PercentualeFKMRientro
+                                    dataRientro = trasferimento.DATARIENTRO,
+                                    IndennitaRichiamo = ci.IndennitaRichiamoLordo,
+                                    AnticipoContrOmniComprensivoRientro = ci.AnticipoContributoOmnicomprensivoRientro,
+                                    SaldoContrOmniComprensivoRientro = ci.SaldoContributoOmnicomprensivoRientro,
+                                    PercentualeFasciaKmR = ci.PercentualeFKMRientro
                                                                                                
-                                            };
+                                };
 
-                                            rpt.Add(rpts);
+                                rpt.Add(rpts);
                                         
-                                        }
-
-                                    }
-                                }
                             }
-                        
 
                         ReportViewer reportViewer = new ReportViewer();
 

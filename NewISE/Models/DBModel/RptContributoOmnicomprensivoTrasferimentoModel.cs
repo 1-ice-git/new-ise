@@ -22,5 +22,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data Partenza")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime dataPartenza { get; set; }
+
+        [Display(Name = "Totale Contr.Omnicomprensivo Partenza")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal TotaleContributoOmnicomprensivoPartenza { get; set; }
     }
 }

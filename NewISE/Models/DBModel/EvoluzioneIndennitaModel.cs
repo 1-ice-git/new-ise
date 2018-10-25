@@ -98,19 +98,23 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal CoefficientediMaggiorazione { get; set; }
 
-        [Display(Name = "Anticipo Contr.Omnicomprensivo Partenza")]
+        [Display(Name = "Anticipo")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal AnticipoContributoOmnicomprensivoPartenza { get; set; }
 
-        [Display(Name = "Saldo Contr.Omnicomprensivo Partenza")]
+        [Display(Name = "Saldo")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal SaldoContributoOmnicomprensivoPartenza { get; set; }
 
-        [Display(Name = "Anticipo Contr.Omnicomprensivo Rientro")]
+        [Display(Name = "Totale")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal TotaleContributoOmnicomprensivoPartenza { get; set; }
+
+        [Display(Name = "Anticipo")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal AnticipoContributoOmnicomprensivoRientro { get; set; }
 
-        [Display(Name = "Saldo Contr.Omnicomprensivo Rientro")]
+        [Display(Name = "Saldo")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal SaldoContributoOmnicomprensivoRientro { get; set; }
 
@@ -148,13 +152,15 @@ namespace NewISE.Models.DBModel
         public decimal AliquotaPrevid { get; set; }
 
         [Display(Name = "ImpPrevid")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal ImpPrevid { get; set; }
 
         [Display(Name = "ContrPrevid")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal ContrPrevid { get; set; }
 
         [Display(Name = "ImpFiscale")]
-
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal ImpFiscale { get; set; }
 
         [Display(Name = "RitenutaFiscale")]
