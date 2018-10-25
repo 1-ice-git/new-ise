@@ -6940,7 +6940,6 @@
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptSospensioni.rdlc" />
     <EmbeddedResource Include="Report\RptAnticipoIndennitadiSistemazioneLorda.rdlc" />
-    <EmbeddedResource Include="Report\RptRiepilogoVoci_old.rdlc" />
     <EmbeddedResource Include="Report\RptUnicaSoluzioneIndennitadiPrimaSistemazione.rdlc" />
   </ItemGroup>
   <PropertyGroup>

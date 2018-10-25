@@ -42,6 +42,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
 
+                    #region Variazioni Indennità Di Base
                     List<DateTime> lDateVariazioni = new List<DateTime>();
 
                     var ll =
@@ -74,6 +75,8 @@ namespace NewISE.Models.DBModel.dtObj
                             lDateVariazioni.Sort();
                         }
                     }
+
+                    #endregion
 
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
