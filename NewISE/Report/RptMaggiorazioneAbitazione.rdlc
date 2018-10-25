@@ -520,7 +520,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CanoneLocazioneinValuta.Value</Value>
-                              <Style />
+                              <Style>
+                                <Format>#,0.00;(#,0.00)</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -552,7 +554,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CanoneLocazioneinEuro.Value</Value>
-                              <Style />
+                              <Style>
+                                <Format>#,0.00;(#,0.00)</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -584,7 +588,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!TassoFissoRagguaglio.Value</Value>
-                              <Style />
+                              <Style>
+                                <Format>#,0.00;(#,0.00)</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
