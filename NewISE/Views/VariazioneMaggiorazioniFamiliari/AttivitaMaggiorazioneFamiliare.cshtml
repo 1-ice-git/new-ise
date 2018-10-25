@@ -346,7 +346,7 @@
                 VerificaAutenticazione();
             },
             success: function (result) {
-                //debugger;
+                debugger;
                 if (result.err == "") {
                     var admin = result.admin;
                     var rinuncia = result.rinuncia;
@@ -361,9 +361,61 @@
                     var siDocFigli = result.siDocFigli;
                     var siDoc = result.siDoc;
                     var docFormulario = result.docFormulario;
+                    var siDocFormulari = result.siDocFormulari;
                     var inLavorazione = result.inLavorazione;
                     var checkNotifica = result.CheckNotifica;
                     var trasfSolaLettura = result.trasfSolaLettura;
+
+                    if (
+                            (
+                                datiFigli &&
+                                datiParzialiFigli == false &&
+                                siDocFigli &&
+                                datiConiuge == false &&
+                                siDocFormulari == false
+                            )
+                        ) {
+                        //blink('#lkFormulariVar');
+                        //LINK ROSSO
+                        $("#lkFormulariVar").animate({ color: "#ff0000" });
+                    }
+
+                    if (
+                            (
+                                datiConiuge &&
+                                datiParzialiConiuge == false &&
+                                siDocConiuge &&
+                                datiFigli == false &&
+                                siDocFormulari == false
+                            )
+                        ) {
+                        //blink('#lkFormulariVar');
+                        //LINK ROSSO
+                        $("#lkFormulariVar").animate({ color: "#ff0000" });
+                    }
+
+                    if (
+                            (
+                                datiFigli &&
+                                datiParzialiFigli == false &&
+                                siDocFigli &&
+                                datiConiuge == false &&
+                                siDocFormulari
+                            )
+                            ||
+                            (
+                                datiConiuge &&
+                                datiParzialiConiuge == false &&
+                                siDocConiuge &&
+                                datiFigli == false &&
+                                siDocFormulari
+                            )
+
+                        ) {
+                        //$('#lkFormulariVar').stop().fadeIn();
+                        //RIPRISTINA COLORE LINK
+                        $("#lkFormulariVar").animate({ color: $("#lkFormulariVar").css('color') });
+                    }
 
                     $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                     $("#btAttivaMagFam_Var").addClass("disabled");
@@ -392,20 +444,6 @@
                         $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
                     }
                     else {
-                        /////Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione
-                        //if (rinuncia && richiesta)
-                        //{
-                        //    $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                        //    $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
-
-                        //    if (attivazione)
-                        //    {
-                        //        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                        //        $("#btAttivaMagFam_Var").addClass("disabled");
-                        //    }
-                        //}
-                        //else
-                        //{
                         if (richiesta) {
                             $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
                             $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
@@ -441,7 +479,6 @@
                             $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
                             $("#btAnnullaMagFam_Var").addClass("disabled");
                         }
-                        //}
                     }
                     //se il trasferimento è terminato o annullato disabilito i pulsanti
                     if (trasfSolaLettura) {
