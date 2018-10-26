@@ -289,6 +289,8 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columnTassoFissoRagguaglio;
             
+            private global::System.Data.DataColumn columnPercentualeMaggAbitazione;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -364,6 +366,14 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PercentualeMaggAbitazioneColumn {
+                get {
+                    return this.columnPercentualeMaggAbitazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -399,14 +409,15 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string CanoneLocazioneinValuta, string CanoneLocazioneinEuro, string TassoFissoRagguaglio) {
+            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string CanoneLocazioneinValuta, string CanoneLocazioneinEuro, string TassoFissoRagguaglio, string PercentualeMaggAbitazione) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DataInizioValidita,
                         DataFineValidita,
                         CanoneLocazioneinValuta,
                         CanoneLocazioneinEuro,
-                        TassoFissoRagguaglio};
+                        TassoFissoRagguaglio,
+                        PercentualeMaggAbitazione};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -434,6 +445,7 @@ namespace NewISE.Views.Dataset {
                 this.columnCanoneLocazioneinValuta = base.Columns["CanoneLocazioneinValuta"];
                 this.columnCanoneLocazioneinEuro = base.Columns["CanoneLocazioneinEuro"];
                 this.columnTassoFissoRagguaglio = base.Columns["TassoFissoRagguaglio"];
+                this.columnPercentualeMaggAbitazione = base.Columns["PercentualeMaggAbitazione"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -449,6 +461,8 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnCanoneLocazioneinEuro);
                 this.columnTassoFissoRagguaglio = new global::System.Data.DataColumn("TassoFissoRagguaglio", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTassoFissoRagguaglio);
+                this.columnPercentualeMaggAbitazione = new global::System.Data.DataColumn("PercentualeMaggAbitazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPercentualeMaggAbitazione);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -675,6 +689,23 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PercentualeMaggAbitazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.PercentualeMaggAbitazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PercentualeMaggAbitazione\' nella tabella \'DataTable1\' è " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.PercentualeMaggAbitazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDataInizioValiditaNull() {
                 return this.IsNull(this.tableDataTable1.DataInizioValiditaColumn);
             }
@@ -731,6 +762,18 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTassoFissoRagguaglioNull() {
                 this[this.tableDataTable1.TassoFissoRagguaglioColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPercentualeMaggAbitazioneNull() {
+                return this.IsNull(this.tableDataTable1.PercentualeMaggAbitazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPercentualeMaggAbitazioneNull() {
+                this[this.tableDataTable1.PercentualeMaggAbitazioneColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -273,7 +273,7 @@
               <Width>5.56231cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.8495cm</Width>
+              <Width>4.84949cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -414,14 +414,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox19">
+                    <Textbox Name="Textbox3">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Tasso Fisso Ragguaglio</Value>
+                              <Value>% Magg. Abitazione</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -430,7 +430,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox19</rd:DefaultName>
+                      <rd:DefaultName>Textbox3</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -580,17 +580,15 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="TassoFissoRagguaglio">
+                    <Textbox Name="PercentualeMaggAbitazione">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!TassoFissoRagguaglio.Value</Value>
-                              <Style>
-                                <Format>#,0.00;(#,0.00)</Format>
-                              </Style>
+                              <Value>=Fields!PercentualeMaggAbitazione.Value</Value>
+                              <Style />
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -598,7 +596,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>TassoFissoRagguaglio</rd:DefaultName>
+                      <rd:DefaultName>PercentualeMaggAbitazione</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -639,7 +637,7 @@
         <Top>3.5687cm</Top>
         <Left>0.39423cm</Left>
         <Height>1.2cm</Height>
-        <Width>23.83646cm</Width>
+        <Width>23.83645cm</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
@@ -798,6 +796,10 @@
         </Field>
         <Field Name="TassoFissoRagguaglio">
           <DataField>TassoFissoRagguaglio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PercentualeMaggAbitazione">
+          <DataField>PercentualeMaggAbitazione</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

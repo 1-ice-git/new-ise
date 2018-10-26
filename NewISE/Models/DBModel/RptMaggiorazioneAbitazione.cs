@@ -13,6 +13,9 @@ namespace NewISE.Models.DBModel
         public decimal CanoneLocazioneinValuta { get; set; }
         public decimal CanoneLocazioneinEuro { get; set; }
         public decimal TassoFissoRagguaglio { get; set; }
+
+        public decimal PercentualeMaggAbitazione { get; set; }
+
         
 
     }

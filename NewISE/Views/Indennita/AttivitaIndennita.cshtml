@@ -141,9 +141,9 @@
                                <div class="list-group-item">
                                     @Ajax.ActionLink("Saldo Indennità di Prima Sistemazione", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                                 </div>
-                                @*<div class="list-group-item">
+                                <div class="list-group-item">
                                     @Ajax.ActionLink("Unica Soluzione Indennità di Prima Sistemazione ", "UnicaSoluzioneIndennitadiPrimaSistemazione", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                                </div>*@
+                                </div>
                                 <div class="list-group-item">
                                     @Ajax.ActionLink("Indennità di Richiamo Lorda", "IndennitadiRichiamoLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                                 </div>
@@ -158,14 +158,8 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
-
-
-
             </div>
 
 

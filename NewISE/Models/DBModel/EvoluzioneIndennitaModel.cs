@@ -33,6 +33,11 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal PercentualeFasciaKmR { get; set; }
 
+        [Display(Name = "Percentuale Magg Abitazione")]
+        
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
+        public decimal PercentualeMaggAbitazione { get; set; }
+
         [Display(Name = "Coeff. Ind. Prima Sistemazione")]
         public decimal CoeffIndSistemazione { get; set; }
 
@@ -146,6 +151,7 @@ namespace NewISE.Models.DBModel
         public decimal AliquotaFiscale { get; set; }
 
         [Display(Name = "Detrazione")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Detrazione { get; set; }
 
         [Display(Name = "AliquotaPrevid")]
@@ -164,6 +170,7 @@ namespace NewISE.Models.DBModel
         public decimal ImpFiscale { get; set; }
 
         [Display(Name = "RitenutaFiscale")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal RitenutaFiscale { get; set; }
 
         [Display(Name = "Data Test")]

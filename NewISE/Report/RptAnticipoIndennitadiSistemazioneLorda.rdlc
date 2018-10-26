@@ -286,7 +286,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox86</rd:DefaultName>
@@ -437,7 +439,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox17</rd:DefaultName>
@@ -519,10 +523,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>6.42792cm</Width>
+              <Width>6.375cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>12.23826cm</Width>
+              <Width>12.18534cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -544,7 +548,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox25</rd:DefaultName>
@@ -610,9 +616,9 @@
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
         <Top>6.26745cm</Top>
-        <Left>0.38364cm</Left>
+        <Left>0.48948cm</Left>
         <Height>0.6cm</Height>
-        <Width>18.66618cm</Width>
+        <Width>18.56034cm</Width>
         <ZIndex>12</ZIndex>
         <Style>
           <Border>
@@ -636,10 +642,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>6.375cm</Width>
+              <Width>6.34854cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>12.23826cm</Width>
+              <Width>12.2118cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -661,7 +667,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox31</rd:DefaultName>
@@ -729,9 +737,9 @@
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
         <Top>8.43174cm</Top>
-        <Left>0.43656cm</Left>
+        <Left>0.48948cm</Left>
         <Height>0.6cm</Height>
-        <Width>18.61326cm</Width>
+        <Width>18.56033cm</Width>
         <ZIndex>14</ZIndex>
         <Style>
           <Border>
@@ -743,10 +751,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>6.25911cm</Width>
+              <Width>6.29059cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>12.23826cm</Width>
+              <Width>12.26974cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -768,7 +776,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox37</rd:DefaultName>
@@ -834,9 +844,9 @@
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
         <Top>9.64883cm</Top>
-        <Left>0.55245cm</Left>
+        <Left>0.48948cm</Left>
         <Height>0.6cm</Height>
-        <Width>18.49737cm</Width>
+        <Width>18.56034cm</Width>
         <ZIndex>15</ZIndex>
         <Style>
           <Border>
@@ -848,10 +858,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>6.14321cm</Width>
+              <Width>6.17469cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>12.35415cm</Width>
+              <Width>12.38563cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -873,7 +883,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox43</rd:DefaultName>
@@ -939,9 +951,9 @@
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
         <Top>10.6807cm</Top>
-        <Left>0.55245cm</Left>
+        <Left>0.48948cm</Left>
         <Height>0.6cm</Height>
-        <Width>18.49736cm</Width>
+        <Width>18.56033cm</Width>
         <ZIndex>16</ZIndex>
         <Style>
           <Border>
@@ -975,7 +987,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox62</rd:DefaultName>
@@ -1064,10 +1078,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>6.25911cm</Width>
+              <Width>6.29059cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>12.23826cm</Width>
+              <Width>12.26974cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -1089,7 +1103,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox70</rd:DefaultName>
@@ -1155,9 +1171,9 @@
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
         <Top>12.29995cm</Top>
-        <Left>0.55245cm</Left>
+        <Left>0.48948cm</Left>
         <Height>0.6cm</Height>
-        <Width>18.49737cm</Width>
+        <Width>18.56034cm</Width>
         <ZIndex>18</ZIndex>
         <Style>
           <Border>
@@ -1192,7 +1208,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1291,7 +1307,7 @@
         </Style>
       </Line>
     </ReportItems>
-    <Height>6.57744in</Height>
+    <Height>6.52536in</Height>
     <Style>
       <Border>
         <Style>None</Style>
@@ -1406,7 +1422,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>2.98979cm</Height>
+      <Height>2.59291cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
