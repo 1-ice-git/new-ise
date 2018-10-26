@@ -303,6 +303,7 @@ namespace NewISE.Models.DBModel
 
         public string dtRientro { get; set; }
 
-
+        [Display(Name = "MAB Mensile")]
+        public decimal ImportoMABMensile { get; set; }
     }
 }

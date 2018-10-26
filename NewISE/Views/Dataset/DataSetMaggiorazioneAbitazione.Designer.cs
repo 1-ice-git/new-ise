@@ -291,6 +291,8 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columnPercentualeMaggAbitazione;
             
+            private global::System.Data.DataColumn columnImportoMABMensile;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -374,6 +376,14 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ImportoMABMensileColumn {
+                get {
+                    return this.columnImportoMABMensile;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -409,7 +419,7 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string CanoneLocazioneinValuta, string CanoneLocazioneinEuro, string TassoFissoRagguaglio, string PercentualeMaggAbitazione) {
+            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string CanoneLocazioneinValuta, string CanoneLocazioneinEuro, string TassoFissoRagguaglio, string PercentualeMaggAbitazione, string ImportoMABMensile) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DataInizioValidita,
@@ -417,7 +427,8 @@ namespace NewISE.Views.Dataset {
                         CanoneLocazioneinValuta,
                         CanoneLocazioneinEuro,
                         TassoFissoRagguaglio,
-                        PercentualeMaggAbitazione};
+                        PercentualeMaggAbitazione,
+                        ImportoMABMensile};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -446,6 +457,7 @@ namespace NewISE.Views.Dataset {
                 this.columnCanoneLocazioneinEuro = base.Columns["CanoneLocazioneinEuro"];
                 this.columnTassoFissoRagguaglio = base.Columns["TassoFissoRagguaglio"];
                 this.columnPercentualeMaggAbitazione = base.Columns["PercentualeMaggAbitazione"];
+                this.columnImportoMABMensile = base.Columns["ImportoMABMensile"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -463,6 +475,8 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnTassoFissoRagguaglio);
                 this.columnPercentualeMaggAbitazione = new global::System.Data.DataColumn("PercentualeMaggAbitazione", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentualeMaggAbitazione);
+                this.columnImportoMABMensile = new global::System.Data.DataColumn("ImportoMABMensile", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnImportoMABMensile);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -706,6 +720,22 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ImportoMABMensile {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.ImportoMABMensileColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ImportoMABMensile\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.ImportoMABMensileColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDataInizioValiditaNull() {
                 return this.IsNull(this.tableDataTable1.DataInizioValiditaColumn);
             }
@@ -774,6 +804,18 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPercentualeMaggAbitazioneNull() {
                 this[this.tableDataTable1.PercentualeMaggAbitazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsImportoMABMensileNull() {
+                return this.IsNull(this.tableDataTable1.ImportoMABMensileColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetImportoMABMensileNull() {
+                this[this.tableDataTable1.ImportoMABMensileColumn] = global::System.Convert.DBNull;
             }
         }
         
