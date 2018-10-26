@@ -27,5 +27,8 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime dataRientro { get; set; }
 
+        public string dtRientro { get; set; }
+
+
     }
 }

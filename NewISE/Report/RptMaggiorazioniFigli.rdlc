@@ -380,6 +380,7 @@
                               <Value>Data Fine Validita</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
+                                <Format>d</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>

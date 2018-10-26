@@ -490,7 +490,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!DataFineValidita.Value</Value>
-                              <Style />
+                              <Style>
+                                <Format>d</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />

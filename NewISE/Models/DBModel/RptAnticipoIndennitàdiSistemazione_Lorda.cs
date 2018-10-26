@@ -262,5 +262,9 @@ namespace NewISE.Models.DBModel
         }
 
         public decimal idMeseAnnoElaborato { get; set; }
+
+        public string dtFineValidita { get; set; }
+
+
     }
 }
