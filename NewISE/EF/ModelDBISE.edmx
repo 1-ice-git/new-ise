@@ -631,7 +631,6 @@
           <Property Name="ANTICIPO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="SALDO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="UNICASOLUZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IMPORTOLORDO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCANTSALDOUNISOL" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
@@ -1504,6 +1503,7 @@
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="CONTRIBUTOAGGIUNTIVO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="MASSIMALECA" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="IMPORTOLORDO" Type="number" Precision="18" Scale="8" Nullable="false" />
         </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
@@ -8421,7 +8421,6 @@
           <Property Name="ANTICIPO" Type="Boolean" Nullable="false" />
           <Property Name="SALDO" Type="Boolean" Nullable="false" />
           <Property Name="UNICASOLUZIONE" Type="Boolean" Nullable="false" />
-          <Property Name="IMPORTOLORDO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCANTSALDOUNISOL" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
@@ -9258,6 +9257,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="CONTRIBUTOAGGIUNTIVO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="MASSIMALECA" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="IMPORTOLORDO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_AVM_T" FromRole="TEORICI" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_EIR_T" FromRole="TEORICI" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="ELABINDSISTEMAZIONE" Relationship="DBISE.R_EIS_T" FromRole="TEORICI" ToRole="ELABINDSISTEMAZIONE" />
@@ -12479,7 +12479,6 @@
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="PERCANTSALDOUNISOL" ColumnName="PERCANTSALDOUNISOL" />
-                <ScalarProperty Name="IMPORTOLORDO" ColumnName="IMPORTOLORDO" />
                 <ScalarProperty Name="UNICASOLUZIONE" ColumnName="UNICASOLUZIONE" />
                 <ScalarProperty Name="SALDO" ColumnName="SALDO" />
                 <ScalarProperty Name="ANTICIPO" ColumnName="ANTICIPO" />
@@ -13173,6 +13172,7 @@
           <EntitySetMapping Name="TEORICI">
             <EntityTypeMapping TypeName="DBISE.TEORICI">
               <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="IMPORTOLORDO" ColumnName="IMPORTOLORDO" />
                 <ScalarProperty Name="MASSIMALECA" ColumnName="MASSIMALECA" />
                 <ScalarProperty Name="CONTRIBUTOAGGIUNTIVO" ColumnName="CONTRIBUTOAGGIUNTIVO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
