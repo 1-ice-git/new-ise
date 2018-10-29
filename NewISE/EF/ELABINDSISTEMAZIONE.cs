@@ -35,7 +35,6 @@ namespace NewISE.EF
         public bool ANTICIPO { get; set; }
         public bool SALDO { get; set; }
         public bool UNICASOLUZIONE { get; set; }
-        public decimal IMPORTOLORDO { get; set; }
         public decimal PERCANTSALDOUNISOL { get; set; }
         public bool CONGUAGLIO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }

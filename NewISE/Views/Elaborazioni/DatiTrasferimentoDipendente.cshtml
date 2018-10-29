@@ -9,32 +9,36 @@
 </div>
 <hr />
 <div class="form-group">
-    <div class="col-xs-4">
-        <label class="control-label">Tipo trasf.</label>
-        <input type="text" class="form-control text-uppercase" readonly="readonly" value="@Model.TipoTrasferimento.descTipoTrasf" />
+    <div class="col-xs-3">
+        <label class="control-label">Tipo trasf.: </label>
+        <label class="control-label text-uppercase text-info">@Model.TipoTrasferimento.descTipoTrasf</label>
     </div>
-    <div class="col-xs-4">
-        <label class="control-label">Ufficio</label>
-        <input type="text" class="form-control text-uppercase" readonly="readonly" value="@Model.Ufficio.descUfficio (@Model.Ufficio.codiceUfficio)" />
+    <div class="col-xs-3">
+        <label class="control-label">Ufficio: </label>
+        <label class="control-label text-uppercase text-info">@Model.Ufficio.descUfficio (@Model.Ufficio.codiceUfficio)</label>
+    </div>
+
+    <div class="col-xs-2">
+        <label class="control-label">Data ini.: </label>
+        <label class="control-label text-uppercase text-info"> @Model.dataPartenza.ToShortDateString()</label>
+    </div>
+    <div class="col-xs-3">
+        <label class="control-label">Data fine trasf.: </label>
+        @if (Model.dataRientro.HasValue && Model.dataRientro.Value < Utility.DataFineStop())
+        {
+
+            <label class="control-label text-uppercase text-info">@Model.dataRientro.Value.ToShortDateString()</label>
+        }
+        else
+        {
+
+            <label class="control-label text-uppercase text-info">In corso...</label>
+        }
+
     </div>
 </div>
 
 <div class="form-group">
-    <div class="col-xs-4">
-        <label class="control-label">Data ini.</label>
-        <input type="text" class="form-control text-uppercase" readonly="readonly" value="@Model.dataPartenza.ToShortDateString()" />
-    </div>
-    <div class="col-xs-4">
-        <label class="control-label">Data fine trasf.</label>
-        @if (Model.dataRientro.HasValue && Model.dataRientro.Value < Utility.DataFineStop())
-            {
-            <input type="text" class="form-control text-uppercase" readonly="readonly" value="@Model.dataRientro.Value.ToShortDateString()" />
-        }
-        else
-        {
-            <input type="text" class="form-control text-uppercase" readonly="readonly" value="In corso..." />
-        }
 
-    </div>
 </div>
 

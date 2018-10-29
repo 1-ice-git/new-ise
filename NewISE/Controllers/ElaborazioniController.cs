@@ -234,7 +234,6 @@ namespace NewISE.Controllers
                 {
                     if (dipendenti?.Any() ?? false)
                     {
-
                         dte.Elaborazione(dipendenti, idAnnoMeseElaborato);
                     }
                 }

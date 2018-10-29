@@ -631,7 +631,6 @@
           <Property Name="ANTICIPO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="SALDO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="UNICASOLUZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IMPORTOLORDO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="PERCANTSALDOUNISOL" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
@@ -1495,6 +1494,7 @@
           <Property Name="ANNORIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="IMPORTOLORDO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ALIQUOTAFISCALE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DETRAZIONIAPPLICATE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="CONTRIBUTOAGGIUNTIVO" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -7871,7 +7871,7 @@
             <PropertyRef Name="IDACCESSO" />
           </Key>
           <Property Name="IDACCESSO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DATAACCESSO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAACCESSO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="GUID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_UL_C" FromRole="ACCESSI" ToRole="UTENTIAUTORIZZATI" />
@@ -7882,10 +7882,10 @@
           </Key>
           <Property Name="IDALIQCONTR" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOCONTRIBUTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="VALORE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TIPOALIQUOTECONTRIBUTIVE" Relationship="DBISE.R_TC_AC" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="TIPOALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISE.EMAB_ALIQ" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="ELABMAB" />
@@ -7899,7 +7899,7 @@
           </Key>
           <Property Name="IDALTRIDATIFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATANASCITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATANASCITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CAPNASCITA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="COMUNENASCITA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="PROVINCIANASCITA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
@@ -7908,7 +7908,7 @@
           <Property Name="CAPRESIDENZA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="COMUNERESIDENZA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="PROVINCIARESIDENZA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FK_IDALTRIDATIFAM" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ALTRIDATIFAM1" Relationship="DBISE.R_ADF_ADF" FromRole="ALTRIDATIFAM" ToRole="ALTRIDATIFAM1" />
           <NavigationProperty Name="ALTRIDATIFAM2" Relationship="DBISE.R_ADF_ADF" FromRole="ALTRIDATIFAM1" ToRole="ALTRIDATIFAM" />
@@ -7925,7 +7925,7 @@
           <Property Name="IDATTIVITAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDTIPOLOGIAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="PERCENTUALEANTICIPO" Type="Decimal" Nullable="false" Precision="6" Scale="3" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISE.R_AA_A" FromRole="ANTICIPI" ToRole="ATTIVITAANTICIPI" />
           <NavigationProperty Name="TIPOLOGIAANTICIPI" Relationship="DBISE.R_TA_A" FromRole="ANTICIPI" ToRole="TIPOLOGIAANTICIPI" />
@@ -7939,7 +7939,7 @@
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANTICIPOANNUALE" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FK_IDANTICIPOANNUALEMAB" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ANTICIPOANNUALEMAB1" Relationship="DBISE.R_AAMAB_AAMAB" FromRole="ANTICIPOANNUALEMAB" ToRole="ANTICIPOANNUALEMAB1" />
           <NavigationProperty Name="ANTICIPOANNUALEMAB2" Relationship="DBISE.R_AAMAB_AAMAB" FromRole="ANTICIPOANNUALEMAB1" ToRole="ANTICIPOANNUALEMAB" />
@@ -7963,11 +7963,11 @@
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" Precision="0" />
           <Property Name="ATTIVAZIONE" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVAZIONE" Type="DateTime" />
-          <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAATTIVAZIONE" Type="DateTime" Precision="0" />
+          <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.R_AMAB_VMAB" FromRole="ATTIVAZIONEMAB" ToRole="ANTICIPOANNUALEMAB" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_AMAB_CMAB" FromRole="ATTIVAZIONEMAB" ToRole="CANONEMAB" />
@@ -7984,10 +7984,10 @@
           <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTITOLOVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" Precision="0" />
           <Property Name="ATTIVAZIONERICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVAZIONERICHIESTA" Type="DateTime" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAATTIVAZIONERICHIESTA" Type="DateTime" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO1" Relationship="DBISE.R_ATV_ATV" FromRole="ATTIVAZIONETITOLIVIAGGIO" ToRole="ATTIVAZIONETITOLIVIAGGIO1" />
@@ -8005,11 +8005,11 @@
           <Property Name="IDATTIVAZIONEMAGFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RICHIESTAATTIVAZIONE" Type="Boolean" Nullable="false" />
-          <Property Name="DATARICHIESTAATTIVAZIONE" Type="DateTime" />
+          <Property Name="DATARICHIESTAATTIVAZIONE" Type="DateTime" Precision="0" />
           <Property Name="ATTIVAZIONEMAGFAM" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVAZIONEMAGFAM" Type="DateTime" />
-          <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAATTIVAZIONEMAGFAM" Type="DateTime" Precision="0" />
+          <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MODIFICHEMAGFAM" Relationship="DBISE.R_AMF_MMF" FromRole="ATTIVAZIONIMAGFAM" ToRole="MODIFICHEMAGFAM" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_MF_AMF" FromRole="ATTIVAZIONIMAGFAM" ToRole="MAGGIORAZIONIFAMILIARI" />
@@ -8028,11 +8028,11 @@
           <Property Name="IDPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDFASEPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" Precision="0" />
           <Property Name="PRATICACONCLUSA" Type="Boolean" Nullable="false" />
-          <Property Name="DATAPRATICACONCLUSA" Type="DateTime" />
-          <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAPRATICACONCLUSA" Type="DateTime" Precision="0" />
+          <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CONIUGEPASSAPORTO" Relationship="DBISE.R_AP_CP" FromRole="ATTIVAZIONIPASSAPORTI" ToRole="CONIUGEPASSAPORTO" />
           <NavigationProperty Name="FIGLIPASSAPORTO" Relationship="DBISE.R_AP_FP" FromRole="ATTIVAZIONIPASSAPORTI" ToRole="FIGLIPASSAPORTO" />
@@ -8047,10 +8047,10 @@
           <Property Name="IDPROVSCOLASTICHE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFPROVSCOLASTICHE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATANOTIFICA" Type="DateTime" />
+          <Property Name="DATANOTIFICA" Type="DateTime" Precision="0" />
           <Property Name="ATTIVARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVAZIONE" Type="DateTime" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAATTIVAZIONE" Type="DateTime" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDPROVSCOLASTICHE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONIPROVSCOLASTICHE1" Relationship="DBISE.R_APS_APS" FromRole="ATTIVAZIONIPROVSCOLASTICHE" ToRole="ATTIVAZIONIPROVSCOLASTICHE1" />
@@ -8066,10 +8066,10 @@
           <Property Name="IDVIAGGIOCONGEDO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDFASEVC" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" Precision="0" />
           <Property Name="ATTIVARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVARICHIESTA" Type="DateTime" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAATTIVARICHIESTA" Type="DateTime" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDATTIVAZIONEVC" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO1" Relationship="DBISE.R_AVC_AVC" FromRole="ATTIVAZIONIVIAGGICONGEDO" ToRole="ATTIVAZIONIVIAGGICONGEDO1" />
@@ -8086,10 +8086,10 @@
           <Property Name="IDATTIVITAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" Precision="0" />
           <Property Name="ATTIVARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVARICHIESTA" Type="DateTime" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAATTIVARICHIESTA" Type="DateTime" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ANTICIPI" Relationship="DBISE.R_AA_A" FromRole="ATTIVITAANTICIPI" ToRole="ANTICIPI" />
           <NavigationProperty Name="RINUNCIAANTICIPI" Relationship="DBISE.R_AA_RA" FromRole="ATTIVITAANTICIPI" ToRole="RINUNCIAANTICIPI" />
@@ -8111,10 +8111,10 @@
           <Property Name="IDTEPARTENZA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDANTICIPOSALDOTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RICHIESTATRASPORTOEFFETTI" Type="Boolean" Nullable="false" />
-          <Property Name="DATARICHIESTATRASPORTOEFFETTI" Type="DateTime" />
+          <Property Name="DATARICHIESTATRASPORTOEFFETTI" Type="DateTime" Precision="0" />
           <Property Name="ATTIVAZIONETRASPORTOEFFETTI" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVAZIONETE" Type="DateTime" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAATTIVAZIONETE" Type="DateTime" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ANTICIPOSALDOTE" Relationship="DBISE.R_ASTE_ATEP" FromRole="ATTIVITATEPARTENZA" ToRole="ANTICIPOSALDOTE" />
           <NavigationProperty Name="RINUNCIA_TE_P" Relationship="DBISE.R_ATEP_RTEP" FromRole="ATTIVITATEPARTENZA" ToRole="RINUNCIA_TE_P" />
@@ -8129,10 +8129,10 @@
           <Property Name="IDTERIENTRO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDANTICIPOSALDOTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RICHIESTATRASPORTOEFFETTI" Type="Boolean" Nullable="false" />
-          <Property Name="DATARICHIESTATE" Type="DateTime" />
+          <Property Name="DATARICHIESTATE" Type="DateTime" Precision="0" />
           <Property Name="ATTIVAZIONETRASPORTOEFFETTI" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVAZIONETE" Type="DateTime" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAATTIVAZIONETE" Type="DateTime" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ANTICIPOSALDOTE" Relationship="DBISE.R_ASTE_ATER" FromRole="ATTIVITATERIENTRO" ToRole="ANTICIPOSALDOTE" />
           <NavigationProperty Name="RINUNCIA_TE_R" Relationship="DBISE.R_ATER_RTER" FromRole="ATTIVITATERIENTRO" ToRole="RINUNCIA_TE_R" />
@@ -8148,7 +8148,7 @@
           <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNOMESEINIZIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNOMESEFINE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_AVM_T" FromRole="AUTOMATISMOVOCIMANUALI" ToRole="TEORICI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_AVM" FromRole="AUTOMATISMOVOCIMANUALI" ToRole="TRASFERIMENTO" />
@@ -8161,10 +8161,10 @@
           <Property Name="IDCALENDARIOEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDFUNZIONIEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOEVENTO" Type="DateTime" Nullable="false" />
-          <Property Name="DATASCADENZA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOEVENTO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATASCADENZA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="COMPLETATO" Type="Boolean" Nullable="false" />
-          <Property Name="DATACOMPLETATO" Type="DateTime" />
+          <Property Name="DATACOMPLETATO" Type="DateTime" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FUNZIONIEVENTI" Relationship="DBISE.R_FE_CE" FromRole="CALENDARIOEVENTI" ToRole="FUNZIONIEVENTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_CE" FromRole="CALENDARIOEVENTI" ToRole="TRASFERIMENTO" />
@@ -8178,10 +8178,10 @@
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IMPORTOCANONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDCANONE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_CMAB" FromRole="CANONEMAB" ToRole="ATTIVAZIONEMAB" />
@@ -8199,7 +8199,7 @@
           <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CODICECDC" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DESCCDC" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_DIP_CDCG" FromRole="CDCGEPE" ToRole="DIPENDENTI" />
         </EntityType>
         <EntityType Name="COEFFICIENTEINDRICHIAMO">
@@ -8207,10 +8207,10 @@
             <PropertyRef Name="IDCOEFINDRICHIAMO" />
           </Key>
           <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="COEFFICIENTERICHIAMO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="RIDUZIONI" Relationship="DBISE.CIR_R" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="RIDUZIONI" />
           <NavigationProperty Name="RICHIAMO" Relationship="DBISE.RICHIAMO_COEFFRICH" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="RICHIAMO" />
@@ -8221,10 +8221,10 @@
           </Key>
           <Property Name="IDCOEFFICIENTESEDE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="VALORECOEFFICIENTE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFFICI_COEFFICIENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="UFFICI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.IND_COEFFICENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="INDENNITA" />
@@ -8240,9 +8240,9 @@
           <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FK_IDCONIUGE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="CONIUGE1" Relationship="DBISE.R_C_C" FromRole="CONIUGE" ToRole="CONIUGE1" />
           <NavigationProperty Name="CONIUGE2" Relationship="DBISE.R_C_C" FromRole="CONIUGE1" ToRole="CONIUGE" />
@@ -8265,7 +8265,7 @@
           <Property Name="IDPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONIPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INCLUDIPASSAPORTO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONIPASSAPORTI" Relationship="DBISE.R_AP_CP" FromRole="CONIUGEPASSAPORTO" ToRole="ATTIVAZIONIPASSAPORTI" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISE.R_P_CP" FromRole="CONIUGEPASSAPORTO" ToRole="PASSAPORTI" />
@@ -8280,7 +8280,7 @@
           <Property Name="IDTITOLOVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RICHIEDITITOLOVIAGGIO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISE.R_ATV_CTV" FromRole="CONIUGETITOLIVIAGGIO" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
           <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISE.R_TV_CTV" FromRole="CONIUGETITOLIVIAGGIO" ToRole="TITOLIVIAGGIO" />
@@ -8306,8 +8306,8 @@
           <Property Name="MATRICOLA" Type="Int32" Nullable="false" />
           <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="DATAASSUNZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="DATACESSAZIONE" Type="DateTime" />
+          <Property Name="DATAASSUNZIONE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATACESSAZIONE" Type="DateTime" Precision="0" />
           <Property Name="INDIRIZZO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CAP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CITTA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
@@ -8316,7 +8316,7 @@
           <Property Name="TELEFONO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="FAX" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="ABILITATO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="RICALCOLARE" Type="Boolean" Nullable="false" />
           <Property Name="NOSISTEMA" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CDCGEPE" Relationship="DBISE.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
@@ -8338,7 +8338,7 @@
           <Property Name="NOMEDOCUMENTO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ESTENSIONE" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="FILEDOCUMENTO" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="MODIFICATO" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="SELECTDOCVC" Relationship="DBISE.R_D_AVCD" FromRole="DOCUMENTI" ToRole="SELECTDOCVC" />
@@ -8393,12 +8393,12 @@
           <Property Name="PERCENTUALEMAGCONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DAL" Type="DateTime" Nullable="false" />
-          <Property Name="AL" Type="DateTime" Nullable="false" />
+          <Property Name="DAL" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AL" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="GIORNISOSPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EI_EDF" FromRole="ELABINDENNITA" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_EI" FromRole="ELABINDENNITA" ToRole="INDENNITA" />
@@ -8419,7 +8419,7 @@
           <Property Name="PERCENTUALERIDUZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCMAGCONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PENSIONECONIUGE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIR_EDF" FromRole="ELABINDRICHIAMO" ToRole="ELABDATIFIGLI" />
@@ -8445,10 +8445,9 @@
           <Property Name="ANTICIPO" Type="Boolean" Nullable="false" />
           <Property Name="SALDO" Type="Boolean" Nullable="false" />
           <Property Name="UNICASOLUZIONE" Type="Boolean" Nullable="false" />
-          <Property Name="IMPORTOLORDO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCANTSALDOUNISOL" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EIS_EDF" FromRole="ELABINDSISTEMAZIONE" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_EIS_T" FromRole="ELABINDSISTEMAZIONE" ToRole="TEORICI" />
@@ -8472,12 +8471,12 @@
           <Property Name="CANONELOCAZIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="TASSOFISSORAGGUAGLIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="PERCMAB" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DAL" Type="DateTime" Nullable="false" />
-          <Property Name="AL" Type="DateTime" Nullable="false" />
+          <Property Name="DAL" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AL" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNUALE" Type="Boolean" Nullable="false" />
           <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EMAB_EDF" FromRole="ELABMAB" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_EMAB" FromRole="ELABMAB" ToRole="INDENNITA" />
@@ -8493,7 +8492,7 @@
           <Property Name="IDEALBORAZIONI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMESEANNOELAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_D_E" FromRole="ELABORAZIONI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="MESEANNOELABORAZIONE" Relationship="DBISE.R_MAE_E" FromRole="ELABORAZIONI" ToRole="MESEANNOELABORAZIONE" />
         </EntityType>
@@ -8510,7 +8509,7 @@
           <Property Name="ANTICIPO" Type="Boolean" Nullable="false" />
           <Property Name="SALDO" Type="Boolean" Nullable="false" />
           <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_ETE_T" FromRole="ELABTRASPEFFETTI" ToRole="TEORICI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_ETE" FromRole="ELABTRASPEFFETTI" ToRole="LIVELLI" />
@@ -8564,9 +8563,9 @@
           <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FK_IDFIGLI" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="FIGLI1" Relationship="DBISE.R_F_F" FromRole="FIGLI" ToRole="FIGLI1" />
           <NavigationProperty Name="FIGLI2" Relationship="DBISE.R_F_F" FromRole="FIGLI1" ToRole="FIGLI" />
@@ -8589,7 +8588,7 @@
           <Property Name="IDPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONIPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INCLUDIPASSAPORTO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONIPASSAPORTI" Relationship="DBISE.R_AP_FP" FromRole="FIGLIPASSAPORTO" ToRole="ATTIVAZIONIPASSAPORTI" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISE.R_P_FP" FromRole="FIGLIPASSAPORTO" ToRole="PASSAPORTI" />
@@ -8604,7 +8603,7 @@
           <Property Name="IDTITOLOVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RICHIEDITITOLOVIAGGIO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISE.R_ATV_FTV" FromRole="FIGLITITOLIVIAGGIO" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
           <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISE.R_TV_FTV" FromRole="FIGLITITOLIVIAGGIO" ToRole="TITOLIVIAGGIO" />
@@ -8616,7 +8615,7 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINVIOFLUSSI" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINVIOFLUSSI" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_T_FC" FromRole="FLUSSICEDOLINO" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="FUNZIONERIDUZIONE">
@@ -8642,9 +8641,9 @@
           </Key>
           <Property Name="IDGRUPPOFK" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="LEGGEFASCIAKM" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FASCIA_KM" Relationship="DBISE.R_GFKM_F_KM" FromRole="GRUPPO_FKM" ToRole="FASCIA_KM" />
         </EntityType>
@@ -8653,7 +8652,7 @@
             <PropertyRef Name="IDTRASFINDENNITA" />
           </Key>
           <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ELABINDENNITA" Relationship="DBISE.R_I_EI" FromRole="INDENNITA" ToRole="ELABINDENNITA" />
           <NavigationProperty Name="ELABMAB" Relationship="DBISE.R_I_EMAB" FromRole="INDENNITA" ToRole="ELABMAB" />
           <NavigationProperty Name="MAB" Relationship="DBISE.R_I_MAB" FromRole="INDENNITA" ToRole="MAB" />
@@ -8670,11 +8669,11 @@
           </Key>
           <Property Name="IDINDENNITABASE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="VALORE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="VALORERESP" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_I" FromRole="INDENNITABASE" ToRole="LIVELLI" />
           <NavigationProperty Name="RIDUZIONI" Relationship="DBISE.IB_R" FromRole="INDENNITABASE" ToRole="RIDUZIONI" />
@@ -8685,10 +8684,10 @@
             <PropertyRef Name="IDINDPRIMOSEGR" />
           </Key>
           <Property Name="IDINDPRIMOSEGR" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="INDENNITA" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FIGLI" Relationship="DBISE.F_IPS" FromRole="INDENNITAPRIMOSEGRETARIO" ToRole="FIGLI" />
         </EntityType>
@@ -8698,10 +8697,10 @@
           </Key>
           <Property Name="IDINDSIST" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="COEFFICIENTE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="DBISE.R_TT_IS" FromRole="INDENNITASISTEMAZIONE" ToRole="TIPOTRASFERIMENTO" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISE.IS_PS" FromRole="INDENNITASISTEMAZIONE" ToRole="PRIMASITEMAZIONE" />
@@ -8729,9 +8728,9 @@
           <Property Name="IDLIVDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_DIP_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_LIV_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="LIVELLI" />
@@ -8745,7 +8744,7 @@
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="DESCATTIVITASVOLTA" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" />
@@ -8761,7 +8760,7 @@
           <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RINUNCIAMAB" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ANTICIPOANNUALEMAB" Relationship="DBISE.R_MAB_AAMAB" FromRole="MAB" ToRole="ANTICIPOANNUALEMAB" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_MAB_AMAB" FromRole="MAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISE.R_MAB_CMAB" FromRole="MAB" ToRole="CANONEMAB" />
@@ -8777,10 +8776,10 @@
           </Key>
           <Property Name="IDMAGANNUALI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNUALITA" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFFICI_MAGANNUALI" FromRole="MAGGIORAZIONIANNUALI" ToRole="UFFICI" />
           <NavigationProperty Name="MAB" Relationship="DBISE.MAB_MA" FromRole="MAGGIORAZIONIANNUALI" ToRole="MAB" />
@@ -8815,7 +8814,7 @@
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMSGVAR" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="VALORE" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_MAMAB" FromRole="MODIFICHE_MAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="TIPOLOGIAMODIFICHE" Relationship="DBISE.R_TM_MMAB" FromRole="MODIFICHE_MAB" ToRole="TIPOLOGIAMODIFICHE" />
         </EntityType>
@@ -8826,7 +8825,7 @@
           <Property Name="IDMODMAGFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDATTIVAZIONEMAGFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDMSGVAR" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="VALORE" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISE.R_AMF_MMF" FromRole="MODIFICHEMAGFAM" ToRole="ATTIVAZIONIMAGFAM" />
           <NavigationProperty Name="TIPOLOGIAMODIFICHE" Relationship="DBISE.R_TM_MMF" FromRole="MODIFICHEMAGFAM" ToRole="TIPOLOGIAMODIFICHE" />
@@ -8848,7 +8847,7 @@
           <Property Name="IDMITTENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="OGGETTO" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="CORPOMESSAGGIO" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="DATANOTIFICA" Type="DateTime" Nullable="false" />
+          <Property Name="DATANOTIFICA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ALLEGATO" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="NOMEDOCUMENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ESTENSIONEDOC" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
@@ -8868,16 +8867,16 @@
           <Property Name="CTB_TIPO_MOVIMENTO" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="CTB_DESCRIZIONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CTB_COAN" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CTB_DT_RIFERIMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="CTB_DT_OPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="CTB_DT_CONTABILE" Type="DateTime" />
+          <Property Name="CTB_DT_RIFERIMENTO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CTB_DT_OPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CTB_DT_CONTABILE" Type="DateTime" Precision="0" />
           <Property Name="CTB_NUM_DOC" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="CTB_NUM_DOC_RIF" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="CTB_IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="CTB_IMPORTO_RIF" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="CTB_OPER_99" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="CTB_DTINI_MAB" Type="DateTime" />
-          <Property Name="CTB_DTFIN_MAB" Type="DateTime" />
+          <Property Name="CTB_DTINI_MAB" Type="DateTime" Precision="0" />
+          <Property Name="CTB_DTFIN_MAB" Type="DateTime" Precision="0" />
           <Property Name="CTB_GIORNI_MAB" Type="Int16" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_T_OA" FromRole="OA" ToRole="TEORICI" />
         </EntityType>
@@ -8889,11 +8888,11 @@
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CONDIVISO" Type="Boolean" Nullable="false" />
           <Property Name="PAGATO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDPAGATOCONDIVISO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="ATTIVAZIONEMAB" />
@@ -8922,7 +8921,7 @@
           <Property Name="IDPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONIPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="INCLUDIPASSAPORTO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONIPASSAPORTI" Relationship="DBISE.R_AP_PR" FromRole="PASSAPORTORICHIEDENTE" ToRole="ATTIVAZIONIPASSAPORTI" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISE.R_P_PR" FromRole="PASSAPORTORICHIEDENTE" ToRole="PASSAPORTI" />
@@ -8935,9 +8934,9 @@
           <Property Name="IDPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IMPORTOPENSIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="NASCONDI" Type="Boolean" Nullable="false" />
           <Property Name="FK_IDPENSIONE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="PENSIONE1" Relationship="DBISE.R_P_P" FromRole="PENSIONE" ToRole="PENSIONE1" />
@@ -8952,10 +8951,10 @@
           </Key>
           <Property Name="IDPERCANTICIPOTM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOANTICIPOTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="6" Scale="3" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TIPOANTICIPOTRASPORTOEFFETTI" Relationship="DBISE.R_TATE_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TIPOANTICIPOTRASPORTOEFFETTI" />
           <NavigationProperty Name="TEPARTENZA" Relationship="DBISE.TEP_PATE" FromRole="PERCENTUALEANTICIPOTE" ToRole="TEPARTENZA" />
@@ -8966,10 +8965,10 @@
             <PropertyRef Name="IDPERCCOND" />
           </Key>
           <Property Name="IDPERCCOND" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="6" Scale="3" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISE.PAGCOND_PERCCOND" FromRole="PERCENTUALECONDIVISIONE" ToRole="PAGATOCONDIVISOMAB" />
         </EntityType>
@@ -8979,10 +8978,10 @@
           </Key>
           <Property Name="IDPERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFFICI_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="UFFICI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.INDENNITA_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="INDENNITA" />
@@ -8993,10 +8992,10 @@
           </Key>
           <Property Name="IDPFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="COEFFICIENTEKM" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FASCIA_KM" Relationship="DBISE.R_DFK_CFK" FromRole="PERCENTUALEFKM" ToRole="FASCIA_KM" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISE.PS_PFKM" FromRole="PERCENTUALEFKM" ToRole="PRIMASITEMAZIONE" />
@@ -9009,11 +9008,11 @@
           <Property Name="IDPERCMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDLIVELLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
           <Property Name="PERCENTUALERESPONSABILE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_PMAB" FromRole="PERCENTUALEMAB" ToRole="LIVELLI" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_U_PMAB" FromRole="PERCENTUALEMAB" ToRole="UFFICI" />
@@ -9025,10 +9024,10 @@
           </Key>
           <Property Name="IDPERCMAGCONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PERCENTUALECONIUGE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TIPOLOGIACONIUGE" Relationship="DBISE.R_TC_PMC" FromRole="PERCENTUALEMAGCONIUGE" ToRole="TIPOLOGIACONIUGE" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISE.C_PC" FromRole="PERCENTUALEMAGCONIUGE" ToRole="CONIUGE" />
@@ -9039,10 +9038,10 @@
           </Key>
           <Property Name="IDPERCMAGFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PERCENTUALEFIGLI" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TIPOLOGIAFIGLIO" Relationship="DBISE.R_TF_MF" FromRole="PERCENTUALEMAGFIGLI" ToRole="TIPOLOGIAFIGLIO" />
           <NavigationProperty Name="FIGLI" Relationship="DBISE.PMF_F" FromRole="PERCENTUALEMAGFIGLI" ToRole="FIGLI" />
@@ -9055,9 +9054,9 @@
           <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOMAB" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEMAB" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOMAB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEMAB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FK_IDPERIODOMAB" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISE.R_AMAB_PMAB" FromRole="PERIODOMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="MAB" Relationship="DBISE.R_MAB_PMAB" FromRole="PERIODOMAB" ToRole="MAB" />
@@ -9093,9 +9092,9 @@
           <Property Name="IDTIPOREGOLACALCOLO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDNORMACALCOLO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="FORMULAREGOLACALCOLO" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="NORMACALCOLO" Relationship="DBISE.R_NC_RC" FromRole="REGOLECALCOLO" ToRole="NORMACALCOLO" />
           <NavigationProperty Name="TIPOREGOLACALCOLO" Relationship="DBISE.R_TRC_RC" FromRole="REGOLECALCOLO" ToRole="TIPOREGOLACALCOLO" />
@@ -9107,8 +9106,8 @@
           </Key>
           <Property Name="IDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATARICHIAMO" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATARICHIAMO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABINDRICHIAMO" Relationship="DBISE.R_R_EIR" FromRole="RICHIAMO" ToRole="ELABINDRICHIAMO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_R" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
@@ -9121,10 +9120,10 @@
           </Key>
           <Property Name="IDRIDUZIONI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDFUNZIONERIDUZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FUNZIONERIDUZIONE" Relationship="DBISE.R_FR_R" FromRole="RIDUZIONI" ToRole="FUNZIONERIDUZIONE" />
           <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISE.CIR_R" FromRole="RIDUZIONI" ToRole="COEFFICIENTEINDRICHIAMO" />
@@ -9137,7 +9136,7 @@
           </Key>
           <Property Name="IDATEPARTENZA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RINUNCIATE" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISE.R_ATEP_RTEP" FromRole="RINUNCIA_TE_P" ToRole="ATTIVITATEPARTENZA" />
         </EntityType>
         <EntityType Name="RINUNCIA_TE_R">
@@ -9146,7 +9145,7 @@
           </Key>
           <Property Name="IDATERIENTRO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RINUNCIATE" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISE.R_ATER_RTER" FromRole="RINUNCIA_TE_R" ToRole="ATTIVITATERIENTRO" />
         </EntityType>
         <EntityType Name="RINUNCIAANTICIPI">
@@ -9155,7 +9154,7 @@
           </Key>
           <Property Name="IDATTIVITAANTICIPI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RINUNCIAANT" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISE.R_AA_RA" FromRole="RINUNCIAANTICIPI" ToRole="ATTIVITAANTICIPI" />
         </EntityType>
         <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
@@ -9166,9 +9165,9 @@
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDSTATORECORD" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RINUNCIAMAGGIORAZIONI" Type="Boolean" Nullable="false" />
-          <Property Name="DATAINI" Type="DateTime" />
-          <Property Name="DATAFINE" Type="DateTime" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINI" Type="DateTime" Precision="0" />
+          <Property Name="DATAFINE" Type="DateTime" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FK_IDRINUNCIAMAGFAM" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_MF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI1" Relationship="DBISE.R_RMF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI1" />
@@ -9191,9 +9190,9 @@
           <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="RUOLOUFFICIO" Relationship="DBISE.R_RU_RD" FromRole="RUOLODIPENDENTE" ToRole="RUOLOUFFICIO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_RD" FromRole="RUOLODIPENDENTE" ToRole="TRASFERIMENTO" />
@@ -9224,9 +9223,9 @@
           <Property Name="IDSOSPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOSOSPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_TRASF_SOSP" FromRole="SOSPENSIONE" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TIPOSOSPENSIONE" Relationship="DBISE.R_TS_S" FromRole="SOSPENSIONE" ToRole="TIPOSOSPENSIONE" />
@@ -9274,11 +9273,12 @@
           <Property Name="ANNORIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="GIORNI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="IMPORTOLORDO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ALIQUOTAFISCALE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DETRAZIONIAPPLICATE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="CONTRIBUTOAGGIUNTIVO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="MASSIMALECA" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="INSERIMENTOMANUALE" Type="Boolean" Nullable="false" />
           <Property Name="ELABORATO" Type="Boolean" Nullable="false" />
           <Property Name="DIRETTO" Type="Boolean" Nullable="false" />
@@ -9323,9 +9323,9 @@
           <Property Name="IDTFR" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="TASSOCAMBIO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="VALUTE" Relationship="DBISE.R_VALUTE_TFR" FromRole="TFR" ToRole="VALUTE" />
           <NavigationProperty Name="CANONEMAB" Relationship="DBISE.CMAB_TFR" FromRole="TFR" ToRole="CANONEMAB" />
@@ -9468,7 +9468,7 @@
           <Property Name="IDTITOLOVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="RICHIEDITITOLOVIAGGIO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISE.R_ATV_TVR" FromRole="TITOLIVIAGGIORICHIEDENTE" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
           <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISE.R_TV_TVR" FromRole="TITOLIVIAGGIORICHIEDENTE" ToRole="TITOLIVIAGGIO" />
@@ -9484,13 +9484,13 @@
           <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDTIPOCOAN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAPARTENZA" Type="DateTime" Nullable="false" />
-          <Property Name="DATARIENTRO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAPARTENZA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATARIENTRO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="COAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="PROTOCOLLOLETTERA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DATALETTERA" Type="DateTime" />
+          <Property Name="DATALETTERA" Type="DateTime" Precision="0" />
           <Property Name="NOTIFICATRASFERIMENTO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_T_AVM" FromRole="TRASFERIMENTO" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISE.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
@@ -9550,9 +9550,9 @@
           <Property Name="IDVALUTAUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFF_VALUFF" FromRole="VALUTAUFFICIO" ToRole="UFFICI" />
           <NavigationProperty Name="VALUTE" Relationship="DBISE.R_VALUTE_VALUFF" FromRole="VALUTAUFFICIO" ToRole="VALUTE" />
@@ -12521,7 +12521,6 @@
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="PERCANTSALDOUNISOL" ColumnName="PERCANTSALDOUNISOL" />
-                <ScalarProperty Name="IMPORTOLORDO" ColumnName="IMPORTOLORDO" />
                 <ScalarProperty Name="UNICASOLUZIONE" ColumnName="UNICASOLUZIONE" />
                 <ScalarProperty Name="SALDO" ColumnName="SALDO" />
                 <ScalarProperty Name="ANTICIPO" ColumnName="ANTICIPO" />
@@ -13224,6 +13223,7 @@
                 <ScalarProperty Name="CONTRIBUTOAGGIUNTIVO" ColumnName="CONTRIBUTOAGGIUNTIVO" />
                 <ScalarProperty Name="DETRAZIONIAPPLICATE" ColumnName="DETRAZIONIAPPLICATE" />
                 <ScalarProperty Name="ALIQUOTAFISCALE" ColumnName="ALIQUOTAFISCALE" />
+                <ScalarProperty Name="IMPORTOLORDO" ColumnName="IMPORTOLORDO" />
                 <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="ANNORIFERIMENTO" ColumnName="ANNORIFERIMENTO" />
@@ -13954,6 +13954,7 @@
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="SynchronizePropertyFacets" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.ViewModel;
 using System.Data.Entity;
+using System.Web.Services.Description;
 using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
@@ -233,6 +234,13 @@ namespace NewISE.Models.DBModel.dtObj
                             if (db.SaveChanges() > 0)
                             {
                                 sosp.idSospensione = sospnew.IDSOSPENSIONE;
+
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(sosp.idTrasferimento, sosp.DataInizioSospensione.Value, db);
+                                }
+
+
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento sospensione avvenuta con successo", "SOSPENSIONE", db, sospnew.IDTRASFERIMENTO, sospnew.IDSOSPENSIONE);
                                 db.Database.CurrentTransaction.Commit();
                             }

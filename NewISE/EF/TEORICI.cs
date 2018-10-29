@@ -34,6 +34,7 @@ namespace NewISE.EF
         public decimal ANNORIFERIMENTO { get; set; }
         public decimal GIORNI { get; set; }
         public decimal IMPORTO { get; set; }
+        public decimal IMPORTOLORDO { get; set; }
         public decimal ALIQUOTAFISCALE { get; set; }
         public decimal DETRAZIONIAPPLICATE { get; set; }
         public decimal CONTRIBUTOAGGIUNTIVO { get; set; }
