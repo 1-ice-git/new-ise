@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         public decimal MaggiorazioneFigli { get; set; }
         public decimal MaggiorazioneConiuge { get; set; }
         public decimal IndennitaRichiamo { get; set; }
-
+        public decimal CoeffIndennitadiRichiamo { get; set; }
 
     }
 }

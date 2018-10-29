@@ -291,6 +291,8 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columnIndennitaRichiamo;
             
+            private global::System.Data.DataColumn columnCoefficenteIndennitaRichiamo;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -374,6 +376,14 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CoefficenteIndennitaRichiamoColumn {
+                get {
+                    return this.columnCoefficenteIndennitaRichiamo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -409,7 +419,7 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaBase, string MaggiorazioneConiuge, string MaggiorazioneFigli, string IndennitaRichiamo) {
+            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaBase, string MaggiorazioneConiuge, string MaggiorazioneFigli, string IndennitaRichiamo, string CoefficenteIndennitaRichiamo) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DataInizioValidita,
@@ -417,7 +427,8 @@ namespace NewISE.Views.Dataset {
                         IndennitaBase,
                         MaggiorazioneConiuge,
                         MaggiorazioneFigli,
-                        IndennitaRichiamo};
+                        IndennitaRichiamo,
+                        CoefficenteIndennitaRichiamo};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -446,6 +457,7 @@ namespace NewISE.Views.Dataset {
                 this.columnMaggiorazioneConiuge = base.Columns["MaggiorazioneConiuge"];
                 this.columnMaggiorazioneFigli = base.Columns["MaggiorazioneFigli"];
                 this.columnIndennitaRichiamo = base.Columns["IndennitaRichiamo"];
+                this.columnCoefficenteIndennitaRichiamo = base.Columns["CoefficenteIndennitaRichiamo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -463,6 +475,8 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnMaggiorazioneFigli);
                 this.columnIndennitaRichiamo = new global::System.Data.DataColumn("IndennitaRichiamo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnIndennitaRichiamo);
+                this.columnCoefficenteIndennitaRichiamo = new global::System.Data.DataColumn("CoefficenteIndennitaRichiamo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCoefficenteIndennitaRichiamo);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -704,6 +718,23 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CoefficenteIndennitaRichiamo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.CoefficenteIndennitaRichiamoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CoefficenteIndennitaRichiamo\' nella tabella \'DataTable1\'" +
+                                " è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.CoefficenteIndennitaRichiamoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDataInizioValiditaNull() {
                 return this.IsNull(this.tableDataTable1.DataInizioValiditaColumn);
             }
@@ -772,6 +803,18 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetIndennitaRichiamoNull() {
                 this[this.tableDataTable1.IndennitaRichiamoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCoefficenteIndennitaRichiamoNull() {
+                return this.IsNull(this.tableDataTable1.CoefficenteIndennitaRichiamoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCoefficenteIndennitaRichiamoNull() {
+                this[this.tableDataTable1.CoefficenteIndennitaRichiamoColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -42,6 +42,9 @@
                @Html.DisplayNameFor(model => model.MaggiorazioneConiuge)
             </th>*@
             <th class="text-center">
+                @Html.DisplayNameFor(model => model.CoeffIndennitadiRichiamo)
+            </th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.IndennitaRichiamo)
             </th>
         </tr>
@@ -73,6 +76,9 @@
                 <td style="text-align:center;">
                    @Html.DisplayFor(modelItem => item.MaggiorazioneConiuge) 
                 </td>*@
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CoeffIndennitadiRichiamo)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaRichiamo)
                 </td>

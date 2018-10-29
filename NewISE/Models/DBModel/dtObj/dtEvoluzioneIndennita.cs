@@ -2121,7 +2121,39 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     #endregion
 
-                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
+                    if (richiamo?.Any() ?? false)
+                    {
+                        #region Variazione Percentuale Coefficente di Richiamo
+                        foreach (var coeff in richiamo)
+                        {
+
+                            var coeffrichiamo =
+                                      coeff.COEFFICIENTEINDRICHIAMO.Where(
+                                          a =>
+                                              a.ANNULLATO == false).ToList();
+
+                            DateTime dtVar = new DateTime();
+
+                            if (coeff.DATARICHIAMO < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = coeff.DATARICHIAMO;
+                            }
+
+
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+                                lDateVariazioni.Sort();
+                            }
+
+                        }
+                        #endregion
+                    }
+                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                          if (lDateVariazioni?.Any() ?? false)
                          {
@@ -2147,6 +2179,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                             xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                             xx.IndennitaRichiamo = ci.IndennitaRichiamoLordo;
+                                            xx.CoeffIndennitadiRichiamo = ci.CoefficenteIndennitaRichiamo;
+                                            
 
                                             eim.Add(xx);
 

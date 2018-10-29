@@ -2039,6 +2039,39 @@ namespace NewISE.Controllers
                             }
                             #endregion
 
+                            if (richiamo?.Any() ?? false)
+                            {
+
+                                #region Variazione Percentuale Coefficente di Richiamo
+                                foreach (var coeff in richiamo)
+                                {
+
+                                    var coeffrichiamo =
+                                              coeff.COEFFICIENTEINDRICHIAMO.Where(
+                                                  a =>
+                                                      a.ANNULLATO == false).ToList();
+
+                                    DateTime dtVar = new DateTime();
+
+                                    if (coeff.DATARICHIAMO < trasferimento.DATAPARTENZA)
+                                    {
+                                        dtVar = trasferimento.DATAPARTENZA;
+                                    }
+                                    else
+                                    {
+                                        dtVar = coeff.DATARICHIAMO;
+                                    }
+
+
+                                    if (!lDateVariazioni.Contains(dtVar))
+                                    {
+                                        lDateVariazioni.Add(dtVar);
+                                        lDateVariazioni.Sort();
+                                    }
+
+                                }
+                                #endregion
+                            }
                             lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                             if (lDateVariazioni?.Any() ?? false)
@@ -2062,8 +2095,9 @@ namespace NewISE.Controllers
                                                 //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
                                                 IndennitaBase = ci.IndennitaDiBase,
-                                                MaggiorazioneConiuge =ci.MaggiorazioneConiuge,
-                                                MaggiorazioneFigli =ci.MaggiorazioneFigli,
+                                                MaggiorazioneConiuge = ci.MaggiorazioneConiuge,
+                                                MaggiorazioneFigli = ci.MaggiorazioneFigli,
+                                                CoeffIndennitadiRichiamo = ci.CoefficenteIndennitaRichiamo,
                                                 IndennitaRichiamo = ci.IndennitaRichiamoLordo
 
                                             };

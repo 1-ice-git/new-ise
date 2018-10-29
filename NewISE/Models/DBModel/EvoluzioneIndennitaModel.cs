@@ -134,6 +134,9 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "Percentuale Anticipo Richiesto")]
         public decimal PercentualeAnticipoRichiesto { get; set; }
+
+        [Display(Name = "Coeff. Ind. Richiamo")]
+        public decimal CoeffIndennitadiRichiamo { get; set; }
         
         [Display(Name = "Canone MAB")]
         public decimal CanoneMAB { get; set; }
