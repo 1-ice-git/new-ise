@@ -3207,15 +3207,18 @@ namespace NewISE.Models.DBModel.dtObj
 
                         using (dtRichiamo dtr = new dtRichiamo())
                         {
-                            var rm = dtr.GetRichiamoByIdTrasf(last_t.idTrasferimento);
-                            if(!(rm.IdRichiamo>0))
+                            if (last_t.idTrasferimento > 0)
                             {
-                                DateTime dtFine_TrasfPrec = t.DATAPARTENZA.AddDays(-1);
-                                var t_prec = db.TRASFERIMENTO.Find(last_t.idTrasferimento);
-                                t_prec.DATARIENTRO = dtFine_TrasfPrec;
-                                if(db.SaveChanges()<=0)
+                                var rm = dtr.GetRichiamoByIdTrasf(last_t.idTrasferimento);
+                                if (!(rm.IdRichiamo > 0))
                                 {
-                                    throw new Exception("Errore di aggiornamento data rientro trasferimento precedente.");
+                                    DateTime dtFine_TrasfPrec = t.DATAPARTENZA.AddDays(-1);
+                                    var t_prec = db.TRASFERIMENTO.Find(last_t.idTrasferimento);
+                                    t_prec.DATARIENTRO = dtFine_TrasfPrec;
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore di aggiornamento data rientro trasferimento precedente.");
+                                    }
                                 }
                             }
                         }

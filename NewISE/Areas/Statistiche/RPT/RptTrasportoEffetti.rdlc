@@ -115,7 +115,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
         <Top>0.57312cm</Top>
-        <Left>23.48221cm</Left>
+        <Left>25.65179cm</Left>
         <Height>0.6cm</Height>
         <Width>3.90423cm</Width>
         <ZIndex>3</ZIndex>
@@ -136,19 +136,19 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.06643cm</Width>
+              <Width>2.50034cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>7.50426cm</Width>
+              <Width>7.93817cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>7.48137cm</Width>
+              <Width>7.91528cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.49737cm</Width>
+              <Width>5.93128cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.83702cm</Width>
+              <Width>5.27093cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -189,7 +189,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -482,10 +481,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!Importo.Value,2)</Value>
+                              <Value>=Fields!Importo.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -506,6 +505,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -541,7 +541,7 @@
         <DataSetName>DataSetTrasportoEffetti</DataSetName>
         <Top>2.51037cm</Top>
         <Height>1.2cm</Height>
-        <Width>27.38645cm</Width>
+        <Width>29.55602cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -550,10 +550,10 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>2.27083in</Height>
+    <Height>1.78125in</Height>
     <Style />
   </Body>
-  <Width>10.84456in</Width>
+  <Width>11.63623in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -614,7 +614,7 @@ TRASPORTO EFFETTI</Value>
           <Top>0.24094cm</Top>
           <Left>4.6732cm</Left>
           <Height>2.05811cm</Height>
-          <Width>18.23246cm</Width>
+          <Width>20.40203cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -631,7 +631,7 @@ TRASPORTO EFFETTI</Value>
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.24094cm</Top>
-          <Left>23.08204cm</Left>
+          <Left>25.25162cm</Left>
           <Height>2.05811cm</Height>
           <Width>4.3044cm</Width>
           <ZIndex>2</ZIndex>
@@ -654,10 +654,42 @@ TRASPORTO EFFETTI</Value>
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>1.42875cm</Height>
+      <Height>0.84667cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
+        <Textbox Name="PageNumber">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Globals!PageNumber</Value>
+                  <Style />
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>PageNumber</rd:DefaultName>
+          <Top>0.17639cm</Top>
+          <Left>27.48879cm</Left>
+          <Height>0.6cm</Height>
+          <Width>0.86841cm</Width>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
         <Textbox Name="Textbox18">
           <CanGrow>true</CanGrow>
           <KeepTogether>true</KeepTogether>
@@ -675,42 +707,10 @@ TRASPORTO EFFETTI</Value>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.335cm</Top>
-          <Left>23.69645cm</Left>
+          <Top>0.17639cm</Top>
+          <Left>26.2629cm</Left>
           <Height>0.6cm</Height>
           <Width>1.19062cm</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <BackgroundColor>WhiteSmoke</BackgroundColor>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Textbox Name="PageNumber">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>=Globals!PageNumber</Value>
-                  <Style />
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Right</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>0.335cm</Top>
-          <Left>24.92234cm</Left>
-          <Height>0.6cm</Height>
-          <Width>0.93896cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -740,8 +740,8 @@ TRASPORTO EFFETTI</Value>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.335cm</Top>
-          <Left>25.82603cm</Left>
+          <Top>0.17639cm</Top>
+          <Left>28.39248cm</Left>
           <Height>0.6cm</Height>
           <Width>0.52916cm</Width>
           <ZIndex>2</ZIndex>
@@ -767,14 +767,16 @@ TRASPORTO EFFETTI</Value>
                   <Style />
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>0.335cm</Top>
-          <Left>26.32873cm</Left>
+          <Top>0.17639cm</Top>
+          <Left>28.92164cm</Left>
           <Height>0.6cm</Height>
-          <Width>1.05771cm</Width>
+          <Width>0.63438cm</Width>
           <ZIndex>3</ZIndex>
           <Style>
             <Border>
@@ -796,10 +798,10 @@ TRASPORTO EFFETTI</Value>
     </PageFooter>
     <PageHeight>21cm</PageHeight>
     <PageWidth>29.7cm</PageWidth>
-    <LeftMargin>1cm</LeftMargin>
-    <RightMargin>1cm</RightMargin>
-    <TopMargin>1cm</TopMargin>
-    <BottomMargin>1cm</BottomMargin>
+    <LeftMargin>0cm</LeftMargin>
+    <RightMargin>0cm</RightMargin>
+    <TopMargin>0cm</TopMargin>
+    <BottomMargin>0cm</BottomMargin>
     <ColumnSpacing>0.13cm</ColumnSpacing>
     <Style />
   </Page>

@@ -6,10 +6,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>6.53431cm</Width>
+              <Width>6.86945cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.04786cm</Width>
+              <Width>4.383cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -139,7 +139,7 @@
                               <Value>=Fields!Importo.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>n2</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -216,7 +216,7 @@
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Format>n2</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -369,7 +369,7 @@
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Format>n2</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -391,6 +391,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -420,7 +421,7 @@
                 </SortExpression>
               </SortExpressions>
               <TablixHeader>
-                <Size>7.51603cm</Size>
+                <Size>7.85117cm</Size>
                 <CellContents>
                   <Textbox Name="Ufficio">
                     <CanGrow>true</CanGrow>
@@ -455,7 +456,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.80835cm</Size>
+                    <Size>2.14349cm</Size>
                     <CellContents>
                       <Textbox Name="Matricola1">
                         <CanGrow>true</CanGrow>
@@ -494,7 +495,7 @@
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>6.37619cm</Size>
+                        <Size>6.71133cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox221">
                             <CanGrow>true</CanGrow>
@@ -531,7 +532,7 @@
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>1.39557cm</Size>
+                            <Size>1.73071cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox227">
                                 <CanGrow>true</CanGrow>
@@ -588,7 +589,7 @@
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>1.80835cm</Size>
+                    <Size>2.14349cm</Size>
                     <CellContents>
                       <Textbox Name="Matricola">
                         <CanGrow>true</CanGrow>
@@ -635,7 +636,7 @@
                         </SortExpression>
                       </SortExpressions>
                       <TablixHeader>
-                        <Size>6.37619cm</Size>
+                        <Size>6.71133cm</Size>
                         <CellContents>
                           <Textbox Name="Nominativo">
                             <CanGrow>true</CanGrow>
@@ -680,7 +681,7 @@
                             </SortExpression>
                           </SortExpressions>
                           <TablixHeader>
-                            <Size>1.39557cm</Size>
+                            <Size>1.73071cm</Size>
                             <CellContents>
                               <Textbox Name="Livello">
                                 <CanGrow>true</CanGrow>
@@ -731,7 +732,7 @@
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.80835cm</Size>
+                    <Size>2.14349cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox211">
                         <CanGrow>true</CanGrow>
@@ -768,7 +769,7 @@
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>6.37619cm</Size>
+                        <Size>6.71133cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox223">
                             <CanGrow>true</CanGrow>
@@ -803,7 +804,7 @@
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>1.39557cm</Size>
+                            <Size>1.73071cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox229">
                                 <CanGrow>true</CanGrow>
@@ -848,7 +849,7 @@
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.80835cm</Size>
+                    <Size>2.14349cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox232">
                         <CanGrow>true</CanGrow>
@@ -885,7 +886,7 @@
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>6.37619cm</Size>
+                        <Size>6.71133cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox233">
                             <CanGrow>true</CanGrow>
@@ -920,7 +921,7 @@
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>1.39557cm</Size>
+                            <Size>1.73071cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox234">
                                 <CanGrow>true</CanGrow>
@@ -964,7 +965,7 @@
             </TablixMember>
             <TablixMember>
               <TablixHeader>
-                <Size>7.51603cm</Size>
+                <Size>7.85117cm</Size>
                 <CellContents>
                   <Textbox Name="Textbox242">
                     <CanGrow>true</CanGrow>
@@ -999,7 +1000,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.80835cm</Size>
+                    <Size>2.14349cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox243">
                         <CanGrow>true</CanGrow>
@@ -1036,7 +1037,7 @@
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>6.37619cm</Size>
+                        <Size>6.71133cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox244">
                             <CanGrow>true</CanGrow>
@@ -1071,7 +1072,7 @@
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>1.39557cm</Size>
+                            <Size>1.73071cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox245">
                                 <CanGrow>true</CanGrow>
@@ -1118,7 +1119,7 @@
         <DataSetName>dsCostiUfficio</DataSetName>
         <Top>0.3463cm</Top>
         <Height>3.00854cm</Height>
-        <Width>27.67831cm</Width>
+        <Width>29.68914cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1129,7 +1130,7 @@
     <Height>1.77881in</Height>
     <Style />
   </Body>
-  <Width>10.89697in</Width>
+  <Width>11.68864in</Width>
   <Page>
     <PageHeader>
       <Height>4.9772cm</Height>
@@ -1176,7 +1177,7 @@
           <Top>0.40707cm</Top>
           <Left>4.78567cm</Left>
           <Height>2.24332cm</Height>
-          <Width>18.14225cm</Width>
+          <Width>20.1178cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -1239,7 +1240,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox24</rd:DefaultName>
           <Top>3.45354cm</Top>
-          <Left>23.05108cm</Left>
+          <Left>25.06192cm</Left>
           <Height>0.6cm</Height>
           <Width>4.62722cm</Width>
           <ZIndex>3</ZIndex>
@@ -1362,7 +1363,7 @@
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.40707cm</Top>
-          <Left>23.06903cm</Left>
+          <Left>25.07986cm</Left>
           <Height>2.24332cm</Height>
           <Width>4.60928cm</Width>
           <ZIndex>7</ZIndex>
@@ -1386,7 +1387,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>2.14313cm</Height>
+      <Height>1.13771cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1402,15 +1403,15 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Right</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>1.54313cm</Top>
-          <Left>25.18774cm</Left>
+          <Top>0.29531cm</Top>
+          <Left>27.62191cm</Left>
           <Height>0.6cm</Height>
-          <Width>0.93896cm</Width>
+          <Width>0.86841cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1439,8 +1440,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>1.54313cm</Top>
-          <Left>23.96185cm</Left>
+          <Top>0.29531cm</Top>
+          <Left>26.39602cm</Left>
           <Height>0.6cm</Height>
           <Width>1.19062cm</Width>
           <ZIndex>1</ZIndex>
@@ -1472,8 +1473,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>1.54313cm</Top>
-          <Left>26.09143cm</Left>
+          <Top>0.29531cm</Top>
+          <Left>28.5256cm</Left>
           <Height>0.6cm</Height>
           <Width>0.52916cm</Width>
           <ZIndex>2</ZIndex>
@@ -1499,14 +1500,16 @@
                   <Style />
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>1.54313cm</Top>
-          <Left>26.62059cm</Left>
+          <Top>0.29531cm</Top>
+          <Left>29.05476cm</Left>
           <Height>0.6cm</Height>
-          <Width>1.05771cm</Width>
+          <Width>0.63438cm</Width>
           <ZIndex>3</ZIndex>
           <Style>
             <Border>
@@ -1528,10 +1531,10 @@
     </PageFooter>
     <PageHeight>21cm</PageHeight>
     <PageWidth>29.7cm</PageWidth>
-    <LeftMargin>1cm</LeftMargin>
-    <RightMargin>1cm</RightMargin>
-    <TopMargin>1cm</TopMargin>
-    <BottomMargin>1cm</BottomMargin>
+    <LeftMargin>0cm</LeftMargin>
+    <RightMargin>0cm</RightMargin>
+    <TopMargin>0cm</TopMargin>
+    <BottomMargin>0cm</BottomMargin>
     <ColumnSpacing>0.13cm</ColumnSpacing>
     <Style />
   </Page>

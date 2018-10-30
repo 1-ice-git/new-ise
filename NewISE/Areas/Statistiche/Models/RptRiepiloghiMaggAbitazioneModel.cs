@@ -18,7 +18,8 @@ namespace NewISE.Areas.Statistiche.Models
         public string Valuta { get; set; }
         public decimal percApplicata { get; set; }
         public decimal Canone { get; set; }
-        public decimal Importo { get; set; }
+        public decimal importo_mab { get; set; }
+        public decimal importo_ind_pers { get; set; }
         public decimal numMeseRiferimento { get; set; }
         public decimal numMeseElaborazione { get; set; }
         public decimal tfr { get; set; }

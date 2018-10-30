@@ -6,40 +6,40 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>1.44167cm</Width>
+              <Width>3.43815cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.50319cm</Width>
+              <Width>1.82829cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.99729cm</Width>
+              <Width>1.68801cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.57938cm</Width>
+              <Width>3.54586cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.26066cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.91792cm</Width>
+              <Width>1.85966cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.96542cm</Width>
+              <Width>1.29052cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.09771cm</Width>
+              <Width>1.42281cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.26354cm</Width>
+              <Width>2.58864cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.08208cm</Width>
+              <Width>3.40718cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.71165cm</Width>
+              <Width>3.03675cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.8175cm</Width>
+              <Width>3.1426cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -342,7 +342,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -377,7 +377,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -412,7 +412,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -447,7 +447,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -521,7 +521,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Left</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -657,7 +657,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Left</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -691,7 +691,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Left</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -725,7 +725,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Left</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -752,9 +752,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!ISEP.Value,2)</Value>
+                              <Value>=Fields!ISEP.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -786,9 +787,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!CONTRIBUTO.Value,2)</Value>
+                              <Value>=Fields!CONTRIBUTO.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -820,9 +822,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!USO.Value,2)</Value>
+                              <Value>=Fields!USO.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -854,10 +857,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!TOTALE.Value,2)</Value>
+                              <Value>=Fields!TOTALE.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>'€'#,0.00;('€'#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -876,9 +879,9 @@
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
-                        <rd:FormatSymbolCulture>it-IT</rd:FormatSymbolCulture>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -915,9 +918,8 @@
         </TablixRowHierarchy>
         <DataSetName>DataSet15</DataSetName>
         <Top>1.39912cm</Top>
-        <Left>0.40015cm</Left>
         <Height>1.2cm</Height>
-        <Width>24.87735cm</Width>
+        <Width>29.50915cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -941,15 +943,16 @@
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>0.3175cm</Top>
-        <Left>2.88444cm</Left>
+        <Left>2.51958cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.41035cm</Width>
+        <Width>3.45771cm</Width>
         <ZIndex>1</ZIndex>
         <ToolTip>Dal </ToolTip>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>WhiteSmoke</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -974,15 +977,15 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>0.3175cm</Top>
-        <Left>0.40014cm</Left>
         <Height>0.6cm</Height>
-        <Width>2.37847cm</Width>
+        <Width>2.51958cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>Periodo di riferimento</ToolTip>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>WhiteSmoke</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -1005,7 +1008,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox14</rd:DefaultName>
         <Top>0.3175cm</Top>
-        <Left>21.71912cm</Left>
+        <Left>25.95077cm</Left>
         <Height>0.6cm</Height>
         <Width>3.55838cm</Width>
         <ZIndex>3</ZIndex>
@@ -1013,6 +1016,7 @@
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>WhiteSmoke</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -1023,7 +1027,7 @@
     <Height>1.26042in</Height>
     <Style />
   </Body>
-  <Width>10.23236in</Width>
+  <Width>11.61778in</Width>
   <Page>
     <PageHeader>
       <Height>2.75167cm</Height>
@@ -1035,7 +1039,6 @@
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.24094cm</Top>
-          <Left>0.40014cm</Left>
           <Height>2.05811cm</Height>
           <Width>3.49903cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
@@ -1051,7 +1054,7 @@
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.24094cm</Top>
-          <Left>20.66822cm</Left>
+          <Left>24.89987cm</Left>
           <Height>2.05811cm</Height>
           <Width>4.60928cm</Width>
           <ZIndex>1</ZIndex>
@@ -1088,9 +1091,9 @@
           </Paragraphs>
           <rd:DefaultName>Textbox15</rd:DefaultName>
           <Top>0.24094cm</Top>
-          <Left>4.07556cm</Left>
+          <Left>3.67542cm</Left>
           <Height>2.05811cm</Height>
-          <Width>16.41627cm</Width>
+          <Width>21.04806cm</Width>
           <ZIndex>2</ZIndex>
           <Style>
             <Border>
@@ -1128,15 +1131,15 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Right</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>0.12334cm</Top>
-          <Left>22.84026cm</Left>
+          <Top>0.10583cm</Top>
+          <Left>27.44192cm</Left>
           <Height>0.6cm</Height>
-          <Width>0.93896cm</Width>
+          <Width>0.86841cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1165,8 +1168,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.12334cm</Top>
-          <Left>21.61437cm</Left>
+          <Top>0.10583cm</Top>
+          <Left>26.21603cm</Left>
           <Height>0.6cm</Height>
           <Width>1.19062cm</Width>
           <ZIndex>1</ZIndex>
@@ -1198,8 +1201,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.12334cm</Top>
-          <Left>23.74395cm</Left>
+          <Top>0.10583cm</Top>
+          <Left>28.34561cm</Left>
           <Height>0.6cm</Height>
           <Width>0.52916cm</Width>
           <ZIndex>2</ZIndex>
@@ -1225,14 +1228,16 @@
                   <Style />
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>0.12334cm</Top>
-          <Left>24.27311cm</Left>
+          <Top>0.10583cm</Top>
+          <Left>28.87477cm</Left>
           <Height>0.6cm</Height>
-          <Width>1.05771cm</Width>
+          <Width>0.63438cm</Width>
           <ZIndex>3</ZIndex>
           <Style>
             <Border>
@@ -1254,10 +1259,10 @@
     </PageFooter>
     <PageHeight>21cm</PageHeight>
     <PageWidth>29.7cm</PageWidth>
-    <LeftMargin>2cm</LeftMargin>
-    <RightMargin>2cm</RightMargin>
-    <TopMargin>2cm</TopMargin>
-    <BottomMargin>2cm</BottomMargin>
+    <LeftMargin>0cm</LeftMargin>
+    <RightMargin>0cm</RightMargin>
+    <TopMargin>0cm</TopMargin>
+    <BottomMargin>0cm</BottomMargin>
     <ColumnSpacing>0.13cm</ColumnSpacing>
     <Style />
   </Page>

@@ -279,7 +279,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class DataTable1DataTable : global::System.Data.TypedTableBase<DataTable1Row> {
             
-            private global::System.Data.DataColumn columnImporto;
+            private global::System.Data.DataColumn columnimporto_mab;
             
             private global::System.Data.DataColumn columnVoce;
             
@@ -310,6 +310,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             private global::System.Data.DataColumn columnnumMeseElaborazione;
             
             private global::System.Data.DataColumn columntfr;
+            
+            private global::System.Data.DataColumn columnimporto_ind_pers;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -346,9 +348,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ImportoColumn {
+            public global::System.Data.DataColumn importo_mabColumn {
                 get {
-                    return this.columnImporto;
+                    return this.columnimporto_mab;
                 }
             }
             
@@ -474,6 +476,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn importo_ind_persColumn {
+                get {
+                    return this.columnimporto_ind_pers;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -510,7 +520,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1Row AddDataTable1Row(
-                        string Importo, 
+                        string importo_mab, 
                         string Voce, 
                         string Liquidazione, 
                         string Movimento, 
@@ -525,10 +535,11 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         string Valuta, 
                         string numMeseRiferimento, 
                         string numMeseElaborazione, 
-                        string tfr) {
+                        string tfr, 
+                        string importo_ind_pers) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        Importo,
+                        importo_mab,
                         Voce,
                         Liquidazione,
                         Movimento,
@@ -543,7 +554,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         Valuta,
                         numMeseRiferimento,
                         numMeseElaborazione,
-                        tfr};
+                        tfr,
+                        importo_ind_pers};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -566,7 +578,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnImporto = base.Columns["Importo"];
+                this.columnimporto_mab = base.Columns["importo_mab"];
                 this.columnVoce = base.Columns["Voce"];
                 this.columnLiquidazione = base.Columns["Liquidazione"];
                 this.columnMovimento = base.Columns["Movimento"];
@@ -582,13 +594,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.columnnumMeseRiferimento = base.Columns["numMeseRiferimento"];
                 this.columnnumMeseElaborazione = base.Columns["numMeseElaborazione"];
                 this.columntfr = base.Columns["tfr"];
+                this.columnimporto_ind_pers = base.Columns["importo_ind_pers"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnImporto = new global::System.Data.DataColumn("Importo", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnImporto);
+                this.columnimporto_mab = new global::System.Data.DataColumn("importo_mab", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnimporto_mab);
                 this.columnVoce = new global::System.Data.DataColumn("Voce", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVoce);
                 this.columnLiquidazione = new global::System.Data.DataColumn("Liquidazione", typeof(string), null, global::System.Data.MappingType.Element);
@@ -619,6 +632,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnnumMeseElaborazione);
                 this.columntfr = new global::System.Data.DataColumn("tfr", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columntfr);
+                this.columnimporto_ind_pers = new global::System.Data.DataColumn("importo_ind_pers", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnimporto_ind_pers);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -761,17 +776,17 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Importo {
+            public string importo_mab {
                 get {
                     try {
-                        return ((string)(this[this.tableDataTable1.ImportoColumn]));
+                        return ((string)(this[this.tableDataTable1.importo_mabColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Importo\' in table \'DataTable1\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'importo_mab\' in table \'DataTable1\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.ImportoColumn] = value;
+                    this[this.tableDataTable1.importo_mabColumn] = value;
                 }
             }
             
@@ -1017,14 +1032,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsImportoNull() {
-                return this.IsNull(this.tableDataTable1.ImportoColumn);
+            public string importo_ind_pers {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.importo_ind_persColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'importo_ind_pers\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.importo_ind_persColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetImportoNull() {
-                this[this.tableDataTable1.ImportoColumn] = global::System.Convert.DBNull;
+            public bool Isimporto_mabNull() {
+                return this.IsNull(this.tableDataTable1.importo_mabColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Setimporto_mabNull() {
+                this[this.tableDataTable1.importo_mabColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1205,6 +1236,18 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SettfrNull() {
                 this[this.tableDataTable1.tfrColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool Isimporto_ind_persNull() {
+                return this.IsNull(this.tableDataTable1.importo_ind_persColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Setimporto_ind_persNull() {
+                this[this.tableDataTable1.importo_ind_persColumn] = global::System.Convert.DBNull;
             }
         }
         

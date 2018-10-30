@@ -6,34 +6,34 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>1.29933cm</Width>
+              <Width>1.49159cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.93832cm</Width>
+              <Width>1.13058cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.37313cm</Width>
+              <Width>3.56539cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.95451cm</Width>
+              <Width>3.14677cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.69226cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.87042cm</Width>
+              <Width>3.06268cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.06886cm</Width>
+              <Width>3.26112cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.34441cm</Width>
+              <Width>3.53667cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.85821cm</Width>
+              <Width>4.05047cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.42133cm</Width>
+              <Width>3.61359cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -88,7 +88,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -614,7 +613,7 @@
                               <Value>=Fields!AltreSpese.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -636,6 +635,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -650,7 +650,7 @@
                               <Value>=Fields!IndRichiamo.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -686,7 +686,7 @@
                               <Value>=Fields!IndPS.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -722,7 +722,7 @@
                               <Value>=Fields!IndPersonale.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -758,7 +758,7 @@
                               <Value>=Fields!IndMAB.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -794,7 +794,7 @@
                               <Value>=Fields!IndTE.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -835,7 +835,7 @@
 +Fields!IndTE.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -875,7 +875,7 @@
 +Fields!IndTE.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -932,7 +932,7 @@
         <DataSetName>dsRiepilogoGenerale</DataSetName>
         <Top>0.17639cm</Top>
         <Height>1.98521cm</Height>
-        <Width>27.62852cm</Width>
+        <Width>29.55116cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -943,7 +943,7 @@
     <Height>0.85102in</Height>
     <Style />
   </Body>
-  <Width>10.90515in</Width>
+  <Width>11.63432in</Width>
   <Page>
     <PageHeader>
       <Height>4.39511cm</Height>
@@ -991,7 +991,7 @@
           <Top>0.40707cm</Top>
           <Left>4.80597cm</Left>
           <Height>2.24332cm</Height>
-          <Width>18.14272cm</Width>
+          <Width>19.95953cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -1021,7 +1021,7 @@
           </Paragraphs>
           <rd:DefaultName>paramDal</rd:DefaultName>
           <Top>3.45354cm</Top>
-          <Left>4.1603cm</Left>
+          <Left>4.06944cm</Left>
           <Height>0.6cm</Height>
           <Width>8.77063cm</Width>
           <ZIndex>2</ZIndex>
@@ -1054,7 +1054,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox24</rd:DefaultName>
           <Top>3.45354cm</Top>
-          <Left>23.0013cm</Left>
+          <Left>24.92394cm</Left>
           <Height>0.6cm</Height>
           <Width>4.62722cm</Width>
           <ZIndex>3</ZIndex>
@@ -1091,7 +1091,6 @@
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
           <Top>3.45354cm</Top>
-          <Left>0.09086cm</Left>
           <Height>0.6cm</Height>
           <Width>4.06944cm</Width>
           <ZIndex>4</ZIndex>
@@ -1112,7 +1111,7 @@
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.40707cm</Top>
-          <Left>23.0898cm</Left>
+          <Left>24.94188cm</Left>
           <Height>2.24332cm</Height>
           <Width>4.60928cm</Width>
           <ZIndex>5</ZIndex>
@@ -1152,15 +1151,15 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Right</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>0.59062cm</Top>
-          <Left>25.17734cm</Left>
-          <Height>0.6cm</Height>
-          <Width>0.93896cm</Width>
+          <Top>0.42761cm</Top>
+          <Left>27.48393cm</Left>
+          <Height>0.46771cm</Height>
+          <Width>0.86841cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1189,9 +1188,9 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.59062cm</Top>
-          <Left>23.95144cm</Left>
-          <Height>0.6cm</Height>
+          <Top>0.42761cm</Top>
+          <Left>26.25804cm</Left>
+          <Height>0.46771cm</Height>
           <Width>1.19062cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
@@ -1222,10 +1221,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.59062cm</Top>
-          <Left>26.1163cm</Left>
-          <Height>0.6cm</Height>
-          <Width>0.66145cm</Width>
+          <Top>0.42761cm</Top>
+          <Left>28.38762cm</Left>
+          <Height>0.46771cm</Height>
+          <Width>0.52916cm</Width>
           <ZIndex>2</ZIndex>
           <Style>
             <Border>
@@ -1249,14 +1248,16 @@
                   <Style />
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>0.59062cm</Top>
-          <Left>26.81303cm</Left>
-          <Height>0.6cm</Height>
-          <Width>0.81549cm</Width>
+          <Top>0.42761cm</Top>
+          <Left>28.91678cm</Left>
+          <Height>0.46771cm</Height>
+          <Width>0.63438cm</Width>
           <ZIndex>3</ZIndex>
           <Style>
             <Border>
@@ -1278,10 +1279,10 @@
     </PageFooter>
     <PageHeight>21cm</PageHeight>
     <PageWidth>29.7cm</PageWidth>
-    <LeftMargin>1cm</LeftMargin>
-    <RightMargin>1cm</RightMargin>
-    <TopMargin>1cm</TopMargin>
-    <BottomMargin>1cm</BottomMargin>
+    <LeftMargin>0cm</LeftMargin>
+    <RightMargin>0cm</RightMargin>
+    <TopMargin>0cm</TopMargin>
+    <BottomMargin>0cm</BottomMargin>
     <ColumnSpacing>0.13cm</ColumnSpacing>
     <Style />
   </Page>

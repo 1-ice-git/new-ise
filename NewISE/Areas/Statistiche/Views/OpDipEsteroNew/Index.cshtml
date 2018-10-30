@@ -5,9 +5,9 @@
     <div class="col-xs-12">
         <div class="form-group">
             <div class="panel panel-default">
-                <div class="panel-heading"><b>Dislocazione dei Dipendenti all'Estero</b></div>
+                <div class="panel-heading"><h5><b>Dislocazione dei Dipendenti all'Estero</b></h5></div>
                 <div class="panel-body">
-
+                    <h5>
                     <div class="col-xs-4 date">
 
                         <div class="input-group input-append date">
@@ -17,35 +17,18 @@
                     </div>
 
                     <div class="col-xs-4 date">
-
-                        @*<div class="input-group input-append date">
-                            <input type="text" class="form-control" id="data2" />
-                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>*@
-
-                        
                         <div class="input-group input-append date">
-                                
                                 @Html.DropDownList("idUfficio", ViewBag.UfficiList as IEnumerable<SelectListItem>, new { @id= "idUfficio", @class = "form-control select2 select2-select" })
-                        
                         </div>
-
                     </div>
 
                     <div class="col-xs-4 date">
-                        <button class="btn btn-small btn-default" id="opener">
+                        <button class="btn btn-small btn-success" id="opener">
                             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-
                             Stampa
                         </button>
                     </div>
-
-
-                    @*<div class="col-md-3">
-                            <a href="#" onclick="callpartialRptOpIndSedeEstera()">Test </a>
-
-                        </div>*@
-
+                    </h5>
                 </div>
             </div>
         </div>

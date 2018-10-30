@@ -25,7 +25,8 @@ namespace NewISE.Models.DBModel.dtObj
             
             var ltrasf = db.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
                                                      a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
-                                                     a.DATAPARTENZA >= dtIni &&
+                                                     a.DATAPARTENZA <= dtIni &&
+                                                     a.DATARIENTRO >= dtIni &&
                                                      a.UFFICI.IDUFFICIO == idUfficio).ToList();
 
             var lvaluta = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == idUfficio
@@ -40,24 +41,14 @@ namespace NewISE.Models.DBModel.dtObj
                 foreach (var t in ltrasf)
                 {   
                     var dip = t.DIPENDENTI;
-                    var livelli = t.DIPENDENTI.LIVELLIDIPENDENTI;
-                    var qualif = livelli.First();
-                    var qualifica = qualif.LIVELLI.LIVELLO;
-
-                    var dipendenti = t.INDENNITA.TRASFERIMENTO;
-
-                    var llivelli = t.INDENNITA.LIVELLIDIPENDENTI;
-
-                    var qualifica1 = llivelli.First();
-                    var Qualifica = qualifica1.LIVELLI.LIVELLO;
-                                         
-                    var livello = ltrasf.First();
-                    var xxx = livello.DIPENDENTI;
+                    var llivdip = t.DIPENDENTI.LIVELLIDIPENDENTI;
+                    var livdip = llivdip.First();
+                    var livello = livdip.LIVELLI.LIVELLO;
                     
 
                     #region Coefficente di Sede
                     // Coefficente di Sede
-                    var lcoeff = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == dipendenti.UFFICI.IDUFFICIO);
+                    var lcoeff = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == t.UFFICI.IDUFFICIO);
                     if (!lcoeff?.Any() ?? false)
                     {
                         throw new Exception("Errore: Coefficente di Sede non trovata");
@@ -67,7 +58,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     #region Percentuale di Disagio
                     // Percentuale di Disagio
-                    var lperc = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == dipendenti.UFFICI.IDUFFICIO);
+                    var lperc = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == t.UFFICI.IDUFFICIO);
                     if (!lperc?.Any() ?? false)
                     {
                         throw new Exception("Errore: Percentuale di Disagio non trovata");
@@ -103,7 +94,7 @@ namespace NewISE.Models.DBModel.dtObj
                     #region Valuta Ufficio
                     // Valuta Ufficio
 
-                    var ufficio = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == dipendenti.UFFICI.IDUFFICIO && a.ANNULLATO == false);
+                    var ufficio = db.VALUTAUFFICIO.Where(a => a.IDUFFICIO == t.UFFICI.IDUFFICIO && a.ANNULLATO == false);
                     if (!ufficio?.Any() ?? false)
                     {
                         throw new Exception("Errore: Valuta Ufficio non trovata");
@@ -382,7 +373,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         nominativo = t.DIPENDENTI.COGNOME + " " + t.DIPENDENTI.NOME + " (" + t.DIPENDENTI.MATRICOLA + ")",
                                         data_trasferimento = Convert.ToDateTime(t.DATAPARTENZA).ToShortDateString(),
                                         //qualifica = qualif.LIVELLI.LIVELLO,
-                                        qualifica = Qualifica,
+                                        qualifica = livello,
                                         IndennitaPersonale = ci.IndennitaPersonale,
                                         PercMaggConiuge = ci.PercentualeMaggiorazioneConiuge,
                                         PercNumFigli = ci.PercentualeMaggiorazioneFigli,

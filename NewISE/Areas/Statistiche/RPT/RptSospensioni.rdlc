@@ -20,7 +20,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
         <Top>0.57312cm</Top>
-        <Left>23.18726cm</Left>
+        <Left>25.75762cm</Left>
         <Height>0.6cm</Height>
         <Width>3.93069cm</Width>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
@@ -40,25 +40,25 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>4.43416cm</Width>
+              <Width>4.83933cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.84937cm</Width>
+              <Width>4.25454cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.69062cm</Width>
+              <Width>4.09579cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.10854cm</Width>
+              <Width>3.51371cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.82292cm</Width>
+              <Width>4.22809cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.05563cm</Width>
+              <Width>3.4608cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.86884cm</Width>
+              <Width>5.27401cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -97,7 +97,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -583,9 +582,9 @@ Sospensione</Value>
         </TablixRowHierarchy>
         <DataSetName>DataSetRiepiloghiSospensioni</DataSetName>
         <Top>2.37808cm</Top>
-        <Left>0.28787cm</Left>
+        <Left>0.02205cm</Left>
         <Height>1.59688cm</Height>
-        <Width>26.83008cm</Width>
+        <Width>29.66626cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -611,7 +610,7 @@ Sospensione</Value>
         </Paragraphs>
         <rd:DefaultName>Textbox17</rd:DefaultName>
         <Top>0.57312cm</Top>
-        <Left>0.30551cm</Left>
+        <Left>0.01323cm</Left>
         <Height>0.6cm</Height>
         <Width>6.46754cm</Width>
         <ZIndex>2</ZIndex>
@@ -642,7 +641,7 @@ Sospensione</Value>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>0.57312cm</Top>
-        <Left>6.80833cm</Left>
+        <Left>6.51605cm</Left>
         <Height>0.6cm</Height>
         <Width>2.62364cm</Width>
         <ZIndex>3</ZIndex>
@@ -674,7 +673,7 @@ Sospensione</Value>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
         <Top>0.57312cm</Top>
-        <Left>9.49371cm</Left>
+        <Left>9.20143cm</Left>
         <Height>0.6cm</Height>
         <Width>2.79477cm</Width>
         <ZIndex>4</ZIndex>
@@ -690,10 +689,10 @@ Sospensione</Value>
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>2.27083in</Height>
+    <Height>1.66666in</Height>
     <Style />
   </Body>
-  <Width>10.68831in</Width>
+  <Width>11.68831in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -740,7 +739,7 @@ Sospensione</Value>
           <Top>0.24094cm</Top>
           <Left>4.17522cm</Left>
           <Height>2.05811cm</Height>
-          <Width>18.10917cm</Width>
+          <Width>20.60897cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -758,7 +757,7 @@ Sospensione</Value>
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.24094cm</Top>
-          <Left>22.39022cm</Left>
+          <Left>24.96058cm</Left>
           <Height>2.05811cm</Height>
           <Width>4.72773cm</Width>
           <ZIndex>2</ZIndex>
@@ -785,6 +784,38 @@ Sospensione</Value>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
+        <Textbox Name="PageNumber">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=Globals!PageNumber</Value>
+                  <Style />
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>PageNumber</rd:DefaultName>
+          <Top>0.38791cm</Top>
+          <Left>27.62108cm</Left>
+          <Height>0.6cm</Height>
+          <Width>0.86841cm</Width>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <BackgroundColor>WhiteSmoke</BackgroundColor>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
         <Textbox Name="Textbox18">
           <CanGrow>true</CanGrow>
           <KeepTogether>true</KeepTogether>
@@ -802,42 +833,10 @@ Sospensione</Value>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.44083cm</Top>
-          <Left>23.4015cm</Left>
+          <Top>0.38791cm</Top>
+          <Left>26.39519cm</Left>
           <Height>0.6cm</Height>
           <Width>1.19062cm</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <BackgroundColor>WhiteSmoke</BackgroundColor>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Textbox Name="PageNumber">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>=Globals!PageNumber</Value>
-                  <Style />
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Right</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>0.44083cm</Top>
-          <Left>24.62739cm</Left>
-          <Height>0.6cm</Height>
-          <Width>0.93896cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -867,8 +866,8 @@ Sospensione</Value>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.44083cm</Top>
-          <Left>25.53108cm</Left>
+          <Top>0.38791cm</Top>
+          <Left>28.52477cm</Left>
           <Height>0.6cm</Height>
           <Width>0.52916cm</Width>
           <ZIndex>2</ZIndex>
@@ -894,14 +893,16 @@ Sospensione</Value>
                   <Style />
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>0.44083cm</Top>
-          <Left>26.06024cm</Left>
+          <Top>0.38791cm</Top>
+          <Left>29.05393cm</Left>
           <Height>0.6cm</Height>
-          <Width>1.05771cm</Width>
+          <Width>0.63438cm</Width>
           <ZIndex>3</ZIndex>
           <Style>
             <Border>
@@ -923,10 +924,10 @@ Sospensione</Value>
     </PageFooter>
     <PageHeight>21cm</PageHeight>
     <PageWidth>29.7cm</PageWidth>
-    <LeftMargin>1cm</LeftMargin>
-    <RightMargin>1cm</RightMargin>
-    <TopMargin>1cm</TopMargin>
-    <BottomMargin>1cm</BottomMargin>
+    <LeftMargin>0cm</LeftMargin>
+    <RightMargin>0cm</RightMargin>
+    <TopMargin>0cm</TopMargin>
+    <BottomMargin>0cm</BottomMargin>
     <ColumnSpacing>0.13cm</ColumnSpacing>
     <Style />
   </Page>

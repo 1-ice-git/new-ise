@@ -140,18 +140,17 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtStoriaDipendenteNew dtStoriaDipendenteNew = new dtStoriaDipendenteNew())
+                    using (dtStoriaDipendenteNew dtSD = new dtStoriaDipendenteNew())
                     {
-                        rim = dtStoriaDipendenteNew.GetStoriaDipendenteNew(Nominativo, db).ToList();
+                        rim = dtSD.GetStoriaDipendenteNew(Nominativo, db).ToList();
                     }
-
-                    string nome = "";
-                    string sede = "";
-                    string DataAssunzione = "";
-                    string DataPartenza = "";
-                    string DataRientro = "";
-                    string DataLettera = "";
-                    string valuta = "";
+                    //string nome = "";
+                    //string sede = "";
+                    //string DataAssunzione = "";
+                    //string DataPartenza = "";
+                    //string DataRientro = " ";
+                    //string DataLettera = "";
+                    //string valuta = "";
 
                     if (rim?.Any() ?? false)
                     {
@@ -159,17 +158,13 @@ namespace NewISE.Areas.Statistiche.Controllers
                         {
                             RptStoriaDipendenteNewModel rptds = new RptStoriaDipendenteNewModel()
                             {
-                                //matricola = lm.matricola,
-                                //nome = lm.nome,
-                                //cognome = lm.cognome,
-                                nome = lm.cognome + " " + lm.nome + " (" + lm.matricola + ")",
-                                //nome = lm.cognome + " " + lm.nome,
-                                dataAssunzione = lm.dataAssunzione,
+                                nome = lm.nome,
+                                dataAssunzione = lm.dataAssunzione.ToShortDateString(),
                                 dataVariazione = lm.dataVariazione,
                                 Ufficio = lm.Ufficio,
                                 DescLivello =  lm.DescLivello,
-                                dataPartenza = lm.dataPartenza,
-                                dataRientro = lm.dataRientro,
+                                dataPartenza = lm.dataPartenza.ToShortDateString(),
+                                dataRientro = (lm.dataRientro < Utility.DataFineStop()) ? Convert.ToDateTime(lm.dataRientro).ToShortDateString() : " ",
                                 valore = lm.valore,
                                 percentuale = lm.percentuale,
                                 indennita = lm.indennita,
@@ -184,13 +179,15 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                             rpt.Add(rptds);
 
-                            nome = lm.nome;
-                            sede = lm.Ufficio;
-                            DataAssunzione = Convert.ToString(lm.dataAssunzione);
-                            DataPartenza = Convert.ToString(lm.dataPartenza);
-                            DataRientro = Convert.ToString(lm.dataRientro);
-                            DataLettera = Convert.ToString(lm.dataLettera);
-                            valuta = lm.ValutaUfficio;
+                            //nome = lm.nome;
+                            //sede = lm.Ufficio;
+                            //DataAssunzione = Convert.ToString(lm.dataAssunzione);
+                            //DataPartenza = Convert.ToString(lm.dataPartenza);
+                            //DataRientro = Convert.ToString(lm.dataRientro);
+                            //DataRientro = (lm.dataRientro < Utility.DataFineStop()) ? Convert.ToDateTime(lm.dataRientro).ToShortDateString() : " ";
+                 
+                            //DataLettera = Convert.ToString(lm.dataLettera);
+                            //valuta = lm.ValutaUfficio;
                         }
                     }
                     
@@ -216,27 +213,27 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetStoriaDipendenteNew", rpt));
                     reportViewer.LocalReport.Refresh();
 
-                    string NomeMatricola = nome;
-                    string Sede = sede;
-                    var Data = DataPartenza;
-                    var Data1 = DataAssunzione;
-                    var Data2 = DataRientro;
-                    var Data3 = DataLettera;
-                    string Valuta = valuta;
+                    //string NomeMatricola = nome;
+                    //string Sede = sede;
+                    //var Data = DataPartenza;
+                    //var Data1 = DataAssunzione;
+                    //string Data2 = DataRientro;
+                    //var Data3 = DataLettera;
+                    //string Valuta = valuta;
 
-                    ReportParameter[] parameterValues = new ReportParameter[]
-                       {
-                        new ReportParameter ("Nominativo",Convert.ToString(Nominativo)),
-                        new ReportParameter ("NomeMatricola",NomeMatricola),
-                        new ReportParameter ("Data",Data),
-                        new ReportParameter ("Data1",Data1),
-                        new ReportParameter ("Data2",Data2),
-                        new ReportParameter ("Data3",Data3),
-                        new ReportParameter ("Sede",Sede),
-                        new ReportParameter ("Valuta",Valuta)
-                       };
+                    //ReportParameter[] parameterValues = new ReportParameter[]
+                    //   {
+                    //    new ReportParameter ("Nominativo",Convert.ToString(Nominativo)),
+                    //    new ReportParameter ("NomeMatricola",NomeMatricola),
+                    //    new ReportParameter ("Data",Data),
+                    //    new ReportParameter ("Data1",Data1),
+                    //    new ReportParameter ("Data2",Data2),
+                    //    new ReportParameter ("Data3",Data3),
+                    //    new ReportParameter ("Sede",Sede),
+                    //    new ReportParameter ("Valuta",Valuta)
+                    //   };
 
-                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    //reportViewer.LocalReport.SetParameters(parameterValues);
                     ViewBag.ReportViewer = reportViewer;
 
                 }

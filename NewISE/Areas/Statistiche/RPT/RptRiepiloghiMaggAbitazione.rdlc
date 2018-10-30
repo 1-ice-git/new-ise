@@ -6,21 +6,24 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>1.7754cm</Width>
+              <Width>1.94131cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.81208cm</Width>
+              <Width>2.18288cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.59702cm</Width>
+              <Width>2.13943cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.84264cm</Width>
+              <Width>2.00855cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.66591cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.9175cm</Height>
+              <Height>0.86458cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -33,7 +36,7 @@
                             <TextRun>
                               <Value>Valuta</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -70,7 +73,7 @@
                             <TextRun>
                               <Value>TFR</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -105,9 +108,23 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Canone</Value>
+                              <Value>Indennità</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Personale</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -144,7 +161,7 @@
                             <TextRun>
                               <Value>% </Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -158,7 +175,7 @@
                             <TextRun>
                               <Value>applicata</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -169,6 +186,56 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox10</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>Gainsboro</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox7">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Importo</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>MAB</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox7</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -199,7 +266,7 @@
                             <TextRun>
                               <Value>=Fields!Valuta.Value</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -233,8 +300,8 @@
                             <TextRun>
                               <Value>=Fields!tfr.Value</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <FontSize>8pt</FontSize>
+                                <Format>#,0.000000;- #,0.000000</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -259,17 +326,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Canone">
+                    <Textbox Name="importo_ind_pers">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Canone.Value</Value>
+                              <Value>=Fields!importo_ind_pers.Value</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <FontSize>8pt</FontSize>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -278,7 +345,43 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Canone</rd:DefaultName>
+                      <rd:DefaultName>importo_ind_pers</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <rd:Selected>true</rd:Selected>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="percApplicata">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!percApplicata.Value</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <Format>0.00;- 0.00</Format>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>percApplicata</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -294,17 +397,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="percApplicata">
+                    <Textbox Name="importo_mab">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!percApplicata.Value</Value>
+                              <Value>=Fields!importo_mab.Value</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
-                                <Format>#,0.00;(#,0.00)</Format>
+                                <FontSize>8pt</FontSize>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -313,7 +416,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>percApplicata</rd:DefaultName>
+                      <rd:DefaultName>importo_mab</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -337,13 +440,14 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
               <TablixHeader>
-                <Size>2.01445cm</Size>
+                <Size>1.68647cm</Size>
                 <CellContents>
                   <Textbox Name="Textbox17">
                     <CanGrow>true</CanGrow>
@@ -354,7 +458,7 @@
                           <TextRun>
                             <Value>Matricola</Value>
                             <Style>
-                              <FontSize>9pt</FontSize>
+                              <FontSize>8pt</FontSize>
                               <FontWeight>Bold</FontWeight>
                             </Style>
                           </TextRun>
@@ -383,7 +487,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>4.58396cm</Size>
+                    <Size>4.74987cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox11">
                         <CanGrow>true</CanGrow>
@@ -394,7 +498,7 @@
                               <TextRun>
                                 <Value>Nominativo </Value>
                                 <Style>
-                                  <FontSize>9pt</FontSize>
+                                  <FontSize>8pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
                                 </Style>
                               </TextRun>
@@ -423,7 +527,7 @@
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>4.61944cm</Size>
+                        <Size>4.49431cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox21">
                             <CanGrow>true</CanGrow>
@@ -434,7 +538,7 @@
                                   <TextRun>
                                     <Value>Sede</Value>
                                     <Style>
-                                      <FontSize>9pt</FontSize>
+                                      <FontSize>8pt</FontSize>
                                       <FontWeight>Bold</FontWeight>
                                     </Style>
                                   </TextRun>
@@ -461,7 +565,7 @@
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>2.85277cm</Size>
+                            <Size>2.6177cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox23">
                                 <CanGrow>true</CanGrow>
@@ -472,7 +576,7 @@
                                       <TextRun>
                                         <Value>Mese </Value>
                                         <Style>
-                                          <FontSize>9pt</FontSize>
+                                          <FontSize>8pt</FontSize>
                                           <FontWeight>Bold</FontWeight>
                                         </Style>
                                       </TextRun>
@@ -486,7 +590,7 @@
                                       <TextRun>
                                         <Value>Elaborazione</Value>
                                         <Style>
-                                          <FontSize>9pt</FontSize>
+                                          <FontSize>8pt</FontSize>
                                           <FontWeight>Bold</FontWeight>
                                         </Style>
                                       </TextRun>
@@ -514,7 +618,7 @@
                           <TablixMembers>
                             <TablixMember>
                               <TablixHeader>
-                                <Size>2.8454cm</Size>
+                                <Size>2.77318cm</Size>
                                 <CellContents>
                                   <Textbox Name="Textbox27">
                                     <CanGrow>true</CanGrow>
@@ -525,7 +629,7 @@
                                           <TextRun>
                                             <Value>Mese</Value>
                                             <Style>
-                                              <FontSize>9pt</FontSize>
+                                              <FontSize>8pt</FontSize>
                                               <FontWeight>Bold</FontWeight>
                                             </Style>
                                           </TextRun>
@@ -539,7 +643,7 @@
                                           <TextRun>
                                             <Value>Riferimento</Value>
                                             <Style>
-                                              <FontSize>9pt</FontSize>
+                                              <FontSize>8pt</FontSize>
                                               <FontWeight>Bold</FontWeight>
                                             </Style>
                                           </TextRun>
@@ -567,7 +671,7 @@
                               <TablixMembers>
                                 <TablixMember>
                                   <TablixHeader>
-                                    <Size>2.84014cm</Size>
+                                    <Size>2.2964cm</Size>
                                     <CellContents>
                                       <Textbox Name="Textbox3">
                                         <CanGrow>true</CanGrow>
@@ -576,9 +680,9 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>Importo</Value>
+                                                <Value>Canone</Value>
                                                 <Style>
-                                                  <FontSize>9pt</FontSize>
+                                                  <FontSize>8pt</FontSize>
                                                   <FontWeight>Bold</FontWeight>
                                                 </Style>
                                               </TextRun>
@@ -633,7 +737,7 @@
                 </SortExpression>
               </SortExpressions>
               <TablixHeader>
-                <Size>2.01445cm</Size>
+                <Size>1.68647cm</Size>
                 <CellContents>
                   <Textbox Name="Matricola">
                     <CanGrow>true</CanGrow>
@@ -644,7 +748,7 @@
                           <TextRun>
                             <Value>=Fields!Matricola.Value</Value>
                             <Style>
-                              <FontSize>9pt</FontSize>
+                              <FontSize>8pt</FontSize>
                             </Style>
                           </TextRun>
                         </TextRuns>
@@ -670,7 +774,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>4.58396cm</Size>
+                    <Size>4.74987cm</Size>
                     <CellContents>
                       <Textbox Name="Nominativo1">
                         <CanGrow>true</CanGrow>
@@ -681,7 +785,7 @@
                               <TextRun>
                                 <Value>=Fields!Nominativo.Value</Value>
                                 <Style>
-                                  <FontSize>9pt</FontSize>
+                                  <FontSize>8pt</FontSize>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -717,7 +821,7 @@
                         </SortExpression>
                       </SortExpressions>
                       <TablixHeader>
-                        <Size>4.61944cm</Size>
+                        <Size>4.49431cm</Size>
                         <CellContents>
                           <Textbox Name="Ufficio1">
                             <CanGrow>true</CanGrow>
@@ -728,7 +832,7 @@
                                   <TextRun>
                                     <Value>=Fields!Ufficio.Value</Value>
                                     <Style>
-                                      <FontSize>9pt</FontSize>
+                                      <FontSize>8pt</FontSize>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -762,7 +866,7 @@
                             </SortExpression>
                           </SortExpressions>
                           <TablixHeader>
-                            <Size>2.85277cm</Size>
+                            <Size>2.6177cm</Size>
                             <CellContents>
                               <Textbox Name="MeseElaborazione">
                                 <CanGrow>true</CanGrow>
@@ -773,7 +877,7 @@
                                       <TextRun>
                                         <Value>=Fields!MeseElaborazione.Value</Value>
                                         <Style>
-                                          <FontSize>9pt</FontSize>
+                                          <FontSize>8pt</FontSize>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -809,7 +913,7 @@
                                 </SortExpression>
                               </SortExpressions>
                               <TablixHeader>
-                                <Size>2.8454cm</Size>
+                                <Size>2.77318cm</Size>
                                 <CellContents>
                                   <Textbox Name="MeseRiferimento1">
                                     <CanGrow>true</CanGrow>
@@ -820,7 +924,7 @@
                                           <TextRun>
                                             <Value>=Fields!MeseRiferimento.Value</Value>
                                             <Style>
-                                              <FontSize>9pt</FontSize>
+                                              <FontSize>8pt</FontSize>
                                             </Style>
                                           </TextRun>
                                         </TextRuns>
@@ -845,30 +949,25 @@
                               </TablixHeader>
                               <TablixMembers>
                                 <TablixMember>
-                                  <Group Name="Importo">
+                                  <Group Name="Importo_mab">
                                     <GroupExpressions>
-                                      <GroupExpression>=Fields!Importo.Value</GroupExpression>
+                                      <GroupExpression>=Fields!importo_mab.Value</GroupExpression>
                                     </GroupExpressions>
                                   </Group>
-                                  <SortExpressions>
-                                    <SortExpression>
-                                      <Value>=Fields!Importo.Value</Value>
-                                    </SortExpression>
-                                  </SortExpressions>
                                   <TablixHeader>
-                                    <Size>2.84014cm</Size>
+                                    <Size>2.2964cm</Size>
                                     <CellContents>
-                                      <Textbox Name="Importo1">
+                                      <Textbox Name="Canone">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Fields!Importo.Value</Value>
+                                                <Value>=Fields!Canone.Value</Value>
                                                 <Style>
-                                                  <FontSize>9pt</FontSize>
-                                                  <Format>#,0.00;(#,0.00)</Format>
+                                                  <FontSize>8pt</FontSize>
+                                                  <Format>#,0.00;- #,0.00</Format>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
@@ -877,7 +976,6 @@
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Importo1</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Color>LightGrey</Color>
@@ -927,8 +1025,8 @@
         <DataSetName>DataSetRiepiloghiMaggAbitazione</DataSetName>
         <Top>0.3175cm</Top>
         <Left>0.02647cm</Left>
-        <Height>1.5175cm</Height>
-        <Width>27.7833cm</Width>
+        <Height>1.46458cm</Height>
+        <Width>29.55601cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -939,7 +1037,7 @@
     <Height>0.83702in</Height>
     <Style />
   </Body>
-  <Width>10.94873in</Width>
+  <Width>11.64665in</Width>
   <Page>
     <PageHeader>
       <Height>3.62479cm</Height>
@@ -1003,7 +1101,7 @@
           <Top>0.27904cm</Top>
           <Left>4.22373cm</Left>
           <Height>2.05811cm</Height>
-          <Width>18.80037cm</Width>
+          <Width>20.60836cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -1022,7 +1120,7 @@
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.27904cm</Top>
-          <Left>23.20049cm</Left>
+          <Left>24.9732cm</Left>
           <Height>2.05811cm</Height>
           <Width>4.60928cm</Width>
           <ZIndex>2</ZIndex>
@@ -1122,7 +1220,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox24</rd:DefaultName>
           <Top>2.63687cm</Top>
-          <Left>23.85262cm</Left>
+          <Left>25.65179cm</Left>
           <Height>0.6cm</Height>
           <Width>3.93069cm</Width>
           <ZIndex>5</ZIndex>
@@ -1147,7 +1245,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>2.05521cm</Height>
+      <Height>0.97042cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -1163,15 +1261,15 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Right</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>1.27cm</Top>
-          <Left>25.29275cm</Left>
+          <Top>0.3175cm</Top>
+          <Left>27.51526cm</Left>
           <Height>0.6cm</Height>
-          <Width>0.93896cm</Width>
+          <Width>0.86841cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1200,8 +1298,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>1.27cm</Top>
-          <Left>24.06686cm</Left>
+          <Top>0.3175cm</Top>
+          <Left>26.28937cm</Left>
           <Height>0.6cm</Height>
           <Width>1.19062cm</Width>
           <ZIndex>1</ZIndex>
@@ -1233,8 +1331,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>1.27cm</Top>
-          <Left>26.19644cm</Left>
+          <Top>0.3175cm</Top>
+          <Left>28.41895cm</Left>
           <Height>0.6cm</Height>
           <Width>0.52916cm</Width>
           <ZIndex>2</ZIndex>
@@ -1260,14 +1358,16 @@
                   <Style />
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Left</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>1.27cm</Top>
-          <Left>26.7256cm</Left>
+          <Top>0.3175cm</Top>
+          <Left>28.94811cm</Left>
           <Height>0.6cm</Height>
-          <Width>1.05771cm</Width>
+          <Width>0.63438cm</Width>
           <ZIndex>3</ZIndex>
           <Style>
             <Border>
@@ -1313,8 +1413,8 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="Importo">
-          <DataField>Importo</DataField>
+        <Field Name="importo_mab">
+          <DataField>importo_mab</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Voce">
@@ -1375,6 +1475,10 @@
         </Field>
         <Field Name="tfr">
           <DataField>tfr</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="importo_ind_pers">
+          <DataField>importo_ind_pers</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

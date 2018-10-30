@@ -11,7 +11,7 @@
 <div style="margin: 15px"></div>
 
 <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-6">
 
         <div class="panel-group" id="accordion">
 
@@ -27,7 +27,9 @@
                 <div id="Primomenu" class="panel-collapse collapse">
 
                     <div class="list-group">
-                        <a href="#" class="list-group-item" onclick="callpartial();">Log Attività</a>
+                        <h5>
+                            <a href="#" class="list-group-item" onclick="callpartial();">Log Attività</a>
+                        </h5>
                     </div>
 
                 </div>
@@ -70,7 +72,7 @@
                 </div>
                 <div id="Terzomenu" class="panel-collapse collapse">
                     <div class="list-group">
-
+                        <h5>
                         <a href="#" class="list-group-item" onclick="callpartialCosti()">Consuntivo dei Costi</a>
                         <a href="#" class="list-group-item" onclick="callpartialCostiCoan()">Consuntivo dei Costi per Codice CO.AN.</a>
                         <a href="#" class="list-group-item" onclick="callpartialCostiUfficio()">Consuntivo dei Costi per Ufficio</a>
@@ -85,7 +87,7 @@
                         <a href="#" class="list-group-item" onclick="callpartialOpTrasportoEffettiNew();">Riepilogo delle Operazioni Effettuate - Trasporto Effetti</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpSospensioniNew();">Sospensioni</a>
                         <a href="#" class="list-group-item" onclick="callpartialOpStoriaDipendenteNew()">Storia del Dipendente</a>
-                        
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -93,7 +95,7 @@
         </div>
     </div>
 
-    <div id="divPartialView" class="col-xs-8"></div>
+    <div id="divPartialView" class="col-xs-6"></div>
 
 </div>
        
@@ -127,593 +129,593 @@
         });
     }
 
-    function callpartial2() {
-        //debugger;
-        var rotta = "/Statistiche/AltreStatistiche/AltreStatistiche2";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idUtenteAutorizzato: 0 },
-            dataType: 'html',
-            beforeSend: function () {
+    //function callpartial2() {
+    //    debugger;
+    //    var rotta = "/Statistiche/AltreStatistiche/AltreStatistiche2";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: { idUtenteAutorizzato: 0 },
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
-    function callpartial3() {
-        //debugger;
-        //var rotta = "/Statistiche/AltreStatistiche/Index";
-        var rotta = "/Statistiche/ArchivioVecchioISE/Index";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idStampa: 0 },
-            dataType: 'html',
-            beforeSend: function () {
+    //function callpartial3() {
+    //    debugger;
+    //    var rotta = "/Statistiche/AltreStatistiche/Index";
+    //    var rotta = "/Statistiche/ArchivioVecchioISE/Index";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: { idStampa: 0 },
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
-    function callpartial4() {
-        //debugger;
-        var rotta = "/Statistiche/AltreStatistiche/AltreStatistiche4";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //function callpartial4() {
+    //    debugger;
+    //    var rotta = "/Statistiche/AltreStatistiche/AltreStatistiche4";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
-    function callpartial5() {
-        //debugger;
-        var rotta = "/Statistiche/Riepiloghi/Index";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //function callpartial5() {
+    //    debugger;
+    //    var rotta = "/Statistiche/Riepiloghi/Index";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     //ISE Mensile
-    function callpartial6() {
-        //debugger;
+    //function callpartial6() {
+    //    debugger;
 
-        rotta = "/Statistiche/RiepiloghiIseMensile/Index";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/RiepiloghiIseMensile/Index";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
-    function callpartial7() {
-        //debugger;
+    //function callpartial7() {
+    //    debugger;
 
-        rotta = "/Statistiche/ArchivioVecchioISE/OpCanoneAnticipato";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/ArchivioVecchioISE/OpCanoneAnticipato";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
-    function callpartial8() {
-        //debugger;
+    //function callpartial8() {
+    //    debugger;
 
-        rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
-    function callpartial9() {
-        //debugger;
+    //function callpartial9() {
+    //    debugger;
 
-        rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Dislocazione Dipendenti Estero
-    function callpartialDislocazione() {
-        //debugger;
+    //function callpartialDislocazione() {
+    //    //debugger;
 
-        rotta = "/Statistiche/DislocazioneDipEstero/Dislocazione";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/DislocazioneDipEstero/Dislocazione";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Presenze Livelli Estero
-    function callpartialPresenze() {
-        //debugger;
+    //function callpartialPresenze() {
+    //    //debugger;
 
-        rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Spese Diverse
-    function callpartialSpese() {
-        //debugger;
+    //function callpartialSpese() {
+    //    //debugger;
 
-        rotta = "/Statistiche/SpeseDiverse/SpeseDiverse";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/SpeseDiverse/SpeseDiverse";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Spese Avvicendamento
-    function callpartialSpeseAvvicendamento() {
-        //debugger;
+    //function callpartialSpeseAvvicendamento() {
+    //    //debugger;
 
-        rotta = "/Statistiche/SpeseAvvicendamento/SpeseAvvicendamento";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/SpeseAvvicendamento/SpeseAvvicendamento";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Storia del Dipendente
-    function callpartialStoria() {
-        //debugger;
+    //function callpartialStoria() {
+    //    //debugger;
 
-        rotta = "/Statistiche/StoriaDipendente/StoriaDipendente";
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {},
-            dataType: 'html',
-            beforeSend: function () {
+    //    rotta = "/Statistiche/StoriaDipendente/StoriaDipendente";
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {},
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Operazioni Effettuate - Indennità di Sede Estera
-    function callpartialOpIndEstera() {
-        //debugger;
+    //function callpartialOpIndEstera() {
+    //    //debugger;
 
-        rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
-        //rotta = "/Statistiche/OpIndEstera/Index";
+    //    rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
+    //    //rotta = "/Statistiche/OpIndEstera/Index";
 
-        //var data = $("#datepicker").datepicker().val()
-        //var data1 = $("#datepicker1").datepicker().val()
+    //    //var data = $("#datepicker").datepicker().val()
+    //    //var data1 = $("#datepicker1").datepicker().val()
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                //V_DATA: data,
-                //V_DATA1: data1
-            },
-            dataType: 'html',
-            beforeSend: function () {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {
+    //            //V_DATA: data,
+    //            //V_DATA1: data1
+    //        },
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Operazioni Effettuate - Canone Anticipato
-    function callpartialOpCanoneAnticipato() {
-        //debugger;
+    //function callpartialOpCanoneAnticipato() {
+    //    //debugger;
 
-        rotta = "/Statistiche/OpCanoneAnticipato/OpCanoneAnticipato";
+    //    rotta = "/Statistiche/OpCanoneAnticipato/OpCanoneAnticipato";
 
-        //var data = $("#datepicker").datepicker().val()
-        //var data1 = $("#datepicker1").datepicker().val()
+    //    //var data = $("#datepicker").datepicker().val()
+    //    //var data1 = $("#datepicker1").datepicker().val()
 
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                //V_DATA: data,
-                //V_DATA1: data1
-            },
-            dataType: 'html',
-            beforeSend: function () {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {
+    //            //V_DATA: data,
+    //            //V_DATA1: data1
+    //        },
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Operazioni Effettuate - Uso Abitazione
-    function callpartialOpUsoAbitazione() {
-        //debugger;
+    //function callpartialOpUsoAbitazione() {
+    //    //debugger;
 
-        rotta = "/Statistiche/OpUsoAbitazione/OpUsoAbitazione";
+    //    rotta = "/Statistiche/OpUsoAbitazione/OpUsoAbitazione";
 
-        //var data = $("#datepicker").datepicker().val()
-        //var data1 = $("#datepicker1").datepicker().val()
+    //    //var data = $("#datepicker").datepicker().val()
+    //    //var data1 = $("#datepicker1").datepicker().val()
 
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                //V_DATA: data,
-                //V_DATA1: data1
-            },
-            dataType: 'html',
-            beforeSend: function () {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {
+    //            //V_DATA: data,
+    //            //V_DATA1: data1
+    //        },
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Operazioni Effettuate - Contributo Abitazione
-    function callpartialOpContributoAbitazione() {
-        //debugger;
+    //function callpartialOpContributoAbitazione() {
+    //    //debugger;
 
-        rotta = "/Statistiche/OpContributoAbitazione/OpContributoAbitazione";
+    //    rotta = "/Statistiche/OpContributoAbitazione/OpContributoAbitazione";
 
-        //var data = $("#datepicker").datepicker().val()
-        //var data1 = $("#datepicker1").datepicker().val()
+    //    //var data = $("#datepicker").datepicker().val()
+    //    //var data1 = $("#datepicker1").datepicker().val()
 
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                //V_DATA: data,
-                //V_DATA1: data1
-            },
-            dataType: 'html',
-            beforeSend: function () {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {
+    //            //V_DATA: data,
+    //            //V_DATA1: data1
+    //        },
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Operazioni Effettuate - Spese diverse
-    function callpartialOpSpeseDiverse() {
-        //debugger;
+    //function callpartialOpSpeseDiverse() {
+    //    //debugger;
 
-        rotta = "/Statistiche/OpSpeseDiverse/OpSpeseDiverse";
+    //    rotta = "/Statistiche/OpSpeseDiverse/OpSpeseDiverse";
 
-        //var data = $("#datepicker").datepicker().val()
-        //var data1 = $("#datepicker1").datepicker().val()
+    //    //var data = $("#datepicker").datepicker().val()
+    //    //var data1 = $("#datepicker1").datepicker().val()
 
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                //V_DATA: data,
-                //V_DATA1: data1
-            },
-            dataType: 'html',
-            beforeSend: function () {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {
+    //            //V_DATA: data,
+    //            //V_DATA1: data1
+    //        },
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
-    // Operazioni Effettuate - Maggiorazione Abitazione
-    function callpartialOpMaggAbitazione() {
-        //debugger;
+    //// Operazioni Effettuate - Maggiorazione Abitazione
+    //function callpartialOpMaggAbitazione() {
+    //    //debugger;
 
-        rotta = "/Statistiche/OpMaggiorazioneAbitazione/OpMaggiorazioneAbitazione";
+    //    rotta = "/Statistiche/OpMaggiorazioneAbitazione/OpMaggiorazioneAbitazione";
 
-        var data = $("#datepicker").datepicker().val()
-        var data1 = $("#datepicker1").datepicker().val()
+    //    var data = $("#datepicker").datepicker().val()
+    //    var data1 = $("#datepicker1").datepicker().val()
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                V_DATA: data,
-                V_DATA1: data1
-            },
-            dataType: 'html',
-            beforeSend: function () {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: {
+    //            V_DATA: data,
+    //            V_DATA1: data1
+    //        },
+    //        dataType: 'html',
+    //        beforeSend: function () {
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divPartialView").empty();
-                $("#divPartialView").html(result);
-            },
-            complete: function () {
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#divPartialView").empty();
+    //            $("#divPartialView").html(result);
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+    //    });
+    //}
 
     // Operazioni Effettuate - Indennità di Sede Estera (Nuovo ISE)
     function callpartialOpIndSedeEsteraNew() {
