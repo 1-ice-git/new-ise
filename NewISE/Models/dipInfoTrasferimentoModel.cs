@@ -50,6 +50,9 @@ namespace NewISE.Models
         [Display(Name = "Ant./Saldo sitemazione")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal primaSitemazione { get; set; }
+        [Display(Name = "Sist. più Mag. Fam.")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        public decimal primaSitemazioneMF { get; set; }
         [Display(Name = "Contr. omni...")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal contributoOmnicomprensivo { get; set; }

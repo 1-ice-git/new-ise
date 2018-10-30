@@ -38,8 +38,8 @@
                 db.TEORICI.Where(
                         a =>
                             a.ANNULLATO == false && a.DIRETTO == true && a.INSERIMENTOMANUALE == false &&
-                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                             a.IDTRASFERIMENTO == idTrasferimento)
                     .OrderBy(a => a.ANNORIFERIMENTO)
                     .ThenBy(a => a.MESERIFERIMENTO)
@@ -116,13 +116,13 @@
                     }
 
                     var detrazioni = eisOld.ALIQUOTECONTRIBUTIVE.Last(a =>
-                        a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive.Detrazioni_DET);
+                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET);
 
 
                     this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, detrazioni.IDALIQCONTR, db);
 
                     var aliqPrev = eisOld.ALIQUOTECONTRIBUTIVE.Last(a =>
-                        a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive.Previdenziali_PREV);
+                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV);
 
                     this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, aliqPrev.IDALIQCONTR, db);
 
@@ -131,8 +131,8 @@
                     {
                         IDTRASFERIMENTO = idTrasferimento,
                         IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
-                        IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                        IDVOCI = (decimal) EnumVociContabili.Ind_Prima_Sist_IPS,
+                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                        IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                         IDMESEANNOELAB = tLast.IDMESEANNOELAB,
                         MESERIFERIMENTO = tLast.MESERIFERIMENTO,
                         ANNORIFERIMENTO = tLast.ANNORIFERIMENTO,
@@ -205,7 +205,7 @@
 
                     Decimal AnnoMeseAttuale =
                         Convert.ToDecimal(meseAnnoElab.ANNO.ToString() +
-                                          meseAnnoElab.MESE.ToString().PadLeft(2, (char) '0'));
+                                          meseAnnoElab.MESE.ToString().PadLeft(2, (char)'0'));
 
                     var levm =
                         db.AUTOMATISMOVOCIMANUALI.Where(
@@ -226,23 +226,23 @@
                     if (levm?.Any() ?? false)
                     {
                         levmm = (from e in levm
-                            select new ElencoVociManualiViewModel()
-                            {
-                                idAutoVociManuali = e.IDAUTOVOCIMANUALI,
-                                nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                ufficio = e.TRASFERIMENTO.UFFICI.DESCRIZIONEUFFICIO + " (" +
-                                          e.TRASFERIMENTO.UFFICI.CODICEUFFICIO + ")",
-                                voce = e.VOCI.DESCRIZIONE + " (" + e.VOCI.CODICEVOCE + ")",
-                                meseAnnoInizio = Utility.MeseAnnoTesto(
-                                    Convert.ToInt16(e.ANNOMESEINIZIO.ToString()
-                                        .Substring(e.ANNOMESEINIZIO.ToString().Length - 2, 2)),
-                                    Convert.ToInt16(e.ANNOMESEINIZIO.ToString().Substring(0, 4))),
-                                meseAnnoFine = Utility.MeseAnnoTesto(
-                                    Convert.ToInt16(e.ANNOMESEFINE.ToString()
-                                        .Substring(e.ANNOMESEFINE.ToString().Length - 2, 2)),
-                                    Convert.ToInt16(e.ANNOMESEFINE.ToString().Substring(0, 4))),
-                                importo = e.IMPORTO
-                            }).OrderBy(a => a.nominativo).ThenBy(a => a.meseAnnoInizio).ToList();
+                                 select new ElencoVociManualiViewModel()
+                                 {
+                                     idAutoVociManuali = e.IDAUTOVOCIMANUALI,
+                                     nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                     ufficio = e.TRASFERIMENTO.UFFICI.DESCRIZIONEUFFICIO + " (" +
+                                               e.TRASFERIMENTO.UFFICI.CODICEUFFICIO + ")",
+                                     voce = e.VOCI.DESCRIZIONE + " (" + e.VOCI.CODICEVOCE + ")",
+                                     meseAnnoInizio = Utility.MeseAnnoTesto(
+                                         Convert.ToInt16(e.ANNOMESEINIZIO.ToString()
+                                             .Substring(e.ANNOMESEINIZIO.ToString().Length - 2, 2)),
+                                         Convert.ToInt16(e.ANNOMESEINIZIO.ToString().Substring(0, 4))),
+                                     meseAnnoFine = Utility.MeseAnnoTesto(
+                                         Convert.ToInt16(e.ANNOMESEFINE.ToString()
+                                             .Substring(e.ANNOMESEFINE.ToString().Length - 2, 2)),
+                                         Convert.ToInt16(e.ANNOMESEFINE.ToString().Substring(0, 4))),
+                                     importo = e.IMPORTO
+                                 }).OrderBy(a => a.nominativo).ThenBy(a => a.meseAnnoInizio).ToList();
                     }
                 }
             }
@@ -283,7 +283,7 @@
                     var lt =
                         db.TEORICI.Where(
                             a => a.ANNULLATO == false && a.INSERIMENTOMANUALE == false && a.DIRETTO == false &&
-                                 a.VOCI.IDTIPOVOCE == (decimal) EnumTipoVoce.Software &&
+                                 a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
                                  a.ANNORIFERIMENTO == annoMeseElab.ANNO &&
                                  a.MESERIFERIMENTO == annoMeseElab.MESE).ToList();
 
@@ -331,8 +331,8 @@
                                 a =>
                                     a.TRASFERIMENTO.Any(
                                         b =>
-                                            (b.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Attivo ||
-                                             b.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Terminato) &&
+                                            (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                             b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
                                             Convert.ToDecimal(b.DATAPARTENZA.Year.ToString() +
                                                               b.DATAPARTENZA.Month.ToString()
                                                                   .PadLeft(2, Convert.ToChar("0"))) <=
@@ -471,8 +471,8 @@
                         a =>
                             a.TRASFERIMENTO.Any(
                                 b =>
-                                    (b.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Attivo ||
-                                     b.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Terminato) &&
+                                    (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                     b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
                                     b.DATAPARTENZA.Year + b.DATAPARTENZA.Month <= anno + mese) &&
                             a.ELABORAZIONI.All(b => b.IDMESEANNOELAB != idAnnoMeseElab))
                     .OrderBy(a => a.NOME)
@@ -571,7 +571,7 @@
                 if (teorico.ANNULLATO == false && teorico.IDMESEANNOELAB == idMeseAnnoElaborato &&
                     teorico.ELABORATO == false)
                 {
-                    switch ((EnumTipoLiquidazione) teorico.VOCI.IDTIPOLIQUIDAZIONE)
+                    switch ((EnumTipoLiquidazione)teorico.VOCI.IDTIPOLIQUIDAZIONE)
                     {
                         case EnumTipoLiquidazione.Paghe:
                             this.InviaFlussiMensiliCedolino(teorico, db);
@@ -843,7 +843,7 @@
             if (t.ELABINDSISTEMAZIONE?.IDINDSISTLORDA > 0)
             {
                 if (t.ANNULLATO == false && t.DIRETTO == false && t.ELABORATO == false &&
-                    t.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS && t.ELABINDSISTEMAZIONE.SALDO == true)
+                    t.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS && t.ELABINDSISTEMAZIONE.SALDO == true)
                 {
                     var eis = t.ELABINDSISTEMAZIONE;
                     var trasferimento = eis.PRIMASITEMAZIONE.TRASFERIMENTO;
@@ -855,7 +855,7 @@
                     string tipoMovimento = "M";
                     string descVociEnd = string.Empty;
 
-                    if (t.IDTIPOMOVIMENTO == (decimal) EnumTipoMovimento.MeseCorrente_M)
+                    if (t.IDTIPOMOVIMENTO == (decimal)EnumTipoMovimento.MeseCorrente_M)
                     {
                         tipoMovimento = "M";
                         descVociEnd = " - Mese Corr.";
@@ -882,7 +882,7 @@
                             {
                                 IDTEORICI = t.IDTEORICI,
                                 CTB_ID_RECORD = idOA,
-                                CTB_MATRICOLA = (short) dip.MATRICOLA,
+                                CTB_MATRICOLA = (short)dip.MATRICOLA,
                                 CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
                                 CTB_COD_SEDE = ufficio.CODICEUFFICIO,
                                 CTB_TIPO_VOCE = tipoVoce,
@@ -957,7 +957,7 @@
                 string tipoMovimento = "M";
                 string descVociEnd = string.Empty;
 
-                if (t.IDTIPOMOVIMENTO == (decimal) EnumTipoMovimento.MeseCorrente_M)
+                if (t.IDTIPOMOVIMENTO == (decimal)EnumTipoMovimento.MeseCorrente_M)
                 {
                     tipoMovimento = "M";
                     descVociEnd = " - Mese Corr.";
@@ -983,7 +983,7 @@
                         {
                             IDTEORICI = t.IDTEORICI,
                             CTB_ID_RECORD = idOA,
-                            CTB_MATRICOLA = (short) dip.MATRICOLA,
+                            CTB_MATRICOLA = (short)dip.MATRICOLA,
                             CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
                             CTB_COD_SEDE = ufficio.CODICEUFFICIO,
                             CTB_TIPO_VOCE = tipoVoce,
@@ -1054,7 +1054,7 @@
                 string tipoMovimento = "M";
                 string descVociEnd = string.Empty;
 
-                if (t.IDTIPOMOVIMENTO == (decimal) EnumTipoMovimento.MeseCorrente_M)
+                if (t.IDTIPOMOVIMENTO == (decimal)EnumTipoMovimento.MeseCorrente_M)
                 {
                     tipoMovimento = "M";
                     descVociEnd = " - Mese Corr.";
@@ -1081,7 +1081,7 @@
                         {
                             IDTEORICI = t.IDTEORICI,
                             CTB_ID_RECORD = idOA,
-                            CTB_MATRICOLA = (short) dip.MATRICOLA,
+                            CTB_MATRICOLA = (short)dip.MATRICOLA,
                             CTB_QUALIFICA = livello.LIVELLO == "D" ? "D" : "I",
                             CTB_COD_SEDE = ufficio.CODICEUFFICIO,
                             CTB_TIPO_VOCE = tipoVoce,
@@ -1153,7 +1153,7 @@
                 string tipoMovimento = "M";
                 string descVociEnd = string.Empty;
 
-                if (t.IDTIPOMOVIMENTO == (decimal) EnumTipoMovimento.MeseCorrente_M)
+                if (t.IDTIPOMOVIMENTO == (decimal)EnumTipoMovimento.MeseCorrente_M)
                 {
                     tipoMovimento = "M";
                     descVociEnd = " - Mese Corr.";
@@ -1176,7 +1176,7 @@
                         {
                             IDTEORICI = t.IDTEORICI,
                             CTB_ID_RECORD = idOA,
-                            CTB_MATRICOLA = (short) dip.MATRICOLA,
+                            CTB_MATRICOLA = (short)dip.MATRICOLA,
                             CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
                             CTB_COD_SEDE = ufficio.CODICEUFFICIO,
                             CTB_TIPO_VOCE = tipoVoce,
@@ -1240,7 +1240,7 @@
                             a =>
                                 a.ANNULLATO == false && a.DIRETTO == true && a.ELABORATO == false &&
                                 a.IDMESEANNOELAB == idMeseAnnoElaborato && a.IDTEORICI == idTeorico &&
-                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità)
+                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)
                         .OrderBy(a => a.ANNORIFERIMENTO)
                         .ThenBy(a => a.MESERIFERIMENTO)
                         .ToList();
@@ -1253,7 +1253,7 @@
                                     a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
                                     (a.ELABINDSISTEMAZIONE.ANTICIPO == true || a.ELABINDSISTEMAZIONE.SALDO == true ||
                                      a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true) &&
-                                    a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS)
+                                    a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS)
                             .OrderBy(a => a.ANNORIFERIMENTO)
                             .ThenBy(a => a.MESERIFERIMENTO)
                             .ToList();
@@ -1303,8 +1303,8 @@
                                             a =>
                                                 a.ANNULLATO == false && a.DIRETTO == true &&
                                                 a.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                (decimal) EnumTipoLiquidazione.Contabilità &&
-                                                a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                                (decimal)EnumTipoLiquidazione.Contabilità &&
+                                                a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                                                 a.ELABINDSISTEMAZIONE.ANTICIPO == true)
                                         .OrderBy(a => a.ANNORIFERIMENTO)
                                         .ThenBy(a => a.MESERIFERIMENTO)
@@ -1342,7 +1342,7 @@
                             {
                                 IDTEORICI = tps.IDTEORICI,
                                 CTB_ID_RECORD = idOA,
-                                CTB_MATRICOLA = (short) dip.MATRICOLA,
+                                CTB_MATRICOLA = (short)dip.MATRICOLA,
                                 CTB_QUALIFICA = liv.LIVELLO == "D" ? "D" : "I",
                                 CTB_COD_SEDE = ufficio.CODICEUFFICIO,
                                 CTB_TIPO_VOCE = tipoVoce,
@@ -1453,7 +1453,7 @@
                                           a.DIRETTO == true &&
                                           a.IDMESEANNOELAB == idMeseAnnoElaborato &&
                                           a.ELABORATO == false &&
-                                          a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità
+                                          a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità
                 );
             }
 
@@ -1484,7 +1484,7 @@
                             a.ELABINDSISTEMAZIONE.CONGUAGLIO == false &&
                             a.DIRETTO == true &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS).ToList();
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS).ToList();
 
                 foreach (var t in lTeorici)
                 {
@@ -1623,7 +1623,7 @@
                                     a =>
                                         a.ANNULLATO == false &&
                                         a.IDTIPOLOGIAANTICIPI ==
-                                        (decimal) EnumTipoAnticipi.Prima_sistemazione)
+                                        (decimal)EnumTipoAnticipi.Prima_sistemazione)
                                 .OrderByDescending(a => a.IDATTIVITAANTICIPI)
                                 .ToList();
 
@@ -1693,7 +1693,7 @@
                                         a =>
                                             a.ANNULLATO == false &&
                                             a.IDTIPOCONTRIBUTO ==
-                                            (decimal) EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                            (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
                                             t.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                             t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                     .ToList();
@@ -1718,7 +1718,7 @@
                                         a =>
                                             a.ANNULLATO == false &&
                                             a.IDTIPOCONTRIBUTO ==
-                                            (decimal) EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                            (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
                                             t.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                             t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                     .ToList();
@@ -1742,7 +1742,7 @@
                                         a =>
                                             a.ANNULLATO == false &&
                                             a.IDTIPOCONTRIBUTO ==
-                                            (decimal) EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                            (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
                                             t.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                             t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                     .ToList();
@@ -1765,7 +1765,7 @@
                                 db.ALIQUOTECONTRIBUTIVE.Where(
                                         a =>
                                             a.ANNULLATO == false &&
-                                            a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive
+                                            a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive
                                                 .MassimaleContributoAggiuntivo_MCA &&
                                             t.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                             t.DATAPARTENZA <= a.DATAFINEVALIDITA)
@@ -1808,7 +1808,7 @@
                                     datiAticipoInseriti.TEORICI.Where(
                                             a =>
                                                 a.ANNULLATO == false &&
-                                                a.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                                a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                                                 a.INSERIMENTOMANUALE == false)
                                         .OrderByDescending(a => a.IDTEORICI)
                                         .ToList();
@@ -1873,8 +1873,8 @@
                                                 teorici = new TEORICI()
                                                 {
                                                     IDTRASFERIMENTO = t.IDTRASFERIMENTO,
-                                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                    IDVOCI = (decimal) EnumVociContabili.Ind_Prima_Sist_IPS,
+                                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                    IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                                     IDMESEANNOELAB = mae.idMeseAnnoElab,
                                                     MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                                     ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -1896,8 +1896,8 @@
                                                 teorici = new TEORICI()
                                                 {
                                                     IDTRASFERIMENTO = t.IDTRASFERIMENTO,
-                                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                    IDVOCI = (decimal) EnumVociContabili.Ind_Prima_Sist_IPS,
+                                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                    IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                                     IDMESEANNOELAB = mae.idMeseAnnoElab,
                                                     MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                                     ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -1936,8 +1936,8 @@
                                             {
                                                 IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Lorda_086_380,
+                                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
                                                 IDMESEANNOELAB = mae.idMeseAnnoElab,
                                                 MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                                 ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -1967,8 +1967,8 @@
                                             {
                                                 IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                                                 IDMESEANNOELAB = mae.idMeseAnnoElab,
                                                 MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                                 ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -2000,8 +2000,8 @@
                                                 {
                                                     IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                                                     IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                    IDVOCI = (decimal) EnumVociCedolino.Detrazione_086_384,
+                                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                    IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                                                     IDMESEANNOELAB = mae.idMeseAnnoElab,
                                                     MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                                     ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -2126,7 +2126,7 @@
                     db.ALIQUOTECONTRIBUTIVE.Where(
                             a =>
                                 a.ANNULLATO == false &&
-                                a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
                                 t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                         .ToList();
 
@@ -2149,7 +2149,7 @@
                     db.ALIQUOTECONTRIBUTIVE.Where(
                             a =>
                                 a.ANNULLATO == false &&
-                                a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
                                 t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                         .ToList();
 
@@ -2172,7 +2172,7 @@
                     db.ALIQUOTECONTRIBUTIVE.Where(
                             a =>
                                 a.ANNULLATO == false &&
-                                a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
                                 t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                         .ToList();
 
@@ -2196,7 +2196,7 @@
                             a =>
                                 a.ANNULLATO == false &&
                                 a.IDTIPOCONTRIBUTO ==
-                                (decimal) EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
                                 t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                         .ToList();
 
@@ -2274,8 +2274,8 @@
                         {
                             IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Lorda_086_380,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
                             IDMESEANNOELAB = mae.idMeseAnnoElab,
                             MESERIFERIMENTO = t.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -2305,8 +2305,8 @@
                         {
                             IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                             IDMESEANNOELAB = mae.idMeseAnnoElab,
                             MESERIFERIMENTO = t.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -2336,8 +2336,8 @@
                         {
                             IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Detrazione_086_384,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                             IDMESEANNOELAB = mae.idMeseAnnoElab,
                             MESERIFERIMENTO = t.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -2365,8 +2365,8 @@
                         TEORICI teorici = new TEORICI()
                         {
                             IDTRASFERIMENTO = t.IDTRASFERIMENTO,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociContabili.Ind_Prima_Sist_IPS,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                             IDMESEANNOELAB = mae.idMeseAnnoElab,
                             MESERIFERIMENTO = t.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -2426,8 +2426,8 @@
                         a =>
                             a.ANNULLATO == false && a.DIRETTO == true && a.INSERIMENTOMANUALE == false &&
                             a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
-                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                             a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true &&
                             a.ELABINDSISTEMAZIONE.CONGUAGLIO == false)
                     .OrderBy(a => a.IDTEORICI)
@@ -2504,7 +2504,7 @@
                             db.ALIQUOTECONTRIBUTIVE.Where(
                                     a =>
                                         a.ANNULLATO == false &&
-                                        a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
                                         trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                         trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                 .ToList();
@@ -2530,7 +2530,7 @@
                                     a =>
                                         a.ANNULLATO == false &&
                                         a.IDTIPOCONTRIBUTO ==
-                                        (decimal) EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                        (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
                                         trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                         trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                 .ToList();
@@ -2554,7 +2554,7 @@
                                     a =>
                                         a.ANNULLATO == false &&
                                         a.IDTIPOCONTRIBUTO ==
-                                        (decimal) EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                        (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
                                         trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                         trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                 .ToList();
@@ -2577,7 +2577,7 @@
                             db.ALIQUOTECONTRIBUTIVE.Where(
                                     a =>
                                         a.ANNULLATO == false &&
-                                        a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive
+                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive
                                             .MassimaleContributoAggiuntivo_MCA &&
                                         trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                         trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
@@ -2641,8 +2641,8 @@
                         {
                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Lorda_086_380,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                             MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -2672,8 +2672,8 @@
                         {
                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                             MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -2703,8 +2703,8 @@
                         {
                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Detrazione_086_384,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                             MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -2734,8 +2734,8 @@
                             db.TEORICI.Where(
                                 a => a.ANNULLATO == false && a.DIRETTO == true && a.INSERIMENTOMANUALE == false &&
                                      a.ELABORATO == false && a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
-                                     a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                                     a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                     a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                     a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                                      a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
                                      a.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true).OrderBy(a => a.IDTEORICI).ToList();
                         if (ltUS?.Any() ?? false)
@@ -2749,8 +2749,8 @@
                             {
                                 IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                IDVOCI = (decimal) EnumVociContabili.Ind_Prima_Sist_IPS,
+                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                 MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -2802,8 +2802,8 @@
                         a =>
                             a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                             a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
-                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                             a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
                             a.ELABINDSISTEMAZIONE.CONGUAGLIO == false)
                     .OrderBy(a => a.IDTEORICI)
@@ -2818,16 +2818,15 @@
                         a =>
                             a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                             a.ELABORATO == true && a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
-                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                             a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.SALDO == true);
 
                 if (saldoPercepito == false)
                 {
                     decimal PercentualeRestante = 100 - eisOld.PERCANTSALDOUNISOL;
 
-                    using (CalcoliIndennita ci =
-                        new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA, db))
+                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA, db))
                     {
                         ELABINDSISTEMAZIONE eis = new ELABINDSISTEMAZIONE()
                         {
@@ -2985,7 +2984,7 @@
                                 "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
                         }
 
-                        this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, mca.IDALIQCONTR, db); 
+                        this.AssociaAliquoteIndSist(eis.IDINDSISTLORDA, mca.IDALIQCONTR, db);
                         #endregion
 
                         CalcoliIndennita.ElaboraPrimaSistemazione(eis.INDENNITABASE, eis.COEFFICENTESEDE,
@@ -3013,7 +3012,7 @@
                         //decimal SaldoLordo = (primaSistemazioneAnticipabile * (PercentualeRestante / 100)) + outMaggiorazioniFamiliari;
 
                         //decimal AnticipoNettoPercepito = teoricoAP.IMPORTO;
-                        decimal AnticipoLordoPercepito = lTeoriciAP.Sum(a=>a.IMPORTOLORDO);
+                        decimal AnticipoLordoPercepito = lTeoriciAP.Sum(a => a.IMPORTOLORDO);
 
                         decimal SaldoLordo = primaSistemazioneUnicaSoluzione - AnticipoLordoPercepito;
 
@@ -3039,8 +3038,8 @@
                         {
                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Lorda_086_380,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                             MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -3071,8 +3070,8 @@
                         {
                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                             MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -3103,8 +3102,8 @@
                         {
                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                             IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                            IDVOCI = (decimal) EnumVociCedolino.Detrazione_086_384,
+                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                            IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                             MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -3137,8 +3136,8 @@
                             {
                                 IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                IDVOCI = (decimal) EnumVociContabili.Ind_Prima_Sist_IPS,
+                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                 MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -3195,7 +3194,7 @@
                         aa.ANTICIPI.Where(
                             a =>
                                 a.ANNULLATO == false &&
-                                a.IDTIPOLOGIAANTICIPI == (decimal) EnumTipoAnticipi.Prima_sistemazione).ToList();
+                                a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipoAnticipi.Prima_sistemazione).ToList();
 
                     if (lanticipi?.Any() ?? false)
                     {
@@ -3266,7 +3265,7 @@
                                         a =>
                                             a.ANNULLATO == false &&
                                             a.IDTIPOCONTRIBUTO ==
-                                            (decimal) EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                            (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
                                             t.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                             t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                     .ToList();
@@ -3293,7 +3292,7 @@
                                         a =>
                                             a.ANNULLATO == false &&
                                             a.IDTIPOCONTRIBUTO ==
-                                            (decimal) EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                            (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
                                             t.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                             t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                     .ToList();
@@ -3318,7 +3317,7 @@
                                         a =>
                                             a.ANNULLATO == false &&
                                             a.IDTIPOCONTRIBUTO ==
-                                            (decimal) EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                            (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
                                             t.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                             t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                     .ToList();
@@ -3341,7 +3340,7 @@
                                 db.ALIQUOTECONTRIBUTIVE.Where(
                                         a =>
                                             a.ANNULLATO == false &&
-                                            a.IDTIPOCONTRIBUTO == (decimal) EnumTipoAliquoteContributive
+                                            a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive
                                                 .MassimaleContributoAggiuntivo_MCA &&
                                             t.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                             t.DATAPARTENZA <= a.DATAFINEVALIDITA)
@@ -3419,8 +3418,8 @@
                                     TEORICI teorici = new TEORICI()
                                     {
                                         IDTRASFERIMENTO = t.IDTRASFERIMENTO,
-                                        IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.MeseCorrente_M,
-                                        IDVOCI = (decimal) EnumVociContabili.Ind_Prima_Sist_IPS,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                        IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                         IDMESEANNOELAB = mae.idMeseAnnoElab,
                                         MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -3451,7 +3450,7 @@
                                     //decimal annoMeseElab = Convert.ToDecimal(mae.anno.ToString() + mae.mese.ToString().PadLeft(2, (char)'0'));
 
                                     EnumTipoMovimento tipoMov = EnumTipoMovimento.MeseCorrente_M;
-                                    
+
 
                                     //if (annoMeseTrasf < annoMeseElab)
                                     //{
@@ -3466,8 +3465,8 @@
                                     TEORICI teoriciLordo = new TEORICI()
                                     {
                                         IDTRASFERIMENTO = t.IDTRASFERIMENTO,
-                                        IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                        IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Lorda_086_380,
+                                        IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                        IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
                                         IDMESEANNOELAB = mae.idMeseAnnoElab,
                                         MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -3499,8 +3498,8 @@
                                     {
                                         IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                                         IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                        IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                        IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                        IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                        IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                                         IDMESEANNOELAB = mae.idMeseAnnoElab,
                                         MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -3532,8 +3531,8 @@
                                     {
                                         IDTRASFERIMENTO = t.IDTRASFERIMENTO,
                                         IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                        IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                        IDVOCI = (decimal) EnumVociCedolino.Detrazione_086_384,
+                                        IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                        IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                                         IDMESEANNOELAB = mae.idMeseAnnoElab,
                                         MESERIFERIMENTO = t.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = t.DATAPARTENZA.Year,
@@ -3588,7 +3587,7 @@
             try
             {
                 am = Utility.UtenteAutorizzato();
-                if (am.RuoloAccesso.idRuoloAccesso != (decimal) EnumRuoloAccesso.SuperAmministratore)
+                if (am.RuoloAccesso.idRuoloAccesso != (decimal)EnumRuoloAccesso.SuperAmministratore)
                 {
                     mittente.Nominativo = am.nominativo;
                     mittente.EmailMittente = am.eMail;
@@ -3673,8 +3672,8 @@
                             a =>
                                 a.TRASFERIMENTO.Any(
                                     b =>
-                                        (b.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Attivo ||
-                                         b.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Terminato) &&
+                                        (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                         b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
                                         (Convert.ToDecimal(b.DATAPARTENZA.Year.ToString() +
                                                            b.DATAPARTENZA.Month.ToString()
                                                                .PadLeft(2, Convert.ToChar("0"))) <=
@@ -3696,8 +3695,8 @@
                             a =>
                                 a.ELABORATO == false && a.IDMESEANNOELAB == idAnnoMeseElab && a.DIRETTO == false &&
                                 a.INSERIMENTOMANUALE == false &&
-                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Paghe &&
-                                a.IDVOCI == (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 &&
+                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                a.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 &&
                                 a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0)
                         .OrderBy(a => a.IDTEORICI)
                         .ToList();
@@ -3720,8 +3719,8 @@
                                             b.ANNULLATO == false && b.DIRETTO == false && b.ELABORATO == true &&
                                             b.INSERIMENTOMANUALE == false && b.IDMESEANNOELAB == idAnnoMeseElab &&
                                             b.IDTRASFERIMENTO == trasf.IDTRASFERIMENTO &&
-                                            b.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Paghe &&
-                                            b.IDVOCI == (decimal) EnumVociCedolino
+                                            b.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                            b.IDVOCI == (decimal)EnumVociCedolino
                                                 .Sistemazione_Richiamo_Netto_086_383));
 
                         if (elaborato == false)
@@ -3786,8 +3785,8 @@
             var lTrasf =
                 dip.TRASFERIMENTO.Where(
                         a =>
-                            (a.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Attivo ||
-                             a.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Terminato) &&
+                            (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                             a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
                             a.DATARIENTRO >= a.DIPENDENTI.DATAINIZIORICALCOLI)
                     .OrderBy(a => a.DATAPARTENZA)
                     .ToList();
@@ -3847,8 +3846,8 @@
                                 dipendente.IDDIPENDENTE &&
                                 a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
                                 a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
-                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Paghe &&
-                                a.IDVOCI == (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383)
+                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                a.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383)
                         .OrderBy(a => a.IDTEORICI)
                         .ToList();
 
@@ -3888,8 +3887,8 @@
 
                 var lTrasferimenti =
                     dipendente.TRASFERIMENTO
-                        .Where(a => (a.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Attivo ||
-                                     a.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Terminato)
+                        .Where(a => (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                     a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                                     &&
                                     Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year.ToString(),
                                         a.DATARIENTRO.Month.ToString().PadLeft(2, Convert.ToChar("0")))) >=
@@ -3941,7 +3940,7 @@
             ModelDBISE db)
         {
             decimal AnnoMeseElab = Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
-                                                     meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char) '0'));
+                                                     meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char)'0'));
 
             var lvm =
                 db.AUTOMATISMOVOCIMANUALI.Where(
@@ -3971,7 +3970,7 @@
                     {
                         dataFineElaborazione =
                             Utility.GetDtFineMese(
-                                Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char) '0') +
+                                Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char)'0') +
                                                    "/" +
                                                    meseAnnoElaborazione.ANNO.ToString()));
                     }
@@ -4015,7 +4014,7 @@
 
                             decimal AnnoMeseCiclato =
                                 Convert.ToDecimal(dtIni.Year.ToString() +
-                                                  dtIni.Month.ToString().PadLeft(2, (char) '0'));
+                                                  dtIni.Month.ToString().PadLeft(2, (char)'0'));
 
                             if (AnnoMeseCiclato < AnnoMeseElab)
                             {
@@ -4041,7 +4040,7 @@
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     IDVOCI = vm.IDVOCI,
-                                    IDTIPOMOVIMENTO = (decimal) tm,
+                                    IDTIPOMOVIMENTO = (decimal)tm,
                                     IDAUTOVOCIMANUALI = vm.IDAUTOVOCIMANUALI,
                                     MESERIFERIMENTO = dtIni.Month,
                                     ANNORIFERIMENTO = dtIni.Year,
@@ -4088,6 +4087,8 @@
                 Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" + meseAnnoElaborazione.ANNO);
             DateTime dataFineElaborazione = Utility.GetDtFineMese(dataInizioElaborazione);
 
+            int giorniElabMese = 0;
+
             if (dataFineElaborazione > dataFineTrasferimento)
             {
                 dataFineElaborazione = dataFineTrasferimento;
@@ -4107,20 +4108,59 @@
                             dtIni = Utility.GetDataInizioMese(dtIni.AddMonths(1));
                         }
 
-                        bool EsisteTeorico =
-                            db.TEORICI.Any(
-                                a =>
-                                    a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
-                                    a.ANNORIFERIMENTO == dtIni.Year && a.MESERIFERIMENTO == dtIni.Month &&
-                                    a.ELABORATO == true && a.VOCI.IDVOCI == (decimal) EnumVociContabili.MAB &&
-                                    //a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == trasferimento.IDTRASFERIMENTO)
-                                    a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO);
+                        //bool EsisteTeorico = db.TEORICI.Any(
+                        //        a =>
+                        //            a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
+                        //            a.ANNORIFERIMENTO == dtIni.Year && a.MESERIFERIMENTO == dtIni.Month &&
+                        //            a.ELABORATO == true && a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                        //            a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == trasferimento.IDTRASFERIMENTO && b.CONGUAGLIO == false) &&
+                        //            a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO);
 
-                        if (EsisteTeorico == false)
+                        //if (EsisteTeorico == false)
+                        //{
+
+                        //    dataInizioElaborazione = dtIni;
+                        //    break;
+                        //}
+
+                        var lteoricoElab =
+                            db.TEORICI.Where(
+                                a => a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
+                                     a.ANNORIFERIMENTO == dtIni.Year &&
+                                     a.MESERIFERIMENTO == dtIni.Month &&
+                                     a.ELABORATO == true &&
+                                     a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                                     a.ELABMAB.Any(
+                                         b =>
+                                             b.ANNULLATO == false && b.IDTRASFINDENNITA == trasferimento.IDTRASFERIMENTO &&
+                                             b.CONGUAGLIO == false) &&
+                                     a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO).ToList();
+
+                        if (lteoricoElab?.Any() ?? false)
                         {
+                            giorniElabMese = (int)lteoricoElab.Sum(a => a.GIORNI);
                             dataInizioElaborazione = dtIni;
-                            break;
+
+                            var dtSucc = dtIni.AddMonths(1);
+
+                            bool verificaMeseElab =
+                                db.TEORICI.Any(
+                                    a => a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
+                                         a.ANNORIFERIMENTO == dtSucc.Year &&
+                                         a.MESERIFERIMENTO == dtSucc.Month &&
+                                         a.ELABORATO == true &&
+                                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                                         a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO);
+
+
+                            if (verificaMeseElab == false)
+                            {
+                                dataInizioElaborazione = dataInizioElaborazione.AddDays(giorniElabMese);
+                                break;
+                            }
+
                         }
+
                     }
                 }
 
@@ -4131,9 +4171,9 @@
             var lmab =
                 indennita.MAB.Where(
                         a =>
-                            a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                             a.RINUNCIAMAB == false &&
-                            a.PERIODOMAB.Any(b => b.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                            a.PERIODOMAB.Any(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                   b.DATAFINEMAB >= dataInizioElaborazione &&
                                                   b.DATAINIZIOMAB <= dataFineElaborazione))
                     .OrderBy(a => a.IDMAB)
@@ -4145,7 +4185,7 @@
                 foreach (var mab in lmab)
                 {
                     var lPeriodoMab =
-                        mab.PERIODOMAB.Where(b => b.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                        mab.PERIODOMAB.Where(b => b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                   b.ATTIVAZIONEMAB.ANNULLATO == false &&
                                                   b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
                                                   b.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
@@ -4171,12 +4211,13 @@
                         var lanticipoAnnuale =
                             mab.ANTICIPOANNUALEMAB.Where(
                                     a =>
-                                        a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                         a.ATTIVAZIONEMAB.ANNULLATO == false &&
                                         a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
                                         a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
                                 .OrderByDescending(a => a.IDANTICIPOANNUALEMAB)
                                 .ToList();
+
                         if (lanticipoAnnuale?.Any() ?? false)
                         {
                             var aamab = lanticipoAnnuale.First();
@@ -4187,9 +4228,9 @@
                                     db.TEORICI.Where(
                                             a =>
                                                 a.ANNULLATO == false && a.ELABORATO == true &&
-                                                a.IDVOCI == (decimal) EnumVociContabili.MAB &&
+                                                a.IDVOCI == (decimal)EnumVociContabili.MAB &&
                                                 a.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                (decimal) EnumTipoLiquidazione.Contabilità &&
+                                                (decimal)EnumTipoLiquidazione.Contabilità &&
                                                 //a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == mab.IDTRASFINDENNITA)
                                                 a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
                                         .OrderBy(a => a.ANNORIFERIMENTO)
@@ -4199,16 +4240,15 @@
                                     DateTime appoDataFineRateMab = dataInizioElaborazione.AddMonths(6).AddDays(-1);
                                     decimal fineRateMab =
                                         Convert.ToDecimal(appoDataFineRateMab.Year.ToString() +
-                                                          appoDataFineRateMab.Month.ToString().PadLeft(2, (char) '0'));
+                                                          appoDataFineRateMab.Month.ToString().PadLeft(2, (char)'0'));
                                     decimal fineElab =
                                         Convert.ToDecimal(dataFineElaborazione.Year.ToString() +
-                                                          dataFineElaborazione.Month.ToString().PadLeft(2, (char) '0'));
+                                                          dataFineElaborazione.Month.ToString().PadLeft(2, (char)'0'));
 
 
                                     if (fineRateMab < fineElab)
                                     {
-                                        using (GiorniRateo gr = new GiorniRateo(dataInizioElaborazione,
-                                            dataFineElaborazione))
+                                        using (GiorniRateo gr = new GiorniRateo(dataInizioElaborazione, dataFineElaborazione))
                                         {
                                             int numeroCicli = Convert.ToInt32(gr.CicliElaborazione / 6);
 
@@ -4219,8 +4259,7 @@
                                                 numeroCicli++;
                                             }
 
-                                            dataFineElaborazione = dataInizioElaborazione.AddMonths(6 * numeroCicli)
-                                                .AddDays(-1);
+                                            dataFineElaborazione = dataInizioElaborazione.AddMonths(6 * numeroCicli).AddDays(-1);
                                         }
                                     }
                                     else
@@ -4233,10 +4272,10 @@
                                     DateTime appoDataFineRateMab = dataInizioElaborazione.AddMonths(12).AddDays(-1);
                                     decimal fineRateMab =
                                         Convert.ToDecimal(appoDataFineRateMab.Year.ToString() +
-                                                          appoDataFineRateMab.Month.ToString().PadLeft(2, (char) '0'));
+                                                          appoDataFineRateMab.Month.ToString().PadLeft(2, (char)'0'));
                                     decimal fineElab =
                                         Convert.ToDecimal(dataFineElaborazione.Year.ToString() +
-                                                          dataFineElaborazione.Month.ToString().PadLeft(2, (char) '0'));
+                                                          dataFineElaborazione.Month.ToString().PadLeft(2, (char)'0'));
 
 
                                     if (fineRateMab < fineElab)
@@ -4270,10 +4309,10 @@
                                 DateTime appoDataFineRateMab = dataInizioElaborazione.AddMonths(6).AddDays(-1);
                                 decimal fineRateMab =
                                     Convert.ToDecimal(appoDataFineRateMab.Year.ToString() +
-                                                      appoDataFineRateMab.Month.ToString().PadLeft(2, (char) '0'));
+                                                      appoDataFineRateMab.Month.ToString().PadLeft(2, (char)'0'));
                                 decimal fineElab =
                                     Convert.ToDecimal(dataFineElaborazione.Year.ToString() +
-                                                      dataFineElaborazione.Month.ToString().PadLeft(2, (char) '0'));
+                                                      dataFineElaborazione.Month.ToString().PadLeft(2, (char)'0'));
 
 
                                 if (fineRateMab < fineElab)
@@ -4512,7 +4551,7 @@
                                             var lc =
                                                 mf.CONIUGE.Where(
                                                         a =>
-                                                            a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                             a.DATAFINEVALIDITA >= dataIniCiclo &&
                                                             a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                                     .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
@@ -4557,7 +4596,7 @@
                                                         coniuge.PENSIONE.Where(
                                                                 a =>
                                                                     a.IDSTATORECORD !=
-                                                                    (decimal) EnumStatoRecord.Annullato &&
+                                                                    (decimal)EnumStatoRecord.Annullato &&
                                                                     a.DATAFINE >= dataIniCiclo &&
                                                                     a.DATAINIZIO <= dataFineCiclo)
                                                             .OrderByDescending(a => a.DATAINIZIO)
@@ -4591,7 +4630,7 @@
                                             var lf =
                                                 mf.FIGLI.Where(
                                                         a =>
-                                                            a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                             a.DATAFINEVALIDITA >= dataIniCiclo &&
                                                             a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                                     .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
@@ -4636,7 +4675,7 @@
 
                                         var lcl =
                                             mab.CANONEMAB.Where(
-                                                    a => a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                                    a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                          a.ATTIVAZIONEMAB.ANNULLATO == false &&
                                                          a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
                                                          a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
@@ -4693,7 +4732,7 @@
                                         var lpc =
                                             mab.PAGATOCONDIVISOMAB.Where(
                                                     a =>
-                                                        a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                         a.ATTIVAZIONEMAB.ANNULLATO == false &&
                                                         a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
                                                         a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
@@ -4897,8 +4936,8 @@
                                                 {
                                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
-                                                    IDVOCI = (decimal) EnumVociContabili.MAB,
-                                                    IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
+                                                    IDVOCI = (decimal)EnumVociContabili.MAB,
+                                                    IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
                                                     MESERIFERIMENTO = dataRiferimento.Month,
                                                     ANNORIFERIMENTO = dataRiferimento.Year,
                                                     IMPORTO = importoMabTot,
@@ -4916,8 +4955,8 @@
                                                 {
                                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
-                                                    IDVOCI = (decimal) EnumVociContabili.MAB,
-                                                    IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.MeseCorrente_M,
+                                                    IDVOCI = (decimal)EnumVociContabili.MAB,
+                                                    IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
                                                     MESERIFERIMENTO = dataRiferimento.Month,
                                                     ANNORIFERIMENTO = dataRiferimento.Year,
                                                     IMPORTO = importoMabTot,
@@ -4968,8 +5007,8 @@
             var lTeorici = db.TEORICI.Where(a => a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                                                  a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                                                  a.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                 (decimal) EnumTipoLiquidazione.Contabilità &&
-                                                 a.VOCI.IDVOCI == (decimal) EnumVociContabili.MAB &&
+                                                 (decimal)EnumTipoLiquidazione.Contabilità &&
+                                                 a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
                                                  a.DIRETTO == false && a.IMPORTO != 0 &&
                                                  a.ELABMAB.Any(b => b.ANNULLATO == false))
                 .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
@@ -5061,8 +5100,8 @@
                             a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                             a.DIRETTO == false && a.IMPORTO != 0 &&
-                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                             a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
                             a.ELABINDSISTEMAZIONE.CONGUAGLIO == true
                     ).OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
@@ -5141,8 +5180,8 @@
                             a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                             a.DIRETTO == false && a.IMPORTO != 0 &&
-                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                             a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
                             a.ELABINDSISTEMAZIONE.SALDO == true &&
                             a.ELABINDSISTEMAZIONE.PERCANTSALDOUNISOL == 0
@@ -5218,8 +5257,8 @@
             var lTeorici = db.TEORICI.Where(a => a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                                                  a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                                                  a.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                 (decimal) EnumTipoLiquidazione.Contabilità &&
-                                                 a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Sede_Estera &&
+                                                 (decimal)EnumTipoLiquidazione.Contabilità &&
+                                                 a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
                                                  a.DIRETTO == false && a.IMPORTO != 0 &&
                                                  a.ELABINDENNITA.Any(b => b.ANNULLATO == false))
                 .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
@@ -5310,9 +5349,9 @@
                             a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                             a.ELABTRASPEFFETTI.ANNULLATO == false && a.ELABTRASPEFFETTI.IDTEPARTENZA > 0 &&
-                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Paghe &&
-                            a.VOCI.IDTIPOVOCE == (decimal) EnumTipoVoce.Software &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                            a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
                             a.DIRETTO == false && a.IMPORTO != 0)
                     .OrderBy(a => a.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABTRASPEFFETTI.TEPARTENZA.TRASFERIMENTO.DIPENDENTI.NOME)
@@ -5413,9 +5452,9 @@
                             a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
                             a.ELABTRASPEFFETTI.ANNULLATO == false && a.ELABTRASPEFFETTI.IDTERIENTRO > 0 &&
-                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Paghe &&
-                            a.VOCI.IDTIPOVOCE == (decimal) EnumTipoVoce.Software &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                            a.VOCI.IDTIPOVOCE == (decimal)EnumTipoVoce.Software &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
                             a.DIRETTO == false && a.IMPORTO != 0)
                     .OrderBy(a => a.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABTRASPEFFETTI.TERIENTRO.TRASFERIMENTO.DIPENDENTI.NOME)
@@ -5516,10 +5555,10 @@
                         a =>
                             a.ANNULLATO == false &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
-                            (a.VOCI.IDVOCI == (decimal) EnumVociCedolino.Rientro_Lordo_086_381 ||
-                             a.VOCI.IDVOCI == (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
-                             a.VOCI.IDVOCI == (decimal) EnumVociCedolino.Detrazione_086_384 ||
-                             a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Richiamo_IRI) &&
+                            (a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Rientro_Lordo_086_381 ||
+                             a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
+                             a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384 ||
+                             a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI) &&
                             a.DIRETTO == false && a.IMPORTO != 0 &&
                             a.ELABINDRICHIAMO.ANNULLATO == false && a.ELABINDRICHIAMO.IDRICHIAMO > 0)
                     .OrderBy(a => a.ELABINDRICHIAMO.RICHIAMO.TRASFERIMENTO.DIPENDENTI.COGNOME)
@@ -5604,9 +5643,9 @@
                         a =>
                             a.ANNULLATO == false &&
                             a.IDMESEANNOELAB == mae.IDMESEANNOELAB &&
-                            (a.VOCI.IDVOCI == (decimal) EnumVociCedolino.Sistemazione_Lorda_086_380 ||
-                             a.VOCI.IDVOCI == (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
-                             a.VOCI.IDVOCI == (decimal) EnumVociCedolino.Detrazione_086_384) &&
+                            (a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380 ||
+                             a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383 ||
+                             a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Detrazione_086_384) &&
                             a.DIRETTO == false && a.IMPORTO != 0 && a.ELABINDSISTEMAZIONE.IDINDSISTLORDA > 0)
                     .OrderBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.COGNOME)
                     .ThenBy(a => a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.DIPENDENTI.NOME)
@@ -5908,7 +5947,7 @@
             var lAttTePartenzaAnticipo =
                 tePartenza.ATTIVITATEPARTENZA.Where(
                         a =>
-                            a.ANNULLATO == false && a.IDANTICIPOSALDOTE == (decimal) EnumTipoAnticipoSaldoTE.Anticipo &&
+                            a.ANNULLATO == false && a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo &&
                             a.RICHIESTATRASPORTOEFFETTI == true && a.ATTIVAZIONETRASPORTOEFFETTI == true)
                     .ToList();
 
@@ -5969,7 +6008,7 @@
                                     decimal annoMeseDtIniElab =
                                         Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
                                                           trasferimento.DATAPARTENZA.Month.ToString()
-                                                              .PadLeft(2, (char) '0'));
+                                                              .PadLeft(2, (char)'0'));
 
                                     if (annoMeseDtIniElab < annoMeseElab)
                                     {
@@ -5984,8 +6023,8 @@
                                     TEORICI t = new TEORICI()
                                     {
                                         IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                        IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                        IDVOCI = (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                        IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                        IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                         IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                         IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                         MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
@@ -6011,7 +6050,7 @@
                                     tePartenza.ATTIVITATEPARTENZA.Where(
                                             a =>
                                                 a.ANNULLATO == false &&
-                                                a.IDANTICIPOSALDOTE == (decimal) EnumTipoAnticipoSaldoTE.Saldo &&
+                                                a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo &&
                                                 a.RICHIESTATRASPORTOEFFETTI == true &&
                                                 a.ATTIVAZIONETRASPORTOEFFETTI == true)
                                         .ToList();
@@ -6068,7 +6107,7 @@
                                                 decimal annoMeseDtIniElab =
                                                     Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
                                                                       trasferimento.DATAPARTENZA.Month.ToString()
-                                                                          .PadLeft(2, (char) '0'));
+                                                                          .PadLeft(2, (char)'0'));
 
                                                 if (annoMeseDtIniElab < annoMeseElab)
                                                 {
@@ -6095,8 +6134,8 @@
                                                 TEORICI t = new TEORICI()
                                                 {
                                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                    IDVOCI = (decimal) EnumVociCedolino
+                                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                    IDVOCI = (decimal)EnumVociCedolino
                                                         .Trasp_Mass_Partenza_Rientro_162_131,
                                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
@@ -6142,7 +6181,7 @@
                                             decimal annoMeseDtIniElab =
                                                 Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
                                                                   trasferimento.DATAPARTENZA.Month.ToString()
-                                                                      .PadLeft(2, (char) '0'));
+                                                                      .PadLeft(2, (char)'0'));
 
                                             if (annoMeseDtIniElab < annoMeseElab)
                                             {
@@ -6167,8 +6206,8 @@
                                             TEORICI t = new TEORICI()
                                             {
                                                 IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                IDVOCI = (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                                 IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                                 MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
@@ -6215,7 +6254,7 @@
                                 decimal annoMeseDtIniElab =
                                     Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
                                                       trasferimento.DATAPARTENZA.Month.ToString()
-                                                          .PadLeft(2, (char) '0'));
+                                                          .PadLeft(2, (char)'0'));
 
                                 if (annoMeseDtIniElab < annoMeseElab)
                                 {
@@ -6229,8 +6268,8 @@
                                 TEORICI t = new TEORICI()
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                    IDVOCI = (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                    IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
@@ -6256,7 +6295,7 @@
             var lAttTeRientroAnticipo =
                 teRientro.ATTIVITATERIENTRO.Where(
                         a =>
-                            a.ANNULLATO == false && a.IDANTICIPOSALDOTE == (decimal) EnumTipoAnticipoSaldoTE.Anticipo &&
+                            a.ANNULLATO == false && a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo &&
                             a.RICHIESTATRASPORTOEFFETTI == true && a.ATTIVAZIONETRASPORTOEFFETTI == true)
                     .ToList();
 
@@ -6316,7 +6355,7 @@
                                     decimal annoMeseDtIniElab =
                                         Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
                                                           trasferimento.DATARIENTRO.Month.ToString()
-                                                              .PadLeft(2, (char) '0'));
+                                                              .PadLeft(2, (char)'0'));
 
                                     if (annoMeseDtIniElab < annoMeseElab)
                                     {
@@ -6331,8 +6370,8 @@
                                     TEORICI t = new TEORICI()
                                     {
                                         IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                        IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                        IDVOCI = (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                        IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                        IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                         IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                         IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                         MESERIFERIMENTO = trasferimento.DATARIENTRO.Month,
@@ -6359,7 +6398,7 @@
                                     teRientro.ATTIVITATERIENTRO.Where(
                                             a =>
                                                 a.ANNULLATO == false &&
-                                                a.IDANTICIPOSALDOTE == (decimal) EnumTipoAnticipoSaldoTE.Saldo &&
+                                                a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Saldo &&
                                                 a.RICHIESTATRASPORTOEFFETTI == true &&
                                                 a.ATTIVAZIONETRASPORTOEFFETTI == true)
                                         .ToList();
@@ -6416,7 +6455,7 @@
                                                 decimal annoMeseDtIniElab =
                                                     Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
                                                                       trasferimento.DATARIENTRO.Month.ToString()
-                                                                          .PadLeft(2, (char) '0'));
+                                                                          .PadLeft(2, (char)'0'));
 
                                                 if (annoMeseDtIniElab < annoMeseElab)
                                                 {
@@ -6442,8 +6481,8 @@
                                                 TEORICI t = new TEORICI()
                                                 {
                                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                    IDVOCI = (decimal) EnumVociCedolino
+                                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                    IDVOCI = (decimal)EnumVociCedolino
                                                         .Trasp_Mass_Partenza_Rientro_162_131,
                                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
@@ -6488,7 +6527,7 @@
                                             decimal annoMeseDtIniElab =
                                                 Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
                                                                   trasferimento.DATARIENTRO.Month.ToString()
-                                                                      .PadLeft(2, (char) '0'));
+                                                                      .PadLeft(2, (char)'0'));
 
                                             if (annoMeseDtIniElab < annoMeseElab)
                                             {
@@ -6513,8 +6552,8 @@
                                             TEORICI t = new TEORICI()
                                             {
                                                 IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                                IDVOCI = (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                                 IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                                 MESERIFERIMENTO = trasferimento.DATARIENTRO.Month,
@@ -6559,7 +6598,7 @@
                                 decimal annoMeseDtIniElab =
                                     Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
                                                       trasferimento.DATARIENTRO.Month.ToString()
-                                                          .PadLeft(2, (char) '0'));
+                                                          .PadLeft(2, (char)'0'));
 
                                 if (annoMeseDtIniElab < annoMeseElab)
                                 {
@@ -6574,8 +6613,8 @@
                                 TEORICI t = new TEORICI()
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                    IDVOCI = (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                    IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = trasferimento.DATARIENTRO.Month,
@@ -6633,7 +6672,7 @@
                         a =>
                             a.ANNULLATO == false && a.ELABORATO == true && a.DIRETTO == false &&
                             a.INSERIMENTOMANUALE == false &&
-                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.MAB &&
+                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
                             a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
                     .OrderBy(a => a.ANNORIFERIMENTO)
                     .ThenBy(a => a.MESERIFERIMENTO)
@@ -6644,11 +6683,11 @@
                 var ultimoTeoricoPercepito = ltPercepite.Last();
                 DateTime dtFineMabPercepita = Convert.ToDateTime("01/" +
                                                                  ultimoTeoricoPercepito.MESERIFERIMENTO.ToString()
-                                                                     .PadLeft(2, (char) '0') +
+                                                                     .PadLeft(2, (char)'0') +
                                                                  "/" + ultimoTeoricoPercepito.ANNORIFERIMENTO
                 );
 
-                int nGiorniUTP = (int) ultimoTeoricoPercepito.GIORNI;
+                int nGiorniUTP = (int)ultimoTeoricoPercepito.GIORNI;
 
                 if (nGiorniUTP == 30)
                 {
@@ -6718,9 +6757,9 @@
                     var lteoriciOld =
                         db.TEORICI.Where(
                                 a =>
-                                    a.ANNULLATO == false && a.IDVOCI == (decimal) EnumVociContabili.MAB &&
+                                    a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.MAB &&
                                     a.INSERIMENTOMANUALE == false && a.ELABORATO == true &&
-                                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
+                                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                     a.ANNORIFERIMENTO == dataIniCiclo.Year &&
                                     a.MESERIFERIMENTO == dataIniCiclo.Month &&
                                     a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
@@ -6737,10 +6776,10 @@
                         var lmab =
                             indennita.MAB.Where(
                                     a =>
-                                        a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                         a.PERIODOMAB.Any(
                                             b =>
-                                                b.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                                b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                 b.DATAFINEMAB >= dataIniCiclo &&
                                                 b.DATAINIZIOMAB <= dataFineCiclo))
                                 .OrderBy(a => a.IDMAB)
@@ -6852,7 +6891,7 @@
                                     var lc =
                                         mf.CONIUGE.Where(
                                                 a =>
-                                                    a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                     a.DATAFINEVALIDITA >= dataIniCiclo &&
                                                     a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
@@ -6895,7 +6934,7 @@
                                             var lpensioni =
                                                 coniuge.PENSIONE.Where(
                                                         a =>
-                                                            a.IDSTATORECORD != (decimal) EnumStatoRecord.Annullato &&
+                                                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                                             a.DATAFINE >= dataIniCiclo &&
                                                             a.DATAINIZIO <= dataFineCiclo)
                                                     .OrderByDescending(a => a.DATAINIZIO)
@@ -6929,7 +6968,7 @@
                                     var lf =
                                         mf.FIGLI.Where(
                                                 a =>
-                                                    a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                     a.DATAFINEVALIDITA >= dataIniCiclo &&
                                                     a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                             .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
@@ -6974,7 +7013,7 @@
 
                                 var lcl =
                                     mab.CANONEMAB.Where(
-                                            a => a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                  a.ATTIVAZIONEMAB.ANNULLATO == false &&
                                                  a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
                                                  a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
@@ -7031,7 +7070,7 @@
                                 var lpc =
                                     mab.PAGATOCONDIVISOMAB.Where(
                                             a =>
-                                                a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                                 a.ATTIVAZIONEMAB.ANNULLATO == false &&
                                                 a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
                                                 a.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
@@ -7144,15 +7183,13 @@
 
                                             if (annoMeseVariazione == annoMeseVariazioneSucc)
                                             {
-                                                using (CalcoliIndennita ci =
-                                                    new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                                 {
                                                     using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                                     {
                                                         giorniElabTotali += grVariazione.RateoGiorni;
 
-                                                        importoMabNewTot +=
-                                                            (ci.ImportoMABMensile / 30) * grVariazione.RateoGiorni;
+                                                        importoMabNewTot += (ci.ImportoMABMensile / 30) * grVariazione.RateoGiorni;
 
                                                         ELABMAB emab = new ELABMAB()
                                                         {
@@ -7172,9 +7209,9 @@
                                                             ANNUALE = ci.AnticipoAnnualeMAB,
                                                             PROGRESSIVO = progMax,
                                                             DATAOPERAZIONE = DateTime.Now,
-                                                            ANNULLATO = false
+                                                            ANNULLATO = false,
+                                                            CONGUAGLIO = true
                                                         };
-
 
                                                         lElabMabNew.Add(emab);
                                                     }
@@ -7247,8 +7284,8 @@
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
-                                    IDVOCI = (decimal) EnumVociContabili.MAB,
-                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
+                                    IDVOCI = (decimal)EnumVociContabili.MAB,
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
                                     MESERIFERIMENTO = dataRiferimento.Month,
                                     ANNORIFERIMENTO = dataRiferimento.Year,
                                     IMPORTO = conguaglioMab,
@@ -7466,7 +7503,7 @@
                             var lc =
                                 mf.CONIUGE.Where(
                                         a =>
-                                            a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                             a.DATAFINEVALIDITA >= dataInizioCiclo &&
                                             a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                     .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
@@ -7509,7 +7546,7 @@
                                     var lpensioni =
                                         coniuge.PENSIONE.Where(
                                                 a =>
-                                                    a.IDSTATORECORD != (decimal) EnumStatoRecord.Annullato &&
+                                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                                     a.DATAFINE >= dataInizioCiclo &&
                                                     a.DATAINIZIO <= dataFineCiclo)
                                             .OrderByDescending(a => a.DATAINIZIO)
@@ -7543,7 +7580,7 @@
                             var lf =
                                 mf.FIGLI.Where(
                                         a =>
-                                            a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                             a.DATAFINEVALIDITA >= dataInizioCiclo &&
                                             a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                     .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
@@ -7608,10 +7645,10 @@
                                     a =>
                                         a.ANNULLATO == false &&
                                         a.ELABORATO == true &&
-                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
+                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                         a.ANNORIFERIMENTO == dataInizioCiclo.Year &&
                                         a.MESERIFERIMENTO == dataInizioCiclo.Month &&
-                                        a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Sede_Estera &&
+                                        a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
                                         a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
                                 .ToList();
 
@@ -7739,8 +7776,8 @@
                                 TEORICI teorico = new TEORICI()
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                    IDVOCI = (decimal) EnumVociContabili.Ind_Sede_Estera,
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                    IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = dataInizioCiclo.Month,
                                     ANNORIFERIMENTO = dataInizioCiclo.Year,
@@ -7825,7 +7862,7 @@
                                     a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
                                     a.ANNORIFERIMENTO == dtIni.Year && a.MESERIFERIMENTO == dtIni.Month &&
                                     a.ELABORATO == true &&
-                                    a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Sede_Estera &&
+                                    a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
                                     a.ELABINDENNITA.Any(b =>
                                         b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA));
 
@@ -8007,7 +8044,7 @@
                             var lc =
                                 mf.CONIUGE.Where(
                                         a =>
-                                            a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                             a.DATAFINEVALIDITA >= dataIniCiclo &&
                                             a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                     .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
@@ -8050,7 +8087,7 @@
                                     var lpensioni =
                                         coniuge.PENSIONE.Where(
                                                 a =>
-                                                    a.IDSTATORECORD != (decimal) EnumStatoRecord.Annullato &&
+                                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                                     a.DATAFINE >= dataIniCiclo &&
                                                     a.DATAINIZIO <= dataFineCiclo)
                                             .OrderByDescending(a => a.DATAINIZIO)
@@ -8084,7 +8121,7 @@
                             var lf =
                                 mf.FIGLI.Where(
                                         a =>
-                                            a.IDSTATORECORD == (decimal) EnumStatoRecord.Attivato &&
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                             a.DATAFINEVALIDITA >= dataIniCiclo &&
                                             a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                     .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
@@ -8245,10 +8282,10 @@
                         if (lIdElabInd?.Any() ?? false)
                         {
                             decimal ndtIni = Convert.ToDecimal(
-                                dataIniCiclo.Year.ToString() + dataIniCiclo.Month.ToString().PadLeft(2, (char) '0'));
+                                dataIniCiclo.Year.ToString() + dataIniCiclo.Month.ToString().PadLeft(2, (char)'0'));
                             decimal nDtFineTrasf = Convert.ToDecimal(
                                 dataFineElaborazione.Year.ToString() +
-                                dataFineElaborazione.Month.ToString().PadLeft(2, (char) '0'));
+                                dataFineElaborazione.Month.ToString().PadLeft(2, (char)'0'));
 
                             EnumTipoMovimento tipoMov = EnumTipoMovimento.MeseCorrente_M;
 
@@ -8264,8 +8301,8 @@
                             TEORICI teorico = new TEORICI()
                             {
                                 IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                IDVOCI = (decimal) EnumVociContabili.Ind_Sede_Estera,
+                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                 MESERIFERIMENTO = dataIniCiclo.Month,
                                 ANNORIFERIMENTO = dataIniCiclo.Year,
@@ -8376,10 +8413,10 @@
 
                 decimal annoMeseDtFineTrasf =
                     Convert.ToDecimal(dataFineTrasf.Year.ToString() +
-                                      dataFineTrasf.Month.ToString().PadLeft(2, (char) '0'));
+                                      dataFineTrasf.Month.ToString().PadLeft(2, (char)'0'));
                 decimal annoMeseElab =
                     Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
-                                      meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char) '0'));
+                                      meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char)'0'));
 
                 var richiamo = lRichiami.Last();
 
@@ -8432,7 +8469,7 @@
                                                     a =>
                                                         a.ANNULLATO == false && a.ELABORATO == false &&
                                                         a.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                        (decimal) EnumTipoLiquidazione.Contabilità)
+                                                        (decimal)EnumTipoLiquidazione.Contabilità)
                                                 .OrderBy(a => a.ANNORIFERIMENTO)
                                                 .ThenBy(a => a.MESERIFERIMENTO)
                                                 .ToList();
@@ -8608,7 +8645,7 @@
                                                 "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
                                         }
 
-                                        this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, mca.IDALIQCONTR, db); 
+                                        this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, mca.IDALIQCONTR, db);
                                         #endregion
 
 
@@ -8635,8 +8672,8 @@
                                         {
                                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                             IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                            IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.MeseCorrente_M,
-                                            IDVOCI = (decimal) EnumVociContabili.Ind_Richiamo_IRI,
+                                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                            IDVOCI = (decimal)EnumVociContabili.Ind_Richiamo_IRI,
                                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                             MESERIFERIMENTO = dataFineTrasf.Month,
                                             ANNORIFERIMENTO = dataFineTrasf.Year,
@@ -8669,8 +8706,8 @@
                                         {
                                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                             IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                            IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.MeseCorrente_M,
-                                            IDVOCI = (decimal) EnumVociCedolino.Rientro_Lordo_086_381,
+                                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                            IDVOCI = (decimal)EnumVociCedolino.Rientro_Lordo_086_381,
                                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                             MESERIFERIMENTO = dataFineTrasf.Month,
                                             ANNORIFERIMENTO = dataFineTrasf.Year,
@@ -8699,8 +8736,8 @@
                                         {
                                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                             IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                            IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.MeseCorrente_M,
-                                            IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                            IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                             MESERIFERIMENTO = dataFineTrasf.Month,
                                             ANNORIFERIMENTO = dataFineTrasf.Year,
@@ -8729,8 +8766,8 @@
                                         {
                                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                             IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                            IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.MeseCorrente_M,
-                                            IDVOCI = (decimal) EnumVociCedolino.Detrazione_086_384,
+                                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.MeseCorrente_M,
+                                            IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                             MESERIFERIMENTO = dataFineTrasf.Month,
                                             ANNORIFERIMENTO = dataFineTrasf.Year,
@@ -8800,7 +8837,7 @@
                 eis.TEORICI.Any(
                     a =>
                         a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
-                        a.ELABORATO == true && a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Paghe);
+                        a.ELABORATO == true && a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe);
             if (elaborazionePaghe)
             {
                 return;
@@ -8810,7 +8847,7 @@
                 eis.TEORICI.Where(
                     a =>
                         a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
-                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Paghe && a.ELABORATO == false &&
+                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe && a.ELABORATO == false &&
                         !a.FLUSSICEDOLINO.IfNotNull(b => b.IDTEORICI > 0)).ToList();
 
             if (teoriciOLD?.Any() ?? false)
@@ -8842,7 +8879,7 @@
                         a =>
                             a.ANNULLATO == false &&
                             a.IDTIPOCONTRIBUTO ==
-                            (decimal) EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                            (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
                             trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                             trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
                     .OrderByDescending(a => a.DATAINIZIOVALIDITA)
@@ -8855,7 +8892,7 @@
                             a =>
                                 a.ANNULLATO == false &&
                                 a.IDTIPOCONTRIBUTO ==
-                                (decimal) EnumTipoAliquoteContributive.Detrazioni_DET &&
+                                (decimal)EnumTipoAliquoteContributive.Detrazioni_DET &&
                                 trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                 trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
                         .OrderByDescending(a => a.DATAINIZIOVALIDITA)
@@ -8868,7 +8905,7 @@
                                 a =>
                                     a.ANNULLATO == false &&
                                     a.IDTIPOCONTRIBUTO ==
-                                    (decimal) EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                    (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
                                     trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                     trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
                             .OrderByDescending(a => a.DATAINIZIOVALIDITA)
@@ -8880,7 +8917,7 @@
                                 a =>
                                     a.ANNULLATO == false &&
                                     a.IDTIPOCONTRIBUTO ==
-                                    (decimal) EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                    (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
                                     trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
                                     trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
                             .OrderByDescending(a => a.DATAINIZIOVALIDITA)
@@ -8922,8 +8959,8 @@
                             {
                                 IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Lorda_086_380,
+                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                 MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -8953,8 +8990,8 @@
                             {
                                 IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                 MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -8984,8 +9021,8 @@
                             {
                                 IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                 IDINDSISTLORDA = eis.IDINDSISTLORDA,
-                                IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                IDVOCI = (decimal) EnumVociCedolino.Detrazione_086_384,
+                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                                 IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                 MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                 ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -9044,8 +9081,8 @@
                     var ltrasferimento =
                         dip.TRASFERIMENTO.Where(
                                 a =>
-                                    (a.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Attivo ||
-                                     a.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Terminato) &&
+                                    (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                     a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
                                     a.DIPENDENTI.RICALCOLARE == true &&
                                     Convert.ToDecimal(a.DATAPARTENZA.Year.ToString() +
                                                       a.DATAPARTENZA.Month.ToString()) <
@@ -9070,7 +9107,7 @@
                                                 b =>
                                                     b.ANNULLATO == false && b.DIRETTO == true && b.ELABORATO == true &&
                                                     b.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                    (decimal) EnumTipoLiquidazione.Contabilità)).ToList();
+                                                    (decimal)EnumTipoLiquidazione.Contabilità)).ToList();
 
                                 if (leis?.Any() ?? false)
                                 {
@@ -9085,7 +9122,7 @@
                                                     b =>
                                                         b.ANNULLATO == false && b.ELABORATO == true &&
                                                         b.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                        (decimal) EnumTipoLiquidazione.Contabilità)).ToList();
+                                                        (decimal)EnumTipoLiquidazione.Contabilità)).ToList();
 
                                     if (lete?.Any() ?? false)
                                     {
@@ -9115,8 +9152,8 @@
                                     a =>
                                         a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
                                         a.ELABORATO == true &&
-                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                                        a.IDVOCI == (decimal) EnumVociContabili.Ind_Sede_Estera &&
+                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                        a.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
                                         a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO);
                             if (tind)
                             {
@@ -9145,8 +9182,8 @@
                                     a =>
                                         a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
                                         a.ELABORATO == true &&
-                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                                        a.IDVOCI == (decimal) EnumVociContabili.MAB &&
+                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                        a.IDVOCI == (decimal)EnumVociContabili.MAB &&
                                         a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO);
                             if (tmab)
                             {
@@ -9189,7 +9226,7 @@
                                                         b =>
                                                             b.ANNULLATO == false && b.ELABORATO == true &&
                                                             b.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                            (decimal) EnumTipoLiquidazione.Contabilità)).ToList();
+                                                            (decimal)EnumTipoLiquidazione.Contabilità)).ToList();
 
                                         if (lete?.Any() ?? false)
                                         {
@@ -9261,7 +9298,7 @@
                     {
                         DateTime dtIni = emab.DAL;
                         DateTime dtFin = emab.AL;
-                        int giorniOld = (int) emab.GIORNI;
+                        int giorniOld = (int)emab.GIORNI;
 
                         if (emab.DAL < dataRientro)
                         {
@@ -9277,8 +9314,8 @@
                                         a =>
                                             a.ANNULLATO == false && a.ELABORATO == true && a.DIRETTO == false &&
                                             a.INSERIMENTOMANUALE == false &&
-                                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.MAB &&
+                                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
                                             a.ANNORIFERIMENTO == dtIni.Year &&
                                             a.MESERIFERIMENTO == dtIni.Month &&
                                             a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
@@ -9351,8 +9388,8 @@
                                         TEORICI teorico = new TEORICI()
                                         {
                                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                            IDVOCI = (decimal) EnumVociContabili.MAB,
+                                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                            IDVOCI = (decimal)EnumVociContabili.MAB,
                                             IDMESEANNOELAB = MeseAnnoElaborato.IDMESEANNOELAB,
                                             MESERIFERIMENTO = dtIni.Month,
                                             ANNORIFERIMENTO = dtIni.Year,
@@ -9432,7 +9469,7 @@
                     {
                         DateTime dtIni = ei.DAL;
                         DateTime dtFin = ei.AL;
-                        int giorniOld = (int) ei.GIORNI;
+                        int giorniOld = (int)ei.GIORNI;
 
                         if (ei.DAL < dataRientro)
                         {
@@ -9454,8 +9491,8 @@
                                         a =>
                                             a.ANNULLATO == false && a.ELABORATO == true && a.DIRETTO == false &&
                                             a.INSERIMENTOMANUALE == false &&
-                                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                                            a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Sede_Estera &&
+                                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
                                             a.ANNORIFERIMENTO == dtIni.Year &&
                                             a.MESERIFERIMENTO == dtIni.Month &&
                                             a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
@@ -9527,8 +9564,8 @@
                                         TEORICI teorico = new TEORICI()
                                         {
                                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                            IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                            IDVOCI = (decimal) EnumVociContabili.Ind_Sede_Estera,
+                                            IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                            IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
                                             IDMESEANNOELAB = meseAnnoElaborato.IDMESEANNOELAB,
                                             MESERIFERIMENTO = dtIni.Month,
                                             ANNORIFERIMENTO = dtIni.Year,
@@ -9583,7 +9620,7 @@
                         a.TEORICI.Any(
                             b =>
                                 b.ANNULLATO == false && b.ELABORATO == true &&
-                                b.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità)).ToList();
+                                b.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)).ToList();
 
             if (lete?.Any() ?? false)
             {
@@ -9631,8 +9668,8 @@
                                 TEORICI t = new TEORICI()
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                    IDVOCI = (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                    IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                     IDMESEANNOELAB = meseAnnoElaborato.IDMESEANNOELAB,
                                     MESERIFERIMENTO = trasferimento.DATARIENTRO.Month,
@@ -9674,7 +9711,7 @@
                         a.TEORICI.Any(
                             b =>
                                 b.ANNULLATO == false && b.ELABORATO == true &&
-                                b.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità)).ToList();
+                                b.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)).ToList();
 
             if (lete?.Any() ?? false)
             {
@@ -9722,8 +9759,8 @@
                                 TEORICI t = new TEORICI()
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                    IDTIPOMOVIMENTO = (decimal) tipoMov,
-                                    IDVOCI = (decimal) EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
+                                    IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                    IDVOCI = (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131,
                                     IDELABTRASPEFFETTI = teap.IDELABTRASPEFFETTI,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
@@ -9780,8 +9817,8 @@
                 var lTeoriciOld =
                     db.TEORICI.Where(
                             a =>
-                                a.ANNULLATO == false && a.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
-                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
+                                a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                 a.ELABORATO == true && a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
                                 a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
                         .ToList();
@@ -9793,7 +9830,7 @@
                     var eisOld = lTeoriciOld.OrderBy(a => a.IDTEORICI).Last().ELABINDSISTEMAZIONE;
 
                     decimal nettoOld = lTeoriciOld.Sum(a => a.IMPORTO);
-                    decimal lordoOld = lTeoriciOld.Sum(a=>a.IMPORTOLORDO);
+                    decimal lordoOld = lTeoriciOld.Sum(a => a.IMPORTOLORDO);
                     decimal detrazioniOld = lTeoriciOld.Sum(a => a.DETRAZIONIAPPLICATE);
 
                     if (nettoOld != 0)
@@ -9802,8 +9839,8 @@
                             eisOld.TEORICI.Where(
                                 a =>
                                     a.ANNULLATO == false &&
-                                    a.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
-                                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
+                                    a.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                     a.ELABORATO == false && a.INSERIMENTOMANUALE == false).ToList();
 
                         if (lTeoriciNoElab?.Any() ?? false)
@@ -10024,7 +10061,7 @@
                                     "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
                             }
 
-                            this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, mca.IDALIQCONTR, db); 
+                            this.AssociaAliquoteIndSist(eisNew.IDINDSISTLORDA, mca.IDALIQCONTR, db);
                             #endregion
 
                             CalcoliIndennita.ElaboraPrimaSistemazione(eisOld.INDENNITABASE, eisOld.COEFFICENTESEDE,
@@ -10053,7 +10090,7 @@
 
                             if (lordoOld == outPrimaSistemazioneUnicaSoluzioneOld)
                             {
-                                
+
                             }
 
 
@@ -10076,8 +10113,8 @@
                                     {
                                         IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
-                                        IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                                        IDVOCI = (decimal) EnumVociContabili.Ind_Prima_Sist_IPS,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                        IDVOCI = (decimal)EnumVociContabili.Ind_Prima_Sist_IPS,
                                         IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                         MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -10119,8 +10156,8 @@
                                     {
                                         IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
-                                        IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                                        IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Lorda_086_380,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                        IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
                                         IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                         MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -10150,8 +10187,8 @@
                                     {
                                         IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                         IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
-                                        IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                                        IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                        IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                        IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                                         IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                         MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                         ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -10183,8 +10220,8 @@
                                         {
                                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                             IDINDSISTLORDA = eisNew.IDINDSISTLORDA,
-                                            IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                                            IDVOCI = (decimal) EnumVociCedolino.Detrazione_086_384,
+                                            IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                            IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
                                             IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                             MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
                                             ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
@@ -10243,10 +10280,10 @@
 
             decimal annoMeseDtFineTrasf =
                 Convert.ToDecimal(dataFineTrasf.Year.ToString() +
-                                  dataFineTrasf.Month.ToString().PadLeft(2, (char) '0'));
+                                  dataFineTrasf.Month.ToString().PadLeft(2, (char)'0'));
             decimal annoMeseElab =
                 Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
-                                  meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char) '0'));
+                                  meseAnnoElaborazione.MESE.ToString().PadLeft(2, (char)'0'));
 
             decimal annoMeseDataInizioRicalcoli =
                 Convert.ToDecimal(dataIniRicalcolo.Year.ToString() + dataIniRicalcolo.Month.ToString().PadLeft(2, '0'));
@@ -10276,8 +10313,8 @@
                                     a =>
                                         a.ANNULLATO == false && a.ELABORATO == true &&
                                         a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
-                                        a.IDVOCI == (decimal) EnumVociContabili.Ind_Richiamo_IRI &&
-                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
+                                        a.IDVOCI == (decimal)EnumVociContabili.Ind_Richiamo_IRI &&
+                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                         a.INSERIMENTOMANUALE == false &&
                                         a.ELABINDRICHIAMO.ANNULLATO == false &&
                                         a.ELABINDRICHIAMO.IDELABINDRICHIAMO > 0)
@@ -10370,7 +10407,7 @@
                                         throw new Exception(
                                             "Errore nella fase d'inderimento dell'indennità di richiamo.");
                                     }
-                                } 
+                                }
                                 #endregion
 
                                 #region Detrazioni
@@ -10475,7 +10512,7 @@
                                         "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
                                 }
 
-                                this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, mca.IDALIQCONTR, db); 
+                                this.AssociaAliquoteIndRichiamo(eir.IDELABINDRICHIAMO, mca.IDALIQCONTR, db);
                                 #endregion
 
                                 decimal outAliqIse = 0;
@@ -10501,8 +10538,8 @@
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                    IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                                    IDVOCI = (decimal) EnumVociContabili.Ind_Richiamo_IRI,
+                                    IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                    IDVOCI = (decimal)EnumVociContabili.Ind_Richiamo_IRI,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = dataFineTrasf.Month,
                                     ANNORIFERIMENTO = dataFineTrasf.Year,
@@ -10534,8 +10571,8 @@
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                    IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                                    IDVOCI = (decimal) EnumVociCedolino.Rientro_Lordo_086_381,
+                                    IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                    IDVOCI = (decimal)EnumVociCedolino.Rientro_Lordo_086_381,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = dataFineTrasf.Month,
                                     ANNORIFERIMENTO = dataFineTrasf.Year,
@@ -10564,8 +10601,8 @@
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                    IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                                    IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                    IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                    IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = dataFineTrasf.Month,
                                     ANNORIFERIMENTO = dataFineTrasf.Year,
@@ -10594,8 +10631,8 @@
                                 {
                                     IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
                                     IDELABINDRICHIAMO = eir.IDELABINDRICHIAMO,
-                                    IDTIPOMOVIMENTO = (decimal) EnumTipoMovimento.Conguaglio_C,
-                                    IDVOCI = (decimal) EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                                    IDTIPOMOVIMENTO = (decimal)EnumTipoMovimento.Conguaglio_C,
+                                    IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = dataFineTrasf.Month,
                                     ANNORIFERIMENTO = dataFineTrasf.Year,
@@ -10644,7 +10681,7 @@
                     db.TRASFERIMENTO.Where(
                             a =>
                                 a.IDDIPENDENTE == avmm.idDipendente &&
-                                a.IDSTATOTRASFERIMENTO == (decimal) EnumStatoTraferimento.Attivo)
+                                a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo)
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
 
@@ -10653,9 +10690,9 @@
                     var t = lt.Last();
 
                     annoMeseIni =
-                        Convert.ToDecimal(avmm.AnnoDa.ToString() + avmm.MeseDa.ToString().PadLeft(2, (char) '0'));
+                        Convert.ToDecimal(avmm.AnnoDa.ToString() + avmm.MeseDa.ToString().PadLeft(2, (char)'0'));
                     annoMeseFin =
-                        Convert.ToDecimal(avmm.AnnoA.ToString() + avmm.MeseA.ToString().PadLeft(2, (char) '0'));
+                        Convert.ToDecimal(avmm.AnnoA.ToString() + avmm.MeseA.ToString().PadLeft(2, (char)'0'));
 
                     avm = new AUTOMATISMOVOCIMANUALI()
                     {
