@@ -567,11 +567,19 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             foreach (var coniuge in lc)
                             {
+                                //using (dtConiuge dtc = new dtConiuge())
+                                //{
+                                //    var cm = dtc.GetConiugebyID(coniuge.IDCONIUGE);
+                                //    DateTime dtIni = cm.dataInizio.Value;
+                                //    DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
+                                //}
+
                                 var lpmc =
                                     coniuge.PERCENTUALEMAGCONIUGE.Where(
                                         a =>
                                             a.ANNULLATO == false &&
-                                            a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE)
+                                            a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE
+                                            )
                                             .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                                 //.OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
@@ -912,12 +920,23 @@ namespace NewISE.Models.DBModel.dtObj
 
                     var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
 
+                    //using (dtConiuge dtc = new dtConiuge())
+                    //{
+                    //    var cm = dtc.GetConiugebyID(coniuge.IDCONIUGE);
+
+
+                    //    DateTime dtIni = cm.dataInizio.Value;
+                    //    DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
+                    //}
+
                     #region Variazioni Coniuge
                     var lf =
                         mf.CONIUGE.Where(
                             a =>
                                 a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
                                 .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                    
 
                     if (lf?.Any() ?? false)
                     {
@@ -1218,6 +1237,8 @@ namespace NewISE.Models.DBModel.dtObj
                    //.ToList();
 
 
+
+
                     var lTeorici =
                         db.TEORICI.Where(
                             a =>
@@ -1243,7 +1264,31 @@ namespace NewISE.Models.DBModel.dtObj
                         var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                         var tv = teorico.VOCI.TIPOVOCE;
                         var detrazione = teorico.DETRAZIONIAPPLICATE;
-                        
+
+
+                        // Aliquote Previdenziali
+                        ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
+
+                        var lacPrev =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lacPrev?.Any() ?? false)
+                        {
+                            aliqPrev = lacPrev.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+                        }
+
+
+                        // Detrazioni
                         ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
 
                         var lacDetr =
@@ -1253,6 +1298,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
                                     t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
                                 .ToList();
+
 
 
                         if (lacDetr?.Any() ?? false)
@@ -1269,6 +1315,49 @@ namespace NewISE.Models.DBModel.dtObj
                                 "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
                         }
 
+
+
+                        // Massimale Contributo Aggiuntivo
+                        ALIQUOTECONTRIBUTIVE mca = new ALIQUOTECONTRIBUTIVE();
+
+                        var lmca =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lmca?.Any() ?? false)
+                        {
+                            mca = lmca.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                        }
+                        
+                        // Contributo Aggiuntivo
+                        ALIQUOTECONTRIBUTIVE ca = new ALIQUOTECONTRIBUTIVE();
+
+                        var lca =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lca?.Any() ?? false)
+                        {
+                            ca = lca.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non è presente il contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                        }
 
                         List<DateTime> lDateVariazioni = new List<DateTime>();
 
@@ -1320,8 +1409,16 @@ namespace NewISE.Models.DBModel.dtObj
 
                     }
 
-                    #endregion
+                        #endregion
 
+
+                        ContributoAggiuntivo cam = new ContributoAggiuntivo();
+                        cam.contributoAggiuntivo = mca.VALORE;
+                        cam.massimaleContributoAggiuntivo = mca.VALORE;
+
+                        var wrk_n1 = cam.contributoAggiuntivo;
+                        var wrk_n2 = cam.massimaleContributoAggiuntivo;
+                        
                         lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                         if (lDateVariazioni?.Any() ?? false)
@@ -1332,7 +1429,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 if (dv < Utility.DataFineStop())
                                 {
-                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+                                    //DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+                                    DateTime dvSucc = lDateVariazioni[(j + 1)];
 
                                     using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                     {
@@ -1363,7 +1461,10 @@ namespace NewISE.Models.DBModel.dtObj
                                         xx.Detrazione = teorico.DETRAZIONIAPPLICATE;
                                         xx.AliquotaPrevid = detrazioni.VALORE;
                                         xx.ImpPrevid = ci.IndennitaSistemazioneAnticipabileLorda - teorico.DETRAZIONIAPPLICATE;
-                                        xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        //xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        xx.wrk_n1 = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        xx.wrk_n2 = (xx.ImpPrevid - cam.massimaleContributoAggiuntivo) * cam.contributoAggiuntivo / 100;
+                                        xx.ContrPrevid = (wrk_n2 > 0) ? (wrk_n1 + wrk_n2) : wrk_n1;
                                         xx.ImpFiscale = xx.ImpPrevid - xx.ContrPrevid;
                                         xx.RitenutaFiscale = xx.ImpFiscale * teorico.ALIQUOTAFISCALE / 100;
 
@@ -1429,32 +1530,100 @@ namespace NewISE.Models.DBModel.dtObj
                         var tv = teorico.VOCI.TIPOVOCE;
                         var detrazione = teorico.DETRAZIONIAPPLICATE;
 
-                        #region Aliquote Contributive
+
+
+                        // Aliquote Previdenziali
+                        ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
+
+                        var lacPrev =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lacPrev?.Any() ?? false)
+                        {
+                            aliqPrev = lacPrev.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+                        }
+
+
+                        // Detrazioni
                         ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
 
-                            var lacDetr =
-                                db.ALIQUOTECONTRIBUTIVE.Where(
-                                    a =>
-                                        a.ANNULLATO == false &&
-                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
-                                        t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
-                                    .ToList();
+                        var lacDetr =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
 
 
-                            if (lacDetr?.Any() ?? false)
-                            {
-                                detrazioni = lacDetr.First();
 
-                                var AliquotaPrevid = detrazioni.VALORE;
+                        if (lacDetr?.Any() ?? false)
+                        {
+                            detrazioni = lacDetr.First();
+
+                            var AliquotaPrevid = detrazioni.VALORE;
 
 
-                            }
-                            else
-                            {
-                                throw new Exception(
-                                    "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
-                            }
-                        #endregion
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                        }
+
+
+
+                        // Massimale Contributo Aggiuntivo
+                        ALIQUOTECONTRIBUTIVE mca = new ALIQUOTECONTRIBUTIVE();
+
+                        var lmca =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lmca?.Any() ?? false)
+                        {
+                            mca = lmca.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                        }
+
+                        // Contributo Aggiuntivo
+                        ALIQUOTECONTRIBUTIVE ca = new ALIQUOTECONTRIBUTIVE();
+
+                        var lca =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lca?.Any() ?? false)
+                        {
+                            ca = lca.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non è presente il contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                        }
 
                         List<DateTime> lDateVariazioni = new List<DateTime>();
 
@@ -1508,6 +1677,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                         #endregion
 
+                        ContributoAggiuntivo cam = new ContributoAggiuntivo();
+                        cam.contributoAggiuntivo = mca.VALORE;
+                        cam.massimaleContributoAggiuntivo = mca.VALORE;
+
+                        var wrk_n1 = cam.contributoAggiuntivo;
+                        var wrk_n2 = cam.massimaleContributoAggiuntivo;
+
                         lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                         if (lDateVariazioni?.Any() ?? false)
@@ -1549,7 +1725,11 @@ namespace NewISE.Models.DBModel.dtObj
                                         xx.Detrazione = teorico.DETRAZIONIAPPLICATE;
                                         xx.AliquotaPrevid = detrazioni.VALORE;
                                         xx.ImpPrevid = ci.IndennitaSistemazioneAnticipabileLorda - teorico.DETRAZIONIAPPLICATE;
-                                        xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        //xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        //xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        xx.wrk_n1 = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                        xx.wrk_n2 = (xx.ImpPrevid - cam.massimaleContributoAggiuntivo) * cam.contributoAggiuntivo / 100;
+                                        xx.ContrPrevid = (wrk_n2 > 0) ? (wrk_n1 + wrk_n2) : wrk_n1;
                                         xx.ImpFiscale = xx.ImpPrevid - xx.ContrPrevid;
                                         xx.RitenutaFiscale = xx.ImpFiscale * teorico.ALIQUOTAFISCALE / 100;
 
@@ -1618,33 +1798,102 @@ namespace NewISE.Models.DBModel.dtObj
                                     var tv = teorico.VOCI.TIPOVOCE;
                                     var detrazione = teorico.DETRAZIONIAPPLICATE;
 
-                                    #region Aliquote Contributive
-                                    ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+                        
+                        #region Aliquote Previdenziali
+                        ALIQUOTECONTRIBUTIVE aliqPrev = new ALIQUOTECONTRIBUTIVE();
 
-                                            var lacDetr =
-                                                db.ALIQUOTECONTRIBUTIVE.Where(
-                                                    a =>
-                                                        a.ANNULLATO == false &&
-                                                        a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
-                                                        t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
-                                                    .ToList();
+                        var lacPrev =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lacPrev?.Any() ?? false)
+                        {
+                            aliqPrev = lacPrev.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le aliquote previdenziali per il periodo del trasferimento elaborato.");
+                        }
+                        #endregion
+
+                        // Detrazioni
+                        ALIQUOTECONTRIBUTIVE detrazioni = new ALIQUOTECONTRIBUTIVE();
+
+                        var lacDetr =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.Previdenziali_PREV &&
+                                    t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
 
 
-                                            if (lacDetr?.Any() ?? false)
-                                            {
-                                                detrazioni = lacDetr.First();
 
-                                                var AliquotaPrevid = detrazioni.VALORE;
+                        if (lacDetr?.Any() ?? false)
+                        {
+                            detrazioni = lacDetr.First();
+
+                            var AliquotaPrevid = detrazioni.VALORE;
 
 
-                                            }
-                                            else
-                                            {
-                                                throw new Exception(
-                                                    "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
-                                            }
-                                    #endregion
-                                    List<DateTime> lDateVariazioni = new List<DateTime>();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non sono presenti le detrazioni per il periodo del trasferimento elaborato.");
+                        }
+
+
+
+                        // Massimale Contributo Aggiuntivo
+                        ALIQUOTECONTRIBUTIVE mca = new ALIQUOTECONTRIBUTIVE();
+
+                        var lmca =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.MassimaleContributoAggiuntivo_MCA &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lmca?.Any() ?? false)
+                        {
+                            mca = lmca.First();
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non è presente il massimale del contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                        }
+
+                        // Contributo Aggiuntivo
+                        ALIQUOTECONTRIBUTIVE ca = new ALIQUOTECONTRIBUTIVE();
+
+                        var lca =
+                            db.ALIQUOTECONTRIBUTIVE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.IDTIPOCONTRIBUTO == (decimal)EnumTipoAliquoteContributive.ContributoAggiuntivo_CA &&
+                                    trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA && trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                .ToList();
+
+                        if (lca?.Any() ?? false)
+                        {
+                            ca = lca.First();
+
+                           
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "Non è presente il contributo aggiuntivo per il periodo del trasferimento elaborato.");
+                        }
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
 
                                     #region Variazioni Indennità di Sistemazione
 
@@ -1694,9 +1943,16 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     }
 
-                                    #endregion
+                        #endregion
 
-                                    lDateVariazioni.Add(new DateTime(9999, 12, 31));
+                        ContributoAggiuntivo cam = new ContributoAggiuntivo();
+                        cam.contributoAggiuntivo = mca.VALORE;
+                        cam.massimaleContributoAggiuntivo = mca.VALORE;
+
+                        var wrk_n1 = cam.contributoAggiuntivo;
+                        var wrk_n2 = cam.massimaleContributoAggiuntivo;
+
+                        lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
                                     if (lDateVariazioni?.Any() ?? false)
                                     {
@@ -1737,7 +1993,10 @@ namespace NewISE.Models.DBModel.dtObj
                                                     xx.Detrazione = teorico.DETRAZIONIAPPLICATE;
                                                     xx.AliquotaPrevid = detrazioni.VALORE;
                                                     xx.ImpPrevid = ci.IndennitaSistemazioneAnticipabileLorda - teorico.DETRAZIONIAPPLICATE;
-                                                    xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                                    //xx.ContrPrevid = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                                    xx.wrk_n1 = xx.ImpPrevid * xx.AliquotaPrevid / 100;
+                                                    xx.wrk_n2 = (xx.ImpPrevid - cam.massimaleContributoAggiuntivo) * cam.contributoAggiuntivo / 100;
+                                                    xx.ContrPrevid = (wrk_n2 > 0) ? (wrk_n1 + wrk_n2) : wrk_n1;
                                                     xx.ImpFiscale = xx.ImpPrevid - xx.ContrPrevid;
                                                     xx.RitenutaFiscale = xx.ImpFiscale * teorico.ALIQUOTAFISCALE / 100;
 
