@@ -9236,12 +9236,40 @@
                                 }
                             }
 
-                            if (trasferimento.DATARIENTRO < dataInizioRicalcoli)
-                            {
-                                this.ConguaglioIndennitaFineTrasferimento(trasferimento, MeseAnnoElaborato, db);
+                            #region Conguaglio negativo da rientro retroattivo
 
-                                this.ConguaglioMabFineTrasferimento(trasferimento, MeseAnnoElaborato, db);
+                            var teoriciUltElab =
+                                trasferimento.TEORICI.Where(
+                                    a => a.ANNULLATO == false && a.ELABORATO == true && a.INSERIMENTOMANUALE == false &&
+                                         (a.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera ||
+                                          a.IDVOCI == (decimal)EnumVociContabili.MAB))
+                                    .OrderBy(a => a.ANNORIFERIMENTO)
+                                    .ThenBy(a => a.MESERIFERIMENTO)
+                                    .ToList();
+
+                            if (teoriciUltElab?.Any() ?? false)
+                            {
+                                TEORICI teorico = teoriciUltElab.Last();
+
+                                decimal annoMeseUltElab =
+                                    Convert.ToDecimal(teorico.ANNORIFERIMENTO.ToString() +
+                                                      teorico.MESERIFERIMENTO.ToString().PadLeft(2, '0'));
+
+                                decimal annoMeseDataRientro =
+                                    Convert.ToDecimal(trasferimento.DATARIENTRO.Year.ToString() +
+                                                      trasferimento.DATARIENTRO.Month.ToString().PadLeft(2, '0'));
+
+                                if (annoMeseDataRientro <= annoMeseUltElab)
+                                {
+                                    this.ConguaglioIndennitaFineTrasferimento(trasferimento, MeseAnnoElaborato, db);
+
+                                    this.ConguaglioMabFineTrasferimento(trasferimento, MeseAnnoElaborato, db);
+                                }
+
                             }
+                            #endregion
+
+
 
                             //using (dtDipendenti dtd = new dtDipendenti())
                             //{
@@ -9429,8 +9457,7 @@
         /// <param name="trasferimento">The trasferimento<see cref="TRASFERIMENTO"/></param>
         /// <param name="meseAnnoElaborato">The meseAnnoElaborato<see cref="MESEANNOELABORAZIONE"/></param>
         /// <param name="db">The db<see cref="ModelDBISE"/></param>
-        private void ConguaglioIndennitaFineTrasferimento(TRASFERIMENTO trasferimento,
-            MESEANNOELABORAZIONE meseAnnoElaborato, ModelDBISE db)
+        private void ConguaglioIndennitaFineTrasferimento(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborato, ModelDBISE db)
         {
             var indennita = trasferimento.INDENNITA;
 
