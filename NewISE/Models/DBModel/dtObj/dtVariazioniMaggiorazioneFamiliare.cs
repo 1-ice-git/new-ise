@@ -433,7 +433,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DateTime dtIni = cm.dataInizio.Value;
                 DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : t.DATARIENTRO;
                 cm.dataFine = dtFin;
-                dtFin = (dtFin != t.DATARIENTRO) ? dtFin : c.DATAFINEVALIDITA;
+                //dtFin = (dtFin != t.DATARIENTRO) ? dtFin : c.DATAFINEVALIDITA;
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
@@ -848,7 +848,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : t.DATARIENTRO;
                 fm.dataFine = dtFin;
                 //fm.dataFine = (dtFin != t.DATARIENTRO) ? dtFin : f.DATAFINEVALIDITA;
-                dtFin = (dtFin != t.DATARIENTRO) ? dtFin : f.DATAFINEVALIDITA;
+                //dtFin = (dtFin != t.DATARIENTRO) ? dtFin : f.DATAFINEVALIDITA;
 
 
                 if (f != null && f.IDFIGLI > 0)
@@ -6044,11 +6044,43 @@ namespace NewISE.Models.DBModel.dtObj
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
                     var lc_old = mf.CONIUGE.Where(a =>
                                         a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                        a.DATAFINEVALIDITA < Utility.DataFineStop()).OrderByDescending(a => a.IDCONIUGE).ToList();
-                    if (lc_old?.Any() ?? false)
+                                        a.DATAFINEVALIDITA < Utility.DataFineStop())
+                                    .OrderByDescending(a => a.IDCONIUGE)
+                                    .ToList();
+                    if (lc_old.Count()>1)
                     {
                         var c_old = lc_old.First();
                         if (dtInizio <= c_old.DATAFINEVALIDITA)
+                        {
+                            throw new Exception(string.Format("La data inizio validita deve essere superiore alla data fine validita del conuiuge precedente. ({0})", c_old.DATAFINEVALIDITA.ToShortDateString()));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void VerificaModificaDataInizioConiuge(ConiugeModel cm)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var mf = db.MAGGIORAZIONIFAMILIARI.Find(cm.idMaggiorazioniFamiliari);
+                    var lc_old = mf.CONIUGE.Where(a =>
+                                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                        a.DATAFINEVALIDITA < Utility.DataFineStop() && 
+                                        a.IDCONIUGE!=cm.idConiuge &&
+                                        a.IDCONIUGE!=cm.FK_idConiuge)
+                                    .OrderByDescending(a => a.IDCONIUGE)
+                                    .ToList();
+                    if (lc_old?.Any()??false)
+                    {
+                        var c_old = lc_old.First();
+                        if (cm.dataInizio <= c_old.DATAFINEVALIDITA)
                         {
                             throw new Exception(string.Format("La data inizio validita deve essere superiore alla data fine validita del conuiuge precedente. ({0})", c_old.DATAFINEVALIDITA.ToShortDateString()));
                         }

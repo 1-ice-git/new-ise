@@ -493,7 +493,7 @@ namespace NewISE.Controllers
                     {
                         try
                         {
-                            dtvmf.VerificaDataInizioConiuge(cm.idMaggiorazioniFamiliari, cm.dataInizio.Value);
+                            dtvmf.VerificaModificaDataInizioConiuge(cm);
                         }
                         catch (Exception ex)
                         {
