@@ -18,7 +18,6 @@ namespace NewISE.EF
         public VALUTE()
         {
             this.CANONEMAB = new HashSet<CANONEMAB>();
-            this.ELABMAB = new HashSet<ELABMAB>();
             this.TFR = new HashSet<TFR>();
             this.VALUTAUFFICIO = new HashSet<VALUTAUFFICIO>();
         }
@@ -29,8 +28,6 @@ namespace NewISE.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANONEMAB> CANONEMAB { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELABMAB> ELABMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TFR> TFR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
