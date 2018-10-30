@@ -3244,111 +3244,118 @@ namespace NewISE.Models.DBModel.dtObj
                                                 throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (lettura precedente record coniuge).");
                                             }
 
-                                            #region riassocio coniugepassaporto a coniugepassaporto del coniuge modificato
-                                            var lcp = db.CONIUGE.Find(c.FK_IDCONIUGE).CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDCONIUGEPASSAPORTO).ToList();
-                                            if (lcp?.Any() ?? false)
+                                            if (cold.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente)
                                             {
-                                                var cp = lcp.First();
-                                                dtvp.AssociaConiugePassaportoConiuge(cp.IDCONIUGEPASSAPORTO, c.IDCONIUGE, db);
-                                            }
-                                            else
-                                            {
-                                                throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (ConiugePassaporto non trovato)."));
-                                            }
-                                            #endregion
+                                                #region riassocio coniugepassaporto a coniugepassaporto del coniuge modificato (se residente)
+                                                var lcp = cold.CONIUGEPASSAPORTO
+                                                                .Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDCONIUGEPASSAPORTO).ToList();
+                                                if (lcp?.Any() ?? false)
+                                                {
+                                                    var cp = lcp.First();
+                                                    dtvp.AssociaConiugePassaportoConiuge(cp.IDCONIUGEPASSAPORTO, c.IDCONIUGE, db);
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (ConiugePassaporto non trovato)."));
+                                                }
+                                                #endregion
 
-                                            #region riassocio coniugetitoliviaggio a coniugetitoliviaggio del coniuge modificato
-                                            var lctv = db.CONIUGE.Find(c.FK_IDCONIUGE).CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDCONIUGETITOLIVIAGGIO).ToList();
-                                            if (lctv?.Any() ?? false)
-                                            {
-                                                var ctv = lctv.First();
-                                                dtvtv.AssociaConiugeTitoloViaggio(c.IDCONIUGE, ctv.IDCONIUGETITOLIVIAGGIO, db);
+                                                #region riassocio coniugetitoliviaggio a coniugetitoliviaggio del coniuge modificato
+                                                var lctv = cold.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDCONIUGETITOLIVIAGGIO).ToList();
+                                                if (lctv?.Any() ?? false)
+                                                {
+                                                    var ctv = lctv.First();
+                                                    dtvtv.AssociaConiugeTitoloViaggio(c.IDCONIUGE, ctv.IDCONIUGETITOLIVIAGGIO, db);
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (ConiugeTitoliViaggio non trovato)."));
+                                                }
+                                                #endregion
                                             }
-                                            else
-                                            {
-                                                throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (ConiugeTitoliViaggio non trovato)."));
-                                            }
-                                            #endregion
 
                                         }
                                         else
                                         {
-                                            #region se non si tratta di una modifica creo e associo coniugepassaporto e documenti identita
-                                            decimal idAttivazioniPassaporti;
-
-                                            //verifico se esiste una fase richiesta passaporti non notificata
-                                            //var t = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioneFamiliare).TRASFERIMENTO;
-                                            var idPassaporti = t.PASSAPORTI.IDPASSAPORTI;
-                                            var ap = dtvp.GetUltimaFasePassaporti_Richiesta_Da_Notificare(idPassaporti, db);
-
-                                            if (ap.IDATTIVAZIONIPASSAPORTI > 0)
+                                            if (c.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente)
                                             {
-                                                idAttivazioniPassaporti = ap.IDATTIVAZIONIPASSAPORTI;
+                                                #region se non si tratta di una modifica creo e associo coniugepassaporto e documenti identita
+                                                decimal idAttivazioniPassaporti;
+
+                                                //verifico se esiste una fase richiesta passaporti non notificata
+                                                //var t = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioneFamiliare).TRASFERIMENTO;
+                                                var idPassaporti = t.PASSAPORTI.IDPASSAPORTI;
+                                                var ap = dtvp.GetUltimaFasePassaporti_Richiesta_Da_Notificare(idPassaporti, db);
+
+                                                if (ap.IDATTIVAZIONIPASSAPORTI > 0)
+                                                {
+                                                    idAttivazioniPassaporti = ap.IDATTIVAZIONIPASSAPORTI;
+                                                }
+                                                else
+                                                {
+                                                    var ap_new = dtvp.CreaAttivazioneRichiestaPassaporti(t.IDTRASFERIMENTO, db);
+                                                    idAttivazioniPassaporti = ap_new.idAttivazioniPassaporti;
+                                                }
+                                                CONIUGEPASSAPORTO cp_new = new CONIUGEPASSAPORTO()
+                                                {
+                                                    IDPASSAPORTI = idPassaporti,
+                                                    IDATTIVAZIONIPASSAPORTI = idAttivazioniPassaporti,
+                                                    INCLUDIPASSAPORTO = false,
+                                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                                    ANNULLATO = false
+                                                };
+                                                db.CONIUGEPASSAPORTO.Add(cp_new);
+
+                                                if (db.SaveChanges() <= 0)
+                                                {
+                                                    throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (inserimento ConiugePassaporto)."));
+                                                }
+                                                dtvp.AssociaConiugePassaportoConiuge(cp_new.IDCONIUGEPASSAPORTO, c.IDCONIUGE, db);
+
+                                                //elenco documenti identita coniuge
+                                                var ldoc_coniuge = c.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare &&
+                                                                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita
+                                                                                    ).ToList();
+                                                foreach (var doc_coniuge in ldoc_coniuge)
+                                                {
+                                                    dtvp.AssociaDocumentoPassaportoConiuge(cp_new.IDCONIUGEPASSAPORTO, doc_coniuge.IDDOCUMENTO, db);
+                                                }
+                                                #endregion
+
+                                                #region se non si tratta di una modifica creo e associo coniugetitoliviaggio e documenti relativi
+                                                decimal idAttivazioneTV;
+
+                                                //verifico se esiste una fase richiesta TV non notificata
+                                                var idTitoliViaggio = t.TITOLIVIAGGIO.IDTITOLOVIAGGIO;
+                                                var atv = dtvtv.GetAttivazioneTV(idTitoliViaggio, db);
+                                                decimal ndocTViaggio = dtvtv.GetDocumentiTVbyIdAttivazioneTV(idTitoliViaggio, atv.IDATTIVAZIONETITOLIVIAGGIO, (decimal)EnumTipoDoc.Titolo_Viaggio).Count();
+                                                decimal ndocCImbarco = dtvtv.GetDocumentiTVbyIdAttivazioneTV(idTitoliViaggio, atv.IDATTIVAZIONETITOLIVIAGGIO, (decimal)EnumTipoDoc.Carta_Imbarco).Count();
+
+                                                if (atv.IDATTIVAZIONETITOLIVIAGGIO > 0 && atv.NOTIFICARICHIESTA == false && atv.ATTIVAZIONERICHIESTA == false && ndocCImbarco == 0 && ndocTViaggio == 0)
+                                                {
+                                                    idAttivazioneTV = atv.IDATTIVAZIONETITOLIVIAGGIO;
+                                                }
+                                                else
+                                                {
+                                                    var atv_new = dtvtv.CreaAttivazioneTV(idTitoliViaggio, db);
+                                                    idAttivazioneTV = atv_new.IDATTIVAZIONETITOLIVIAGGIO;
+                                                }
+                                                CONIUGETITOLIVIAGGIO ctv_new = new CONIUGETITOLIVIAGGIO()
+                                                {
+                                                    IDTITOLOVIAGGIO = idTitoliViaggio,
+                                                    IDATTIVAZIONETITOLIVIAGGIO = idAttivazioneTV,
+                                                    RICHIEDITITOLOVIAGGIO = false,
+                                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                                    ANNULLATO = false
+                                                };
+                                                c.CONIUGETITOLIVIAGGIO.Add(ctv_new);
+
+                                                if (db.SaveChanges() <= 0)
+                                                {
+                                                    throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (inserimento ConiugePassaporto)."));
+                                                }
+                                                #endregion
                                             }
-                                            else
-                                            {
-                                                var ap_new = dtvp.CreaAttivazioneRichiestaPassaporti(t.IDTRASFERIMENTO, db);
-                                                idAttivazioniPassaporti = ap_new.idAttivazioniPassaporti;
-                                            }
-                                            CONIUGEPASSAPORTO cp_new = new CONIUGEPASSAPORTO()
-                                            {
-                                                IDPASSAPORTI = idPassaporti,
-                                                IDATTIVAZIONIPASSAPORTI = idAttivazioniPassaporti,
-                                                INCLUDIPASSAPORTO = false,
-                                                DATAAGGIORNAMENTO = DateTime.Now,
-                                                ANNULLATO = false
-                                            };
-                                            db.CONIUGEPASSAPORTO.Add(cp_new);
-
-                                            if (db.SaveChanges() <= 0)
-                                            {
-                                                throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (inserimento ConiugePassaporto)."));
-                                            }
-                                            dtvp.AssociaConiugePassaportoConiuge(cp_new.IDCONIUGEPASSAPORTO, c.IDCONIUGE, db);
-
-                                            //elenco documenti identita coniuge
-                                            var ldoc_coniuge = c.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare &&
-                                                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita
-                                                                                ).ToList();
-                                            foreach (var doc_coniuge in ldoc_coniuge)
-                                            {
-                                                dtvp.AssociaDocumentoPassaportoConiuge(cp_new.IDCONIUGEPASSAPORTO, doc_coniuge.IDDOCUMENTO, db);
-                                            }
-                                            #endregion
-
-                                            #region se non si tratta di una modifica creo e associo coniugetitoliviaggio e documenti relativi
-                                            decimal idAttivazioneTV;
-
-                                            //verifico se esiste una fase richiesta TV non notificata
-                                            var idTitoliViaggio = t.TITOLIVIAGGIO.IDTITOLOVIAGGIO;
-                                            var atv = dtvtv.GetAttivazioneTV(idTitoliViaggio, db);
-                                            decimal ndocTViaggio = dtvtv.GetDocumentiTVbyIdAttivazioneTV(idTitoliViaggio, atv.IDATTIVAZIONETITOLIVIAGGIO, (decimal)EnumTipoDoc.Titolo_Viaggio).Count();
-                                            decimal ndocCImbarco = dtvtv.GetDocumentiTVbyIdAttivazioneTV(idTitoliViaggio, atv.IDATTIVAZIONETITOLIVIAGGIO, (decimal)EnumTipoDoc.Carta_Imbarco).Count();
-
-                                            if (atv.IDATTIVAZIONETITOLIVIAGGIO > 0 && atv.NOTIFICARICHIESTA==false && atv.ATTIVAZIONERICHIESTA==false && ndocCImbarco==0 && ndocTViaggio==0)
-                                            {
-                                                idAttivazioneTV = atv.IDATTIVAZIONETITOLIVIAGGIO;
-                                            }
-                                            else
-                                            {
-                                                var atv_new = dtvtv.CreaAttivazioneTV(idTitoliViaggio, db);
-                                                idAttivazioneTV = atv_new.IDATTIVAZIONETITOLIVIAGGIO;
-                                            }
-                                            CONIUGETITOLIVIAGGIO ctv_new = new CONIUGETITOLIVIAGGIO()
-                                            {
-                                                IDTITOLOVIAGGIO = idTitoliViaggio,
-                                                IDATTIVAZIONETITOLIVIAGGIO = idAttivazioneTV,
-                                                RICHIEDITITOLOVIAGGIO = false,
-                                                DATAAGGIORNAMENTO = DateTime.Now,
-                                                ANNULLATO = false
-                                            };
-                                            c.CONIUGETITOLIVIAGGIO.Add(ctv_new);
-
-                                            if (db.SaveChanges() <= 0)
-                                            {
-                                                throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (inserimento ConiugePassaporto)."));
-                                            }
-                                            #endregion
                                         }
                                     }
                                     #endregion
@@ -3381,32 +3388,34 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (lettura precedente record figlio).");
                                             }
+                                            if (fold.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || fold.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente)
+                                            {
+                                                #region riassocio figlipassaporto a figlipassaporto del figlio modificato
+                                                var lfp = db.FIGLI.Find(f.FK_IDFIGLI).FIGLIPASSAPORTO.OrderByDescending(a => a.IDFIGLIPASSAPORTO).ToList();
+                                                if (lfp?.Any() ?? false)
+                                                {
+                                                    var fp = lfp.First();
+                                                    dtvp.AssociaFigliPassaportoFigli(fp.IDFIGLIPASSAPORTO, f.IDFIGLI, db);
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (FigliPassaporto non trovato)."));
+                                                }
+                                                #endregion
 
-                                            #region riassocio figlipassaporto a figlipassaporto del figlio modificato
-                                            var lfp = db.FIGLI.Find(f.FK_IDFIGLI).FIGLIPASSAPORTO.OrderByDescending(a => a.IDFIGLIPASSAPORTO).ToList();
-                                            if (lfp?.Any() ?? false)
-                                            {
-                                                var fp = lfp.First();
-                                                dtvp.AssociaFigliPassaportoFigli(fp.IDFIGLIPASSAPORTO, f.IDFIGLI, db);
+                                                #region riassocio figlititoliviaggio a figlititoliviaggio del figlio modificato
+                                                var lftv = db.FIGLI.Find(f.FK_IDFIGLI).FIGLITITOLIVIAGGIO.OrderByDescending(a => a.IDFIGLITITOLIVIAGGIO).ToList();
+                                                if (lftv?.Any() ?? false)
+                                                {
+                                                    var ftv = lftv.First();
+                                                    dtvtv.AssociaFigliTitoloViaggio(f.IDFIGLI, ftv.IDFIGLITITOLIVIAGGIO, db);
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (FigliTitoliViaggio non trovato)."));
+                                                }
+                                                #endregion
                                             }
-                                            else
-                                            {
-                                                throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (FigliPassaporto non trovato)."));
-                                            }
-                                            #endregion
-
-                                            #region riassocio figlititoliviaggio a figlititoliviaggio del figlio modificato
-                                            var lftv = db.FIGLI.Find(f.FK_IDFIGLI).FIGLITITOLIVIAGGIO.OrderByDescending(a => a.IDFIGLITITOLIVIAGGIO).ToList();
-                                            if (lftv?.Any() ?? false)
-                                            {
-                                                var ftv = lftv.First();
-                                                dtvtv.AssociaFigliTitoloViaggio(f.IDFIGLI, ftv.IDFIGLITITOLIVIAGGIO, db);
-                                            }
-                                            else
-                                            {
-                                                throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (FigliTitoliViaggio non trovato)."));
-                                            }
-                                            #endregion
                                         }
                                         else
                                         {
@@ -3426,65 +3435,67 @@ namespace NewISE.Models.DBModel.dtObj
                                                 var ap_new = dtvp.CreaAttivazioneRichiestaPassaporti(t.IDTRASFERIMENTO, db);
                                                 idAttivazioniPassaporti = ap_new.idAttivazioniPassaporti;
                                             }
-
-                                            FIGLIPASSAPORTO fp_new = new FIGLIPASSAPORTO()
+                                            if (f.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || f.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente)
                                             {
-                                                IDPASSAPORTI = idPassaporti,
-                                                IDATTIVAZIONIPASSAPORTI = idAttivazioniPassaporti,
-                                                INCLUDIPASSAPORTO = false,
-                                                DATAAGGIORNAMENTO = DateTime.Now,
-                                                ANNULLATO = false
-                                            };
-                                            db.FIGLIPASSAPORTO.Add(fp_new);
+                                                FIGLIPASSAPORTO fp_new = new FIGLIPASSAPORTO()
+                                                {
+                                                    IDPASSAPORTI = idPassaporti,
+                                                    IDATTIVAZIONIPASSAPORTI = idAttivazioniPassaporti,
+                                                    INCLUDIPASSAPORTO = false,
+                                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                                    ANNULLATO = false
+                                                };
+                                                db.FIGLIPASSAPORTO.Add(fp_new);
 
-                                            if (db.SaveChanges() <= 0)
-                                            {
-                                                throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (inserimento FigliPassaporto)."));
+                                                if (db.SaveChanges() <= 0)
+                                                {
+                                                    throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (inserimento FigliPassaporto)."));
+                                                }
+                                                dtvp.AssociaFigliPassaportoFigli(fp_new.IDFIGLIPASSAPORTO, f.IDFIGLI, db);
+
+                                                //elenco documenti identita figlio
+                                                var ldoc_figlio = f.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare &&
+                                                                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita
+                                                                                    ).ToList();
+                                                foreach (var doc_figlio in ldoc_figlio)
+                                                {
+                                                    dtvp.AssociaDocumentoPassaportoFiglio(fp_new.IDFIGLIPASSAPORTO, doc_figlio.IDDOCUMENTO, db);
+                                                }
+                                                #endregion
+
+                                                #region inserisce FigliTV
+                                                decimal idAttivazioniTV;
+
+                                                //verifico se esiste una fase richiesta TV non notificata
+                                                var idTitoliViaggio = t.TITOLIVIAGGIO.IDTITOLOVIAGGIO;
+                                                var atv = dtvtv.GetAttivazioneTVRichiesta(idTitoliViaggio, db);
+
+                                                if (atv.IDATTIVAZIONETITOLIVIAGGIO > 0 && atv.NOTIFICARICHIESTA == false && atv.ATTIVAZIONERICHIESTA == false)
+                                                {
+                                                    idAttivazioniTV = atv.IDATTIVAZIONETITOLIVIAGGIO;
+                                                }
+                                                else
+                                                {
+                                                    var atv_new = dtvtv.CreaAttivazioneTV(idTitoliViaggio, db);
+                                                    idAttivazioniTV = atv_new.IDATTIVAZIONETITOLIVIAGGIO;
+                                                }
+
+                                                FIGLITITOLIVIAGGIO ftv_new = new FIGLITITOLIVIAGGIO()
+                                                {
+                                                    IDTITOLOVIAGGIO = idTitoliViaggio,
+                                                    IDATTIVAZIONETITOLIVIAGGIO = idAttivazioniTV,
+                                                    RICHIEDITITOLOVIAGGIO = false,
+                                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                                    ANNULLATO = false
+                                                };
+                                                f.FIGLITITOLIVIAGGIO.Add(ftv_new);
+
+                                                if (db.SaveChanges() <= 0)
+                                                {
+                                                    throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (inserimento FigliTitoliViaggio)."));
+                                                }
+                                                #endregion
                                             }
-                                            dtvp.AssociaFigliPassaportoFigli(fp_new.IDFIGLIPASSAPORTO, f.IDFIGLI, db);
-
-                                            //elenco documenti identita figlio
-                                            var ldoc_figlio = f.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare &&
-                                                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita
-                                                                                ).ToList();
-                                            foreach (var doc_figlio in ldoc_figlio)
-                                            {
-                                                dtvp.AssociaDocumentoPassaportoFiglio(fp_new.IDFIGLIPASSAPORTO, doc_figlio.IDDOCUMENTO, db);
-                                            }
-                                            #endregion
-
-                                            #region inserisce FigliTV
-                                            decimal idAttivazioniTV;
-
-                                            //verifico se esiste una fase richiesta TV non notificata
-                                            var idTitoliViaggio = t.TITOLIVIAGGIO.IDTITOLOVIAGGIO;
-                                            var atv = dtvtv.GetAttivazioneTVRichiesta(idTitoliViaggio, db);
-
-                                            if (atv.IDATTIVAZIONETITOLIVIAGGIO > 0 && atv.NOTIFICARICHIESTA == false && atv.ATTIVAZIONERICHIESTA == false)
-                                            {
-                                                idAttivazioniTV = atv.IDATTIVAZIONETITOLIVIAGGIO;
-                                            }
-                                            else
-                                            {
-                                                var atv_new = dtvtv.CreaAttivazioneTV(idTitoliViaggio, db);
-                                                idAttivazioniTV = atv_new.IDATTIVAZIONETITOLIVIAGGIO;
-                                            }
-
-                                            FIGLITITOLIVIAGGIO ftv_new = new FIGLITITOLIVIAGGIO()
-                                            {
-                                                IDTITOLOVIAGGIO = idTitoliViaggio,
-                                                IDATTIVAZIONETITOLIVIAGGIO = idAttivazioniTV,
-                                                RICHIEDITITOLOVIAGGIO = false,
-                                                DATAAGGIORNAMENTO = DateTime.Now,
-                                                ANNULLATO = false
-                                            };
-                                            f.FIGLITITOLIVIAGGIO.Add(ftv_new);
-
-                                            if (db.SaveChanges() <= 0)
-                                            {
-                                                throw new Exception(string.Format("Errore in fase di attivazione delle maggiorazioni familiari (inserimento FigliTitoliViaggio)."));
-                                            }
-                                            #endregion
 
                                         }
                                     }

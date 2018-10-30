@@ -2881,7 +2881,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 gp.coniugeIncluso = false;
                             }
-                            if(verificaDoc==false)
+                            if(verificaDoc==false && ultima_att.IDATTIVAZIONETITOLIVIAGGIO > 0)
                             {
                                 var lctvdoc_ci = ctv.DOCUMENTI.Where(a =>
                                                       a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco &&
@@ -2911,7 +2911,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 gp.figliIncluso = false;
                             }
-                            if (verificaDoc==false)
+                            if (verificaDoc==false && ultima_att.IDATTIVAZIONETITOLIVIAGGIO > 0)
                             {
                                 var lftvdoc_ci = ftv.DOCUMENTI.Where(a =>
                                                       a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco &&

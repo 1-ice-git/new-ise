@@ -369,9 +369,16 @@ namespace NewISE.Controllers
                                         adffm.studente = true;
                                         adffm.residente = true;
                                         break;
+                                    case EnumTipologiaFiglio.StudenteNonResidente:
+                                        adffm.residente = false;
+                                        adffm.studente = true;
+                                        break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
                                 }
+
+                              
+
                             }
                         }
 
