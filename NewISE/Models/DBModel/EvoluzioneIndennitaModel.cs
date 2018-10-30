@@ -308,5 +308,13 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "MAB Mensile")]
         public decimal ImportoMABMensile { get; set; }
+
+        public decimal wrk_n1 { get; set; }
+
+        public decimal wrk_n2 { get; set; }
+
+        public decimal wrk_n3 { get; set; }
+
+
     }
 }
