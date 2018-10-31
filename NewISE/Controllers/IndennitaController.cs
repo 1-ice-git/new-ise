@@ -2923,8 +2923,13 @@ namespace NewISE.Controllers
                                         IndennitaPersonale = lm.IndennitaPersonale,
                                         PercentualeDisagio = lm.PercentualeDisagio,
                                         IndennitaBase = lm.IndennitaBase,
-                                        dataAnticipoSistemazione = lm.dataAnticipoSistemazione
+                                        dataAnticipoSistemazione = lm.dataAnticipoSistemazione,
+                                        anticipo = lm.anticipo,
+                                        saldo = lm.saldo,
+                                        totaleSaldoPrimaSistemazione = lm.totaleSaldoPrimaSistemazione
+                                        
 
+                                        
                                     };
 
                                     rpt.Add(rptds);

@@ -1792,16 +1792,27 @@ namespace NewISE.Models.DBModel.dtObj
                     decimal MassAgg = 0;
                     decimal detrazione = 0;
                     string DataElab = null;
-
+                    decimal importSaldo = 0;
 
                     if (lTeorici?.Any() ?? false)
                     {
                         foreach (var c in lTeorici)
                         {
+
+                            if (c.ELABINDSISTEMAZIONE.ANNULLATO == false && c.ELABINDSISTEMAZIONE.ANTICIPO == true)
+                            {
+
+                                importAnticipo = c.IMPORTOLORDO;
+                               
+
+                            }
+
+
                             if (c.ELABINDSISTEMAZIONE.ANNULLATO == false && (c.ELABINDSISTEMAZIONE.SALDO == true || c.ELABINDSISTEMAZIONE.CONGUAGLIO == true))
                             {
 
-                                importAnticipo = c.IMPORTOLORDO + importAnticipo;
+                                //importAnticipo = c.IMPORTOLORDO + importAnticipo;
+                                importSaldo = c.IMPORTOLORDO;
                                 AliquotaFiscale = c.ALIQUOTAFISCALE;
                                 importo = c.IMPORTO;
                                 idMeseAnnoElaborato = c.MESEANNOELABORAZIONE.IDMESEANNOELAB;
@@ -1865,7 +1876,7 @@ namespace NewISE.Models.DBModel.dtObj
                             xx.Importo = importo;
                             xx.AliquotaFiscale = AliquotaFiscale;
                             xx.PercentualeAnticipoRichiesto = anticipi.PercentualeAnticipoRichiesto;
-                            xx.IndennitaSistemazione = importAnticipo;
+                            xx.saldo = importSaldo;
                             xx.Detrazione = detrazione;
                             xx.AliquotaPrevid = aliqPrev.VALORE;
                             xx.ImpPrevid = importAnticipo - detrazione;
@@ -1874,6 +1885,9 @@ namespace NewISE.Models.DBModel.dtObj
                             xx.ContrPrevid = (xx.wrk_n2 > 0) ? (xx.wrk_n1 + xx.wrk_n2) : xx.wrk_n1;
                             xx.ImpFiscale = xx.ImpPrevid - xx.ContrPrevid;
                             xx.RitenutaFiscale = xx.ImpFiscale * AliquotaFiscale / 100;
+                            xx.anticipo = importAnticipo;
+                            xx.totaleSaldoPrimaSistemazione = importAnticipo + importSaldo;
+
 
                             eim.Add(xx);
 

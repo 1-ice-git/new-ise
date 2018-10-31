@@ -26,9 +26,10 @@
     <table cellspacing="0" class="table table-striped">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
-                <th>@Html.DisplayNameFor(model => model.IndennitaSistemazione)</th>
-                <th>&nbsp;</th>
+                <th>@Html.DisplayNameFor(model => model.anticipo)</th>
+                <th>@Html.DisplayNameFor(model => model.saldo)</th>
+                <th>@Html.DisplayNameFor(model => model.totaleSaldoPrimaSistemazione)</th>
+                
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>
@@ -37,9 +38,10 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
-                    <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazione)</td>
-                    <td>&nbsp;</td>
+                    <td>@Html.DisplayFor(modelItem => item.anticipo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.saldo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.totaleSaldoPrimaSistemazione)</td>
+                    
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                 </tr>
