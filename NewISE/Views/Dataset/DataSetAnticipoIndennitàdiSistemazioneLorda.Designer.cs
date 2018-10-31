@@ -333,6 +333,12 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columndataAnticipoSistemazione;
             
+            private global::System.Data.DataColumn columnanticipo;
+            
+            private global::System.Data.DataColumn columnsaldo;
+            
+            private global::System.Data.DataColumn columntotaleSaldoPrimaSistemazione;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -584,6 +590,30 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn anticipoColumn {
+                get {
+                    return this.columnanticipo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn saldoColumn {
+                get {
+                    return this.columnsaldo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn totaleSaldoPrimaSistemazioneColumn {
+                get {
+                    return this.columntotaleSaldoPrimaSistemazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -646,7 +676,10 @@ namespace NewISE.Views.Dataset {
                         string IndennitaPersonale, 
                         string PercentualeDisagio, 
                         string IndennitaBase, 
-                        string dataAnticipoSistemazione) {
+                        string dataAnticipoSistemazione, 
+                        string anticipo, 
+                        string saldo, 
+                        string totaleSaldoPrimaSistemazione) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         dataInizioValidita,
@@ -675,7 +708,10 @@ namespace NewISE.Views.Dataset {
                         IndennitaPersonale,
                         PercentualeDisagio,
                         IndennitaBase,
-                        dataAnticipoSistemazione};
+                        dataAnticipoSistemazione,
+                        anticipo,
+                        saldo,
+                        totaleSaldoPrimaSistemazione};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -725,6 +761,9 @@ namespace NewISE.Views.Dataset {
                 this.columnPercentualeDisagio = base.Columns["PercentualeDisagio"];
                 this.columnIndennitaBase = base.Columns["IndennitaBase"];
                 this.columndataAnticipoSistemazione = base.Columns["dataAnticipoSistemazione"];
+                this.columnanticipo = base.Columns["anticipo"];
+                this.columnsaldo = base.Columns["saldo"];
+                this.columntotaleSaldoPrimaSistemazione = base.Columns["totaleSaldoPrimaSistemazione"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -784,6 +823,12 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnIndennitaBase);
                 this.columndataAnticipoSistemazione = new global::System.Data.DataColumn("dataAnticipoSistemazione", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndataAnticipoSistemazione);
+                this.columnanticipo = new global::System.Data.DataColumn("anticipo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnanticipo);
+                this.columnsaldo = new global::System.Data.DataColumn("saldo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnsaldo);
+                this.columntotaleSaldoPrimaSistemazione = new global::System.Data.DataColumn("totaleSaldoPrimaSistemazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntotaleSaldoPrimaSistemazione);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1374,6 +1419,55 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string anticipo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.anticipoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'anticipo\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.anticipoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string saldo {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.saldoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'saldo\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.saldoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string totaleSaldoPrimaSistemazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.totaleSaldoPrimaSistemazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'totaleSaldoPrimaSistemazione\' nella tabella \'DataTable1\'" +
+                                " è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.totaleSaldoPrimaSistemazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsdataInizioValiditaNull() {
                 return this.IsNull(this.tableDataTable1.dataInizioValiditaColumn);
             }
@@ -1694,6 +1788,42 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetdataAnticipoSistemazioneNull() {
                 this[this.tableDataTable1.dataAnticipoSistemazioneColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsanticipoNull() {
+                return this.IsNull(this.tableDataTable1.anticipoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetanticipoNull() {
+                this[this.tableDataTable1.anticipoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IssaldoNull() {
+                return this.IsNull(this.tableDataTable1.saldoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetsaldoNull() {
+                this[this.tableDataTable1.saldoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IstotaleSaldoPrimaSistemazioneNull() {
+                return this.IsNull(this.tableDataTable1.totaleSaldoPrimaSistemazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SettotaleSaldoPrimaSistemazioneNull() {
+                this[this.tableDataTable1.totaleSaldoPrimaSistemazioneColumn] = global::System.Convert.DBNull;
             }
         }
         

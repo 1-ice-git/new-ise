@@ -324,5 +324,17 @@ namespace NewISE.Models.DBModel
 
         public string dataSaldoSistemazione { get; set; }
 
+        [Display(Name = "Anticipo")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal anticipo { get; set; }
+
+        [Display(Name = "Saldo")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal saldo { get; set; }
+
+        [Display(Name = "Indennità Prima Sistemazione")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal totaleSaldoPrimaSistemazione { get; set; }
+
     }
 }

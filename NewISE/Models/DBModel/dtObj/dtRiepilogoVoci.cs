@@ -27,6 +27,7 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
 
                     if (t != null && t.IDTRASFERIMENTO > 0)
                     {
@@ -36,19 +37,37 @@ namespace NewISE.Models.DBModel.dtObj
                         var tep = t.TEPARTENZA;
                         var ter = t.TERIENTRO;
                         
+                        //var lTeorici =
+                        //    t.TEORICI.Where(
+                        //        a =>
+                        //            a.ANNULLATO == false && a.ELABORATO == true && 
+                        //            (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
+                        //            a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
+                        //            a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
+                        //            a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
+                        //            a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO)
+                        //        .OrderBy(a => a.ANNORIFERIMENTO)
+                        //        .ThenBy(a => a.MESERIFERIMENTO)
+                        //        .ToList();
+
+                        //var lTeorici =
+                        //       trasferimento.TEORICI.Where(
+                        //                 a =>
+                        //                    a.ANNULLATO == false && a.ELABORATO == true &&
+                        //                    a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
+                        //                    a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) )
+                        //                .OrderBy(a => a.ANNORIFERIMENTO)
+                        //                .ThenBy(a => a.MESERIFERIMENTO)
+                        //                .ToList();
+
                         var lTeorici =
-                            db.TEORICI.Where(
-                                a =>
-                                    a.ANNULLATO == false && a.ELABORATO == true && 
-                                    (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
-                                    a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
-                                    a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
-                                    a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
-                                    a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO)
-                                .OrderBy(a => a.ANNORIFERIMENTO)
-                                .ThenBy(a => a.MESERIFERIMENTO)
-                                .ToList();
-                        
+                               trasferimento.TEORICI.Where(
+                                         a =>
+                                            a.ANNULLATO == false && a.ELABORATO == true)
+                                        .OrderBy(a => a.ANNORIFERIMENTO)
+                                        .ThenBy(a => a.MESERIFERIMENTO)
+                                        .ToList();
+
                         if (lTeorici?.Any() ?? false)
                         {
 

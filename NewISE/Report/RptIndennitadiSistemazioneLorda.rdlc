@@ -397,7 +397,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>7.9494cm</Top>
+        <Top>8.80665cm</Top>
         <Left>0.46537cm</Left>
         <Height>0.6cm</Height>
         <Width>18.81612cm</Width>
@@ -502,7 +502,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>8.89336cm</Top>
+        <Top>9.81411cm</Top>
         <Left>0.42132cm</Left>
         <Height>0.6cm</Height>
         <Width>18.86016cm</Width>
@@ -607,7 +607,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>10.46393cm</Top>
+        <Top>10.90843cm</Top>
         <Left>0.41043cm</Left>
         <Height>0.6cm</Height>
         <Width>18.87105cm</Width>
@@ -641,7 +641,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Indennita Sistemazione Anticipabile Lorda (Con esclus. Magg. Fam)</Value>
+                              <Value>Anticipo</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -673,7 +673,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!IndennitaSistemazioneAnticipabileLorda.Value,2)</Value>
+                              <Value>=FormatNumber(Fields!anticipo.Value,2)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -712,7 +712,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>4.37564cm</Top>
+        <Top>4.21689cm</Top>
         <Left>0.41043cm</Left>
         <Height>0.6cm</Height>
         <Width>18.87105cm</Width>
@@ -746,7 +746,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Indennita di Prima Sistemazione (Lorda) </Value>
+                              <Value>Saldo</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -780,7 +780,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!IndennitaSistemazione.Value,2)</Value>
+                              <Value>=FormatNumber(Fields!saldo.Value,2)</Value>
                               <Style>
                                 <FontWeight>Normal</FontWeight>
                               </Style>
@@ -821,7 +821,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>5.45752cm</Top>
+        <Top>5.14002cm</Top>
         <Left>0.46335cm</Left>
         <Height>0.55292cm</Height>
         <Width>18.81813cm</Width>
@@ -928,7 +928,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>6.46585cm</Top>
+        <Top>7.3231cm</Top>
         <Left>0.46335cm</Left>
         <Height>0.6cm</Height>
         <Width>18.81813cm</Width>
@@ -939,30 +939,6 @@
           </Border>
         </Style>
       </Tablix>
-      <Line Name="Line6">
-        <Top>7.42731cm</Top>
-        <Left>14.45062cm</Left>
-        <Height>0cm</Height>
-        <Width>4.83087cm</Width>
-        <ZIndex>16</ZIndex>
-        <Style>
-          <Border>
-            <Style>Solid</Style>
-          </Border>
-        </Style>
-      </Line>
-      <Line Name="Line5">
-        <Top>9.83502cm</Top>
-        <Left>14.37123cm</Left>
-        <Height>0cm</Height>
-        <Width>4.91026cm</Width>
-        <ZIndex>17</ZIndex>
-        <Style>
-          <Border>
-            <Style>Solid</Style>
-          </Border>
-        </Style>
-      </Line>
       <Tablix Name="Tablix9">
         <TablixBody>
           <TablixColumns>
@@ -1061,11 +1037,11 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>12.53551cm</Top>
+        <Top>13.42451cm</Top>
         <Left>0.41043cm</Left>
         <Height>0.6cm</Height>
         <Width>18.87105cm</Width>
-        <ZIndex>18</ZIndex>
+        <ZIndex>16</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1168,11 +1144,11 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>11.44002cm</Top>
+        <Top>12.32902cm</Top>
         <Left>0.46537cm</Left>
         <Height>0.6cm</Height>
         <Width>18.81612cm</Width>
-        <ZIndex>19</ZIndex>
+        <ZIndex>17</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1273,11 +1249,11 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>13.90064cm</Top>
+        <Top>14.85314cm</Top>
         <Left>0.46537cm</Left>
         <Height>0.6cm</Height>
         <Width>18.79417cm</Width>
-        <ZIndex>20</ZIndex>
+        <ZIndex>18</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1386,19 +1362,172 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>15.2146cm</Top>
+        <Top>16.0401cm</Top>
         <Left>0.46335cm</Left>
         <Height>1.2cm</Height>
         <Width>18.81814cm</Width>
-        <ZIndex>21</ZIndex>
+        <ZIndex>19</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Tablix>
+      <Tablix Name="Tablix2">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>13.80342cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>4.99075cm</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Indennità Prima Sistemazione</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox18">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FormatNumber(Fields!totaleSaldoPrimaSistemazione.Value,2)</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox18</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember />
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
+        <Top>6.39445cm</Top>
+        <Left>0.46537cm</Left>
+        <Height>0.6cm</Height>
+        <Width>18.79417cm</Width>
+        <ZIndex>20</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Tablix>
+      <Line Name="Line6">
+        <Top>6.03824cm</Top>
+        <Left>14.34928cm</Left>
+        <Height>0cm</Height>
+        <Width>4.91026cm</Width>
+        <ZIndex>21</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+        </Style>
+      </Line>
+      <Line Name="Line7">
+        <Top>8.36658cm</Top>
+        <Left>14.37123cm</Left>
+        <Height>0cm</Height>
+        <Width>4.91026cm</Width>
+        <ZIndex>22</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+        </Style>
+      </Line>
+      <Line Name="Line8">
+        <Top>11.91199cm</Top>
+        <Left>14.34928cm</Left>
+        <Height>0cm</Height>
+        <Width>4.91026cm</Width>
+        <ZIndex>23</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+        </Style>
+      </Line>
+      <Line Name="Line9">
+        <Top>14.4389cm</Top>
+        <Left>14.37123cm</Left>
+        <Height>0cm</Height>
+        <Width>4.91026cm</Width>
+        <ZIndex>24</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+        </Style>
+      </Line>
     </ReportItems>
-    <Height>6.57744in</Height>
+    <Height>7.00452in</Height>
     <Style />
   </Body>
   <Width>7.7188in</Width>
@@ -1702,6 +1831,22 @@
         </Field>
         <Field Name="IndennitaBase">
           <DataField>IndennitaBase</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="dataAnticipoSistemazione">
+          <DataField>dataAnticipoSistemazione</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="anticipo">
+          <DataField>anticipo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="saldo">
+          <DataField>saldo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="totaleSaldoPrimaSistemazione">
+          <DataField>totaleSaldoPrimaSistemazione</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
