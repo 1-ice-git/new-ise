@@ -41,6 +41,7 @@ namespace NewISE.EF
         public decimal PROGRESSIVO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
+        public bool CONGUAGLIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELABDATIFIGLI> ELABDATIFIGLI { get; set; }

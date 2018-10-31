@@ -163,7 +163,7 @@ namespace NewISE.Models.DBModel.dtObj
                         ret = true;
                     }
                 }
-                if(tOld.DATARIENTRO<Utility.DataFineStop() && tOld.DATARIENTRO>=dtTrasfNew)
+                if (tOld.DATARIENTRO < Utility.DataFineStop() && tOld.DATARIENTRO >= dtTrasfNew)
                 {
                     ret = true;
                 }
@@ -1051,7 +1051,7 @@ namespace NewISE.Models.DBModel.dtObj
                         ldp.First()
                             .TRASFERIMENTO.Where(
                                 a => a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
-                            .OrderByDescending(a=>a.DATAPARTENZA)
+                            .OrderByDescending(a => a.DATAPARTENZA)
                             .ToList();
 
                     if (lt?.Any() ?? false)
@@ -1385,6 +1385,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dit.primaSitemazione = ci.IndennitaSistemazioneAnticipabileLorda;
                                 dit.contributoOmnicomprensivo = ci.TotaleContributoOmnicomprensivoPartenza;
                                 dit.mabMensile = ci.ImportoMABMaxMensile;
+                                dit.primaSitemazioneMF = ci.IndennitaSistemazioneLorda;
                             }
                         }
                     }
@@ -3198,7 +3199,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 #region allinea data fine trasf precedente se non ha richiamo
                 var ltrasf = LeggiElencoTrasferimenti(tm.idTrasferimento);
-                if(ltrasf.Count()>0)
+                if (ltrasf.Count() > 0)
                 {
                     using (dtDipendenti dtd = new dtDipendenti())
                     {
@@ -3235,7 +3236,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        
+
 
         public void AttivaTrasf(decimal idTrasferimento, DateTime dataPartenzaEffettiva)
         {
@@ -3280,7 +3281,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     var d = t.DIPENDENTI;
                                     var trasfTerminato = GetUltimoTrasferimentoTerminatoByMatricola(d.MATRICOLA.ToString());
-                                    if(trasfTerminato.idTrasferimento>0)
+                                    if (trasfTerminato.idTrasferimento > 0)
                                     {
                                         if (trasfTerminato.dataPartenza >= dataPartenzaEffettiva)
                                         {
@@ -3425,7 +3426,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 if (ltrasf.Count() > 0)
                                 {
-                                    var last_t = GetUltimoTrasferimentoTerminatoByMatricola (Convert.ToString(matricola));
+                                    var last_t = GetUltimoTrasferimentoTerminatoByMatricola(Convert.ToString(matricola));
 
                                     idTrasferimentoPrecedente = last_t.idTrasferimento;
                                     if (idTrasferimentoPrecedente > 0)

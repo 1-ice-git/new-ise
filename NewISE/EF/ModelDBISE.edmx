@@ -659,6 +659,7 @@
           <Property Name="PROGRESSIVO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ELABORAZIONI">
           <Key>
@@ -8478,6 +8479,7 @@
           <Property Name="PROGRESSIVO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="CONGUAGLIO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELABDATIFIGLI" Relationship="DBISE.R_EMAB_EDF" FromRole="ELABMAB" ToRole="ELABDATIFIGLI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_EMAB" FromRole="ELABMAB" ToRole="INDENNITA" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISE.R_L_EMAB" FromRole="ELABMAB" ToRole="LIVELLI" />
@@ -12540,6 +12542,7 @@
           <EntitySetMapping Name="ELABMAB">
             <EntityTypeMapping TypeName="DBISE.ELABMAB">
               <MappingFragment StoreEntitySet="ELABMAB">
+                <ScalarProperty Name="CONGUAGLIO" ColumnName="CONGUAGLIO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="PROGRESSIVO" ColumnName="PROGRESSIVO" />
