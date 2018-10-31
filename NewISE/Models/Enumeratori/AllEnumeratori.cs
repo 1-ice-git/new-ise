@@ -21,7 +21,8 @@ namespace NewISE.Models.Enumeratori
     {
         ItaliaEstero = 1,
         EsteroEstero = 2,
-        EsteroEsteroStessaRegiona = 3
+        EsteroEsteroStessaRegiona = 3,
+        Richiamo = 4
     }
 
     public enum EnumAttivitaCrud

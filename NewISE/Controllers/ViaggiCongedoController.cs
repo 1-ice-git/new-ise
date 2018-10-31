@@ -507,11 +507,19 @@ namespace NewISE.Controllers
                         //ViewData["ConteggioElementi"] = dtvc.ConteggiaPreventiviRichiesta(idAttivazioneVC);
                         //ViewData["id_Viaggio_Congedo"] = 0;
                         //ViewData["idFaseInCorso"] = idFaseInCorso;
-                        AggiornaTuttiViewData(idTrasferimento);
 
-                        string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo2;
-                        string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo2;
-                        InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
+                        AttivazioneInviata = dtvc.AttivazionePreventiviInviata(idAttivazioneVC, idFaseInCorso, idTrasferimento);
+                        if (AttivazioneInviata == false)
+                        {
+                            tmp = dtvc.AttivaPreventiviRichiesta(idAttivazioneVC, idDocumento, idFaseInCorso, idTrasferimento);
+
+
+                            AggiornaTuttiViewData(idTrasferimento);
+
+                            string oggetto = Resources.msgEmail.OggettoAttivaViaggiCongedo2;
+                            string corpoMessaggio = Resources.msgEmail.MessaggioAttivazioneViaggiCongedo2;
+                            InviaMailViaggioCongedo(idAttivazioneVC, 0, corpoMessaggio, oggetto);
+                        }
                     }
                 }
                 //Inviare la mail
