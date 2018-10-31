@@ -7337,8 +7337,7 @@
         /// <param name="trasferimento">The trasferimento<see cref="TRASFERIMENTO"/></param>
         /// <param name="meseAnnoElaborazione">The meseAnnoElaborazione<see cref="MESEANNOELABORAZIONE"/></param>
         /// <param name="db">The db<see cref="ModelDBISE"/></param>
-        private void ConguaglioIndennita(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione,
-            ModelDBISE db)
+        private void ConguaglioIndennita(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
             var indennita = trasferimento.INDENNITA;
             var dip = trasferimento.DIPENDENTI;
@@ -7698,8 +7697,7 @@
 
                                     if (annoMeseVariazione == annoMeseVariazioneSucc)
                                     {
-                                        using (CalcoliIndennita ci =
-                                            new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                         {
                                             using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                             {
@@ -9297,8 +9295,7 @@
         /// <param name="trasferimento">The trasferimento<see cref="TRASFERIMENTO"/></param>
         /// <param name="MeseAnnoElaborato">The MeseAnnoElaborato<see cref="MESEANNOELABORAZIONE"/></param>
         /// <param name="db">The db<see cref="ModelDBISE"/></param>
-        private void ConguaglioMabFineTrasferimento(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE MeseAnnoElaborato,
-            ModelDBISE db)
+        private void ConguaglioMabFineTrasferimento(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE MeseAnnoElaborato, ModelDBISE db)
         {
             var indennita = trasferimento.INDENNITA;
             //var dip = trasferimento.DIPENDENTI;
@@ -9309,12 +9306,12 @@
 
                 var lemab =
                     indennita.ELABMAB.Where(
-                            a =>
-                                a.ANNULLATO == false && a.DAL >= dataRientro && a.AL >= dataRientro &&
-                                a.TEORICI.Any(
-                                    b =>
-                                        b.ANNULLATO == false && b.ELABORATO == true && b.DIRETTO == false &&
-                                        b.INSERIMENTOMANUALE == false))
+                        a =>
+                            a.ANNULLATO == false && a.AL >= dataRientro && a.DAL <= Utility.DataFineStop() &&
+                            a.TEORICI.Any(
+                                b =>
+                                    b.ANNULLATO == false && b.ELABORATO == true && b.DIRETTO == false &&
+                                    b.INSERIMENTOMANUALE == false))
                         .OrderBy(a => a.DAL)
                         .ThenBy(a => a.AL)
                         .ToList();
@@ -9334,113 +9331,75 @@
 
                         using (GiorniRateo gr = new GiorniRateo(dtIni, dtFin))
                         {
-                            int giorniNew = gr.RateoGiorni;
+                            int numeroCicli = gr.CicliElaborazione;
 
-                            var ltOld =
-                                db.TEORICI.Where(
-                                        a =>
-                                            a.ANNULLATO == false && a.ELABORATO == true && a.DIRETTO == false &&
-                                            a.INSERIMENTOMANUALE == false &&
-                                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                            a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
-                                            a.ANNORIFERIMENTO == dtIni.Year &&
-                                            a.MESERIFERIMENTO == dtIni.Month &&
-                                            a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
-                                    //a.ELABMAB.Any(
-                                    //    b =>
-                                    //        b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
+                            for (int i = 1; i <= numeroCicli; i++)
+                            {
+                                if (i > 1)
+                                {
+                                    dtIni = Utility.GetDataInizioMese(dtIni.AddMonths(1));
+                                }
+
+                                int giorniNew = gr.RateoGiorni;
+
+                                var ltOld =
+                                emab.TEORICI.Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.ELABORATO == true && a.DIRETTO == false &&
+                                        a.INSERIMENTOMANUALE == false &&
+                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                        a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                                        a.ANNORIFERIMENTO == dtIni.Year &&
+                                        a.MESERIFERIMENTO == dtIni.Month &&
+                                        a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
+                                    .OrderBy(a => a.ANNORIFERIMENTO)
+                                    .ThenBy(a => a.MESERIFERIMENTO)
                                     .ToList();
 
-                            if (ltOld?.Any() ?? false)
-                            {
-                                decimal importoOld = ltOld.Sum(a => a.IMPORTO);
-                                //foreach (var tOld in ltOld)
-                                //{
-                                //    tOld.ANNULLATO = true;
-                                //}
-
-                                int h = db.SaveChanges();
-
-                                if (h > 0)
+                                if (ltOld?.Any() ?? false)
                                 {
-                                    decimal importoGiornoOld = importoOld / giorniOld;
+                                    decimal importoOld = ltOld.Sum(a => a.IMPORTO);
 
-                                    decimal importoNegativo = (importoGiornoOld * giorniNew) * -1;
-
-                                    decimal progMax = db.Database
-                                        .SqlQuery<decimal>("SELECT SEQ_MAB.nextval PROG_MAX FROM dual").First();
-
-                                    ELABMAB emabNew = new ELABMAB()
+                                    if (importoOld > 0)
                                     {
-                                        IDTRASFINDENNITA = indennita.IDTRASFINDENNITA,
-                                        IDLIVELLO = emab.IDLIVELLO,
-                                        INDENNITABASE = emab.INDENNITABASE,
-                                        COEFFICENTESEDE = emab.COEFFICENTESEDE,
-                                        PERCENTUALEDISAGIO = emab.PERCENTUALEDISAGIO,
-                                        PERCENTUALERIDUZIONE = emab.PERCENTUALERIDUZIONE,
-                                        PERCENTUALEMAGCONIUGE = emab.PERCENTUALEMAGCONIUGE,
-                                        CANONELOCAZIONE = emab.CANONELOCAZIONE,
-                                        TASSOFISSORAGGUAGLIO = emab.TASSOFISSORAGGUAGLIO,
-                                        IDVALUTA = emab.IDVALUTA,
-                                        PERCMAB = emab.PERCMAB,
-                                        DAL = dtIni,
-                                        AL = dtFin,
-                                        GIORNI = giorniNew,
-                                        ANNUALE = emab.ANNUALE,
-                                        PROGRESSIVO = progMax,
-                                        DATAOPERAZIONE = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
+                                        decimal importoGiornoOld = importoOld / giorniOld;
 
-                                    indennita.ELABMAB.Add(emabNew);
-
-                                    int n = db.SaveChanges();
-
-                                    if (n > 0)
-                                    {
-                                        foreach (var edfOld in emab.ELABDATIFIGLI)
-                                        {
-                                            ELABDATIFIGLI edf = new ELABDATIFIGLI()
-                                            {
-                                                IDELABIND = edfOld.IDELABIND,
-                                                INDENNITAPRIMOSEGRETARIO = edfOld.INDENNITAPRIMOSEGRETARIO,
-                                                PERCENTUALEMAGGIORAZIONEFIGLI = edfOld.PERCENTUALEMAGGIORAZIONEFIGLI
-                                            };
-
-                                            emabNew.ELABDATIFIGLI.Add(edf);
-                                        }
+                                        decimal importoNegativo = (importoGiornoOld * giorniNew) * -1;
 
                                         EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
-
-                                        TEORICI teorico = new TEORICI()
+                                        if (importoNegativo != 0)
                                         {
-                                            IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                            IDTIPOMOVIMENTO = (decimal)tipoMov,
-                                            IDVOCI = (decimal)EnumVociContabili.MAB,
-                                            IDMESEANNOELAB = MeseAnnoElaborato.IDMESEANNOELAB,
-                                            MESERIFERIMENTO = dtIni.Month,
-                                            ANNORIFERIMENTO = dtIni.Year,
-                                            IMPORTO = importoNegativo,
-                                            DATAOPERAZIONE = DateTime.Now,
-                                            INSERIMENTOMANUALE = false,
-                                            ELABORATO = false,
-                                            DIRETTO = false,
-                                            ANNULLATO = false,
-                                            GIORNI = giorniNew
-                                        };
+                                            TEORICI teorico = new TEORICI()
+                                            {
+                                                IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
+                                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                IDVOCI = (decimal)EnumVociContabili.MAB,
+                                                IDMESEANNOELAB = MeseAnnoElaborato.IDMESEANNOELAB,
+                                                MESERIFERIMENTO = dtIni.Month,
+                                                ANNORIFERIMENTO = dtIni.Year,
+                                                IMPORTO = importoNegativo,
+                                                DATAOPERAZIONE = DateTime.Now,
+                                                INSERIMENTOMANUALE = false,
+                                                ELABORATO = false,
+                                                DIRETTO = false,
+                                                ANNULLATO = false,
+                                                GIORNI = giorniNew
+                                            };
 
-                                        db.TEORICI.Add(teorico);
+                                            db.TEORICI.Add(teorico);
 
-                                        int k = db.SaveChanges();
+                                            int k = db.SaveChanges();
 
-                                        if (k > 0)
-                                        {
-                                            this.AssociaTeoriciElabMAB(teorico.IDTEORICI, emabNew.IDELABMAB, db);
+                                            if (k > 0)
+                                            {
+                                                this.AssociaTeoriciElabMAB(teorico.IDTEORICI, emab.IDELABMAB, db);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Impossibile inserire il teorico della MAB.");
+                                            }
                                         }
-                                        else
-                                        {
-                                            throw new Exception("Impossibile inserire il teorico della MAB.");
-                                        }
+
                                     }
                                 }
                             }
@@ -9459,8 +9418,6 @@
         private void ConguaglioIndennitaFineTrasferimento(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborato, ModelDBISE db)
         {
             var indennita = trasferimento.INDENNITA;
-
-
 
             if (trasferimento.DATARIENTRO < Utility.DataFineStop())
             {
@@ -9508,14 +9465,16 @@
                         using (GiorniRateo gr = new GiorniRateo(dtIni, dtFin))
                         {
                             int giorniNew = gr.RateoGiorni;
-                            //int numeroCicli = gr.CicliElaborazione;
+                            int numeroCicli = gr.CicliElaborazione;
 
-                            //for (int i = 1; i <= numeroCicli; i++)
-                            //{
+                            for (int i = 1; i <= numeroCicli; i++)
+                            {
+                                if (i > 1)
+                                {
+                                    dtIni = Utility.GetDataInizioMese(dtIni.AddMonths(1));
+                                }
 
-                            //}
-
-                            var ltOld =
+                                var ltOld =
                                 ei.TEORICI.Where(
                                     a =>
                                         a.ANNULLATO == false && a.ELABORATO == true && a.DIRETTO == false &&
@@ -9529,101 +9488,55 @@
                                     .ThenBy(a => a.MESERIFERIMENTO)
                                     .ToList();
 
-                            if (ltOld?.Any() ?? false)
-                            {
-                                decimal importoOld = ltOld.Sum(a => a.IMPORTO);
-
-                                //if (importoOld > 0)
-                                //{
-                                //foreach (var tOld in ltOld)
-                                //{
-                                //    tOld.ANNULLATO = true;
-                                //}
-
-                                //int h = db.SaveChanges();
-
-                                //if (h > 0)
-                                //{
-                                decimal importoGiornoOld = importoOld / giorniOld;
-
-                                decimal importoNegativo = (importoGiornoOld * giorniNew) * -1;
-
-                                decimal progMax = db.Database
-                                    .SqlQuery<decimal>("SELECT SEQ_P_ELABIND.nextval PROG_MAX FROM dual").First();
-
-                                ELABINDENNITA einew = new ELABINDENNITA()
+                                if (ltOld?.Any() ?? false)
                                 {
-                                    IDTRASFINDENNITA = indennita.IDTRASFINDENNITA,
-                                    IDLIVELLO = ei.IDLIVELLO,
-                                    INDENNITABASE = ei.INDENNITABASE,
-                                    COEFFICENTESEDE = ei.COEFFICENTESEDE,
-                                    PERCENTUALEDISAGIO = ei.PERCENTUALEDISAGIO,
-                                    PERCENTUALEMAGCONIUGE = ei.PERCENTUALEMAGCONIUGE,
-                                    PENSIONECONIUGE = ei.PENSIONECONIUGE,
-                                    GIORNISOSPENSIONE = ei.GIORNISOSPENSIONE,
-                                    DAL = dtIni,
-                                    AL = dtFin,
-                                    GIORNI = giorniNew,
-                                    DATAOPERAZIONE = DateTime.Now,
-                                    PROGRESSIVO = progMax,
-                                    ANNULLATO = false
-                                };
+                                    decimal importoOld = ltOld.Sum(a => a.IMPORTO);
 
-                                indennita.ELABINDENNITA.Add(einew);
-
-                                int n = db.SaveChanges();
-
-                                if (n > 0)
-                                {
-                                    foreach (var edfOld in ei.ELABDATIFIGLI)
+                                    if (importoOld > 0)
                                     {
-                                        ELABDATIFIGLI edf = new ELABDATIFIGLI()
+
+                                        decimal importoGiornoOld = importoOld / giorniOld;
+
+                                        decimal importoNegativo = (importoGiornoOld * giorniNew) * -1;
+
+                                        if (importoNegativo != 0)
                                         {
-                                            IDELABIND = edfOld.IDELABIND,
-                                            INDENNITAPRIMOSEGRETARIO = edfOld.INDENNITAPRIMOSEGRETARIO,
-                                            PERCENTUALEMAGGIORAZIONEFIGLI = edfOld.PERCENTUALEMAGGIORAZIONEFIGLI
-                                        };
+                                            EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
 
-                                        einew.ELABDATIFIGLI.Add(edf);
-                                    }
+                                            TEORICI teorico = new TEORICI()
+                                            {
+                                                IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
+                                                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                                                IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
+                                                IDMESEANNOELAB = meseAnnoElaborato.IDMESEANNOELAB,
+                                                MESERIFERIMENTO = dtIni.Month,
+                                                ANNORIFERIMENTO = dtIni.Year,
+                                                IMPORTO = importoNegativo,
+                                                DATAOPERAZIONE = DateTime.Now,
+                                                INSERIMENTOMANUALE = false,
+                                                ELABORATO = false,
+                                                DIRETTO = false,
+                                                ANNULLATO = false,
+                                                GIORNI = giorniNew
+                                            };
 
-                                    EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
+                                            db.TEORICI.Add(teorico);
 
-                                    TEORICI teorico = new TEORICI()
-                                    {
-                                        IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
-                                        IDTIPOMOVIMENTO = (decimal)tipoMov,
-                                        IDVOCI = (decimal)EnumVociContabili.Ind_Sede_Estera,
-                                        IDMESEANNOELAB = meseAnnoElaborato.IDMESEANNOELAB,
-                                        MESERIFERIMENTO = dtIni.Month,
-                                        ANNORIFERIMENTO = dtIni.Year,
-                                        IMPORTO = importoNegativo,
-                                        DATAOPERAZIONE = DateTime.Now,
-                                        INSERIMENTOMANUALE = false,
-                                        ELABORATO = false,
-                                        DIRETTO = false,
-                                        ANNULLATO = false,
-                                        GIORNI = giorniNew
-                                    };
+                                            int k = db.SaveChanges();
 
-                                    db.TEORICI.Add(teorico);
+                                            if (k > 0)
+                                            {
+                                                this.AssociaTeoriciElabIndennita(ei.IDELABIND, teorico.IDTEORICI, db);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Impossibile inserire il teorico dell'indennità mensile.");
+                                            }
+                                        }
 
-                                    int k = db.SaveChanges();
-
-                                    if (k > 0)
-                                    {
-                                        this.AssociaTeoriciElabIndennita(einew.IDELABIND, teorico.IDTEORICI, db);
-                                    }
-                                    else
-                                    {
-                                        throw new Exception(
-                                            "Impossibile inserire il teorico dell'indennità mensile.");
                                     }
                                 }
-                                //}
 
-
-                                //}
                             }
                         }
                     }
@@ -9817,8 +9730,7 @@
         /// <param name="trasferimento">The trasferimento<see cref="TRASFERIMENTO"/></param>
         /// <param name="meseAnnoElaborazione">The meseAnnoElaborazione<see cref="MESEANNOELABORAZIONE"/></param>
         /// <param name="db">The db<see cref="ModelDBISE"/></param>
-        private void ConguaglioPrimaSistemazione(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione,
-            ModelDBISE db)
+        private void ConguaglioPrimaSistemazione(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
             decimal outPrimaSistemazioneAnticipabileOld = 0;
             decimal outPrimaSistemazioneUnicaSoluzioneOld = 0;
@@ -10116,10 +10028,10 @@
                             decimal conguaglioLordo =
                                 outPrimaSistemazioneUnicaSoluzioneNew - outPrimaSistemazioneUnicaSoluzioneOld;
 
-                            if (lordoOld == outPrimaSistemazioneUnicaSoluzioneOld)
-                            {
+                            //if (lordoOld == outPrimaSistemazioneUnicaSoluzioneOld)
+                            //{
 
-                            }
+                            //}
 
 
 
