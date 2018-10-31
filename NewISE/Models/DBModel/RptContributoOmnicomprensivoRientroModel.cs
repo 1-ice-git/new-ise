@@ -29,6 +29,9 @@ namespace NewISE.Models.DBModel
 
         public string dtRientro { get; set; }
 
+        [Display(Name = "Totale")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal TotaleContributoOmnicomprensivoRientro { get; set; }
 
     }
 }

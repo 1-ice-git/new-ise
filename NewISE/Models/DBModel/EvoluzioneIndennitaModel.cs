@@ -115,6 +115,11 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal TotaleContributoOmnicomprensivoPartenza { get; set; }
 
+        [Display(Name = "Totale")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal TotaleContributoOmnicomprensivoRientro { get; set; }
+
+
         [Display(Name = "Anticipo")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal AnticipoContributoOmnicomprensivoRientro { get; set; }

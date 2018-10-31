@@ -495,7 +495,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!CoefficenteIndennitaRichiamo.Value,5)</Value>
+                              <Value>=Fields!CoefficenteIndennitaRichiamo.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>

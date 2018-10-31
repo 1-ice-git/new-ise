@@ -1912,6 +1912,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 a.ANNULLATO == false)
                                 .OrderBy(a => a.ANNORIFERIMENTO).ThenBy(a => a.MESERIFERIMENTO)
                                 .ToList();
+
                     decimal importAnticipo = 0;
                     decimal AliquotaFiscale = 0;
                     decimal importo = 0;
@@ -1919,24 +1920,24 @@ namespace NewISE.Models.DBModel.dtObj
                     decimal AliquotaAgg = 0;
                     decimal MassAgg = 0;
                     decimal detrazione = 0;
-
+                    string DataElab = null;
 
 
                     if (lTeorici?.Any() ?? false)
                     {
                         foreach (var c in lTeorici)
                         {
-                            if (c.ELABINDSISTEMAZIONE.ANNULLATO == false && c.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true)
+                            if (c.ELABINDSISTEMAZIONE.ANNULLATO == false && (c.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true || c.ELABINDSISTEMAZIONE.CONGUAGLIO == true))
                             {
 
-                                importAnticipo = c.IMPORTOLORDO;
+                                importAnticipo = c.IMPORTOLORDO + importAnticipo;
                                 AliquotaFiscale = c.ALIQUOTAFISCALE;
                                 importo = c.IMPORTO;
                                 idMeseAnnoElaborato = c.MESEANNOELABORAZIONE.IDMESEANNOELAB;
                                 detrazione = c.DETRAZIONIAPPLICATE;
                                 AliquotaAgg = c.CONTRIBUTOAGGIUNTIVO;
                                 MassAgg = c.MASSIMALECA;
-
+                                DataElab = c.DATAOPERAZIONE.ToShortDateString();
 
                             }
                         }
@@ -2179,113 +2180,11 @@ namespace NewISE.Models.DBModel.dtObj
                             xx.SaldoContributoOmnicomprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza;
                             xx.PercentualeFasciaKmP = ci.PercentualeFKMPartenza;
                             xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
-                        xx.TotaleContributoOmnicomprensivoPartenza = ci.TotaleContributoOmnicomprensivoPartenza;
+                            xx.TotaleContributoOmnicomprensivoPartenza = ci.TotaleContributoOmnicomprensivoPartenza;
 
                         eim.Add(xx);
 
                     }
-
-
-                    //var tePartenza = trasferimento.TEPARTENZA;
-
-                    //var lete =
-                    //    tePartenza.ELABTRASPEFFETTI.Where(
-                    //        a =>
-                    //            a.ANNULLATO == false &&
-                    //            a.TEORICI.Any(
-                    //                b =>
-                    //                    b.ANNULLATO == false && b.ELABORATO == true &&
-
-                    //                                 b.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità)).ToList();
-
-
-                    //if (lete?.Any() ?? false)
-                    //{
-
-
-
-
-                    //}
-
-                    //List<DateTime> lDateVariazioni = new List<DateTime>();
-
-
-                    #region Variazioni Percentuale Fascia Km
-
-                    //var ll =
-                    //    db.PERCENTUALEFKM
-                    //    .Where(a => a.ANNULLATO == false)
-                    //    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                    //foreach (var ib in ll)
-                    //{
-                    //    DateTime dtVar = new DateTime();
-
-                    //    if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                    //    {
-                    //        dtVar = trasferimento.DATAPARTENZA;
-                    //    }
-                    //    else
-                    //    {
-                    //        dtVar = ib.DATAINIZIOVALIDITA;
-                    //    }
-
-
-                    //    if (!lDateVariazioni.Contains(dtVar))
-                    //    {
-                    //        lDateVariazioni.Add(dtVar);
-                    //        lDateVariazioni.Sort();
-                    //    }
-                    //}
-
-                    #endregion
-
-                    //lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                    //if (lDateVariazioni?.Any() ?? false)
-                    //{
-                    //    for (int j = 0; j < lDateVariazioni.Count; j++)
-                    //    {
-                    //        DateTime dv = lDateVariazioni[j];
-
-                    //        if (dv < Utility.DataFineStop())
-                    //        {
-                    //            DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-
-                    //            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA, db))
-                    //            {
-                    //                EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-
-                    //                xx.dataInizioValidita = dv;
-                    //                xx.dataFineValidita = dvSucc;
-                    //                xx.IndennitaBase = ci.IndennitaDiBase;
-                    //                xx.PercentualeDisagio = ci.PercentualeDisagio;
-                    //                xx.CoefficienteSede = ci.CoefficienteDiSede;
-                    //                xx.IndennitaServizio = ci.IndennitaDiServizio;
-                    //                xx.IndennitaPersonale = ci.IndennitaPersonale;
-                    //                xx.IndennitaPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
-                    //                xx.PercentualeMaggConiuge = ci.PercentualeMaggiorazioneConiuge;
-                    //                xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
-                    //                xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
-                    //                xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
-                    //                xx.TotaleMaggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
-                    //                xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
-                    //                xx.CoefficientediMaggiorazione = ci.CoefficienteIndennitaSistemazione;
-                    //                xx.PercentualeFasciaKmP = ci.PercentualeFKMPartenza;
-                    //                xx.PercentualeFasciaKmR = ci.PercentualeFKMRientro;
-                    //                xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
-                    //                xx.AnticipoContributoOmnicomprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza;
-                    //                xx.SaldoContributoOmnicomprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza;
-
-
-                    //                eim.Add(xx);
-
-                    //            }
-
-                    //        }
-                    //    }
-                    //}
 
                 }
 
@@ -2318,7 +2217,7 @@ namespace NewISE.Models.DBModel.dtObj
                         xx.SaldoContributoOmnicomprensivoRientro = ci.SaldoContributoOmnicomprensivoRientro;
                         xx.PercentualeFasciaKmR = ci.PercentualeFKMRientro;
                         xx.IndennitaRichiamo = ci.IndennitaRichiamoLordo;
-                        xx.TotaleContributoOmnicomprensivoPartenza = ci.TotaleContributoOmnicomprensivoPartenza;
+                        xx.TotaleContributoOmnicomprensivoRientro = ci.TotaleContributoOmnicomprensivoRientro;
                         
                         eim.Add(xx);
 

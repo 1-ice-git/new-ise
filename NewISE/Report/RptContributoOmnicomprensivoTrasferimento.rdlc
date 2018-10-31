@@ -55,13 +55,16 @@
               <Width>5.58176cm</Width>
             </TablixColumn>
             <TablixColumn>
+              <Width>3.18792cm</Width>
+            </TablixColumn>
+            <TablixColumn>
               <Width>3.9678cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.36058cm</Width>
+              <Width>2.92876cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.54176cm</Width>
+              <Width>4.74648cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -124,6 +127,41 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox4</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>WhiteSmoke</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>% Fascia Km P</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -210,14 +248,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox1">
+                    <Textbox Name="Textbox14">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Percentuale Fascia Km P</Value>
+                              <Value>Totale</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -228,7 +266,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox1</rd:DefaultName>
+                      <rd:DefaultName>Textbox14</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -318,6 +356,38 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
+                    <Textbox Name="PercentualeFasciaKmP">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FormatNumber(Fields!PercentualeFasciaKmP.Value,2)</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>PercentualeFasciaKmP</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
                     <Textbox Name="AnticipoContrOmniComprensivoPartenza">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -382,14 +452,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="PercentualeFasciaKmP">
+                    <Textbox Name="TotaleContributoOmnicomprensivoPartenza">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!PercentualeFasciaKmP.Value,2)</Value>
+                              <Value>=FormatNumber(Fields!TotaleContributoOmnicomprensivoPartenza.Value,2)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -398,7 +468,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>PercentualeFasciaKmP</rd:DefaultName>
+                      <rd:DefaultName>TotaleContributoOmnicomprensivoPartenza</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -410,6 +480,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -418,6 +489,7 @@
         </TablixBody>
         <TablixColumnHierarchy>
           <TablixMembers>
+            <TablixMember />
             <TablixMember />
             <TablixMember />
             <TablixMember />
@@ -439,7 +511,7 @@
         <Top>5.55308cm</Top>
         <Left>0.38364cm</Left>
         <Height>1.2cm</Height>
-        <Width>23.9074cm</Width>
+        <Width>23.86821cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -865,6 +937,10 @@
         </Field>
         <Field Name="dataPartenza">
           <DataField>dataPartenza</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TotaleContributoOmnicomprensivoPartenza">
+          <DataField>TotaleContributoOmnicomprensivoPartenza</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
