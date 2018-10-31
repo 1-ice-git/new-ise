@@ -7829,8 +7829,7 @@
         /// <param name="trasferimento">The trasferimento<see cref="TRASFERIMENTO"/></param>
         /// <param name="meseAnnoElaborazione">The meseAnnoElaborazione<see cref="MESEANNOELABORAZIONE"/></param>
         /// <param name="db">The db<see cref="ModelDBISE"/></param>
-        private void InsIndennitaMensile(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione,
-            ModelDBISE db)
+        private void InsIndennitaMensile(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
             var indennita = trasferimento.INDENNITA;
             DateTime dataInizioTrasferimento = trasferimento.DATAPARTENZA;
