@@ -182,25 +182,13 @@ namespace NewISE.Models.DBModel.dtObj
 
             var u = db.UFFICI.Find(idUfficio);
 
-            //var lpd =
-            //    u.PERCENTUALEDISAGIO.Where(
-            //        a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAFINEVALIDITA <= dtFin)
-            //        .OrderBy(a => a.DATAINIZIOVALIDITA);
             List<PERCENTUALEDISAGIO> lpd = new List<PERCENTUALEDISAGIO>();
-            if (dtFin == Utility.DataFineStop())
-            {
-                lpd =
-                u.PERCENTUALEDISAGIO.Where(
-                    a => a.ANNULLATO == false && dtIni >= a.DATAINIZIOVALIDITA)
-                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-            }else
-            {
-                lpd =
-                u.PERCENTUALEDISAGIO.Where(
-                    a => a.ANNULLATO == false && dtIni >= a.DATAINIZIOVALIDITA && a.DATAFINEVALIDITA >= dtFin)
-                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-            }
+            lpd =
+                u.PERCENTUALEDISAGIO.Where(
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAFINEVALIDITA)
+                    .ToList();
 
             if (lpd?.Any() ?? false)
             {
@@ -226,7 +214,7 @@ namespace NewISE.Models.DBModel.dtObj
             return lPercentualeDisagio;
 
         }
-        
+
         public PercentualeDisagioModel GetPercentualeDisagioValida(decimal idUfficio, DateTime dt, ModelDBISE db)
         {
             PercentualeDisagioModel pdm = new PercentualeDisagioModel();
