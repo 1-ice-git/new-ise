@@ -34,16 +34,16 @@ namespace NewISE.EF
         public decimal ANNORIFERIMENTO { get; set; }
         public decimal GIORNI { get; set; }
         public decimal IMPORTO { get; set; }
+        public decimal IMPORTOLORDO { get; set; }
         public decimal ALIQUOTAFISCALE { get; set; }
         public decimal DETRAZIONIAPPLICATE { get; set; }
+        public decimal CONTRIBUTOAGGIUNTIVO { get; set; }
+        public decimal MASSIMALECA { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool INSERIMENTOMANUALE { get; set; }
         public bool ELABORATO { get; set; }
         public bool DIRETTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal CONTRIBUTOAGGIUNTIVO { get; set; }
-        public decimal MASSIMALECA { get; set; }
-        public decimal IMPORTOLORDO { get; set; }
     
         public virtual AUTOMATISMOVOCIMANUALI AUTOMATISMOVOCIMANUALI { get; set; }
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
