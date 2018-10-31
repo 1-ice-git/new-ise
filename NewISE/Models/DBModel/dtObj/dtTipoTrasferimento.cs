@@ -3,6 +3,7 @@ using NewISE.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NewISE.Models.Enumeratori;
 using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj
@@ -20,7 +21,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                lttm = (from e in db.TIPOTRASFERIMENTO
+                lttm = (from e in db.TIPOTRASFERIMENTO.Where(a=>a.IDTIPOTRASFERIMENTO!=(decimal)EnumTipoTrasferimento.Richiamo)
                         select new TipoTrasferimentoModel()
                         {
                             idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
