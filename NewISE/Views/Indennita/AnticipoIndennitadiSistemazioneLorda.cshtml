@@ -29,10 +29,11 @@
             <thead>
                 <tr>
                     <th class="text-center">&nbsp;</th>
-                    <th class="text-center">@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
-                    <th class="text-center">@Html.DisplayNameFor(model => model.IndennitaServizio)</th>
-                    <th class="text-center">@Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.dataAnticipoSistemazione)</th>
+                    
                     <th class="text-center">@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.IndennitaSistemazione)</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,10 +42,11 @@
 
                     <tr>
                         <td style="text-align:center;">&nbsp;</td>
-                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
-                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.IndennitaServizio)</td>
-                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.dataAnticipoSistemazione)</td>
+                        
                         <td style="text-align:center;">@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.PercentualeAnticipoRichiesto)</td>
+                        <td style="text-align:center;">@Html.DisplayFor(modelItem => item.IndennitaSistemazione)</td>
                     </tr>
                     <tr class="comment"><td colspan="5">&nbsp;</td></tr>
 

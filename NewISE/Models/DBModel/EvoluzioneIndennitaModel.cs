@@ -315,6 +315,9 @@ namespace NewISE.Models.DBModel
 
         public decimal wrk_n3 { get; set; }
 
+        public string dataAnticipoSistemazione { get; set; }
+
+        public string dataSaldoSistemazione { get; set; }
 
     }
 }

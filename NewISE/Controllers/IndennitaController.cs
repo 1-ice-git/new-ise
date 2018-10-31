@@ -2339,8 +2339,10 @@ namespace NewISE.Controllers
                                         IndennitaPrimoSegretario = lm.IndennitaPrimoSegretario,
                                         IndennitaPersonale = lm.IndennitaPersonale,
                                         PercentualeDisagio = lm.PercentualeDisagio,
-                                        IndennitaBase = lm.IndennitaBase
-
+                                        IndennitaBase = lm.IndennitaBase,
+                                        dataAnticipoSistemazione = lm.dataAnticipoSistemazione
+                                        
+                                        
 
                                     };
 

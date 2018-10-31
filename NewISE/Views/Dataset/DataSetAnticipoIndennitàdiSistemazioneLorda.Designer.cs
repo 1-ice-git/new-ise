@@ -331,6 +331,8 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columnIndennitaBase;
             
+            private global::System.Data.DataColumn columndataAnticipoSistemazione;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -574,6 +576,14 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn dataAnticipoSistemazioneColumn {
+                get {
+                    return this.columndataAnticipoSistemazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -635,7 +645,8 @@ namespace NewISE.Views.Dataset {
                         string IndennitaPrimoSegretario, 
                         string IndennitaPersonale, 
                         string PercentualeDisagio, 
-                        string IndennitaBase) {
+                        string IndennitaBase, 
+                        string dataAnticipoSistemazione) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         dataInizioValidita,
@@ -663,7 +674,8 @@ namespace NewISE.Views.Dataset {
                         IndennitaPrimoSegretario,
                         IndennitaPersonale,
                         PercentualeDisagio,
-                        IndennitaBase};
+                        IndennitaBase,
+                        dataAnticipoSistemazione};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -712,6 +724,7 @@ namespace NewISE.Views.Dataset {
                 this.columnIndennitaPersonale = base.Columns["IndennitaPersonale"];
                 this.columnPercentualeDisagio = base.Columns["PercentualeDisagio"];
                 this.columnIndennitaBase = base.Columns["IndennitaBase"];
+                this.columndataAnticipoSistemazione = base.Columns["dataAnticipoSistemazione"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -769,6 +782,8 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnPercentualeDisagio);
                 this.columnIndennitaBase = new global::System.Data.DataColumn("IndennitaBase", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnIndennitaBase);
+                this.columndataAnticipoSistemazione = new global::System.Data.DataColumn("dataAnticipoSistemazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndataAnticipoSistemazione);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1342,6 +1357,23 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string dataAnticipoSistemazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.dataAnticipoSistemazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'dataAnticipoSistemazione\' nella tabella \'DataTable1\' è D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.dataAnticipoSistemazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsdataInizioValiditaNull() {
                 return this.IsNull(this.tableDataTable1.dataInizioValiditaColumn);
             }
@@ -1650,6 +1682,18 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetIndennitaBaseNull() {
                 this[this.tableDataTable1.IndennitaBaseColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsdataAnticipoSistemazioneNull() {
+                return this.IsNull(this.tableDataTable1.dataAnticipoSistemazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetdataAnticipoSistemazioneNull() {
+                this[this.tableDataTable1.dataAnticipoSistemazioneColumn] = global::System.Convert.DBNull;
             }
         }
         

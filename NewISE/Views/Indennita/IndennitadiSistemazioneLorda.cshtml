@@ -26,10 +26,10 @@
     <table cellspacing="0" class="table table-striped">
         <thead>
             <tr>
-                <th>&nbsp;</th>
-                <th>@Html.DisplayNameFor(model => model.dataInizioValidita)</th>
-                <th>@Html.DisplayNameFor(model => model.IndennitaServizio)</th>
-                <th>@Html.DisplayNameFor(model => model.IndennitaPersonale)</th>                
+                <th class="text-center">&nbsp;</th>
+                <th class="text-center">@Html.DisplayNameFor(model => model.dataSaldoSistemazione)</th>
+                <th class="text-center">&nbsp;</th>
+                <th class="text-center">&nbsp;</th>                
                 <th>@Html.DisplayNameFor(model => model.IndennitaSistemazione)</th>
             </tr>
         </thead>
@@ -39,9 +39,9 @@
 
                 <tr>
                     <td>&nbsp;</td>
-                    <td>@Html.DisplayFor(modelItem => item.dataInizioValidita)</td>
-                    <td>@Html.DisplayFor(modelItem => item.IndennitaServizio)</td>
-                    <td>@Html.DisplayFor(modelItem => item.IndennitaPersonale)</td>                    
+                    <td>@Html.DisplayFor(modelItem => item.dataSaldoSistemazione)</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>                    
                     <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazione)</td>
                 </tr>
                 <tr class="comment"><td colspan="5">&nbsp;</td></tr>
