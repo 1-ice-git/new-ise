@@ -7216,10 +7216,10 @@
 
                                                         importoMabNewTot += (ci.ImportoMABMensile / 30) * grVariazione.RateoGiorni;
 
-                                                        rateoImportoMabOPld =
-                                                            (sumImportoMabOld / sumNumeroGiorniOld) * giorniElabTotali;
+                                                        //rateoImportoMabOPld =
+                                                        //    (sumImportoMabOld / sumNumeroGiorniOld) * giorniElabTotali;
 
-                                                        differenzaGiorni = giorniElabTotali - sumNumeroGiorniOld;
+                                                        //differenzaGiorni = giorniElabTotali - sumNumeroGiorniOld;
 
 
                                                         ELABMAB emab = new ELABMAB()
@@ -7256,6 +7256,11 @@
 
                         if (lElabMabNew?.Any() ?? false)
                         {
+
+                            rateoImportoMabOPld = (sumImportoMabOld / sumNumeroGiorniOld) * giorniElabTotali;
+
+                            differenzaGiorni = giorniElabTotali - sumNumeroGiorniOld;
+
                             decimal conguaglioMab = importoMabNewTot - rateoImportoMabOPld;
 
                             if (Math.Round(conguaglioMab, 2) != 0)
@@ -7660,16 +7665,7 @@
                         decimal sumImportoOld = 0;
                         decimal sumGiorniOld = 0;
 
-                        //var lTeoriciOld =
-                        //    db.TEORICI.Where(
-                        //        a =>
-                        //            a.ANNULLATO == false &&
-                        //            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                        //            a.ANNORIFERIMENTO == dataInizioCiclo.Year &&
-                        //            a.MESERIFERIMENTO == dataInizioCiclo.Month &&
-                        //            a.ELABINDENNITA.Any(
-                        //                b => b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
-                        //        .ToList();
+                        
 
                         var lTeoriciOld =
                             db.TEORICI.Where(
@@ -7688,16 +7684,15 @@
                             sumImportoOld = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.IMPORTO);
                             sumGiorniOld = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.GIORNI);
 
-                            foreach (var teoricoOld in lTeoriciOld.Where(a => a.ELABORATO == false))
-                            {
-                                teoricoOld.ANNULLATO = true;
-                            }
+                            
                         }
 
                         decimal sumImportoNew = 0;
                         decimal rateoImportoOld = 0;
                         int numeroGiorniNew = 0;
                         int differenzaGiorni = 0;
+
+
                         List<decimal> lIdElabInd = new List<decimal>();
 
                         if (lDateVariazioni?.Any() ?? false)
@@ -7746,8 +7741,9 @@
 
                                                 sumImportoNew += ImportorateoIndPers - oImportoAbbattimentoSospensione;
                                                 numeroGiorniNew += grVariazione.RateoGiorni;
-                                                rateoImportoOld += (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
-                                                differenzaGiorni += Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
+
+                                                //rateoImportoOld += (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
+                                                //differenzaGiorni += Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
 
                                                 ELABINDENNITA ei = new ELABINDENNITA()
                                                 {
@@ -7804,6 +7800,13 @@
 
                         if (lIdElabInd?.Any() ?? false)
                         {
+
+                            rateoImportoOld = (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
+                            differenzaGiorni = Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
+
+
+                            decimal conguaglio = Math.Round(sumImportoNew - rateoImportoOld, 8);
+
                             if (Math.Round(sumImportoNew - rateoImportoOld, 2) != 0)
                             {
                                 EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
@@ -7816,7 +7819,7 @@
                                     IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
                                     MESERIFERIMENTO = dataInizioCiclo.Month,
                                     ANNORIFERIMENTO = dataInizioCiclo.Year,
-                                    IMPORTO = sumImportoNew - sumImportoOld,
+                                    IMPORTO = conguaglio,
                                     DATAOPERAZIONE = DateTime.Now,
                                     INSERIMENTOMANUALE = false,
                                     ELABORATO = false,
