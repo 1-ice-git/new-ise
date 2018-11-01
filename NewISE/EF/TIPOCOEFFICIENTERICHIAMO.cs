@@ -12,24 +12,18 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class MAGGIORAZIONIANNUALI
+    public partial class TIPOCOEFFICIENTERICHIAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MAGGIORAZIONIANNUALI()
+        public TIPOCOEFFICIENTERICHIAMO()
         {
-            this.MAB = new HashSet<MAB>();
+            this.COEFFICIENTEINDRICHIAMO = new HashSet<COEFFICIENTEINDRICHIAMO>();
         }
     
-        public decimal IDMAGANNUALI { get; set; }
-        public decimal IDUFFICIO { get; set; }
-        public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public System.DateTime DATAFINEVALIDITA { get; set; }
-        public bool ANNUALITA { get; set; }
-        public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        public decimal IDTIPOCOEFFICIENTERICHIAMO { get; set; }
+        public string DESCRIZIONE { get; set; }
     
-        public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB> MAB { get; set; }
+        public virtual ICollection<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
     }
 }

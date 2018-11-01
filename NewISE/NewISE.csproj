@@ -5725,6 +5725,9 @@
     <Compile Include="EF\TIPOANTICIPOTRASPORTOEFFETTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TIPOCOEFFICIENTERICHIAMO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\TIPODOCUMENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
