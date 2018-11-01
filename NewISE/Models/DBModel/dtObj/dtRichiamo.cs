@@ -22,13 +22,31 @@ namespace NewISE.Models.DBModel.dtObj
         public decimal Restituisci_ID_CoeffIndRichiamo_Da_Data(RichiamoModel ri, ModelDBISE db)
         {
             decimal tmp = 0;
-            var lCIR = db.COEFFICIENTEINDRICHIAMO.ToList().Where(a => a.ANNULLATO == false && ri.DataRichiamo >= a.DATAINIZIOVALIDITA && ri.DataRichiamo <= a.DATAFINEVALIDITA).ToList();
+            var lCIR = db.COEFFICIENTEINDRICHIAMO.Where(a =>
+                a.ANNULLATO == false && ri.DataRichiamo >= a.DATAINIZIOVALIDITA &&
+                ri.DataRichiamo <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
+                (decimal) EnumTipoCoefficienteRichiamo.CoefficienteRichiamo).ToList();
             if (lCIR?.Any() ?? false)
             {
                 tmp = lCIR.First().IDCOEFINDRICHIAMO;
             }
             return tmp;
         }
+
+        public decimal Restituisci_ID_CoeffMagIndRichiamo_Da_Data(RichiamoModel ri, ModelDBISE db)
+        {
+            decimal tmp = 0;
+            var lCIR = db.COEFFICIENTEINDRICHIAMO.Where(a =>
+                a.ANNULLATO == false && ri.DataRichiamo >= a.DATAINIZIOVALIDITA &&
+                ri.DataRichiamo <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
+                (decimal) EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione).ToList();
+            if (lCIR?.Any() ?? false)
+            {
+                tmp = lCIR.First().IDCOEFINDRICHIAMO;
+            }
+            return tmp;
+        }
+
         public decimal Restituisci_ID_PercentualeFKM_Da_Data(RichiamoModel ri, ModelDBISE db)
         {
             decimal tmp = 0;
@@ -166,7 +184,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
-        public decimal SetRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, DateTime DataRientro, ModelDBISE db)
+        public decimal SetRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, decimal idCoeffMagIndRichiamo, DateTime DataRientro, ModelDBISE db)
         {
 
             decimal tmp = 0;
@@ -194,6 +212,7 @@ namespace NewISE.Models.DBModel.dtObj
                 using (dtRichiamo dtr = new dtRichiamo())
                 {
                     dtr.Associa_Richiamo_CoeffIndRichiamo(ri.IDRICHIAMO, idCoeffIndRichiamo, db);
+                    dtr.Associa_Richiamo_CoeffIndRichiamo(ri.IDRICHIAMO, idCoeffMagIndRichiamo, db);
                     dtr.Associa_Richiamo_PercentualeFKM(ri.IDRICHIAMO, idPercentualeFKM, db);
                 }
                 if (i > 0)
@@ -271,7 +290,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (i <= 0)
             {
-                throw new Exception("Non è stato possibile associare la percentuale fascia KM al Richiamo.");
+                throw new Exception("Non è stato possibile associare il coefficente di indennità di richiamo.");
             }
         }
         public void RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(decimal idRichiamo, ModelDBISE db)

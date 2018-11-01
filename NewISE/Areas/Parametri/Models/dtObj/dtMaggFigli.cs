@@ -731,7 +731,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
 
-                            dtrp.AssociaFiglio_PMF(NuovoPrecedente.IDPERCMAGFIGLI, db);
+                            dtrp.AssociaFiglio_PMF(NuovoPrecedente.IDPERCMAGFIGLI, db, delIB.DATAINIZIOVALIDITA);
 
                         }
 
@@ -815,7 +815,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db);
+                                dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -879,7 +879,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pmf in libNew)
                                     {
-                                        dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db);
+                                        dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -952,7 +952,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pmf in libNew)
                                     {
-                                        dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db);
+                                        dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -984,7 +984,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
 
-                                    dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db);
+                                    dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db, ibm.dataInizioValidita);
 
                                 }
 
@@ -1022,7 +1022,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
 
-                                        dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db);
+                                        dtrp.AssociaFiglio_PMF(ibNew1.IDPERCMAGFIGLI, db, ibm.dataInizioValidita);
 
 
                                     }
@@ -1059,7 +1059,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var pmf in libNew)
                                         {
-                                            dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db);
+                                            dtrp.AssociaFiglio_PMF(pmf.IDPERCMAGFIGLI, db, ibm.dataInizioValidita);
                                         }
 
                                     }

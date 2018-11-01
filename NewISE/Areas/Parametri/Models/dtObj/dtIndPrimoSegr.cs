@@ -246,7 +246,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db);
+                                dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -308,7 +308,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var ips in libNew)
                                     {
-                                        dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db);
+                                        dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -379,7 +379,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var ips in libNew)
                                     {
-                                        dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db);
+                                        dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -410,7 +410,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db);
+                                    dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
                                 }
 
                                 db.Database.CurrentTransaction.Commit();
@@ -447,7 +447,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db);
+                                        dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -485,7 +485,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var ips in libNew)
                                         {
-                                            dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db);
+                                            dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
                                         }
 
                                     }
@@ -675,7 +675,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaFigli_IPS(NuovoPrecedente.IDINDPRIMOSEGR, db);
+                            dtrp.AssociaFigli_IPS(NuovoPrecedente.IDINDPRIMOSEGR, db, delIB.DATAINIZIOVALIDITA);
                         }
                     }
 

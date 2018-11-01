@@ -229,8 +229,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db);
-                                dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db);
+                                dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                                dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
                             }
 
 
@@ -295,8 +295,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var cfkm in libNew)
                                     {
-                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db);
-                                        dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db);
+                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -365,8 +365,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var cfkm in libNew)
                                     {
-                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db);
-                                        dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db);
+                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -399,8 +399,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db);
-                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db);
+                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -440,8 +440,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db);
-                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db);
+                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -476,8 +476,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var cfkm in libNew)
                                         {
-                                            dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db);
-                                            dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db);
+                                            dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
                                         }
                                     }
 
@@ -536,8 +536,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaPrimaSistemazione_PKM(NuovoPrecedente.IDPFKM, db);
-                            dtrp.AssociaRichiamo_PKM(NuovoPrecedente.IDPFKM, db);
+                            dtrp.AssociaPrimaSistemazione_PKM(NuovoPrecedente.IDPFKM, db, delIB.DATAINIZIOVALIDITA);
+                            dtrp.AssociaRichiamo_PKM(NuovoPrecedente.IDPFKM, db, delIB.DATAINIZIOVALIDITA);
                         }
                     }
 

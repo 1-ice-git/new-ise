@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 using NewISE.Models.dtObj;
+using NewISE.Models.DBModel.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -185,6 +186,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 try
                 {
+
+                   
+
                     if (ibm.dataFineValidita.HasValue)
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
@@ -382,11 +386,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             INDENNITABASE ibNew2 = new INDENNITABASE();
             //List<INDENNITABASE> lArchivioIB = new List<INDENNITABASE>();
             List<string> lista = new List<string>();
+
+            DateTime dataVariazione = ibm.dataInizioValidita;
+
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 bool giafatta = false;
                 try
                 {
+
+                    
+
+
                     using (dtParIndennitaBase dtal = new dtParIndennitaBase())
                     {
                         //Se la data variazione coincide con una data inizio esistente
@@ -437,8 +449,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db);
-                                dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db);
+                                dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -505,8 +517,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var ib in libNew)
                                     {
-                                        dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db);
-                                        dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db);
+                                        dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -582,8 +594,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var ib in libNew)
                                     {
-                                        dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db);
-                                        dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db);
+                                        dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -614,8 +626,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db);
-                                    dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db);
+                                    dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
 
                                 }
 
@@ -653,8 +665,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db);
-                                        dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db);
+                                        dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
 
                                     }
 
@@ -694,8 +706,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var ib in libNew)
                                         {
-                                            dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db);
-                                            dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db);
+                                            dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
                                         }
 
 
@@ -816,8 +828,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaIndennitaBase_IB(ibOld1.IDINDENNITABASE, db);
-                                dtrp.AssociaRiduzioniIB(ibOld1.IDINDENNITABASE, db);
+                                dtrp.AssociaIndennitaBase_IB(ibOld1.IDINDENNITABASE, db, delIB.DATAINIZIOVALIDITA);
+                                dtrp.AssociaRiduzioniIB(ibOld1.IDINDENNITABASE, db, delIB.DATAINIZIOVALIDITA);
                             }
                         }
 

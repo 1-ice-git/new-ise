@@ -490,8 +490,8 @@ namespace NewISE.Controllers
                 using (ModelDBISE db = new ModelDBISE())
                 {
 
-                    var te =
-                        db.TEORICI.Where(a => a.ANNULLATO == false && a.ELABINDSISTEMAZIONE.IDLIVELLO == 1).ToList();
+                    //var te =
+                    //    db.TEORICI.Where(a => a.ANNULLATO == false && a.ELABINDSISTEMAZIONE.IDLIVELLO == 1).ToList();
 
 
                     db.Database.BeginTransaction();

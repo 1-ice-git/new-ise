@@ -589,9 +589,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaCoefficienteRichiamo_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db);
-                            dtrp.AssociaIndennitaBase_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db);
-                            dtrp.AssociaIndennitaSistemazione_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db);
+                            dtrp.AssociaCoefficienteRichiamo_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db,delIB.DATAINIZIOVALIDITA);
+                            dtrp.AssociaIndennitaBase_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db, delIB.DATAINIZIOVALIDITA);
+                            dtrp.AssociaIndennitaSistemazione_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db, delIB.DATAINIZIOVALIDITA);
                         }
                         using (objLogAttivita log = new objLogAttivita())
                         {
@@ -671,9 +671,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db);
-                                dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db);
-                                dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -739,9 +739,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     foreach (var r in libNew)
                                     {
 
-                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db);
-                                        dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db);
-                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db);
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -815,9 +815,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     foreach (var r in libNew)
                                     {
 
-                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db);
-                                        dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db);
-                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db);
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -847,9 +847,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db);
-                                    dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db);
-                                    dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                    dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
                                 }
 
                                 db.Database.CurrentTransaction.Commit();
@@ -885,9 +885,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db);
-                                        dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db);
-                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db);
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -923,9 +923,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         foreach (var r in libNew)
                                         {
 
-                                            dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db);
-                                            dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db);
-                                            dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db);
+                                            dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
                                         }
                                     }
 

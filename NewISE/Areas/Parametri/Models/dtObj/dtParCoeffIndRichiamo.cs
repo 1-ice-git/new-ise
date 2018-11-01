@@ -502,8 +502,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaRichiamo_CR(NuovoPrecedente.IDCOEFINDRICHIAMO, db);
-                            dtrp.AssociaRiduzioni_CR(NuovoPrecedente.IDCOEFINDRICHIAMO, db);
+                            dtrp.AssociaRichiamo_CR(NuovoPrecedente.IDCOEFINDRICHIAMO, db,delIB.DATAINIZIOVALIDITA);
+                            dtrp.AssociaRiduzioni_CR(NuovoPrecedente.IDCOEFINDRICHIAMO, db, delIB.DATAINIZIOVALIDITA);
                         }
                     }
 
@@ -738,8 +738,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaRichiamo_CR(ibNew1.IDCOEFINDRICHIAMO, db);
-                                dtrp.AssociaRiduzioni_CR(ibNew1.IDCOEFINDRICHIAMO, db);
+                                dtrp.AssociaRichiamo_CR(ibNew1.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
+                                dtrp.AssociaRiduzioni_CR(ibNew1.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -808,8 +808,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var cr in libNew)
                                     {
-                                        dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db);
-                                        dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db);
+                                        dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -879,8 +879,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var cr in libNew)
                                     {
-                                        dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db);
-                                        dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db);
+                                        dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -940,8 +940,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaRichiamo_CR(ibNew1.IDCOEFINDRICHIAMO, db);
-                                        dtrp.AssociaRiduzioni_CR(ibNew1.IDCOEFINDRICHIAMO, db);
+                                        dtrp.AssociaRichiamo_CR(ibNew1.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_CR(ibNew1.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -977,8 +977,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var cr in libNew)
                                         {
-                                            dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db);
-                                            dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db);
+                                            dtrp.AssociaRichiamo_CR(cr.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaRiduzioni_CR(cr.IDCOEFINDRICHIAMO, db, ibm.dataInizioValidita);
                                         }
 
                                     }

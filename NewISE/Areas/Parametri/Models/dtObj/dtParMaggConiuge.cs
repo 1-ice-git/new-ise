@@ -428,7 +428,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db);
+                                dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -493,7 +493,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pmag in libNew)
                                     {
-                                        dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db);
+                                        dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -565,7 +565,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pmag in libNew)
                                     {
-                                        dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db);
+                                        dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -596,7 +596,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
 
-                                    dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db);
+                                    dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
 
                                 }
 
@@ -634,7 +634,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
 
-                                        dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db);
+                                        dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
 
                                     }
 
@@ -670,7 +670,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var pmag in libNew)
                                         {
-                                            dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db);
+                                            dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
                                         }
 
 
@@ -770,7 +770,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaConiuge_PMC(NuovoPrecedente.IDPERCMAGCONIUGE, db);
+                            dtrp.AssociaConiuge_PMC(NuovoPrecedente.IDPERCMAGCONIUGE, db, delIB.DATAINIZIOVALIDITA);
                         }
 
                         using (objLogAttivita log = new objLogAttivita())

@@ -432,7 +432,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db);
+                                dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -496,7 +496,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var cs in libNew)
                                     {
-                                        dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db);
+                                        dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -567,7 +567,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var cs in libNew)
                                     {
-                                        dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db);
+                                        dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -597,7 +597,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db);
+                                    dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db, ibm.dataInizioValidita);
                                 }
                                 db.Database.CurrentTransaction.Commit();
                             }
@@ -632,7 +632,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db);
+                                        dtrp.AssociaIndennita_CS(ibNew1.IDCOEFFICIENTESEDE, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -667,7 +667,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var cs in libNew)
                                         {
-                                            dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db);
+                                            dtrp.AssociaIndennita_CS(cs.IDCOEFFICIENTESEDE, db, ibm.dataInizioValidita);
                                         }
 
                                     }
@@ -825,7 +825,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaIndennita_CS(NuovoPrecedente.IDCOEFFICIENTESEDE, db);
+                            dtrp.AssociaIndennita_CS(NuovoPrecedente.IDCOEFFICIENTESEDE, db, delIB.DATAINIZIOVALIDITA);
                         }
                     }
 

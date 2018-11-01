@@ -862,9 +862,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         richiamo.COEFFICIENTEINDRICHIAMO.Where(
                                 a =>
                                     a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
-                                    a.IDTIPOCOEFFICIENTERICHIAMO ==
-                                    (decimal) EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione &&
-                                    dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                    dataRientro <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
+                                    (decimal) EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                             .ToList();
 
                     if (lcmr?.Any() ?? false)
@@ -888,13 +888,13 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         _coefficenteMaggiorazioneRichiamo = cmr.COEFFICIENTERICHIAMO;
 
                         var lcr =
-                        richiamo.COEFFICIENTEINDRICHIAMO.Where(
-                                a =>
-                                    a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
-                                    a.IDTIPOCOEFFICIENTERICHIAMO ==
-                                    (decimal)EnumTipoCoefficienteRichiamo.CoefficienteRichiamo &&
-                                    dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA)
-                            .ToList();
+                            richiamo.COEFFICIENTEINDRICHIAMO.Where(
+                                    a =>
+                                        a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
+                                        dataRientro <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
+                                        (decimal) EnumTipoCoefficienteRichiamo.CoefficienteRichiamo)
+                                .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                .ToList();
 
                         if (lcr?.Any() ?? false)
                         {

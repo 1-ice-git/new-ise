@@ -438,7 +438,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db);
+                                dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -511,7 +511,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pmab in libNew)
                                     {
-                                        dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db);
+                                        dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -588,7 +588,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pmab in libNew)
                                     {
-                                        dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db);
+                                        dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -624,7 +624,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
 
-                                    dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db);
+                                    dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db, ibm.dataInizioValidita);
 
                                 }
 
@@ -663,7 +663,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
 
-                                        dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db);
+                                        dtrp.AssociaMAB_VMAB(ibNew1.IDPERCMAB, db, ibm.dataInizioValidita);
 
                                     }
 
@@ -703,7 +703,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var pmab in libNew)
                                         {
-                                            dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db);
+                                            dtrp.AssociaMAB_VMAB(pmab.IDPERCMAB, db, ibm.dataInizioValidita);
                                         }
 
 
@@ -866,7 +866,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
 
-                            dtrp.AssociaMAB_VMAB(NuovoPrecedente.IDPERCMAB, db);
+                            dtrp.AssociaMAB_VMAB(NuovoPrecedente.IDPERCMAB, db, delIB.DATAINIZIOVALIDITA);
 
                         }
 

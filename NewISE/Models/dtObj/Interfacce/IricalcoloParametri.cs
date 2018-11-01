@@ -15,13 +15,13 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idCoeffRichiamo"></param>
         /// <param name="db"></param>
-        void AssociaRichiamo_CR(decimal idCoeffRichiamo, ModelDBISE db);
+        void AssociaRichiamo_CR(decimal idCoeffRichiamo, ModelDBISE db, DateTime dataVariazione);
         /// <summary>
         /// Asscia il coefficente di richiamo alla tabella riduzioni.
         /// </summary>
         /// <param name="idCoeffRichiamo"></param>
         /// <param name="db"></param>
-        void AssociaRiduzioni_CR(decimal idCoeffRichiamo, ModelDBISE db);
+        void AssociaRiduzioni_CR(decimal idCoeffRichiamo, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Coefficiente di sede
@@ -30,7 +30,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idCoefficenteSede"></param>
         /// <param name="db"></param>
-        void AssociaIndennita_CS(decimal idCoefficenteSede, ModelDBISE db);
+        void AssociaIndennita_CS(decimal idCoefficenteSede, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Indennità di base
@@ -39,13 +39,13 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idIndBase"></param>
         /// <param name="db"></param>
-        void AssociaIndennitaBase_IB(decimal idIndBase, ModelDBISE db);
+        void AssociaIndennitaBase_IB(decimal idIndBase, ModelDBISE db, DateTime dataVariazione);
         /// <summary>
         /// Associa l'indennità di base alla tabella riduzioni.
         /// </summary>
         /// <param name="idIndBase"></param>
         /// <param name="db"></param>
-        void AssociaRiduzioniIB(decimal idIndBase, ModelDBISE db);
+        void AssociaRiduzioniIB(decimal idIndBase, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Indennità di primo segretario
@@ -54,7 +54,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPrimoSegretario"></param>
         /// <param name="db"></param>
-        void AssociaFigli_IPS(decimal idPrimoSegretario, ModelDBISE db);
+        void AssociaFigli_IPS(decimal idPrimoSegretario, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Indennita di sistemazione
@@ -63,13 +63,13 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idIndSistemazione"></param>
         /// <param name="db"></param>
-        void AssociaPrimaSistemazione_IS(decimal idIndSistemazione, ModelDBISE db);
+        void AssociaPrimaSistemazione_IS(decimal idIndSistemazione, ModelDBISE db, DateTime dataVariazione);
         /// <summary>
         /// Associa l'indennità di prima sistemazione alla tabella Riduzioni.
         /// </summary>
         /// <param name="idIndSistemazione"></param>
         /// <param name="db"></param>
-        void AssociaRiduzioni_IS(decimal idIndSistemazione, ModelDBISE db);
+        void AssociaRiduzioni_IS(decimal idIndSistemazione, ModelDBISE db, DateTime dataVariazione);
 
         #endregion
 
@@ -79,7 +79,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idMagAnnuali"></param>
         /// <param name="db"></param>
-        void AssociaMaggiorazioniAbitazione_MA(decimal idMagAnnuali, ModelDBISE db);
+        void AssociaMaggiorazioniAbitazione_MA(decimal idMagAnnuali, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Percentuale anticio trasporto effetti
@@ -88,13 +88,13 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPercentualeAnticipoTEP"></param>
         /// <param name="db"></param>
-        void AssociaPercentualeAnticipoTEP(decimal idPercentualeAnticipoTEP, ModelDBISE db);
+        void AssociaPercentualeAnticipoTEP(decimal idPercentualeAnticipoTEP, ModelDBISE db, DateTime dataVariazione);
         /// <summary>
         /// Associa la percentuale di anticipo trasporto effetti alla tabella TERientro.
         /// </summary>
         /// <param name="idPercentualeAnticipoTEP"></param>
         /// <param name="db"></param>
-        void AssociaPercentualeAnticipoTER(decimal idPercentualeAnticipoTER, ModelDBISE db);
+        void AssociaPercentualeAnticipoTER(decimal idPercentualeAnticipoTER, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Percentuale condivisione
@@ -104,7 +104,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPercentualeCondivisione"></param>
         /// <param name="db"></param>
-        void AssociaPagatoCondivisoMAB(decimal idPercentualeCondivisione, ModelDBISE db);
+        void AssociaPagatoCondivisoMAB(decimal idPercentualeCondivisione, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Percentuale chilometrica
@@ -113,14 +113,14 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPercKM"></param>
         /// <param name="db"></param>
-        void AssociaPrimaSistemazione_PKM(decimal idPercKM, ModelDBISE db);
+        void AssociaPrimaSistemazione_PKM(decimal idPercKM, ModelDBISE db, DateTime dataVariazione);
 
         /// <summary>
         /// Associa la percentuale di fascia chilometrica alla tabella Richiamo.
         /// </summary>
         /// <param name="idPercKM"></param>
         /// <param name="db"></param>
-        void AssociaRichiamo_PKM(decimal idPercKM, ModelDBISE db);
+        void AssociaRichiamo_PKM(decimal idPercKM, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Percentuale di disagio
@@ -129,7 +129,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPercDisagio"></param>
         /// <param name="db"></param>
-        void AssociaIndenita_PD(decimal idPercDisagio, ModelDBISE db);
+        void AssociaIndenita_PD(decimal idPercDisagio, ModelDBISE db, DateTime dataVariazione);
 
         #endregion
 
@@ -139,7 +139,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPerceMAB"></param>
         /// <param name="db"></param>
-        void AssociaMAB_VMAB(decimal idPerceMAB, ModelDBISE db);
+        void AssociaMAB_VMAB(decimal idPerceMAB, ModelDBISE db, DateTime dataVariazione);
         #endregion
 
         #region Percentuale maggiorazione coniuge
@@ -148,7 +148,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPercMagConiuge"></param>
         /// <param name="db"></param>
-        void AssociaConiuge_PMC(decimal idPercMagConiuge, ModelDBISE db);
+        void AssociaConiuge_PMC(decimal idPercMagConiuge, ModelDBISE db, DateTime dataVariazione);
 
         #endregion
 
@@ -158,7 +158,7 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idPercFiglio"></param>
         /// <param name="db"></param>
-        void AssociaFiglio_PMF(decimal idPercFiglio, ModelDBISE db);
+        void AssociaFiglio_PMF(decimal idPercFiglio, ModelDBISE db, DateTime dataVariazione);
 
         #endregion
 
@@ -168,19 +168,19 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idRiduzioni"></param>
         /// <param name="db"></param>
-        void AssociaIndennitaBase_Riduzioni(decimal idRiduzioni, ModelDBISE db);
+        void AssociaIndennitaBase_Riduzioni(decimal idRiduzioni, ModelDBISE db, DateTime dataVariazione);
         /// <summary>
         /// Associa le riduzioni alla tabella CoefficenteIndRichiamo.
         /// </summary>
         /// <param name="idRiduzioni"></param>
         /// <param name="db"></param>
-        void AssociaCoefficienteRichiamo_Riduzioni(decimal idRiduzioni, ModelDBISE db);
+        void AssociaCoefficienteRichiamo_Riduzioni(decimal idRiduzioni, ModelDBISE db, DateTime dataVariazione);
         /// <summary>
         /// Associa le riduzioni alla tabella IndennitaSistemazione.
         /// </summary>
         /// <param name="idRiduzioni"></param>
         /// <param name="db"></param>
-        void AssociaIndennitaSistemazione_Riduzioni(decimal idRiduzioni, ModelDBISE db);
+        void AssociaIndennitaSistemazione_Riduzioni(decimal idRiduzioni, ModelDBISE db, DateTime dataVariazione);
 
         #endregion
 
@@ -190,13 +190,13 @@ namespace NewISE.Models.dtObj.Interfacce
         /// </summary>
         /// <param name="idTFR"></param>
         /// <param name="db"></param>
-        void AssociaIndennita_TFR(decimal idTFR, ModelDBISE db);
+        void AssociaIndennita_TFR(decimal idTFR, ModelDBISE db, DateTime dataVariazione);
         /// <summary>
         /// Associa il tfr alla tabella CanoneMAB.
         /// </summary>
         /// <param name="idTFR"></param>
         /// <param name="db"></param>
-        void AssociaCanoneMAB_TFR(decimal idTFR, ModelDBISE db);
+        void AssociaCanoneMAB_TFR(decimal idTFR, ModelDBISE db, DateTime dataVariazione);
 
         #endregion
 

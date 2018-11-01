@@ -244,7 +244,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db);
+                                dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -306,7 +306,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pc in libNew)
                                     {
-                                        dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db);
+                                        dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -377,7 +377,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pc in libNew)
                                     {
-                                        dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db);
+                                        dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -409,7 +409,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
 
-                                    dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db);
+                                    dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db, ibm.dataInizioValidita);
 
                                 }
 
@@ -447,7 +447,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db);
+                                        dtrp.AssociaPagatoCondivisoMAB(ibNew1.IDPERCCOND, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -485,7 +485,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var pc in libNew)
                                         {
-                                            dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db);
+                                            dtrp.AssociaPagatoCondivisoMAB(pc.IDPERCCOND, db, ibm.dataInizioValidita);
                                         }
 
                                     }
@@ -592,7 +592,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaPagatoCondivisoMAB(NuovoPrecedente.IDPERCCOND, db);
+                            dtrp.AssociaPagatoCondivisoMAB(NuovoPrecedente.IDPERCCOND, db, delIB.DATAINIZIOVALIDITA);
                         }
 
                         using (objLogAttivita log = new objLogAttivita())
