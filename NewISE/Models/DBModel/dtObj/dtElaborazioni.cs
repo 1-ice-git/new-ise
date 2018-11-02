@@ -1443,6 +1443,65 @@
             }
         }
 
+
+        public IList<LiquidazioneMensileViewModel> PrelevaLiquidazioniMensili(List<decimal> lidTeorici)
+        {
+            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                //db.Database.BeginTransaction();
+
+                try
+                {
+                    //var mae = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
+
+
+                    //lLm.AddRange(this.PlmPrimaSistemazione(mae, db));
+
+
+                    //lLm.AddRange(this.PlmVociManuali(mae, db));
+                    //lLm.AddRange(PlmRientroCedolino(mae, db));
+
+                    //lLm.AddRange(this.PlmTrasportoEffettiPartenza(mae, db));
+                    //lLm.AddRange(this.PlmTrasportoEffettiRientro(mae, db));
+
+
+                    //lLm.AddRange(this.PlmIndennitaPersonale(mae, db));
+                    //lLm.AddRange(this.PlmMAB(mae, db));
+                    //lLm.AddRange(this.PlmSaldoPrimaSistemazioneSoloMF(mae, db));
+                    //lLm.AddRange(this.PlmSaldoPrimaSistemazioneConguagli(mae, db));
+
+
+                    foreach (decimal teorico in lidTeorici)
+                    {
+                        lLm.Add(this.GetTeoricoByID(teorico, db));
+                    }
+
+
+
+
+                    //db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    //db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+
+                return
+                    lLm.OrderBy(a => a.Nominativo)
+                        .ThenBy(a => a.Voci.codiceVoce)
+                        .ThenBy(a => a.Ufficio)
+                        .ThenBy(a => a.annoRiferimento)
+                        .ThenBy(a => a.meseRiferimento)
+                        .ThenBy(a => a.TipoMovimento.DescMovimento)
+                        .ThenBy(a => a.Voci.TipoLiquidazione.descrizione)
+                        .ToList();
+            }
+        }
+
+
         /// <summary>
         /// The VerificaLiquidazioniDiretteDaInviare
         /// </summary>
@@ -5735,6 +5794,70 @@
             return lLm;
         }
 
+
+
+        private LiquidazioneMensileViewModel GetTeoricoByID(decimal idTeorico, ModelDBISE db)
+        {
+            List<LiquidazioneMensileViewModel> lLm = new List<LiquidazioneMensileViewModel>();
+
+
+            var teorico = db.TEORICI.Find(idTeorico);
+
+
+            var tr = teorico.TRASFERIMENTO;
+            var dip = tr.DIPENDENTI;
+            var tm = teorico.TIPOMOVIMENTO;
+            var voce = teorico.VOCI;
+            var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+            var tv = teorico.VOCI.TIPOVOCE;
+            var uf = tr.UFFICI;
+
+            LiquidazioneMensileViewModel lm = new LiquidazioneMensileViewModel()
+            {
+                idTeorici = teorico.IDTEORICI,
+                Nominativo = dip.COGNOME + " " + dip.NOME + " (" + dip.MATRICOLA + ")",
+                Ufficio = uf.DESCRIZIONEUFFICIO + " (" + uf.CODICEUFFICIO + ")",
+                TipoMovimento = new TipoMovimentoModel()
+                {
+                    idTipoMovimento = tm.IDTIPOMOVIMENTO,
+                    TipoMovimento = tm.TIPOMOVIMENTO1,
+                    DescMovimento = tm.DESCMOVIMENTO
+                },
+                Voci = new VociModel()
+                {
+                    idVoci = voce.IDVOCI,
+                    codiceVoce = voce.CODICEVOCE,
+                    descrizione = voce.DESCRIZIONE,
+                    TipoLiquidazione = new TipoLiquidazioneModel()
+                    {
+                        idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                        descrizione = tl.DESCRIZIONE
+                    },
+                    TipoVoce = new TipoVoceModel()
+                    {
+                        idTipoVoce = tv.IDTIPOVOCE,
+                        descrizione = tv.DESCRIZIONE
+                    }
+                },
+                meseRiferimento = teorico.MESERIFERIMENTO,
+                annoRiferimento = teorico.ANNORIFERIMENTO,
+                Importo = teorico.IMPORTO,
+                Elaborato = teorico.ELABORATO
+            };
+
+            if (teorico.INSERIMENTOMANUALE == true)
+            {
+                lm.tipoInserimento = EnumTipoInserimento.Manuale;
+            }
+            else
+            {
+                lm.tipoInserimento = EnumTipoInserimento.Software;
+            }
+            
+
+            return lm;
+        }
+
         /// <summary>
         /// Preleva le liquidazione mensili per la prima sistemazione.
         /// </summary>
@@ -5817,6 +5940,8 @@
 
             return lLm;
         }
+
+        
 
         /// <summary>
         /// Netto della prima sistemazione

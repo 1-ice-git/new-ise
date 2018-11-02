@@ -294,43 +294,62 @@
 
     $("#btLiquidazioniMensili").on("click", function () {
         //debugger;
-        $('.container').addClass("NoOverflow");
-
-        $("#dialogRpt").dialog("open");
-        $("#dialogRpt").css("background-color", "#ffffff");
+        
 
         var rotta = "/Elaborazioni/ReportLiquidazioniMensili";
 
         var idAnnoMeseElaborato = @idAnnoMeseElaborato;
+        var lidTeorici = new Array();
+
+        
+        var lTeorici = $('#TabLiquidazioniMensili > tbody > tr > td > #item_idTeorici');
 
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                $("#dialogRpt").empty();
+        for (var i = 0; i < lTeorici.length; i++) {
+            var idTeorico = lTeorici[parseInt(i)].value;
+            lidTeorici.push(idTeorico);
+        }
+        
+        
+        if (lidTeorici.length >0) {
+            $('.container').addClass("NoOverflow");
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#dialogRpt").html(result);
+        $("#dialogRpt").dialog("open");
+        $("#dialogRpt").css("background-color", "#ffffff");
+            
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Teorici: lidTeorici },
+                dataType: 'html',
+                beforeSend: function() {
+                    //debugger;
+                    $("#dialogRpt").empty();
+
+                },
+                success: function(result) {
+                    //debugger;
+                    $("#dialogRpt").html(result);
 
 
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
+                },
+                complete: function() {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function(jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
 
-        });
+            });
+        }
+        else {
+            InfoElaborazioneAjax("Non sono presenti movimenti per la stampa.")
+        }
+        
 
     });
 

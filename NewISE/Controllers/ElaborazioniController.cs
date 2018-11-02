@@ -788,7 +788,7 @@ namespace NewISE.Controllers
 
 
         [HttpPost]
-        public ActionResult ReportLiquidazioniMensili(decimal idAnnoMeseElaborato)
+        public ActionResult ReportLiquidazioniMensili(decimal idAnnoMeseElaborato, List<decimal> Teorici)
         {
             //ViewData["annoMeseElab"] = annoMeseElab;
 
@@ -828,7 +828,8 @@ namespace NewISE.Controllers
 
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
-                        lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
+                        //lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
+                        lLm = dte.PrelevaLiquidazioniMensili(Teorici).ToList();
                     }
 
                     if (lLm?.Any() ?? false)
