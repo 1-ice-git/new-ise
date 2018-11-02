@@ -7329,7 +7329,7 @@
                                     ELABORATO = false,
                                     DIRETTO = false,
                                     ANNULLATO = false,
-                                    GIORNI = giorniElabTotali
+                                    GIORNI = differenzaGiorni
                                 };
 
                                 db.TEORICI.Add(t);
@@ -8442,8 +8442,7 @@
         /// <param name="trasferimento">The trasferimento<see cref="TRASFERIMENTO"/></param>
         /// <param name="meseAnnoElaborazione">The meseAnnoElaborazione<see cref="MESEANNOELABORAZIONE"/></param>
         /// <param name="db">The db<see cref="ModelDBISE"/></param>
-        private void InsSistemazioneRichiamo(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione,
-            ModelDBISE db)
+        private void InsSistemazioneRichiamo(TRASFERIMENTO trasferimento, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
         {
             var lRichiami = trasferimento.RICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDRICHIAMO).ToList();
 
@@ -9243,15 +9242,15 @@
                                     var richiamo = lr.Last();
 
                                     var leir = richiamo.ELABINDRICHIAMO.Where(a => a.ANNULLATO == false &&
-                                                                                   a.TEORICI.Any(
-                                                                                       b =>
-                                                                                           b.ANNULLATO == false &&
-                                                                                           b.ELABORATO == true &&
-                                                                                           b.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                                                           (decimal)
-                                                                                           EnumTipoLiquidazione
-                                                                                               .Contabilità))
-                                        .ToList();
+                                                                                   a.TEORICI.Any(b =>
+                                                                                       b.ANNULLATO == false &&
+                                                                                       b.ELABORATO == true &&
+                                                                                       b.VOCI.IDTIPOLIQUIDAZIONE ==
+                                                                                       (decimal) EnumTipoLiquidazione
+                                                                                           .Contabilità &&
+                                                                                       b.IDVOCI ==
+                                                                                       (decimal) EnumVociContabili
+                                                                                           .Ind_Richiamo_IRI)).ToList();
 
                                     if (leir?.Any() ?? false)
                                     {
@@ -9345,6 +9344,8 @@
             if (trasferimento.DATARIENTRO < Utility.DataFineStop())
             {
                 DateTime dataRientro = trasferimento.DATARIENTRO;
+                decimal annoMeseRientro =
+                    Convert.ToDecimal(dataRientro.Year.ToString() + dataRientro.Month.ToString().PadLeft(2, '0'));
 
                 var lemab =
                     indennita.ELABMAB.Where(
@@ -9364,16 +9365,19 @@
                     {
                         DateTime dtIni = emab.DAL;
                         DateTime dtFin = emab.AL;
-                        int giorniOld = (int)emab.GIORNI;
+                        //int giorniOld = (int)emab.GIORNI;
 
-                        if (emab.DAL < dataRientro)
+                        if (emab.DAL < dataRientro && emab.AL > dataRientro)
                         {
-                            dtIni = dataRientro.AddDays(1);
+                            dtFin = dataRientro;
                         }
 
                         using (GiorniRateo gr = new GiorniRateo(dtIni, dtFin))
                         {
                             int numeroCicli = gr.CicliElaborazione;
+                            decimal annoMeseDataFine =
+                                Convert.ToDecimal(dtFin.Year.ToString() + dtFin.Month.ToString().PadLeft(2, '0'));
+
 
                             for (int i = 1; i <= numeroCicli; i++)
                             {
@@ -9383,6 +9387,12 @@
                                 }
 
                                 int giorniNew = gr.RateoGiorni;
+
+                                if (annoMeseDataFine > annoMeseRientro)
+                                {
+                                    giorniNew = 0;
+                                }
+
 
                                 var ltOld =
                                 emab.TEORICI.Where(
@@ -9401,15 +9411,21 @@
                                 if (ltOld?.Any() ?? false)
                                 {
                                     decimal importoOld = ltOld.Sum(a => a.IMPORTO);
+                                    int giorniOld = (int)ltOld.Sum(a => a.GIORNI);
 
                                     if (importoOld > 0)
                                     {
+                                        
                                         decimal importoGiornoOld = importoOld / giorniOld;
+                                        decimal importoNew = importoGiornoOld * giorniNew;
 
-                                        decimal importoNegativo = (importoGiornoOld * giorniNew) * -1;
+                                        decimal conguaglio = importoNew - importoOld;
+
+                                        int differenzaGiorni = giorniNew - giorniOld;
+
 
                                         EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
-                                        if (importoNegativo != 0)
+                                        if (conguaglio != 0)
                                         {
                                             TEORICI teorico = new TEORICI()
                                             {
@@ -9419,13 +9435,13 @@
                                                 IDMESEANNOELAB = MeseAnnoElaborato.IDMESEANNOELAB,
                                                 MESERIFERIMENTO = dtIni.Month,
                                                 ANNORIFERIMENTO = dtIni.Year,
-                                                IMPORTO = importoNegativo,
+                                                IMPORTO = conguaglio,
                                                 DATAOPERAZIONE = DateTime.Now,
                                                 INSERIMENTOMANUALE = false,
                                                 ELABORATO = false,
                                                 DIRETTO = false,
                                                 ANNULLATO = false,
-                                                GIORNI = giorniNew
+                                                GIORNI = differenzaGiorni
                                             };
 
                                             db.TEORICI.Add(teorico);
@@ -9464,6 +9480,8 @@
             if (trasferimento.DATARIENTRO < Utility.DataFineStop())
             {
                 DateTime dataRientro = trasferimento.DATARIENTRO;
+                decimal annoMeseRientro =
+                    Convert.ToDecimal(dataRientro.Year.ToString() + dataRientro.Month.ToString().PadLeft(2, '0'));
 
                 //decimal annoMeseRientro =
                 //    Convert.ToDecimal(dataRientro.Year.ToString() + dataRientro.Month.ToString().PadLeft(2, (char)'0'));
@@ -9497,16 +9515,27 @@
                     {
                         DateTime dtIni = ei.DAL;
                         DateTime dtFin = ei.AL;
-                        int giorniOld = (int)ei.GIORNI;
+                        //int giorniOld = (int)ei.GIORNI;
 
-                        if (ei.DAL < dataRientro)
+                        if (ei.DAL < dataRientro && ei.AL > dataRientro)
                         {
-                            dtIni = dataRientro;
+                            dtFin = dataRientro;
                         }
 
                         using (GiorniRateo gr = new GiorniRateo(dtIni, dtFin))
                         {
                             int giorniNew = gr.RateoGiorni;
+
+                            decimal annoMeseDataFine =
+                                Convert.ToDecimal(dtFin.Year.ToString() + dtFin.Month.ToString().PadLeft(2, '0'));
+
+
+                            if (annoMeseDataFine > annoMeseRientro)
+                            {
+                                giorniNew = 0;
+                            }
+
+
                             int numeroCicli = gr.CicliElaborazione;
 
                             for (int i = 1; i <= numeroCicli; i++)
@@ -9533,15 +9562,19 @@
                                 if (ltOld?.Any() ?? false)
                                 {
                                     decimal importoOld = ltOld.Sum(a => a.IMPORTO);
+                                    int giorniOld = (int)ltOld.Sum(a => a.GIORNI);
 
                                     if (importoOld > 0)
                                     {
 
                                         decimal importoGiornoOld = importoOld / giorniOld;
+                                        decimal importoNew = importoGiornoOld * giorniNew;
 
-                                        decimal importoNegativo = (importoGiornoOld * giorniNew) * -1;
+                                        decimal conguaglio = importoNew - importoOld;
 
-                                        if (importoNegativo != 0)
+                                        int differenzaGiorni = giorniNew - giorniOld;
+
+                                        if (conguaglio != 0)
                                         {
                                             EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
 
@@ -9553,13 +9586,13 @@
                                                 IDMESEANNOELAB = meseAnnoElaborato.IDMESEANNOELAB,
                                                 MESERIFERIMENTO = dtIni.Month,
                                                 ANNORIFERIMENTO = dtIni.Year,
-                                                IMPORTO = importoNegativo,
+                                                IMPORTO = conguaglio,
                                                 DATAOPERAZIONE = DateTime.Now,
                                                 INSERIMENTOMANUALE = false,
                                                 ELABORATO = false,
                                                 DIRETTO = false,
                                                 ANNULLATO = false,
-                                                GIORNI = giorniNew
+                                                GIORNI = differenzaGiorni
                                             };
 
                                             db.TEORICI.Add(teorico);
