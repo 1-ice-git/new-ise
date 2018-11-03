@@ -132,7 +132,8 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
                         descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
-                    }
+                    },
+                    
 
                 };
 

@@ -1,9 +1,9 @@
 ﻿@using NewISE.Models.Tools
-@model NewISE.Models.DBModel.TrasferimentoModel
+@model NewISE.Models.ViewModel.DatiTrasferimentoDipendenteModel
 <div class="row">
     <div class="col-xs-12">
         <div class="text-center">
-            <H3>@Model.Dipendente.Nominativo</H3>
+            <H3>@Model.Dipendente</H3>
         </div>
     </div>
 </div>
@@ -11,31 +11,63 @@
 <div class="form-group">
     <div class="col-xs-3">
         <label class="control-label">Tipo trasf.: </label>
-        <label class="control-label text-uppercase text-info">@Model.TipoTrasferimento.descTipoTrasf</label>
+        <label class="control-label text-uppercase text-info">@Model.TipoTrasferimento</label>
     </div>
     <div class="col-xs-3">
         <label class="control-label">Ufficio: </label>
-        <label class="control-label text-uppercase text-info">@Model.Ufficio.descUfficio (@Model.Ufficio.codiceUfficio)</label>
+        <label class="control-label text-uppercase text-info">@Model.Ufficio</label>
     </div>
 
-    <div class="col-xs-2">
+    <div class="col-xs-3">
         <label class="control-label">Data ini.: </label>
-        <label class="control-label text-uppercase text-info"> @Model.dataPartenza.ToShortDateString()</label>
+        <label class="control-label text-uppercase text-info"> @Model.DataPartenza</label>
     </div>
     <div class="col-xs-3">
         <label class="control-label">Data fine trasf.: </label>
-        @if (Model.dataRientro.HasValue && Model.dataRientro.Value < Utility.DataFineStop())
-        {
-
-            <label class="control-label text-uppercase text-info">@Model.dataRientro.Value.ToShortDateString()</label>
-        }
-        else
-        {
-
-            <label class="control-label text-uppercase text-info">In corso...</label>
-        }
+        <label class="control-label text-uppercase text-info">@Model.DataRientro</label>
+        
 
     </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-3">
+        <label class="control-label">Livello: </label>
+        <label class="control-label text-uppercase text-info">@Model.Livello</label>
+    </div>
+    <div class="col-xs-3">
+        <label class="control-label">Ruolo: </label>
+        <label class="control-label text-uppercase text-info">@Model.Ruolo</label>
+    </div>
+
+    <div class="col-xs-3">
+        <label class="control-label">Coan: </label>
+        <label class="control-label text-uppercase text-info"> @Model.Coan</label>
+    </div>
+    <div class="col-xs-3">
+        <label class="control-label">Fascia KM P.: </label>
+        <label class="control-label text-uppercase text-info">@Model.FasciaKM_P</label>
+
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-xs-3">
+        <label class="control-label">Fascia KM R. </label>
+        <label class="control-label text-uppercase text-info">@Model.FasciaKM_R</label>
+    </div>
+    @*<div class="col-xs-3">
+        <label class="control-label">Ruolo: </label>
+        <label class="control-label text-uppercase text-info">@Model.Ruolo</label>
+    </div>
+
+    <div class="col-xs-3">
+        <label class="control-label">Coan: </label>
+        <label class="control-label text-uppercase text-info"> @Model.Coan</label>
+    </div>
+    <div class="col-xs-3">
+        <label class="control-label">Fascia KM P.: </label>
+        <label class="control-label text-uppercase text-info">@Model.FasciaKM_P</label>
+
+    </div>*@
 </div>
 
 <div class="form-group">

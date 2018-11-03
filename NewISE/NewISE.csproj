@@ -6169,6 +6169,7 @@
     <Compile Include="Areas\Statistiche\Models\ElencoCoanModel.cs" />
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
+    <Compile Include="Models\ViewModel\DatiTrasferimentoDipendenteModel.cs" />
     <Compile Include="Models\ViewModel\ElencoVociManualiViewModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiVariazioneTVModel.cs" />
     <Compile Include="Models\ViewModel\NoValidateAttribute.cs" />

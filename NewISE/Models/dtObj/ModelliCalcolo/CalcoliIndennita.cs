@@ -105,12 +105,23 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private LIVELLI _livello = new LIVELLI();
 
         private List<DatiFigli> _lDatiFigli = new List<DatiFigli>();
-        //private DatiCalcoloTrasportoEffetti _datiCalcoloTrasportoEffetti = new DatiCalcoloTrasportoEffetti();
+
+        private FASCIA_KM _fasciaKMPartenza = new FASCIA_KM();
+        private FASCIA_KM _fasciaKMRientro = new FASCIA_KM();
 
         #endregion
 
 
         #region Proprietà pubbliche
+        [ReadOnly(true)]
+        public FASCIA_KM FasciaKM_P => _fasciaKMPartenza;
+        [ReadOnly(true)]
+        public FASCIA_KM FasciaKM_R => _fasciaKMRientro;
+        [ReadOnly(true)]
+        public RUOLODIPENDENTE RuoloDipendente => _ruoloDipendente;
+        [ReadOnly(true)]
+        public RUOLOUFFICIO RuoloUfficio => _ruoloUfficio;
+
         [ReadOnly(true)]
         public decimal IndennitaDiBase => _indennitaDiBase;
         [ReadOnly(true)]
@@ -997,6 +1008,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             if (lps?.Any() ?? false)
             {
                 var pfkm = lps.First();
+                _fasciaKMPartenza = pfkm.FASCIA_KM;
                 _percentualeFKMPartenza = pfkm.COEFFICIENTEKM;
 
                 var tePartenza = _trasferimento.TEPARTENZA;
@@ -1053,6 +1065,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 if (lpfk?.Any() ?? false)
                 {
                     var pfkm = lpfk.First();
+                    _fasciaKMRientro = pfkm.FASCIA_KM;
                     _percentualeFKMRientro = pfkm.COEFFICIENTEKM;
 
                     var teRientro = _trasferimento.TERIENTRO;
