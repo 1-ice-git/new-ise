@@ -700,21 +700,21 @@ namespace NewISE.Models.DBModel.dtObj
                                 #region replico record e lo nascondo
                                 pcmPrecedente.NascondiRecord(db);
 
-                                if (pcmPrecedente.dataInizioValidita != dataRientro)
-                                {
-                                    pcmLav = new PensioneConiugeModel()
-                                    {
+                                //if (pcmPrecedente.dataInizioValidita != dataRientro)
+                                //{
+                                //    pcmLav = new PensioneConiugeModel()
+                                //    {
 
-                                        importoPensione = pcmPrecedente.importoPensione,
-                                        dataInizioValidita = pcmPrecedente.dataInizioValidita,
-                                        dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
-                                        dataAggiornamento = DateTime.Now,
-                                        idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                        FK_idPensione = pcmPrecedente.FK_idPensione,
-                                        nascondi = false
-                                    };
-                                    SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
-                                }
+                                //        importoPensione = pcmPrecedente.importoPensione,
+                                //        dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                //        dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                //        dataAggiornamento = DateTime.Now,
+                                //        idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                                //        FK_idPensione = pcmPrecedente.FK_idPensione,
+                                //        nascondi = false
+                                //    };
+                                //    SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
+                                //}
                                 #endregion
 
                                 #region creo record
@@ -722,7 +722,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     importoPensione = pcm.importoPensione,
                                     dataInizioValidita = pcm.dataInizioValidita,
-                                    dataFineValidita = dataRientro,
+                                    dataFineValidita = pcmPrecedente.dataFineValidita,
                                     dataAggiornamento = DateTime.Now,
                                     idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                     FK_idPensione = pcm.FK_idPensione,
