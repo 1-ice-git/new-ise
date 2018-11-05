@@ -21,7 +21,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                lttm = (from e in db.TIPOTRASFERIMENTO.Where(a=>a.IDTIPOTRASFERIMENTO!=(decimal)EnumTipoTrasferimento.Richiamo)
+                lttm = (from e in db.TIPOTRASFERIMENTO
                         select new TipoTrasferimentoModel()
                         {
                             idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
