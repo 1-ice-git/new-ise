@@ -24,7 +24,7 @@ namespace NewISE.Controllers
     public class IndennitaController : Controller
     {
         // GET: Indennita
-        public ActionResult Index()
+        public ActionResult Index() 
         {
             return View();
         }        
