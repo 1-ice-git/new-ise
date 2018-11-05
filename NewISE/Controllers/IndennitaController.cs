@@ -2016,79 +2016,6 @@ namespace NewISE.Controllers
                                 }
 
                                 lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-
-                                //if (lmab?.Any() ?? false)
-                                //{
-
-                                //    foreach (var mab in lmab)
-                                //    {
-                                //        var perMab =
-                                //            mab.PERIODOMAB.Where(
-                                //                a =>
-                                //                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-                                //                .OrderByDescending(a => a.IDPERIODOMAB)
-                                //           .First();
-
-                                //        var lpmab =
-                                //           perMab.PERCENTUALEMAB.Where(
-                                //               a =>
-                                //               a.ANNULLATO == false)
-                                //           .ToList();
-
-                                //        foreach (var cz in lpmab)
-                                //        {
-                                //            DateTime dtVar = new DateTime();
-
-                                //            if (cz.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                //            {
-                                //                dtVar = trasferimento.DATAPARTENZA;
-                                //            }
-                                //            else
-                                //            {
-                                //                dtVar = cz.DATAINIZIOVALIDITA;
-                                //            }
-
-                                //            if (!lDateVariazioni.Contains(dtVar))
-                                //            {
-                                //                lDateVariazioni.Add(dtVar);
-                                //                lDateVariazioni.Sort();
-                                //            }
-                                //        }
-
-                                //        var lcl =
-                                //            mab.CANONEMAB.Where(
-                                //                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                //                a.ATTIVAZIONEMAB.ANNULLATO == false &&
-                                //                a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                                //                a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
-                                //            .OrderBy(a => a.DATAINIZIOVALIDITA)
-                                //            .ToList();
-
-                                //        foreach (var cl in lcl)
-                                //        {
-                                //            DateTime dtVar = new DateTime();
-
-                                //            if (cl.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                //            {
-                                //                dtVar = trasferimento.DATAPARTENZA;
-                                //            }
-                                //            else
-                                //            {
-                                //                dtVar = cl.DATAINIZIOVALIDITA;
-                                //            }
-
-                                //            if (!lDateVariazioni.Contains(dtVar))
-                                //            {
-                                //                lDateVariazioni.Add(dtVar);
-                                //                lDateVariazioni.Sort();
-                                //            }
-
-                                //        }
-
-                                //    }
-
-
                             }
 
                                 lDateVariazioni.Add(new DateTime(9999, 12, 31));
@@ -2113,8 +2040,10 @@ namespace NewISE.Controllers
                                                     //DataFineValidita = (lDateVariazioni[(j + 1)] < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
                                                     DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
                                                     CanoneLocazioneinValuta = ci.CanoneMAB,
+                                                    CanoneLocazioneinEuro = ci.CanoneMABEuro,
                                                     PercentualeMaggAbitazione = ci.PercentualeMAB,
-                                                    ImportoMABMensile = ci.ImportoMABMensile
+                                                    ImportoMABMensile = ci.ImportoMABMensile,
+                                                    valutaMAB = ci.ValutaMAB.DESCRIZIONEVALUTA
                                                 };
                                                 rpt.Add(rpts);
                                             }

@@ -1612,6 +1612,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                     yy.TassoFissoRagguaglio = ci.TassoCambio;
                                                     yy.ImportoMABMensile = ci.ImportoMABMensile;
                                                     yy.PercentualeMaggAbitazione = ci.PercentualeMAB;
+                                                    yy.valutaMab = ci.ValutaMAB.DESCRIZIONEVALUTA;
+                                                    
 
                                                     eim.Add(yy);
 
