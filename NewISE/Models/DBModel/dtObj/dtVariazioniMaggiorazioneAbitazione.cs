@@ -2342,9 +2342,32 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     throw new Exception("Errore durante l'inserimento del canone MAB.");
                                 }
-                                #endregion
+                            #endregion
+
+                            #region riassocia TFR
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var mab = db.MAB.Find(cmabPrecedente.IDMAB);
+                                var t = mab.INDENNITA.TRASFERIMENTO;
+                                var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
+
+                                List<TFRModel> ltfrm = new List<TFRModel>();
+
+                                using (dtTFR dtTfr = new dtTFR())
+                                {
+                                    ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
+                                }
+
+                                RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+
+                                foreach (var tfrm in ltfrm)
+                                {
+                                    Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                                }
                             }
-                            else
+                            #endregion
+                        }
+                        else
                             {
                                 cmabmPrecedente.NascondiRecord(db);
 
@@ -2440,9 +2463,32 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     throw new Exception("Errore durante l'inserimento del canone.");
                                 }
-                                #endregion
+                            #endregion
+
+                            #region riassocia TFR
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var mab = db.MAB.Find(cmabPrecedente.IDMAB);
+                                var t = mab.INDENNITA.TRASFERIMENTO;
+                                var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
+
+                                List<TFRModel> ltfrm = new List<TFRModel>();
+
+                                using (dtTFR dtTfr = new dtTFR())
+                                {
+                                    ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
+                                }
+
+                                RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+
+                                foreach (var tfrm in ltfrm)
+                                {
+                                    Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                                }
                             }
-                            else
+                            #endregion
+                        }
+                        else
                             {
                                 cmabmPrecedente.NascondiRecord(db);
 
@@ -2567,6 +2613,19 @@ namespace NewISE.Models.DBModel.dtObj
                                 throw new Exception("Errore durante l'inserimento di pagato condiviso.");
                             }
                             #endregion
+
+                            #region associa percentuale condivisione
+                            List<PERCENTUALECONDIVISIONE> lperccond = new List<PERCENTUALECONDIVISIONE>();
+
+                            lperccond = GetListaPercentualeCondivisione_var(pcmabPrecedente.DATAINIZIOVALIDITA, pcmabPrecedente.DATAFINEVALIDITA, db);
+
+                            RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pcmabPrecedente.IDPAGATOCONDIVISO, db);
+
+                            foreach (var perccond in lperccond)
+                            {
+                                Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pcmabPrecedente.IDPAGATOCONDIVISO, perccond.IDPERCCOND, db);
+                            }
+                            #endregion
                         }
                         else
                         {
@@ -2668,6 +2727,19 @@ namespace NewISE.Models.DBModel.dtObj
                         if (db.SaveChanges() <= 0)
                         {
                             throw new Exception("Errore durante l'inserimento di pagato condiviso.");
+                        }
+                        #endregion
+
+                        #region associa percentuale condivisione
+                        List<PERCENTUALECONDIVISIONE> lperccond = new List<PERCENTUALECONDIVISIONE>();
+
+                        lperccond = GetListaPercentualeCondivisione_var(pcmabPrecedente.DATAINIZIOVALIDITA, pcmabPrecedente.DATAFINEVALIDITA, db);
+
+                        RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pcmabPrecedente.IDPAGATOCONDIVISO, db);
+
+                        foreach (var perccond in lperccond)
+                        {
+                            Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pcmabPrecedente.IDPAGATOCONDIVISO, perccond.IDPERCCOND, db);
                         }
                         #endregion
                     }
@@ -3323,92 +3395,96 @@ namespace NewISE.Models.DBModel.dtObj
                                 mvm.dataInizioMAB = pmm.dataInizioMAB;
                                 mvm.dataFineMAB = pmm.dataFineMAB;
 
-                                //#region aggiorno l'associazione anticipo annuale
-                                ////var mab = GetMABPartenza(am.TRASFERIMENTO.IDTRASFERIMENTO, db);
-                                ////rimuovi precedenti associazioni MAB MaggiorazioniAnnuali
-                                //RimuoviAssociazioneMAB_MaggiorazioniAnnuali(mab_corrente.IDMAB, db);
-                                ////se richiesto le riassocio
-                                //var aal = mab_corrente.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDANTICIPOANNUALEMAB);
-                                //if (aal?.Any() ?? false)
-                                //{
-                                //    var aa = aal.First();
-                                //    if (aa.ANTICIPOANNUALE)
-                                //    {
-                                //        var mann = GetMaggiorazioneAnnuale_var(mvm, db);
-                                //        if (mann.IDMAGANNUALI > 0)
-                                //        {
-                                //            //associa MAB a MaggiorazioniAnnuali se esiste
-                                //            Associa_MAB_MaggiorazioniAnnuali_var(mab_corrente.IDMAB, mann.IDMAGANNUALI, db);
-                                //        }
-                                //    }
-                                //}
-                                //#endregion
+                                #region aggiorno l'associazione anticipo annuale
+                                //var mab = GetMABPartenza(am.TRASFERIMENTO.IDTRASFERIMENTO, db);
+                                //rimuovi precedenti associazioni MAB MaggiorazioniAnnuali
+                                RimuoviAssociazioneMAB_MaggiorazioniAnnuali(mab_corrente.IDMAB, db);
+                                //se richiesto le riassocio
+                                var aal = mab_corrente.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
+                                if (aal?.Any() ?? false)
+                                {
+                                    var aa = aal.First();
+                                    if (aa.ANTICIPOANNUALE)
+                                    {
+                                        var mann = GetMaggiorazioneAnnuale_var(mvm, db);
+                                        if (mann.IDMAGANNUALI > 0)
+                                        {
+                                            //associa MAB a MaggiorazioniAnnuali se esiste
+                                            Associa_MAB_MaggiorazioniAnnuali_var(mab_corrente.IDMAB, mann.IDMAGANNUALI, db);
+                                        }
+                                    }
+                                }
+                                #endregion
 
-                                //#region aggiorno associazione MAB con percentuali MAB
-                                //TrasferimentoModel tm = new TrasferimentoModel();
-                                //using (dtTrasferimento dtt = new dtTrasferimento())
-                                //{
-                                //    tm = dtt.GetTrasferimentoById(idTrasferimento);
-                                //}
+                                #region aggiorno associazione MAB con percentuali MAB
+                                TrasferimentoModel tm = new TrasferimentoModel();
+                                using (dtTrasferimento dtt = new dtTrasferimento())
+                                {
+                                    tm = dtt.GetTrasferimentoById(idTrasferimento);
+                                }
 
+                                RimuoviAssociazionePeriodoMAB_PercentualeMAB_var(pmm.idPeriodoMAB, db);
 
-                                //RimuoviAssociazionePeriodoMAB_PercentualeMAB_var(pmm.idPeriodoMAB, db);
+                                var lista_perc = GetListaPercentualeMAB_var(tm.idTrasferimento, db);
+                                if (lista_perc?.Any() ?? false)
+                                {
+                                    foreach (var perc in lista_perc)
+                                    {
+                                        Associa_perMAB_PercenualeMAB_var(pmm.idPeriodoMAB, perc.IDPERCMAB, db);
+                                    }
+                                }
+                                #endregion
 
-                                //var lista_perc = GetListaPercentualeMAB_var(tm.idTrasferimento, db);
-                                //if (lista_perc?.Any() ?? false)
-                                //{
-                                //    foreach (var perc in lista_perc)
-                                //    {
-                                //        Associa_perMAB_PercenualeMAB_var(pmm.idPeriodoMAB, perc.IDPERCMAB, db);
-
-                                //    }
-                                //}
-                                //#endregion
-
-                                //#region aggiorna associazioni eventuale pagato condiviso
-                                ////var ma = this.GetMABPartenza(am.TRASFERIMENTO.IDTRASFERIMENTO, db);
+                                #region aggiorna associazioni eventuale pagato condiviso
+                                //var ma = this.GetMABPartenza(am.TRASFERIMENTO.IDTRASFERIMENTO, db);
                                 //var lpc = am.PAGATOCONDIVISOMAB.OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
-                                //PAGATOCONDIVISOMAB pc = this.GetPagatoCondivisoMABPartenza(mab.IDMAB, db);
-                                //this.RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, db);
+                                List<PagatoCondivisoMABModel> lpc = GetPagatoCondivisoMABModel(mab_corrente.IDMAB, db);
+                                foreach (var pc in lpc)
+                                {
+                                    RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pc.idPagatoCondiviso, db);
 
-                                //if (pc.CONDIVISO)
-                                //{
-                                //    var lpercCond = this.GetListaPercentualeCondivisione(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
-                                //    if (lpercCond?.Any() ?? false)
-                                //    {
-                                //        foreach (var percCond in lpercCond)
-                                //        {
-                                //            this.Associa_PagatoCondivisoMAB_PercentualeCondivisione(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
-                                //        }
-                                //    }
-                                //    else
-                                //    {
-                                //        throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
-                                //    }
-                                //}
-                                //#endregion
 
-                                //#region aggiorna associazioni canone MAB a TFR
-                                //var cm = this.GetCanoneMABPartenza(mab, db);
-                                //this.RimuoviAssociazioneCanoneMAB_TFR(cm.IDCANONE, db);
-                                //using (dtTFR dtt = new dtTFR())
-                                //{
-                                //    //using (dtValute dtv = new dtValute())
-                                //    //{
-                                //    //var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
-                                //    var ltfr = dtt.GetListaTfrByValuta_RangeDate(tm, cm.IDVALUTA, cm.DATAINIZIOVALIDITA, cm.DATAFINEVALIDITA, db);
+                                    if (pc.Condiviso)
+                                    {
+                                        var lpercCond = GetListaPercentualeCondivisione_var(pc.DataInizioValidita, pc.DataFineValidita, db);
+                                        if (lpercCond?.Any() ?? false)
+                                        {
+                                            foreach (var percCond in lpercCond)
+                                            {
+                                                Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.idPagatoCondiviso, percCond.IDPERCCOND, db);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+                                        }
+                                    }
+                                }
+                                #endregion
 
-                                //    if (ltfr?.Any() ?? false)
-                                //    {
-                                //        foreach (var tfr in ltfr)
-                                //        {
-                                //            this.Associa_TFR_CanoneMAB(tfr.idTFR, cm.IDCANONE, db);
-                                //        }
-                                //    }
-                                //    //}
+                                #region aggiorna associazioni canone MAB a TFR
+                                var lcm = GetCanoneMAB(mab_corrente.IDMAB, db);
+                                foreach (var cm in lcm)
+                                {
+                                    RimuoviAssociazioneCanoneMAB_TFR_var(cm.IDCANONE, db);
+                                    using (dtTFR dtt = new dtTFR())
+                                    {
+                                        //using (dtValute dtv = new dtValute())
+                                        //{
+                                        //var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
+                                        var ltfr = dtt.GetListaTfrByValuta_RangeDate(tm, cm.IDVALUTA, cm.DATAINIZIOVALIDITA, cm.DATAFINEVALIDITA, db);
 
-                                //}
-                                //#endregion
+                                        if (ltfr?.Any() ?? false)
+                                        {
+                                            foreach (var tfr in ltfr)
+                                            {
+                                                Associa_TFR_CanoneMAB_var(tfr.idTFR, cm.IDCANONE, db);
+                                            }
+                                        }
+                                        //}
+                                    }
+                                }
+                                #endregion
 
 
 
@@ -3454,7 +3530,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     UpdateStatoCanoneMAB(cmab.IDCANONE, EnumStatoRecord.Annullato, db);
                                 }
 
-                                var aal = am.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
+                                aal = am.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
                                 foreach (var aa in aal)
                                 {
                                     UpdateStatoAnticipoAnnualeMAB(aa.IDANTICIPOANNUALEMAB, EnumStatoRecord.Attivato, db);
@@ -5033,6 +5109,17 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                 }
 
+                            }
+                            #endregion
+
+                            #region associa maggiorazione annuale
+                            var ma = GetMaggiorazioneAnnuale_var(mabvm, db);
+                            if (mabvm.anticipoAnnuale)
+                            {
+                                if (ma.IDMAGANNUALI > 0)
+                                {
+                                    Associa_MAB_MaggiorazioniAnnuali_var(mabvm.idMAB, ma.IDMAGANNUALI, db);
+                                }
                             }
                             #endregion
 
