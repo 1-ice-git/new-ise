@@ -73,6 +73,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _totaleContributoOmnicomprensivoRientro = 0;
 
         private decimal _coefficenteIndennitaRichiamo = 0;
+        private decimal _coefficenteMaggiorazioneRichiamo = 0;
         private decimal _indennitaRichiamoLordo = 0;
         private decimal _indennitaRichiamoNetto = 0;
         //private int _giorniSospensione = 0;
@@ -104,12 +105,23 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private LIVELLI _livello = new LIVELLI();
 
         private List<DatiFigli> _lDatiFigli = new List<DatiFigli>();
-        //private DatiCalcoloTrasportoEffetti _datiCalcoloTrasportoEffetti = new DatiCalcoloTrasportoEffetti();
+
+        private FASCIA_KM _fasciaKMPartenza = new FASCIA_KM();
+        private FASCIA_KM _fasciaKMRientro = new FASCIA_KM();
 
         #endregion
 
 
         #region Proprietà pubbliche
+        [ReadOnly(true)]
+        public FASCIA_KM FasciaKM_P => _fasciaKMPartenza;
+        [ReadOnly(true)]
+        public FASCIA_KM FasciaKM_R => _fasciaKMRientro;
+        [ReadOnly(true)]
+        public RUOLODIPENDENTE RuoloDipendente => _ruoloDipendente;
+        [ReadOnly(true)]
+        public RUOLOUFFICIO RuoloUfficio => _ruoloUfficio;
+
         [ReadOnly(true)]
         public decimal IndennitaDiBase => _indennitaDiBase;
         [ReadOnly(true)]
@@ -178,6 +190,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         [ReadOnly(true)]
         public decimal CoefficenteIndennitaRichiamo => _coefficenteIndennitaRichiamo;
+        [ReadOnly(true)]
+        public decimal CoefficenteMaggiorazioneRichiamo => _coefficenteMaggiorazioneRichiamo;
         [ReadOnly(true)]
         public decimal IndennitaRichiamoLordo => _indennitaRichiamoLordo;
         [ReadOnly(true)]
@@ -855,20 +869,23 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     var richiamo = lRichiamo.First();
                     DateTime dataRientro = _trasferimento.DATARIENTRO;
 
-                    var lcr =
+                    var lcmr =
                         richiamo.COEFFICIENTEINDRICHIAMO.Where(
-                            a =>
-                                a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
-                                dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                                a =>
+                                    a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
+                                    dataRientro <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
+                                    (decimal) EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
 
-                    if (lcr?.Any() ?? false)
+                    if (lcmr?.Any() ?? false)
                     {
                         RIDUZIONI riduzione = new RIDUZIONI();
 
-                        var cr = lcr.First();
+                        var cmr = lcmr.First();
 
                         var lrid =
-                            cr.RIDUZIONI.Where(
+                            cmr.RIDUZIONI.Where(
                                 a =>
                                     a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
                                     dataRientro <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
@@ -879,20 +896,51 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                             _percentualeRiduzioneRichiamo = riduzione.PERCENTUALE;
                         }
 
-                        var maggiorazione = _indennitaDiBase * _coefficienteDiSede;
-                        _coefficenteIndennitaRichiamo = cr.COEFFICIENTERICHIAMO;
-                        var abbattimento = (maggiorazione + _maggiorazioniFimailiri) * _coefficenteIndennitaRichiamo;
+                        _coefficenteMaggiorazioneRichiamo = cmr.COEFFICIENTERICHIAMO;
 
+                        var lcr =
+                            richiamo.COEFFICIENTEINDRICHIAMO.Where(
+                                    a =>
+                                        a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
+                                        dataRientro <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
+                                        (decimal) EnumTipoCoefficienteRichiamo.CoefficienteRichiamo)
+                                .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                .ToList();
 
-
-                        if (_percentualeRiduzioneRichiamo > 0)
+                        if (lcr?.Any() ?? false)
                         {
-                            _indennitaRichiamoLordo = Math.Round((abbattimento * (_percentualeRiduzioneRichiamo / 100)), 8);
+                            var cr = lcr.First();
+
+                            _coefficenteIndennitaRichiamo = cr.COEFFICIENTERICHIAMO;
+
+
+                            var maggiorazione = _indennitaDiBase * _coefficenteMaggiorazioneRichiamo;
+
+                            var comodo1 = maggiorazione + _indennitaDiBase;
+
+                            var comodo2 = (maggiorazione + _maggiorazioniFimailiri) * _coefficenteIndennitaRichiamo;
+
+                            
+
+                            if (_percentualeRiduzioneRichiamo > 0)
+                            {
+                                _indennitaRichiamoLordo = Math.Round((comodo2 * (_percentualeRiduzioneRichiamo / 100)), 8);
+                            }
+                            else
+                            {
+                                _indennitaRichiamoLordo = Math.Round(comodo2, 8);
+                            }
+
                         }
                         else
                         {
-                            _indennitaRichiamoLordo = Math.Round(abbattimento, 8);
+                            throw new Exception("Il coefficiente di richiamo non è presente.");
                         }
+                        
+                    }
+                    else
+                    {
+                        throw new Exception("Il coefficicnete di maggiorazione per il richiamo non è presente.");
                     }
                 }
             }
@@ -960,6 +1008,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             if (lps?.Any() ?? false)
             {
                 var pfkm = lps.First();
+                _fasciaKMPartenza = pfkm.FASCIA_KM;
                 _percentualeFKMPartenza = pfkm.COEFFICIENTEKM;
 
                 var tePartenza = _trasferimento.TEPARTENZA;
@@ -1016,6 +1065,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 if (lpfk?.Any() ?? false)
                 {
                     var pfkm = lpfk.First();
+                    _fasciaKMRientro = pfkm.FASCIA_KM;
                     _percentualeFKMRientro = pfkm.COEFFICIENTEKM;
 
                     var teRientro = _trasferimento.TERIENTRO;

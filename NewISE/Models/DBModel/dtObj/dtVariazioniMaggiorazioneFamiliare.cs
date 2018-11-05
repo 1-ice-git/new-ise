@@ -3225,7 +3225,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (coniuge).");
                                         }
 
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, c.DATAINIZIOVALIDITA, db);
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, c.DATAINIZIOVALIDITA, db, true);
 
                                         //se deriva da un altro coniuge annullo il precedente
                                         if (c.FK_IDCONIUGE > 0)
@@ -3370,7 +3370,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             throw new Exception("Errore in fase di attivazione delle maggiorazioni familiari (figli).");
                                         }
 
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, f.DATAINIZIOVALIDITA, db);
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, f.DATAINIZIOVALIDITA, db, true);
 
                                         //se deriva da un altro figlio annullo il precedente
                                         if (f.FK_IDFIGLI > 0)

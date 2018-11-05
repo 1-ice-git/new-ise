@@ -446,10 +446,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             switch ((EnumTipoAnticipoTE)NuovoPrecedente.IDTIPOANTICIPOTE)
                             {
                                 case EnumTipoAnticipoTE.Partenza:
-                                    dtrp.AssociaPercentualeAnticipoTEP(NuovoPrecedente.IDPERCANTICIPOTM, db);
+                                    dtrp.AssociaPercentualeAnticipoTEP(NuovoPrecedente.IDPERCANTICIPOTM, db, delIB.DATAINIZIOVALIDITA);
                                     break;
                                 case EnumTipoAnticipoTE.Rientro:
-                                    dtrp.AssociaPercentualeAnticipoTER(NuovoPrecedente.IDPERCANTICIPOTM, db);
+                                    dtrp.AssociaPercentualeAnticipoTER(NuovoPrecedente.IDPERCANTICIPOTM, db,delIB.DATAINIZIOVALIDITA);
                                     break;
                                 default:
                                     throw new ArgumentOutOfRangeException();
@@ -540,10 +540,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 switch ((EnumTipoAnticipoTE)ibNew1.IDTIPOANTICIPOTE)
                                 {
                                     case EnumTipoAnticipoTE.Partenza:
-                                        dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db);
+                                        dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                         break;
                                     case EnumTipoAnticipoTE.Rientro:
-                                        dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db);
+                                        dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                         break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
@@ -615,10 +615,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         switch ((EnumTipoAnticipoTE)pa.IDTIPOANTICIPOTE)
                                         {
                                             case EnumTipoAnticipoTE.Partenza:
-                                                dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db);
+                                                dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                                 break;
                                             case EnumTipoAnticipoTE.Rientro:
-                                                dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db);
+                                                dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                                 break;
                                             default:
                                                 throw new ArgumentOutOfRangeException();
@@ -699,10 +699,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         switch ((EnumTipoAnticipoTE)pa.IDTIPOANTICIPOTE)
                                         {
                                             case EnumTipoAnticipoTE.Partenza:
-                                                dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db);
+                                                dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                                 break;
                                             case EnumTipoAnticipoTE.Rientro:
-                                                dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db);
+                                                dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                                 break;
                                             default:
                                                 throw new ArgumentOutOfRangeException();
@@ -742,10 +742,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     switch ((EnumTipoAnticipoTE)ibNew1.IDTIPOANTICIPOTE)
                                     {
                                         case EnumTipoAnticipoTE.Partenza:
-                                            dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db);
+                                            dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                             break;
                                         case EnumTipoAnticipoTE.Rientro:
-                                            dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db);
+                                            dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                             break;
                                         default:
                                             throw new ArgumentOutOfRangeException();
@@ -792,10 +792,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         switch ((EnumTipoAnticipoTE)ibNew1.IDTIPOANTICIPOTE)
                                         {
                                             case EnumTipoAnticipoTE.Partenza:
-                                                dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db);
+                                                dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                                 break;
                                             case EnumTipoAnticipoTE.Rientro:
-                                                dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db);
+                                                dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                                 break;
                                             default:
                                                 throw new ArgumentOutOfRangeException();
@@ -840,10 +840,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                             switch ((EnumTipoAnticipoTE)pa.IDTIPOANTICIPOTE)
                                             {
                                                 case EnumTipoAnticipoTE.Partenza:
-                                                    dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db);
+                                                    dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                                     break;
                                                 case EnumTipoAnticipoTE.Rientro:
-                                                    dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db);
+                                                    dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
                                                     break;
                                                 default:
                                                     throw new ArgumentOutOfRangeException();

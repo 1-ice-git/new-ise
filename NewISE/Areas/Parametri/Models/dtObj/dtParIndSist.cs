@@ -231,8 +231,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db);
-                                dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db);
+                                dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db,ibm.dataInizioValidita);
+                                dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -302,8 +302,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var ps in libNew)
                                     {
-                                        dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db);
-                                        dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db);
+                                        dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -378,8 +378,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var ps in libNew)
                                     {
-                                        dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db);
-                                        dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db);
+                                        dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -417,8 +417,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
 
-                                    dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db);
-                                    dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db);
+                                    dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
 
                                 }
 
@@ -459,8 +459,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
 
-                                        dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db);
-                                        dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db);
+                                        dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
 
                                     }
 
@@ -501,8 +501,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var ps in libNew)
                                         {
-                                            dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db);
-                                            dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db);
+                                            dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
                                         }
                                     }
 
@@ -610,8 +610,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaPrimaSistemazione_IS(ibOld1.IDINDSIST, db);
-                                dtrp.AssociaRiduzioni_IS(ibOld1.IDINDSIST, db);
+                                dtrp.AssociaPrimaSistemazione_IS(ibOld1.IDINDSIST, db, delIB.DATAINIZIOVALIDITA);
+                                dtrp.AssociaRiduzioni_IS(ibOld1.IDINDSIST, db, delIB.DATAINIZIOVALIDITA);
                             }
                         }
 

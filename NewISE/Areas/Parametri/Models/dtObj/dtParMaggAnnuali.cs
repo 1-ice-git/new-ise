@@ -238,7 +238,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db);
+                                dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db, ibm.dataInizioValidita);
                             }
 
 
@@ -303,7 +303,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var ma in libNew)
                                     {
-                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db);
+                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -371,7 +371,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var ma in libNew)
                                     {
-                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db);
+                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db, ibm.dataInizioValidita);
                                     }
                                 }
 
@@ -401,7 +401,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db);
+                                    dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db, ibm.dataInizioValidita);
                                 }
 
                                 db.Database.CurrentTransaction.Commit();
@@ -435,7 +435,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db);
+                                        dtrp.AssociaMaggiorazioniAbitazione_MA(ibNew1.IDMAGANNUALI, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -470,7 +470,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var ma in libNew)
                                         {
-                                            dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db);
+                                            dtrp.AssociaMaggiorazioniAbitazione_MA(ma.IDMAGANNUALI, db, ibm.dataInizioValidita);
                                         }
 
                                     }
@@ -580,7 +580,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaMaggiorazioniAbitazione_MA(ibOld1.IDMAGANNUALI, db);
+                                dtrp.AssociaMaggiorazioniAbitazione_MA(ibOld1.IDMAGANNUALI, db, delIB.DATAINIZIOVALIDITA);
                             }
                         }
 

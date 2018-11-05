@@ -132,7 +132,8 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
                         descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
-                    }
+                    },
+                    
 
                 };
 
@@ -3305,7 +3306,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
                                     ///Imposto la data di inzio ricalcoli alla data di inzio trasferimento per il trasferimento in corso.
-                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, t.DATAPARTENZA, db);
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, t.DATAPARTENZA, db, true);
 
                                     var d = db.DIPENDENTI.Find(t.IDDIPENDENTE);
                                     var lt_prec = d.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato).OrderByDescending(a => a.IDTRASFERIMENTO).ToList();
@@ -3325,7 +3326,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             }
                                             RiassociaIndennitaTrasferimento(t_prec, db);
 
-                                            dtd.DataInizioRicalcoliDipendente(t_prec.IDTRASFERIMENTO, t_prec.DATARIENTRO, db);
+                                            dtd.DataInizioRicalcoliDipendente(t_prec.IDTRASFERIMENTO, t_prec.DATARIENTRO, db, true);
                                         }
                                     }
 

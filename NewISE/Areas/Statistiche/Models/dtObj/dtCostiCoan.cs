@@ -290,8 +290,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
             }
         }
 
-        public RptCostiCoanModel SetCostiCoan(
-                                                int matricola, 
+        public RptCostiCoanModel SetCostiCoan(int matricola, 
                                                 string cognome, 
                                                 string nome, 
                                                 string descLivello, 

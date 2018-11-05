@@ -475,8 +475,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         db.SaveChanges();
                         using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                         {
-                            dtrp.AssociaCanoneMAB_TFR(NuovoPrecedente.IDTFR, db);
-                            dtrp.AssociaIndennita_TFR(NuovoPrecedente.IDTFR, db);
+                            dtrp.AssociaCanoneMAB_TFR(NuovoPrecedente.IDTFR, db,delIB.DATAINIZIOVALIDITA);
+                            dtrp.AssociaIndennita_TFR(NuovoPrecedente.IDTFR, db, delIB.DATAINIZIOVALIDITA);
                         }
                         using (objLogAttivita log = new objLogAttivita())
                         {
@@ -558,8 +558,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaCanoneMAB_TFR(ibNew1.IDTFR, db);
-                                dtrp.AssociaIndennita_TFR(ibNew1.IDTFR, db);
+                                dtrp.AssociaCanoneMAB_TFR(ibNew1.IDTFR, db, ibm.dataInizioValidita);
+                                dtrp.AssociaIndennita_TFR(ibNew1.IDTFR, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -624,8 +624,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var tfr in libNew)
                                     {
-                                        dtrp.AssociaCanoneMAB_TFR(tfr.IDTFR, db);
-                                        dtrp.AssociaIndennita_TFR(tfr.IDTFR, db);
+                                        dtrp.AssociaCanoneMAB_TFR(tfr.IDTFR, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennita_TFR(tfr.IDTFR, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -699,8 +699,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var tfr in libNew)
                                     {
-                                        dtrp.AssociaCanoneMAB_TFR(tfr.IDTFR, db);
-                                        dtrp.AssociaIndennita_TFR(tfr.IDTFR, db);
+                                        dtrp.AssociaCanoneMAB_TFR(tfr.IDTFR, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennita_TFR(tfr.IDTFR, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -730,8 +730,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    dtrp.AssociaCanoneMAB_TFR(ibNew1.IDTFR, db);
-                                    dtrp.AssociaIndennita_TFR(ibNew1.IDTFR, db);
+                                    dtrp.AssociaCanoneMAB_TFR(ibNew1.IDTFR, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaIndennita_TFR(ibNew1.IDTFR, db, ibm.dataInizioValidita);
                                 }
                                 db.Database.CurrentTransaction.Commit();
                             }
@@ -767,8 +767,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        dtrp.AssociaCanoneMAB_TFR(ibNew1.IDTFR, db);
-                                        dtrp.AssociaIndennita_TFR(ibNew1.IDTFR, db);
+                                        dtrp.AssociaCanoneMAB_TFR(ibNew1.IDTFR, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennita_TFR(ibNew1.IDTFR, db, ibm.dataInizioValidita);
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -804,8 +804,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var tfr in libNew)
                                         {
-                                            dtrp.AssociaCanoneMAB_TFR(tfr.IDTFR, db);
-                                            dtrp.AssociaIndennita_TFR(tfr.IDTFR, db);
+                                            dtrp.AssociaCanoneMAB_TFR(tfr.IDTFR, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaIndennita_TFR(tfr.IDTFR, db, ibm.dataInizioValidita);
                                         }
 
                                     }

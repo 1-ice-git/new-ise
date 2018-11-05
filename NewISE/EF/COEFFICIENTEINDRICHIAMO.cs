@@ -27,7 +27,9 @@ namespace NewISE.EF
         public decimal COEFFICIENTERICHIAMO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
+        public decimal IDTIPOCOEFFICIENTERICHIAMO { get; set; }
     
+        public virtual TIPOCOEFFICIENTERICHIAMO TIPOCOEFFICIENTERICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RIDUZIONI> RIDUZIONI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

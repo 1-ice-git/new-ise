@@ -195,7 +195,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db);
+                                dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -260,7 +260,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pd in libNew)
                                     {
-                                        dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db);
+                                        dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -333,7 +333,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     foreach (var pd in libNew)
                                     {
-                                        dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db);
+                                        dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
                                     }
 
                                 }
@@ -365,7 +365,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
 
-                                    dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db);
+                                    dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
 
                                 }
 
@@ -403,7 +403,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
 
-                                        dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db);
+                                        dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
 
                                     }
 
@@ -439,7 +439,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         foreach (var pd in libNew)
                                         {
-                                            dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db);
+                                            dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
                                         }
 
                                     }
@@ -549,7 +549,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
 
-                                dtrp.AssociaIndenita_PD(ibOld1.IDPERCENTUALEDISAGIO, db);
+                                dtrp.AssociaIndenita_PD(ibOld1.IDPERCENTUALEDISAGIO, db, delIB.DATAINIZIOVALIDITA);
 
                             }
 

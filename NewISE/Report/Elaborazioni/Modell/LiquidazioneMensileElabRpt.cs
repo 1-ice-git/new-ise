@@ -17,5 +17,7 @@ namespace NewISE.Report.Elaborazioni.Modell
         public decimal Importo { get; set; }
         public bool Inviato { get; set; }
         public string Nominativo { get; set; }
+        public int Anno { get; set; }
+        public int Mese { get; set; }
     }
 }

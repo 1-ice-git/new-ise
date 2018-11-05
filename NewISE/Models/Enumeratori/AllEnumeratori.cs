@@ -283,4 +283,10 @@ namespace NewISE.Models.Enumeratori
         Completati = 2
     }
 
+    public enum EnumTipoCoefficienteRichiamo
+    {
+        CoefficienteMaggiorazione = 1,
+        CoefficienteRichiamo = 2
+    }
+
 }

@@ -237,7 +237,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
-                                    dtd.DataInizioRicalcoliDipendente(sosp.idTrasferimento, sosp.DataInizioSospensione.Value, db);
+                                    dtd.DataInizioRicalcoliDipendente(sosp.idTrasferimento, sosp.DataInizioSospensione.Value, db, true);
                                 }
 
 

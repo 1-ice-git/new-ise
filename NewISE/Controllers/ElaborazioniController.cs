@@ -51,12 +51,33 @@ namespace NewISE.Controllers
         public ActionResult DatiTrasferimentoDipendente(decimal idTeorico)
         {
             TrasferimentoModel tm = new TrasferimentoModel();
+            DatiTrasferimentoDipendenteModel dtdm=new DatiTrasferimentoDipendenteModel();
 
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     tm = dtt.GetTrasferimentoByIdTeorico(idTeorico);
+
+                    using (CalcoliIndennita ci=new CalcoliIndennita(tm.idTrasferimento))
+                    {
+                        dtdm = new DatiTrasferimentoDipendenteModel()
+                        {
+                            Dipendente = tm.Dipendente.Nominativo,
+                            TipoTrasferimento = tm.TipoTrasferimento.descTipoTrasf,
+                            Ufficio = tm.Ufficio.descUfficio + " (" + tm.Ufficio.codiceUfficio + ")",
+                            DataPartenza = tm.dataPartenza.ToShortDateString(),
+                            DataRientro = tm.dataRientro.HasValue ? tm.dataRientro.Value == Convert.ToDateTime("31/12/9999") ? "In corso..." : tm.dataRientro.Value.ToShortDateString() : "In corso...",
+                            Livello = ci.Livello.LIVELLO,
+                            Ruolo = ci.RuoloUfficio.DESCRUOLO,
+                            Coan = string.IsNullOrEmpty(tm.coan) ? tm.TipoCoan.idTipoCoan == 1 ? "S.I." : "S.P." : tm.TipoCoan.descrizione + " (" + tm.coan + ")",
+                            FasciaKM_P = string.IsNullOrEmpty(ci.FasciaKM_P.KM) ? "-" :ci.FasciaKM_P.KM + " (" + ci.PercentualeFKMPartenza.ToString() + "%)",
+                            FasciaKM_R = string.IsNullOrEmpty(ci.FasciaKM_R.KM) ? "-" :ci.FasciaKM_R.KM + " (" + ci.PercentualeFKMRientro.ToString() + "%)",
+
+                        };
+                    }
+
+                    
 
                 }
 
@@ -66,7 +87,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView(tm);
+            return PartialView(dtdm);
         }
 
 
@@ -490,8 +511,8 @@ namespace NewISE.Controllers
                 using (ModelDBISE db = new ModelDBISE())
                 {
 
-                    var te =
-                        db.TEORICI.Where(a => a.ANNULLATO == false && a.ELABINDSISTEMAZIONE.IDLIVELLO == 1).ToList();
+                    //var te =
+                    //    db.TEORICI.Where(a => a.ANNULLATO == false && a.ELABINDSISTEMAZIONE.IDLIVELLO == 1).ToList();
 
 
                     db.Database.BeginTransaction();
@@ -788,7 +809,7 @@ namespace NewISE.Controllers
 
 
         [HttpPost]
-        public ActionResult ReportLiquidazioniMensili(decimal idAnnoMeseElaborato)
+        public ActionResult ReportLiquidazioniMensili(decimal idAnnoMeseElaborato, List<decimal> Teorici)
         {
             //ViewData["annoMeseElab"] = annoMeseElab;
 
@@ -828,7 +849,8 @@ namespace NewISE.Controllers
 
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
-                        lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
+                        //lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
+                        lLm = dte.PrelevaLiquidazioniMensili(Teorici).ToList();
                     }
 
                     if (lLm?.Any() ?? false)
@@ -846,12 +868,17 @@ namespace NewISE.Controllers
                                 Voce = lm.Voci.codiceVoce,
                                 Inserimento = lm.tipoInserimento.ToString(),
                                 Importo = lm.Importo,
-                                Inviato = lm.Elaborato
+                                Inviato = lm.Elaborato,
+                                Anno = (int)lm.annoRiferimento,
+                                Mese = (int)lm.meseRiferimento
                             };
 
                             lrptds.Add(rptds);
                         }
                     }
+
+                    lrptds = lrptds.OrderBy(a => a.Anno).ThenBy(a => a.Mese).ToList();
+
                     reportViewer.LocalReport.SetParameters(parameterValues);
 
                     ReportDataSource _rsource = new ReportDataSource("DataSet1", lrptds);

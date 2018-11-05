@@ -404,6 +404,7 @@
           <Property Name="COEFFICIENTERICHIAMO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOCOEFFICIENTERICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="COEFFICIENTESEDE">
           <Key>
@@ -1560,6 +1561,13 @@
           </Key>
           <Property Name="IDTIPOANTICIPOTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TIPOANTICIPO" Type="varchar2" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TIPOCOEFFICIENTERICHIAMO">
+          <Key>
+            <PropertyRef Name="IDTIPOCOEFFICIENTERICHIAMO" />
+          </Key>
+          <Property Name="IDTIPOCOEFFICIENTERICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPODOCUMENTI">
           <Key>
@@ -4994,6 +5002,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_TCR_CR">
+          <End Role="TIPOCOEFFICIENTERICHIAMO" Type="Self.TIPOCOEFFICIENTERICHIAMO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="COEFFICIENTEINDRICHIAMO" Type="Self.COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOCOEFFICIENTERICHIAMO">
+              <PropertyRef Name="IDTIPOCOEFFICIENTERICHIAMO" />
+            </Principal>
+            <Dependent Role="COEFFICIENTEINDRICHIAMO">
+              <PropertyRef Name="IDTIPOCOEFFICIENTERICHIAMO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TD_D">
           <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5748,6 +5770,7 @@
           <EntitySet Name="TFR" EntityType="Self.TFR" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="Self.TIPOALIQUOTECONTRIBUTIVE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPOANTICIPOTRASPORTOEFFETTI" EntityType="Self.TIPOANTICIPOTRASPORTOEFFETTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOCOEFFICIENTERICHIAMO" EntityType="Self.TIPOCOEFFICIENTERICHIAMO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPODOCUMENTI" EntityType="Self.TIPODOCUMENTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPOLIQUIDAZIONE" EntityType="Self.TIPOLIQUIDAZIONE" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="TIPOLOGIAANTICIPI" EntityType="Self.TIPOLOGIAANTICIPI" Schema="ISESIM" store:Type="Tables" />
@@ -6699,6 +6722,10 @@
             <End Role="TIPOLOGIACONIUGE" EntitySet="TIPOLOGIACONIUGE" />
             <End Role="PERCENTUALEMAGCONIUGE" EntitySet="PERCENTUALEMAGCONIUGE" />
           </AssociationSet>
+          <AssociationSet Name="R_TCR_CR" Association="Self.R_TCR_CR">
+            <End Role="TIPOCOEFFICIENTERICHIAMO" EntitySet="TIPOCOEFFICIENTERICHIAMO" />
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
+          </AssociationSet>
           <AssociationSet Name="R_TD_D" Association="Self.R_TD_D">
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -6973,6 +7000,7 @@
           <EntitySet Name="TFR" EntityType="DBISE.TFR" />
           <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="DBISE.TIPOALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="TIPOANTICIPOTRASPORTOEFFETTI" EntityType="DBISE.TIPOANTICIPOTRASPORTOEFFETTI" />
+          <EntitySet Name="TIPOCOEFFICIENTERICHIAMO" EntityType="DBISE.TIPOCOEFFICIENTERICHIAMO" />
           <EntitySet Name="TIPODOCUMENTI" EntityType="DBISE.TIPODOCUMENTI" />
           <EntitySet Name="TIPOLIQUIDAZIONE" EntityType="DBISE.TIPOLIQUIDAZIONE" />
           <EntitySet Name="TIPOLOGIAANTICIPI" EntityType="DBISE.TIPOLOGIAANTICIPI" />
@@ -7201,6 +7229,10 @@
           <AssociationSet Name="R_DIP_CDCG" Association="DBISE.R_DIP_CDCG">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="CDCGEPE" EntitySet="CDCGEPE" />
+          </AssociationSet>
+          <AssociationSet Name="R_TCR_CR" Association="DBISE.R_TCR_CR">
+            <End Role="TIPOCOEFFICIENTERICHIAMO" EntitySet="TIPOCOEFFICIENTERICHIAMO" />
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
           </AssociationSet>
           <AssociationSet Name="R_UFFICI_COEFFICIENTESEDE" Association="DBISE.R_UFFICI_COEFFICIENTESEDE">
             <End Role="UFFICI" EntitySet="UFFICI" />
@@ -8213,6 +8245,8 @@
           <Property Name="COEFFICIENTERICHIAMO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="IDTIPOCOEFFICIENTERICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="TIPOCOEFFICIENTERICHIAMO" Relationship="DBISE.R_TCR_CR" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="TIPOCOEFFICIENTERICHIAMO" />
           <NavigationProperty Name="RIDUZIONI" Relationship="DBISE.CIR_R" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="RIDUZIONI" />
           <NavigationProperty Name="RICHIAMO" Relationship="DBISE.RICHIAMO_COEFFRICH" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="RICHIAMO" />
         </EntityType>
@@ -9350,6 +9384,14 @@
           <Property Name="TIPOANTICIPO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISE.R_TATE_PATE" FromRole="TIPOANTICIPOTRASPORTOEFFETTI" ToRole="PERCENTUALEANTICIPOTE" />
         </EntityType>
+        <EntityType Name="TIPOCOEFFICIENTERICHIAMO">
+          <Key>
+            <PropertyRef Name="IDTIPOCOEFFICIENTERICHIAMO" />
+          </Key>
+          <Property Name="IDTIPOCOEFFICIENTERICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISE.R_TCR_CR" FromRole="TIPOCOEFFICIENTERICHIAMO" ToRole="COEFFICIENTEINDRICHIAMO" />
+        </EntityType>
         <EntityType Name="TIPODOCUMENTI">
           <Key>
             <PropertyRef Name="IDTIPODOCUMENTO" />
@@ -10319,6 +10361,20 @@
             </Principal>
             <Dependent Role="CDCGEPE">
               <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TCR_CR">
+          <End Type="DBISE.TIPOCOEFFICIENTERICHIAMO" Role="TIPOCOEFFICIENTERICHIAMO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOCOEFFICIENTERICHIAMO">
+              <PropertyRef Name="IDTIPOCOEFFICIENTERICHIAMO" />
+            </Principal>
+            <Dependent Role="COEFFICIENTEINDRICHIAMO">
+              <PropertyRef Name="IDTIPOCOEFFICIENTERICHIAMO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -12353,6 +12409,7 @@
           <EntitySetMapping Name="COEFFICIENTEINDRICHIAMO">
             <EntityTypeMapping TypeName="DBISE.COEFFICIENTEINDRICHIAMO">
               <MappingFragment StoreEntitySet="COEFFICIENTEINDRICHIAMO">
+                <ScalarProperty Name="IDTIPOCOEFFICIENTERICHIAMO" ColumnName="IDTIPOCOEFFICIENTERICHIAMO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="COEFFICIENTERICHIAMO" ColumnName="COEFFICIENTERICHIAMO" />
@@ -13284,6 +13341,14 @@
               <MappingFragment StoreEntitySet="TIPOANTICIPOTRASPORTOEFFETTI">
                 <ScalarProperty Name="TIPOANTICIPO" ColumnName="TIPOANTICIPO" />
                 <ScalarProperty Name="IDTIPOANTICIPOTE" ColumnName="IDTIPOANTICIPOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPOCOEFFICIENTERICHIAMO">
+            <EntityTypeMapping TypeName="DBISE.TIPOCOEFFICIENTERICHIAMO">
+              <MappingFragment StoreEntitySet="TIPOCOEFFICIENTERICHIAMO">
+                <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
+                <ScalarProperty Name="IDTIPOCOEFFICIENTERICHIAMO" ColumnName="IDTIPOCOEFFICIENTERICHIAMO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

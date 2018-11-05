@@ -3271,15 +3271,15 @@ namespace NewISE.Models.DBModel.dtObj
                                 foreach (var pmab in pmabl)
                                 {
                                     UpdateStatoPeriodoMAB(pmab.IDPERIODOMAB, EnumStatoRecord.Attivato, db);
-                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pmab.DATAINIZIOMAB, db);
-                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pmab.DATAFINEMAB, db);
+                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pmab.DATAINIZIOMAB, db, true);
+                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pmab.DATAFINEMAB, db, true);
                                 }
 
                                 var cmabl = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare && a.NASCONDI == false).OrderBy(a => a.IDCANONE).ToList();
                                 foreach (var cmab in cmabl)
                                 {
                                     UpdateStatoCanoneMAB(cmab.IDCANONE, EnumStatoRecord.Attivato, db);
-                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, cmab.DATAINIZIOVALIDITA, db);
+                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, cmab.DATAINIZIOVALIDITA, db, true);
                             
                                 }
                                 //annullo i record attivi nascosti  (relativi alla mab perche potrbbero avere idattivazione diverso)
@@ -3299,7 +3299,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 foreach (var pcmab in pcmabl)
                                 {
                                     UpdateStatoPagatoCondivisoMAB(pcmab.IDPAGATOCONDIVISO, EnumStatoRecord.Attivato, db);
-                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pcmab.DATAINIZIOVALIDITA, db);
+                                    dtd.DataInizioRicalcoliDipendente(idTrasferimento, pcmab.DATAINIZIOVALIDITA, db, true);
                                 }
                                 //annullo i record attivi nascosti (relativi alla mab perche potrbbero avere idattivazione diverso)
                                 pcmabl = mab_corrente.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.NASCONDI).OrderBy(a => a.IDPAGATOCONDIVISO).ToList();

@@ -302,14 +302,18 @@ namespace NewISE.Controllers
                         using (dtRichiamo dtric = new dtRichiamo())
                         {
                             decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri, db);
+                            decimal idCoeffMagIndRichiamo = dtric.Restituisci_ID_CoeffMagIndRichiamo_Da_Data(ri, db);
                             decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri, db);
                             var r = new List<SelectListItem>();
-                            if (idCoeffIndRichiamo == 0 || IDPFKM == 0)
+                            if (idCoeffIndRichiamo == 0 || IDPFKM == 0 || idCoeffMagIndRichiamo == 0)
                             {
                                 ViewData["errore"] = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
                                 errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
                                 throw new Exception("Non esistono coefficenti corrispondenti ai criteri del Richiamo");
                             }
+
+                            
+
                             ri.IDPFKM = IDPFKM;
                             DateTime DataRientro = Convert.ToDateTime(dataRichiamo).AddDays(-1);
                             ri.DataRientro = DataRientro;
@@ -322,7 +326,7 @@ namespace NewISE.Controllers
                                 errore = "Data Rientro " + DataRientro.ToShortDateString() + " non può essere inferiore alla data Partenza " + dataPartenza.ToShortDateString();
                             else
                             {
-                                idRichiamo = dtric.SetRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro, db);
+                                idRichiamo = dtric.SetRichiamo(ri, idCoeffIndRichiamo, IDPFKM, idCoeffMagIndRichiamo, DataRientro, db);
                                 ViewData["idRichiamo"] = idRichiamo;
                                 errore = "";
                             }
@@ -334,7 +338,7 @@ namespace NewISE.Controllers
 
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db);
+                                dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db, true);
                             }
 
                             InviaMailRichiamo(idTrasferimento, db, corpoMessaggio, oggetto);

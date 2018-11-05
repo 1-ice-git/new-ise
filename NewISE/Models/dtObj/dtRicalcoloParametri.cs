@@ -17,7 +17,7 @@ namespace NewISE.Models.dtObj
 
     public class DtRicalcoloParametri : IDisposable, IricalcoloParametri
     {
-        public void AssociaCanoneMAB_TFR(decimal idTFR, ModelDBISE db)
+        public void AssociaCanoneMAB_TFR(decimal idTFR, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace NewISE.Models.dtObj
                             var t = cmab.ATTIVAZIONEMAB.MAB.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -73,7 +73,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaCoefficienteRichiamo_Riduzioni(decimal idRiduzioni, ModelDBISE db)
+        public void AssociaCoefficienteRichiamo_Riduzioni(decimal idRiduzioni, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace NewISE.Models.dtObj
                                     {
                                         var t = r.TRASFERIMENTO;
 
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, riduzioni.DATAINIZIOVALIDITA, db);
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
 
                                     }
                                 }
@@ -143,7 +143,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaConiuge_PMC(decimal idPercMagConiuge, ModelDBISE db)
+        public void AssociaConiuge_PMC(decimal idPercMagConiuge, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace NewISE.Models.dtObj
                             var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmc.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -203,7 +203,7 @@ namespace NewISE.Models.dtObj
 
         }
 
-        public void AssociaFiglio_PMF(decimal idPercFiglio, ModelDBISE db)
+        public void AssociaFiglio_PMF(decimal idPercFiglio, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -239,7 +239,7 @@ namespace NewISE.Models.dtObj
                             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pmf.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
                         }
                     }
@@ -259,7 +259,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaFigli_IPS(decimal idPrimoSegretario, ModelDBISE db)
+        public void AssociaFigli_IPS(decimal idPrimoSegretario, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -294,7 +294,7 @@ namespace NewISE.Models.dtObj
                             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ips.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -316,7 +316,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaIndenita_PD(decimal idPercDisagio, ModelDBISE db)
+        public void AssociaIndenita_PD(decimal idPercDisagio, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -347,7 +347,7 @@ namespace NewISE.Models.dtObj
                             pd.INDENNITA.Add(indennita);
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pd.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
                         }
                     }
@@ -367,8 +367,8 @@ namespace NewISE.Models.dtObj
                 throw ex;
             }
         }
-
-        public void AssociaIndennitaBase_IB(decimal idIndBase, ModelDBISE db)
+        
+        public void AssociaIndennitaBase_IB(decimal idIndBase, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -389,12 +389,12 @@ namespace NewISE.Models.dtObj
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
 
-                var d =
-                    db.LIVELLIDIPENDENTI.Where(
-                        a =>
-                            a.ANNULLATO == false && a.IDLIVELLO == ib.IDLIVELLO &&
-                            a.DATAFINEVALIDITA >= ib.DATAINIZIOVALIDITA && a.DATAINIZIOVALIDITA <= ib.DATAFINEVALIDITA)
-                        .ToList();
+                //var d =
+                //    db.LIVELLIDIPENDENTI.Where(
+                //        a =>
+                //            a.ANNULLATO == false && a.IDLIVELLO == ib.IDLIVELLO &&
+                //            a.DATAFINEVALIDITA >= ib.DATAINIZIOVALIDITA && a.DATAINIZIOVALIDITA <= ib.DATAFINEVALIDITA)
+                //        .ToList();
 
                 if (lTrsferimento?.Any() ?? false)
                 {
@@ -411,7 +411,7 @@ namespace NewISE.Models.dtObj
                             ib.INDENNITA.Add(indennita);
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
                         }
                     }
@@ -433,7 +433,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaIndennitaBase_Riduzioni(decimal idRiduzioni, ModelDBISE db)
+        public void AssociaIndennitaBase_Riduzioni(decimal idRiduzioni, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -478,7 +478,7 @@ namespace NewISE.Models.dtObj
                                     var t = i.TRASFERIMENTO;
                                     using (dtDipendenti dtd = new dtDipendenti())
                                     {
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                                     }
 
 
@@ -506,7 +506,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaIndennitaSistemazione_Riduzioni(decimal idRiduzioni, ModelDBISE db)
+        public void AssociaIndennitaSistemazione_Riduzioni(decimal idRiduzioni, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -549,7 +549,7 @@ namespace NewISE.Models.dtObj
                                     var t = i.TRASFERIMENTO;
                                     using (dtDipendenti dtd = new dtDipendenti())
                                     {
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, r.DATAINIZIOVALIDITA, db);
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                                     }
 
 
@@ -575,7 +575,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaIndennita_CS(decimal idCoefficenteSede, ModelDBISE db)
+        public void AssociaIndennita_CS(decimal idCoefficenteSede, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -607,7 +607,7 @@ namespace NewISE.Models.dtObj
                             cs.INDENNITA.Add(indennita);
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cs.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -631,7 +631,7 @@ namespace NewISE.Models.dtObj
 
         }
 
-        public void AssociaIndennita_TFR(decimal idTFR, ModelDBISE db)
+        public void AssociaIndennita_TFR(decimal idTFR, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -668,7 +668,7 @@ namespace NewISE.Models.dtObj
                             tfr.INDENNITA.Add(indennita);
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, tfr.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -690,7 +690,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaMAB_VMAB(decimal idPerceMAB, ModelDBISE db)
+        public void AssociaMAB_VMAB(decimal idPerceMAB, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -746,7 +746,7 @@ namespace NewISE.Models.dtObj
                             var t = perMab.MAB.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pm.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -770,7 +770,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaMaggiorazioniAbitazione_MA(decimal idMagAnnuali, ModelDBISE db)
+        public void AssociaMaggiorazioniAbitazione_MA(decimal idMagAnnuali, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -810,7 +810,7 @@ namespace NewISE.Models.dtObj
                             var t = mab.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ma.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -833,7 +833,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaPagatoCondivisoMAB(decimal idPercentualeCondivisione, ModelDBISE db)
+        public void AssociaPagatoCondivisoMAB(decimal idPercentualeCondivisione, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -870,7 +870,7 @@ namespace NewISE.Models.dtObj
                             var t = pgc.MAB.INDENNITA.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pc.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
 
@@ -894,7 +894,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaPercentualeAnticipoTEP(decimal idPercentualeAnticipoTEP, ModelDBISE db)
+        public void AssociaPercentualeAnticipoTEP(decimal idPercentualeAnticipoTEP, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -931,7 +931,7 @@ namespace NewISE.Models.dtObj
                             var t = tep.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, patep.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -954,7 +954,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaPercentualeAnticipoTER(decimal idPercentualeAnticipoTER, ModelDBISE db)
+        public void AssociaPercentualeAnticipoTER(decimal idPercentualeAnticipoTER, ModelDBISE db, DateTime dataVariazione)
         {
             try
             {
@@ -990,7 +990,7 @@ namespace NewISE.Models.dtObj
                             var t = ter.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pater.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -1013,7 +1013,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void AssociaPrimaSistemazione_IS(decimal idIndSistemazione, ModelDBISE db)
+        public void AssociaPrimaSistemazione_IS(decimal idIndSistemazione, ModelDBISE db, DateTime dataVariazione)
         {
             var indSist = db.INDENNITASISTEMAZIONE.Find(idIndSistemazione);
             var item = db.Entry<INDENNITASISTEMAZIONE>(indSist);
@@ -1050,7 +1050,7 @@ namespace NewISE.Models.dtObj
                         var t = ps.TRASFERIMENTO;
                         using (dtDipendenti dtd = new dtDipendenti())
                         {
-                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, indSist.DATAINIZIOVALIDITA, db);
+                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                         }
 
                     }
@@ -1067,7 +1067,7 @@ namespace NewISE.Models.dtObj
 
         }
 
-        public void AssociaPrimaSistemazione_PKM(decimal idPercKM, ModelDBISE db)
+        public void AssociaPrimaSistemazione_PKM(decimal idPercKM, ModelDBISE db, DateTime dataVariazione)
         {
             var pfkm = db.PERCENTUALEFKM.Find(idPercKM);
             var item = db.Entry<PERCENTUALEFKM>(pfkm);
@@ -1104,7 +1104,7 @@ namespace NewISE.Models.dtObj
                         var t = ps.TRASFERIMENTO;
                         using (dtDipendenti dtd = new dtDipendenti())
                         {
-                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pfkm.DATAINIZIOVALIDITA, db);
+                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                         }
 
                     }
@@ -1122,7 +1122,7 @@ namespace NewISE.Models.dtObj
 
         }
 
-        public void AssociaRichiamo_CR(decimal idCoeffRichiamo, ModelDBISE db)
+        public void AssociaRichiamo_CR(decimal idCoeffRichiamo, ModelDBISE db, DateTime dataVariazione)
         {
             var cr = db.COEFFICIENTEINDRICHIAMO.Find(idCoeffRichiamo);
             var item = db.Entry<COEFFICIENTEINDRICHIAMO>(cr);
@@ -1154,7 +1154,7 @@ namespace NewISE.Models.dtObj
                         var t = r.TRASFERIMENTO;
                         using (dtDipendenti dtd = new dtDipendenti())
                         {
-                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cr.DATAINIZIOVALIDITA, db);
+                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                         }
 
                     }
@@ -1172,7 +1172,7 @@ namespace NewISE.Models.dtObj
 
         }
 
-        public void AssociaRichiamo_PKM(decimal idPercKM, ModelDBISE db)
+        public void AssociaRichiamo_PKM(decimal idPercKM, ModelDBISE db, DateTime dataVariazione)
         {
             var pfkm = db.PERCENTUALEFKM.Find(idPercKM);
             var item = db.Entry<PERCENTUALEFKM>(pfkm);
@@ -1204,7 +1204,7 @@ namespace NewISE.Models.dtObj
                         var t = r.TRASFERIMENTO;
                         using (dtDipendenti dtd = new dtDipendenti())
                         {
-                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, pfkm.DATAINIZIOVALIDITA, db);
+                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                         }
 
                     }
@@ -1223,7 +1223,7 @@ namespace NewISE.Models.dtObj
 
         }
 
-        public void AssociaRiduzioniIB(decimal idIndBase, ModelDBISE db)
+        public void AssociaRiduzioniIB(decimal idIndBase, ModelDBISE db, DateTime dataVariazione)
         {
             var ib = db.INDENNITABASE.Find(idIndBase);
             var item = db.Entry<INDENNITABASE>(ib);
@@ -1263,7 +1263,7 @@ namespace NewISE.Models.dtObj
                             var t = ind.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, ib.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -1281,7 +1281,7 @@ namespace NewISE.Models.dtObj
 
         }
 
-        public void AssociaRiduzioni_CR(decimal idCoeffRichiamo, ModelDBISE db)
+        public void AssociaRiduzioni_CR(decimal idCoeffRichiamo, ModelDBISE db, DateTime dataVariazione)
         {
             var cr = db.COEFFICIENTEINDRICHIAMO.Find(idCoeffRichiamo);
             var item = db.Entry<COEFFICIENTEINDRICHIAMO>(cr);
@@ -1315,7 +1315,7 @@ namespace NewISE.Models.dtObj
                             var t = ric.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, cr.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
 
                         }
@@ -1336,7 +1336,7 @@ namespace NewISE.Models.dtObj
 
         }
 
-        public void AssociaRiduzioni_IS(decimal idIndSistemazione, ModelDBISE db)
+        public void AssociaRiduzioni_IS(decimal idIndSistemazione, ModelDBISE db, DateTime dataVariazione)
         {
             var indSist = db.INDENNITASISTEMAZIONE.Find(idIndSistemazione);
             var item = db.Entry<INDENNITASISTEMAZIONE>(indSist);
@@ -1370,7 +1370,7 @@ namespace NewISE.Models.dtObj
                             var t = ps.TRASFERIMENTO;
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, indSist.DATAINIZIOVALIDITA, db);
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                             }
                         }
 
