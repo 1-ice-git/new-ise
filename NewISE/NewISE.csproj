@@ -815,6 +815,7 @@
     <Content Include="Content\DataTables-1.10.13\extensions\ColReorder\js\dataTables.colReorder.js" />
     <Content Include="Content\DataTables-1.10.13\extensions\ColReorder\js\dataTables.colReorder.min.js" />
     <Content Include="Content\DataTables-1.10.13\extensions\ColReorder\License.txt" />
+    <Content Include="Content\DataTables-1.10.13\extensions\date-euro.js" />
     <Content Include="Content\DataTables-1.10.13\extensions\FixedColumns\css\fixedColumns.bootstrap.css" />
     <Content Include="Content\DataTables-1.10.13\extensions\FixedColumns\css\fixedColumns.bootstrap.min.css" />
     <Content Include="Content\DataTables-1.10.13\extensions\FixedColumns\css\fixedColumns.bootstrap4.css" />
