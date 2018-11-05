@@ -33,7 +33,7 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaPrimoSegretario)
+                @Html.DisplayNameFor(model => model.IndennitaServizioPrimoSegretario)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.PercentualeMaggiorazioniFigli)
@@ -62,7 +62,7 @@
                     </td>
                 }
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaPrimoSegretario)
+                    @Html.DisplayFor(modelItem => item.IndennitaServizioPrimoSegretario)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.PercentualeMaggiorazioniFigli)
@@ -121,11 +121,11 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "columnDefs": [
-                {
-                    "targets": 'no-sort',
-                    "orderable": false,
+                //{
+                //    "targets": 'no-sort',
+                //    "orderable": false,
 
-                }
+                //}
         ],
         "order": [[0, "asc"]]
     });

@@ -283,7 +283,7 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columnDataFineValidita;
             
-            private global::System.Data.DataColumn columnIndennitaPrimoSegretario;
+            private global::System.Data.DataColumn columnIndennitaServizioPrimoSegretario;
             
             private global::System.Data.DataColumn columnPercentualeMaggiorazioniFigli;
             
@@ -340,9 +340,9 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IndennitaPrimoSegretarioColumn {
+            public global::System.Data.DataColumn IndennitaServizioPrimoSegretarioColumn {
                 get {
-                    return this.columnIndennitaPrimoSegretario;
+                    return this.columnIndennitaServizioPrimoSegretario;
                 }
             }
             
@@ -399,12 +399,12 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaPrimoSegretario, string PercentualeMaggiorazioniFigli, string MaggiorazioniFigli) {
+            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaServizioPrimoSegretario, string PercentualeMaggiorazioniFigli, string MaggiorazioniFigli) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DataInizioValidita,
                         DataFineValidita,
-                        IndennitaPrimoSegretario,
+                        IndennitaServizioPrimoSegretario,
                         PercentualeMaggiorazioniFigli,
                         MaggiorazioniFigli};
                 rowDataTable1Row.ItemArray = columnValuesArray;
@@ -431,7 +431,7 @@ namespace NewISE.Views.Dataset {
             internal void InitVars() {
                 this.columnDataInizioValidita = base.Columns["DataInizioValidita"];
                 this.columnDataFineValidita = base.Columns["DataFineValidita"];
-                this.columnIndennitaPrimoSegretario = base.Columns["IndennitaPrimoSegretario"];
+                this.columnIndennitaServizioPrimoSegretario = base.Columns["IndennitaServizioPrimoSegretario"];
                 this.columnPercentualeMaggiorazioniFigli = base.Columns["PercentualeMaggiorazioniFigli"];
                 this.columnMaggiorazioniFigli = base.Columns["MaggiorazioniFigli"];
             }
@@ -443,8 +443,8 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnDataInizioValidita);
                 this.columnDataFineValidita = new global::System.Data.DataColumn("DataFineValidita", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDataFineValidita);
-                this.columnIndennitaPrimoSegretario = new global::System.Data.DataColumn("IndennitaPrimoSegretario", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIndennitaPrimoSegretario);
+                this.columnIndennitaServizioPrimoSegretario = new global::System.Data.DataColumn("IndennitaServizioPrimoSegretario", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIndennitaServizioPrimoSegretario);
                 this.columnPercentualeMaggiorazioniFigli = new global::System.Data.DataColumn("PercentualeMaggiorazioniFigli", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPercentualeMaggiorazioniFigli);
                 this.columnMaggiorazioniFigli = new global::System.Data.DataColumn("MaggiorazioniFigli", typeof(string), null, global::System.Data.MappingType.Element);
@@ -624,18 +624,18 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string IndennitaPrimoSegretario {
+            public string IndennitaServizioPrimoSegretario {
                 get {
                     try {
-                        return ((string)(this[this.tableDataTable1.IndennitaPrimoSegretarioColumn]));
+                        return ((string)(this[this.tableDataTable1.IndennitaServizioPrimoSegretarioColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IndennitaPrimoSegretario\' nella tabella \'DataTable1\' è D" +
-                                "BNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IndennitaServizioPrimoSegretario\' nella tabella \'DataTab" +
+                                "le1\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.IndennitaPrimoSegretarioColumn] = value;
+                    this[this.tableDataTable1.IndennitaServizioPrimoSegretarioColumn] = value;
                 }
             }
             
@@ -699,14 +699,14 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIndennitaPrimoSegretarioNull() {
-                return this.IsNull(this.tableDataTable1.IndennitaPrimoSegretarioColumn);
+            public bool IsIndennitaServizioPrimoSegretarioNull() {
+                return this.IsNull(this.tableDataTable1.IndennitaServizioPrimoSegretarioColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIndennitaPrimoSegretarioNull() {
-                this[this.tableDataTable1.IndennitaPrimoSegretarioColumn] = global::System.Convert.DBNull;
+            public void SetIndennitaServizioPrimoSegretarioNull() {
+                this[this.tableDataTable1.IndennitaServizioPrimoSegretarioColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -17,7 +17,7 @@
                 </Style>
               </TextRun>
               <TextRun>
-                <Value>IIndennità Teorica * Coefficiente di riduzione</Value>
+                <Value>Indennità Teorica *  Eventuale Coefficiente di riduzione</Value>
                 <Style>
                   <FontStyle>Italic</FontStyle>
                   <FontSize>9pt</FontSize>
@@ -267,7 +267,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>

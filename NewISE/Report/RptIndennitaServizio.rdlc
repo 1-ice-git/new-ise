@@ -17,28 +17,71 @@
                 </Style>
               </TextRun>
               <TextRun>
-                <Value>([(Ind. Base * Coeff.Sede)+ (Ind. Base)]+ ([(Ind. Base * Coeff.Sede)+ ([(Ind. Base)]*Perc. Di9sagio])*</Value>
+                <Value>X = </Value>
                 <Style>
                   <FontStyle>Normal</FontStyle>
                   <FontFamily>Calibri</FontFamily>
+                  <FontSize>9pt</FontSize>
                   <FontWeight>Normal</FontWeight>
                   <TextDecoration>None</TextDecoration>
                   <Color>#000000</Color>
                 </Style>
               </TextRun>
               <TextRun>
-                <Value>Coeff. Rid</Value>
+                <Value>(Ind. Base * Coeff.Sede)+ (Ind. Base)</Value>
                 <Style>
-                  <FontStyle>Italic</FontStyle>
+                  <FontStyle>Normal</FontStyle>
                   <FontFamily>Calibri</FontFamily>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Normal</FontWeight>
+                  <TextDecoration>None</TextDecoration>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Y = X * Perc.Disagio</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>9pt</FontSize>
                   <FontWeight>Normal</FontWeight>
                   <TextDecoration>None</TextDecoration>
                   <Color>#000000</Color>
                 </Style>
               </TextRun>
             </TextRuns>
+            <LeftIndent>0cm</LeftIndent>
+            <RightIndent>0cm</RightIndent>
             <Style>
               <TextAlign>Center</TextAlign>
+              <LineHeight>12pt</LineHeight>
+            </Style>
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Indennità di servizio = (X + Y) * Eventuale Coeff.di Riduzione</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Normal</FontWeight>
+                  <TextDecoration>None</TextDecoration>
+                  <Color>#000000</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <LeftIndent>0cm</LeftIndent>
+            <RightIndent>0cm</RightIndent>
+            <Style>
+              <TextAlign>Center</TextAlign>
+              <LineHeight>12pt</LineHeight>
             </Style>
           </Paragraph>
           <Paragraph>
@@ -362,7 +405,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=FormatNumber(Fields!IndennitaBase.Value,2)</Value>
-                              <Style />
+                              <Style>
+                                <Format>#,0,.00;(#,0,.00);'-'</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -426,7 +471,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=FormatNumber(Fields!PercentualeDisagio.Value,2)</Value>
-                              <Style />
+                              <Style>
+                                <Format>0.00 %</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -458,7 +505,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=FormatNumber(Fields!IndennitaServizio.Value,2)</Value>
-                              <Style />
+                              <Style>
+                                <Format>#,0,.00;(#,0,.00);'-'</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>

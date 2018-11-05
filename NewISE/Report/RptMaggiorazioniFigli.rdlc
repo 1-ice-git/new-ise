@@ -272,7 +272,7 @@
                 </Style>
               </TextRun>
               <TextRun>
-                <Value>Indennità di Primo Segretario * Numero Figli</Value>
+                <Value>Indennità  di servizio calcolata con Indennità di Primo Segretario *  Perc.Magg.Figli * Numero Figli</Value>
                 <Style>
                   <FontStyle>Italic</FontStyle>
                   <FontSize>9pt</FontSize>
@@ -410,7 +410,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Indennita Primo Segretario</Value>
+                              <Value>Ind. Servizio Primo Segr.</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -564,15 +564,17 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="IndennitaPrimoSegretario">
+                    <Textbox Name="IndennitaServizioPrimoSegretario">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!IndennitaPrimoSegretario.Value,2)</Value>
-                              <Style />
+                              <Value>=FormatNumber(Fields!IndennitaServizioPrimoSegretario.Value,2)</Value>
+                              <Style>
+                                <Format>#,0,.00;(#,0,.00);'-'</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -580,7 +582,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>IndennitaPrimoSegretario</rd:DefaultName>
+                      <rd:DefaultName>IndennitaServizioPrimoSegretario</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -592,6 +594,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -636,7 +639,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=FormatNumber(Fields!MaggiorazioniFigli.Value,2)</Value>
-                              <Style />
+                              <Style>
+                                <Format>#,0,.00;(#,0,.00);'-'</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
@@ -890,8 +895,8 @@
           <DataField>DataFineValidita</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="IndennitaPrimoSegretario">
-          <DataField>IndennitaPrimoSegretario</DataField>
+        <Field Name="IndennitaServizioPrimoSegretario">
+          <DataField>IndennitaServizioPrimoSegretario</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="PercentualeMaggiorazioniFigli">

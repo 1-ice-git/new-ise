@@ -316,6 +316,10 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal ImportoMABMensile { get; set; }
 
+        [Display(Name = "Massimale MAB")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal ImportoMABMaxMensile { get; set; }
+
         public decimal wrk_n1 { get; set; }
 
         public decimal wrk_n2 { get; set; }
@@ -342,6 +346,8 @@ namespace NewISE.Models.DBModel
         
         public string valutaMab { get; set; }
 
-
+        [Display(Name = "Indennità Servizio Primo Segr.")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal IndennitaServizioPrimoSegretario { get; set; }
     }
 }

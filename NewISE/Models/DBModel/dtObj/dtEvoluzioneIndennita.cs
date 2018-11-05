@@ -75,7 +75,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -112,7 +112,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -197,7 +197,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
                    }
 
@@ -228,7 +228,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
                     }
 
@@ -260,7 +260,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
                         }
 
@@ -302,7 +302,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -324,6 +324,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     dvSucc = lDateVariazioni[j + 1];
                                 }
+
                                 using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                 {
                                         EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
@@ -401,7 +402,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
                         }
 
@@ -432,7 +433,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
                         }
 
@@ -464,7 +465,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
                         }
 
@@ -501,7 +502,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -550,7 +551,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
 
                         }
@@ -600,7 +601,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
 
                         }
@@ -608,6 +609,8 @@ namespace NewISE.Models.DBModel.dtObj
                     #endregion
                     
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                    lDateVariazioni = lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
 
                     if (lDateVariazioni?.Any() ?? false)
                     {
@@ -921,24 +924,11 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
 
-                            if (f.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
-                            {
-                                dtVar = f.DATAFINEVALIDITA.AddDays(+1);
-
-                            }
-                            else
-                            {
-                                dtVar = trasferimento.DATARIENTRO;
-                            }
-
-                            if (!lDateVariazioni.Contains(dtVar))
-                            {
-                                lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
-                            }
 
                         }
                     }
+
+                    
                     #endregion
 
                     #region Variazioni Percentuale Maggiorazioni Figli
@@ -967,7 +957,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
                         }
 
@@ -985,6 +975,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         f.INDENNITAPRIMOSEGRETARIO.Where(
                                             a =>
                                                 a.ANNULLATO == false).ToList();
+
                             DateTime dtVar = new DateTime();
 
                             if (f.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
@@ -999,7 +990,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
 
 
@@ -1008,6 +999,34 @@ namespace NewISE.Models.DBModel.dtObj
 
                     }
                     #endregion
+
+                    if (lf?.Any() ?? false)
+                    {
+                        foreach (var ff in lf)
+                        {
+
+                            DateTime dtVar = new DateTime();
+
+
+
+                            if (ff.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
+                            {
+                                dtVar = ff.DATAFINEVALIDITA.AddDays(1);
+                            }
+                            else
+                            {
+                                dtVar = trasferimento.DATARIENTRO;
+                            }
+
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+
+                            }
+
+
+                        }
+                    }
 
                     #region Variazioni di indennità di base
 
@@ -1036,7 +1055,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -1067,7 +1086,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -1099,7 +1118,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -1136,13 +1155,15 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
                     #endregion
 
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                    lDateVariazioni = lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
 
                     if (lDateVariazioni?.Any() ?? false)
                     {
@@ -1168,7 +1189,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli;
                                     xx.IndennitaPrimoSegretario = ci.IndennitaPrimoSegretario;
                                     xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
-
+                                    xx.IndennitaServizioPrimoSegretario = ci.IndennitaServizioPrimoSegretario;
                                     eim.Add(xx);
 
                                 }
@@ -1234,25 +1255,25 @@ namespace NewISE.Models.DBModel.dtObj
                                 dtVar = c.DATAINIZIOVALIDITA;
                             }
 
+                            //if (!lDateVariazioni.Contains(dtVar))
+                            //{
+                            //    lDateVariazioni.Add(dtVar);
+                            //    //lDateVariazioni.Sort();
+                            //}
+
+                            //if (c.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
+                            //{
+                            //    dtVar = c.DATAFINEVALIDITA;
+                            //}
+                            //else
+                            //{
+                            //    dtVar = trasferimento.DATARIENTRO;
+                            //}
+
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
-                            }
-
-                            if (c.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
-                            {
-                                dtVar = c.DATAFINEVALIDITA;
-                            }
-                            else
-                            {
-                                dtVar = trasferimento.DATARIENTRO;
-                            }
-
-                            if (!lDateVariazioni.Contains(dtVar))
-                            {
-                                lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
 
 
@@ -1285,7 +1306,7 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
 
                         }
@@ -1313,10 +1334,51 @@ namespace NewISE.Models.DBModel.dtObj
                             if (!lDateVariazioni.Contains(dtVar))
                             {
                                 lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
+                                //lDateVariazioni.Sort();
                             }
                         }
                         #endregion
+                    }
+
+                    if (lc?.Any() ?? false)
+                    {
+                        foreach (var fc in lc)
+                        {
+
+                            DateTime dtVar = new DateTime();
+
+                            //if (c.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            //{
+                            //    dtVar = trasferimento.DATAPARTENZA;
+                            //}
+                            //else
+                            //{
+                            //    dtVar = c.DATAINIZIOVALIDITA;
+                            //}
+
+                            //if (!lDateVariazioni.Contains(dtVar))
+                            //{
+                            //    lDateVariazioni.Add(dtVar);
+                            //    //lDateVariazioni.Sort();
+                            //}
+
+                            if (fc.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
+                            {
+                                dtVar = fc.DATAFINEVALIDITA.AddDays(1);
+                            }
+                            else
+                            {
+                                dtVar = trasferimento.DATARIENTRO;
+                            }
+
+                            if (!lDateVariazioni.Contains(dtVar))
+                            {
+                                lDateVariazioni.Add(dtVar);
+                                
+                            }
+
+
+                        }
                     }
 
                     #region Variazioni di indennità di base
@@ -1346,7 +1408,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -1377,7 +1439,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -1409,7 +1471,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -1446,7 +1508,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (!lDateVariazioni.Contains(dtVar))
                         {
                             lDateVariazioni.Add(dtVar);
-                            lDateVariazioni.Sort();
+                            //lDateVariazioni.Sort();
                         }
                     }
 
@@ -1454,7 +1516,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
 
-                        if (lDateVariazioni?.Any() ?? false)
+                    lDateVariazioni = lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
+
+                    if (lDateVariazioni?.Any() ?? false)
                         {
                             for (int j = 0; j < lDateVariazioni.Count; j++)
                             {
@@ -1552,39 +1616,71 @@ namespace NewISE.Models.DBModel.dtObj
                                                 lDateVariazioni.Sort();
                                             }
                                         }
-                                
-                                    var lcl =
-                                        mab.CANONEMAB.Where(
-                                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                            a.ATTIVAZIONEMAB.ANNULLATO == false &&
-                                            a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                                            a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
-                                        .OrderBy(a => a.DATAINIZIOVALIDITA)
-                                        .ToList();
 
-                                            foreach (var cl in lcl)
+
+                            
+
+
+
+                                        foreach (var fz in lpmab)
+                                        {
+                                            DateTime dtVar = new DateTime();
+
+                                            if (fz.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
                                             {
-                                                DateTime dtVar = new DateTime();
-
-                                                if (cl.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                                {
-                                                    dtVar = trasferimento.DATAPARTENZA;
-                                                }
-                                                else
-                                                {
-                                                    dtVar = cl.DATAINIZIOVALIDITA;
-                                                }
-
-                                                if (!lDateVariazioni.Contains(dtVar))
-                                                {
-                                                    lDateVariazioni.Add(dtVar);
-                                                    lDateVariazioni.Sort();
-                                                }
-
+                                                dtVar = fz.DATAFINEVALIDITA.AddDays(1);
                                             }
+                                            else
+                                            {
+                                                dtVar = trasferimento.DATARIENTRO;
+                                            }
+
+                                            if (!lDateVariazioni.Contains(dtVar))
+                                            {
+                                                lDateVariazioni.Add(dtVar);
+                                                
+                                            }
+                                        }
+
+                                            var lcl =
+                                                    mab.CANONEMAB.Where(
+                                                        a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                        a.ATTIVAZIONEMAB.ANNULLATO == false &&
+                                                        a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                                                        a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+                                                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                                    .ToList();
+
+                                                        foreach (var cl in lcl)
+                                                        {
+                                                            DateTime dtVar = new DateTime();
+
+                                                            if (cl.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                                            {
+                                                                dtVar = trasferimento.DATAPARTENZA;
+                                                            }
+                                                            else
+                                                            {
+                                                                dtVar = cl.DATAINIZIOVALIDITA;
+                                                            }
+
+                                                            if (!lDateVariazioni.Contains(dtVar))
+                                                            {
+                                                                lDateVariazioni.Add(dtVar);
+                                                                lDateVariazioni.Sort();
+                                                            }
+
+                                                        }
+
+
+
+
+
                                 }
                         
                                     lDateVariazioni.Add(new DateTime(9999, 12, 31));
+
+                                    lDateVariazioni = lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
 
                                     if (lDateVariazioni?.Any() ?? false)
                                     {
@@ -1613,7 +1709,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     yy.ImportoMABMensile = ci.ImportoMABMensile;
                                                     yy.PercentualeMaggAbitazione = ci.PercentualeMAB;
                                                     yy.valutaMab = ci.ValutaMAB.DESCRIZIONEVALUTA;
-                                                    
+                                                    yy.ImportoMABMaxMensile = ci.ImportoMABMaxMensile;
 
                                                     eim.Add(yy);
 
@@ -1896,6 +1992,10 @@ namespace NewISE.Models.DBModel.dtObj
                         }
 
                     }
+
+
+
+
                 }
                 return eim;
             }

@@ -38,17 +38,21 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.CanoneMAB)
             </th>
-            @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.CanoneLocazioneinEuro)
-            </th>*@
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.CanoneLocazioneinValuta)
-            </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.valutaMab)
             </th>
             <th class="text-center">
+                @Html.DisplayNameFor(model => model.TassoFissoRagguaglio)
+            </th>
+
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.CanoneLocazioneinEuro)
+            </th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.PercentualeMaggAbitazione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.ImportoMABMaxMensile)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.ImportoMABMensile)
@@ -76,17 +80,20 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.CanoneMAB)
                 </td>
-                @*<td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.CanoneLocazioneinEuro)
-                </td>*@
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.CanoneLocazioneinValuta)
-                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.valutaMab)
                 </td>
                 <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.TassoFissoRagguaglio)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CanoneLocazioneinEuro)
+                </td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.PercentualeMaggAbitazione)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.ImportoMABMaxMensile)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.ImportoMABMensile)
@@ -165,13 +172,13 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "columnDefs": [
-                {
-                    "targets": 'no-sort',
-                    "orderable": false,
+                //{
+                //    "targets": 'no-sort',
+                //    "orderable": false,
 
-                }
+                //}
         ],
-        "order": [[0, "asc"]]
+        "order": [[0, "desc"]]
     });
 
     function DownloadReportIndennitaServizio() {

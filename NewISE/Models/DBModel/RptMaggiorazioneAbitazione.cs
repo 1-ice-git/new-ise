@@ -22,6 +22,11 @@ namespace NewISE.Models.DBModel
 
         public string valutaMAB { get; set; }
 
+        public decimal CanoneMAB { get; set; }
+
+        public decimal ImportoMABMaxMensile { get; set; }
+
+
 
     }
 }
