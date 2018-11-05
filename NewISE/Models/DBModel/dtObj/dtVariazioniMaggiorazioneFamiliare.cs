@@ -3572,7 +3572,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     foreach (var p in lp)
                                     {
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, p.DATAINIZIO, db);
+                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, p.DATAINIZIO, db, true);
 
                                         p.IDSTATORECORD = (decimal)EnumStatoRecord.Attivato;
                                         if (db.SaveChanges() <= 0)
