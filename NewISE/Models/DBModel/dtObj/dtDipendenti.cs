@@ -584,10 +584,14 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     int i = db.SaveChanges();
 
-                    if (i <= 0)
+                    if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
                     {
-                        throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                        if (i <= 0)
+                        {
+                            throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                        }
                     }
+
                 }
 
 
