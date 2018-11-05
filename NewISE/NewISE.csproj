@@ -6831,9 +6831,6 @@
     <Content Include="Report\RptIndennitadiRichiamoLorda.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Report\RptIndennitadiRichiamoNetta.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Report\RptIndennitadiSistemazioneLorda.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

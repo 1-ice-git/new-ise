@@ -38,6 +38,15 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.CanoneMAB)
             </th>
+            @*<th class="text-center">
+                @Html.DisplayNameFor(model => model.CanoneLocazioneinEuro)
+            </th>*@
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.CanoneLocazioneinValuta)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.valutaMab)
+            </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.PercentualeMaggAbitazione)
             </th>
@@ -66,6 +75,15 @@
                 }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.CanoneMAB)
+                </td>
+                @*<td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CanoneLocazioneinEuro)
+                </td>*@
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CanoneLocazioneinValuta)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.valutaMab)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.PercentualeMaggAbitazione)

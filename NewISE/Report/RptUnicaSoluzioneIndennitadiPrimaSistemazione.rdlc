@@ -293,7 +293,7 @@
         <Top>4.31271cm</Top>
         <Left>0.46335cm</Left>
         <Height>0cm</Height>
-        <Width>18.14991cm</Width>
+        <Width>18.81813cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
@@ -301,19 +301,124 @@
           </Border>
         </Style>
       </Line>
-      <Tablix Name="Tablix1">
+      <Tablix Name="Tablix11">
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>6.24271cm</Width>
+              <Width>13.85836cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>12.10597cm</Width>
+              <Width>5.16129cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.5cm</Height>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox9">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Indennita Sistemazione Anticipabile Lorda (Con esclus. Magg. Fam)</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox9</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox12">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FormatNumber(Fields!IndennitaSistemazioneAnticipabileLorda.Value,2)</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox12</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember />
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
+        <Top>4.83306cm</Top>
+        <Left>0.46335cm</Left>
+        <Height>0.6cm</Height>
+        <Width>19.01965cm</Width>
+        <ZIndex>10</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Tablix>
+      <Tablix Name="Tablix1">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>13.91654cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>5.1031cm</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.55292cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -324,13 +429,15 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Indennita di Prima Sistemazione </Value>
+                              <Value>Indennita di Prima Sistemazione (Lorda) </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox86</rd:DefaultName>
@@ -397,88 +504,129 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
-        <Top>4.85646cm</Top>
-        <Left>0.26458cm</Left>
-        <Height>0.5cm</Height>
-        <Width>18.34868cm</Width>
-        <ZIndex>10</ZIndex>
+        <Top>5.99122cm</Top>
+        <Left>0.46335cm</Left>
+        <Height>0.55292cm</Height>
+        <Width>19.01964cm</Width>
+        <ZIndex>11</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Tablix>
-      <Textbox Name="Textbox25">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Detrazione</Value>
-                <Style>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox25</rd:DefaultName>
-        <Top>5.87535cm</Top>
-        <Left>0.17639cm</Left>
+      <Tablix Name="Tablix4">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>13.89585cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>5.1031cm</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox25">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Detrazione</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox25</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox60">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FormatNumber(Fields!Detrazione.Value,2)</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox60</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember />
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
+        <Top>6.95112cm</Top>
+        <Left>0.48404cm</Left>
         <Height>0.6cm</Height>
-        <Width>6.38823cm</Width>
-        <ZIndex>11</ZIndex>
-        <Style>
-          <Border>
-            <Color>LightGrey</Color>
-            <Style>Solid</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox60">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Microsoft.VisualBasic.Strings.FormatNumber(Fields!Detrazione.Value, 2)</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox60</rd:DefaultName>
-        <Top>5.87535cm</Top>
-        <Left>6.56462cm</Left>
-        <Height>0.6cm</Height>
-        <Width>12.04864cm</Width>
+        <Width>18.99895cm</Width>
         <ZIndex>12</ZIndex>
         <Style>
           <Border>
-            <Color>LightGrey</Color>
-            <Style>Solid</Style>
+            <Style>None</Style>
           </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Textbox>
-      <Line Name="Line3">
-        <Top>7.21618cm</Top>
-        <Left>12.67923cm</Left>
+      </Tablix>
+      <Line Name="Line6">
+        <Top>7.91258cm</Top>
+        <Left>14.65213cm</Left>
         <Height>0cm</Height>
-        <Width>6.40146cm</Width>
+        <Width>4.83087cm</Width>
         <ZIndex>13</ZIndex>
         <Style>
           <Border>
@@ -486,74 +634,113 @@
           </Border>
         </Style>
       </Line>
-      <Textbox Name="Textbox31">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Imponibile Previdenziale</Value>
-                <Style>
-                  <FontWeight>Bold</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox31</rd:DefaultName>
-        <Top>7.7486cm</Top>
-        <Left>0.26458cm</Left>
+      <Tablix Name="Tablix6">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>13.89485cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>5.10411cm</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox32">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Imponibile Previdenziale</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox31</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox65">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Microsoft.VisualBasic.Strings.FormatNumber(Fields!ImpPrevid.Value, 2)</Value>
+                              <Style>
+                                <FontWeight>Normal</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox64</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember />
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DataSetAnticipoIndennitàdiSistemazioneLorda</DataSetName>
+        <Top>8.86073cm</Top>
+        <Left>0.48404cm</Left>
         <Height>0.6cm</Height>
-        <Width>6.47643cm</Width>
+        <Width>18.99896cm</Width>
         <ZIndex>14</ZIndex>
         <Style>
           <Border>
-            <Color>LightGrey</Color>
-            <Style>Solid</Style>
+            <Style>None</Style>
           </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Textbox>
-      <Textbox Name="Textbox64">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Microsoft.VisualBasic.Strings.FormatNumber(Fields!ImpPrevid.Value, 2)</Value>
-                <Style>
-                  <FontWeight>Normal</FontWeight>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox64</rd:DefaultName>
-        <Top>7.7486cm</Top>
-        <Left>6.74101cm</Left>
-        <Height>0.6cm</Height>
-        <Width>12.02218cm</Width>
-        <ZIndex>15</ZIndex>
-        <Style>
-          <Border>
-            <Color>LightGrey</Color>
-            <Style>Solid</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
+      </Tablix>
       <Textbox Name="Textbox37">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -571,11 +758,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox37</rd:DefaultName>
-        <Top>8.96569cm</Top>
-        <Left>0.26582cm</Left>
+        <Top>10.01636cm</Top>
+        <Left>0.46335cm</Left>
         <Height>0.6cm</Height>
-        <Width>6.41786cm</Width>
-        <ZIndex>16</ZIndex>
+        <Width>13.84747cm</Width>
+        <ZIndex>15</ZIndex>
         <Style>
           <Border>
             <Color>LightGrey</Color>
@@ -604,11 +791,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox66</rd:DefaultName>
-        <Top>8.96569cm</Top>
-        <Left>6.68368cm</Left>
+        <Top>10.01636cm</Top>
+        <Left>14.31082cm</Left>
         <Height>0.6cm</Height>
-        <Width>12.07951cm</Width>
-        <ZIndex>17</ZIndex>
+        <Width>5.15022cm</Width>
+        <ZIndex>16</ZIndex>
         <Style>
           <Border>
             <Color>LightGrey</Color>
@@ -637,11 +824,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox43</rd:DefaultName>
-        <Top>10.18277cm</Top>
-        <Left>0.17639cm</Left>
+        <Top>12.03672cm</Top>
+        <Left>0.66484cm</Left>
         <Height>0.6cm</Height>
-        <Width>6.34668cm</Width>
-        <ZIndex>18</ZIndex>
+        <Width>13.85836cm</Width>
+        <ZIndex>17</ZIndex>
         <Style>
           <Border>
             <Color>LightGrey</Color>
@@ -670,11 +857,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox68</rd:DefaultName>
-        <Top>10.18277cm</Top>
-        <Left>6.52307cm</Left>
+        <Top>12.03672cm</Top>
+        <Left>14.49674cm</Left>
         <Height>0.6cm</Height>
-        <Width>12.24012cm</Width>
-        <ZIndex>19</ZIndex>
+        <Width>5.01269cm</Width>
+        <ZIndex>18</ZIndex>
         <Style>
           <Border>
             <Color>LightGrey</Color>
@@ -686,18 +873,6 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Line Name="Line4">
-        <Top>11.32147cm</Top>
-        <Left>12.67923cm</Left>
-        <Height>0cm</Height>
-        <Width>6.40146cm</Width>
-        <ZIndex>20</ZIndex>
-        <Style>
-          <Border>
-            <Style>Solid</Style>
-          </Border>
-        </Style>
-      </Line>
       <Textbox Name="Textbox70">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -711,15 +886,17 @@
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Left</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox70</rd:DefaultName>
-        <Top>11.72265cm</Top>
-        <Left>0.26582cm</Left>
+        <Top>13.01281cm</Top>
+        <Left>0.69332cm</Left>
         <Height>0.6cm</Height>
-        <Width>6.25911cm</Width>
-        <ZIndex>21</ZIndex>
+        <Width>13.80343cm</Width>
+        <ZIndex>19</ZIndex>
         <Style>
           <Border>
             <Color>LightGrey</Color>
@@ -748,11 +925,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox76</rd:DefaultName>
-        <Top>11.72265cm</Top>
-        <Left>6.52493cm</Left>
+        <Top>13.01281cm</Top>
+        <Left>14.49675cm</Left>
         <Height>0.6cm</Height>
-        <Width>12.23826cm</Width>
-        <ZIndex>22</ZIndex>
+        <Width>5.01269cm</Width>
+        <ZIndex>20</ZIndex>
         <Style>
           <Border>
             <Color>LightGrey</Color>
@@ -764,7 +941,7 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox62">
+      <Textbox Name="Textbox63">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
@@ -777,14 +954,84 @@
                 </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Left</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox62</rd:DefaultName>
-        <Top>13.56944cm</Top>
-        <Left>6.51258cm</Left>
+        <Top>14.05539cm</Top>
+        <Left>0.63838cm</Left>
         <Height>0.6cm</Height>
-        <Width>12.25061cm</Width>
+        <Width>13.85836cm</Width>
+        <ZIndex>21</ZIndex>
+        <Style>
+          <Border>
+            <Color>LightGrey</Color>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox21">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Microsoft.VisualBasic.Strings.FormatNumber(Fields!AliquotaFiscale.Value, 2)</Value>
+                <Style>
+                  <FontWeight>Normal</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox21</rd:DefaultName>
+        <Top>14.05539cm</Top>
+        <Left>14.47029cm</Left>
+        <Height>0.6cm</Height>
+        <Width>5.01269cm</Width>
+        <ZIndex>22</ZIndex>
+        <Style>
+          <Border>
+            <Color>LightGrey</Color>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox26">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Ritenuta Fiscale</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox26</rd:DefaultName>
+        <Top>15.42052cm</Top>
+        <Left>0.66687cm</Left>
+        <Height>0.6cm</Height>
+        <Width>13.80342cm</Width>
         <ZIndex>23</ZIndex>
         <Style>
           <Border>
@@ -797,14 +1044,14 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="AliquotaFiscale">
+      <Textbox Name="Textbox28">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Microsoft.VisualBasic.Strings.FormatNumber(Fields!AliquotaFiscale.Value, 2)</Value>
+                <Value>=Microsoft.VisualBasic.Strings.FormatNumber(Fields!RitenutaFiscale.Value, 2)</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -813,11 +1060,11 @@
             </Style>
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>AliquotaFiscale</rd:DefaultName>
-        <Top>14.16944cm</Top>
-        <Left>6.51258cm</Left>
+        <rd:DefaultName>Textbox28</rd:DefaultName>
+        <Top>15.42052cm</Top>
+        <Left>14.47029cm</Left>
         <Height>0.6cm</Height>
-        <Width>12.25061cm</Width>
+        <Width>4.99075cm</Width>
         <ZIndex>24</ZIndex>
         <Style>
           <Border>
@@ -837,7 +1084,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Indennità di Prima Sistemazione (Unica Soluzione)</Value>
+                <Value>Indennità di Prima Sistemazione (Ind. Prima Sistemazione Lorda - Contr. Prev. - Rit. Fiscale)</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -849,10 +1096,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox82</rd:DefaultName>
-        <Top>15.45856cm</Top>
-        <Left>6.51258cm</Left>
+        <Top>16.73448cm</Top>
+        <Left>0.66485cm</Left>
         <Height>0.6cm</Height>
-        <Width>12.25061cm</Width>
+        <Width>18.81814cm</Width>
         <ZIndex>25</ZIndex>
         <Style>
           <Border>
@@ -877,15 +1124,15 @@
               </TextRun>
             </TextRuns>
             <Style>
-              <TextAlign>Center</TextAlign>
+              <TextAlign>Right</TextAlign>
             </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Importo</rd:DefaultName>
-        <Top>16.05856cm</Top>
-        <Left>6.51258cm</Left>
+        <Top>17.33448cm</Top>
+        <Left>0.66485cm</Left>
         <Height>0.6cm</Height>
-        <Width>12.25061cm</Width>
+        <Width>18.81814cm</Width>
         <ZIndex>26</ZIndex>
         <Style>
           <Border>
@@ -898,11 +1145,23 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Line Name="Line5">
+        <Top>11.40781cm</Top>
+        <Left>14.31082cm</Left>
+        <Height>0cm</Height>
+        <Width>4.91026cm</Width>
+        <ZIndex>27</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+        </Style>
+      </Line>
     </ReportItems>
-    <Height>7.12268in</Height>
+    <Height>7.42834in</Height>
     <Style />
   </Body>
-  <Width>7.57459in</Width>
+  <Width>7.78905in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>

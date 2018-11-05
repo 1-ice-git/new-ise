@@ -205,8 +205,11 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     //db.Database.BeginTransaction();
-                    var AVC = db.ATTIVAZIONIVIAGGICONGEDO.Where(a => a.IDATTIVAZIONEVC == id_Attiv_Viaggio_Congedo && a.IDFASEVC == idFaseInCorso
-                    && a.ANNULLATO == false && a.ATTIVARICHIESTA == true).ToList();
+                    var AVC = db.ATTIVAZIONIVIAGGICONGEDO
+                                .Where(a => a.IDATTIVAZIONEVC == id_Attiv_Viaggio_Congedo &&
+                                            a.IDFASEVC == idFaseInCorso && 
+                                            a.ANNULLATO == false && 
+                                            a.ATTIVARICHIESTA == true).ToList();
                     if (AVC?.Any() ?? false)
                         tmp = Convert.ToBoolean(AVC.First().ATTIVARICHIESTA);
                 }

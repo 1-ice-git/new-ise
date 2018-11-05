@@ -319,5 +319,14 @@ namespace NewISE.Models.DBModel
 
         public string dataSaldoSistemazione { get; set; }
 
+        public decimal anticipo { get; set; }
+        
+        
+        public decimal saldo { get; set; }
+
+        
+        public decimal totaleSaldoPrimaSistemazione { get; set; }
+
+
     }
 }

@@ -60,12 +60,10 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal IndennitaPersonale { get; set; }
 
-        [Display(Name = "Perc. Magg. Coniuge")]
-       
+        [Display(Name = "Perc. Magg. Coniuge")]       
         public decimal PercentualeMaggConiuge { get; set; }
 
-        [Display(Name = "Perc. Magg. Figli")]
-       
+        [Display(Name = "Perc. Magg. Figli")]       
         public decimal PercentualeMaggiorazioniFigli { get; set; }
         
         [Display(Name = "Maggiorazioni Coniuge")]
@@ -115,6 +113,11 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal TotaleContributoOmnicomprensivoPartenza { get; set; }
 
+        [Display(Name = "Totale")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal TotaleContributoOmnicomprensivoRientro { get; set; }
+
+
         [Display(Name = "Anticipo")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal AnticipoContributoOmnicomprensivoRientro { get; set; }
@@ -123,6 +126,9 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal SaldoContributoOmnicomprensivoRientro { get; set; }
 
+        [Display(Name = "Canone di MAB in Euro")]
+        public decimal CanoneMabinEuro { get; set; }
+        
         [Display(Name = "Canone di locazione in valuta")]
         public decimal CanoneLocazioneinValuta { get; set; }
 
@@ -307,6 +313,7 @@ namespace NewISE.Models.DBModel
         public string dtRientro { get; set; }
 
         [Display(Name = "MAB Mensile")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal ImportoMABMensile { get; set; }
 
         public decimal wrk_n1 { get; set; }
@@ -318,6 +325,23 @@ namespace NewISE.Models.DBModel
         public string dataAnticipoSistemazione { get; set; }
 
         public string dataSaldoSistemazione { get; set; }
+
+        [Display(Name = "Anticipo")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal anticipo { get; set; }
+
+        [Display(Name = "Saldo")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal saldo { get; set; }
+
+        [Display(Name = "Indennità Prima Sistemazione")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal totaleSaldoPrimaSistemazione { get; set; }
+
+        [Display(Name = "Valuta MAB")]
+        
+        public string valutaMab { get; set; }
+
 
     }
 }

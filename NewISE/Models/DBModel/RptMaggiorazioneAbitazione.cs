@@ -20,6 +20,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "MAB Mensile")]
         public decimal ImportoMABMensile { get; set; }
 
+        public string valutaMAB { get; set; }
 
 
     }

@@ -293,6 +293,8 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columnDATARIENTRO;
             
+            private global::System.Data.DataColumn columnTotaleContributoOmnicomprensivoRientro;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -384,6 +386,14 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TotaleContributoOmnicomprensivoRientroColumn {
+                get {
+                    return this.columnTotaleContributoOmnicomprensivoRientro;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -419,7 +429,7 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaRichiamo, string AnticipoContrOmniComprensivoRientro, string SaldoContrOmniComprensivoRientro, string PercentualeFasciaKmR, string DATARIENTRO) {
+            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaRichiamo, string AnticipoContrOmniComprensivoRientro, string SaldoContrOmniComprensivoRientro, string PercentualeFasciaKmR, string DATARIENTRO, string TotaleContributoOmnicomprensivoRientro) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DataInizioValidita,
@@ -428,7 +438,8 @@ namespace NewISE.Views.Dataset {
                         AnticipoContrOmniComprensivoRientro,
                         SaldoContrOmniComprensivoRientro,
                         PercentualeFasciaKmR,
-                        DATARIENTRO};
+                        DATARIENTRO,
+                        TotaleContributoOmnicomprensivoRientro};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -458,6 +469,7 @@ namespace NewISE.Views.Dataset {
                 this.columnSaldoContrOmniComprensivoRientro = base.Columns["SaldoContrOmniComprensivoRientro"];
                 this.columnPercentualeFasciaKmR = base.Columns["PercentualeFasciaKmR"];
                 this.columnDATARIENTRO = base.Columns["DATARIENTRO"];
+                this.columnTotaleContributoOmnicomprensivoRientro = base.Columns["TotaleContributoOmnicomprensivoRientro"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -477,6 +489,8 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnPercentualeFasciaKmR);
                 this.columnDATARIENTRO = new global::System.Data.DataColumn("DATARIENTRO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATARIENTRO);
+                this.columnTotaleContributoOmnicomprensivoRientro = new global::System.Data.DataColumn("TotaleContributoOmnicomprensivoRientro", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotaleContributoOmnicomprensivoRientro);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -735,6 +749,23 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TotaleContributoOmnicomprensivoRientro {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.TotaleContributoOmnicomprensivoRientroColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TotaleContributoOmnicomprensivoRientro\' nella tabella \'D" +
+                                "ataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.TotaleContributoOmnicomprensivoRientroColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDataInizioValiditaNull() {
                 return this.IsNull(this.tableDataTable1.DataInizioValiditaColumn);
             }
@@ -815,6 +846,18 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDATARIENTRONull() {
                 this[this.tableDataTable1.DATARIENTROColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTotaleContributoOmnicomprensivoRientroNull() {
+                return this.IsNull(this.tableDataTable1.TotaleContributoOmnicomprensivoRientroColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTotaleContributoOmnicomprensivoRientroNull() {
+                this[this.tableDataTable1.TotaleContributoOmnicomprensivoRientroColumn] = global::System.Convert.DBNull;
             }
         }
         
