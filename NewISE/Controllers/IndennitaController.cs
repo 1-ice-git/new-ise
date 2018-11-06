@@ -2069,14 +2069,39 @@ namespace NewISE.Controllers
                                         }
                                     }
 
+
+
+
+
+
+                                    foreach (var fz in lpmab)
+                                    {
+                                        DateTime dtVar = new DateTime();
+
+                                        if (fz.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
+                                        {
+                                            dtVar = fz.DATAFINEVALIDITA.AddDays(1);
+                                        }
+                                        else
+                                        {
+                                            dtVar = trasferimento.DATARIENTRO;
+                                        }
+
+                                        if (!lDateVariazioni.Contains(dtVar))
+                                        {
+                                            lDateVariazioni.Add(dtVar);
+
+                                        }
+                                    }
+
                                     var lcl =
-                                        mab.CANONEMAB.Where(
-                                            a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                            a.ATTIVAZIONEMAB.ANNULLATO == false &&
-                                            a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                                            a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
-                                        .OrderBy(a => a.DATAINIZIOVALIDITA)
-                                        .ToList();
+                                            mab.CANONEMAB.Where(
+                                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                                a.ATTIVAZIONEMAB.ANNULLATO == false &&
+                                                a.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
+                                                a.ATTIVAZIONEMAB.ATTIVAZIONE == true)
+                                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                            .ToList();
 
                                     foreach (var cl in lcl)
                                     {
@@ -2098,12 +2123,16 @@ namespace NewISE.Controllers
                                         }
 
                                     }
+
+
+
+
+
                                 }
 
                                 lDateVariazioni.Add(new DateTime(9999, 12, 31));
-                            }
 
-                                lDateVariazioni.Add(new DateTime(9999, 12, 31));
+                                lDateVariazioni = lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
 
                                 if (lDateVariazioni?.Any() ?? false)
                                 {
@@ -2130,23 +2159,23 @@ namespace NewISE.Controllers
                                             using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                             {
                                                 RptMaggiorazioneAbitazione rpts = new RptMaggiorazioneAbitazione()
-                                                    {
+                                                {
 
-                                                        DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                        //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
-                                                        //DataFineValidita = (lDateVariazioni[(j + 1)] < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
-                                                        DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
-                                                        //CanoneLocazioneinValuta = ci.CanoneMAB,
-                                                        CanoneLocazioneinEuro = ci.CanoneMABEuro,
-                                                        PercentualeMaggAbitazione = ci.PercentualeMAB,
-                                                        ImportoMABMensile = ci.ImportoMABMensile,
-                                                        CanoneMAB = ci.CanoneMAB,
-                                                        valutaMAB = ci.ValutaMAB.DESCRIZIONEVALUTA,
-                                                        TassoFissoRagguaglio = ci.TassoCambio,
-                                                        ImportoMABMaxMensile = ci.ImportoMABMaxMensile
+                                                    DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                    //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                    //DataFineValidita = (lDateVariazioni[(j + 1)] < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
+                                                    DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
+                                                    //CanoneLocazioneinValuta = ci.CanoneMAB,
+                                                    CanoneLocazioneinEuro = ci.CanoneMABEuro,
+                                                    PercentualeMaggAbitazione = ci.PercentualeMAB,
+                                                    ImportoMABMensile = ci.ImportoMABMensile,
+                                                    CanoneMAB = ci.CanoneMAB,
+                                                    valutaMAB = ci.ValutaMAB.DESCRIZIONEVALUTA,
+                                                    TassoFissoRagguaglio = ci.TassoCambio,
+                                                    ImportoMABMaxMensile = ci.ImportoMABMaxMensile
 
 
-                                        };
+                                                };
                                                 rpt.Add(rpts);
                                             }
                                         }
@@ -2184,7 +2213,7 @@ namespace NewISE.Controllers
                             }
                         }
                     }
-                
+                }   
             }
             catch (Exception ex)
             {
