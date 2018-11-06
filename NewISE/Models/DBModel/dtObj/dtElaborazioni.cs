@@ -9996,8 +9996,7 @@
                             }
                         }
 
-                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO,
-                            trasferimento.DATAPARTENZA, db))
+                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA, db))
                         {
                             ELABINDSISTEMAZIONE eisNew = new ELABINDSISTEMAZIONE();
 
@@ -10279,17 +10278,17 @@
                                         throw new Exception(
                                             "Errore nella fase d'inderimento del conguaglio di prima sistemazione in contabilità.");
                                     }
-                                    else
-                                    {
-                                        //eisNew.IMPORTOLORDO = conguaglioLordo;
-                                        int x = db.SaveChanges();
+                                    //else
+                                    //{
+                                    //    //eisNew.IMPORTOLORDO = conguaglioLordo;
+                                    //    int x = db.SaveChanges();
 
-                                        if (x <= 0)
-                                        {
-                                            throw new Exception(
-                                                "Errore nella fase d'inderimento del conguaglio di prima sistemazione in contabilità.");
-                                        }
-                                    }
+                                    //    if (x <= 0)
+                                    //    {
+                                    //        throw new Exception(
+                                    //            "Errore nella fase d'inderimento del conguaglio di prima sistemazione in contabilità.");
+                                    //    }
+                                    //}
 
 
                                     TEORICI teoricoLordo = new TEORICI()

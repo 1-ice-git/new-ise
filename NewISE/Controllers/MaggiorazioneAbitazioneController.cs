@@ -94,7 +94,7 @@ namespace NewISE.Controllers
                             aa = dtma.GetAnticipoAnnualeMABPartenza(mab, db);
                             mavm.importo_canone = cm.IMPORTOCANONE;
                             mavm.dataInizioMAB = pmab.DATAINIZIOMAB;
-                            mavm.dataFineMAB = pmab.DATAFINEMAB>t.dataRientro?t.dataRientro.Value:pmab.DATAFINEMAB;
+                            mavm.dataFineMAB = pmab.DATAFINEMAB > t.dataRientro ? t.dataRientro.Value : pmab.DATAFINEMAB;
                             if (aa.IDANTICIPOANNUALEMAB > 0)
                             {
                                 mavm.anticipoAnnuale = aa.ANTICIPOANNUALE;
@@ -147,7 +147,6 @@ namespace NewISE.Controllers
                     }
 
                     db.Database.CurrentTransaction.Commit();
-
                 }
 
                 catch (Exception ex)
@@ -286,7 +285,7 @@ namespace NewISE.Controllers
         {
             AttivazioneMABModel amm = new AttivazioneMABModel();
             MAB ma = new MAB();
-            ANTICIPOANNUALEMAB aa = new ANTICIPOANNUALEMAB(); 
+            ANTICIPOANNUALEMAB aa = new ANTICIPOANNUALEMAB();
             //VariazioniMABModel vmam = new VariazioniMABModel();
             //RinunciaMABModel rmab = new RinunciaMABModel();
 
