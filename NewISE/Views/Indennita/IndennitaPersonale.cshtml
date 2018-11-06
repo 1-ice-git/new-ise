@@ -34,8 +34,8 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.IndennitaBase)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.IndennitaBase)
+                </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.IndennitaServizio)
             </th>
@@ -70,8 +70,8 @@
                     </td>
                 }
                 @*<td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.IndennitaBase)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.IndennitaBase)
+                    </td>*@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaServizio)
                 </td>
@@ -93,9 +93,9 @@
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
 
         @*<button class="btn btn-default btn-sm" onclick="DownloadReportIndennitaServizio();">
-            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-            Stampa
-        </button>*@
+                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                Stampa
+            </button>*@
 
         <button class="btn btn-default btn-sm" id="opener">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
@@ -127,6 +127,26 @@
 </div>
 
 <script type="text/javascript">
+
+    //$.fn.dataTable.moment('dd/mm/yyyy');
+    //$.fn.dataTable.moment('dd/mm/yyyy');
+
+    $.fn.dataTable.moment = function (format, locale) {
+        var types = $.fn.dataTable.ext.type;
+
+        // Add type detection
+        types.detect.unshift(function (d) {
+            return moment(d, format, locale, true).isValid() ?
+                'moment-' + format :
+                null;
+        });
+
+        // Add sorting method - use an integer for the sorting
+        types.order['moment-' + format + '-pre'] = function (d) {
+            return moment(d, format, locale, true).unix();
+        };
+    };
+
     $('#tbIndennitaPersonale').DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
@@ -158,12 +178,12 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "columnDefs": [
-                {
-                    type: 'data-euro', targets: [0, 1]
+        //"columnDefs": [
+        //    {
+        //        type: 'data-euro', targets: [0, 1]
 
-                }
-        ],
+        //    }
+        //],
         "order": [[0, "asc"]]
     });
 
@@ -236,43 +256,43 @@
         });
     });
 
-     function RptIndennitaServizio() {
-         //debugger;
-         var rotta = "/Indennita/RptIndennitaServizio";
+    function RptIndennitaServizio() {
+        //debugger;
+        var rotta = "/Indennita/RptIndennitaServizio";
 
-         var idTrasferimento = 0;
+        var idTrasferimento = 0;
 
-         if (!isNaN(idTrasf)) {
-             idTrasferimento = idTrasf;
-         } else {
-             idTrasferimento = $("#hidTrasferimento").val();
-         }
-         @*var idTrasferimento = parseInt('@idTrasferimento');*@
+        if (!isNaN(idTrasf)) {
+            idTrasferimento = idTrasf;
+        } else {
+            idTrasferimento = $("#hidTrasferimento").val();
+        }
+        @*var idTrasferimento = parseInt('@idTrasferimento');*@
 
-                 $.ajax({
-                     type: "POST",
-                     url: rotta,
-                     data: { idTrasferimento: idTrasferimento },
-                     dataType: 'html',
-                     beforeSend: function () {
-                         //debugger;
-                         VerificaAutenticazione();
-                     },
-                     success: function (result) {
-                         //debugger;
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
 
-                         $("#divViewIndennitaServizio").empty();
-                         $("#divViewIndennitaServizio").html(result);
-                     },
-                     complete: function () {
-                     },
-                     error: function (jqXHR, textStatus, errorThrow) {
-                         //debugger;
-                         var msg = errorThrow.err;
-                         ErroreElaborazioneAjax(msg);
-                     }
+                $("#divViewIndennitaServizio").empty();
+                $("#divViewIndennitaServizio").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
 
-                 });
+        });
 
-     }
+    }
 </script>

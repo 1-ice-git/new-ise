@@ -133,7 +133,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
                         descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
                     },
-                    
+
 
                 };
 
@@ -2584,6 +2584,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 foreach (var pm in lpmab)
                                 {
                                     dtma.Associa_PerMAB_PercentualeMAB(pmab.IDPERIODOMAB, pm.IDPERCMAB, db);
+
+                                    //pmab.PERCENTUALEMAB.Add(pm);
                                 }
                             }
 

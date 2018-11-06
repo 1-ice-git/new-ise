@@ -241,32 +241,71 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = db.TRASFERIMENTO.Find(trm.idTrasferimento);
 
                 UFFICI u = t.UFFICI;
-                DIPENDENTI d = t.DIPENDENTI;
 
-                var livelli =
-                    d.LIVELLIDIPENDENTI.Where(
-                        a =>
-                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni &&
-                            a.DATAINIZIOVALIDITA <= dtFin).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                INDENNITA i = t.INDENNITA;
 
-                foreach (var l in livelli)
+                var livelli = i.LIVELLIDIPENDENTI.Where(a =>
+                    a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni &&
+                    a.DATAINIZIOVALIDITA <= dtFin).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (livelli?.Any() ?? false)
                 {
-                    DateTime dtIniPerc = l.DATAINIZIOVALIDITA < dtIni ? dtIni : l.DATAINIZIOVALIDITA;
-                    DateTime dtFinPerc = l.DATAFINEVALIDITA > dtFin ? dtFin : l.DATAFINEVALIDITA;
-
-                    var pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
-                                                          a.DATAFINEVALIDITA >= dtIniPerc &&
-                                                          a.DATAINIZIOVALIDITA <= dtFinPerc &&
-                                                          a.IDUFFICIO == u.IDUFFICIO &&
-                                                          a.IDLIVELLO == l.IDLIVELLO).ToList();
-
-                    if (!pl?.Any() ?? false)
+                    foreach (var l in livelli)
                     {
-                        throw new Exception("La percentuale mab per il livello " + l.LIVELLI.LIVELLO + " non è presente.");
-                    }
+                        DateTime dtIniPerc = l.DATAINIZIOVALIDITA < dtIni ? dtIni : l.DATAINIZIOVALIDITA;
+                        DateTime dtFinPerc = l.DATAFINEVALIDITA > dtFin ? dtFin : l.DATAFINEVALIDITA;
 
-                    plAll.AddRange(pl);
+
+                        var pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
+                                                              a.DATAFINEVALIDITA >= dtIniPerc &&
+                                                              a.DATAINIZIOVALIDITA <= dtFinPerc &&
+                                                              a.IDUFFICIO == u.IDUFFICIO &&
+                                                              a.IDLIVELLO == l.IDLIVELLO)
+                            .OrderBy(a => a.DATAFINEVALIDITA)
+                            .ToList();
+                        if (!pl?.Any() ?? false)
+                        {
+                            throw new Exception("La percentuale mab per il livello " + l.LIVELLI.LIVELLO + " non è presente.");
+                        }
+                        else
+                        {
+                            plAll.AddRange(pl);
+                        }
+
+
+                    }
                 }
+                else
+                {
+                    throw new Exception("Non è presente l'associazione del livello al trasferimento.");
+                }
+
+                //DIPENDENTI d = t.DIPENDENTI;
+
+                //var livelli =
+                //    d.LIVELLIDIPENDENTI.Where(
+                //        a =>
+                //            a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni &&
+                //            a.DATAINIZIOVALIDITA <= dtFin).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                //foreach (var l in livelli)
+                //{
+                //    DateTime dtIniPerc = l.DATAINIZIOVALIDITA < dtIni ? dtIni : l.DATAINIZIOVALIDITA;
+                //    DateTime dtFinPerc = l.DATAFINEVALIDITA > dtFin ? dtFin : l.DATAFINEVALIDITA;
+
+                //    var pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
+                //                                          a.DATAFINEVALIDITA >= dtIniPerc &&
+                //                                          a.DATAINIZIOVALIDITA <= dtFinPerc &&
+                //                                          a.IDUFFICIO == u.IDUFFICIO &&
+                //                                          a.IDLIVELLO == l.IDLIVELLO).ToList();
+
+                //    if (!pl?.Any() ?? false)
+                //    {
+                //        throw new Exception("La percentuale mab per il livello " + l.LIVELLI.LIVELLO + " non è presente.");
+                //    }
+
+                //    plAll.AddRange(pl);
+                //}
 
                 return plAll;
             }
