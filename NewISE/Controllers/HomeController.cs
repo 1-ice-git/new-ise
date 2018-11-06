@@ -26,6 +26,7 @@ namespace NewISE.Controllers
             {
                 admin = Utility.Amministratore();
                 ViewBag.Amministratore = admin;
+
             }
             catch (Exception)
             {
