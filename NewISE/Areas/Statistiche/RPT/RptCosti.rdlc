@@ -139,7 +139,7 @@
                               <Value>=Fields!Importo.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>#,0.00;- #,0.00</Format>
+                                <Format>n2</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -216,7 +216,7 @@
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Format>#,0.00;- #,0.00</Format>
+                                <Format>n2</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -369,7 +369,7 @@
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Format>#,0.00;- #,0.00</Format>
+                                <Format>#,0,.00;(#,0,.00)</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -391,7 +391,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -1109,7 +1108,7 @@
         <DataSetName>dsCosti</DataSetName>
         <Top>0.3463cm</Top>
         <Height>3.00854cm</Height>
-        <Width>29.68914cm</Width>
+        <Width>29.68915cm</Width>
         <Style>
           <Border>
             <Style>None</Style>

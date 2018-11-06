@@ -2478,27 +2478,31 @@ namespace NewISE.Controllers
                                     .Where(a => a.ANNULLATO == false)
                                     .OrderByDescending(a => a.IDRICHIAMO).ToList();
 
+
+                            string DataRichiamo = null;
                             if (richiamo?.Any() ?? false)
                             {
                                 foreach (var ib in richiamo)
                                 {
-                                    DateTime dtVar = new DateTime();
+                                    //DateTime dtVar = new DateTime();
 
-                                    if (ib.DATARICHIAMO < trasferimento.DATAPARTENZA)
-                                    {
-                                        dtVar = trasferimento.DATAPARTENZA;
-                                    }
-                                    else
-                                    {
-                                        dtVar = ib.DATARICHIAMO;
-                                    }
+                                    //if (ib.DATARICHIAMO < trasferimento.DATAPARTENZA)
+                                    //{
+                                    //    dtVar = trasferimento.DATAPARTENZA;
+                                    //}
+                                    //else
+                                    //{
+                                    //    dtVar = ib.DATARICHIAMO;
+                                    //}
 
 
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
-                                        lDateVariazioni.Sort();
-                                    }
+                                    //if (!lDateVariazioni.Contains(dtVar))
+                                    //{
+                                    //    lDateVariazioni.Add(dtVar);
+                                    //    lDateVariazioni.Sort();
+                                    //}
+
+                                    DataRichiamo = ib.DATARICHIAMO.ToShortDateString();
                                 }
                             }
                             #endregion
@@ -2555,14 +2559,16 @@ namespace NewISE.Controllers
                                             RptIndennitàRichiamoLordaModel rpts = new RptIndennitàRichiamoLordaModel()
                                             {
                                               
-                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                //DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
                                                 //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
-                                                DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
+                                                //DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
                                                 IndennitaBase = ci.IndennitaDiBase,
                                                 MaggiorazioneConiuge = ci.MaggiorazioneConiuge,
                                                 MaggiorazioneFigli = ci.MaggiorazioneFigli,
                                                 CoeffIndennitadiRichiamo = ci.CoefficenteIndennitaRichiamo,
-                                                IndennitaRichiamo = ci.IndennitaRichiamoNetto
+                                                CoeffMaggIndennitadiRichiamo = ci.CoefficenteMaggiorazioneRichiamo,
+                                                IndennitaRichiamo = ci.IndennitaRichiamoLordo,
+                                                dtRientro = DataRichiamo
 
                                             };
 
@@ -2878,10 +2884,12 @@ namespace NewISE.Controllers
 
             }
             catch (Exception ex)
-            {
+            {   
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+              
             }
 
+            
 
         }
         public ActionResult RptIndennitadiSistemazioneLorda(decimal idTrasferimento)
@@ -3283,7 +3291,7 @@ namespace NewISE.Controllers
 
                                 RptContributoOmnicomprensivoTrasferimentoModel rpts = new RptContributoOmnicomprensivoTrasferimentoModel()
                                 {
-                                    IndennitaSistemazioneLorda = ci.IndennitaSistemazioneLorda,
+                                    IndennitaSistemazioneLorda = ci.IndennitaSistemazioneAnticipabileLorda,
                                     AnticipoContrOmniComprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza,
                                     SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza,
                                     PercentualeFasciaKmP =  ci.PercentualeFKMPartenza,

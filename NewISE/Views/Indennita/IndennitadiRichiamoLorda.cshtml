@@ -25,24 +25,23 @@
 <table id="tbIndennitadiRichiamoLorda" class="display" cellspacing="0">
     <thead>
         <tr>
-
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
+                @Html.DisplayNameFor(model => model.dtRientro)
             </th>
             <th class="text-center">
-               @Html.DisplayNameFor(model => model.dataFineValidita)
-            </th>
-            @*<th class="text-center">
-               @Html.DisplayNameFor(model => model.IndennitaBase)
+                @Html.DisplayNameFor(model => model.IndennitaBase)
             </th>
             <th class="text-center">
-               @Html.DisplayNameFor(model => model.MaggiorazioniFigli)
+                @Html.DisplayNameFor(model => model.CoeffMaggIndennitadiRichiamo)
             </th>
-            <th class="text-center">
-               @Html.DisplayNameFor(model => model.MaggiorazioneConiuge)
-            </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.CoeffIndennitadiRichiamo)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.MaggiorazioniFigli)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.MaggiorazioneConiuge)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.IndennitaRichiamo)
@@ -53,31 +52,23 @@
         @foreach (var item in Model)
         {
             <tr>
-
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                    @Html.DisplayFor(modelItem => item.dtRientro)
                 </td>
-                @if (item.dataFineValidita == Utility.DataFineStop())
-                {
-                    <td style="text-align:center;"></td>
-                }
-                else
-                {
-                    <td style="text-align:center;">
-                        @Html.DisplayFor(modelItem => item.dataFineValidita)
-                    </td>
-                }
-                @*<td style="text-align:center;">
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaBase)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CoeffMaggIndennitadiRichiamo)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.CoeffIndennitadiRichiamo)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.MaggiorazioniFigli)
                 </td>
                 <td style="text-align:center;">
-                   @Html.DisplayFor(modelItem => item.MaggiorazioneConiuge) 
-                </td>*@
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.CoeffIndennitadiRichiamo)
+                    @Html.DisplayFor(modelItem => item.MaggiorazioneConiuge)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaRichiamo)

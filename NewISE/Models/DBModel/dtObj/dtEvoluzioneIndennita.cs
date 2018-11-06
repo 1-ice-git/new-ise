@@ -141,6 +141,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.dataInizioValidita = dv;
                                     xx.dataFineValidita = dvSucc;
                                     xx.IndennitaBase = ci.IndennitaDiBase;
+                                   
 
                                     libm.Add(xx);
                                 }
@@ -1779,6 +1780,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 DataElab = c.DATAOPERAZIONE.ToShortDateString();
 
                             }
+                            
+
                         }
 
                         // Aliquote Previdenziali
@@ -1827,7 +1830,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
 
-                            xx.dataAnticipoSistemazione = DataElab.ToString();
+                            //xx.dataAnticipoSistemazione = DataElab.ToString();
                             xx.IndennitaServizio = ci.IndennitaDiServizio;
                             xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
                             xx.Importo = importo;
@@ -1845,17 +1848,19 @@ namespace NewISE.Models.DBModel.dtObj
 
                             eim.Add(xx);
 
-                        }         
+                            }
 
+
+                            return eim;
+                        }
                     }
-            }
-                return eim;
-            }
-            catch (Exception ex)
-            {
+                        return eim;
+                    }
+                    catch (Exception ex)
+                    {
 
-                throw ex;
-            }
+                        throw ex;
+                    }
         }
         public IList<EvoluzioneIndennitaModel> GetSaldoIndennitaSistemazioneEvoluzione(decimal idTrasferimento)
         {
@@ -1920,6 +1925,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 DataElab = c.DATAOPERAZIONE.ToShortDateString();
 
                             }
+                            
+
                         }
 
                         // Aliquote Previdenziali
@@ -1968,7 +1975,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
 
-                            xx.dataSaldoSistemazione = DataElab.ToString();
+                            //xx.dataSaldoSistemazione = DataElab.ToString();
                             xx.IndennitaServizio = ci.IndennitaDiServizio;
                             xx.IndennitaSistemazioneAnticipabileLorda = ci.IndennitaSistemazioneAnticipabileLorda;
                             xx.Importo = importo;
@@ -1990,11 +1997,8 @@ namespace NewISE.Models.DBModel.dtObj
                             eim.Add(xx);
 
                         }
-
+                        return eim;
                     }
-
-
-
 
                 }
                 return eim;
@@ -2121,20 +2125,22 @@ namespace NewISE.Models.DBModel.dtObj
                             eim.Add(xx);
 
                         }
+                        return eim;
 
                     }
+
+                    
                 }
-
-
-
-
                 return eim;
+
             }
             catch (Exception ex)
             {
 
                 throw ex;
             }
+
+            
         }
         public IList<EvoluzioneIndennitaModel> GetIndennitaSistemazioneLordaEvoluzione(decimal idTrasferimento)
         {
@@ -2295,7 +2301,7 @@ namespace NewISE.Models.DBModel.dtObj
                             xx.AnticipoContributoOmnicomprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza;
                             xx.SaldoContributoOmnicomprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza;
                             xx.PercentualeFasciaKmP = ci.PercentualeFKMPartenza;
-                            xx.IndennitaSistemazione = ci.IndennitaSistemazioneLorda;
+                            xx.IndennitaSistemazione = ci.IndennitaSistemazioneAnticipabileLorda;
                             xx.TotaleContributoOmnicomprensivoPartenza = ci.TotaleContributoOmnicomprensivoPartenza;
 
                         eim.Add(xx);
@@ -2369,27 +2375,33 @@ namespace NewISE.Models.DBModel.dtObj
                            .Where(a => a.ANNULLATO == false)
                            .OrderByDescending(a => a.IDRICHIAMO).ToList();
 
+                    
+
+                    string DataRichiamo = null;
+
                     if (richiamo?.Any() ?? false)
                     {
                         foreach (var ib in richiamo)
                         {
-                            DateTime dtVar = new DateTime();
+                            //DateTime dtVar = new DateTime();
 
-                            if (ib.DATARICHIAMO < trasferimento.DATAPARTENZA)
-                            {
-                                dtVar = trasferimento.DATAPARTENZA;
-                            }
-                            else
-                            {
-                                dtVar = ib.DATARICHIAMO;
-                            }
+                            //if (ib.DATARICHIAMO < trasferimento.DATAPARTENZA)
+                            //{
+                            //    dtVar = trasferimento.DATAPARTENZA;
+                            //}
+                            //else
+                            //{
+                            //    dtVar = ib.DATARICHIAMO;
+                            //}
 
 
-                            if (!lDateVariazioni.Contains(dtVar))
-                            {
-                                lDateVariazioni.Add(dtVar);
-                                lDateVariazioni.Sort();
-                            }
+                            //if (!lDateVariazioni.Contains(dtVar))
+                            //{
+                            //    lDateVariazioni.Add(dtVar);
+                            //    lDateVariazioni.Sort();
+                            //}
+
+                            DataRichiamo = ib.DATARICHIAMO.ToShortDateString();
                         }
                     }
                     #endregion
@@ -2446,15 +2458,17 @@ namespace NewISE.Models.DBModel.dtObj
                                         using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                         {
                                             EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-                                            xx.dataInizioValidita = dv;
-                                            xx.dataFineValidita = dvSucc;
+                                            
+
+                                            xx.dtRientro = DataRichiamo.ToString();
                                             xx.IndennitaBase = ci.IndennitaDiBase;
                                             xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                             xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
                                             xx.IndennitaRichiamo = ci.IndennitaRichiamoLordo;
                                             xx.CoeffIndennitadiRichiamo = ci.CoefficenteIndennitaRichiamo;
+                                            xx.CoeffMaggIndennitadiRichiamo = ci.CoefficenteMaggiorazioneRichiamo;
                                             
-
+                                            
                                             eim.Add(xx);
 
                                         }

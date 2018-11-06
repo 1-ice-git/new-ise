@@ -24,13 +24,9 @@ namespace NewISE.Models.DBModel
         public decimal PercentualeDisagio { get; set; }
 
         [Display(Name = "Percentuale Fascia Km Partenza")]
-        //[DisplayFormat(DataFormatString = "{0:0.00}")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal PercentualeFasciaKmP { get; set; }
 
         [Display(Name = "Percentuale Fascia Km Rientro")]
-        //[DisplayFormat(DataFormatString = "{0:0.00}")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal PercentualeFasciaKmR { get; set; }
 
         [Display(Name = "Percentuale Magg Abitazione")]
@@ -142,8 +138,14 @@ namespace NewISE.Models.DBModel
         public decimal PercentualeAnticipoRichiesto { get; set; }
 
         [Display(Name = "Coeff. Ind. Richiamo")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal CoeffIndennitadiRichiamo { get; set; }
-        
+
+        [Display(Name = "Coeff. Magg Ind. Richiamo")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
+        public decimal CoeffMaggIndennitadiRichiamo { get; set; }
+
+
         [Display(Name = "Canone MAB")]
         public decimal CanoneMAB { get; set; }
 
@@ -310,6 +312,7 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime dataRientro { get; set; }
 
+        [Display(Name = "Rientro")]
         public string dtRientro { get; set; }
 
         [Display(Name = "MAB Mensile")]
@@ -328,7 +331,7 @@ namespace NewISE.Models.DBModel
 
         public string dataAnticipoSistemazione { get; set; }
 
-        public string dataSaldoSistemazione { get; set; }
+        public DateTime? dataSaldoSistemazione { get; set; }
 
         [Display(Name = "Anticipo")]
         [DisplayFormat(DataFormatString = "{0:C2}")]

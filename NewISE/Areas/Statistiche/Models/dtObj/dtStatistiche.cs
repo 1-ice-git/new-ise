@@ -186,19 +186,21 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<TEORICI> lteorici = t.TEORICI.Where(a =>
                                                         a.ELABTRASPEFFETTI?.IDLIVELLO == idLivello &&
-                                                        a.ELABTRASPEFFETTI.IDTEPARTENZA>0 &&
+                                                        //a.ELABTRASPEFFETTI.IDTEPARTENZA>0 &&
                                                         a.ANNULLATO == false &&
                                                         a.DIRETTO == false &&
                                                         a.ELABORATO == true &&
                                                         a.INSERIMENTOMANUALE == false &&
                                                         a.IDVOCI == idVoci &&
-                                                        a.VOCI.IDTIPOLIQUIDAZIONE == idTipoLiquidazione &&
+                                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
                                                         Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
                                                                             a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) >= annoMeseInizio &&
                                                         Convert.ToDecimal((a.ANNORIFERIMENTO.ToString() +
                                                                             a.MESERIFERIMENTO.ToString().PadLeft(2, (char)'0'))) <= annoMeseFine)
                                                 .OrderBy(a => a.ANNORIFERIMENTO)
                                                 .ThenBy(a => a.MESERIFERIMENTO).ToList();
+
+            
 
             return lteorici;
         }
