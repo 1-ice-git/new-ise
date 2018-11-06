@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
 @using NewISE.Models.Tools
-
+<script src="~/Content/DataTables-1.10.13/extensions/date-euro.js"></script>
 
 @{
 
@@ -159,11 +159,10 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "columnDefs": [
-                //{
-                //    "targets": 'sort',
-                //    "orderable": true,
+                {
+                    type: 'data-euro', targets: [0, 1]
 
-                //}
+                }
         ],
         "order": [[0, "asc"]]
     });

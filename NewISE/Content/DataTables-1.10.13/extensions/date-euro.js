@@ -21,10 +21,10 @@
  *    } );
  */
 
- jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+    
     "date-euro-pre": function ( a ) {
         var x;
-
         if ( $.trim(a) !== '' ) {
             var frDatea = $.trim(a).split(' ');
             var frTimea = (undefined != frDatea[1]) ? frDatea[1].split(':') : [00,00,00];
