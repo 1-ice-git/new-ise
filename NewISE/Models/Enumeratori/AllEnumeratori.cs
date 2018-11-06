@@ -117,7 +117,8 @@ namespace NewISE.Models.Enumeratori
     {
         Residente = 1,
         StudenteResidente = 2,
-        StudenteNonResidente = 3
+        StudenteNonResidente = 3,
+        NonResidente = 4
     }
 
     public enum EnumTipologiaConiuge
