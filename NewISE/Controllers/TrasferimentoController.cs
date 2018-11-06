@@ -1508,7 +1508,7 @@ namespace NewISE.Controllers
                                         #region aggiorno data ricalcolo dipendente del trasferimento precedente
                                         using (dtDipendenti dtd = new dtDipendenti())
                                         {
-                                            dtd.DataInizioRicalcoliDipendente(t_old.IDTRASFERIMENTO, t_old.DATARIENTRO, db);
+                                            dtd.DataInizioRicalcoliDipendente(t_old.IDTRASFERIMENTO, t_old.DATARIENTRO, db, true);
                                         }
                                         #endregion
                                     }

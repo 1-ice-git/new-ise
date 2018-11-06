@@ -475,7 +475,7 @@ namespace NewISE.Controllers
 
                                     using (dtDipendenti dtd = new dtDipendenti())
                                     {
-                                        dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db);
+                                        dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db,true);
                                     }
 
                                     string sede = dtric.DeterminaSede(idTrasferimento);

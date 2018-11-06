@@ -266,6 +266,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+
         public List<PERCENTUALEMAB> GetListaPercentualeMAB_var(decimal idTrasferimento, ModelDBISE db)
         {
             try
@@ -1979,6 +1980,30 @@ namespace NewISE.Models.DBModel.dtObj
                                 throw new Exception("Errore durante l'inserimento del canone.");
                             }
                             #endregion
+
+                            #region riassocia TFR
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var mab = db.MAB.Find(cmabPrecedente.IDMAB);
+                                var t = mab.INDENNITA.TRASFERIMENTO;
+                                var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
+
+                                List<TFRModel> ltfrm = new List<TFRModel>();
+
+                                using (dtTFR dtTfr = new dtTFR())
+                                {
+                                    ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
+                                }
+
+                                RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+
+                                foreach (var tfrm in ltfrm)
+                                {
+                                    Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                                }
+                            }
+                            #endregion
+
                         }
                         else
                         {
@@ -2082,6 +2107,31 @@ namespace NewISE.Models.DBModel.dtObj
                             throw new Exception("Errore durante l'inserimento del canone.");
                         }
                         #endregion
+
+                        #region riassocia TFR
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var mab = db.MAB.Find(cmabPrecedente.IDMAB);
+                            var t = mab.INDENNITA.TRASFERIMENTO;
+                            var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
+
+                            List<TFRModel> ltfrm = new List<TFRModel>();
+
+                            using (dtTFR dtTfr = new dtTFR())
+                            {
+                                ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
+                            }
+
+                            RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+
+                            foreach (var tfrm in ltfrm)
+                            {
+                                Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                            }
+                        }
+                        #endregion
+
+
                     }
                     else
                     {
@@ -2292,9 +2342,32 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     throw new Exception("Errore durante l'inserimento del canone MAB.");
                                 }
-                                #endregion
+                            #endregion
+
+                            #region riassocia TFR
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var mab = db.MAB.Find(cmabPrecedente.IDMAB);
+                                var t = mab.INDENNITA.TRASFERIMENTO;
+                                var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
+
+                                List<TFRModel> ltfrm = new List<TFRModel>();
+
+                                using (dtTFR dtTfr = new dtTFR())
+                                {
+                                    ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
+                                }
+
+                                RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+
+                                foreach (var tfrm in ltfrm)
+                                {
+                                    Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                                }
                             }
-                            else
+                            #endregion
+                        }
+                        else
                             {
                                 cmabmPrecedente.NascondiRecord(db);
 
@@ -2390,9 +2463,32 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     throw new Exception("Errore durante l'inserimento del canone.");
                                 }
-                                #endregion
+                            #endregion
+
+                            #region riassocia TFR
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var mab = db.MAB.Find(cmabPrecedente.IDMAB);
+                                var t = mab.INDENNITA.TRASFERIMENTO;
+                                var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
+
+                                List<TFRModel> ltfrm = new List<TFRModel>();
+
+                                using (dtTFR dtTfr = new dtTFR())
+                                {
+                                    ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
+                                }
+
+                                RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+
+                                foreach (var tfrm in ltfrm)
+                                {
+                                    Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                                }
                             }
-                            else
+                            #endregion
+                        }
+                        else
                             {
                                 cmabmPrecedente.NascondiRecord(db);
 
@@ -2517,6 +2613,19 @@ namespace NewISE.Models.DBModel.dtObj
                                 throw new Exception("Errore durante l'inserimento di pagato condiviso.");
                             }
                             #endregion
+
+                            #region associa percentuale condivisione
+                            List<PERCENTUALECONDIVISIONE> lperccond = new List<PERCENTUALECONDIVISIONE>();
+
+                            lperccond = GetListaPercentualeCondivisione_var(pcmabPrecedente.DATAINIZIOVALIDITA, pcmabPrecedente.DATAFINEVALIDITA, db);
+
+                            RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pcmabPrecedente.IDPAGATOCONDIVISO, db);
+
+                            foreach (var perccond in lperccond)
+                            {
+                                Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pcmabPrecedente.IDPAGATOCONDIVISO, perccond.IDPERCCOND, db);
+                            }
+                            #endregion
                         }
                         else
                         {
@@ -2618,6 +2727,19 @@ namespace NewISE.Models.DBModel.dtObj
                         if (db.SaveChanges() <= 0)
                         {
                             throw new Exception("Errore durante l'inserimento di pagato condiviso.");
+                        }
+                        #endregion
+
+                        #region associa percentuale condivisione
+                        List<PERCENTUALECONDIVISIONE> lperccond = new List<PERCENTUALECONDIVISIONE>();
+
+                        lperccond = GetListaPercentualeCondivisione_var(pcmabPrecedente.DATAINIZIOVALIDITA, pcmabPrecedente.DATAFINEVALIDITA, db);
+
+                        RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pcmabPrecedente.IDPAGATOCONDIVISO, db);
+
+                        foreach (var perccond in lperccond)
+                        {
+                            Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pcmabPrecedente.IDPAGATOCONDIVISO, perccond.IDPERCCOND, db);
                         }
                         #endregion
                     }
@@ -3188,6 +3310,23 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void RimuoviAssociazioneMAB_MaggiorazioniAnnuali(decimal idMAB, ModelDBISE db)
+        {
+            var ma = db.MAB.Find(idMAB);
+            var lmann = ma.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).ToList();
+            if (lmann?.Any() ?? false)
+            {
+                foreach (var mann in lmann)
+                {
+                    ma.MAGGIORAZIONIANNUALI.Remove(mann);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
+
+
         public void SetDocumentoMAB_var(ref DocumentiModel dm, decimal idAttivazioneMAB, ModelDBISE db)
         {
             MemoryStream ms = new MemoryStream();
@@ -3248,7 +3387,109 @@ namespace NewISE.Models.DBModel.dtObj
                                     idTrasferimento, am.IDATTIVAZIONEMAB);
 
                                 var mab_corrente = am.MAB; //.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDMAB).ToList().First();
+                                                           //--------
+                                var pmm = GetPeriodoMABModel(mab_corrente.IDMAB, db);
 
+                                MABViewModel mvm = new MABViewModel();
+                                mvm.idTrasferimento = idTrasferimento;
+                                mvm.dataInizioMAB = pmm.dataInizioMAB;
+                                mvm.dataFineMAB = pmm.dataFineMAB;
+
+                                #region aggiorno l'associazione anticipo annuale
+                                //var mab = GetMABPartenza(am.TRASFERIMENTO.IDTRASFERIMENTO, db);
+                                //rimuovi precedenti associazioni MAB MaggiorazioniAnnuali
+                                RimuoviAssociazioneMAB_MaggiorazioniAnnuali(mab_corrente.IDMAB, db);
+                                //se richiesto le riassocio
+                                var aal = mab_corrente.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
+                                if (aal?.Any() ?? false)
+                                {
+                                    var aa = aal.First();
+                                    if (aa.ANTICIPOANNUALE)
+                                    {
+                                        var mann = GetMaggiorazioneAnnuale_var(mvm, db);
+                                        if (mann.IDMAGANNUALI > 0)
+                                        {
+                                            //associa MAB a MaggiorazioniAnnuali se esiste
+                                            Associa_MAB_MaggiorazioniAnnuali_var(mab_corrente.IDMAB, mann.IDMAGANNUALI, db);
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                #region aggiorno associazione MAB con percentuali MAB
+                                TrasferimentoModel tm = new TrasferimentoModel();
+                                using (dtTrasferimento dtt = new dtTrasferimento())
+                                {
+                                    tm = dtt.GetTrasferimentoById(idTrasferimento);
+                                }
+
+                                RimuoviAssociazionePeriodoMAB_PercentualeMAB_var(pmm.idPeriodoMAB, db);
+
+                                var lista_perc = GetListaPercentualeMAB_var(tm.idTrasferimento, db);
+                                if (lista_perc?.Any() ?? false)
+                                {
+                                    foreach (var perc in lista_perc)
+                                    {
+                                        Associa_perMAB_PercenualeMAB_var(pmm.idPeriodoMAB, perc.IDPERCMAB, db);
+                                    }
+                                }
+                                #endregion
+
+                                #region aggiorna associazioni eventuale pagato condiviso
+                                //var ma = this.GetMABPartenza(am.TRASFERIMENTO.IDTRASFERIMENTO, db);
+                                //var lpc = am.PAGATOCONDIVISOMAB.OrderBy(a => a.IDPAGATOCONDIVISO).ToList();
+                                List<PagatoCondivisoMABModel> lpc = GetPagatoCondivisoMABModel(mab_corrente.IDMAB, db);
+                                foreach (var pc in lpc)
+                                {
+                                    RimuoviAssociazionePagatoCondiviso_PercentualeCondivisione_var(pc.idPagatoCondiviso, db);
+
+
+                                    if (pc.Condiviso)
+                                    {
+                                        var lpercCond = GetListaPercentualeCondivisione_var(pc.DataInizioValidita, pc.DataFineValidita, db);
+                                        if (lpercCond?.Any() ?? false)
+                                        {
+                                            foreach (var percCond in lpercCond)
+                                            {
+                                                Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.idPagatoCondiviso, percCond.IDPERCCOND, db);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                #region aggiorna associazioni canone MAB a TFR
+                                var lcm = GetCanoneMAB(mab_corrente.IDMAB, db);
+                                foreach (var cm in lcm)
+                                {
+                                    RimuoviAssociazioneCanoneMAB_TFR_var(cm.IDCANONE, db);
+                                    using (dtTFR dtt = new dtTFR())
+                                    {
+                                        //using (dtValute dtv = new dtValute())
+                                        //{
+                                        //var vm = dtv.GetValutaByCanonePartenza(cm.IDCANONE, db);
+                                        var ltfr = dtt.GetListaTfrByValuta_RangeDate(tm, cm.IDVALUTA, cm.DATAINIZIOVALIDITA, cm.DATAFINEVALIDITA, db);
+
+                                        if (ltfr?.Any() ?? false)
+                                        {
+                                            foreach (var tfr in ltfr)
+                                            {
+                                                Associa_TFR_CanoneMAB_var(tfr.idTFR, cm.IDCANONE, db);
+                                            }
+                                        }
+                                        //}
+                                    }
+                                }
+                                #endregion
+
+
+
+
+                                //---------
                                 #region imposto lo stato su ATTIVO
                                 //var mabl = am.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDMAB).ToList();
                                 //foreach (var mab in mabl)
@@ -3289,7 +3530,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     UpdateStatoCanoneMAB(cmab.IDCANONE, EnumStatoRecord.Annullato, db);
                                 }
 
-                                var aal = am.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
+                                aal = am.ANTICIPOANNUALEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).OrderBy(a => a.IDANTICIPOANNUALEMAB).ToList();
                                 foreach (var aa in aal)
                                 {
                                     UpdateStatoAnticipoAnnualeMAB(aa.IDANTICIPOANNUALEMAB, EnumStatoRecord.Attivato, db);
@@ -4868,6 +5109,17 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                 }
 
+                            }
+                            #endregion
+
+                            #region associa maggiorazione annuale
+                            var ma = GetMaggiorazioneAnnuale_var(mabvm, db);
+                            if (mabvm.anticipoAnnuale)
+                            {
+                                if (ma.IDMAGANNUALI > 0)
+                                {
+                                    Associa_MAB_MaggiorazioniAnnuali_var(mabvm.idMAB, ma.IDMAGANNUALI, db);
+                                }
                             }
                             #endregion
 
